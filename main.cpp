@@ -104,6 +104,32 @@ bool dump_to_file(const char *file_name, BYTE* data, size_t data_size)
 	return true;
 }
 
+size_t report_patches(const char* file_name, DWORD rva, BYTE *orig_code, BYTE *patched_code, size_t code_size)
+{
+	const char delimiter = ';';
+	FILE *f1 = fopen(file_name, "wb");
+	size_t patches_count = 0;
+
+	bool patch_flag = false;
+	for (size_t i = 0; i < code_size; i++) {
+		if (orig_code[i] == patched_code[i]) {
+			patch_flag = false;
+			continue;
+		}
+		if (patch_flag == false) {
+			patch_flag = true;
+			if (f1) {
+				fprintf(f1, "%8.8X%cpatch_%d\n", rva + i, delimiter, patches_count);
+			} else {
+				printf("%8.8X\n", rva + i);
+			}
+			patches_count++;
+		}
+	}
+	if (f1) fclose(f1);
+	return patches_count;
+}
+
 size_t enum_modules_in_process(DWORD process_id, FILE *f)
 {
 	HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process_id);
@@ -162,6 +188,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 			hooked_modules++;
 			log_info(f, module_entry);
 			//
+			//todo: unmap module
 			if (!dump_module(processHandle, module_entry.modBaseAddr, module_entry.modBaseSize)) {
 				printf("Failed dumping module!\n");
 			}
@@ -173,6 +200,12 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 
 			sprintf(mod_name, "%llX_original_code.bin", (ULONGLONG)module_entry.modBaseAddr);
 			dump_to_file(mod_name, orig_code, section_hdr->SizeOfRawData);
+
+			sprintf(mod_name, "%llX_patches.tag", (ULONGLONG)module_entry.modBaseAddr);
+			size_t patches_count = report_patches(mod_name, section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
+			if (patches_count) {
+				printf("Total patches: %d\n", patches_count);
+			}
 			//---
 			//
 		} else {
