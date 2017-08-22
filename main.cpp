@@ -237,7 +237,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 int main(int argc, char *argv[])
 {
 	char *version = "0.0.1 alpha";
-	if (argc < 3) {
+	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");
 		printf("Args: <PID>\n");
