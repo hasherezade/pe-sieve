@@ -109,7 +109,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 		return 0;
 	}
 	size_t hooked_modules = 0;
-    while (Module32Next(hProcessSnapShot, &module_entry)) {
+	while (Module32Next(hProcessSnapShot, &module_entry)) {
 		
 		modules++;
 		if (processHandle == NULL) continue;
@@ -142,7 +142,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 		
 		size_t smaller_size = section_hdr->SizeOfRawData > read_size ? read_size : section_hdr->SizeOfRawData;
 		printf("Code RVA: %x to %x\n", section_hdr->VirtualAddress, section_hdr->SizeOfRawData);
-		
+
 		int res = memcmp(loaded_code, orig_code, smaller_size);
 
 		if (res != 0) {
@@ -178,7 +178,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 		}
 		VirtualFree(original_module, module_size, MEM_FREE);
 		delete []loaded_code;
-		}
+	}
 	if (processHandle) {
 		CloseHandle(processHandle);
 	}
