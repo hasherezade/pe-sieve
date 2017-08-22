@@ -9,6 +9,7 @@
 #include "peloader\util.h"
 #include "peloader\pe_hdrs_helper.h"
 #include "peloader\pe_raw_to_virtual.h"
+#include "peloader\pe_virtual_to_raw.h"
 #include "peloader\relocate.h"
 
 #include <Windows.h>
@@ -80,15 +81,30 @@ bool dump_module(HANDLE processHandle, BYTE *start_addr, size_t mod_size)
 		return false;
 	}
 	char mod_name[MAX_PATH] = { 0 };
-	sprintf(mod_name, "%llX.bin", (ULONGLONG)start_addr);
+	BYTE* dump_data = buffer;
+	size_t dump_size = mod_size;
+
+	size_t out_size = 0;
+	BYTE* unmapped_module = pe_virtual_to_raw(buffer, mod_size, (ULONGLONG)start_addr, out_size);
+	if (unmapped_module != NULL) {
+		dump_data = unmapped_module;
+		dump_size = out_size;
+		sprintf(mod_name, "%llX.dll", (ULONGLONG)start_addr);
+	} else {
+		sprintf(mod_name, "%llX.bin", (ULONGLONG)start_addr);
+	}
+
 	FILE *f1 = fopen(mod_name, "wb");
 	if (f1) {
-		fwrite(buffer, 1, mod_size, f1);
+		fwrite(dump_data, 1, dump_size, f1);
 		fclose(f1);
 		printf("Module dumped to: %s\n", mod_name);
 	}
 	VirtualFree(buffer, mod_size, MEM_FREE);
 	buffer = NULL;
+	if (unmapped_module) {
+		VirtualFree(unmapped_module, mod_size, MEM_FREE);
+	}
 	return true;
 }
 
@@ -98,7 +114,6 @@ bool dump_to_file(const char *file_name, BYTE* data, size_t data_size)
 	if (!f1) {
 		return false;
 	}
-	printf("dumped\n");
 	fwrite(data, 1, data_size, f1);
 	fclose(f1);
 	return true;
@@ -184,7 +199,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 		int res = memcmp(loaded_code, orig_code, smaller_size);
 
 		if (res != 0) {
-			printf("[!] %s is hooked!\n\n", module_entry.szExePath);
+			printf("[!] %s is hooked!\n", module_entry.szExePath);
 			hooked_modules++;
 			log_info(f, module_entry);
 			//
@@ -194,14 +209,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 			}
 			//---
 			char mod_name[MAX_PATH] = { 0 };
-
-			sprintf(mod_name, "%llX_hooked_code.bin", (ULONGLONG)module_entry.modBaseAddr);
-			dump_to_file(mod_name, loaded_code, read_size);
-
-			sprintf(mod_name, "%llX_original_code.bin", (ULONGLONG)module_entry.modBaseAddr);
-			dump_to_file(mod_name, orig_code, section_hdr->SizeOfRawData);
-
-			sprintf(mod_name, "%llX_patches.tag", (ULONGLONG)module_entry.modBaseAddr);
+			sprintf(mod_name, "%llX.dll.tag", (ULONGLONG)module_entry.modBaseAddr);
 			size_t patches_count = report_patches(mod_name, section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
 			if (patches_count) {
 				printf("Total patches: %d\n", patches_count);
@@ -209,7 +217,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 			//---
 			//
 		} else {
-			printf("[*] %s is NOT hooked!\n\n", module_entry.szExePath);
+			printf("[*] %s is NOT hooked!\n", module_entry.szExePath);
 		}
 		VirtualFree(original_module, module_size, MEM_FREE);
 		delete []loaded_code;
@@ -221,6 +229,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 	CloseHandle(hProcessSnapShot);
 	printf("[*] Total modules: %d\n", modules);
 	printf("[*] Total hooked:  %d\n", hooked_modules);
+	printf("\n---\n");
 	return hooked_modules;
 }
 
