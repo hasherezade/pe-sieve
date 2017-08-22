@@ -70,7 +70,7 @@ bool clear_iat(PIMAGE_SECTION_HEADER section_hdr, BYTE* original_module, BYTE* l
 	return true;
 }
 
-bool dump_module(HANDLE processHandle, BYTE *start_addr, size_t mod_size)
+bool dump_module(const char *out_path, const HANDLE processHandle, BYTE *start_addr, size_t mod_size)
 {
 	BYTE* buffer = (BYTE*) VirtualAlloc(NULL, mod_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 	DWORD read_size = 0;
@@ -80,7 +80,6 @@ bool dump_module(HANDLE processHandle, BYTE *start_addr, size_t mod_size)
 		buffer = NULL;
 		return false;
 	}
-	char mod_name[MAX_PATH] = { 0 };
 	BYTE* dump_data = buffer;
 	size_t dump_size = mod_size;
 
@@ -89,16 +88,12 @@ bool dump_module(HANDLE processHandle, BYTE *start_addr, size_t mod_size)
 	if (unmapped_module != NULL) {
 		dump_data = unmapped_module;
 		dump_size = out_size;
-		sprintf(mod_name, "%llX.dll", (ULONGLONG)start_addr);
-	} else {
-		sprintf(mod_name, "%llX.bin", (ULONGLONG)start_addr);
 	}
-
-	FILE *f1 = fopen(mod_name, "wb");
+	FILE *f1 = fopen(out_path, "wb");
 	if (f1) {
 		fwrite(dump_data, 1, dump_size, f1);
 		fclose(f1);
-		printf("Module dumped to: %s\n", mod_name);
+		printf("Module dumped to: %s\n", out_path);
 	}
 	VirtualFree(buffer, mod_size, MEM_FREE);
 	buffer = NULL;
@@ -145,6 +140,17 @@ size_t report_patches(const char* file_name, DWORD rva, BYTE *orig_code, BYTE *p
 	return patches_count;
 }
 
+bool make_dump_dir(const DWORD process_id, OUT char *directory)
+{
+	sprintf(directory, "process_%d", process_id);
+	if (CreateDirectoryA(directory, NULL) ||  GetLastError() == ERROR_ALREADY_EXISTS) {
+		printf("[+] Directory created\n");
+		return true;
+	}
+	memset(directory, 0, MAX_PATH);
+	return false;
+}
+
 size_t enum_modules_in_process(DWORD process_id, FILE *f)
 {
 	HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process_id);
@@ -155,6 +161,9 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
       return 0;
 	}
 	size_t modules = 1;
+
+	char directory[MAX_PATH] = { 0 };
+	bool is_dir = make_dump_dir(process_id, directory);
 
 	HANDLE processHandle = OpenProcess(PROCESS_VM_READ, FALSE, process_id);
 	if (processHandle == NULL)  {
@@ -198,6 +207,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 		printf("Code RVA: %x to %x\n", section_hdr->VirtualAddress, section_hdr->SizeOfRawData);
 
 		int res = memcmp(loaded_code, orig_code, smaller_size);
+		char mod_name[MAX_PATH] = { 0 };
 
 		if (res != 0) {
 			printf("[!] %s is hooked!\n", module_entry.szExePath);
@@ -205,12 +215,13 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 			log_info(f, module_entry);
 			//
 			//todo: unmap module
-			if (!dump_module(processHandle, module_entry.modBaseAddr, module_entry.modBaseSize)) {
+			sprintf(mod_name, "%s\\%llX.dll", directory, (ULONGLONG)module_entry.modBaseAddr);
+			if (!dump_module(mod_name, processHandle, module_entry.modBaseAddr, module_entry.modBaseSize)) {
 				printf("Failed dumping module!\n");
 			}
 			//---
-			char mod_name[MAX_PATH] = { 0 };
-			sprintf(mod_name, "%llX.dll.tag", (ULONGLONG)module_entry.modBaseAddr);
+			
+			sprintf(mod_name, "%s\\%llX.dll.tag", directory, (ULONGLONG)module_entry.modBaseAddr);
 			size_t patches_count = report_patches(mod_name, section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
 			if (patches_count) {
 				printf("Total patches: %d\n", patches_count);
