@@ -158,9 +158,10 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 
 	HANDLE processHandle = OpenProcess(PROCESS_VM_READ, FALSE, process_id);
 	if (processHandle == NULL)  {
-		printf("Could not open process for reading!\n");
+		printf("[-] Could not open the process for reading!\n");
 		return 0;
 	}
+	printf("---\n");
 	size_t hooked_modules = 0;
 	while (Module32Next(hProcessSnapShot, &module_entry)) {
 		
@@ -229,17 +230,25 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 	CloseHandle(hProcessSnapShot);
 	printf("[*] Total modules: %d\n", modules);
 	printf("[*] Total hooked:  %d\n", hooked_modules);
-	printf("\n---\n");
+	printf("---\n");
 	return hooked_modules;
 }
 
 int main(int argc, char *argv[])
 {
-	DWORD pid = GetCurrentProcessId();
-	if (argc >= 2) {
-		pid = atoi(argv[1]);
-		printf("PID: %d\n", pid);
+	char *version = "0.0.1 alpha";
+	if (argc < 3) {
+		printf("[hook_finder v%s]\n", version);
+		printf("A small tool allowing to detect and examine inline hooks\n---\n");
+		printf("Args: <PID>\n");
+		printf("PID: (decimal) PID of the target application\n");
+		printf("---\n");
+		system("pause");
+		return -1;
 	}
+
+	DWORD pid = atoi(argv[1]);
+	printf("PID: %d\n", pid);
 	
 	char filename[MAX_PATH] = { 0 };
 	sprintf(filename,"PID_%d_modules.txt", pid);
