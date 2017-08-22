@@ -92,6 +92,18 @@ bool dump_module(HANDLE processHandle, BYTE *start_addr, size_t mod_size)
 	return true;
 }
 
+bool dump_to_file(const char *file_name, BYTE* data, size_t data_size)
+{
+	FILE *f1 = fopen(file_name, "wb");
+	if (!f1) {
+		return false;
+	}
+	printf("dumped\n");
+	fwrite(data, 1, data_size, f1);
+	fclose(f1);
+	return true;
+}
+
 size_t enum_modules_in_process(DWORD process_id, FILE *f)
 {
 	HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process_id);
@@ -157,20 +169,10 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 			char mod_name[MAX_PATH] = { 0 };
 
 			sprintf(mod_name, "%llX_hooked_code.bin", (ULONGLONG)module_entry.modBaseAddr);
-			FILE *f1 = fopen(mod_name, "wb");
-			if (f1) {
-				printf("dumped\n");
-				fwrite(loaded_code, 1, read_size, f1);
-				fclose(f1);
-				f1 = NULL;
-			}
+			dump_to_file(mod_name, loaded_code, read_size);
+
 			sprintf(mod_name, "%llX_original_code.bin", (ULONGLONG)module_entry.modBaseAddr);
-			f1 = fopen(mod_name, "wb");
-			if (f1) {
-				fwrite(orig_code, 1, section_hdr->SizeOfRawData, f1);
-				fclose(f1);
-				f1 = NULL;
-			}
+			dump_to_file(mod_name, orig_code, section_hdr->SizeOfRawData);
 			//---
 			//
 		} else {
