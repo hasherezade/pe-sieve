@@ -89,3 +89,4 @@ bool apply_relocations(ULONGLONG newBase, ULONGLONG oldBase, PVOID modulePtr, SI
 	}
 	return (parsedSize != 0);
 }
+

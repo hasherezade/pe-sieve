@@ -76,47 +76,44 @@ IMAGE_DATA_DIRECTORY* get_pe_directory(const BYTE *pe_buffer, DWORD dir_id)
 
 ULONGLONG get_module_base(const BYTE *pe_buffer)
 {
-    bool is64b = is64bit(pe_buffer);
-    //update image base in the written content:
-    BYTE* payload_nt_hdr = get_nt_hrds(pe_buffer);
-    if (payload_nt_hdr == NULL) {
-        return 0;
-    }
-    if (is64b) {
-        IMAGE_NT_HEADERS64* payload_nt_hdr64 = (IMAGE_NT_HEADERS64*)payload_nt_hdr;
-        return payload_nt_hdr64->OptionalHeader.ImageBase;
-    }
+	bool is64b = is64bit(pe_buffer);
+	//update image base in the written content:
+	BYTE* payload_nt_hdr = get_nt_hrds(pe_buffer);
+	if (payload_nt_hdr == NULL) {
+		return 0;
+	}
+	if (is64b) {
+	IMAGE_NT_HEADERS64* payload_nt_hdr64 = (IMAGE_NT_HEADERS64*)payload_nt_hdr;
+	return payload_nt_hdr64->OptionalHeader.ImageBase;
+	}
 	IMAGE_NT_HEADERS32* payload_nt_hdr32 = (IMAGE_NT_HEADERS32*)payload_nt_hdr;
 	return static_cast<ULONGLONG>(payload_nt_hdr32->OptionalHeader.ImageBase);
 }
 
 PIMAGE_SECTION_HEADER get_section_hdr(const BYTE* payload, const size_t buffer_size, size_t section_num)
 {
-    if (payload == NULL) return NULL;
+	if (payload == NULL) return NULL;
 
-    bool is64b = is64bit(payload);
+	bool is64b = is64bit(payload);
+	BYTE* payload_nt_hdr = get_nt_hrds(payload);
+	if (payload_nt_hdr == NULL) {
+		return NULL;
+	}
 
-    BYTE* payload_nt_hdr = get_nt_hrds(payload);
-    if (payload_nt_hdr == NULL) {
-        return NULL;
-    }
-
-    IMAGE_FILE_HEADER *fileHdr = NULL;
-    DWORD hdrsSize = 0;
-    LPVOID secptr = NULL;
-    if (is64b) {
-        IMAGE_NT_HEADERS64* payload_nt_hdr64 = (IMAGE_NT_HEADERS64*)payload_nt_hdr;
-        fileHdr = &(payload_nt_hdr64->FileHeader);
-        hdrsSize = payload_nt_hdr64->OptionalHeader.SizeOfHeaders;
-        secptr = (LPVOID)((ULONGLONG)&(payload_nt_hdr64->OptionalHeader) + fileHdr->SizeOfOptionalHeader);
-    }
-    else {
-        IMAGE_NT_HEADERS32* payload_nt_hdr32 = (IMAGE_NT_HEADERS32*)payload_nt_hdr;
-        fileHdr = &(payload_nt_hdr32->FileHeader);
-        hdrsSize = payload_nt_hdr32->OptionalHeader.SizeOfHeaders;
-        secptr = (LPVOID)((ULONGLONG)&(payload_nt_hdr32->OptionalHeader) + fileHdr->SizeOfOptionalHeader);
-    }
-
+	IMAGE_FILE_HEADER *fileHdr = NULL;
+	DWORD hdrsSize = 0;
+	LPVOID secptr = NULL;
+	if (is64b) {
+		IMAGE_NT_HEADERS64* payload_nt_hdr64 = (IMAGE_NT_HEADERS64*)payload_nt_hdr;
+		fileHdr = &(payload_nt_hdr64->FileHeader);
+		hdrsSize = payload_nt_hdr64->OptionalHeader.SizeOfHeaders;
+		secptr = (LPVOID)((ULONGLONG)&(payload_nt_hdr64->OptionalHeader) + fileHdr->SizeOfOptionalHeader);
+	} else {
+		 IMAGE_NT_HEADERS32* payload_nt_hdr32 = (IMAGE_NT_HEADERS32*)payload_nt_hdr;
+		fileHdr = &(payload_nt_hdr32->FileHeader);
+		hdrsSize = payload_nt_hdr32->OptionalHeader.SizeOfHeaders;
+		secptr = (LPVOID)((ULONGLONG)&(payload_nt_hdr32->OptionalHeader) + fileHdr->SizeOfOptionalHeader);
+	}
 	if (section_num >= fileHdr->NumberOfSections) {
 		return NULL;
 	}
@@ -125,8 +122,9 @@ PIMAGE_SECTION_HEADER get_section_hdr(const BYTE* payload, const size_t buffer_s
 		);
 
 	//validate pointer
-    if (!validate_ptr((const LPVOID) payload, buffer_size, (const LPVOID) next_sec, sizeof(IMAGE_SECTION_HEADER))) {
-        return NULL;
-    }
+	if (!validate_ptr((const LPVOID) payload, buffer_size, (const LPVOID) next_sec, sizeof(IMAGE_SECTION_HEADER))) {
+		return NULL;
+	}
 	return next_sec;
 }
+

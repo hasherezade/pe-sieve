@@ -16,10 +16,9 @@
 
 void log_info(FILE *f, MODULEENTRY32 &module_entry)
 {
-    BYTE* mod_end = module_entry.modBaseAddr + module_entry.modBaseSize;
-
-    fprintf(f, "%p,%p,%s\n", module_entry.modBaseAddr, mod_end, module_entry.szModule);
-    fflush(f);
+	BYTE* mod_end = module_entry.modBaseAddr + module_entry.modBaseSize;
+	fprintf(f, "%p,%p,%s\n", module_entry.modBaseAddr, mod_end, module_entry.szModule);
+	fflush(f);
 }
 
 BYTE* get_module_code(BYTE *start_addr, size_t mod_size, HANDLE processHandle, size_t &code_size)
@@ -95,14 +94,14 @@ bool dump_module(HANDLE processHandle, BYTE *start_addr, size_t mod_size)
 
 size_t enum_modules_in_process(DWORD process_id, FILE *f)
 {
-    HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process_id);
-    MODULEENTRY32 module_entry = { 0 };
-    module_entry.dwSize = sizeof(module_entry);
-	
-    if (!Module32First(hProcessSnapShot, &module_entry)) {
-        return 0;
-    }
-    size_t modules = 1;
+	HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process_id);
+	MODULEENTRY32 module_entry = { 0 };
+	module_entry.dwSize = sizeof(module_entry);
+
+	if (!Module32First(hProcessSnapShot, &module_entry)) {
+      return 0;
+	}
+	size_t modules = 1;
 
 	HANDLE processHandle = OpenProcess(PROCESS_VM_READ, FALSE, process_id);
 	if (processHandle == NULL)  {
@@ -174,20 +173,20 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 			}
 			//---
 			//
-	} else {
+		} else {
 			printf("[*] %s is NOT hooked!\n\n", module_entry.szExePath);
 		}
 		VirtualFree(original_module, module_size, MEM_FREE);
 		delete []loaded_code;
-    }
+		}
 	if (processHandle) {
 		CloseHandle(processHandle);
 	}
-    // Close the handle
-    CloseHandle(hProcessSnapShot);
+	// Close the handle
+	CloseHandle(hProcessSnapShot);
 	printf("[*] Total modules: %d\n", modules);
 	printf("[*] Total hooked:  %d\n", hooked_modules);
-    return hooked_modules;
+	return hooked_modules;
 }
 
 int main(int argc, char *argv[])

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "util.h"
 #include <Windows.h>
+#include "util.h"
 
 BYTE* get_nt_hrds(const BYTE *pe_buffer);
 IMAGE_NT_HEADERS32* get_nt_hrds32(const BYTE *pe_buffer);
