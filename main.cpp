@@ -14,6 +14,7 @@
 
 #include <Windows.h>
 #include <TlHelp32.h>
+#include <stdlib.h>
 
 void log_info(FILE *f, MODULEENTRY32 &module_entry)
 {
@@ -33,18 +34,23 @@ BYTE* get_module_code(BYTE *start_addr, size_t mod_size, HANDLE processHandle, s
 		return NULL;
 	}
 	PIMAGE_SECTION_HEADER section_hdr = get_section_hdr(header_buffer, header_size, 0);
-	BYTE *module_code = new BYTE[section_hdr->SizeOfRawData];
+	BYTE *module_code = (BYTE*) calloc(section_hdr->SizeOfRawData, sizeof(BYTE));
 	if (module_code == NULL) {
 		return NULL;
 	}
 
 	ReadProcessMemory(processHandle, start_addr + section_hdr->VirtualAddress, module_code, section_hdr->SizeOfRawData, &read_size);
 	if (read_size != section_hdr->SizeOfRawData) {
-		delete []module_code;
+		free(module_code);
 		return NULL;
 	}
 	code_size = read_size;
 	return module_code;
+}
+
+void free_module_code(BYTE *module_code)
+{
+	free(module_code);
 }
 
 bool clear_iat(PIMAGE_SECTION_HEADER section_hdr, BYTE* original_module, BYTE* loaded_code)
@@ -241,7 +247,8 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 			printf("[*] %s is NOT hooked!\n", module_entry.szExePath);
 		}
 		VirtualFree(original_module, module_size, MEM_FREE);
-		delete []loaded_code;
+		free_module_code(loaded_code);
+		loaded_code = NULL;
 
 	} while (Module32Next(hProcessSnapShot, &module_entry));
 
@@ -264,7 +271,7 @@ int main(int argc, char *argv[])
 		printf("PID: (decimal) PID of the target application\n");
 		printf("---\n");
 		system("pause");
-		return -1;
+		return 0;
 	}
 
 	DWORD pid = atoi(argv[1]);
