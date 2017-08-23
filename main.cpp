@@ -40,6 +40,7 @@ BYTE* get_module_code(BYTE *start_addr, size_t mod_size, HANDLE processHandle, s
 
 	ReadProcessMemory(processHandle, start_addr + section_hdr->VirtualAddress, module_code, section_hdr->SizeOfRawData, &read_size);
 	if (read_size != section_hdr->SizeOfRawData) {
+		delete []module_code;
 		return NULL;
 	}
 	code_size = read_size;
@@ -74,8 +75,9 @@ bool dump_module(const char *out_path, const HANDLE processHandle, BYTE *start_a
 {
 	BYTE* buffer = (BYTE*) VirtualAlloc(NULL, mod_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 	DWORD read_size = 0;
-	ReadProcessMemory(processHandle, start_addr, buffer, mod_size, &read_size);
-	if (read_size == 0) {
+
+	if (!ReadProcessMemory(processHandle, start_addr, buffer, mod_size, &read_size)) {
+		printf("[-] Failed reading module. Error: %d\n", GetLastError());
 		VirtualFree(buffer, mod_size, MEM_FREE);
 		buffer = NULL;
 		return false;
@@ -154,33 +156,42 @@ bool make_dump_dir(const DWORD process_id, OUT char *directory)
 size_t enum_modules_in_process(DWORD process_id, FILE *f)
 {
 	HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process_id);
-	MODULEENTRY32 module_entry = { 0 };
-	module_entry.dwSize = sizeof(module_entry);
-
-	if (!Module32First(hProcessSnapShot, &module_entry)) {
-      return 0;
+	if (!hProcessSnapShot) {
+		return 0;
 	}
-	size_t modules = 1;
-
-	char directory[MAX_PATH] = { 0 };
-	bool is_dir = make_dump_dir(process_id, directory);
 
 	HANDLE processHandle = OpenProcess(PROCESS_VM_READ, FALSE, process_id);
 	if (processHandle == NULL)  {
 		printf("[-] Could not open the process for reading!\n");
 		return 0;
 	}
-	printf("---\n");
+
+	//make a directory to store the dumps:
+	char directory[MAX_PATH] = { 0 };
+	bool is_dir = make_dump_dir(process_id, directory);
+
 	size_t hooked_modules = 0;
-	while (Module32Next(hProcessSnapShot, &module_entry)) {
-		
+	size_t modules = 1;
+
+	MODULEENTRY32 module_entry = { 0 };
+	module_entry.dwSize = sizeof(module_entry);
+
+	printf("---\n");
+	//check all modules in the process, including the main module:
+	if (!Module32First(hProcessSnapShot, &module_entry)) {
+		CloseHandle(processHandle);
+		return 0;
+	}
+	do {		
 		modules++;
 		if (processHandle == NULL) continue;
 
+		//get the code section from the module:
 		size_t read_size = 0;
 		BYTE *loaded_code = get_module_code(module_entry.modBaseAddr, module_entry.modBaseSize, processHandle, read_size);
 		if (loaded_code == NULL) continue;
 
+		//load the same module, but from the disk:
 		printf("Module: %s\n", module_entry.szExePath);
 		size_t module_size = 0;
 		BYTE* original_module = load_pe_module(module_entry.szExePath, module_size);
@@ -206,6 +217,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 		size_t smaller_size = section_hdr->SizeOfRawData > read_size ? read_size : section_hdr->SizeOfRawData;
 		printf("Code RVA: %x to %x\n", section_hdr->VirtualAddress, section_hdr->SizeOfRawData);
 
+		//check if the code of the loaded module is same as the code of the module on the disk:
 		int res = memcmp(loaded_code, orig_code, smaller_size);
 		char mod_name[MAX_PATH] = { 0 };
 
@@ -214,30 +226,27 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 			hooked_modules++;
 			log_info(f, module_entry);
 			//
-			//todo: unmap module
 			sprintf(mod_name, "%s\\%llX.dll", directory, (ULONGLONG)module_entry.modBaseAddr);
 			if (!dump_module(mod_name, processHandle, module_entry.modBaseAddr, module_entry.modBaseSize)) {
 				printf("Failed dumping module!\n");
 			}
 			//---
-			
 			sprintf(mod_name, "%s\\%llX.dll.tag", directory, (ULONGLONG)module_entry.modBaseAddr);
 			size_t patches_count = report_patches(mod_name, section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
 			if (patches_count) {
 				printf("Total patches: %d\n", patches_count);
 			}
 			//---
-			//
 		} else {
 			printf("[*] %s is NOT hooked!\n", module_entry.szExePath);
 		}
 		VirtualFree(original_module, module_size, MEM_FREE);
 		delete []loaded_code;
-	}
-	if (processHandle) {
-		CloseHandle(processHandle);
-	}
-	// Close the handle
+
+	} while (Module32Next(hProcessSnapShot, &module_entry));
+
+	//close the handles
+	CloseHandle(processHandle);
 	CloseHandle(hProcessSnapShot);
 	printf("[*] Total modules: %d\n", modules);
 	printf("[*] Total hooked:  %d\n", hooked_modules);
@@ -247,7 +256,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.1 alpha";
+	char *version = "0.0.2 alpha";
 	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");
