@@ -90,6 +90,33 @@ ULONGLONG get_module_base(const BYTE *pe_buffer)
 	return static_cast<ULONGLONG>(payload_nt_hdr32->OptionalHeader.ImageBase);
 }
 
+size_t get_sections_count(const BYTE* payload, const size_t buffer_size)
+{
+	if (payload == NULL) return 0;
+
+	bool is64b = is64bit(payload);
+	BYTE* payload_nt_hdr = get_nt_hrds(payload);
+	if (payload_nt_hdr == NULL) {
+		return 0;
+	}
+
+	IMAGE_FILE_HEADER *fileHdr = NULL;
+	DWORD hdrsSize = 0;
+	LPVOID secptr = NULL;
+	if (is64b) {
+		IMAGE_NT_HEADERS64* payload_nt_hdr64 = (IMAGE_NT_HEADERS64*)payload_nt_hdr;
+		fileHdr = &(payload_nt_hdr64->FileHeader);
+		hdrsSize = payload_nt_hdr64->OptionalHeader.SizeOfHeaders;
+		secptr = (LPVOID)((ULONGLONG)&(payload_nt_hdr64->OptionalHeader) + fileHdr->SizeOfOptionalHeader);
+	} else {
+		 IMAGE_NT_HEADERS32* payload_nt_hdr32 = (IMAGE_NT_HEADERS32*)payload_nt_hdr;
+		fileHdr = &(payload_nt_hdr32->FileHeader);
+		hdrsSize = payload_nt_hdr32->OptionalHeader.SizeOfHeaders;
+		secptr = (LPVOID)((ULONGLONG)&(payload_nt_hdr32->OptionalHeader) + fileHdr->SizeOfOptionalHeader);
+	}
+	return fileHdr->NumberOfSections;
+}
+
 PIMAGE_SECTION_HEADER get_section_hdr(const BYTE* payload, const size_t buffer_size, size_t section_num)
 {
 	if (payload == NULL) return NULL;

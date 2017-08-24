@@ -39,7 +39,7 @@ bool read_module_header(HANDLE processHandle, BYTE *start_addr, size_t mod_size,
 	return true;
 }
 
-BYTE* get_module_code(BYTE *start_addr, size_t mod_size, HANDLE processHandle, size_t &code_size)
+BYTE* get_module_section(HANDLE processHandle, BYTE *start_addr, size_t mod_size, const size_t section_num, OUT size_t &section_size)
 {
 	BYTE header_buffer[HEADER_SIZE] = { 0 };
 	DWORD read_size = 0;
@@ -47,24 +47,26 @@ BYTE* get_module_code(BYTE *start_addr, size_t mod_size, HANDLE processHandle, s
 	if (!read_module_header(processHandle, start_addr, mod_size, header_buffer, HEADER_SIZE)) {
 		return NULL;
 	}
-	PIMAGE_SECTION_HEADER section_hdr = get_section_hdr(header_buffer, HEADER_SIZE, 0);
+	PIMAGE_SECTION_HEADER section_hdr = get_section_hdr(header_buffer, HEADER_SIZE, section_num);
+	if (section_hdr == NULL || section_hdr->SizeOfRawData == 0) {
+		return NULL;
+	}
 	BYTE *module_code = (BYTE*) calloc(section_hdr->SizeOfRawData, sizeof(BYTE));
 	if (module_code == NULL) {
 		return NULL;
 	}
-
 	ReadProcessMemory(processHandle, start_addr + section_hdr->VirtualAddress, module_code, section_hdr->SizeOfRawData, &read_size);
 	if (read_size != section_hdr->SizeOfRawData) {
 		free(module_code);
 		return NULL;
 	}
-	code_size = read_size;
+	section_size = read_size;
 	return module_code;
 }
 
-void free_module_code(BYTE *module_code)
+void free_module_section(BYTE *section_buffer)
 {
-	free(module_code);
+	free(section_buffer);
 }
 
 bool clear_iat(PIMAGE_SECTION_HEADER section_hdr, BYTE* original_module, BYTE* loaded_code)
@@ -94,8 +96,31 @@ bool clear_iat(PIMAGE_SECTION_HEADER section_hdr, BYTE* original_module, BYTE* l
 size_t read_pe_from_memory(const HANDLE processHandle, BYTE *start_addr, const size_t mod_size, OUT BYTE* buffer)
 {
 	DWORD read_size = 0;
-	if (!ReadProcessMemory(processHandle, start_addr, buffer, mod_size, &read_size)) {
-		printf("[-] Error while reading the module: %d\n", GetLastError());
+	if (ReadProcessMemory(processHandle, start_addr, buffer, mod_size, &read_size)) {
+		return read_size;
+	}
+	printf("[!] Warning: failed to read full module at once: %d\n", GetLastError());
+	printf("[*] Trying to read the module section by section...\n");
+	BYTE hdr_buffer[HEADER_SIZE] = { 0 };
+	if (!read_module_header(processHandle, start_addr, mod_size, hdr_buffer, HEADER_SIZE)) {
+		printf("[-] Failed to read the module header\n");
+		return 0;
+	}
+	//if not possible to read full module at once, try to read it section by section:
+	size_t sections_count = get_sections_count(hdr_buffer, HEADER_SIZE);
+	for (size_t i = 0; i < sections_count; i++) {
+		DWORD read_sec_size = 0;
+		PIMAGE_SECTION_HEADER hdr = get_section_hdr(hdr_buffer, HEADER_SIZE, i);
+		if (!hdr) {
+			printf("[-] Failed to read the header of section: %d\n", i);
+			break;
+		}
+		const DWORD sec_va = hdr->VirtualAddress;
+		const DWORD sec_size = hdr->SizeOfRawData;
+		if (!ReadProcessMemory(processHandle, start_addr + sec_va, buffer + sec_va, sec_size, &read_sec_size)) {
+			printf("[-] Failed to read the module section: %d\n", i);
+		}
+		read_size = sec_va + read_sec_size;
 	}
 	return read_size;
 }
@@ -217,7 +242,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 
 		//get the code section from the module:
 		size_t read_size = 0;
-		BYTE *loaded_code = get_module_code(module_entry.modBaseAddr, module_entry.modBaseSize, processHandle, read_size);
+		BYTE *loaded_code = get_module_section(processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, 0, read_size);
 		if (loaded_code == NULL) continue;
 
 		//load the same module, but from the disk:
@@ -270,7 +295,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 			printf("[*] %s is NOT hooked!\n", module_entry.szExePath);
 		}
 		VirtualFree(original_module, module_size, MEM_FREE);
-		free_module_code(loaded_code);
+		free_module_section(loaded_code);
 		loaded_code = NULL;
 
 	} while (Module32Next(hProcessSnapShot, &module_entry));
@@ -286,7 +311,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.2a alpha";
+	char *version = "0.0.3 alpha";
 	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");
