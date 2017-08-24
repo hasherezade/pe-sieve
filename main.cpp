@@ -16,6 +16,8 @@
 #include <TlHelp32.h>
 #include <stdlib.h>
 
+#define HEADER_SIZE 0x400
+
 void log_info(FILE *f, MODULEENTRY32 &module_entry)
 {
 	BYTE* mod_end = module_entry.modBaseAddr + module_entry.modBaseSize;
@@ -23,17 +25,29 @@ void log_info(FILE *f, MODULEENTRY32 &module_entry)
 	fflush(f);
 }
 
+bool read_module_header(HANDLE processHandle, BYTE *start_addr, size_t mod_size, OUT BYTE* buffer, const size_t buffer_size)
+{
+	DWORD read_size = 0;
+	ReadProcessMemory(processHandle, start_addr, buffer, buffer_size, &read_size);
+	if (read_size != buffer_size) {
+		return false;
+	}
+	if (get_nt_hrds(buffer) == NULL) {
+		printf("[-] Cannot get the module header!\n");
+		return false;
+	}
+	return true;
+}
+
 BYTE* get_module_code(BYTE *start_addr, size_t mod_size, HANDLE processHandle, size_t &code_size)
 {
-	const size_t header_size = 0x400;
-	BYTE header_buffer[header_size] = { 0 };
+	BYTE header_buffer[HEADER_SIZE] = { 0 };
 	DWORD read_size = 0;
-	ReadProcessMemory(processHandle, start_addr, header_buffer, header_size, &read_size);
 
-	if (read_size != header_size) {
+	if (!read_module_header(processHandle, start_addr, mod_size, header_buffer, HEADER_SIZE)) {
 		return NULL;
 	}
-	PIMAGE_SECTION_HEADER section_hdr = get_section_hdr(header_buffer, header_size, 0);
+	PIMAGE_SECTION_HEADER section_hdr = get_section_hdr(header_buffer, HEADER_SIZE, 0);
 	BYTE *module_code = (BYTE*) calloc(section_hdr->SizeOfRawData, sizeof(BYTE));
 	if (module_code == NULL) {
 		return NULL;
@@ -77,12 +91,21 @@ bool clear_iat(PIMAGE_SECTION_HEADER section_hdr, BYTE* original_module, BYTE* l
 	return true;
 }
 
+size_t read_pe_from_memory(const HANDLE processHandle, BYTE *start_addr, const size_t mod_size, OUT BYTE* buffer)
+{
+	DWORD read_size = 0;
+	if (!ReadProcessMemory(processHandle, start_addr, buffer, mod_size, &read_size)) {
+		printf("[-] Error while reading the module: %d\n", GetLastError());
+	}
+	return read_size;
+}
+
 bool dump_module(const char *out_path, const HANDLE processHandle, BYTE *start_addr, size_t mod_size)
 {
 	BYTE* buffer = (BYTE*) VirtualAlloc(NULL, mod_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 	DWORD read_size = 0;
 
-	if (!ReadProcessMemory(processHandle, start_addr, buffer, mod_size, &read_size)) {
+	if ((read_size = read_pe_from_memory(processHandle, start_addr, mod_size, buffer)) == 0) {
 		printf("[-] Failed reading module. Error: %d\n", GetLastError());
 		VirtualFree(buffer, mod_size, MEM_FREE);
 		buffer = NULL;
@@ -263,7 +286,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.2 alpha";
+	char *version = "0.0.2a alpha";
 	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");
