@@ -90,3 +90,23 @@ bool apply_relocations(ULONGLONG newBase, ULONGLONG oldBase, PVOID modulePtr, SI
 	return (parsedSize != 0);
 }
 
+bool relocate_module(BYTE* modulePtr, SIZE_T moduleSize, ULONGLONG loadBase, ULONGLONG oldBase)
+{
+#ifdef _DEBUG
+    printf("Load Base: %llx\n", loadBase);
+    printf("Old Base: %llx\n", oldBase);
+#endif
+    if (loadBase == oldBase) {
+		return true; //nothing to reloca
+	}
+	if (apply_relocations(oldBase, loadBase, modulePtr, moduleSize)) {
+		return true;
+	}
+#ifdef _DEBUG
+	printf("Could not relocate, changing the image base instead...\n");
+#endif
+	if (update_image_base(modulePtr, (ULONGLONG)loadBase)) {
+		return true;
+	}
+	return false;
+}

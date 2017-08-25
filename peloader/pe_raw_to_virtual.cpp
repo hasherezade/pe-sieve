@@ -68,29 +68,8 @@ bool sections_raw_to_virtual(const BYTE* payload, SIZE_T destBufferSize, BYTE* d
     return true;
 }
 
-bool update_image_base(BYTE* payload, PVOID destImageBase)
-{
-    bool is64b = is64bit(payload);
-    //update image base in the written content:
-    BYTE* payload_nt_hdr = get_nt_hrds(payload);
-    if (payload_nt_hdr == NULL) {
-        return false;
-    }
-    if (is64b) {
-        IMAGE_NT_HEADERS64* payload_nt_hdr64 = (IMAGE_NT_HEADERS64*)payload_nt_hdr;
-        payload_nt_hdr64->OptionalHeader.ImageBase = (ULONGLONG)destImageBase;
-    }
-    else {
-        IMAGE_NT_HEADERS32* payload_nt_hdr32 = (IMAGE_NT_HEADERS32*)payload_nt_hdr;
-        payload_nt_hdr32->OptionalHeader.ImageBase = (DWORD)destImageBase;
-    }
-    return true;
-}
-
 BYTE* pe_raw_to_virtual(const BYTE* payload, size_t in_size, size_t &out_size)
 {
-    bool is64 = is64bit(payload);
-
     //check payload:
     BYTE* nt_hdr = get_nt_hrds(payload);
     if (nt_hdr == NULL) {
@@ -100,6 +79,8 @@ BYTE* pe_raw_to_virtual(const BYTE* payload, size_t in_size, size_t &out_size)
     ULONGLONG oldImageBase = 0;
     DWORD payloadImageSize = 0;
     ULONGLONG entryPoint = 0;
+
+	bool is64 = is64bit(payload);
     if (is64) {
         IMAGE_NT_HEADERS64* payload_nt_hdr = (IMAGE_NT_HEADERS64*)nt_hdr;
         oldImageBase = payload_nt_hdr->OptionalHeader.ImageBase;

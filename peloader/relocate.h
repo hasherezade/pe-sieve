@@ -19,3 +19,4 @@ bool apply_reloc_block(
 
 bool apply_relocations(ULONGLONG newBase, ULONGLONG oldBase, PVOID modulePtr, SIZE_T moduleSize);
 
+bool relocate_module(BYTE* modulePtr, SIZE_T moduleSize, ULONGLONG newBase, ULONGLONG oldBase);

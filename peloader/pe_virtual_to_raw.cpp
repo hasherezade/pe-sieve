@@ -79,59 +79,36 @@ bool sections_virtual_to_raw(BYTE* payload, SIZE_T payload_size, OUT BYTE* destA
     return true;
 }
 
-BYTE* pe_virtual_to_raw(const BYTE* payload, size_t in_size, ULONGLONG loadBase, size_t &out_size)
+BYTE* pe_virtual_to_raw(BYTE* payload, size_t in_size, ULONGLONG loadBase, size_t &out_size, bool rebuffer)
 {
-	BYTE* in_buf = (BYTE*) VirtualAlloc(NULL, in_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-	memcpy(in_buf, payload, in_size);
+	BYTE* in_buf = payload;
+	if (rebuffer) {
+		BYTE* in_buf = (BYTE*) VirtualAlloc(NULL, in_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+		memcpy(in_buf, payload, in_size);
+	}
 
     BYTE* out_buf = (BYTE*) VirtualAlloc(NULL, in_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 
-    BYTE* nt_headers = get_nt_hrds(in_buf);
-    if (nt_headers == NULL) {
-        printf("Invalid payload - it is not a PE file!\n", in_buf);
-        return false;
-    }
-
-    ULONGLONG oldBase = 0;
-    bool is_payload_64b = is64bit((BYTE*) in_buf);
-
-    if (is_payload_64b) {
-        IMAGE_NT_HEADERS64* nt_headers64 = (IMAGE_NT_HEADERS64*) nt_headers;
-        oldBase = nt_headers64->OptionalHeader.ImageBase;
-    } else {
-        IMAGE_NT_HEADERS32* nt_headers32 = (IMAGE_NT_HEADERS32*) nt_headers;
-        oldBase = nt_headers32->OptionalHeader.ImageBase;
-    }
-
-    bool isOk = true;
-#ifdef _DEBUG
-    printf("Load Base: %llx\n", loadBase);
-    printf("Old Base: %llx\n", oldBase);
-#endif
-
-    if (loadBase != 0 && loadBase != oldBase) {
-        if (!apply_relocations(oldBase, loadBase, in_buf, in_size)) {
-#ifdef _DEBUG
-            printf("Could not relocate, changing the image base instead...\n");
-#endif
-            if (is_payload_64b) {
-                IMAGE_NT_HEADERS64* nt_headers64 = (IMAGE_NT_HEADERS64*) nt_headers;
-                nt_headers64->OptionalHeader.ImageBase = loadBase;
-            } else {
-                IMAGE_NT_HEADERS32* nt_headers32 = (IMAGE_NT_HEADERS32*) nt_headers;
-                nt_headers32->OptionalHeader.ImageBase = static_cast<DWORD>(loadBase);
-            }
-        }
-    }
-    SIZE_T raw_size = 0;
-    if (!sections_virtual_to_raw(in_buf, in_size, out_buf, &raw_size)) {
+    ULONGLONG oldBase = get_image_base(in_buf);
+	bool isOk = true;
+	if (!relocate_module(in_buf, in_size, loadBase, oldBase)) {
+		printf("[!] Failed relocating the module!\n");
 		isOk = false;
 	}
-    VirtualFree(in_buf, in_size, MEM_FREE);
+	SIZE_T raw_size = 0;
+	if (isOk) {
+		if (!sections_virtual_to_raw(in_buf, in_size, out_buf, &raw_size)) {
+			isOk = false;
+		}
+	}
+	if (rebuffer && in_buf != NULL) {
+		VirtualFree(in_buf, in_size, MEM_FREE);
+		in_buf = NULL;
+	}
 	if (!isOk) {
 		VirtualFree(out_buf, in_size, MEM_FREE);
 		out_buf = NULL;
 	}
 	out_size = raw_size;
-    return out_buf;
+	return out_buf;
 }

@@ -9,9 +9,6 @@
 // Map raw PE into virtual memory of local process:
 bool sections_raw_to_virtual(const BYTE* payload, SIZE_T destBufferSize, BYTE* destAddress);
 
-//set a new image base in headers
-bool update_image_base(BYTE* payload, PVOID destImageBase);
-
 BYTE* pe_raw_to_virtual(const BYTE* payload, size_t in_size, size_t &out_size);
 
 // maps PE into memory (raw to virtual)

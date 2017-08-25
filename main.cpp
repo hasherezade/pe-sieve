@@ -213,10 +213,9 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 	if (!hProcessSnapShot) {
 		return 0;
 	}
-
 	HANDLE processHandle = OpenProcess(PROCESS_VM_READ, FALSE, process_id);
 	if (processHandle == NULL)  {
-		printf("[-] Could not open the process for reading!\n");
+		printf("[-] Could not open the process for reading. Error: %d\n", GetLastError());
 		return 0;
 	}
 
@@ -253,7 +252,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 			printf("Could not read original module!\n");
 			continue;
 		}
-		ULONGLONG original_base = get_module_base(original_module);
+		ULONGLONG original_base = get_image_base(original_module);
 		printf("original base: %llX\n", original_base);
 
 		ULONGLONG new_base = (ULONGLONG) module_entry.modBaseAddr;
@@ -311,7 +310,7 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.3 alpha";
+	char *version = "0.0.4 alpha";
 	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");

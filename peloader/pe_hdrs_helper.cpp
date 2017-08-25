@@ -74,7 +74,7 @@ IMAGE_DATA_DIRECTORY* get_pe_directory(const BYTE *pe_buffer, DWORD dir_id)
 	return peDir;
 }
 
-ULONGLONG get_module_base(const BYTE *pe_buffer)
+ULONGLONG get_image_base(const BYTE *pe_buffer)
 {
 	bool is64b = is64bit(pe_buffer);
 	//update image base in the written content:
@@ -82,12 +82,34 @@ ULONGLONG get_module_base(const BYTE *pe_buffer)
 	if (payload_nt_hdr == NULL) {
 		return 0;
 	}
+	ULONGLONG img_base = 0;
 	if (is64b) {
-	IMAGE_NT_HEADERS64* payload_nt_hdr64 = (IMAGE_NT_HEADERS64*)payload_nt_hdr;
-	return payload_nt_hdr64->OptionalHeader.ImageBase;
+		IMAGE_NT_HEADERS64* payload_nt_hdr64 = (IMAGE_NT_HEADERS64*)payload_nt_hdr;
+		img_base = payload_nt_hdr64->OptionalHeader.ImageBase;
+	} else {
+		IMAGE_NT_HEADERS32* payload_nt_hdr32 = (IMAGE_NT_HEADERS32*)payload_nt_hdr;
+		img_base = static_cast<ULONGLONG>(payload_nt_hdr32->OptionalHeader.ImageBase);
 	}
-	IMAGE_NT_HEADERS32* payload_nt_hdr32 = (IMAGE_NT_HEADERS32*)payload_nt_hdr;
-	return static_cast<ULONGLONG>(payload_nt_hdr32->OptionalHeader.ImageBase);
+	return img_base;
+}
+
+bool update_image_base(BYTE* payload, ULONGLONG destImageBase)
+{
+    bool is64b = is64bit(payload);
+    //update image base in the written content:
+    BYTE* payload_nt_hdr = get_nt_hrds(payload);
+    if (payload_nt_hdr == NULL) {
+        return false;
+    }
+    if (is64b) {
+        IMAGE_NT_HEADERS64* payload_nt_hdr64 = (IMAGE_NT_HEADERS64*)payload_nt_hdr;
+        payload_nt_hdr64->OptionalHeader.ImageBase = (ULONGLONG)destImageBase;
+    }
+    else {
+        IMAGE_NT_HEADERS32* payload_nt_hdr32 = (IMAGE_NT_HEADERS32*)payload_nt_hdr;
+        payload_nt_hdr32->OptionalHeader.ImageBase = (DWORD)destImageBase;
+    }
+    return true;
 }
 
 size_t get_sections_count(const BYTE* payload, const size_t buffer_size)
