@@ -16,7 +16,7 @@
 #include <TlHelp32.h>
 #include <stdlib.h>
 
-#define HEADER_SIZE 0x400
+#define HEADER_SIZE 0x800
 
 void log_info(FILE *f, MODULEENTRY32 &module_entry)
 {
@@ -29,11 +29,11 @@ bool read_module_header(HANDLE processHandle, BYTE *start_addr, size_t mod_size,
 {
 	DWORD read_size = 0;
 	ReadProcessMemory(processHandle, start_addr, buffer, buffer_size, &read_size);
-	if (read_size != buffer_size) {
-		return false;
-	}
 	if (get_nt_hrds(buffer) == NULL) {
 		printf("[-] Cannot get the module header!\n");
+		return false;
+	}
+	if (read_size < get_hdrs_size(buffer)) {
 		return false;
 	}
 	return true;
@@ -207,6 +207,76 @@ bool make_dump_dir(const DWORD process_id, OUT char *directory)
 	return false;
 }
 
+int is_module_replaced(HANDLE processHandle, MODULEENTRY32 &module_entry, BYTE* original_module, size_t module_size, char* directory)
+{
+	BYTE hdr_buffer1[HEADER_SIZE] = { 0 };
+	if (!read_module_header(processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, hdr_buffer1, HEADER_SIZE)) {
+		printf("[-] Failed to read the module header\n");
+		return -1;
+	}
+	size_t hdrs_size = get_hdrs_size(hdr_buffer1);
+	if (hdrs_size > HEADER_SIZE) hdrs_size = HEADER_SIZE;
+
+	BYTE hdr_buffer2[HEADER_SIZE] = { 0 };
+	memcpy(hdr_buffer2, original_module, hdrs_size);
+
+	update_image_base(hdr_buffer1, 0);
+	update_image_base(hdr_buffer2, 0);
+	if (memcmp(hdr_buffer1, hdr_buffer2, hdrs_size) != 0) {
+		char mod_name[MAX_PATH] = { 0 };
+		sprintf(mod_name, "%s\\%llX.dll", directory, (ULONGLONG)module_entry.modBaseAddr);
+		if (!dump_module(mod_name, processHandle, module_entry.modBaseAddr, module_entry.modBaseSize)) {
+			printf("Failed dumping module!\n");
+		}
+		return 1; // modified
+	}
+	return 0; //not modified
+}
+
+int is_module_hooked(HANDLE processHandle, MODULEENTRY32 &module_entry, BYTE* original_module, size_t module_size, char* directory)
+{
+	//get the code section from the module:
+	size_t read_size = 0;
+	BYTE *loaded_code = get_module_section(processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, 0, read_size);
+	if (loaded_code == NULL) return -1;
+
+	ULONGLONG original_base = get_image_base(original_module);
+	ULONGLONG new_base = (ULONGLONG) module_entry.modBaseAddr;
+	if (!apply_relocations(new_base, original_base, original_module, module_size)) {
+		printf("reloc failed!\n");
+	}
+
+	PIMAGE_SECTION_HEADER section_hdr = get_section_hdr(original_module, module_size, 0);
+	BYTE *orig_code = original_module + section_hdr->VirtualAddress;
+		
+	clear_iat(section_hdr, original_module, loaded_code);
+		
+	size_t smaller_size = section_hdr->SizeOfRawData > read_size ? read_size : section_hdr->SizeOfRawData;
+	printf("Code RVA: %x to %x\n", section_hdr->VirtualAddress, section_hdr->SizeOfRawData);
+
+	//check if the code of the loaded module is same as the code of the module on the disk:
+	int res = memcmp(loaded_code, orig_code, smaller_size);
+	if (res != 0) {
+		char mod_name[MAX_PATH] = { 0 };
+		sprintf(mod_name, "%s\\%llX.dll.tag", directory, (ULONGLONG)module_entry.modBaseAddr);
+		size_t patches_count = report_patches(mod_name, section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
+		if (patches_count) {
+			printf("Total patches: %d\n", patches_count);
+		}
+		sprintf(mod_name, "%s\\%llX.dll", directory, (ULONGLONG)module_entry.modBaseAddr);
+		if (!dump_module(mod_name, processHandle, module_entry.modBaseAddr, module_entry.modBaseSize)) {
+			printf("Failed dumping module!\n");
+		}
+	}
+	free_module_section(loaded_code);
+	loaded_code = NULL;
+
+	if (res != 0) {
+		return 1; // modified
+	}
+	return 0; //not modified
+}
+
 size_t enum_modules_in_process(DWORD process_id, FILE *f)
 {
 	HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process_id);
@@ -224,12 +294,15 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 	bool is_dir = make_dump_dir(process_id, directory);
 
 	size_t hooked_modules = 0;
+	size_t hollowed_modules = 0;
 	size_t modules = 1;
 
 	MODULEENTRY32 module_entry = { 0 };
 	module_entry.dwSize = sizeof(module_entry);
 
 	printf("---\n");
+	char mod_name[MAX_PATH] = { 0 };
+
 	//check all modules in the process, including the main module:
 	if (!Module32First(hProcessSnapShot, &module_entry)) {
 		CloseHandle(processHandle);
@@ -239,63 +312,35 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 		modules++;
 		if (processHandle == NULL) continue;
 
-		//get the code section from the module:
-		size_t read_size = 0;
-		BYTE *loaded_code = get_module_section(processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, 0, read_size);
-		if (loaded_code == NULL) continue;
-
 		//load the same module, but from the disk:
 		printf("Module: %s\n", module_entry.szExePath);
+		sprintf(mod_name, "%s\\%llX.dll.tag", directory, (ULONGLONG)module_entry.modBaseAddr);
+
 		size_t module_size = 0;
 		BYTE* original_module = load_pe_module(module_entry.szExePath, module_size);
 		if (original_module == NULL) {
 			printf("Could not read original module!\n");
 			continue;
 		}
-		ULONGLONG original_base = get_image_base(original_module);
-		printf("original base: %llX\n", original_base);
-
-		ULONGLONG new_base = (ULONGLONG) module_entry.modBaseAddr;
-		printf("mapped base:   %llX\n", new_base);
-
-		if (!apply_relocations(new_base, original_base, original_module, module_size)) {
-			printf("reloc failed!\n");
+		int is_hollowed = 0;
+		int is_hooked = 0;
+		is_hollowed = is_module_replaced(processHandle, module_entry, original_module, module_size, directory);
+		if (is_hollowed == 1) {
+			printf("[!] Module has been replaced by a different PE!\n");
+			hollowed_modules++;
 		}
-
-		PIMAGE_SECTION_HEADER section_hdr = get_section_hdr(original_module, module_size, 0);
-		BYTE *orig_code = original_module + section_hdr->VirtualAddress;
-		
-		clear_iat(section_hdr, original_module, loaded_code);
-		
-		size_t smaller_size = section_hdr->SizeOfRawData > read_size ? read_size : section_hdr->SizeOfRawData;
-		printf("Code RVA: %x to %x\n", section_hdr->VirtualAddress, section_hdr->SizeOfRawData);
-
-		//check if the code of the loaded module is same as the code of the module on the disk:
-		int res = memcmp(loaded_code, orig_code, smaller_size);
-		char mod_name[MAX_PATH] = { 0 };
-
-		if (res != 0) {
-			printf("[!] %s is hooked!\n", module_entry.szExePath);
-			hooked_modules++;
-			log_info(f, module_entry);
-			//
-			sprintf(mod_name, "%s\\%llX.dll", directory, (ULONGLONG)module_entry.modBaseAddr);
-			if (!dump_module(mod_name, processHandle, module_entry.modBaseAddr, module_entry.modBaseSize)) {
-				printf("Failed dumping module!\n");
+		else {
+			is_hooked = is_module_hooked(processHandle, module_entry, original_module, module_size, directory);
+			if (is_hooked == 1) {
+				printf("[!] %s is hooked!\n", module_entry.szExePath);
+				hooked_modules++;
+				log_info(f, module_entry);
 			}
-			//---
-			sprintf(mod_name, "%s\\%llX.dll.tag", directory, (ULONGLONG)module_entry.modBaseAddr);
-			size_t patches_count = report_patches(mod_name, section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
-			if (patches_count) {
-				printf("Total patches: %d\n", patches_count);
-			}
-			//---
-		} else {
-			printf("[*] %s is NOT hooked!\n", module_entry.szExePath);
+		}
+		if (is_hollowed == -1 || is_hooked == -1) {
+			printf("[!] ERROR occured while checking the module\n");
 		}
 		VirtualFree(original_module, module_size, MEM_FREE);
-		free_module_section(loaded_code);
-		loaded_code = NULL;
 
 	} while (Module32Next(hProcessSnapShot, &module_entry));
 
@@ -304,13 +349,14 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 	CloseHandle(hProcessSnapShot);
 	printf("[*] Total modules: %d\n", modules);
 	printf("[*] Total hooked:  %d\n", hooked_modules);
+	printf("[*] Total hollowed:  %d\n", hollowed_modules);
 	printf("---\n");
 	return hooked_modules;
 }
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.4 alpha";
+	char *version = "0.0.5 alpha";
 	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");
