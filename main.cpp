@@ -18,11 +18,35 @@
 
 #define HEADER_SIZE 0x800
 
-void log_info(FILE *f, MODULEENTRY32 &module_entry)
+FILE* g_LogFile = NULL;
+
+bool make_log_file(const char *filename)
+{
+	g_LogFile = fopen(filename, "w");
+	if (!g_LogFile) {
+		printf("[ERROR] Cannot open log file!\n");
+		return false;
+	}
+	return true;
+}
+
+void log_info(MODULEENTRY32 &module_entry)
 {
 	BYTE* mod_end = module_entry.modBaseAddr + module_entry.modBaseSize;
-	fprintf(f, "%p,%p,%s\n", module_entry.modBaseAddr, mod_end, module_entry.szModule);
-	fflush(f);
+	if (g_LogFile == NULL) {
+		printf("%p,%p,%s\n", module_entry.modBaseAddr, mod_end, module_entry.szModule);
+		return;
+	}
+	fprintf(g_LogFile, "%p,%p,%s\n", module_entry.modBaseAddr, mod_end, module_entry.szModule);
+	fflush(g_LogFile);
+}
+
+bool close_log_file()
+{
+	if (g_LogFile == NULL) return false;
+	fclose(g_LogFile);
+	g_LogFile = NULL;
+	return true;
 }
 
 bool read_module_header(HANDLE processHandle, BYTE *start_addr, size_t mod_size, OUT BYTE* buffer, const size_t buffer_size)
@@ -85,7 +109,9 @@ bool clear_iat(PIMAGE_SECTION_HEADER section_hdr, BYTE* original_module, BYTE* l
 		|| (iat_end >= section_hdr->VirtualAddress && (iat_end < (section_hdr->VirtualAddress + section_hdr->SizeOfRawData)))
 	)
 	{
+#ifdef _DEBUG
 		printf("IAT is in Code section!\n");
+#endif
 		DWORD offset = iat_rva - section_hdr->VirtualAddress;
 		memset(orig_code + offset, 0, iat_size);
 		memset(loaded_code + offset, 0, iat_size);
@@ -252,8 +278,9 @@ int is_module_hooked(HANDLE processHandle, MODULEENTRY32 &module_entry, BYTE* or
 	clear_iat(section_hdr, original_module, loaded_code);
 		
 	size_t smaller_size = section_hdr->SizeOfRawData > read_size ? read_size : section_hdr->SizeOfRawData;
+#ifdef _DEBUG
 	printf("Code RVA: %x to %x\n", section_hdr->VirtualAddress, section_hdr->SizeOfRawData);
-
+#endif
 	//check if the code of the loaded module is same as the code of the module on the disk:
 	int res = memcmp(loaded_code, orig_code, smaller_size);
 	if (res != 0) {
@@ -313,32 +340,32 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 		if (processHandle == NULL) continue;
 
 		//load the same module, but from the disk:
-		printf("Module: %s\n", module_entry.szExePath);
+		printf("[*] Scanning: %s\n", module_entry.szExePath);
 		sprintf(mod_name, "%s\\%llX.dll.tag", directory, (ULONGLONG)module_entry.modBaseAddr);
 
 		size_t module_size = 0;
 		BYTE* original_module = load_pe_module(module_entry.szExePath, module_size);
 		if (original_module == NULL) {
-			printf("Could not read original module!\n");
+			printf("[-] Could not read original module!\n");
 			continue;
 		}
 		int is_hollowed = 0;
 		int is_hooked = 0;
 		is_hollowed = is_module_replaced(processHandle, module_entry, original_module, module_size, directory);
 		if (is_hollowed == 1) {
-			printf("[!] Module has been replaced by a different PE!\n");
+			printf("[!] The module is replaced by a different PE!\n");
 			hollowed_modules++;
 		}
 		else {
 			is_hooked = is_module_hooked(processHandle, module_entry, original_module, module_size, directory);
 			if (is_hooked == 1) {
-				printf("[!] %s is hooked!\n", module_entry.szExePath);
+				printf("[!] The module is hooked!\n");
 				hooked_modules++;
-				log_info(f, module_entry);
+				log_info(module_entry);
 			}
 		}
 		if (is_hollowed == -1 || is_hooked == -1) {
-			printf("[!] ERROR occured while checking the module\n");
+			printf("[-] ERROR occured while checking the module\n");
 		}
 		VirtualFree(original_module, module_size, MEM_FREE);
 
@@ -369,19 +396,16 @@ int main(int argc, char *argv[])
 
 	DWORD pid = atoi(argv[1]);
 	printf("PID: %d\n", pid);
-	
+
 	char filename[MAX_PATH] = { 0 };
 	sprintf(filename,"PID_%d_modules.txt", pid);
-	FILE *f = fopen(filename, "w");
-	if (!f) {
-		printf("[ERROR] Cannot open file!\n");
-		system("pause");
-		return -1;
+	bool isLogging = make_log_file(filename);
+
+	int num = enum_modules_in_process(pid, g_LogFile);
+	if (isLogging) {
+		close_log_file();
+		printf("Found modules: %d saved to the file: %s\n", num, filename);
 	}
-	
-	int num = enum_modules_in_process(pid, f);
-	fclose(f);
-	printf("Found modules: %d saved to the file: %s\n", num, filename);
 	system("pause");
 	return 0;
 }

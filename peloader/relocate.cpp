@@ -50,7 +50,7 @@ bool apply_relocations(ULONGLONG newBase, ULONGLONG oldBase, PVOID modulePtr, SI
 {
 	IMAGE_DATA_DIRECTORY* relocDir = get_pe_directory((const BYTE*) modulePtr, IMAGE_DIRECTORY_ENTRY_BASERELOC);
 	if (relocDir == NULL) {
-		printf("Cannot relocate - application have no relocation table!\n");
+		printf("[-] Cannot relocate - application has no relocation table!\n");
 		return false;
 	}
 	if (!validate_ptr(modulePtr, moduleSize, relocDir, sizeof(IMAGE_DATA_DIRECTORY))) {
