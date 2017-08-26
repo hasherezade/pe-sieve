@@ -60,7 +60,6 @@ size_t check_modules_in_process(DWORD process_id)
 	module_entry.dwSize = sizeof(module_entry);
 
 	printf("---\n");
-	char mod_name[MAX_PATH] = { 0 };
 
 	//check all modules in the process, including the main module:
 	if (!Module32First(hProcessSnapShot, &module_entry)) {
@@ -73,7 +72,6 @@ size_t check_modules_in_process(DWORD process_id)
 
 		//load the same module, but from the disk:
 		printf("[*] Scanning: %s\n", module_entry.szExePath);
-		sprintf(mod_name, "%s\\%llX.dll.tag", directory, (ULONGLONG)module_entry.modBaseAddr);
 
 		size_t module_size = 0;
 		BYTE* original_module = load_pe_module(module_entry.szExePath, module_size);
