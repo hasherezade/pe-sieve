@@ -16,38 +16,9 @@
 #include <TlHelp32.h>
 #include <stdlib.h>
 
+#include "tinylogger.h"
+
 #define HEADER_SIZE 0x800
-
-FILE* g_LogFile = NULL;
-
-bool make_log_file(const char *filename)
-{
-	g_LogFile = fopen(filename, "w");
-	if (!g_LogFile) {
-		printf("[ERROR] Cannot open log file!\n");
-		return false;
-	}
-	return true;
-}
-
-void log_info(MODULEENTRY32 &module_entry)
-{
-	BYTE* mod_end = module_entry.modBaseAddr + module_entry.modBaseSize;
-	if (g_LogFile == NULL) {
-		printf("%p,%p,%s\n", module_entry.modBaseAddr, mod_end, module_entry.szModule);
-		return;
-	}
-	fprintf(g_LogFile, "%p,%p,%s\n", module_entry.modBaseAddr, mod_end, module_entry.szModule);
-	fflush(g_LogFile);
-}
-
-bool close_log_file()
-{
-	if (g_LogFile == NULL) return false;
-	fclose(g_LogFile);
-	g_LogFile = NULL;
-	return true;
-}
 
 bool read_module_header(HANDLE processHandle, BYTE *start_addr, size_t mod_size, OUT BYTE* buffer, const size_t buffer_size)
 {
@@ -304,7 +275,7 @@ int is_module_hooked(HANDLE processHandle, MODULEENTRY32 &module_entry, BYTE* or
 	return 0; //not modified
 }
 
-size_t enum_modules_in_process(DWORD process_id, FILE *f)
+size_t enum_modules_in_process(DWORD process_id)
 {
 	HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process_id);
 	if (!hProcessSnapShot) {
@@ -355,13 +326,14 @@ size_t enum_modules_in_process(DWORD process_id, FILE *f)
 		if (is_hollowed == 1) {
 			printf("[!] The module is replaced by a different PE!\n");
 			hollowed_modules++;
+			log_module_info(module_entry);
 		}
 		else {
 			is_hooked = is_module_hooked(processHandle, module_entry, original_module, module_size, directory);
 			if (is_hooked == 1) {
 				printf("[!] The module is hooked!\n");
 				hooked_modules++;
-				log_info(module_entry);
+				log_module_info(module_entry);
 			}
 		}
 		if (is_hollowed == -1 || is_hooked == -1) {
@@ -401,7 +373,7 @@ int main(int argc, char *argv[])
 	sprintf(filename,"PID_%d_modules.txt", pid);
 	bool isLogging = make_log_file(filename);
 
-	int num = enum_modules_in_process(pid, g_LogFile);
+	int num = enum_modules_in_process(pid);
 	if (isLogging) {
 		close_log_file();
 		printf("Found modules: %d saved to the file: %s\n", num, filename);
