@@ -196,3 +196,23 @@ PIMAGE_SECTION_HEADER get_section_hdr(const BYTE* payload, const size_t buffer_s
 	return next_sec;
 }
 
+bool is_module_dll(BYTE* payload)
+{
+	if (payload == NULL) return false;
+
+	bool is64b = is64bit(payload);
+	BYTE* payload_nt_hdr = get_nt_hrds(payload);
+	if (payload_nt_hdr == NULL) {
+		return false;
+	}
+	IMAGE_FILE_HEADER *fileHdr = NULL;
+	if (is64b) {
+		IMAGE_NT_HEADERS64* payload_nt_hdr64 = (IMAGE_NT_HEADERS64*)payload_nt_hdr;
+		fileHdr = &(payload_nt_hdr64->FileHeader);
+	} else {
+		IMAGE_NT_HEADERS32* payload_nt_hdr32 = (IMAGE_NT_HEADERS32*)payload_nt_hdr;
+		fileHdr = &(payload_nt_hdr32->FileHeader);
+	}
+	DWORD flag = fileHdr->Characteristics & 0x2000;
+	return (flag != 0);
+}

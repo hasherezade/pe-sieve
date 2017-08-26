@@ -17,7 +17,13 @@ t_scan_status is_module_replaced(HANDLE processHandle, MODULEENTRY32 &module_ent
 	update_image_base(hdr_buffer2, 0);
 	if (memcmp(hdr_buffer1, hdr_buffer2, hdrs_size) != 0) {
 		char mod_name[MAX_PATH] = { 0 };
-		sprintf(mod_name, "%s\\%llX.dll", directory, (ULONGLONG)module_entry.modBaseAddr);
+
+		if (is_module_dll(hdr_buffer1)) {
+			sprintf(mod_name, "%s\\%llX.dll", directory, (ULONGLONG)module_entry.modBaseAddr);
+		} else {
+			sprintf(mod_name, "%s\\%llX.exe", directory, (ULONGLONG)module_entry.modBaseAddr);
+		}
+		
 		if (!dump_module(mod_name, processHandle, module_entry.modBaseAddr, module_entry.modBaseSize)) {
 			printf("Failed dumping module!\n");
 		}

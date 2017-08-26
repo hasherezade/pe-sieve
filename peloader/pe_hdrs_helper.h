@@ -20,3 +20,5 @@ bool update_image_base(BYTE* payload, ULONGLONG destImageBase);
 
 size_t get_sections_count(const BYTE* buffer, const size_t buffer_size);
 PIMAGE_SECTION_HEADER get_section_hdr(const BYTE* buffer, const size_t buffer_size, size_t section_num);
+
+bool is_module_dll(BYTE* payload);
