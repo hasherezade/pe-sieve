@@ -75,3 +75,37 @@ size_t read_pe_from_memory(const HANDLE processHandle, BYTE *start_addr, const s
 	}
 	return read_size;
 }
+
+bool dump_module(const char *out_path, const HANDLE processHandle, BYTE *start_addr, size_t mod_size)
+{
+	BYTE* buffer = (BYTE*) VirtualAlloc(NULL, mod_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+	DWORD read_size = 0;
+
+	if ((read_size = read_pe_from_memory(processHandle, start_addr, mod_size, buffer)) == 0) {
+		printf("[-] Failed reading module. Error: %d\n", GetLastError());
+		VirtualFree(buffer, mod_size, MEM_FREE);
+		buffer = NULL;
+		return false;
+	}
+	BYTE* dump_data = buffer;
+	size_t dump_size = mod_size;
+
+	size_t out_size = 0;
+	BYTE* unmapped_module = pe_virtual_to_raw(buffer, mod_size, (ULONGLONG)start_addr, out_size);
+	if (unmapped_module != NULL) {
+		dump_data = unmapped_module;
+		dump_size = out_size;
+	}
+	FILE *f1 = fopen(out_path, "wb");
+	if (f1) {
+		fwrite(dump_data, 1, dump_size, f1);
+		fclose(f1);
+		printf("Module dumped to: %s\n", out_path);
+	}
+	VirtualFree(buffer, mod_size, MEM_FREE);
+	buffer = NULL;
+	if (unmapped_module) {
+		VirtualFree(unmapped_module, mod_size, MEM_FREE);
+	}
+	return true;
+}

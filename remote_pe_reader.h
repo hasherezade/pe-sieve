@@ -20,3 +20,5 @@ BYTE* get_module_section(HANDLE processHandle, BYTE *start_addr, size_t mod_size
 void free_module_section(BYTE *section_buffer);
 
 size_t read_pe_from_memory(const HANDLE processHandle, BYTE *start_addr, const size_t mod_size, OUT BYTE* buffer);
+
+bool dump_module(const char *out_path, const HANDLE processHandle, BYTE *start_addr, size_t mod_size);
