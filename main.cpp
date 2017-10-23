@@ -39,7 +39,7 @@ bool make_dump_dir(const DWORD process_id, OUT char *directory)
 size_t check_modules_in_process(DWORD process_id)
 {
 	HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process_id);
-	if (!hProcessSnapShot) {
+	if (hProcessSnapShot == INVALID_HANDLE_VALUE) {
 		return 0;
 	}
 	HANDLE processHandle = OpenProcess(PROCESS_VM_READ, FALSE, process_id);
