@@ -3,26 +3,40 @@
 bool read_module_header(HANDLE processHandle, BYTE *start_addr, size_t mod_size, OUT BYTE* buffer, const size_t buffer_size)
 {
 	SIZE_T read_size = 0;
-	ReadProcessMemory(processHandle, start_addr, buffer, buffer_size, &read_size);
-	if (get_nt_hrds(buffer) == NULL) {
-		printf("[-] Cannot get the module header!\n");
-		return false;
+	const SIZE_T step_size = 0x100;
+	SIZE_T to_read_size = buffer_size;
+
+	memset(buffer, 0, buffer_size);
+	while (to_read_size >= step_size) {
+		BOOL is_ok = ReadProcessMemory(processHandle, start_addr, buffer, to_read_size, &read_size);
+		if (!is_ok) {
+			//try to read less
+			to_read_size -= step_size;
+			continue;
+		}
+		if (get_nt_hrds(buffer) == NULL) {
+			printf("[-] Cannot get the module header!\n");
+			return false;
+		}
+		if (read_size < get_hdrs_size(buffer)) {
+			printf("[-] Read size: %#x is smaller that the headers size: %#x\n", read_size, get_hdrs_size(buffer));
+			return false;
+		}
+		//reading succeeded and the header passed the checks:
+		return true;
 	}
-	if (read_size < get_hdrs_size(buffer)) {
-		return false;
-	}
-	return true;
+	return false;
 }
 
 BYTE* get_module_section(HANDLE processHandle, BYTE *start_addr, size_t mod_size, const size_t section_num, OUT size_t &section_size)
 {
-	BYTE header_buffer[HEADER_SIZE] = { 0 };
+	BYTE header_buffer[MAX_HEADER_SIZE] = { 0 };
 	SIZE_T read_size = 0;
 
-	if (!read_module_header(processHandle, start_addr, mod_size, header_buffer, HEADER_SIZE)) {
+	if (!read_module_header(processHandle, start_addr, mod_size, header_buffer, MAX_HEADER_SIZE)) {
 		return NULL;
 	}
-	PIMAGE_SECTION_HEADER section_hdr = get_section_hdr(header_buffer, HEADER_SIZE, section_num);
+	PIMAGE_SECTION_HEADER section_hdr = get_section_hdr(header_buffer, MAX_HEADER_SIZE, section_num);
 	if (section_hdr == NULL || section_hdr->SizeOfRawData == 0) {
 		return NULL;
 	}
@@ -52,16 +66,16 @@ size_t read_pe_from_memory(const HANDLE processHandle, BYTE *start_addr, const s
 	}
 	printf("[!] Warning: failed to read full module at once: %d\n", GetLastError());
 	printf("[*] Trying to read the module section by section...\n");
-	BYTE hdr_buffer[HEADER_SIZE] = { 0 };
-	if (!read_module_header(processHandle, start_addr, mod_size, hdr_buffer, HEADER_SIZE)) {
+	BYTE hdr_buffer[MAX_HEADER_SIZE] = { 0 };
+	if (!read_module_header(processHandle, start_addr, mod_size, hdr_buffer, MAX_HEADER_SIZE)) {
 		printf("[-] Failed to read the module header\n");
 		return 0;
 	}
 	//if not possible to read full module at once, try to read it section by section:
-	size_t sections_count = get_sections_count(hdr_buffer, HEADER_SIZE);
+	size_t sections_count = get_sections_count(hdr_buffer, MAX_HEADER_SIZE);
 	for (size_t i = 0; i < sections_count; i++) {
 		SIZE_T read_sec_size = 0;
-		PIMAGE_SECTION_HEADER hdr = get_section_hdr(hdr_buffer, HEADER_SIZE, i);
+		PIMAGE_SECTION_HEADER hdr = get_section_hdr(hdr_buffer, MAX_HEADER_SIZE, i);
 		if (!hdr) {
 			printf("[-] Failed to read the header of section: %d\n", i);
 			break;

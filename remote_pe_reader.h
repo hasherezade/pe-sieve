@@ -12,7 +12,7 @@
 #include "peloader\pe_virtual_to_raw.h"
 #include "peloader\relocate.h"
 
-#define HEADER_SIZE 0x800
+#define MAX_HEADER_SIZE 0x1000
 
 bool read_module_header(HANDLE processHandle, BYTE *start_addr, size_t mod_size, OUT BYTE* buffer, const size_t buffer_size);
 

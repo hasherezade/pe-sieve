@@ -2,15 +2,15 @@
 
 t_scan_status is_module_replaced(HANDLE processHandle, MODULEENTRY32 &module_entry, BYTE* original_module, size_t module_size, char* directory)
 {
-	BYTE hdr_buffer1[HEADER_SIZE] = { 0 };
-	if (!read_module_header(processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, hdr_buffer1, HEADER_SIZE)) {
+	BYTE hdr_buffer1[MAX_HEADER_SIZE] = { 0 };
+	if (!read_module_header(processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, hdr_buffer1, MAX_HEADER_SIZE)) {
 		printf("[-] Failed to read the module header\n");
 		return SCAN_ERROR;
 	}
 	size_t hdrs_size = get_hdrs_size(hdr_buffer1);
-	if (hdrs_size > HEADER_SIZE) hdrs_size = HEADER_SIZE;
+	if (hdrs_size > MAX_HEADER_SIZE) hdrs_size = MAX_HEADER_SIZE;
 
-	BYTE hdr_buffer2[HEADER_SIZE] = { 0 };
+	BYTE hdr_buffer2[MAX_HEADER_SIZE] = { 0 };
 	memcpy(hdr_buffer2, original_module, hdrs_size);
 
 	update_image_base(hdr_buffer1, 0);
