@@ -10,6 +10,8 @@
 #include <Windows.h>
 #include <TlHelp32.h>
 
+#include "peconv.h"
+
 #include "tinylogger.h"
 #include "hook_scanner.h"
 #include "hollowing_scanner.h"
@@ -114,7 +116,7 @@ size_t check_modules_in_process(DWORD process_id)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.7 alpha";
+	char *version = "0.0.7.1 alpha";
 	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");

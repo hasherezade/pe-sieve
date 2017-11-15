@@ -1,4 +1,5 @@
 #include "hook_scanner.h"
+#include "peconv.h"
 
 bool clear_iat(PIMAGE_SECTION_HEADER section_hdr, BYTE* original_module, BYTE* loaded_code)
 {
@@ -56,7 +57,7 @@ t_scan_status is_module_hooked(HANDLE processHandle, MODULEENTRY32 &module_entry
 {
 	//get the code section from the module:
 	size_t read_size = 0;
-	BYTE *loaded_code = get_module_section(processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, 0, read_size);
+	BYTE *loaded_code = get_remote_pe_section(processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, 0, read_size);
 	if (loaded_code == NULL) return SCAN_ERROR;
 
 	ULONGLONG original_base = get_image_base(original_module);
@@ -84,11 +85,11 @@ t_scan_status is_module_hooked(HANDLE processHandle, MODULEENTRY32 &module_entry
 			printf("Total patches: %d\n", patches_count);
 		}
 		sprintf(mod_name, "%s\\%llX.dll", directory, (ULONGLONG)module_entry.modBaseAddr);
-		if (!dump_module(mod_name, processHandle, module_entry.modBaseAddr, module_entry.modBaseSize)) {
+        if (!dump_remote_pe(mod_name, processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
 			printf("Failed dumping module!\n");
 		}
 	}
-	free_module_section(loaded_code);
+    free_remote_pe_section(loaded_code);
 	loaded_code = NULL;
 
 	if (res != 0) {

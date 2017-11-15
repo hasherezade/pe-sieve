@@ -13,14 +13,12 @@ include_directories ( ${PECONV_DIR} )
 set (srcs
 	main.cpp
 	tinylogger.cpp
-	remote_pe_reader.cpp
 	hook_scanner.cpp
 	hollowing_scanner.cpp
 )
 
 set (hdrs
 	tinylogger.h
-	remote_pe_reader.h
 	scanner_status.h
 	hook_scanner.h
 	hollowing_scanner.h

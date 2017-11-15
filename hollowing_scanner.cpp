@@ -1,9 +1,10 @@
 #include "hollowing_scanner.h"
+#include "peconv.h"
 
 t_scan_status is_module_replaced(HANDLE processHandle, MODULEENTRY32 &module_entry, BYTE* original_module, size_t module_size, char* directory)
 {
 	BYTE hdr_buffer1[MAX_HEADER_SIZE] = { 0 };
-	if (!read_module_header(processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, hdr_buffer1, MAX_HEADER_SIZE)) {
+	if (!read_remote_pe_header(processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, hdr_buffer1, MAX_HEADER_SIZE)) {
 		printf("[-] Failed to read the module header\n");
 		return SCAN_ERROR;
 	}
@@ -24,7 +25,7 @@ t_scan_status is_module_replaced(HANDLE processHandle, MODULEENTRY32 &module_ent
 			sprintf(mod_name, "%s\\%llX.exe", directory, (ULONGLONG)module_entry.modBaseAddr);
 		}
 		
-		if (!dump_module(mod_name, processHandle, module_entry.modBaseAddr, module_entry.modBaseSize)) {
+		if (!dump_remote_pe(mod_name, processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
 			printf("Failed dumping module!\n");
 		}
 		return SCAN_MODIFIED; // modified
