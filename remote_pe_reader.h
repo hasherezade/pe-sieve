@@ -6,11 +6,7 @@
 #include <Windows.h>
 #include <TlHelp32.h>
 
-#include "peloader\util.h"
-#include "peloader\pe_hdrs_helper.h"
-#include "peloader\pe_raw_to_virtual.h"
-#include "peloader\pe_virtual_to_raw.h"
-#include "peloader\relocate.h"
+#include "peconv.h"
 
 #define MAX_HEADER_SIZE 0x1000
 
