@@ -62,7 +62,7 @@ t_scan_status is_module_hooked(HANDLE processHandle, MODULEENTRY32 &module_entry
 
 	ULONGLONG original_base = get_image_base(original_module);
 	ULONGLONG new_base = (ULONGLONG) module_entry.modBaseAddr;
-	if (!apply_relocations(original_module, module_size, new_base, original_base)) {
+	if (!relocate_module(original_module, module_size, new_base, original_base)) {
 		printf("reloc failed!\n");
 	}
 

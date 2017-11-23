@@ -76,7 +76,7 @@ size_t check_modules_in_process(DWORD process_id)
 		printf("[*] Scanning: %s\n", module_entry.szExePath);
 
 		size_t module_size = 0;
-		BYTE* original_module = load_pe_module(module_entry.szExePath, module_size);
+		BYTE* original_module = load_pe_module(module_entry.szExePath, module_size, false, false);
 		if (original_module == NULL) {
 			printf("[-] Could not read original module!\n");
 			continue;
@@ -116,7 +116,7 @@ size_t check_modules_in_process(DWORD process_id)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.7.1 alpha";
+	char *version = "0.0.7.2 alpha";
 	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");
