@@ -8,7 +8,7 @@ set ( M_PARSER "libpeconv/libpeconv" )
 
 # modules paths:
 set (PECONV_DIR "${CMAKE_SOURCE_DIR}/${M_PARSER}" CACHE PATH "PEConv main path")
-include_directories ( ${PECONV_DIR} )
+include_directories ( ${PECONV_DIR}/include )
 
 set (srcs
 	main.cpp
@@ -26,8 +26,7 @@ set (hdrs
 
 # libs
 add_subdirectory (libpeconv/libpeconv)
-get_property (LIBPECONV_LOCATION TARGET libpeconv PROPERTY LOCATION)
-set (PECONV_LIB ${LIBPECONV_LOCATION} CACHE FILE "libpeconv library path")
+set ( PECONV_LIB $<TARGET_FILE:libpeconv> CACHE FILE "PEConvLib library path" )
 
 add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} )
 target_link_libraries ( ${PROJECT_NAME} ${PECONV_LIB} )
