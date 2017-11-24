@@ -10,11 +10,12 @@
 #include <Windows.h>
 #include <TlHelp32.h>
 
-#include "peconv.h"
-
 #include "tinylogger.h"
 #include "hook_scanner.h"
 #include "hollowing_scanner.h"
+
+#include "peconv.h"
+using namespace peconv;
 
 bool dump_to_file(const char *file_name, BYTE* data, size_t data_size)
 {

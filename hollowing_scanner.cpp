@@ -1,6 +1,8 @@
 #include "hollowing_scanner.h"
 #include "peconv.h"
 
+using namespace peconv;
+
 t_scan_status is_module_replaced(HANDLE processHandle, MODULEENTRY32 &module_entry, BYTE* original_module, size_t module_size, char* directory)
 {
 	BYTE hdr_buffer1[MAX_HEADER_SIZE] = { 0 };

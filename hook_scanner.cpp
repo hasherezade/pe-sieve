@@ -1,5 +1,7 @@
 #include "hook_scanner.h"
+
 #include "peconv.h"
+using namespace peconv;
 
 bool clear_iat(PIMAGE_SECTION_HEADER section_hdr, BYTE* original_module, BYTE* loaded_code)
 {

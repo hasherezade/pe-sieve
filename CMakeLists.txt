@@ -8,7 +8,7 @@ set ( M_PARSER "libpeconv/libpeconv" )
 
 # modules paths:
 set (PECONV_DIR "${CMAKE_SOURCE_DIR}/${M_PARSER}" CACHE PATH "PEConv main path")
-include_directories ( ${PECONV_DIR} )
+include_directories ( ${PECONV_DIR}/include )
 
 set (srcs
 	main.cpp
