@@ -26,8 +26,7 @@ set (hdrs
 
 # libs
 add_subdirectory (libpeconv/libpeconv)
-get_property (LIBPECONV_LOCATION TARGET libpeconv PROPERTY LOCATION)
-set (PECONV_LIB ${LIBPECONV_LOCATION} CACHE FILE "libpeconv library path")
+set ( PECONV_LIB $<TARGET_FILE:libpeconv> CACHE FILE "PEConvLib library path" )
 
 add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} )
 target_link_libraries ( ${PROJECT_NAME} ${PECONV_LIB} )
