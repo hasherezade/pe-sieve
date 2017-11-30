@@ -86,14 +86,14 @@ size_t check_modules_in_process(DWORD process_id)
 		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
 		is_hollowed = is_module_replaced(processHandle, module_entry, original_module, module_size, directory);
 		if (is_hollowed == SCAN_MODIFIED) {
-			printf("[!] The module is replaced by a different PE!\n");
+			printf("[*] The module is replaced by a different PE!\n");
 			hollowed_modules++;
 			log_module_info(module_entry);
 		}
 		else {
 			is_hooked = is_module_hooked(processHandle, module_entry, original_module, module_size, directory);
 			if (is_hooked == SCAN_MODIFIED) {
-				printf("[!] The module is hooked!\n");
+				printf("[*] The module is hooked!\n");
 				hooked_modules++;
 				log_module_info(module_entry);
 			}
