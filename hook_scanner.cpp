@@ -64,8 +64,8 @@ t_scan_status is_module_hooked(HANDLE processHandle, MODULEENTRY32 &module_entry
 
 	ULONGLONG original_base = get_image_base(original_module);
 	ULONGLONG new_base = (ULONGLONG) module_entry.modBaseAddr;
-	if (!relocate_module(original_module, module_size, new_base, original_base)) {
-		printf("reloc failed!\n");
+	if (has_relocations(original_module) && !relocate_module(original_module, module_size, new_base, original_base)) {
+		printf("[!] Relocating module failed!\n");
 	}
 
 	PIMAGE_SECTION_HEADER section_hdr = get_section_hdr(original_module, module_size, 0);
