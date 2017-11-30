@@ -112,12 +112,12 @@ size_t check_modules_in_process(DWORD process_id)
 	printf("[*] Total hooked:  %d\n", hooked_modules);
 	printf("[*] Total hollowed:  %d\n", hollowed_modules);
 	printf("---\n");
-	return hooked_modules;
+	return hooked_modules + hollowed_modules;
 }
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.7.2 alpha";
+	char *version = "0.0.7.3 alpha";
 	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");
