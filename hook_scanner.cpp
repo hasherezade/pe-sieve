@@ -6,7 +6,7 @@ using namespace peconv;
 bool clear_iat(PIMAGE_SECTION_HEADER section_hdr, BYTE* original_module, BYTE* loaded_code)
 {
 	BYTE *orig_code = original_module + section_hdr->VirtualAddress;
-	IMAGE_DATA_DIRECTORY* iat_dir = get_pe_directory(original_module, 12); //GET_IAT
+	IMAGE_DATA_DIRECTORY* iat_dir = peconv::get_directory_entry(original_module, IMAGE_DIRECTORY_ENTRY_IAT);
 	if (!iat_dir) {
 		return false;
 	}
