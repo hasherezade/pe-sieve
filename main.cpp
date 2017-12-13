@@ -17,17 +17,6 @@
 #include "peconv.h"
 using namespace peconv;
 
-bool dump_to_file(const char *file_name, BYTE* data, size_t data_size)
-{
-	FILE *f1 = fopen(file_name, "wb");
-	if (!f1) {
-		return false;
-	}
-	fwrite(data, 1, data_size, f1);
-	fclose(f1);
-	return true;
-}
-
 bool make_dump_dir(const DWORD process_id, OUT char *directory)
 {
 	sprintf(directory, "process_%d", process_id);
@@ -43,6 +32,7 @@ size_t check_modules_in_process(DWORD process_id)
 {
 	HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process_id);
 	if (hProcessSnapShot == INVALID_HANDLE_VALUE) {
+		printf("[-] Could not create modules snapshot. Error: %d\n", GetLastError());
 		return 0;
 	}
 	HANDLE processHandle = OpenProcess(PROCESS_VM_READ, FALSE, process_id);
@@ -57,6 +47,7 @@ size_t check_modules_in_process(DWORD process_id)
 
 	size_t hooked_modules = 0;
 	size_t hollowed_modules = 0;
+	size_t error_modules = 0;
 	size_t modules = 1;
 
 	MODULEENTRY32 module_entry = { 0 };
@@ -67,11 +58,12 @@ size_t check_modules_in_process(DWORD process_id)
 	//check all modules in the process, including the main module:
 	if (!Module32First(hProcessSnapShot, &module_entry)) {
 		CloseHandle(processHandle);
+		printf("[-] Could not enumerate modules in process. Error: %d\n", GetLastError());
 		return 0;
 	}
 	do {		
 		modules++;
-		if (processHandle == NULL) continue;
+		if (processHandle == NULL) break;
 
 		//load the same module, but from the disk:
 		printf("[*] Scanning: %s\n", module_entry.szExePath);
@@ -80,6 +72,7 @@ size_t check_modules_in_process(DWORD process_id)
 		BYTE* original_module = load_pe_module(module_entry.szExePath, module_size, false, false);
 		if (original_module == NULL) {
 			printf("[-] Could not read original module!\n");
+			error_modules++;
 			continue;
 		}
 		t_scan_status is_hollowed = SCAN_NOT_MODIFIED;
@@ -100,6 +93,7 @@ size_t check_modules_in_process(DWORD process_id)
 		}
 		if (is_hollowed == SCAN_ERROR || is_hooked == SCAN_ERROR) {
 			printf("[-] ERROR occured while checking the module\n");
+			error_modules++;
 		}
 		VirtualFree(original_module, module_size, MEM_FREE);
 
@@ -108,16 +102,19 @@ size_t check_modules_in_process(DWORD process_id)
 	//close the handles
 	CloseHandle(processHandle);
 	CloseHandle(hProcessSnapShot);
-	printf("[*] Total modules: %d\n", modules);
+	printf("[*] Scanned modules: %d\n", modules);
 	printf("[*] Total hooked:  %d\n", hooked_modules);
 	printf("[*] Total hollowed:  %d\n", hollowed_modules);
+	if (error_modules) {
+		printf("[!] Reading errors:  %d\n", error_modules);
+	}
 	printf("---\n");
 	return hooked_modules + hollowed_modules;
 }
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.7.3 alpha";
+	char *version = "0.0.7.4 alpha";
 	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");
