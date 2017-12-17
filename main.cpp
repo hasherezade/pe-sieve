@@ -48,6 +48,7 @@ size_t check_modules_in_process(DWORD process_id)
 	size_t hooked_modules = 0;
 	size_t hollowed_modules = 0;
 	size_t error_modules = 0;
+	size_t suspicious = 0;
 	size_t modules = 1;
 
 	MODULEENTRY32 module_entry = { 0 };
@@ -71,8 +72,13 @@ size_t check_modules_in_process(DWORD process_id)
 		size_t module_size = 0;
 		BYTE* original_module = load_pe_module(module_entry.szExePath, module_size, false, false);
 		if (original_module == NULL) {
-			printf("[-] Could not read original module!\n");
-			error_modules++;
+			printf("[!] Suspicious: could not read the module file! Dumping the virtual image...\n");
+			char mod_name[MAX_PATH] = { 0 };
+			sprintf(mod_name, "%s\\%llX.dll", directory, (ULONGLONG)module_entry.modBaseAddr);
+			if (!dump_remote_pe(mod_name, processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
+				printf("Failed dumping module!\n");
+			}
+			suspicious++;
 			continue;
 		}
 		t_scan_status is_hollowed = SCAN_NOT_MODIFIED;
@@ -105,16 +111,17 @@ size_t check_modules_in_process(DWORD process_id)
 	printf("[*] Scanned modules: %d\n", modules);
 	printf("[*] Total hooked:  %d\n", hooked_modules);
 	printf("[*] Total hollowed:  %d\n", hollowed_modules);
+	printf("[*] Other suspicious:  %d\n", suspicious);
 	if (error_modules) {
 		printf("[!] Reading errors:  %d\n", error_modules);
 	}
 	printf("---\n");
-	return hooked_modules + hollowed_modules;
+	return hooked_modules + hollowed_modules + suspicious;
 }
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.7.4 alpha";
+	char *version = "0.0.7.5 alpha";
 	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");
