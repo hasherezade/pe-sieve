@@ -80,7 +80,7 @@ t_scan_status HookScanner::scanModule(MODULEENTRY32 &module_entry, BYTE* origina
 	//check if the code of the loaded module is same as the code of the module on the disk:
 	int res = memcmp(loaded_code, orig_code, smaller_size);
 	if (res != 0) {
-		std::string mod_name = make_module_path(module_entry, directory, true);
+		std::string mod_name = make_module_path(module_entry, directory);
 		std::string tagsfile_name = mod_name + ".tag";
 
 		size_t patches_count = reportPatches(tagsfile_name.c_str(), section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);

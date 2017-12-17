@@ -77,7 +77,8 @@ size_t check_modules_in_process(DWORD process_id)
 		BYTE* original_module = load_pe_module(module_entry.szExePath, module_size, false, false);
 		if (original_module == NULL) {
 			printf("[!] Suspicious: could not read the module file! Dumping the virtual image...\n");
-			std::string mod_name = make_module_path(module_entry, directory, true);
+			std::string mod_name = make_module_path(module_entry, directory);
+			std::cout << mod_name << std::endl;
 			if (!dump_remote_pe(mod_name.c_str(), processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
 				printf("Failed dumping module!\n");
 			}

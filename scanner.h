@@ -11,7 +11,7 @@ typedef enum module_scan_status {
 	SCAN_MODIFIED = 1
 } t_scan_status;
 
-std::string make_module_path(MODULEENTRY32 &module_entry, std::string directory, bool is_dll);
+std::string make_module_path(MODULEENTRY32 &module_entry, std::string directory);
 
 class Scanner {
 public:

@@ -20,7 +20,7 @@ t_scan_status HollowingScanner::scanModule(MODULEENTRY32 &module_entry, PBYTE or
 	update_image_base(hdr_buffer2, 0);
 
 	if (memcmp(hdr_buffer1, hdr_buffer2, hdrs_size) != 0) {
-		std::string mod_name = make_module_path(module_entry, directory, is_module_dll(hdr_buffer1));
+		std::string mod_name = make_module_path(module_entry, directory);
 		
 		if (!dump_remote_pe(mod_name.c_str(), processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
 			printf("Failed dumping module!\n");
