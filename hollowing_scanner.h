@@ -3,6 +3,14 @@
 #include <Windows.h>
 #include <TlHelp32.h>
 
-#include "scanner_status.h"
+#include "scanner.h"
 
-t_scan_status is_module_replaced(HANDLE processHandle, MODULEENTRY32 &module_entry, BYTE* original_module, size_t module_size, char* directory);
+class HollowingScanner : public Scanner {
+public:
+	HollowingScanner(HANDLE hProc, std::string dir)
+		: Scanner(hProc, dir)
+	{
+	}
+
+	virtual t_scan_status scanModule(MODULEENTRY32 &module_entry, PBYTE original_module, size_t module_size);
+};

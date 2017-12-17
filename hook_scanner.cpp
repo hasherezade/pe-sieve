@@ -3,7 +3,7 @@
 #include "peconv.h"
 using namespace peconv;
 
-bool clear_iat(PIMAGE_SECTION_HEADER section_hdr, BYTE* original_module, BYTE* loaded_code)
+bool HookScanner::clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_module, BYTE* loaded_code)
 {
 	BYTE *orig_code = original_module + section_hdr->VirtualAddress;
 	IMAGE_DATA_DIRECTORY* iat_dir = peconv::get_directory_entry(original_module, IMAGE_DIRECTORY_ENTRY_IAT);
@@ -29,7 +29,7 @@ bool clear_iat(PIMAGE_SECTION_HEADER section_hdr, BYTE* original_module, BYTE* l
 	return true;
 }
 
-size_t report_patches(const char* file_name, DWORD rva, BYTE *orig_code, BYTE *patched_code, size_t code_size)
+size_t HookScanner::reportPatches(const char* file_name, DWORD rva, BYTE *orig_code, BYTE *patched_code, size_t code_size)
 {
 	const char delimiter = ';';
 	FILE *f1 = fopen(file_name, "wb");
@@ -55,7 +55,7 @@ size_t report_patches(const char* file_name, DWORD rva, BYTE *orig_code, BYTE *p
 	return patches_count;
 }
 
-t_scan_status is_module_hooked(HANDLE processHandle, MODULEENTRY32 &module_entry, BYTE* original_module, size_t module_size, char* directory)
+t_scan_status HookScanner::scanModule(MODULEENTRY32 &module_entry, BYTE* original_module, size_t module_size)
 {
 	//get the code section from the module:
 	size_t read_size = 0;
@@ -71,7 +71,7 @@ t_scan_status is_module_hooked(HANDLE processHandle, MODULEENTRY32 &module_entry
 	PIMAGE_SECTION_HEADER section_hdr = get_section_hdr(original_module, module_size, 0);
 	BYTE *orig_code = original_module + section_hdr->VirtualAddress;
 		
-	clear_iat(section_hdr, original_module, loaded_code);
+	clearIAT(section_hdr, original_module, loaded_code);
 		
 	size_t smaller_size = section_hdr->SizeOfRawData > read_size ? read_size : section_hdr->SizeOfRawData;
 #ifdef _DEBUG
@@ -80,14 +80,14 @@ t_scan_status is_module_hooked(HANDLE processHandle, MODULEENTRY32 &module_entry
 	//check if the code of the loaded module is same as the code of the module on the disk:
 	int res = memcmp(loaded_code, orig_code, smaller_size);
 	if (res != 0) {
-		char mod_name[MAX_PATH] = { 0 };
-		sprintf(mod_name, "%s\\%llX.dll.tag", directory, (ULONGLONG)module_entry.modBaseAddr);
-		size_t patches_count = report_patches(mod_name, section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
+		std::string mod_name = make_module_path(module_entry, directory, true);
+		std::string tagsfile_name = mod_name + ".tag";
+
+		size_t patches_count = reportPatches(tagsfile_name.c_str(), section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
 		if (patches_count) {
 			printf("Total patches: %d\n", patches_count);
 		}
-		sprintf(mod_name, "%s\\%llX.dll", directory, (ULONGLONG)module_entry.modBaseAddr);
-        if (!dump_remote_pe(mod_name, processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
+        if (!dump_remote_pe(mod_name.c_str(), processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
 			printf("Failed dumping module!\n");
 		}
 	}

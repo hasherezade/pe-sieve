@@ -62,6 +62,10 @@ size_t check_modules_in_process(DWORD process_id)
 		printf("[-] Could not enumerate modules in process. Error: %d\n", GetLastError());
 		return 0;
 	}
+
+	HollowingScanner hollows(processHandle, directory);
+	HookScanner hooks(processHandle, directory);
+
 	do {		
 		modules++;
 		if (processHandle == NULL) break;
@@ -73,24 +77,22 @@ size_t check_modules_in_process(DWORD process_id)
 		BYTE* original_module = load_pe_module(module_entry.szExePath, module_size, false, false);
 		if (original_module == NULL) {
 			printf("[!] Suspicious: could not read the module file! Dumping the virtual image...\n");
-			char mod_name[MAX_PATH] = { 0 };
-			sprintf(mod_name, "%s\\%llX.dll", directory, (ULONGLONG)module_entry.modBaseAddr);
-			if (!dump_remote_pe(mod_name, processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
+			std::string mod_name = make_module_path(module_entry, directory, true);
+			if (!dump_remote_pe(mod_name.c_str(), processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
 				printf("Failed dumping module!\n");
 			}
 			suspicious++;
 			continue;
 		}
-		t_scan_status is_hollowed = SCAN_NOT_MODIFIED;
+
 		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
-		is_hollowed = is_module_replaced(processHandle, module_entry, original_module, module_size, directory);
+		t_scan_status is_hollowed = hollows.scanModule(module_entry, original_module, module_size);
 		if (is_hollowed == SCAN_MODIFIED) {
 			printf("[*] The module is replaced by a different PE!\n");
 			hollowed_modules++;
 			log_module_info(module_entry);
-		}
-		else {
-			is_hooked = is_module_hooked(processHandle, module_entry, original_module, module_size, directory);
+		} else {
+			t_scan_status is_hooked = hooks.scanModule(module_entry, original_module, module_size);
 			if (is_hooked == SCAN_MODIFIED) {
 				printf("[*] The module is hooked!\n");
 				hooked_modules++;
@@ -121,7 +123,7 @@ size_t check_modules_in_process(DWORD process_id)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.7.5 alpha";
+	char *version = "0.0.7.6";
 	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");
