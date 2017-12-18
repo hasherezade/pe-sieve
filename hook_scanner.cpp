@@ -1,5 +1,7 @@
 #include "hook_scanner.h"
 
+#include <fstream>
+
 #include "peconv.h"
 using namespace peconv;
 
@@ -20,7 +22,7 @@ bool HookScanner::clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_mod
 	)
 	{
 #ifdef _DEBUG
-		printf("IAT is in Code section!\n");
+		std::cout << "IAT is in Code section!" << std::endl;
 #endif
 		DWORD offset = iat_rva - section_hdr->VirtualAddress;
 		memset(orig_code + offset, 0, iat_size);
@@ -29,11 +31,12 @@ bool HookScanner::clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_mod
 	return true;
 }
 
-size_t HookScanner::reportPatches(const char* file_name, DWORD rva, BYTE *orig_code, BYTE *patched_code, size_t code_size)
+size_t HookScanner::reportPatches(const std::string file_name, DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size)
 {
-	const char delimiter = ';';
-	FILE *f1 = fopen(file_name, "wb");
 	size_t patches_count = 0;
+
+	std::ofstream patch_report;
+	patch_report.open(file_name);
 
 	bool patch_flag = false;
 	for (size_t i = 0; i < code_size; i++) {
@@ -43,19 +46,24 @@ size_t HookScanner::reportPatches(const char* file_name, DWORD rva, BYTE *orig_c
 		}
 		if (patch_flag == false) {
 			patch_flag = true;
-			if (f1) {
-				fprintf(f1, "%8.8X%cpatch_%d\n", rva + i, delimiter, patches_count);
+			if (patch_report.is_open()) {
+				patch_report << std::hex << (rva + i);
+				patch_report << HookScanner::delimiter;
+				patch_report << "patch_" << patches_count;
+				patch_report << std::endl;
 			} else {
-				printf("%8.8X\n", rva + i);
+				std::cout << std::hex << (rva + i);
 			}
 			patches_count++;
 		}
 	}
-	if (f1) fclose(f1);
+	if (patch_report.is_open()) {
+		patch_report.close();
+	}
 	return patches_count;
 }
 
-t_scan_status HookScanner::scanModule(MODULEENTRY32 &module_entry, BYTE* original_module, size_t module_size)
+t_scan_status HookScanner::scanModule(MODULEENTRY32 &module_entry, PBYTE original_module, size_t module_size)
 {
 	//get the code section from the module:
 	size_t read_size = 0;
@@ -65,7 +73,7 @@ t_scan_status HookScanner::scanModule(MODULEENTRY32 &module_entry, BYTE* origina
 	ULONGLONG original_base = get_image_base(original_module);
 	ULONGLONG new_base = (ULONGLONG) module_entry.modBaseAddr;
 	if (has_relocations(original_module) && !relocate_module(original_module, module_size, new_base, original_base)) {
-		printf("[!] Relocating module failed!\n");
+		std::cerr << "[!] Relocating module failed!" << std::endl;
 	}
 
 	PIMAGE_SECTION_HEADER section_hdr = get_section_hdr(original_module, module_size, 0);
@@ -75,7 +83,11 @@ t_scan_status HookScanner::scanModule(MODULEENTRY32 &module_entry, BYTE* origina
 		
 	size_t smaller_size = section_hdr->SizeOfRawData > read_size ? read_size : section_hdr->SizeOfRawData;
 #ifdef _DEBUG
-	printf("Code RVA: %x to %x\n", section_hdr->VirtualAddress, section_hdr->SizeOfRawData);
+	std::cout << "Code RVA: " 
+		<< std::hex << section_hdr->VirtualAddress 
+		<< " to "
+		<< std::hex << section_hdr->SizeOfRawData 
+		<< std::endl;
 #endif
 	//check if the code of the loaded module is same as the code of the module on the disk:
 	int res = memcmp(loaded_code, orig_code, smaller_size);
@@ -83,12 +95,12 @@ t_scan_status HookScanner::scanModule(MODULEENTRY32 &module_entry, BYTE* origina
 		std::string mod_name = make_module_path(module_entry, directory);
 		std::string tagsfile_name = mod_name + ".tag";
 
-		size_t patches_count = reportPatches(tagsfile_name.c_str(), section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
+		size_t patches_count = reportPatches(tagsfile_name, section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
 		if (patches_count) {
-			printf("Total patches: %d\n", patches_count);
+			std::cout << "Total patches: "  << patches_count << std::endl;
 		}
         if (!dump_remote_pe(mod_name.c_str(), processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
-			printf("Failed dumping module!\n");
+			std::cerr << "Failed dumping module!" << std::endl;
 		}
 	}
     free_remote_pe_section(loaded_code);
