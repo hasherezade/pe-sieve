@@ -31,36 +31,61 @@ bool HookScanner::clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_mod
 	return true;
 }
 
+bool HookScanner::reportPatch(std::ofstream &patch_report, Patch &patch)
+{
+	if (patch_report.is_open()) {
+		patch_report << std::hex << patch.startRva;
+		patch_report << HookScanner::delimiter;
+		patch_report << "patch_" << patch.id;
+		patch_report << HookScanner::delimiter;
+		patch_report << (patch.endRva - patch.startRva);
+		patch_report << std::endl;
+	} else {
+		std::cout << std::hex << patch.startRva;
+	}
+	return true;
+}
+
+std::vector<HookScanner::Patch*> HookScanner::listPatches(DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size)
+{
+	std::vector<Patch*> patches_list;
+	Patch *currPatch = nullptr;
+
+	for (size_t i = 0; i < code_size; i++) {
+		if (orig_code[i] == patched_code[i]) {
+			if (currPatch != nullptr) {
+				// close the patch
+				currPatch->endRva = rva + i;
+				currPatch = nullptr;
+			}
+			continue;
+		}
+		if (currPatch == nullptr) {
+			//open a new patch
+			currPatch = new Patch(patches_list.size(), rva + i);
+			patches_list.push_back(currPatch);
+		}
+	}
+	return patches_list;
+}
+
 size_t HookScanner::reportPatches(const std::string file_name, DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size)
 {
-	size_t patches_count = 0;
+	std::vector<Patch*> patches_list = this->listPatches(rva, orig_code, patched_code, code_size);
 
 	std::ofstream patch_report;
 	patch_report.open(file_name);
 
-	bool patch_flag = false;
-	for (size_t i = 0; i < code_size; i++) {
-		if (orig_code[i] == patched_code[i]) {
-			patch_flag = false;
-			continue;
-		}
-		if (patch_flag == false) {
-			patch_flag = true;
-			if (patch_report.is_open()) {
-				patch_report << std::hex << (rva + i);
-				patch_report << HookScanner::delimiter;
-				patch_report << "patch_" << patches_count;
-				patch_report << std::endl;
-			} else {
-				std::cout << std::hex << (rva + i);
-			}
-			patches_count++;
-		}
+	std::vector<Patch*>::iterator itr;
+	for (itr = patches_list.begin(); itr != patches_list.end(); itr++) {
+		Patch *patch = *itr;
+		this->reportPatch(patch_report, *patch);
+		delete patch;
 	}
 	if (patch_report.is_open()) {
 		patch_report.close();
 	}
-	return patches_count;
+	return patches_list.size();
 }
 
 t_scan_status HookScanner::scanModule(MODULEENTRY32 &module_entry, PBYTE original_module, size_t module_size)
