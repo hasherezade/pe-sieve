@@ -2,7 +2,6 @@
 // saves the list in the log with the given format:
 // <module_start>,<module_end>,<module_name>
 // CC-BY: hasherezade
-// WARNING: this is alpha version!
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,36 +13,41 @@
 #include "hook_scanner.h"
 #include "hollowing_scanner.h"
 
+#include <sstream>
+
 #include "peconv.h"
 using namespace peconv;
 
-bool make_dump_dir(const DWORD process_id, OUT char *directory)
+bool make_dump_dir(const std::string directory)
 {
-	sprintf(directory, "process_%d", process_id);
-	if (CreateDirectoryA(directory, NULL) ||  GetLastError() == ERROR_ALREADY_EXISTS) {
-		printf("[+] Directory created\n");
+	if (CreateDirectoryA(directory.c_str(), NULL) 
+		||  GetLastError() == ERROR_ALREADY_EXISTS)
+	{
 		return true;
 	}
-	memset(directory, 0, MAX_PATH);
 	return false;
+}
+
+std::string make_dir_name(const DWORD process_id)
+{
+	std::stringstream stream;
+	stream << "process_";
+	stream << process_id;
+	return stream.str();
 }
 
 size_t check_modules_in_process(DWORD process_id)
 {
 	HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process_id);
 	if (hProcessSnapShot == INVALID_HANDLE_VALUE) {
-		printf("[-] Could not create modules snapshot. Error: %d\n", GetLastError());
+		std::cerr << "[-] Could not create modules snapshot. Error: " << GetLastError() << std::endl;
 		return 0;
 	}
 	HANDLE processHandle = OpenProcess(PROCESS_VM_READ, FALSE, process_id);
 	if (processHandle == NULL)  {
-		printf("[-] Could not open the process for reading. Error: %d\n", GetLastError());
+		std::cerr << "[-] Could not open the process for reading. Error: " << GetLastError() << std::endl;
 		return 0;
 	}
-
-	//make a directory to store the dumps:
-	char directory[MAX_PATH] = { 0 };
-	bool is_dir = make_dump_dir(process_id, directory);
 
 	size_t hooked_modules = 0;
 	size_t hollowed_modules = 0;
@@ -54,51 +58,59 @@ size_t check_modules_in_process(DWORD process_id)
 	MODULEENTRY32 module_entry = { 0 };
 	module_entry.dwSize = sizeof(module_entry);
 
-	printf("---\n");
+	std::cerr << "---" << std::endl;
 
 	//check all modules in the process, including the main module:
 	if (!Module32First(hProcessSnapShot, &module_entry)) {
 		CloseHandle(processHandle);
-		printf("[-] Could not enumerate modules in process. Error: %d\n", GetLastError());
+		std::cerr << "[-] Could not enumerate modules in process. Error: " << GetLastError() << std::endl;
 		return 0;
 	}
+
+	std::string directory = make_dir_name(process_id);
+	if (!make_dump_dir(directory)) {
+		directory = "";
+	}
+
+	HollowingScanner hollows(processHandle, directory);
+	HookScanner hooks(processHandle, directory);
+
 	do {		
 		modules++;
 		if (processHandle == NULL) break;
 
-		//load the same module, but from the disk:
-		printf("[*] Scanning: %s\n", module_entry.szExePath);
+		std::cout << "[*] Scanning: " << module_entry.szExePath << std::endl;
 
+		//load the same module, but from the disk:
 		size_t module_size = 0;
 		BYTE* original_module = load_pe_module(module_entry.szExePath, module_size, false, false);
 		if (original_module == NULL) {
-			printf("[!] Suspicious: could not read the module file! Dumping the virtual image...\n");
-			char mod_name[MAX_PATH] = { 0 };
-			sprintf(mod_name, "%s\\%llX.dll", directory, (ULONGLONG)module_entry.modBaseAddr);
-			if (!dump_remote_pe(mod_name, processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
-				printf("Failed dumping module!\n");
+			std::cout << "[!] Suspicious: could not read the module file! Dumping the virtual image..." << std::endl;
+			std::string mod_name = make_module_path(module_entry, directory);
+			std::cout << mod_name << std::endl;
+			if (!dump_remote_pe(mod_name.c_str(), processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
+				std::cerr << "Failed dumping module!" << std::endl;
 			}
 			suspicious++;
 			continue;
 		}
-		t_scan_status is_hollowed = SCAN_NOT_MODIFIED;
+
 		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
-		is_hollowed = is_module_replaced(processHandle, module_entry, original_module, module_size, directory);
+		t_scan_status is_hollowed = hollows.scanModule(module_entry, original_module, module_size);
 		if (is_hollowed == SCAN_MODIFIED) {
-			printf("[*] The module is replaced by a different PE!\n");
+			std::cout << "[*] The module is replaced by a different PE!" << std::endl;
 			hollowed_modules++;
 			log_module_info(module_entry);
-		}
-		else {
-			is_hooked = is_module_hooked(processHandle, module_entry, original_module, module_size, directory);
+		} else {
+			t_scan_status is_hooked = hooks.scanModule(module_entry, original_module, module_size);
 			if (is_hooked == SCAN_MODIFIED) {
-				printf("[*] The module is hooked!\n");
+				std::cout << "[*] The module is hooked!" << std::endl;
 				hooked_modules++;
 				log_module_info(module_entry);
 			}
 		}
 		if (is_hollowed == SCAN_ERROR || is_hooked == SCAN_ERROR) {
-			printf("[-] ERROR occured while checking the module\n");
+			std::cerr << "[-] ERROR while checking the module: " << module_entry.szExePath << std::endl;
 			error_modules++;
 		}
 		VirtualFree(original_module, module_size, MEM_FREE);
@@ -108,20 +120,29 @@ size_t check_modules_in_process(DWORD process_id)
 	//close the handles
 	CloseHandle(processHandle);
 	CloseHandle(hProcessSnapShot);
-	printf("[*] Scanned modules: %d\n", modules);
-	printf("[*] Total hooked:  %d\n", hooked_modules);
-	printf("[*] Total hollowed:  %d\n", hollowed_modules);
-	printf("[*] Other suspicious:  %d\n", suspicious);
+
+	//summary:
+	size_t total_modified = hooked_modules + hollowed_modules + suspicious;
+	std::cout << "---" << std::endl;
+	std::cout << "Summary: \n" << std::endl;
+	std::cout << "Total scanned: " << modules << std::endl;
+	std::cout << "Hooked:  " << hooked_modules << std::endl;
+	std::cout << "Hollowed:  " << hollowed_modules << std::endl;
+	std::cout << "Other suspicious: " << suspicious << std::endl;
+	std::cout << "Total modified: " << total_modified << std::endl;
 	if (error_modules) {
-		printf("[!] Reading errors:  %d\n", error_modules);
+		std::cerr << "[!] Reading errors: " << error_modules << std::endl;
 	}
-	printf("---\n");
-	return hooked_modules + hollowed_modules + suspicious;
+	if (total_modified > 0) {
+		std::cout << "Dumps saved to the directory: " << directory << std::endl;
+	}
+	std::cout << "---" << std::endl;
+	return total_modified;
 }
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.7.5 alpha";
+	char *version = "0.0.7.7";
 	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");
@@ -142,7 +163,7 @@ int main(int argc, char *argv[])
 	size_t num = check_modules_in_process(pid);
 	if (isLogging) {
 		close_log_file();
-		printf("Found modules: %d saved to the file: %s\n", num, filename);
+		std::cout << "Report saved to the file: " << filename << std::endl;
 	}
 	system("pause");
 	return 0;

@@ -15,13 +15,14 @@ set (srcs
 	tinylogger.cpp
 	hook_scanner.cpp
 	hollowing_scanner.cpp
+	scanner.cpp
 )
 
 set (hdrs
 	tinylogger.h
-	scanner_status.h
 	hook_scanner.h
 	hollowing_scanner.h
+	scanner.h
 )
 
 # libs
