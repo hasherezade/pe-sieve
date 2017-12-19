@@ -51,7 +51,7 @@ std::vector<HookScanner::Patch*> HookScanner::listPatches(DWORD rva, PBYTE orig_
 	std::vector<Patch*> patches_list;
 	Patch *currPatch = nullptr;
 
-	for (size_t i = 0; i < code_size; i++) {
+	for (DWORD i = 0; i < code_size; i++) {
 		if (orig_code[i] == patched_code[i]) {
 			if (currPatch != nullptr) {
 				// close the patch
