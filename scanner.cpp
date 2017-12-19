@@ -18,8 +18,10 @@ std::string make_module_path(MODULEENTRY32 &module_entry, std::string directory)
 {
 	char* fname = get_file_name(module_entry.szExePath);
 	std::stringstream stream;
-	stream << directory;
-	stream << "\\";
+	if (directory.length() > 0) {
+		stream << directory;
+		stream << "\\";
+	}
 	stream << std::hex << (ULONGLONG)module_entry.modBaseAddr;
 	if (fname != nullptr) {
 		stream << "." << fname;

@@ -41,7 +41,7 @@ bool HookScanner::reportPatch(std::ofstream &patch_report, Patch &patch)
 		patch_report << (patch.endRva - patch.startRva);
 		patch_report << std::endl;
 	} else {
-		std::cout << std::hex << patch.startRva;
+		std::cout << std::hex << patch.startRva << std::endl;
 	}
 	return true;
 }
@@ -75,7 +75,10 @@ size_t HookScanner::reportPatches(const std::string file_name, DWORD rva, PBYTE 
 
 	std::ofstream patch_report;
 	patch_report.open(file_name);
-
+	if (patch_report.is_open() == false) {
+		std::cout << "[-] Could not open the file: "<<  file_name << std::endl;
+	}
+	
 	std::vector<Patch*>::iterator itr;
 	for (itr = patches_list.begin(); itr != patches_list.end(); itr++) {
 		Patch *patch = *itr;
@@ -119,7 +122,6 @@ t_scan_status HookScanner::scanModule(MODULEENTRY32 &module_entry, PBYTE origina
 	if (res != 0) {
 		std::string mod_name = make_module_path(module_entry, directory);
 		std::string tagsfile_name = mod_name + ".tag";
-
 		size_t patches_count = reportPatches(tagsfile_name, section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
 		if (patches_count) {
 			std::cout << "Total patches: "  << patches_count << std::endl;
