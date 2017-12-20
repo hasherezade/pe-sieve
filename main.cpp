@@ -73,10 +73,10 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 		std::cerr << "[-] Could not open process. Error: " << GetLastError() << std::endl;
 		return 0;
 	}
+	BOOL isWow64 = FALSE;
 #ifdef _WIN64
-	BOOL isWow6 = FALSE;
-	if (IsWow64Process(processHandle, &isWow6)) {
-		if (isWow6) {
+	if (IsWow64Process(processHandle, &isWow64)) {
+		if (isWow64) {
 			std::cerr << "[WARNING] You are trying to scan a 32bit process by a 64bit scanner!\n";
 			std::cerr << "Use a 32bit scanner instead!" << std::endl;
 		}
@@ -116,10 +116,18 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 			const char unnamed[] = "unnamed";
 			memcpy(szModName, unnamed, sizeof(unnamed));
 		}
-
+		if (isWow64) {
+			bool is_converted = convert_to_wow64_path(szModName);
+#ifdef _DEBUG
+			if (is_converted) {
+				std::cout << "Converting path to Wow64..." << std::endl;
+			}
+#endif
+		}
 		std::cout << "[*] Scanning: " << szModName << std::endl;
+
 		ULONGLONG modBaseAddr = (ULONGLONG)hMods[i];
-		std::string dumpFileName = make_module_path(modBaseAddr, szModName, directory);
+		std::string dumpFileName = make_dump_path(modBaseAddr, szModName, directory);
 
 		//load the same module, but from the disk: 
 		size_t module_size = 0;
@@ -205,7 +213,7 @@ void banner(char *version)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.8";
+	char *version = "0.0.8.1";
 	if (argc < 2) {
 		banner(version);
 		system("pause");
