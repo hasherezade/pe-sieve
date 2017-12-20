@@ -82,7 +82,7 @@ size_t check_modules_in_process(DWORD process_id)
 #endif
 	HMODULE hMods[1024];
 	DWORD cbNeeded;
-	if (!EnumProcessModules(processHandle, hMods, sizeof(hMods), &cbNeeded)) {
+	if (!EnumProcessModulesEx(processHandle, hMods, sizeof(hMods), &cbNeeded, LIST_MODULES_32BIT | LIST_MODULES_64BIT)) {
 		std::cerr << "[-] Could not enumerate modules in the process. Error: " << GetLastError() << std::endl;
 		return 0;
 	}
