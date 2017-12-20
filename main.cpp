@@ -3,22 +3,15 @@
 // <module_start>,<module_end>,<module_name>
 // CC-BY: hasherezade
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include <Windows.h>
-#include <TlHelp32.h>
+#include <Psapi.h>
+#include <sstream>
 
 #include "tinylogger.h"
 #include "hook_scanner.h"
 #include "hollowing_scanner.h"
 
-#include <sstream>
-
 #include "peconv.h"
-#include <psapi.h>
-#include <tchar.h>
-
 using namespace peconv;
 
 bool make_dump_dir(const std::string directory)
