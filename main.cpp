@@ -1,7 +1,5 @@
-// Enumerates all the hooked modules in the process with a given PID
-// saves the list in the log with the given format:
-// <module_start>,<module_end>,<module_name>
-// CC-BY: hasherezade
+// Scans for modified modules within the process of a given PID
+// author: hasherezade (hasherezade@gmail.com)
 
 #include <Windows.h>
 #include <Psapi.h>
@@ -131,7 +129,7 @@ size_t check_modules_in_process(DWORD process_id)
 		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
 		t_scan_status is_hollowed = SCAN_NOT_MODIFIED;
 
-		HollowingScanner hollows(processHandle, directory, szModName);
+		HollowingScanner hollows(processHandle);
 		is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 		if (is_hollowed == SCAN_MODIFIED) {
 			std::cout << "[*] The module is replaced by a different PE!" << std::endl;
@@ -140,7 +138,7 @@ size_t check_modules_in_process(DWORD process_id)
 		}
 		else {
 			PatchList patchesList;
-			HookScanner hooks(processHandle, directory, szModName, patchesList);
+			HookScanner hooks(processHandle, patchesList);
 			t_scan_status is_hooked = hooks.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 			if (is_hooked == SCAN_MODIFIED) {
 				std::cout << "[*] The module is hooked!" << std::endl;

@@ -60,8 +60,8 @@ public:
 
 // HookScanner:
 
-	HookScanner(HANDLE hProc, std::string dir, std::string moduleName, PatchList &patches_list)
-		: ModuleScanner(hProc, dir, moduleName), patchesList(patches_list),
+	HookScanner(HANDLE hProc, PatchList &patches_list)
+		: ModuleScanner(hProc), patchesList(patches_list),
 		delimiter(';')
 	{
 	}
@@ -69,9 +69,6 @@ public:
 	virtual t_scan_status scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size);
 
 private:
-	//bool reportPatch(std::ofstream &patch_report, PatchList::Patch &patch);
-
-	//size_t reportPatches(const std::string file_name, DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size);
 	
 	bool clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_module, PBYTE loaded_code);
 
