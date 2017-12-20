@@ -12,7 +12,6 @@ include_directories ( ${PECONV_DIR}/include )
 
 set (srcs
 	main.cpp
-	tinylogger.cpp
 	hook_scanner.cpp
 	hollowing_scanner.cpp
 	scanner.cpp
@@ -20,7 +19,6 @@ set (srcs
 )
 
 set (hdrs
-	tinylogger.h
 	hook_scanner.h
 	hollowing_scanner.h
 	scanner.h
