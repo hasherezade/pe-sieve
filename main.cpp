@@ -66,7 +66,7 @@ size_t report_patches(PatchList &patchesList, std::string reportPath)
 	return patches;
 }
 
-size_t check_modules_in_process(DWORD process_id)
+size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 {
 	HANDLE processHandle = open_process(process_id);
 	if (processHandle == nullptr) {
@@ -84,7 +84,7 @@ size_t check_modules_in_process(DWORD process_id)
 #endif
 	HMODULE hMods[1024];
 	DWORD cbNeeded;
-	if (!EnumProcessModulesEx(processHandle, hMods, sizeof(hMods), &cbNeeded, LIST_MODULES_32BIT | LIST_MODULES_64BIT)) {
+	if (!EnumProcessModulesEx(processHandle, hMods, sizeof(hMods), &cbNeeded, filters)) {
 		std::cerr << "[-] Could not enumerate modules in the process. Error: " << GetLastError() << std::endl;
 		return 0;
 	}
@@ -167,11 +167,11 @@ size_t check_modules_in_process(DWORD process_id)
 	size_t total_modified = hooked_modules + hollowed_modules + suspicious;
 	std::cout << "---" << std::endl;
 	std::cout << "Summary: \n" << std::endl;
-	std::cout << "Total scanned: " << i << std::endl;
-	std::cout << "Hooked:  " << hooked_modules << std::endl;
-	std::cout << "Replaced:  " << hollowed_modules << std::endl;
+	std::cout << "Total scanned:    " << i << std::endl;
+	std::cout << "Hooked:           " << hooked_modules << std::endl;
+	std::cout << "Replaced:         " << hollowed_modules << std::endl;
 	std::cout << "Other suspicious: " << suspicious << std::endl;
-	std::cout << "Total modified: " << total_modified << std::endl;
+	std::cout << "Total modified:   " << total_modified << std::endl;
 	if (error_modules) {
 		std::cerr << "[!] Reading errors: " << error_modules << std::endl;
 	}
@@ -196,32 +196,34 @@ void banner(char *version)
 	std::cout << " version: " << version << "\n\n";
 	std::cout << "~ from hasherezade with love ~\n";
 	std::cout << "Detects inline hooks and other in-memory PE modifications\n---\n";
-	std::cout << "Args: <PID>\n";
+	std::cout << "Args: <PID> [*module_filter]\n";
 	std::cout << "PID: (decimal) PID of the target application\n";
+	std::cout << "module_filter:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
+	std::cout << "* - optional\n";
 	std::cout << "---" << std::endl;
 }
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.7.9";
+	char *version = "0.0.8";
 	if (argc < 2) {
 		banner(version);
 		system("pause");
 		return 0;
 	}
-
 	DWORD pid = atoi(argv[1]);
-	printf("PID: %d\n", pid);
-	/*
-	char filename[MAX_PATH] = { 0 };
-	sprintf(filename,"PID_%d_modules.txt", pid);
-	bool isLogging = make_log_file(filename);
-	*/
-	check_modules_in_process(pid);
-	/*if (isLogging) {
-		close_log_file();
-		std::cout << "Report saved to the file: " << filename << std::endl;
-	}*/
+	std::cout << "PID: " << pid << std::endl;
+
+	DWORD filters = LIST_MODULES_ALL;
+	if (argc >= 3) {
+		filters = atoi(argv[2]);
+		if (filters > LIST_MODULES_ALL) {
+			filters = LIST_MODULES_ALL;
+		}
+	}
+	std::cout << "Module filter: " << filters << std::endl;
+	check_modules_in_process(pid, filters);
+
 	system("pause");
 	return 0;
 }
