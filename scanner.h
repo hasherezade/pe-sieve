@@ -12,9 +12,9 @@ typedef enum module_scan_status {
 
 std::string make_module_path(ULONGLONG modAddr, std::string directory);
 
-class Scanner {
+class ModuleScanner {
 public:
-	Scanner(HANDLE procHndl, std::string dir)
+	ModuleScanner(HANDLE procHndl, std::string dir)
 		: processHandle(procHndl), directory(dir)
 	{
 	}

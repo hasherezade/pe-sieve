@@ -4,10 +4,10 @@
 
 #include "scanner.h"
 
-class HookScanner : public Scanner {
+class HookScanner : public ModuleScanner {
 public:
 	HookScanner(HANDLE hProc, std::string dir)
-		: Scanner(hProc, dir),
+		: ModuleScanner(hProc, dir),
 		delimiter(';')
 	{
 	}

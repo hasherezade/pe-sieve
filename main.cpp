@@ -80,7 +80,7 @@ size_t check_modules_in_process(DWORD process_id)
 
 		bool is_module_named = true;
 
-		if (!GetModuleFileNameExA(processHandle, hMods[i], szModName, sizeof(szModName) / sizeof(szModName[0]))) {
+		if (!GetModuleFileNameExA(processHandle, hMods[i], szModName, MAX_PATH)) {
 			std::cerr << "Cannot fetch module name" << std::endl;
 			is_module_named = false;
 			const char unnamed[] = "unnamed";

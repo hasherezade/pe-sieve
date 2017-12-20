@@ -4,10 +4,10 @@
 
 #include "scanner.h"
 
-class HollowingScanner : public Scanner {
+class HollowingScanner : public ModuleScanner {
 public:
 	HollowingScanner(HANDLE hProc, std::string dir)
-		: Scanner(hProc, dir)
+		: ModuleScanner(hProc, dir)
 	{
 	}
 
