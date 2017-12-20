@@ -62,33 +62,15 @@ size_t check_modules_in_process(DWORD process_id)
 		std::cerr << "[-] Could not enumerate modules in the process. Error: " << GetLastError() << std::endl;
 		return 0;
 	}
-	size_t modules_counter = cbNeeded / sizeof(HMODULE);
-
-	HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process_id);
-	if (hProcessSnapShot == INVALID_HANDLE_VALUE) {
-		std::cerr << "[-] Could not create modules snapshot. Error: " << GetLastError() << std::endl;
-		std::cout << "---" << std::endl;
-		return 0;
-	}
+	const size_t modules_count = cbNeeded / sizeof(HMODULE);
 
 	size_t hooked_modules = 0;
 	size_t hollowed_modules = 0;
 	size_t error_modules = 0;
 	size_t suspicious = 0;
-	size_t modules = 1;
-
-	MODULEENTRY32 module_entry = { 0 };
-	module_entry.dwSize = sizeof(module_entry);
 
 	std::cerr << "---" << std::endl;
-
 	//check all modules in the process, including the main module:
-	if (!Module32First(hProcessSnapShot, &module_entry)) {
-		CloseHandle(processHandle);
-
-		std::cerr << "[-] Could not enumerate modules in process. Error: " << GetLastError() << std::endl;
-		return 0;
-	}
 
 	std::string directory = make_dir_name(process_id);
 	if (!make_dump_dir(directory)) {
@@ -98,20 +80,32 @@ size_t check_modules_in_process(DWORD process_id)
 	HollowingScanner hollows(processHandle, directory);
 	HookScanner hooks(processHandle, directory);
 
-	do {		
-		modules++;
+	char szModName[MAX_PATH];
+	int i = 0;
+	for (; i < modules_count; i++) {		
 		if (processHandle == NULL) break;
 
-		std::cout << "[*] Scanning: " << module_entry.szExePath << std::endl;
+		bool is_module_named = true;
 
-		//load the same module, but from the disk:
+		if (!GetModuleFileNameExA(processHandle, hMods[i], szModName, sizeof(szModName) / sizeof(szModName[0]))) {
+			std::cerr << "Cannot fetch module name" << std::endl;
+			is_module_named = false;
+			const char unnamed[] = "unnamed";
+			memcpy(szModName, unnamed, sizeof(unnamed));
+		}
+		std::cout << "[*] Scanning: " << szModName << std::endl;
+		ULONGLONG modBaseAddr = (ULONGLONG)hMods[i];
+		//load the same module, but from the disk: 
 		size_t module_size = 0;
-		BYTE* original_module = load_pe_module(module_entry.szExePath, module_size, false, false);
-		if (original_module == NULL) {
+		BYTE* original_module = nullptr;
+		if (is_module_named) {
+			original_module = load_pe_module(szModName, module_size, false, false);
+		}
+		if (original_module == nullptr) {
 			std::cout << "[!] Suspicious: could not read the module file! Dumping the virtual image..." << std::endl;
-			std::string mod_name = make_module_path((ULONGLONG)module_entry.modBaseAddr, directory);
+			std::string mod_name = make_module_path(modBaseAddr, directory);
 			std::cout << mod_name << std::endl;
-			if (!dump_remote_pe(mod_name.c_str(), processHandle, module_entry.modBaseAddr, true)) {
+			if (!dump_remote_pe(mod_name.c_str(), processHandle, (PBYTE)modBaseAddr, true)) {
 				std::cerr << "Failed dumping module!" << std::endl;
 			}
 			suspicious++;
@@ -119,36 +113,32 @@ size_t check_modules_in_process(DWORD process_id)
 		}
 
 		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
-		t_scan_status is_hollowed = hollows.scanRemote(module_entry.modBaseAddr, original_module, module_size);
+		t_scan_status is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 		if (is_hollowed == SCAN_MODIFIED) {
 			std::cout << "[*] The module is replaced by a different PE!" << std::endl;
 			hollowed_modules++;
-			log_module_info(module_entry);
+			//log_module_info((PBYTE)modBaseAddr);
 		} else {
-			t_scan_status is_hooked = hooks.scanRemote(module_entry.modBaseAddr, original_module, module_size);
+			t_scan_status is_hooked = hooks.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 			if (is_hooked == SCAN_MODIFIED) {
 				std::cout << "[*] The module is hooked!" << std::endl;
 				hooked_modules++;
-				log_module_info(module_entry);
+				//log_module_info((PBYTE)modBaseAddr);
 			}
 		}
 		if (is_hollowed == SCAN_ERROR || is_hooked == SCAN_ERROR) {
-			std::cerr << "[-] ERROR while checking the module: " << module_entry.szExePath << std::endl;
+			std::cerr << "[-] ERROR while checking the module: " << szModName << std::endl;
 			error_modules++;
 		}
 		VirtualFree(original_module, module_size, MEM_FREE);
 
-	} while (Module32Next(hProcessSnapShot, &module_entry));
-
-	//close the handles
-	CloseHandle(processHandle);
-	CloseHandle(hProcessSnapShot);
+	}
 
 	//summary:
 	size_t total_modified = hooked_modules + hollowed_modules + suspicious;
 	std::cout << "---" << std::endl;
 	std::cout << "Summary: \n" << std::endl;
-	std::cout << "Total scanned: " << modules << std::endl;
+	std::cout << "Total scanned: " << i << std::endl;
 	std::cout << "Hooked:  " << hooked_modules << std::endl;
 	std::cout << "Hollowed:  " << hollowed_modules << std::endl;
 	std::cout << "Other suspicious: " << suspicious << std::endl;
