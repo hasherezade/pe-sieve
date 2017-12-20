@@ -74,10 +74,12 @@ size_t check_modules_in_process(DWORD process_id)
 		return 0;
 	}
 #ifdef _WIN64
-	BOOL isWow6 = true;
+	BOOL isWow6 = FALSE;
 	if (IsWow64Process(processHandle, &isWow6)) {
-		std::cerr << "[WARNING] You are trying to scan a 32bit process by a 64bit scanner!\n";
-		std::cerr << "Use a 32bit scanner instead!" << std::endl;
+		if (isWow6) {
+			std::cerr << "[WARNING] You are trying to scan a 32bit process by a 64bit scanner!\n";
+			std::cerr << "Use a 32bit scanner instead!" << std::endl;
+		}
 	}
 #endif
 	HMODULE hMods[1024];
