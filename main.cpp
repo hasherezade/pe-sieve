@@ -169,7 +169,7 @@ size_t check_modules_in_process(DWORD process_id)
 	std::cout << "Summary: \n" << std::endl;
 	std::cout << "Total scanned: " << i << std::endl;
 	std::cout << "Hooked:  " << hooked_modules << std::endl;
-	std::cout << "Hollowed:  " << hollowed_modules << std::endl;
+	std::cout << "Replaced:  " << hollowed_modules << std::endl;
 	std::cout << "Other suspicious: " << suspicious << std::endl;
 	std::cout << "Total modified: " << total_modified << std::endl;
 	if (error_modules) {
