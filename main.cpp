@@ -116,14 +116,6 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 			const char unnamed[] = "unnamed";
 			memcpy(szModName, unnamed, sizeof(unnamed));
 		}
-		if (isWow64) {
-			bool is_converted = convert_to_wow64_path(szModName);
-#ifdef _DEBUG
-			if (is_converted) {
-				std::cout << "Converting path to Wow64..." << std::endl;
-			}
-#endif
-		}
 		std::cout << "[*] Scanning: " << szModName << std::endl;
 
 		ULONGLONG modBaseAddr = (ULONGLONG)hMods[i];
@@ -148,11 +140,25 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 		HollowingScanner hollows(processHandle);
 		is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 		if (is_hollowed == SCAN_MODIFIED) {
-			std::cout << "[*] The module is replaced by a different PE!" << std::endl;
-			hollowed_modules++;
-			dump_modified_module(processHandle, modBaseAddr, dumpFileName);
+			if (isWow64) {
+				//it can be caused by Wow64 path overwrite, check it...
+				bool is_converted = convert_to_wow64_path(szModName);
+#ifdef _DEBUG
+				std::cout << "Reloading Wow64..." << std::endl;
+#endif
+				//reload it and check again...
+				VirtualFree(original_module, module_size, MEM_DECOMMIT);
+				original_module = load_pe_module(szModName, module_size, false, false);
+			}
+			is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
+			if (is_hollowed) {
+				std::cout << "[*] The module is replaced by a different PE!" << std::endl;
+				hollowed_modules++;
+				dump_modified_module(processHandle, modBaseAddr, dumpFileName);
+			}
 		}
-		else {
+		//if not hollowed, check for hooks:
+		if (is_hollowed == SCAN_NOT_MODIFIED) {
 			PatchList patchesList;
 			HookScanner hooks(processHandle, patchesList);
 			t_scan_status is_hooked = hooks.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
@@ -167,8 +173,7 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 			std::cerr << "[-] ERROR while checking the module: " << szModName << std::endl;
 			error_modules++;
 		}
-		VirtualFree(original_module, module_size, MEM_FREE);
-
+		VirtualFree(original_module, module_size, MEM_DECOMMIT);
 	}
 
 	//summary:
