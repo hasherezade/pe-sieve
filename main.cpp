@@ -174,15 +174,30 @@ size_t check_modules_in_process(DWORD process_id)
 	return total_modified;
 }
 
+void banner(char *version)
+{
+	char logo[] =
+"\
+   __             __      ____         __       \n\
+  / /  ___  ___  / /__   / _(_)__  ___/ /__ ____\n\
+ / _ \\/ _ \\/ _ \\/  '_/  / _/ / _ \\/ _  / -_) __/\n\
+/_//_/\\___/\\___/_/\\_\\__/_//_/_//_/\\_,_/\\__/_/   \n\
+                   /___/ ";
+
+	std::cout << logo;
+	std::cout << " version: " << version << "\n\n";
+	std::cout << "~ from hasherezade with love ~\n";
+	std::cout << "Detects inline hooks and other in-memory PE modifications\n---\n";
+	std::cout << "Args: <PID>\n";
+	std::cout << "PID: (decimal) PID of the target application\n";
+	std::cout << "---" << std::endl;
+}
+
 int main(int argc, char *argv[])
 {
 	char *version = "0.0.7.9";
 	if (argc < 2) {
-		printf("[hook_finder v%s]\n", version);
-		printf("A small tool allowing to detect and examine inline hooks\n---\n");
-		printf("Args: <PID>\n");
-		printf("PID: (decimal) PID of the target application\n");
-		printf("---\n");
+		banner(version);
 		system("pause");
 		return 0;
 	}
