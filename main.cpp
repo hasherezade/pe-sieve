@@ -209,10 +209,16 @@ void banner(char *version)
 #endif
 	std::cout << "~ from hasherezade with love ~\n";
 	std::cout << "Detects inline hooks and other in-memory PE modifications\n---\n";
-	std::cout << "Args: <PID> [*module_filter]\n";
+	std::cout << "Args: <PID> ";
+#ifdef _WIN64
+	std::cout <<"[*module_filter]";
+#endif
+	std::cout << "\n";
 	std::cout << "PID: (decimal) PID of the target application\n";
+#ifdef _WIN64
 	std::cout << "module_filter:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
 	std::cout << "* - optional\n";
+#endif
 	std::cout << "---" << std::endl;
 }
 
