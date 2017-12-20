@@ -164,13 +164,13 @@ int main(int argc, char *argv[])
 
 	char filename[MAX_PATH] = { 0 };
 	sprintf(filename,"PID_%d_modules.txt", pid);
-	bool isLogging = make_log_file(filename);
+	//bool isLogging = make_log_file(filename);
 
-	size_t num = check_modules_in_process(pid);
-	if (isLogging) {
+	check_modules_in_process(pid);
+	/*if (isLogging) {
 		close_log_file();
 		std::cout << "Report saved to the file: " << filename << std::endl;
-	}
+	}*/
 	system("pause");
 	return 0;
 }
