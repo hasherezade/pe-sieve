@@ -6,10 +6,12 @@
 #include <Windows.h>
 #include <Psapi.h>
 #include <sstream>
+#include <fstream>
 
-#include "tinylogger.h"
 #include "hook_scanner.h"
 #include "hollowing_scanner.h"
+
+#include "util.h"
 
 #include "peconv.h"
 using namespace peconv;
@@ -41,6 +43,31 @@ HANDLE open_process(DWORD processID)
 	return hProcess;
 }
 
+bool dump_modified_module(HANDLE processHandle, ULONGLONG modBaseAddr, std::string dumpPath)
+{
+	if (!dump_remote_pe(dumpPath.c_str(), processHandle, (PBYTE)modBaseAddr, true)) {
+		std::cerr << "Failed dumping module!" << std::endl;
+		return false;
+	}
+	return true;
+}
+
+size_t report_patches(PatchList &patchesList, std::string reportPath)
+{
+	std::ofstream patch_report;
+	patch_report.open(reportPath);
+	if (patch_report.is_open() == false) {
+		std::cout << "[-] Could not open the file: "<<  reportPath << std::endl;
+	}
+	
+	size_t patches = patchesList.reportPatches(patch_report, ';');
+
+	if (patch_report.is_open()) {
+		patch_report.close();
+	}
+	return patches;
+}
+
 size_t check_modules_in_process(DWORD process_id)
 {
 	HANDLE processHandle = open_process(process_id);
@@ -70,9 +97,6 @@ size_t check_modules_in_process(DWORD process_id)
 		directory = "";
 	}
 
-	HollowingScanner hollows(processHandle, directory);
-	HookScanner hooks(processHandle, directory);
-
 	char szModName[MAX_PATH];
 	int i = 0;
 	for (; i < modules_count; i++) {		
@@ -86,8 +110,11 @@ size_t check_modules_in_process(DWORD process_id)
 			const char unnamed[] = "unnamed";
 			memcpy(szModName, unnamed, sizeof(unnamed));
 		}
+
 		std::cout << "[*] Scanning: " << szModName << std::endl;
 		ULONGLONG modBaseAddr = (ULONGLONG)hMods[i];
+		std::string dumpFileName = make_module_path(modBaseAddr, szModName, directory);
+
 		//load the same module, but from the disk: 
 		size_t module_size = 0;
 		BYTE* original_module = nullptr;
@@ -96,27 +123,30 @@ size_t check_modules_in_process(DWORD process_id)
 		}
 		if (original_module == nullptr) {
 			std::cout << "[!] Suspicious: could not read the module file! Dumping the virtual image..." << std::endl;
-			std::string mod_name = make_module_path(modBaseAddr, directory);
-			std::cout << mod_name << std::endl;
-			if (!dump_remote_pe(mod_name.c_str(), processHandle, (PBYTE)modBaseAddr, true)) {
-				std::cerr << "Failed dumping module!" << std::endl;
-			}
+			dump_modified_module(processHandle, modBaseAddr, dumpFileName);
 			suspicious++;
 			continue;
 		}
 
 		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
-		t_scan_status is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
+		t_scan_status is_hollowed = SCAN_NOT_MODIFIED;
+
+		HollowingScanner hollows(processHandle, directory, szModName);
+		is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 		if (is_hollowed == SCAN_MODIFIED) {
 			std::cout << "[*] The module is replaced by a different PE!" << std::endl;
 			hollowed_modules++;
-			//log_module_info((PBYTE)modBaseAddr);
-		} else {
+			dump_modified_module(processHandle, modBaseAddr, dumpFileName);
+		}
+		else {
+			PatchList patchesList;
+			HookScanner hooks(processHandle, directory, szModName, patchesList);
 			t_scan_status is_hooked = hooks.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 			if (is_hooked == SCAN_MODIFIED) {
 				std::cout << "[*] The module is hooked!" << std::endl;
 				hooked_modules++;
-				//log_module_info((PBYTE)modBaseAddr);
+				dump_modified_module(processHandle, modBaseAddr, dumpFileName);
+				report_patches(patchesList, dumpFileName + ".tag");
 			}
 		}
 		if (is_hollowed == SCAN_ERROR || is_hooked == SCAN_ERROR) {
@@ -148,7 +178,7 @@ size_t check_modules_in_process(DWORD process_id)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.7.8";
+	char *version = "0.0.7.9";
 	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");
@@ -161,11 +191,11 @@ int main(int argc, char *argv[])
 
 	DWORD pid = atoi(argv[1]);
 	printf("PID: %d\n", pid);
-
+	/*
 	char filename[MAX_PATH] = { 0 };
 	sprintf(filename,"PID_%d_modules.txt", pid);
-	//bool isLogging = make_log_file(filename);
-
+	bool isLogging = make_log_file(filename);
+	*/
 	check_modules_in_process(pid);
 	/*if (isLogging) {
 		close_log_file();

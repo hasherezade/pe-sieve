@@ -4,17 +4,8 @@
 
 #include "scanner.h"
 
-class HookScanner : public ModuleScanner {
+class PatchList {
 public:
-	HookScanner(HANDLE hProc, std::string dir)
-		: ModuleScanner(hProc, dir),
-		delimiter(';')
-	{
-	}
-
-	virtual t_scan_status scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size);
-
-private:
 	class Patch
 	{
 	public:
@@ -23,20 +14,71 @@ private:
 		{
 		}
 
+		void setEnd(DWORD end_rva)
+		{
+			endRva = end_rva;
+		}
+
+		bool reportPatch(std::ofstream &patch_report, const char delimiter);
+
 	protected:
 		size_t id;
 		DWORD startRva;
 		DWORD endRva;
-	friend class HookScanner;
+
+	friend class PatchList;
 	};
 
-	std::vector<Patch*> listPatches(DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size);
+	//constructor:
+	PatchList() {}
 
-	bool reportPatch(std::ofstream &patch_report, Patch &patch);
+	//destructor:
+	virtual ~PatchList() {
+		deletePatches();
+	}
 
-	size_t reportPatches(const std::string file_name, DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size);
+	void insert(Patch *p)
+	{
+		patches.push_back(p);
+	}
+
+	size_t size()
+	{
+		return patches.size();
+	}
+
+	size_t reportPatches(std::ofstream &patch_report, const char delimiter);
+
+	void deletePatches();
+
+// variables:
+	std::vector<Patch*> patches;
+};
+
+class HookScanner : public ModuleScanner {
+public:
+
+// HookScanner:
+
+	HookScanner(HANDLE hProc, std::string dir, std::string moduleName, PatchList &patches_list)
+		: ModuleScanner(hProc, dir, moduleName), patchesList(patches_list),
+		delimiter(';')
+	{
+	}
+
+	virtual t_scan_status scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size);
+
+private:
+	//bool reportPatch(std::ofstream &patch_report, PatchList::Patch &patch);
+
+	//size_t reportPatches(const std::string file_name, DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size);
 	
 	bool clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_module, PBYTE loaded_code);
 
 	const char delimiter;
+
+	size_t collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size);
+
+// variables:
+	PatchList &patchesList;
 };

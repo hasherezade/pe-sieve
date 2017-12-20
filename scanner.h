@@ -10,12 +10,10 @@ typedef enum module_scan_status {
 	SCAN_MODIFIED = 1
 } t_scan_status;
 
-std::string make_module_path(ULONGLONG modAddr, std::string directory);
-
 class ModuleScanner {
 public:
-	ModuleScanner(HANDLE procHndl, std::string dir)
-		: processHandle(procHndl), directory(dir)
+	ModuleScanner(HANDLE procHndl, std::string dir, std::string module_name)
+		: processHandle(procHndl), directory(dir), moduleName(module_name)
 	{
 	}
 
@@ -24,6 +22,7 @@ public:
 protected:
 	std::string directory;
 	HANDLE processHandle;
+	std::string moduleName;
 };
 
 

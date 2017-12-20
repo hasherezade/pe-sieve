@@ -16,6 +16,7 @@ set (srcs
 	hook_scanner.cpp
 	hollowing_scanner.cpp
 	scanner.cpp
+	util.cpp
 )
 
 set (hdrs
@@ -23,6 +24,7 @@ set (hdrs
 	hook_scanner.h
 	hollowing_scanner.h
 	scanner.h
+	util.h
 )
 
 # libs

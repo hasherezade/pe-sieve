@@ -6,8 +6,8 @@
 
 class HollowingScanner : public ModuleScanner {
 public:
-	HollowingScanner(HANDLE hProc, std::string dir)
-		: ModuleScanner(hProc, dir)
+	HollowingScanner(HANDLE hProc, std::string dir, std::string moduleName)
+		: ModuleScanner(hProc, dir, moduleName)
 	{
 	}
 

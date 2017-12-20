@@ -20,12 +20,7 @@ t_scan_status HollowingScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_mod
 	update_image_base(hdr_buffer2, 0);
 
 	if (memcmp(hdr_buffer1, hdr_buffer2, hdrs_size) != 0) {
-		std::string mod_name = make_module_path((ULONGLONG)modBaseAddr, directory);
-		
-		if (!dump_remote_pe(mod_name.c_str(), processHandle, modBaseAddr, true)) {
-			printf("Failed dumping module!\n");
-		}
-		return SCAN_MODIFIED; // modified
+		return SCAN_MODIFIED;
 	}
-	return SCAN_NOT_MODIFIED; //not modified
+	return SCAN_NOT_MODIFIED;
 }
