@@ -91,15 +91,15 @@ size_t HookScanner::reportPatches(const std::string file_name, DWORD rva, PBYTE 
 	return patches_list.size();
 }
 
-t_scan_status HookScanner::scanModule(MODULEENTRY32 &module_entry, PBYTE original_module, size_t module_size)
+t_scan_status HookScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_module, size_t module_size)
 {
 	//get the code section from the module:
 	size_t read_size = 0;
-	BYTE *loaded_code = get_remote_pe_section(processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, 0, read_size);
+	BYTE *loaded_code = get_remote_pe_section(processHandle, modBaseAddr, 0, read_size);
 	if (loaded_code == NULL) return SCAN_ERROR;
 
 	ULONGLONG original_base = get_image_base(original_module);
-	ULONGLONG new_base = (ULONGLONG) module_entry.modBaseAddr;
+	ULONGLONG new_base = (ULONGLONG) modBaseAddr;
 	if (has_relocations(original_module) && !relocate_module(original_module, module_size, new_base, original_base)) {
 		std::cerr << "[!] Relocating module failed!" << std::endl;
 	}
@@ -120,17 +120,17 @@ t_scan_status HookScanner::scanModule(MODULEENTRY32 &module_entry, PBYTE origina
 	//check if the code of the loaded module is same as the code of the module on the disk:
 	int res = memcmp(loaded_code, orig_code, smaller_size);
 	if (res != 0) {
-		std::string mod_name = make_module_path(module_entry, directory);
+		std::string mod_name = make_module_path((ULONGLONG)modBaseAddr, directory);
 		std::string tagsfile_name = mod_name + ".tag";
 		size_t patches_count = reportPatches(tagsfile_name, section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
 		if (patches_count) {
 			std::cout << "Total patches: "  << patches_count << std::endl;
 		}
-        if (!dump_remote_pe(mod_name.c_str(), processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
+		if (!dump_remote_pe(mod_name.c_str(), processHandle, modBaseAddr, true)) {
 			std::cerr << "Failed dumping module!" << std::endl;
 		}
 	}
-    free_remote_pe_section(loaded_code);
+	free_remote_pe_section(loaded_code);
 	loaded_code = NULL;
 
 	if (res != 0) {

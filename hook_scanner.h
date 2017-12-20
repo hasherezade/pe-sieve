@@ -1,6 +1,5 @@
 #pragma once
 #include <Windows.h>
-#include <TlHelp32.h>
 #include <vector>
 
 #include "scanner.h"
@@ -8,11 +7,12 @@
 class HookScanner : public Scanner {
 public:
 	HookScanner(HANDLE hProc, std::string dir)
-		: Scanner(hProc, dir), delimiter(';')
+		: Scanner(hProc, dir),
+		delimiter(';')
 	{
 	}
 
-	virtual t_scan_status scanModule(MODULEENTRY32 &module_entry, PBYTE original_module, size_t module_size);
+	virtual t_scan_status scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size);
 
 private:
 	class Patch

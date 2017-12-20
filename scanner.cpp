@@ -14,19 +14,15 @@ char* get_file_name(char *full_path)
 	return nullptr;
 }
 
-std::string make_module_path(MODULEENTRY32 &module_entry, std::string directory)
+std::string make_module_path(ULONGLONG modBaseAddr, std::string directory)
 {
-	char* fname = get_file_name(module_entry.szExePath);
+	//char* fname = get_file_name(module_entry.szExePath);
 	std::stringstream stream;
 	if (directory.length() > 0) {
 		stream << directory;
 		stream << "\\";
 	}
-	stream << std::hex << (ULONGLONG)module_entry.modBaseAddr;
-	if (fname != nullptr) {
-		stream << "." << fname;
-	} else {
-		stream << ".dll";
-	}
+	stream << std::hex << modBaseAddr;
+    stream << ".dll";
 	return stream.str();
 }

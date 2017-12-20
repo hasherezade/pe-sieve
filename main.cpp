@@ -16,6 +16,9 @@
 #include <sstream>
 
 #include "peconv.h"
+#include <psapi.h>
+#include <tchar.h>
+
 using namespace peconv;
 
 bool make_dump_dir(const std::string directory)
@@ -36,16 +39,35 @@ std::string make_dir_name(const DWORD process_id)
 	return stream.str();
 }
 
+HANDLE open_process(DWORD processID)
+{
+	HANDLE hProcess = OpenProcess(
+		PROCESS_QUERY_INFORMATION |PROCESS_VM_READ,
+		FALSE, processID
+	);
+	return hProcess;
+}
+
 size_t check_modules_in_process(DWORD process_id)
 {
+	HANDLE processHandle = open_process(process_id);
+	if (processHandle == nullptr) {
+		std::cerr << "[-] Could not open process. Error: " << GetLastError() << std::endl;
+		return 0;
+	}
+
+	HMODULE hMods[1024];
+	DWORD cbNeeded;
+	if (!EnumProcessModules(processHandle, hMods, sizeof(hMods), &cbNeeded)) {
+		std::cerr << "[-] Could not enumerate modules in the process. Error: " << GetLastError() << std::endl;
+		return 0;
+	}
+	size_t modules_counter = cbNeeded / sizeof(HMODULE);
+
 	HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process_id);
 	if (hProcessSnapShot == INVALID_HANDLE_VALUE) {
 		std::cerr << "[-] Could not create modules snapshot. Error: " << GetLastError() << std::endl;
-		return 0;
-	}
-	HANDLE processHandle = OpenProcess(PROCESS_VM_READ, FALSE, process_id);
-	if (processHandle == NULL)  {
-		std::cerr << "[-] Could not open the process for reading. Error: " << GetLastError() << std::endl;
+		std::cout << "---" << std::endl;
 		return 0;
 	}
 
@@ -63,6 +85,7 @@ size_t check_modules_in_process(DWORD process_id)
 	//check all modules in the process, including the main module:
 	if (!Module32First(hProcessSnapShot, &module_entry)) {
 		CloseHandle(processHandle);
+
 		std::cerr << "[-] Could not enumerate modules in process. Error: " << GetLastError() << std::endl;
 		return 0;
 	}
@@ -86,9 +109,9 @@ size_t check_modules_in_process(DWORD process_id)
 		BYTE* original_module = load_pe_module(module_entry.szExePath, module_size, false, false);
 		if (original_module == NULL) {
 			std::cout << "[!] Suspicious: could not read the module file! Dumping the virtual image..." << std::endl;
-			std::string mod_name = make_module_path(module_entry, directory);
+			std::string mod_name = make_module_path((ULONGLONG)module_entry.modBaseAddr, directory);
 			std::cout << mod_name << std::endl;
-			if (!dump_remote_pe(mod_name.c_str(), processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
+			if (!dump_remote_pe(mod_name.c_str(), processHandle, module_entry.modBaseAddr, true)) {
 				std::cerr << "Failed dumping module!" << std::endl;
 			}
 			suspicious++;
@@ -96,13 +119,13 @@ size_t check_modules_in_process(DWORD process_id)
 		}
 
 		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
-		t_scan_status is_hollowed = hollows.scanModule(module_entry, original_module, module_size);
+		t_scan_status is_hollowed = hollows.scanRemote(module_entry.modBaseAddr, original_module, module_size);
 		if (is_hollowed == SCAN_MODIFIED) {
 			std::cout << "[*] The module is replaced by a different PE!" << std::endl;
 			hollowed_modules++;
 			log_module_info(module_entry);
 		} else {
-			t_scan_status is_hooked = hooks.scanModule(module_entry, original_module, module_size);
+			t_scan_status is_hooked = hooks.scanRemote(module_entry.modBaseAddr, original_module, module_size);
 			if (is_hooked == SCAN_MODIFIED) {
 				std::cout << "[*] The module is hooked!" << std::endl;
 				hooked_modules++;
@@ -142,7 +165,7 @@ size_t check_modules_in_process(DWORD process_id)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.7.7";
+	char *version = "0.0.7.8";
 	if (argc < 2) {
 		printf("[hook_finder v%s]\n", version);
 		printf("A small tool allowing to detect and examine inline hooks\n---\n");

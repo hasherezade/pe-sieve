@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Windows.h>
-#include <TlHelp32.h>
 
 #include <iostream>
 
@@ -11,7 +10,7 @@ typedef enum module_scan_status {
 	SCAN_MODIFIED = 1
 } t_scan_status;
 
-std::string make_module_path(MODULEENTRY32 &module_entry, std::string directory);
+std::string make_module_path(ULONGLONG modAddr, std::string directory);
 
 class Scanner {
 public:
@@ -20,7 +19,7 @@ public:
 	{
 	}
 
-	virtual t_scan_status scanModule(MODULEENTRY32 &module_entry, PBYTE original_module, size_t module_size) = 0;
+    virtual t_scan_status scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size) = 0;
 
 protected:
 	std::string directory;
