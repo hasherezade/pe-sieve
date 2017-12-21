@@ -1,19 +1,15 @@
-// Enumerates all the hooked modules in the process with a given PID
-// saves the list in the log with the given format:
-// <module_start>,<module_end>,<module_name>
-// CC-BY: hasherezade
-
-#include <stdio.h>
-#include <stdlib.h>
+// Scans for modified modules within the process of a given PID
+// author: hasherezade (hasherezade@gmail.com)
 
 #include <Windows.h>
-#include <TlHelp32.h>
+#include <Psapi.h>
+#include <sstream>
+#include <fstream>
 
-#include "tinylogger.h"
 #include "hook_scanner.h"
 #include "hollowing_scanner.h"
 
-#include <sstream>
+#include "util.h"
 
 #include "peconv.h"
 using namespace peconv;
@@ -36,100 +32,154 @@ std::string make_dir_name(const DWORD process_id)
 	return stream.str();
 }
 
-size_t check_modules_in_process(DWORD process_id)
+HANDLE open_process(DWORD processID)
 {
-	HANDLE hProcessSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, process_id);
-	if (hProcessSnapShot == INVALID_HANDLE_VALUE) {
-		std::cerr << "[-] Could not create modules snapshot. Error: " << GetLastError() << std::endl;
+	HANDLE hProcess = OpenProcess(
+		PROCESS_QUERY_INFORMATION |PROCESS_VM_READ,
+		FALSE, processID
+	);
+	return hProcess;
+}
+
+bool dump_modified_module(HANDLE processHandle, ULONGLONG modBaseAddr, std::string dumpPath)
+{
+	if (!dump_remote_pe(dumpPath.c_str(), processHandle, (PBYTE)modBaseAddr, true)) {
+		std::cerr << "Failed dumping module!" << std::endl;
+		return false;
+	}
+	return true;
+}
+
+size_t report_patches(PatchList &patchesList, std::string reportPath)
+{
+	std::ofstream patch_report;
+	patch_report.open(reportPath);
+	if (patch_report.is_open() == false) {
+		std::cout << "[-] Could not open the file: "<<  reportPath << std::endl;
+	}
+	
+	size_t patches = patchesList.reportPatches(patch_report, ';');
+
+	if (patch_report.is_open()) {
+		patch_report.close();
+	}
+	return patches;
+}
+
+size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
+{
+	HANDLE processHandle = open_process(process_id);
+	if (processHandle == nullptr) {
+		std::cerr << "[-] Could not open process. Error: " << GetLastError() << std::endl;
 		return 0;
 	}
-	HANDLE processHandle = OpenProcess(PROCESS_VM_READ, FALSE, process_id);
-	if (processHandle == NULL)  {
-		std::cerr << "[-] Could not open the process for reading. Error: " << GetLastError() << std::endl;
+	BOOL isWow64 = FALSE;
+#ifdef _WIN64
+	IsWow64Process(processHandle, &isWow64);
+#endif
+	HMODULE hMods[1024];
+	DWORD cbNeeded;
+	if (!EnumProcessModulesEx(processHandle, hMods, sizeof(hMods), &cbNeeded, filters)) {
+		std::cerr << "[-] Could not enumerate modules in the process. Error: " << GetLastError() << std::endl;
 		return 0;
 	}
+	const size_t modules_count = cbNeeded / sizeof(HMODULE);
 
 	size_t hooked_modules = 0;
 	size_t hollowed_modules = 0;
 	size_t error_modules = 0;
 	size_t suspicious = 0;
-	size_t modules = 1;
-
-	MODULEENTRY32 module_entry = { 0 };
-	module_entry.dwSize = sizeof(module_entry);
 
 	std::cerr << "---" << std::endl;
-
 	//check all modules in the process, including the main module:
-	if (!Module32First(hProcessSnapShot, &module_entry)) {
-		CloseHandle(processHandle);
-		std::cerr << "[-] Could not enumerate modules in process. Error: " << GetLastError() << std::endl;
-		return 0;
-	}
 
 	std::string directory = make_dir_name(process_id);
 	if (!make_dump_dir(directory)) {
 		directory = "";
 	}
 
-	HollowingScanner hollows(processHandle, directory);
-	HookScanner hooks(processHandle, directory);
-
-	do {		
-		modules++;
+	char szModName[MAX_PATH];
+	size_t i = 0;
+	for (; i < modules_count; i++) {		
 		if (processHandle == NULL) break;
 
-		std::cout << "[*] Scanning: " << module_entry.szExePath << std::endl;
+		bool is_module_named = true;
 
-		//load the same module, but from the disk:
+		if (!GetModuleFileNameExA(processHandle, hMods[i], szModName, MAX_PATH)) {
+			std::cerr << "Cannot fetch module name" << std::endl;
+			is_module_named = false;
+			const char unnamed[] = "unnamed";
+			memcpy(szModName, unnamed, sizeof(unnamed));
+		}
+		std::cout << "[*] Scanning: " << szModName << std::endl;
+
+		ULONGLONG modBaseAddr = (ULONGLONG)hMods[i];
+		std::string dumpFileName = make_dump_path(modBaseAddr, szModName, directory);
+
+		//load the same module, but from the disk: 
 		size_t module_size = 0;
-		BYTE* original_module = load_pe_module(module_entry.szExePath, module_size, false, false);
-		if (original_module == NULL) {
+		BYTE* original_module = nullptr;
+		if (is_module_named) {
+			original_module = load_pe_module(szModName, module_size, false, false);
+		}
+		if (original_module == nullptr) {
 			std::cout << "[!] Suspicious: could not read the module file! Dumping the virtual image..." << std::endl;
-			std::string mod_name = make_module_path(module_entry, directory);
-			std::cout << mod_name << std::endl;
-			if (!dump_remote_pe(mod_name.c_str(), processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
-				std::cerr << "Failed dumping module!" << std::endl;
-			}
+			dump_modified_module(processHandle, modBaseAddr, dumpFileName);
 			suspicious++;
 			continue;
 		}
 
 		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
-		t_scan_status is_hollowed = hollows.scanModule(module_entry, original_module, module_size);
+		t_scan_status is_hollowed = SCAN_NOT_MODIFIED;
+
+		HollowingScanner hollows(processHandle);
+		is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 		if (is_hollowed == SCAN_MODIFIED) {
-			std::cout << "[*] The module is replaced by a different PE!" << std::endl;
-			hollowed_modules++;
-			log_module_info(module_entry);
-		} else {
-			t_scan_status is_hooked = hooks.scanModule(module_entry, original_module, module_size);
+			if (isWow64) {
+				//it can be caused by Wow64 path overwrite, check it...
+				bool is_converted = convert_to_wow64_path(szModName);
+#ifdef _DEBUG
+				std::cout << "Reloading Wow64..." << std::endl;
+#endif
+				//reload it and check again...
+				VirtualFree(original_module, module_size, MEM_DECOMMIT);
+				original_module = load_pe_module(szModName, module_size, false, false);
+			}
+			is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
+			if (is_hollowed) {
+				std::cout << "[*] The module is replaced by a different PE!" << std::endl;
+				hollowed_modules++;
+				dump_modified_module(processHandle, modBaseAddr, dumpFileName);
+			}
+		}
+		//if not hollowed, check for hooks:
+		if (is_hollowed == SCAN_NOT_MODIFIED) {
+			PatchList patchesList;
+			HookScanner hooks(processHandle, patchesList);
+			t_scan_status is_hooked = hooks.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 			if (is_hooked == SCAN_MODIFIED) {
 				std::cout << "[*] The module is hooked!" << std::endl;
 				hooked_modules++;
-				log_module_info(module_entry);
+				dump_modified_module(processHandle, modBaseAddr, dumpFileName);
+				report_patches(patchesList, dumpFileName + ".tag");
 			}
 		}
 		if (is_hollowed == SCAN_ERROR || is_hooked == SCAN_ERROR) {
-			std::cerr << "[-] ERROR while checking the module: " << module_entry.szExePath << std::endl;
+			std::cerr << "[-] ERROR while checking the module: " << szModName << std::endl;
 			error_modules++;
 		}
-		VirtualFree(original_module, module_size, MEM_FREE);
-
-	} while (Module32Next(hProcessSnapShot, &module_entry));
-
-	//close the handles
-	CloseHandle(processHandle);
-	CloseHandle(hProcessSnapShot);
+		VirtualFree(original_module, module_size, MEM_DECOMMIT);
+	}
 
 	//summary:
 	size_t total_modified = hooked_modules + hollowed_modules + suspicious;
 	std::cout << "---" << std::endl;
 	std::cout << "Summary: \n" << std::endl;
-	std::cout << "Total scanned: " << modules << std::endl;
-	std::cout << "Hooked:  " << hooked_modules << std::endl;
-	std::cout << "Hollowed:  " << hollowed_modules << std::endl;
+	std::cout << "Total scanned:    " << i << std::endl;
+	std::cout << "Hooked:           " << hooked_modules << std::endl;
+	std::cout << "Replaced:         " << hollowed_modules << std::endl;
 	std::cout << "Other suspicious: " << suspicious << std::endl;
-	std::cout << "Total modified: " << total_modified << std::endl;
+	std::cout << "Total modified:   " << total_modified << std::endl;
 	if (error_modules) {
 		std::cerr << "[!] Reading errors: " << error_modules << std::endl;
 	}
@@ -140,31 +190,59 @@ size_t check_modules_in_process(DWORD process_id)
 	return total_modified;
 }
 
+void banner(char *version)
+{
+	char logo[] =
+"\
+   __             __      ____         __       \n\
+  / /  ___  ___  / /__   / _(_)__  ___/ /__ ____\n\
+ / _ \\/ _ \\/ _ \\/  '_/  / _/ / _ \\/ _  / -_) __/\n\
+/_//_/\\___/\\___/_/\\_\\__/_//_/_//_/\\_,_/\\__/_/   \n\
+                   /___/ ";
+
+	std::cout << logo;
+	std::cout << " version: " << version;
+#ifdef _WIN64
+	std::cout << " (x64)" << "\n\n";
+#else
+	std::cout << " (x86)" << "\n\n";
+#endif
+	std::cout << "~ from hasherezade with love ~\n";
+	std::cout << "Detects inline hooks and other in-memory PE modifications\n---\n";
+	std::cout << "Args: <PID> ";
+#ifdef _WIN64
+	std::cout <<"[*module_filter]";
+#endif
+	std::cout << "\n";
+	std::cout << "PID: (decimal) PID of the target application\n";
+#ifdef _WIN64
+	std::cout << "module_filter:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
+	std::cout << "* - optional\n";
+#endif
+	std::cout << "---" << std::endl;
+}
+
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.7.7";
+	char *version = "0.0.8.2";
 	if (argc < 2) {
-		printf("[hook_finder v%s]\n", version);
-		printf("A small tool allowing to detect and examine inline hooks\n---\n");
-		printf("Args: <PID>\n");
-		printf("PID: (decimal) PID of the target application\n");
-		printf("---\n");
+		banner(version);
 		system("pause");
 		return 0;
 	}
-
 	DWORD pid = atoi(argv[1]);
-	printf("PID: %d\n", pid);
+	std::cout << "PID: " << pid << std::endl;
 
-	char filename[MAX_PATH] = { 0 };
-	sprintf(filename,"PID_%d_modules.txt", pid);
-	bool isLogging = make_log_file(filename);
-
-	size_t num = check_modules_in_process(pid);
-	if (isLogging) {
-		close_log_file();
-		std::cout << "Report saved to the file: " << filename << std::endl;
+	DWORD filters = LIST_MODULES_ALL;
+	if (argc >= 3) {
+		filters = atoi(argv[2]);
+		if (filters > LIST_MODULES_ALL) {
+			filters = LIST_MODULES_ALL;
+		}
 	}
+	std::cout << "Module filter: " << filters << std::endl;
+	check_modules_in_process(pid, filters);
+
 	system("pause");
 	return 0;
 }

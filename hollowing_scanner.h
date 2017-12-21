@@ -1,16 +1,15 @@
 #pragma once
 
 #include <Windows.h>
-#include <TlHelp32.h>
 
 #include "scanner.h"
 
-class HollowingScanner : public Scanner {
+class HollowingScanner : public ModuleScanner {
 public:
-	HollowingScanner(HANDLE hProc, std::string dir)
-		: Scanner(hProc, dir)
+	HollowingScanner(HANDLE hProc)
+		: ModuleScanner(hProc)
 	{
 	}
 
-	virtual t_scan_status scanModule(MODULEENTRY32 &module_entry, PBYTE original_module, size_t module_size);
+	virtual t_scan_status scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size);
 };

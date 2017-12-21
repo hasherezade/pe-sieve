@@ -5,6 +5,44 @@
 #include "peconv.h"
 using namespace peconv;
 
+bool PatchList::Patch::reportPatch(std::ofstream &patch_report, const char delimiter)
+{
+	if (patch_report.is_open()) {
+		patch_report << std::hex << startRva;
+		patch_report << delimiter;
+		patch_report << "patch_" << id;
+		patch_report << delimiter;
+		patch_report << (endRva - startRva);
+		patch_report << std::endl;
+	} else {
+		std::cout << std::hex << startRva << std::endl;
+	}
+	return true;
+}
+
+//---
+size_t PatchList::reportPatches(std::ofstream &patch_report, const char delimiter)
+{
+	std::vector<Patch*>::iterator itr;
+	for (itr = patches.begin(); itr != patches.end(); itr++) {
+		Patch *patch = *itr;
+		patch->reportPatch(patch_report, delimiter);
+	}
+	return patches.size();
+}
+
+void PatchList::deletePatches()
+{
+	std::vector<Patch*>::iterator itr;
+	for (itr = patches.begin(); itr != patches.end(); itr++) {
+		Patch *patch = *itr;
+		delete patch;
+	}
+	this->patches.clear();
+}
+
+//---
+
 bool HookScanner::clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_module, BYTE* loaded_code)
 {
 	BYTE *orig_code = original_module + section_hdr->VirtualAddress;
@@ -31,75 +69,37 @@ bool HookScanner::clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_mod
 	return true;
 }
 
-bool HookScanner::reportPatch(std::ofstream &patch_report, Patch &patch)
+size_t HookScanner::collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size)
 {
-	if (patch_report.is_open()) {
-		patch_report << std::hex << patch.startRva;
-		patch_report << HookScanner::delimiter;
-		patch_report << "patch_" << patch.id;
-		patch_report << HookScanner::delimiter;
-		patch_report << (patch.endRva - patch.startRva);
-		patch_report << std::endl;
-	} else {
-		std::cout << std::hex << patch.startRva << std::endl;
-	}
-	return true;
-}
-
-std::vector<HookScanner::Patch*> HookScanner::listPatches(DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size)
-{
-	std::vector<Patch*> patches_list;
-	Patch *currPatch = nullptr;
+	PatchList::Patch *currPatch = nullptr;
 
 	for (DWORD i = 0; i < code_size; i++) {
 		if (orig_code[i] == patched_code[i]) {
 			if (currPatch != nullptr) {
 				// close the patch
-				currPatch->endRva = rva + i;
+				currPatch->setEnd(rva + i);
 				currPatch = nullptr;
 			}
 			continue;
 		}
 		if (currPatch == nullptr) {
 			//open a new patch
-			currPatch = new Patch(patches_list.size(), rva + i);
-			patches_list.push_back(currPatch);
+			currPatch = new PatchList::Patch(this->patchesList.size(), rva + i);
+			this->patchesList.insert(currPatch);
 		}
 	}
-	return patches_list;
+	return this->patchesList.size();
 }
 
-size_t HookScanner::reportPatches(const std::string file_name, DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size)
-{
-	std::vector<Patch*> patches_list = this->listPatches(rva, orig_code, patched_code, code_size);
-
-	std::ofstream patch_report;
-	patch_report.open(file_name);
-	if (patch_report.is_open() == false) {
-		std::cout << "[-] Could not open the file: "<<  file_name << std::endl;
-	}
-	
-	std::vector<Patch*>::iterator itr;
-	for (itr = patches_list.begin(); itr != patches_list.end(); itr++) {
-		Patch *patch = *itr;
-		this->reportPatch(patch_report, *patch);
-		delete patch;
-	}
-	if (patch_report.is_open()) {
-		patch_report.close();
-	}
-	return patches_list.size();
-}
-
-t_scan_status HookScanner::scanModule(MODULEENTRY32 &module_entry, PBYTE original_module, size_t module_size)
+t_scan_status HookScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_module, size_t module_size)
 {
 	//get the code section from the module:
 	size_t read_size = 0;
-	BYTE *loaded_code = get_remote_pe_section(processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, 0, read_size);
+	BYTE *loaded_code = get_remote_pe_section(processHandle, modBaseAddr, 0, read_size);
 	if (loaded_code == NULL) return SCAN_ERROR;
 
 	ULONGLONG original_base = get_image_base(original_module);
-	ULONGLONG new_base = (ULONGLONG) module_entry.modBaseAddr;
+	ULONGLONG new_base = (ULONGLONG) modBaseAddr;
 	if (has_relocations(original_module) && !relocate_module(original_module, module_size, new_base, original_base)) {
 		std::cerr << "[!] Relocating module failed!" << std::endl;
 	}
@@ -120,17 +120,12 @@ t_scan_status HookScanner::scanModule(MODULEENTRY32 &module_entry, PBYTE origina
 	//check if the code of the loaded module is same as the code of the module on the disk:
 	int res = memcmp(loaded_code, orig_code, smaller_size);
 	if (res != 0) {
-		std::string mod_name = make_module_path(module_entry, directory);
-		std::string tagsfile_name = mod_name + ".tag";
-		size_t patches_count = reportPatches(tagsfile_name, section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
+		size_t patches_count = collectPatches(section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
 		if (patches_count) {
 			std::cout << "Total patches: "  << patches_count << std::endl;
 		}
-        if (!dump_remote_pe(mod_name.c_str(), processHandle, module_entry.modBaseAddr, module_entry.modBaseSize, true)) {
-			std::cerr << "Failed dumping module!" << std::endl;
-		}
 	}
-    free_remote_pe_section(loaded_code);
+	free_remote_pe_section(loaded_code);
 	loaded_code = NULL;
 
 	if (res != 0) {
