@@ -3,7 +3,6 @@
 #include <fstream>
 
 #include "peconv.h"
-using namespace peconv;
 
 bool PatchList::Patch::reportPatch(std::ofstream &patch_report, const char delimiter)
 {
@@ -73,7 +72,7 @@ size_t HookScanner::collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_cod
 {
 	PatchList::Patch *currPatch = nullptr;
 
-	for (DWORD i = 0; i < code_size; i++) {
+	for (size_t i = 0; i < code_size; i++) {
 		if (orig_code[i] == patched_code[i]) {
 			if (currPatch != nullptr) {
 				// close the patch
@@ -95,16 +94,18 @@ t_scan_status HookScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_module, 
 {
 	//get the code section from the module:
 	size_t read_size = 0;
-	BYTE *loaded_code = get_remote_pe_section(processHandle, modBaseAddr, 0, read_size);
+	BYTE *loaded_code = peconv::get_remote_pe_section(processHandle, modBaseAddr, 0, read_size);
 	if (loaded_code == NULL) return SCAN_ERROR;
 
-	ULONGLONG original_base = get_image_base(original_module);
+	ULONGLONG original_base = peconv::get_image_base(original_module);
 	ULONGLONG new_base = (ULONGLONG) modBaseAddr;
-	if (has_relocations(original_module) && !relocate_module(original_module, module_size, new_base, original_base)) {
+	if (peconv::has_relocations(original_module) 
+		&& !peconv::relocate_module(original_module, module_size, new_base, original_base))
+	{
 		std::cerr << "[!] Relocating module failed!" << std::endl;
 	}
 
-	PIMAGE_SECTION_HEADER section_hdr = get_section_hdr(original_module, module_size, 0);
+	PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(original_module, module_size, 0);
 	BYTE *orig_code = original_module + section_hdr->VirtualAddress;
 		
 	clearIAT(section_hdr, original_module, loaded_code);
@@ -125,7 +126,7 @@ t_scan_status HookScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_module, 
 			std::cout << "Total patches: "  << patches_count << std::endl;
 		}
 	}
-	free_remote_pe_section(loaded_code);
+	peconv::free_remote_pe_section(loaded_code);
 	loaded_code = NULL;
 
 	if (res != 0) {

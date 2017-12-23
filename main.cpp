@@ -12,7 +12,6 @@
 #include "util.h"
 
 #include "peconv.h"
-using namespace peconv;
 
 bool make_dump_dir(const std::string directory)
 {
@@ -74,7 +73,7 @@ size_t enum_modules(IN HANDLE hProcess, OUT HMODULE hMods[], IN const size_t hMo
 
 bool dump_modified_module(HANDLE processHandle, ULONGLONG modBaseAddr, std::string dumpPath)
 {
-	if (!dump_remote_pe(dumpPath.c_str(), processHandle, (PBYTE)modBaseAddr, true)) {
+	if (!peconv::dump_remote_pe(dumpPath.c_str(), processHandle, (PBYTE)modBaseAddr, true)) {
 		std::cerr << "Failed dumping module!" << std::endl;
 		return false;
 	}
@@ -148,7 +147,7 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 		size_t module_size = 0;
 		BYTE* original_module = nullptr;
 		if (is_module_named) {
-			original_module = load_pe_module(szModName, module_size, false, false);
+			original_module = peconv::load_pe_module(szModName, module_size, false, false);
 		}
 		if (original_module == nullptr) {
 			std::cout << "[!] Suspicious: could not read the module file! Dumping the virtual image..." << std::endl;
@@ -170,8 +169,8 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 				std::cout << "Reloading Wow64..." << std::endl;
 #endif
 				//reload it and check again...
-				free_pe_buffer(original_module, module_size);
-				original_module = load_pe_module(szModName, module_size, false, false);
+				peconv::free_pe_buffer(original_module, module_size);
+				original_module = peconv::load_pe_module(szModName, module_size, false, false);
 			}
 			is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 			if (is_hollowed) {
@@ -196,7 +195,7 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 			std::cerr << "[-] ERROR while checking the module: " << szModName << std::endl;
 			error_modules++;
 		}
-		free_pe_buffer(original_module, module_size);
+		peconv::free_pe_buffer(original_module, module_size);
 	}
 
 	//summary:
