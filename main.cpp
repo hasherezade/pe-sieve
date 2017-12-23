@@ -38,7 +38,38 @@ HANDLE open_process(DWORD processID)
 		PROCESS_QUERY_INFORMATION |PROCESS_VM_READ,
 		FALSE, processID
 	);
+	if (hProcess == nullptr) {
+		DWORD last_err = GetLastError();
+		std::cerr << "[-] Could not open the process. Error: " << last_err << std::endl;
+		if (last_err == ERROR_ACCESS_DENIED) {
+			std::cerr << "-> Access denied. Try to run the scanner as Administrator." << std::endl;
+		}
+		else if (last_err == ERROR_INVALID_PARAMETER) {
+			std::cerr << "-> Is this process still running?" << std::endl;
+		}
+	}
 	return hProcess;
+}
+
+size_t enum_modules(IN HANDLE hProcess, OUT HMODULE hMods[], IN const size_t hModsMax, IN DWORD filters)
+{
+	DWORD cbNeeded;
+	if (!EnumProcessModulesEx(hProcess, hMods, hModsMax, &cbNeeded, filters)) {
+
+		BOOL isCurrWow64 = FALSE;
+		IsWow64Process(GetCurrentProcess(), &isCurrWow64);
+		BOOL isRemoteWow64 = FALSE;
+		IsWow64Process(hProcess, &isRemoteWow64);
+
+		DWORD last_err = GetLastError();
+		std::cerr << "[-] Could not enumerate modules in the process. Error: " << last_err << std::endl;
+		if (last_err == ERROR_PARTIAL_COPY && isCurrWow64 && !isRemoteWow64) {
+			std::cerr << "-> Try to use the 64bit version of the scanner." << std::endl;
+		}
+		return 0;
+	}
+	const size_t modules_count = cbNeeded / sizeof(HMODULE);
+	return modules_count;
 }
 
 bool dump_modified_module(HANDLE processHandle, ULONGLONG modBaseAddr, std::string dumpPath)
@@ -70,7 +101,6 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 {
 	HANDLE processHandle = open_process(process_id);
 	if (processHandle == nullptr) {
-		std::cerr << "[-] Could not open process. Error: " << GetLastError() << std::endl;
 		return 0;
 	}
 	BOOL isWow64 = FALSE;
@@ -78,12 +108,10 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 	IsWow64Process(processHandle, &isWow64);
 #endif
 	HMODULE hMods[1024];
-	DWORD cbNeeded;
-	if (!EnumProcessModulesEx(processHandle, hMods, sizeof(hMods), &cbNeeded, filters)) {
-		std::cerr << "[-] Could not enumerate modules in the process. Error: " << GetLastError() << std::endl;
+	const size_t modules_count = enum_modules(processHandle, hMods, sizeof(hMods), filters);
+	if (modules_count == 0) {
 		return 0;
 	}
-	const size_t modules_count = cbNeeded / sizeof(HMODULE);
 
 	size_t hooked_modules = 0;
 	size_t hollowed_modules = 0;
@@ -100,7 +128,7 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 
 	char szModName[MAX_PATH];
 	size_t i = 0;
-	for (; i < modules_count; i++) {		
+	for (; i < modules_count; i++) {
 		if (processHandle == NULL) break;
 
 		bool is_module_named = true;
@@ -174,17 +202,19 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 	//summary:
 	size_t total_modified = hooked_modules + hollowed_modules + suspicious;
 	std::cout << "---" << std::endl;
-	std::cout << "Summary: \n" << std::endl;
+	std::cout << "SUMMARY: \n" << std::endl;
 	std::cout << "Total scanned:    " << i << std::endl;
+	std::cout << "-\n";
 	std::cout << "Hooked:           " << hooked_modules << std::endl;
 	std::cout << "Replaced:         " << hollowed_modules << std::endl;
 	std::cout << "Other suspicious: " << suspicious << std::endl;
+	std::cout << "-\n";
 	std::cout << "Total modified:   " << total_modified << std::endl;
 	if (error_modules) {
 		std::cerr << "[!] Reading errors: " << error_modules << std::endl;
 	}
 	if (total_modified > 0) {
-		std::cout << "Dumps saved to the directory: " << directory << std::endl;
+		std::cout << "\nDumps saved to the directory: " << directory << std::endl;
 	}
 	std::cout << "---" << std::endl;
 	return total_modified;
@@ -224,7 +254,7 @@ void banner(char *version)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.8.2";
+	char *version = "0.0.8.3";
 	if (argc < 2) {
 		banner(version);
 		system("pause");
