@@ -170,7 +170,7 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 				std::cout << "Reloading Wow64..." << std::endl;
 #endif
 				//reload it and check again...
-				VirtualFree(original_module, module_size, MEM_DECOMMIT);
+				free_pe_buffer(original_module, module_size);
 				original_module = load_pe_module(szModName, module_size, false, false);
 			}
 			is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
@@ -196,7 +196,7 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 			std::cerr << "[-] ERROR while checking the module: " << szModName << std::endl;
 			error_modules++;
 		}
-		VirtualFree(original_module, module_size, MEM_DECOMMIT);
+		free_pe_buffer(original_module, module_size);
 	}
 
 	//summary:
