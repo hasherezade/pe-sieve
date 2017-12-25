@@ -50,7 +50,7 @@ HANDLE open_process(DWORD processID)
 	return hProcess;
 }
 
-size_t enum_modules(IN HANDLE hProcess, OUT HMODULE hMods[], IN const size_t hModsMax, IN DWORD filters)
+size_t enum_modules(IN HANDLE hProcess, OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters)
 {
 	DWORD cbNeeded;
 	if (!EnumProcessModulesEx(hProcess, hMods, hModsMax, &cbNeeded, filters)) {

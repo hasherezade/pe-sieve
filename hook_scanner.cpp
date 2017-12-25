@@ -72,7 +72,7 @@ size_t HookScanner::collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_cod
 {
 	PatchList::Patch *currPatch = nullptr;
 
-	for (size_t i = 0; i < code_size; i++) {
+	for (DWORD i = 0; i < (DWORD) code_size; i++) {
 		if (orig_code[i] == patched_code[i]) {
 			if (currPatch != nullptr) {
 				// close the patch
@@ -83,7 +83,7 @@ size_t HookScanner::collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_cod
 		}
 		if (currPatch == nullptr) {
 			//open a new patch
-			currPatch = new PatchList::Patch(this->patchesList.size(), rva + i);
+			currPatch = new PatchList::Patch(this->patchesList.size(), (DWORD) rva + i);
 			this->patchesList.insert(currPatch);
 		}
 	}
