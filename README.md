@@ -15,5 +15,5 @@ git clone https://github.com/hasherezade/libpeconv.git
 
 Compiled versions:
 -
-32bit: https://drive.google.com/uc?export=download&id=0Bzb5kQFOXkiSMWp6OGJXX01XSUk <br/>
-64bit: https://drive.google.com/uc?export=download&id=0Bzb5kQFOXkiSQVhQajFpaWlMTUk <br/>
+32bit: https://drive.google.com/uc?export=download&id=1TWRF1BtTEHMdd42CPZXpSmOxO9DFlovL <br/>
+64bit: https://drive.google.com/uc?export=download&id=1-LvYrTMJpp4LVo_2fBN5urz2DTezEJvi <br/>
