@@ -1,5 +1,6 @@
-# hook_finder
-a small tool for investigating inline hooks (and other in-memory code patches)
+# PE-sieve
+PE-sieve scans a given process, searching for the modules containing in-memory code modifications. When found, it dumps the modified PE.<br/>
+Detects inline hooks, hollowed processes etc.
 
 uses library:
 https://github.com/hasherezade/libpeconv.git
@@ -7,8 +8,8 @@ https://github.com/hasherezade/libpeconv.git
 Clone:
 -
 <pre>
-git clone https://github.com/hasherezade/hook_finder.git
-cd hook_finder
+git clone https://github.com/hasherezade/pe-sieve.git
+cd pe-sieve
 git clone https://github.com/hasherezade/libpeconv.git
 </pre>
 
