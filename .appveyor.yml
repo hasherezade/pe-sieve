@@ -1,0 +1,37 @@
+shallow_clone: true
+
+os:
+  - Visual Studio 2015
+
+platform: x64
+  - x64
+
+branches:
+  only:
+    - master
+
+install:
+  - cinst cmake
+  - set PATH=C:\Program Files\CMake\bin;%PATH%
+
+build:
+  verbosity: detailed
+
+configuration:
+  - Debug
+  
+before_build:
+  - git clone https://github.com/hasherezade/libpeconv.git
+  
+build_script:
+  - mkdir build32
+  - cd build32
+  - cmake .. -G "Visual Studio 14 2015"
+  - cmake --build .
+  - cd ..
+  - mkdir build64
+  - cd build64
+  - cmake .. -G "Visual Studio 14 2015 Win64"
+  - cmake --build .
+  - cd ..
+  
