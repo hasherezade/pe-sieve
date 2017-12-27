@@ -12,4 +12,7 @@ public:
 	}
 
 	virtual t_scan_status scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size);
+
+private:
+	bool zero_unused_fields(PBYTE hdr_buffer, size_t hdrs_size);
 };
