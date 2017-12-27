@@ -1,4 +1,6 @@
 # PE-sieve
+[![Build status](https://ci.appveyor.com/api/projects/status/crlo8iyvi4bm80yp?svg=true)](https://ci.appveyor.com/project/hasherezade/pe-sieve)
+
 PE-sieve scans a given process, searching for the modules containing in-memory code modifications. When found, it dumps the modified PE.<br/>
 Detects inline hooks, hollowed processes etc.
 
