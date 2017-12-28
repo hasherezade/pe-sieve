@@ -8,6 +8,7 @@
 
 #include "hook_scanner.h"
 #include "hollowing_scanner.h"
+#include "process_privilege.h"
 
 #include "util.h"
 
@@ -37,15 +38,27 @@ HANDLE open_process(DWORD processID)
 		PROCESS_QUERY_INFORMATION |PROCESS_VM_READ,
 		FALSE, processID
 	);
-	if (hProcess == nullptr) {
-		DWORD last_err = GetLastError();
+	if (hProcess != nullptr) {
+		return hProcess;
+	}
+	DWORD last_err = GetLastError();
+	if (last_err == ERROR_ACCESS_DENIED) {
+		if (set_debug_privilege(processID)) {
+			//try again to open
+			hProcess = OpenProcess(
+				PROCESS_QUERY_INFORMATION |PROCESS_VM_READ,
+				FALSE, processID
+			);
+			if (hProcess != nullptr) {
+				return hProcess;
+			}
+		}
 		std::cerr << "[-] Could not open the process. Error: " << last_err << std::endl;
-		if (last_err == ERROR_ACCESS_DENIED) {
-			std::cerr << "-> Access denied. Try to run the scanner as Administrator." << std::endl;
-		}
-		else if (last_err == ERROR_INVALID_PARAMETER) {
-			std::cerr << "-> Is this process still running?" << std::endl;
-		}
+		std::cerr << "-> Access denied. Try to run the scanner as Administrator." << std::endl;
+		return nullptr;
+	}
+	if (last_err == ERROR_INVALID_PARAMETER) {
+		std::cerr << "-> Is this process still running?" << std::endl;
 	}
 	return hProcess;
 }
@@ -253,7 +266,7 @@ void banner(char *version)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.8.3";
+	char *version = "0.0.8.4";
 	if (argc < 2) {
 		banner(version);
 		system("pause");

@@ -12,6 +12,7 @@ include_directories ( ${PECONV_DIR}/include )
 
 set (srcs
 	main.cpp
+	process_privilege.cpp
 	hook_scanner.cpp
 	hollowing_scanner.cpp
 	scanner.cpp
@@ -19,6 +20,7 @@ set (srcs
 )
 
 set (hdrs
+	process_privilege.h
 	hook_scanner.h
 	hollowing_scanner.h
 	scanner.h
