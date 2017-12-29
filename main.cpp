@@ -14,6 +14,20 @@
 
 #include "peconv.h"
 
+#define PARAM_PID "/pid"
+#define PARAM_FILTER "/filter"
+#define PARAM_IMP_REC "/imp"
+#define PARAM_HELP "/help"
+#define PARAM_HELP2  "/?"
+#define PARAM_VERSION  "/version"
+
+typedef struct {
+	DWORD pid;
+	DWORD filter;
+	bool imp_rec;
+} t_params;
+
+
 bool make_dump_dir(const std::string directory)
 {
 	if (CreateDirectoryA(directory.c_str(), NULL) 
@@ -101,7 +115,7 @@ size_t report_patches(PatchList &patchesList, std::string reportPath)
 }
 
 
-size_t dump_all_modified(std::map<ULONGLONG, std::string> &modified_modules, peconv::ExportsMapper& exportsMap, HANDLE &processHandle)
+size_t dump_all_modified(HANDLE &processHandle, std::map<ULONGLONG, std::string> &modified_modules, peconv::ExportsMapper* exportsMap)
 {
 	size_t dumped = 0;
 	std::map<ULONGLONG, std::string>::iterator itr = modified_modules.begin();
@@ -115,7 +129,7 @@ size_t dump_all_modified(std::map<ULONGLONG, std::string> &modified_modules, pec
 			processHandle, 
 			(PBYTE) modBaseAddr, 
 			true, //unmap
-			&exportsMap
+			exportsMap
 			))
 		{
 			dumped++;
@@ -126,9 +140,9 @@ size_t dump_all_modified(std::map<ULONGLONG, std::string> &modified_modules, pec
 	return dumped;
 }
 
-size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
+size_t check_modules_in_process(const t_params args)
 {
-	HANDLE processHandle = open_process(process_id);
+	HANDLE processHandle = open_process(args.pid);
 	if (processHandle == nullptr) {
 		return 0;
 	}
@@ -137,7 +151,7 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 	IsWow64Process(processHandle, &isWow64);
 #endif
 	HMODULE hMods[1024];
-	const size_t modules_count = enum_modules(processHandle, hMods, sizeof(hMods), filters);
+	const size_t modules_count = enum_modules(processHandle, hMods, sizeof(hMods), args.filter);
 	if (modules_count == 0) {
 		return 0;
 	}
@@ -150,13 +164,16 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 	std::cerr << "---" << std::endl;
 	//check all modules in the process, including the main module:
 
-	std::string directory = make_dir_name(process_id);
+	std::string directory = make_dir_name(args.pid);
 	if (!make_dump_dir(directory)) {
 		directory = "";
 	}
 	std::map<ULONGLONG, std::string> modified_modules;
 
-	peconv::ExportsMapper exportsMap;
+	peconv::ExportsMapper* exportsMap = nullptr;
+	if (args.imp_rec) {
+		exportsMap = new peconv::ExportsMapper();
+	}
 	char szModName[MAX_PATH];
 	size_t i = 0;
 	for (; i < modules_count; i++) {
@@ -187,9 +204,9 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 			suspicious++;
 			continue;
 		}
-
-		exportsMap.add_to_lookup(szModName, (HMODULE) original_module, modBaseAddr);
-
+		if (exportsMap != nullptr) {
+			exportsMap->add_to_lookup(szModName, (HMODULE) original_module, modBaseAddr);
+		}
 		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
 		t_scan_status is_hollowed = SCAN_NOT_MODIFIED;
 
@@ -232,7 +249,11 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 		peconv::free_pe_buffer(original_module, module_size);
 	}
 
-	dump_all_modified(modified_modules, exportsMap, processHandle);
+	dump_all_modified(processHandle, modified_modules, exportsMap);
+	if (exportsMap != nullptr) {
+		delete exportsMap;
+		exportsMap = nullptr;
+	}
 
 	//summary:
 	size_t total_modified = hooked_modules + hollowed_modules + suspicious;
@@ -255,6 +276,24 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 	return total_modified;
 }
 
+void print_help()
+{
+	std::cout << "Required: \n";
+	std::cout << PARAM_PID << " <target_pid> : Sets the PID of the target process.\n";
+
+	std::cout << "\nOptional: \n";
+	std::cout << PARAM_IMP_REC << " : Enables recovering imports. Warning: it slows down the scan.\n";
+#ifdef _WIN64
+	std::cout << PARAM_FILTER << " <*module_filter>\n";
+	std::cout << "*module_filter:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
+#endif
+	std::cout << "\nInfo: \n";
+	std::cout << PARAM_HELP << "    : Prints this help.\n";
+	std::cout << PARAM_VERSION << " : Prints version number.\n";
+	std::cout << "---" << std::endl;
+}
+
+
 void banner(char *version)
 {
 	char logo[] = "\
@@ -274,39 +313,59 @@ void banner(char *version)
 #endif
 	std::cout << "~ from hasherezade with love ~\n";
 	std::cout << "Detects inline hooks and other in-memory PE modifications\n---\n";
-	std::cout << "Args: <PID> ";
-#ifdef _WIN64
-	std::cout <<"[*module_filter]";
-#endif
-	std::cout << "\n";
-	std::cout << "PID: (decimal) PID of the target application\n";
-#ifdef _WIN64
-	std::cout << "module_filter:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
-	std::cout << "* - optional\n";
-#endif
-	std::cout << "---" << std::endl;
+	print_help();
 }
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.8.5";
+	char *version = "0.0.8.6";
 	if (argc < 2) {
 		banner(version);
 		system("pause");
 		return 0;
 	}
-	DWORD pid = atoi(argv[1]);
-	std::cout << "PID: " << pid << std::endl;
+	//---
+	bool info_req = false;
+	t_params args = { 0 };
+	args.filter = LIST_MODULES_ALL;
 
-	DWORD filters = LIST_MODULES_ALL;
-	if (argc >= 3) {
-		filters = atoi(argv[2]);
-		if (filters > LIST_MODULES_ALL) {
-			filters = LIST_MODULES_ALL;
+	//Parse parameters
+	for (size_t i = 1; i < argc; i++) {
+		if (!strcmp(argv[i], PARAM_HELP) || !strcmp(argv[i], PARAM_HELP2)) {
+			print_help();
+			info_req = true;
 		}
+		else if (!strcmp(argv[i], PARAM_IMP_REC)) {
+			args.imp_rec = true;
+		}
+		else if (!strcmp(argv[i], PARAM_FILTER) && i < argc) {
+			args.filter = atoi(argv[i + 1]);
+			if (args.filter > LIST_MODULES_ALL) {
+				args.filter = LIST_MODULES_ALL;
+			}
+			i++;
+		}
+		else if (!strcmp(argv[i], PARAM_PID) && i < argc) {
+			args.pid = atoi(argv[i + 1]);
+			++i;
+		}
+		else if (!strcmp(argv[i], PARAM_VERSION)) {
+			std::cout << version << std::endl;
+			info_req = true;
+		} 
 	}
-	std::cout << "Module filter: " << filters << std::endl;
-	check_modules_in_process(pid, filters);
+	//if didn't received PID by explicit parameter, try to parse the first param of the app
+	if (args.pid == 0) {
+		if (info_req) {
+			system("pause");
+			return 0; // info requested, pid not given. finish.
+		}
+		if (argc > 2) args.pid = atoi(argv[1]);
+	}
+	//---
+	std::cout << "PID: " << args.pid << std::endl;
+	std::cout << "Module filter: " << args.filter << std::endl;
+	check_modules_in_process(args);
 
 	system("pause");
 	return 0;
