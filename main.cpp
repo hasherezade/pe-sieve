@@ -84,15 +84,6 @@ size_t enum_modules(IN HANDLE hProcess, OUT HMODULE hMods[], IN const DWORD hMod
 	return modules_count;
 }
 
-bool dump_modified_module(HANDLE processHandle, ULONGLONG modBaseAddr, std::string dumpPath)
-{
-	if (!peconv::dump_remote_pe(dumpPath.c_str(), processHandle, (PBYTE)modBaseAddr, true)) {
-		std::cerr << "Failed dumping module!" << std::endl;
-		return false;
-	}
-	return true;
-}
-
 size_t report_patches(PatchList &patchesList, std::string reportPath)
 {
 	std::ofstream patch_report;
@@ -107,6 +98,32 @@ size_t report_patches(PatchList &patchesList, std::string reportPath)
 		patch_report.close();
 	}
 	return patches;
+}
+
+
+size_t dump_all_modified(std::map<ULONGLONG, std::string> &modified_modules, peconv::ExportsMapper& exportsMap, HANDLE &processHandle)
+{
+	size_t dumped = 0;
+	std::map<ULONGLONG, std::string>::iterator itr = modified_modules.begin();
+
+	for (; itr != modified_modules.end(); itr++ ) {
+		ULONGLONG modBaseAddr = itr->first;
+		std::string dumpFileName = itr->second;
+
+		if (peconv::dump_remote_pe(
+			dumpFileName.c_str(), //output file
+			processHandle, 
+			(PBYTE) modBaseAddr, 
+			true, //unmap
+			&exportsMap
+			))
+		{
+			dumped++;
+		} else {
+			std::cerr << "Failed dumping module!" << std::endl;
+		}
+	}
+	return dumped;
 }
 
 size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
@@ -137,7 +154,9 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 	if (!make_dump_dir(directory)) {
 		directory = "";
 	}
+	std::map<ULONGLONG, std::string> modified_modules;
 
+	peconv::ExportsMapper exportsMap;
 	char szModName[MAX_PATH];
 	size_t i = 0;
 	for (; i < modules_count; i++) {
@@ -164,10 +183,12 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 		}
 		if (original_module == nullptr) {
 			std::cout << "[!] Suspicious: could not read the module file! Dumping the virtual image..." << std::endl;
-			dump_modified_module(processHandle, modBaseAddr, dumpFileName);
+			modified_modules[modBaseAddr] = dumpFileName;
 			suspicious++;
 			continue;
 		}
+
+		exportsMap.add_to_lookup(szModName, (HMODULE) original_module, modBaseAddr);
 
 		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
 		t_scan_status is_hollowed = SCAN_NOT_MODIFIED;
@@ -189,7 +210,7 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 			if (is_hollowed) {
 				std::cout << "[*] The module is replaced by a different PE!" << std::endl;
 				hollowed_modules++;
-				dump_modified_module(processHandle, modBaseAddr, dumpFileName);
+				modified_modules[modBaseAddr] = dumpFileName;
 			}
 		}
 		//if not hollowed, check for hooks:
@@ -200,7 +221,7 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 			if (is_hooked == SCAN_MODIFIED) {
 				std::cout << "[*] The module is hooked!" << std::endl;
 				hooked_modules++;
-				dump_modified_module(processHandle, modBaseAddr, dumpFileName);
+				modified_modules[modBaseAddr] = dumpFileName;
 				report_patches(patchesList, dumpFileName + ".tag");
 			}
 		}
@@ -210,6 +231,8 @@ size_t check_modules_in_process(const DWORD process_id, const DWORD filters)
 		}
 		peconv::free_pe_buffer(original_module, module_size);
 	}
+
+	dump_all_modified(modified_modules, exportsMap, processHandle);
 
 	//summary:
 	size_t total_modified = hooked_modules + hollowed_modules + suspicious;
