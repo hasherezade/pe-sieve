@@ -21,7 +21,7 @@ configuration:
   - Debug
   
 before_build:
-  - git clone https://github.com/hasherezade/libpeconv.git
+  - git submodule update --init
   
 build_script:
   - mkdir build32
