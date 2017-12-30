@@ -371,6 +371,10 @@ int main(int argc, char *argv[])
 			return 0; // info requested, pid not given. finish.
 		}
 		if (argc >= 2) args.pid = atoi(argv[1]);
+		if (args.pid == 0) {
+			print_help();
+			return 0;
+		}
 	}
 	//---
 	std::cout << "PID: " << args.pid << std::endl;
