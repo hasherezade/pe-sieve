@@ -330,7 +330,7 @@ int main(int argc, char *argv[])
 	args.filter = LIST_MODULES_ALL;
 
 	//Parse parameters
-	for (size_t i = 1; i < argc; i++) {
+	for (int i = 1; i < argc; i++) {
 		if (!strcmp(argv[i], PARAM_HELP) || !strcmp(argv[i], PARAM_HELP2)) {
 			print_help();
 			info_req = true;
