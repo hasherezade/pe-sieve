@@ -17,6 +17,7 @@
 #define PARAM_PID "/pid"
 #define PARAM_FILTER "/filter"
 #define PARAM_IMP_REC "/imp"
+#define PARAM_DUMP  "/dump"
 #define PARAM_HELP "/help"
 #define PARAM_HELP2  "/?"
 #define PARAM_VERSION  "/version"
@@ -25,6 +26,7 @@ typedef struct {
 	DWORD pid;
 	DWORD filter;
 	bool imp_rec;
+	bool dump;
 } t_params;
 
 
@@ -248,8 +250,9 @@ size_t check_modules_in_process(const t_params args)
 		}
 		peconv::free_pe_buffer(original_module, module_size);
 	}
-
-	dump_all_modified(processHandle, modified_modules, exportsMap);
+	if (args.dump) {
+		dump_all_modified(processHandle, modified_modules, exportsMap);
+	}
 	if (exportsMap != nullptr) {
 		delete exportsMap;
 		exportsMap = nullptr;
@@ -288,6 +291,7 @@ void print_help()
 	std::cout << "*module_filter:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
 #endif
 	std::cout << "\nInfo: \n";
+	std::cout << PARAM_DUMP << "    : Dumps the detected PE.\n";
 	std::cout << PARAM_HELP << "    : Prints this help.\n";
 	std::cout << PARAM_VERSION << " : Prints version number.\n";
 	std::cout << "---" << std::endl;
@@ -338,6 +342,9 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], PARAM_IMP_REC)) {
 			args.imp_rec = true;
 		}
+		else if (!strcmp(argv[i], PARAM_DUMP)) {
+			args.dump = true;
+		} 
 		else if (!strcmp(argv[i], PARAM_FILTER) && i < argc) {
 			args.filter = atoi(argv[i + 1]);
 			if (args.filter > LIST_MODULES_ALL) {
