@@ -318,7 +318,7 @@ void banner(char *version)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.8.6";
+	char *version = "0.0.8.7";
 	if (argc < 2) {
 		banner(version);
 		system("pause");

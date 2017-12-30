@@ -90,24 +90,17 @@ size_t HookScanner::collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_cod
 	return this->patchesList.size();
 }
 
-t_scan_status HookScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_module, size_t module_size)
+t_scan_status HookScanner::scanSection(PBYTE modBaseAddr, PBYTE original_module, size_t module_size, size_t section_number)
 {
 	//get the code section from the module:
 	size_t read_size = 0;
-	BYTE *loaded_code = peconv::get_remote_pe_section(processHandle, modBaseAddr, 0, read_size);
+	BYTE *loaded_code = peconv::get_remote_pe_section(processHandle, modBaseAddr, section_number, read_size);
 	if (loaded_code == NULL) return SCAN_ERROR;
 
-	ULONGLONG original_base = peconv::get_image_base(original_module);
-	ULONGLONG new_base = (ULONGLONG) modBaseAddr;
-	if (peconv::has_relocations(original_module) 
-		&& !peconv::relocate_module(original_module, module_size, new_base, original_base))
-	{
-		std::cerr << "[!] Relocating module failed!" << std::endl;
-	}
-
-	PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(original_module, module_size, 0);
+	PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(original_module, module_size, section_number);
 	BYTE *orig_code = original_module + section_hdr->VirtualAddress;
-		
+	
+	//TODO: this should be done on the section's copy...
 	clearIAT(section_hdr, original_module, loaded_code);
 		
 	size_t smaller_size = section_hdr->SizeOfRawData > read_size ? read_size : section_hdr->SizeOfRawData;
@@ -128,9 +121,35 @@ t_scan_status HookScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_module, 
 	}
 	peconv::free_remote_pe_section(loaded_code);
 	loaded_code = NULL;
-
 	if (res != 0) {
 		return SCAN_MODIFIED; // modified
 	}
 	return SCAN_NOT_MODIFIED; //not modified
+}
+
+t_scan_status HookScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_module, size_t module_size)
+{
+	ULONGLONG original_base = peconv::get_image_base(original_module);
+	ULONGLONG new_base = (ULONGLONG) modBaseAddr;
+	if (peconv::has_relocations(original_module) 
+		&& !peconv::relocate_module(original_module, module_size, new_base, original_base))
+	{
+		std::cerr << "[!] Relocating module failed!" << std::endl;
+	}
+
+	t_scan_status last_res = SCAN_NOT_MODIFIED;
+	size_t errors = 0;
+	size_t modified = 0;
+	size_t sec_count = peconv::get_sections_count(original_module, module_size);
+	for (size_t i = 0; i < sec_count ; i++) {
+		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(original_module, module_size, i);
+		if (section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE) {
+			last_res = scanSection(modBaseAddr, original_module, module_size, i);
+			if (last_res == SCAN_ERROR) errors++;
+			else if (last_res == SCAN_MODIFIED) modified++;
+		}
+	}
+	if (modified > 0) return SCAN_MODIFIED; //the highest priority for modified
+	if (errors > 0) return SCAN_ERROR;
+	return last_res; // last result
 }

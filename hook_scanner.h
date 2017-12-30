@@ -69,7 +69,8 @@ public:
 	virtual t_scan_status scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size);
 
 private:
-	
+	t_scan_status scanSection(PBYTE modBaseAddr, PBYTE original_module, size_t module_size, size_t section_number);
+
 	bool clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_module, PBYTE loaded_code);
 
 	const char delimiter;
