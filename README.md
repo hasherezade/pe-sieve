@@ -9,10 +9,9 @@ https://github.com/hasherezade/libpeconv.git
 
 Clone:
 -
+Use recursive clone to get the repo together with the submodule:
 <pre>
-git clone https://github.com/hasherezade/pe-sieve.git
-cd pe-sieve
-git clone https://github.com/hasherezade/libpeconv.git
+git clone --recursive https://github.com/hasherezade/pe-sieve.git
 </pre>
 
 Compiled versions:
