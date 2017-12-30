@@ -17,7 +17,7 @@
 #define PARAM_PID "/pid"
 #define PARAM_FILTER "/filter"
 #define PARAM_IMP_REC "/imp"
-#define PARAM_DUMP  "/dump"
+#define PARAM_NO_DUMP  "/nodump"
 #define PARAM_HELP "/help"
 #define PARAM_HELP2  "/?"
 #define PARAM_VERSION  "/version"
@@ -26,7 +26,7 @@ typedef struct {
 	DWORD pid;
 	DWORD filter;
 	bool imp_rec;
-	bool dump;
+	bool no_dump;
 } t_params;
 
 
@@ -250,7 +250,7 @@ size_t check_modules_in_process(const t_params args)
 		}
 		peconv::free_pe_buffer(original_module, module_size);
 	}
-	if (args.dump) {
+	if (!args.no_dump) {
 		dump_all_modified(processHandle, modified_modules, exportsMap);
 	}
 	if (exportsMap != nullptr) {
@@ -290,8 +290,9 @@ void print_help()
 	std::cout << PARAM_FILTER << " <*module_filter>\n";
 	std::cout << "*module_filter:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
 #endif
+	std::cout << PARAM_NO_DUMP << "    : Do not dump the modified PEs.\n";
+
 	std::cout << "\nInfo: \n";
-	std::cout << PARAM_DUMP << "    : Dumps the detected PE.\n";
 	std::cout << PARAM_HELP << "    : Prints this help.\n";
 	std::cout << PARAM_VERSION << " : Prints version number.\n";
 	std::cout << "---" << std::endl;
@@ -322,7 +323,7 @@ void banner(char *version)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.8.7";
+	char *version = "0.0.8.8";
 	if (argc < 2) {
 		banner(version);
 		system("pause");
@@ -342,8 +343,8 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], PARAM_IMP_REC)) {
 			args.imp_rec = true;
 		}
-		else if (!strcmp(argv[i], PARAM_DUMP)) {
-			args.dump = true;
+		else if (!strcmp(argv[i], PARAM_NO_DUMP)) {
+			args.no_dump = true;
 		} 
 		else if (!strcmp(argv[i], PARAM_FILTER) && i < argc) {
 			args.filter = atoi(argv[i + 1]);
@@ -373,7 +374,5 @@ int main(int argc, char *argv[])
 	std::cout << "PID: " << args.pid << std::endl;
 	std::cout << "Module filter: " << args.filter << std::endl;
 	check_modules_in_process(args);
-
 	return 0;
 }
-
