@@ -204,9 +204,6 @@ size_t check_modules_in_process(const t_params args)
 			suspicious++;
 			continue;
 		}
-		if (exportsMap != nullptr) {
-			exportsMap->add_to_lookup(szModName, (HMODULE) original_module, modBaseAddr);
-		}
 		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
 		t_scan_status is_hollowed = SCAN_NOT_MODIFIED;
 
@@ -229,6 +226,9 @@ size_t check_modules_in_process(const t_params args)
 				hollowed_modules++;
 				modified_modules[modBaseAddr] = dumpFileName;
 			}
+		}
+		if (exportsMap != nullptr) {
+			exportsMap->add_to_lookup(szModName, (HMODULE) original_module, modBaseAddr);
 		}
 		//if not hollowed, check for hooks:
 		if (is_hollowed == SCAN_NOT_MODIFIED) {
