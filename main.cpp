@@ -282,19 +282,20 @@ size_t check_modules_in_process(const t_params args)
 void print_help()
 {
 	std::cout << "Required: \n";
-	std::cout << PARAM_PID << " <target_pid> : Sets the PID of the target process.\n";
+	std::cout << PARAM_PID << " <target_pid>\n\t: Set the PID of the target process.\n";
 
 	std::cout << "\nOptional: \n";
-	std::cout << PARAM_IMP_REC << " : Enables recovering imports. Warning: it slows down the scan.\n";
+	std::cout << PARAM_IMP_REC << "\t: Enable recovering imports. ";
+	std::cout << "(Warning: it may slow down the scan)\n";
 #ifdef _WIN64
-	std::cout << PARAM_FILTER << " <*module_filter>\n";
-	std::cout << "*module_filter:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
+	std::cout << PARAM_FILTER << " <*filter_id>\n\t: Filter the scanned modules.\n";
+	std::cout << "*filter_id:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
 #endif
-	std::cout << PARAM_NO_DUMP << "    : Do not dump the modified PEs.\n";
+	std::cout << PARAM_NO_DUMP << "\t: Do not dump the modified PEs.\n";
 
 	std::cout << "\nInfo: \n";
-	std::cout << PARAM_HELP << "    : Prints this help.\n";
-	std::cout << PARAM_VERSION << " : Prints version number.\n";
+	std::cout << PARAM_HELP << "    : Print this help.\n";
+	std::cout << PARAM_VERSION << " : Print version number.\n";
 	std::cout << "---" << std::endl;
 }
 
