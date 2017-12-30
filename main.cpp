@@ -367,7 +367,6 @@ int main(int argc, char *argv[])
 	std::cout << "Module filter: " << args.filter << std::endl;
 	check_modules_in_process(args);
 
-	system("pause");
 	return 0;
 }
 
