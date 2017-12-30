@@ -279,38 +279,57 @@ size_t check_modules_in_process(const t_params args)
 	return total_modified;
 }
 
+void print_in_color(int color, std::string text)
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	FlushConsoleInputBuffer(hConsole);
+	SetConsoleTextAttribute(hConsole, color); // back to default color
+	std::cout << text;
+	FlushConsoleInputBuffer(hConsole);
+	SetConsoleTextAttribute(hConsole, 7); // back to default color
+}
+
 void print_help()
 {
-	std::cout << "Required: \n";
-	std::cout << PARAM_PID << " <target_pid>\n\t: Set the PID of the target process.\n";
+	const int hdr_color = 14;
+	const int param_color = 15;
+	print_in_color(hdr_color, "Required: \n");
+	print_in_color(param_color, PARAM_PID);
+	std::cout << " <target_pid>\n\t: Set the PID of the target process.\n";
 
-	std::cout << "\nOptional: \n";
-	std::cout << PARAM_IMP_REC << "\t: Enable recovering imports. ";
+	print_in_color(hdr_color, "\nOptional: \n");
+	print_in_color(param_color, PARAM_IMP_REC);
+	std::cout << "\t: Enable recovering imports. ";
 	std::cout << "(Warning: it may slow down the scan)\n";
 #ifdef _WIN64
-	std::cout << PARAM_FILTER << " <*filter_id>\n\t: Filter the scanned modules.\n";
+	print_in_color(param_color, PARAM_FILTER);
+	std::cout << " <*filter_id>\n\t: Filter the scanned modules.\n";
 	std::cout << "*filter_id:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
 #endif
-	std::cout << PARAM_NO_DUMP << "\t: Do not dump the modified PEs.\n";
+	print_in_color(param_color, PARAM_NO_DUMP);
+	std::cout << "\t: Do not dump the modified PEs.\n";
 
-	std::cout << "\nInfo: \n";
-	std::cout << PARAM_HELP << "    : Print this help.\n";
-	std::cout << PARAM_VERSION << " : Print version number.\n";
+	print_in_color(hdr_color, "\nInfo: \n");
+	print_in_color(param_color, PARAM_HELP);
+	std::cout << "    : Print this help.\n";
+	print_in_color(param_color, PARAM_VERSION);
+	std::cout << " : Print version number.\n";
 	std::cout << "---" << std::endl;
 }
 
-
 void banner(char *version)
 {
+	const int logo_color = 25;
 	char logo[] = "\
 .______    _______           _______. __   ___________    ____  _______ \n\
 |   _  \\  |   ____|         /       ||  | |   ____\\   \\  /   / |   ____|\n\
 |  |_)  | |  |__    ______ |   (----`|  | |  |__   \\   \\/   /  |  |__   \n\
 |   ___/  |   __|  |______| \\   \\    |  | |   __|   \\      /   |   __|  \n\
 |  |      |  |____      .----)   |   |  | |  |____   \\    /    |  |____ \n\
-| _|      |_______|     |_______/    |__| |_______|   \\__/     |_______|\n\n";
+| _|      |_______|     |_______/    |__| |_______|   \\__/     |_______|\n\
+  _        _______       _______      __   _______     __       _______ \n";
 
-	std::cout << logo;
+	print_in_color(logo_color, logo);
 	std::cout << "version: " << version;
 #ifdef _WIN64
 	std::cout << " (x64)" << "\n\n";
