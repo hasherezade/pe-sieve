@@ -360,7 +360,7 @@ int main(int argc, char *argv[])
 			system("pause");
 			return 0; // info requested, pid not given. finish.
 		}
-		if (argc > 2) args.pid = atoi(argv[1]);
+		if (argc >= 2) args.pid = atoi(argv[1]);
 	}
 	//---
 	std::cout << "PID: " << args.pid << std::endl;
