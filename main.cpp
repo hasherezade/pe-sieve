@@ -365,7 +365,9 @@ int main(int argc, char *argv[])
 	//if didn't received PID by explicit parameter, try to parse the first param of the app
 	if (args.pid == 0) {
 		if (info_req) {
+#ifdef _DEBUG
 			system("pause");
+#endif
 			return 0; // info requested, pid not given. finish.
 		}
 		if (argc >= 2) args.pid = atoi(argv[1]);
@@ -374,5 +376,9 @@ int main(int argc, char *argv[])
 	std::cout << "PID: " << args.pid << std::endl;
 	std::cout << "Module filter: " << args.filter << std::endl;
 	check_modules_in_process(args);
+#ifdef _DEBUG
+	system("pause");
+#endif
 	return 0;
 }
+
