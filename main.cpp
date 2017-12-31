@@ -21,12 +21,14 @@
 #define PARAM_HELP "/help"
 #define PARAM_HELP2  "/?"
 #define PARAM_VERSION  "/version"
+#define PARAM_QUIET "/quiet"
 
 typedef struct {
 	DWORD pid;
 	DWORD filter;
 	bool imp_rec;
 	bool no_dump;
+	bool quiet;
 } t_params;
 
 
@@ -189,8 +191,9 @@ size_t check_modules_in_process(const t_params args)
 			const char unnamed[] = "unnamed";
 			memcpy(szModName, unnamed, sizeof(unnamed));
 		}
-		std::cout << "[*] Scanning: " << szModName << std::endl;
-
+		if (!args.quiet) {
+			std::cout << "[*] Scanning: " << szModName << std::endl;
+		}
 		ULONGLONG modBaseAddr = (ULONGLONG)hMods[i];
 		std::string dumpFileName = make_dump_path(modBaseAddr, szModName, directory);
 
@@ -224,7 +227,9 @@ size_t check_modules_in_process(const t_params args)
 			}
 			is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 			if (is_hollowed) {
-				std::cout << "[*] The module is replaced by a different PE!" << std::endl;
+				if (!args.quiet) {
+					std::cout << "[*] The module is replaced by a different PE!" << std::endl;
+				}
 				hollowed_modules++;
 				modified_modules[modBaseAddr] = dumpFileName;
 			}
@@ -238,7 +243,9 @@ size_t check_modules_in_process(const t_params args)
 			HookScanner hooks(processHandle, patchesList);
 			t_scan_status is_hooked = hooks.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 			if (is_hooked == SCAN_MODIFIED) {
-				std::cout << "[*] The module is hooked!" << std::endl;
+				if (!args.quiet) {
+					std::cout << "[*] The module is hooked!" << std::endl;
+				}
 				hooked_modules++;
 				modified_modules[modBaseAddr] = dumpFileName;
 				report_patches(patchesList, dumpFileName + ".tag");
@@ -308,6 +315,8 @@ void print_help()
 #endif
 	print_in_color(param_color, PARAM_NO_DUMP);
 	std::cout << "\t: Do not dump the modified PEs.\n";
+	print_in_color(param_color, PARAM_QUIET);
+	std::cout << "\t: Do not print the info during processing modules.\n";
 
 	print_in_color(hdr_color, "\nInfo: \n");
 	print_in_color(param_color, PARAM_HELP);
@@ -343,7 +352,7 @@ void banner(char *version)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.8.8";
+	char *version = "0.0.8.9";
 	if (argc < 2) {
 		banner(version);
 		system("pause");
@@ -380,7 +389,11 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], PARAM_VERSION)) {
 			std::cout << version << std::endl;
 			info_req = true;
-		} 
+		}
+		else if (!strcmp(argv[i], PARAM_QUIET)) {
+			std::cout << version << std::endl;
+			args.quiet = true;
+		}
 	}
 	//if didn't received PID by explicit parameter, try to parse the first param of the app
 	if (args.pid == 0) {
