@@ -167,10 +167,12 @@ size_t check_modules_in_process(const t_params args)
 
 	std::cerr << "---" << std::endl;
 	//check all modules in the process, including the main module:
-
+	
 	std::string directory = make_dir_name(args.pid);
-	if (!make_dump_dir(directory)) {
-		directory = "";
+	if (!args.quiet) {
+		if (!make_dump_dir(directory)) {
+			directory = "";
+		}
 	}
 	std::map<ULONGLONG, std::string> modified_modules;
 
@@ -248,7 +250,9 @@ size_t check_modules_in_process(const t_params args)
 				}
 				hooked_modules++;
 				modified_modules[modBaseAddr] = dumpFileName;
-				report_patches(patchesList, dumpFileName + ".tag");
+				if (!args.quiet) {
+					report_patches(patchesList, dumpFileName + ".tag");
+				}
 			}
 		}
 		if (is_hollowed == SCAN_ERROR || is_hooked == SCAN_ERROR) {
@@ -257,7 +261,7 @@ size_t check_modules_in_process(const t_params args)
 		}
 		peconv::free_pe_buffer(original_module, module_size);
 	}
-	if (!args.no_dump) {
+	if (!args.no_dump && !args.quiet) {
 		dump_all_modified(processHandle, modified_modules, exportsMap);
 	}
 	if (exportsMap != nullptr) {
@@ -279,7 +283,7 @@ size_t check_modules_in_process(const t_params args)
 	if (error_modules) {
 		std::cerr << "[!] Reading errors: " << error_modules << std::endl;
 	}
-	if (total_modified > 0) {
+	if (!args.quiet && total_modified > 0) {
 		std::cout << "\nDumps saved to the directory: " << directory << std::endl;
 	}
 	std::cout << "---" << std::endl;
@@ -316,7 +320,7 @@ void print_help()
 	print_in_color(param_color, PARAM_NO_DUMP);
 	std::cout << "\t: Do not dump the modified PEs.\n";
 	print_in_color(param_color, PARAM_QUIET);
-	std::cout << "\t: Do not print the info during processing modules.\n";
+	std::cout << "\t: Print only the summary. Do not create a directory with outputs.\n";
 
 	print_in_color(hdr_color, "\nInfo: \n");
 	print_in_color(param_color, PARAM_HELP);
