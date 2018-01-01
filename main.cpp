@@ -273,15 +273,15 @@ size_t check_modules_in_process(const t_params args)
 	size_t total_modified = hooked_modules + hollowed_modules + suspicious;
 	std::cout << "---" << std::endl;
 	std::cout << "SUMMARY: \n" << std::endl;
-	std::cout << "Total scanned:    " << i << std::endl;
+	std::cout << "Total scanned:    " << std::dec << i << std::endl;
 	std::cout << "-\n";
-	std::cout << "Hooked:           " << hooked_modules << std::endl;
-	std::cout << "Replaced:         " << hollowed_modules << std::endl;
-	std::cout << "Other suspicious: " << suspicious << std::endl;
+	std::cout << "Hooked:           " << std::dec <<hooked_modules << std::endl;
+	std::cout << "Replaced:         " << std::dec << hollowed_modules << std::endl;
+	std::cout << "Other suspicious: " << std::dec << suspicious << std::endl;
 	std::cout << "-\n";
-	std::cout << "Total modified:   " << total_modified << std::endl;
+	std::cout << "Total modified:   " << std::dec << total_modified << std::endl;
 	if (error_modules) {
-		std::cerr << "[!] Reading errors: " << error_modules << std::endl;
+		std::cerr << "[!] Reading errors: " << std::dec << error_modules << std::endl;
 	}
 	if (!args.quiet && total_modified > 0) {
 		std::cout << "\nDumps saved to the directory: " << directory << std::endl;
