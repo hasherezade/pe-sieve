@@ -36,6 +36,7 @@ bool HollowingScanner::zero_unused_fields(PBYTE hdr_buffer, size_t hdrs_size)
 
 	for (size_t i = 0; i < section_num; i++) {
 		PIMAGE_SECTION_HEADER sec_hdr = peconv::get_section_hdr(hdr_buffer, hdrs_size, i);
+		if (sec_hdr == nullptr) continue;
 		if (sec_hdr->SizeOfRawData == 0) {
 			sec_hdr->PointerToRawData = 0;
 			is_modified = true;
