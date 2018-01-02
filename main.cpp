@@ -118,7 +118,6 @@ size_t report_patches(PatchList &patchesList, std::string reportPath)
 	return patches;
 }
 
-
 size_t dump_all_modified(HANDLE &processHandle, std::map<ULONGLONG, std::string> &modified_modules, peconv::ExportsMapper* exportsMap)
 {
 	size_t dumped = 0;
@@ -356,7 +355,7 @@ void banner(char *version)
 
 int main(int argc, char *argv[])
 {
-	char *version = "0.0.8.9";
+	char *version = "0.0.9";
 	if (argc < 2) {
 		banner(version);
 		system("pause");
