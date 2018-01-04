@@ -12,8 +12,6 @@
 t_report __stdcall PESieve_scan(t_params args)
 {
 	const t_report report = check_modules_in_process(args);
-	std::string report_str = report_to_string(report);
-	std::cout << report_str;
 	return report;
 }
 
