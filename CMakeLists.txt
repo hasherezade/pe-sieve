@@ -22,6 +22,7 @@ set (srcs
 	hollowing_scanner.cpp
 	scanner.cpp
 	util.cpp
+	report_formatter.cpp
 )
 
 set (hdrs
@@ -31,6 +32,7 @@ set (hdrs
 	hollowing_scanner.h
 	scanner.h
 	util.h
+	report_formatter.cpp
 	include/pe_sieve_types.h
 )
 
