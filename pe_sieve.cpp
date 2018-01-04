@@ -263,6 +263,21 @@ t_report check_modules_in_process(const t_params args)
 	return report;
 }
 
+std::string info()
+{
+	std::stringstream stream;
+	stream << "version: " << VERSION;
+#ifdef _WIN64
+	stream << " (x64)" << "\n\n";
+#else
+	stream << " (x86)" << "\n\n";
+#endif
+	stream << "~ from hasherezade with love ~\n";
+	stream << "Detects inline hooks and other in-memory PE modifications\n---\n";
+	stream << "URL: " << URL << "\n";
+	return stream.str();
+}
+
 std::string report_to_string(const t_report report)
 {
 	std::stringstream stream;
@@ -283,5 +298,4 @@ std::string report_to_string(const t_report report)
 	}
 	return stream.str();
 }
-
 

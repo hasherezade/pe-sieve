@@ -77,14 +77,7 @@ void banner()
   _        _______       _______      __   _______     __       _______ \n";
 
 	print_in_color(logo_color, logo);
-	std::cout << "version: " << VERSION;
-#ifdef _WIN64
-	std::cout << " (x64)" << "\n\n";
-#else
-	std::cout << " (x86)" << "\n\n";
-#endif
-	std::cout << "~ from hasherezade with love ~\n";
-	std::cout << "Detects inline hooks and other in-memory PE modifications\n---\n";
+	std::cout << info();
 	print_help();
 }
 
