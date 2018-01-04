@@ -23,3 +23,24 @@ std::string report_to_string(const t_report report)
 	return stream.str();
 }
 
+std::string report_to_json(const t_report report)
+{
+	std::stringstream stream;
+	//summary:
+	size_t total_modified = report.hooked + report.replaced + report.suspicious;
+	stream << "{\n";
+	stream << "\"pid\" : " << std::dec << report.pid << ",\n";
+	stream << "\"summary\" : " << " {\n";
+	stream << "\"scanned\" : " << std::dec << report.scanned << ",\n";
+	stream << "\"modified\" : " << std::dec << total_modified << ",\n";
+	stream << "\"hooked\" : " << std::dec << report.hooked << ",\n";
+	stream << "\"replaced\" : "  << std::dec << report.replaced << ",\n";
+	stream << "\"suspicious\" : "  << std::dec << report.suspicious << "\n";
+	if (report.errors) {
+		stream << ", ";
+		stream << "\"errors\" : "<< std::dec << report.errors << "\n";
+	}
+	stream << "}\n";// summary
+	stream << "}\n";
+	return stream.str();
+}
