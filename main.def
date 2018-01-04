@@ -1,3 +1,3 @@
 LIBRARY PE-sieve
-EXPORTS pesieve_help
-EXPORTS pesieve_scan
+EXPORTS PESieve_help
+EXPORTS PESieve_scan
