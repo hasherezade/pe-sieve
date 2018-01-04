@@ -23,6 +23,7 @@
 #define PARAM_HELP2  "/?"
 #define PARAM_VERSION  "/version"
 #define PARAM_QUIET "/quiet"
+#define PARAM_JSON "/json"
 
 void print_in_color(int color, std::string text)
 {
@@ -55,6 +56,8 @@ void print_help()
 	std::cout << "\t: Do not dump the modified PEs.\n";
 	print_in_color(param_color, PARAM_QUIET);
 	std::cout << "\t: Print only the summary. Do not create a directory with outputs.\n";
+	print_in_color(param_color, PARAM_JSON);
+	std::cout << "\t: Print the report formated as JSON.\n";
 
 	print_in_color(hdr_color, "\nInfo: \n");
 	print_in_color(param_color, PARAM_HELP);
@@ -83,7 +86,13 @@ void banner()
 
 void print_report(const t_report report, const t_params args)
 {
-	std::string report_str = report_to_string(report);
+	std::string report_str;
+	if (args.json_output) {
+		report_str = report_to_json(report);
+		
+	} else {
+		report_str = report_to_string(report);
+	}
 	//summary:
 	std::cout << report_str;
 	size_t total_modified = report.hooked + report.replaced + report.suspicious;
@@ -134,8 +143,10 @@ int main(int argc, char *argv[])
 			info_req = true;
 		}
 		else if (!strcmp(argv[i], PARAM_QUIET)) {
-			std::cout << VERSION << std::endl;
 			args.quiet = true;
+		}
+		else if (!strcmp(argv[i], PARAM_JSON)) {
+			args.json_output = true;
 		}
 	}
 	//if didn't received PID by explicit parameter, try to parse the first param of the app

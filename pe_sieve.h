@@ -6,7 +6,7 @@
 #include "pe_sieve_types.h"
 #include "report_formatter.h"
 
-static char VERSION[] = "0.0.9.3";
+static char VERSION[] = "0.0.9.4";
 static char URL[] = "https://github.com/hasherezade/pe-sieve";
 
 std::string info();

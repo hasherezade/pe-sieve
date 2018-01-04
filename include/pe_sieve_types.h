@@ -10,6 +10,7 @@ typedef struct {
 	bool imp_rec;
 	bool no_dump;
 	bool quiet;
+	bool json_output;
 } t_params;
 
 typedef struct {
