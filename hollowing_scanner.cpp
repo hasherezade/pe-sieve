@@ -19,6 +19,16 @@ t_scan_status HollowingScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_mod
 	peconv::update_image_base(hdr_buffer1, 0);
 	peconv::update_image_base(hdr_buffer2, 0);
 
+	// some .NET modules overwrite their own EP!
+	DWORD ep1 = peconv::get_entry_point_rva(hdr_buffer1);
+	DWORD ep2 = peconv::get_entry_point_rva(hdr_buffer2);
+	peconv::update_entry_point_rva(hdr_buffer1, 0);
+	peconv::update_entry_point_rva(hdr_buffer2, 0);
+	if (ep1 != ep2) {
+		//TODO: report about this anomaly in a better way
+		std::cout << "[WARNING] Entry Point overwritten!" << std::endl;
+	}
+
 	zero_unused_fields(hdr_buffer1, hdrs_size);
 	zero_unused_fields(hdr_buffer2, hdrs_size);
 
