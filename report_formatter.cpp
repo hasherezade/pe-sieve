@@ -32,10 +32,12 @@ std::string report_to_json(const t_report report)
 	stream << "\"pid\" : " << std::dec << report.pid << ",\n";
 	stream << "\"summary\" : " << " {\n";
 	stream << "\"scanned\" : " << std::dec << report.scanned << ",\n";
-	stream << "\"modified\" : " << std::dec << total_modified << ",\n";
+	stream << "\"modified\" : " << " {\n";
+	stream << "\"total\" : " << std::dec << total_modified << ",\n";
 	stream << "\"hooked\" : " << std::dec << report.hooked << ",\n";
 	stream << "\"replaced\" : "  << std::dec << report.replaced << ",\n";
 	stream << "\"suspicious\" : "  << std::dec << report.suspicious << "\n";
+	stream << "}\n";// modified
 	if (report.errors) {
 		stream << ", ";
 		stream << "\"errors\" : "<< std::dec << report.errors << "\n";
