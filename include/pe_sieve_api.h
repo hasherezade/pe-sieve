@@ -10,6 +10,6 @@
 #endif
 
 extern "C" {
-	void PESIEVE_API __stdcall help(void);
-	t_report PESIEVE_API __stdcall scan(t_params args);
+	void PESIEVE_API __stdcall pesieve_help(void);
+	t_report PESIEVE_API __stdcall pesieve_scan(t_params args);
 };

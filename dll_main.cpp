@@ -7,7 +7,7 @@
 
 #define LIB_NAME "PE-sieve"
 
-t_report __stdcall scan(t_params args)
+t_report __stdcall pesieve_scan(t_params args)
 {
 	const t_report report = check_modules_in_process(args);
 	std::string report_str = report_to_string(report);
@@ -15,7 +15,7 @@ t_report __stdcall scan(t_params args)
 	return report;
 }
 
-void __stdcall help(void)
+void __stdcall pesieve_help(void)
 {
 	std::string my_info = info();
 
