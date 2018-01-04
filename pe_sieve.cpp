@@ -63,7 +63,7 @@ HANDLE open_process(DWORD processID)
 				return hProcess;
 			}
 		}
-		std::cerr << "[-] Could not open the process. Error: " << last_err << std::endl;
+		std::cerr << "[-][" << processID << "] Could not open the process Error: " << last_err << std::endl;
 		std::cerr << "-> Access denied. Try to run the scanner as Administrator." << std::endl;
 		return nullptr;
 	}
@@ -156,7 +156,6 @@ t_report check_modules_in_process(const t_params args)
 		return report;
 	}
 
-	std::cerr << "---" << std::endl;
 	//check all modules in the process, including the main module:
 	
 	std::string directory = make_dir_name(args.pid);
@@ -180,13 +179,13 @@ t_report check_modules_in_process(const t_params args)
 		bool is_module_named = true;
 
 		if (!GetModuleFileNameExA(processHandle, hMods[report.scanned], szModName, MAX_PATH)) {
-			std::cerr << "Cannot fetch module name" << std::endl;
+			std::cerr << "[!][" << args.pid <<  "] Cannot fetch module name" << std::endl;
 			is_module_named = false;
 			const char unnamed[] = "unnamed";
 			memcpy(szModName, unnamed, sizeof(unnamed));
 		}
 		if (!args.quiet) {
-			std::cout << "[*] Scanning: " << szModName << std::endl;
+			std::cout << "[*][" << args.pid <<  "] Scanning: " << szModName << std::endl;
 		}
 		ULONGLONG modBaseAddr = (ULONGLONG)hMods[i];
 		std::string dumpFileName = make_dump_path(modBaseAddr, szModName, directory);
@@ -198,7 +197,7 @@ t_report check_modules_in_process(const t_params args)
 			original_module = peconv::load_pe_module(szModName, module_size, false, false);
 		}
 		if (original_module == nullptr) {
-			std::cout << "[!] Suspicious: could not read the module file! Dumping the virtual image..." << std::endl;
+			std::cout << "[!][" << args.pid <<  "] Suspicious: could not read the module file!" << std::endl;
 			modified_modules[modBaseAddr] = dumpFileName;
 			report.suspicious++;
 			continue;
@@ -222,7 +221,7 @@ t_report check_modules_in_process(const t_params args)
 			is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 			if (is_hollowed) {
 				if (!args.quiet) {
-					std::cout << "[*] The module is replaced by a different PE!" << std::endl;
+					std::cout << "[*][" << args.pid <<  "] The module is replaced by a different PE!" << std::endl;
 				}
 				report.replaced++;
 				modified_modules[modBaseAddr] = dumpFileName;
@@ -238,7 +237,7 @@ t_report check_modules_in_process(const t_params args)
 			t_scan_status is_hooked = hooks.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 			if (is_hooked == SCAN_MODIFIED) {
 				if (!args.quiet) {
-					std::cout << "[*] The module is hooked!" << std::endl;
+					std::cout << "[*][" << args.pid <<  "] The module is hooked!" << std::endl;
 				}
 				report.hooked++;
 				modified_modules[modBaseAddr] = dumpFileName;
@@ -248,7 +247,7 @@ t_report check_modules_in_process(const t_params args)
 			}
 		}
 		if (is_hollowed == SCAN_ERROR || is_hooked == SCAN_ERROR) {
-			std::cerr << "[-] ERROR while checking the module: " << szModName << std::endl;
+			std::cerr << "[-][" << args.pid <<  "] ERROR while checking the module: " << szModName << std::endl;
 			report.errors++;
 		}
 		peconv::free_pe_buffer(original_module, module_size);
