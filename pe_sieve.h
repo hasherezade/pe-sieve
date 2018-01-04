@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <iostream>
 
-#include "pe_sieve_api.h"
+#include "pe_sieve_types.h"
 
 static char VERSION[] = "0.0.9.1";
 static char URL[] = "https://github.com/hasherezade/pe-sieve";
