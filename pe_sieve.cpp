@@ -219,7 +219,7 @@ t_report check_modules_in_process(const t_params args)
 				original_module = peconv::load_pe_module(szModName, module_size, false, false);
 			}
 			is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
-			if (is_hollowed) {
+			if (is_hollowed == SCAN_MODIFIED) {
 				if (!args.quiet) {
 					std::cout << "[*][" << args.pid <<  "] The module is replaced by a different PE!" << std::endl;
 				}
