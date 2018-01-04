@@ -3,7 +3,9 @@
 #include <iostream>
 
 #include "pe_sieve.h"
-#include "dll_main.h"
+
+#define PESIEVE_EXPORTS
+#include "pe_sieve_api.h"
 
 #define LIB_NAME "PE-sieve"
 

@@ -44,9 +44,8 @@ if(PESIEVE_AS_DLL)
 	set (dll_hdrs
 		${hdrs}
 		include/pe_sieve_api.h
-		dll_main.h
 	)
-	add_library (${PROJECT_NAME} SHARED ${dll_hdrs} ${srcs} dll_main.cpp main.def)
+	add_library ( ${PROJECT_NAME} SHARED ${dll_hdrs} ${srcs} dll_main.cpp )
 else()
 	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} main.cpp )
 endif()
