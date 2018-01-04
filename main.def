@@ -1,0 +1,3 @@
+LIBRARY PE-sieve
+EXPORTS PESieve_help
+EXPORTS PESieve_scan
