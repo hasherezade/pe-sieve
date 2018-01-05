@@ -172,5 +172,6 @@ int main(int argc, char *argv[])
 #ifdef _DEBUG
 	system("pause");
 #endif
+	system("pause");
 	return 0;
 }

@@ -1,8 +1,27 @@
 #include "report_formatter.h"
-
+#include <string>
 #include <sstream>
 
-std::string report_to_string(const t_report report)
+std::string list_modules(const t_report &report)
+{
+	std::stringstream stream;
+	stream << "[\n";
+	//summary:
+	std::vector<ModuleScanReport*>::const_iterator itr;
+	for (itr = report.module_reports.begin() ; itr != report.module_reports.end(); itr++) {
+		ModuleScanReport *mod = *itr;
+		if (mod->status == SCAN_MODIFIED) {
+			if (itr != report.module_reports.begin()) {
+				stream << ",\n";
+			}
+			(*itr)->toJSON(stream);
+		}
+	}
+	stream << "\n]\n";
+	return stream.str();
+}
+
+std::string report_to_string(const t_report &report)
 {
 	std::stringstream stream;
 	//summary:
@@ -23,7 +42,7 @@ std::string report_to_string(const t_report report)
 	return stream.str();
 }
 
-std::string report_to_json(const t_report report)
+std::string report_to_json(const t_report &report)
 {
 	std::stringstream stream;
 	//summary:
@@ -43,5 +62,6 @@ std::string report_to_json(const t_report report)
 	stream << "  \"errors\" : "<< std::dec << report.errors << "\n";
 	stream << " }\n";// scanned
 	stream << "}\n";
+	stream << "\"scans\" : " << list_modules(report);
 	return stream.str();
 }

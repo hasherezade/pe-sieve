@@ -4,6 +4,28 @@
 
 #include "scanner.h"
 
+class HeadersScanReport : public ModuleScanReport
+{
+public:
+	HeadersScanReport(HANDLE processHandle, HMODULE _module)
+		: ModuleScanReport(processHandle, _module),
+		epModified(false) { }
+
+	const virtual bool toJSON(std::stringstream& outs)
+	{
+		outs << "\"headers_scan\" : ";
+		outs << "{\n";
+		ModuleScanReport::toJSON(outs);
+		outs << ",\n";
+		outs << "\"ep_modified\" : " ;
+		outs << epModified;
+		outs << "\n";
+		outs << "}";
+		return true;
+	}
+	bool epModified;
+};
+
 class HollowingScanner : public ModuleScanner {
 public:
 	HollowingScanner(HANDLE hProc)
@@ -11,7 +33,7 @@ public:
 	{
 	}
 
-	virtual t_scan_status scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size);
+	virtual HeadersScanReport* scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size);
 
 private:
 	bool zero_unused_fields(PBYTE hdr_buffer, size_t hdrs_size);

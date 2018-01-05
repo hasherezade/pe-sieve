@@ -5,6 +5,6 @@
 
 #include "pe_sieve_types.h"
 
-std::string report_to_string(const t_report report);
+std::string report_to_string(const t_report &report);
 
-std::string report_to_json(const t_report report);
+std::string report_to_json(const t_report &report);

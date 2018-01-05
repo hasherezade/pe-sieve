@@ -34,6 +34,7 @@ set (hdrs
 	util.h
 	report_formatter.cpp
 	include/pe_sieve_types.h
+	include/pe_sieve_reports.h
 )
 
 # libs

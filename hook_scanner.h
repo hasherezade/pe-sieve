@@ -55,28 +55,46 @@ public:
 	std::vector<Patch*> patches;
 };
 
+class CodeScanReport : public ModuleScanReport
+{
+public:
+	CodeScanReport(HANDLE processHandle, HMODULE _module)
+		: ModuleScanReport(processHandle, _module) {}
+
+	const virtual bool toJSON(std::stringstream &outs)
+	{
+		outs << "\"code_scan\" : ";
+		outs << "{\n";
+		ModuleScanReport::toJSON(outs);
+		outs << ",\n";
+		outs << "\"patches\" : "; 
+		outs << std::dec << patchesList.size();
+		outs << "\n}";
+		return true;
+	}
+
+	PatchList patchesList;
+};
+
 class HookScanner : public ModuleScanner {
 public:
 
 // HookScanner:
 
-	HookScanner(HANDLE hProc, PatchList &patches_list)
-		: ModuleScanner(hProc), patchesList(patches_list),
+	HookScanner(HANDLE hProc)
+		: ModuleScanner(hProc),// patchesList(patches_list),
 		delimiter(';')
 	{
 	}
 
-	virtual t_scan_status scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size);
+	virtual CodeScanReport* scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size);
 
 private:
-	t_scan_status scanSection(PBYTE modBaseAddr, PBYTE original_module, size_t module_size, size_t section_number);
+	t_scan_status scanSection(PBYTE modBaseAddr, PBYTE original_module, size_t module_size, size_t section_number, IN CodeScanReport &report);
 
 	bool clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_module, PBYTE loaded_code);
 
 	const char delimiter;
 
-	size_t collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size);
-
-// variables:
-	PatchList &patchesList;
+	size_t collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList);
 };

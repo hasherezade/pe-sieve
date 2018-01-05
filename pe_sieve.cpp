@@ -126,9 +126,18 @@ size_t dump_all_modified(HANDLE &processHandle, std::map<ULONGLONG, std::string>
 	return dumped;
 }
 
+t_scan_status get_scan_status(ModuleScanReport *report)
+{
+	if (report == nullptr) {
+		return SCAN_ERROR;
+	}
+	return report->status;
+}
+
 t_report check_modules_in_process(const t_params args)
 {
 	t_report report = { 0 };
+	
 	report.pid = args.pid;
 
 	HANDLE processHandle = open_process(args.pid);
@@ -190,6 +199,7 @@ t_report check_modules_in_process(const t_params args)
 		if (original_module == nullptr) {
 			std::cout << "[!][" << args.pid <<  "] Suspicious: could not read the module file!" << std::endl;
 			modified_modules[modBaseAddr] = dumpFileName;
+			//TODO: make a report that finding original module was not possible
 			report.suspicious++;
 			continue;
 		}
@@ -197,7 +207,9 @@ t_report check_modules_in_process(const t_params args)
 		t_scan_status is_hollowed = SCAN_NOT_MODIFIED;
 
 		HollowingScanner hollows(processHandle);
-		is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
+		HeadersScanReport *scan_report = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
+		is_hollowed = get_scan_status(scan_report);
+
 		if (is_hollowed == SCAN_MODIFIED) {
 			if (isWow64) {
 				//it can be caused by Wow64 path overwrite, check it...
@@ -208,8 +220,12 @@ t_report check_modules_in_process(const t_params args)
 				//reload it and check again...
 				peconv::free_pe_buffer(original_module, module_size);
 				original_module = peconv::load_pe_module(szModName, module_size, false, false);
+
+				delete scan_report; // delete previous report
+				scan_report = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 			}
-			is_hollowed = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
+			report.module_reports.push_back(scan_report);
+			is_hollowed = get_scan_status(scan_report);
 			if (is_hollowed == SCAN_MODIFIED) {
 				if (!args.quiet) {
 					std::cout << "[*][" << args.pid <<  "] The module is replaced by a different PE!" << std::endl;
@@ -224,8 +240,11 @@ t_report check_modules_in_process(const t_params args)
 		//if not hollowed, check for hooks:
 		if (is_hollowed == SCAN_NOT_MODIFIED) {
 			PatchList patchesList;
-			HookScanner hooks(processHandle, patchesList);
-			t_scan_status is_hooked = hooks.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
+			HookScanner hooks(processHandle);
+			CodeScanReport *scan_report = hooks.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
+			is_hooked = get_scan_status(scan_report);
+			report.module_reports.push_back(scan_report);
+
 			if (is_hooked == SCAN_MODIFIED) {
 				if (!args.quiet) {
 					std::cout << "[*][" << args.pid <<  "] The module is hooked!" << std::endl;
@@ -233,7 +252,7 @@ t_report check_modules_in_process(const t_params args)
 				report.hooked++;
 				modified_modules[modBaseAddr] = dumpFileName;
 				if (!args.quiet) {
-					report_patches(patchesList, dumpFileName + ".tag");
+					report_patches(scan_report->patchesList, dumpFileName + ".tag");
 				}
 			}
 		}

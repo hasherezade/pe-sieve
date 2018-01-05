@@ -1,13 +1,17 @@
 #include "hollowing_scanner.h"
 #include "peconv.h"
 
-t_scan_status HollowingScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_module, size_t module_size)
+HeadersScanReport* HollowingScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_module, size_t module_size)
 {
+	HeadersScanReport *my_report = new HeadersScanReport(this->processHandle, (HMODULE) modBaseAddr);
+
 	BYTE hdr_buffer1[peconv::MAX_HEADER_SIZE] = { 0 };
 	if (!peconv::read_remote_pe_header(processHandle, modBaseAddr, hdr_buffer1, peconv::MAX_HEADER_SIZE)) {
 		std::cerr << "[-] Failed to read the module header" << std::endl;
-		return SCAN_ERROR;
+		my_report->status = SCAN_ERROR;
+		return my_report;
 	}
+
 	size_t hdrs_size = peconv::get_hdrs_size(hdr_buffer1);
 	if (hdrs_size > peconv::MAX_HEADER_SIZE) {
 		hdrs_size = peconv::MAX_HEADER_SIZE;
@@ -22,11 +26,13 @@ t_scan_status HollowingScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_mod
 	// some .NET modules overwrite their own EP!
 	DWORD ep1 = peconv::get_entry_point_rva(hdr_buffer1);
 	DWORD ep2 = peconv::get_entry_point_rva(hdr_buffer2);
-	peconv::update_entry_point_rva(hdr_buffer1, 0);
-	peconv::update_entry_point_rva(hdr_buffer2, 0);
 	if (ep1 != ep2) {
-		//TODO: report about this anomaly in a better way
+#ifdef _DEBUG
 		std::cout << "[WARNING] Entry Point overwritten!" << std::endl;
+#endif
+		my_report->epModified = true;
+		peconv::update_entry_point_rva(hdr_buffer1, 0);
+		peconv::update_entry_point_rva(hdr_buffer2, 0);
 	}
 
 	zero_unused_fields(hdr_buffer1, hdrs_size);
@@ -34,9 +40,11 @@ t_scan_status HollowingScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_mod
 
 	//compare:
 	if (memcmp(hdr_buffer1, hdr_buffer2, hdrs_size) != 0) {
-		return SCAN_MODIFIED;
+		my_report->status = SCAN_MODIFIED;
+		return my_report;
 	}
-	return SCAN_NOT_MODIFIED;
+	my_report->status = SCAN_NOT_MODIFIED;
+	return my_report;
 }
 
 bool HollowingScanner::zero_unused_fields(PBYTE hdr_buffer, size_t hdrs_size)
