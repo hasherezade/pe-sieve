@@ -134,16 +134,15 @@ t_scan_status get_scan_status(ModuleScanReport *report)
 	return report->status;
 }
 
-t_report check_modules_in_process(const t_params args)
+ProcessScanReport* check_modules_in_process(const t_params args)
 {
-	t_report report = { 0 };
-	
-	report.pid = args.pid;
+	ProcessScanReport *process_report = new ProcessScanReport(args.pid);
+	t_report &report = process_report->summary;
 
 	HANDLE processHandle = open_process(args.pid);
 	if (processHandle == nullptr) {
 		report.errors++;
-		return report;
+		return process_report;
 	}
 	BOOL isWow64 = FALSE;
 #ifdef _WIN64
@@ -153,7 +152,7 @@ t_report check_modules_in_process(const t_params args)
 	const size_t modules_count = enum_modules(processHandle, hMods, sizeof(hMods), args.filter);
 	if (modules_count == 0) {
 		report.errors++;
-		return report;
+		return process_report;
 	}
 
 	//check all modules in the process, including the main module:
@@ -224,7 +223,8 @@ t_report check_modules_in_process(const t_params args)
 				delete scan_report; // delete previous report
 				scan_report = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 			}
-			report.module_reports.push_back(scan_report);
+			
+			process_report->module_reports.push_back(scan_report);
 			is_hollowed = get_scan_status(scan_report);
 			if (is_hollowed == SCAN_MODIFIED) {
 				if (!args.quiet) {
@@ -243,7 +243,7 @@ t_report check_modules_in_process(const t_params args)
 			HookScanner hooks(processHandle);
 			CodeScanReport *scan_report = hooks.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 			is_hooked = get_scan_status(scan_report);
-			report.module_reports.push_back(scan_report);
+			process_report->module_reports.push_back(scan_report);
 
 			if (is_hooked == SCAN_MODIFIED) {
 				if (!args.quiet) {
@@ -269,7 +269,7 @@ t_report check_modules_in_process(const t_params args)
 		delete exportsMap;
 		exportsMap = nullptr;
 	}
-	return report;
+	return process_report;
 }
 
 std::string info()

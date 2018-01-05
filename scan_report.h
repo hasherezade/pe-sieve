@@ -5,6 +5,9 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
+
+#include "pe_sieve_types.h"
 
 typedef enum module_scan_status {
 	SCAN_ERROR = -1,
@@ -37,4 +40,26 @@ public:
 	HMODULE module;
 	DWORD pid;
 	t_scan_status status;
+};
+
+class ProcessScanReport
+{
+public:
+	ProcessScanReport(DWORD pid)
+	{
+		memset(&summary,0,sizeof(summary));
+		summary.pid = pid;
+	}
+	~ProcessScanReport()
+	{
+		std::cout << "Deleting all reports" << std::endl;
+		std::vector<ModuleScanReport*>::iterator itr = module_reports.begin();
+		for (; itr != module_reports.end(); itr++) {
+			ModuleScanReport* module = *itr;
+			delete module;
+		}
+		module_reports.clear();
+	}
+	std::vector<ModuleScanReport*> module_reports;
+	t_report summary;
 };

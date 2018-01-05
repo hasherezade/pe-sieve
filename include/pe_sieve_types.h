@@ -1,8 +1,6 @@
 #pragma once
 
-#include "pe_sieve_reports.h"
 #include <vector>
-
 #include <Windows.h>
 
 #include <pshpack4.h> // ensure 4 byte packing of the structures
@@ -23,7 +21,6 @@ typedef struct {
 	DWORD hooked;
 	DWORD suspicious;
 	DWORD errors;
-	std::vector<ModuleScanReport*> module_reports;
 } t_report;
 
 #include <poppack.h> //back to the previous structure packing

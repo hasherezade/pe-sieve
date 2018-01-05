@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-#include "pe_sieve_reports.h"
+#include "scan_report.h"
 
 class ModuleScanner {
 public:
@@ -16,5 +16,3 @@ public:
 protected:
 	HANDLE processHandle;
 };
-
-
