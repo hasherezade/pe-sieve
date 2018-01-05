@@ -24,6 +24,8 @@ public:
 		this->module = _module;
 	}
 
+	virtual ~ModuleScanReport() {}
+
 	const virtual bool toJSON(std::stringstream &outs)
 	{
 		outs << "\"pid\" : ";
@@ -34,8 +36,6 @@ public:
 		outs << status;
 		return true;
 	}
-
-	virtual ~ModuleScanReport() {}
 
 	HMODULE module;
 	DWORD pid;
@@ -52,13 +52,7 @@ public:
 	}
 	~ProcessScanReport()
 	{
-		std::cout << "Deleting all reports" << std::endl;
-		std::vector<ModuleScanReport*>::iterator itr = module_reports.begin();
-		for (; itr != module_reports.end(); itr++) {
-			ModuleScanReport* module = *itr;
-			delete module;
-		}
-		module_reports.clear();
+		deleteModuleReports();
 	}
 
 	void appendReport(ModuleScanReport *report)
@@ -67,6 +61,17 @@ public:
 		module_reports.push_back(report);
 	}
 
-	std::vector<ModuleScanReport*> module_reports;
 	t_report summary;
+	std::vector<ModuleScanReport*> module_reports; //TODO: make it protected
+
+protected:
+	void deleteModuleReports()
+	{
+		std::vector<ModuleScanReport*>::iterator itr = module_reports.begin();
+		for (; itr != module_reports.end(); itr++) {
+			ModuleScanReport* module = *itr;
+			delete module;
+		}
+		module_reports.clear();
+	}
 };

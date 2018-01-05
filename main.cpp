@@ -171,6 +171,8 @@ int main(int argc, char *argv[])
 	ProcessScanReport* report = check_modules_in_process(args);
 	if (report != nullptr) {
 		print_report(*report, args);
+		delete report;
+		report = nullptr;
 	}
 #ifdef _DEBUG
 	system("pause");
