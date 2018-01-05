@@ -15,15 +15,6 @@
 
 #include "util.h"
 
-#define PARAM_PID "/pid"
-#define PARAM_FILTER "/filter"
-#define PARAM_IMP_REC "/imp"
-#define PARAM_NO_DUMP  "/nodump"
-#define PARAM_HELP "/help"
-#define PARAM_HELP2  "/?"
-#define PARAM_VERSION  "/version"
-#define PARAM_QUIET "/quiet"
-
 bool make_dump_dir(const std::string directory)
 {
 	if (CreateDirectoryA(directory.c_str(), NULL) 
