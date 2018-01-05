@@ -57,7 +57,7 @@ void print_help()
 	print_in_color(param_color, PARAM_QUIET);
 	std::cout << "\t: Print only the summary. Do not create a directory with outputs.\n";
 	print_in_color(param_color, PARAM_JSON);
-	std::cout << "\t: Print the report formated as JSON.\n";
+	std::cout << "\t: Print the summary formated as JSON.\n";
 
 	print_in_color(hdr_color, "\nInfo: \n");
 	print_in_color(param_color, PARAM_HELP);
