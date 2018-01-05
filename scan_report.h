@@ -60,6 +60,13 @@ public:
 		}
 		module_reports.clear();
 	}
+
+	void appendReport(ModuleScanReport *report)
+	{
+		if (report == nullptr) return;
+		module_reports.push_back(report);
+	}
+
 	std::vector<ModuleScanReport*> module_reports;
 	t_report summary;
 };

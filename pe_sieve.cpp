@@ -223,8 +223,7 @@ ProcessScanReport* check_modules_in_process(const t_params args)
 				delete scan_report; // delete previous report
 				scan_report = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 			}
-			
-			process_report->module_reports.push_back(scan_report);
+
 			is_hollowed = get_scan_status(scan_report);
 			if (is_hollowed == SCAN_MODIFIED) {
 				if (!args.quiet) {
@@ -234,6 +233,9 @@ ProcessScanReport* check_modules_in_process(const t_params args)
 				modified_modules[modBaseAddr] = dumpFileName;
 			}
 		}
+
+		process_report->appendReport(scan_report);
+
 		if (exportsMap != nullptr) {
 			exportsMap->add_to_lookup(szModName, (HMODULE) original_module, modBaseAddr);
 		}
@@ -243,7 +245,7 @@ ProcessScanReport* check_modules_in_process(const t_params args)
 			HookScanner hooks(processHandle);
 			CodeScanReport *scan_report = hooks.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
 			is_hooked = get_scan_status(scan_report);
-			process_report->module_reports.push_back(scan_report);
+			process_report->appendReport(scan_report);
 
 			if (is_hooked == SCAN_MODIFIED) {
 				if (!args.quiet) {
