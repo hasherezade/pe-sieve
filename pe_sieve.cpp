@@ -263,8 +263,9 @@ std::string info()
 	stream << " (x86)" << "\n\n";
 #endif
 	stream << "~ from hasherezade with love ~\n";
-	stream << "Detects inline hooks and other in-memory PE modifications\n---\n";
+	stream << "Detects inline hooks and other in-memory PE modifications\n";
 	stream << "URL: " << URL << "\n";
+	stream << "---\n";
 	return stream.str();
 }
 
