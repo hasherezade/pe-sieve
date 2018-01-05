@@ -89,7 +89,6 @@ void print_report(const t_report report, const t_params args)
 	std::string report_str;
 	if (args.json_output) {
 		report_str = report_to_json(report);
-		
 	} else {
 		report_str = report_to_string(report);
 	}
@@ -100,7 +99,9 @@ void print_report(const t_report report, const t_params args)
 		std::string directory = make_dir_name(args.pid);
 		std::cout << "\nDumps saved to the directory: " << directory << std::endl;
 	}
-	std::cout << "---" << std::endl;
+	if (!args.json_output) {
+		std::cout << "---" << std::endl;
+	}
 }
 
 int main(int argc, char *argv[])

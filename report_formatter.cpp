@@ -29,20 +29,19 @@ std::string report_to_json(const t_report report)
 	//summary:
 	size_t total_modified = report.hooked + report.replaced + report.suspicious;
 	stream << "{\n";
-	stream << "\"pid\" : " << std::dec << report.pid << ",\n";
-	stream << "\"summary\" : " << " {\n";
-	stream << "\"scanned\" : " << std::dec << report.scanned << ",\n";
-	stream << "\"modified\" : " << " {\n";
-	stream << "\"total\" : " << std::dec << total_modified << ",\n";
-	stream << "\"hooked\" : " << std::dec << report.hooked << ",\n";
-	stream << "\"replaced\" : "  << std::dec << report.replaced << ",\n";
-	stream << "\"suspicious\" : "  << std::dec << report.suspicious << "\n";
-	stream << "}\n";// modified
-	if (report.errors) {
-		stream << ", ";
-		stream << "\"errors\" : "<< std::dec << report.errors << "\n";
-	}
-	stream << "}\n";// summary
+	stream << " \"pid\" : " << std::dec << report.pid << ",\n";
+	stream << " \"scanned\" : \n";
+	stream << " {\n";
+	stream << "  \"total\" : " << std::dec << report.scanned  << ",\n";
+	stream << "  \"modified\" : \n";
+	stream << "  {\n";
+	stream << "   \"total\" : " << std::dec << total_modified << ",\n";
+	stream << "   \"hooked\" : " << std::dec << report.hooked << ",\n";
+	stream << "   \"replaced\" : "  << std::dec << report.replaced << ",\n";
+	stream << "   \"suspicious\" : "  << std::dec << report.suspicious << "\n";
+	stream << "  },\n";// modified
+	stream << "  \"errors\" : "<< std::dec << report.errors << "\n";
+	stream << " }\n";// scanned
 	stream << "}\n";
 	return stream.str();
 }
