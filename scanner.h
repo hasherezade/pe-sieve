@@ -17,7 +17,7 @@ public:
 	{
 	}
 
-    virtual t_scan_status scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size) = 0;
+	virtual t_scan_status scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size) = 0;
 
 protected:
 	HANDLE processHandle;
