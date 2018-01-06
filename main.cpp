@@ -88,7 +88,7 @@ void print_report(const ProcessScanReport& report, const t_params args)
 {
 	std::string report_str;
 	if (args.json_output) {
-		report_str = report_to_json(report, REPORT_ALL);
+		report_str = report_to_json(report, REPORT_MODIFIED);
 	} else {
 		report_str = report_to_string(report);
 	}
@@ -96,10 +96,10 @@ void print_report(const ProcessScanReport& report, const t_params args)
 	const t_report &summary = report.summary;
 	std::cout << report_str;
 	size_t total_modified = summary.hooked + summary.replaced + summary.suspicious;
-	if (!args.quiet && total_modified > 0) {
+	/*if (!args.quiet && total_modified > 0) {
 		std::string directory = make_dir_name(args.pid);
 		std::cout << "\nDumps saved to the directory: " << directory << std::endl;
-	}
+	}*/
 	if (!args.json_output) {
 		std::cout << "---" << std::endl;
 	}
