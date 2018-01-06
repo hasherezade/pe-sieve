@@ -18,7 +18,6 @@ bool ModuleData::loadOriginal()
 		memcpy(szModName, unnamed, sizeof(unnamed));
 	}
 	peconv::free_pe_buffer(original_module, original_size);
-	std::cout << szModName << std::endl;
 	original_module = peconv::load_pe_module(szModName, original_size, false, false);
 	if (!original_module) {
 		return false;
@@ -132,6 +131,7 @@ ProcessScanReport* ProcessScanner::scanRemote()
 		if (processHandle == NULL) break;
 
 		ModuleData modData(processHandle, hMods[i]);
+
 		if (!modData.loadOriginal()) {
 			std::cout << "[!][" << args.pid <<  "] Suspicious: could not read the module file!" << std::endl;
 			//make a report that finding original module was not possible
@@ -139,7 +139,9 @@ ProcessScanReport* ProcessScanner::scanRemote()
 			report.suspicious++;
 			continue;
 		}
-		
+		if (!args.quiet) {
+			std::cout << "[*] Scanning: " << modData.szModName << std::endl;
+		}
 		t_scan_status is_hollowed = scanForHollows(modData, *pReport);
 		if (is_hollowed == SCAN_ERROR) {
 			continue;

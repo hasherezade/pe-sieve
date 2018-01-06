@@ -136,9 +136,11 @@ t_scan_status HookScanner::scanSection(PBYTE modBaseAddr, PBYTE original_module,
 	int res = memcmp(loaded_code, orig_code, smaller_size);
 	if (res != 0) {
 		size_t patches_count = collectPatches(section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size, report.patchesList);
+#ifdef _DEBUG
 		if (patches_count) {
 			std::cout << "Total patches: "  << patches_count << std::endl;
 		}
+#endif
 	}
 	peconv::free_remote_pe_section(loaded_code);
 	loaded_code = NULL;
