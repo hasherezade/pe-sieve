@@ -87,7 +87,7 @@ public:
 	{
 	}
 
-	virtual CodeScanReport* scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size);
+	virtual CodeScanReport* scanRemote(ModuleData &moduleData);
 
 private:
 	t_scan_status scanSection(PBYTE modBaseAddr, PBYTE original_module, size_t module_size, size_t section_number, IN CodeScanReport &report);

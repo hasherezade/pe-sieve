@@ -1,12 +1,12 @@
 #include "hollowing_scanner.h"
 #include "peconv.h"
 
-HeadersScanReport* HollowingScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_module, size_t module_size)
+HeadersScanReport* HollowingScanner::scanRemote(ModuleData &moduleData)
 {
-	HeadersScanReport *my_report = new HeadersScanReport(this->processHandle, (HMODULE) modBaseAddr);
+	HeadersScanReport *my_report = new HeadersScanReport(this->processHandle, moduleData.moduleHandle);
 
 	BYTE hdr_buffer1[peconv::MAX_HEADER_SIZE] = { 0 };
-	if (!peconv::read_remote_pe_header(processHandle, modBaseAddr, hdr_buffer1, peconv::MAX_HEADER_SIZE)) {
+	if (!peconv::read_remote_pe_header(processHandle, (PBYTE) moduleData.moduleHandle, hdr_buffer1, peconv::MAX_HEADER_SIZE)) {
 		std::cerr << "[-] Failed to read the module header" << std::endl;
 		my_report->status = SCAN_ERROR;
 		return my_report;
@@ -17,7 +17,7 @@ HeadersScanReport* HollowingScanner::scanRemote(PBYTE modBaseAddr, PBYTE origina
 		hdrs_size = peconv::MAX_HEADER_SIZE;
 	}
 	BYTE hdr_buffer2[peconv::MAX_HEADER_SIZE] = { 0 };
-	memcpy(hdr_buffer2, original_module, hdrs_size);
+	memcpy(hdr_buffer2, moduleData.original_module, hdrs_size);
 	
 	//normalize before comparing:
 	peconv::update_image_base(hdr_buffer1, 0);

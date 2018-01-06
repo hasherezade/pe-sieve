@@ -18,10 +18,16 @@ typedef enum module_scan_status {
 class ModuleScanReport
 {
 public:
-	ModuleScanReport(HANDLE processHandle, HMODULE _module)
+	ModuleScanReport(HANDLE processHandle, HMODULE _module, t_scan_status _status)
 	{
 		this->pid = GetProcessId(processHandle);
 		this->module = _module;
+		this->status = _status;
+	}
+
+	ModuleScanReport(HANDLE processHandle, HMODULE _module)
+	{
+		::ModuleScanReport(processHandle, _module, SCAN_NOT_MODIFIED);
 	}
 
 	virtual ~ModuleScanReport() {}

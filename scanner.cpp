@@ -4,11 +4,43 @@
 #include <sstream>
 #include <fstream>
 
-
 #include "util.h"
 
 #include "hollowing_scanner.h"
 #include "hook_scanner.h"
+
+//---
+bool ModuleData::loadOriginal()
+{
+	if (!GetModuleFileNameExA(processHandle, this->moduleHandle, szModName, MAX_PATH)) {
+		is_module_named = false;
+		const char unnamed[] = "unnamed";
+		memcpy(szModName, unnamed, sizeof(unnamed));
+	}
+	peconv::free_pe_buffer(original_module, original_size);
+	std::cout << szModName << std::endl;
+	original_module = peconv::load_pe_module(szModName, original_size, false, false);
+	if (!original_module) {
+		return false;
+	}
+	return true;
+}
+
+bool ModuleData::reloadWow64()
+{
+	bool is_converted = convert_to_wow64_path(szModName);
+	if (!is_converted) return false;
+
+#ifdef _DEBUG
+	std::cout << "Reloading Wow64..." << std::endl;
+#endif
+	//reload it and check again...
+	peconv::free_pe_buffer(original_module, original_size);
+	original_module = peconv::load_pe_module(szModName, original_size, false, false);
+	return true;
+}
+
+//---
 
 t_scan_status ProcessScanner::get_scan_status(ModuleScanReport *report)
 {
@@ -130,63 +162,31 @@ ProcessScanReport* ProcessScanner::scanRemote()
 		if (exportsMap) delete exportsMap;
 		exportsMap = new peconv::ExportsMapper();
 	}
-	char szModName[MAX_PATH];
 
 	report.scanned = 0;
 	for (size_t i = 0; i < modules_count; i++, report.scanned++) {
 		if (processHandle == NULL) break;
-		
-		bool is_module_named = true;
 
-		if (!GetModuleFileNameExA(processHandle, hMods[report.scanned], szModName, MAX_PATH)) {
-			std::cerr << "[!][" << args.pid <<  "] Cannot fetch module name" << std::endl;
-			is_module_named = false;
-			const char unnamed[] = "unnamed";
-			memcpy(szModName, unnamed, sizeof(unnamed));
-		}
-		if (!args.quiet) {
-			std::cout << "[*][" << args.pid <<  "] Scanning: " << szModName << std::endl;
-		}
-		ULONGLONG modBaseAddr = (ULONGLONG)hMods[i];
-		const char* modFileName = get_file_name(szModName);
-
-		//load the same module, but from the disk: 
-		size_t module_size = 0;
-		BYTE* original_module = nullptr;
-		if (is_module_named) {
-			original_module = peconv::load_pe_module(szModName, module_size, false, false);
-		}
-		if (original_module == nullptr) {
+		ModuleData modData(processHandle, hMods[i]);
+		if (!modData.loadOriginal()) {
 			std::cout << "[!][" << args.pid <<  "] Suspicious: could not read the module file!" << std::endl;
-			//TODO: make a report that finding original module was not possible
-			HeadersScanReport *mod_report = new HeadersScanReport(processHandle, hMods[i]);
-			mod_report->status = SCAN_MODIFIED;
-			process_report->appendReport(mod_report);
+			//make a report that finding original module was not possible
+			process_report->appendReport(new ModuleScanReport(processHandle, hMods[i], SCAN_MODIFIED));
 			report.suspicious++;
 			continue;
 		}
-		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
+		
 		t_scan_status is_hollowed = SCAN_NOT_MODIFIED;
 
 		HollowingScanner hollows(processHandle);
-		HeadersScanReport *scan_report = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
+		HeadersScanReport *scan_report = hollows.scanRemote(modData);
 		is_hollowed = get_scan_status(scan_report);
 
 		if (is_hollowed == SCAN_MODIFIED) {
-			if (isWow64) {
-				//it can be caused by Wow64 path overwrite, check it...
-				bool is_converted = convert_to_wow64_path(szModName);
-#ifdef _DEBUG
-				std::cout << "Reloading Wow64..." << std::endl;
-#endif
-				//reload it and check again...
-				peconv::free_pe_buffer(original_module, module_size);
-				original_module = peconv::load_pe_module(szModName, module_size, false, false);
-
+			if (isWow64 && modData.reloadWow64()) {
 				delete scan_report; // delete previous report
-				scan_report = hollows.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
+				scan_report = hollows.scanRemote(modData);
 			}
-
 			is_hollowed = get_scan_status(scan_report);
 			if (is_hollowed == SCAN_MODIFIED) {
 				if (!args.quiet) {
@@ -195,16 +195,16 @@ ProcessScanReport* ProcessScanner::scanRemote()
 				report.replaced++;
 			}
 		}
-
 		process_report->appendReport(scan_report);
 
+		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
 		if (exportsMap != nullptr) {
-			exportsMap->add_to_lookup(szModName, (HMODULE) original_module, modBaseAddr);
+			exportsMap->add_to_lookup(modData.szModName, (HMODULE) modData.original_module, (ULONGLONG) modData.moduleHandle);
 		}
 		//if not hollowed, check for hooks:
 		if (is_hollowed == SCAN_NOT_MODIFIED) {
 			HookScanner hooks(processHandle);
-			CodeScanReport *scan_report = hooks.scanRemote((PBYTE)modBaseAddr, original_module, module_size);
+			CodeScanReport *scan_report = hooks.scanRemote(modData);
 			is_hooked = get_scan_status(scan_report);
 			process_report->appendReport(scan_report);
 
@@ -219,7 +219,7 @@ ProcessScanReport* ProcessScanner::scanRemote()
 			std::cerr << "[-][" << args.pid <<  "] ERROR while checking the module: " << szModName << std::endl;
 			report.errors++;
 		}
-		peconv::free_pe_buffer(original_module, module_size);
+		
 	}
 	return process_report;
 }
