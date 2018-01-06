@@ -56,27 +56,9 @@ bool is_scaner_compatibile(HANDLE hProcess)
 	return true;
 }
 
-std::string make_dir_name(const DWORD process_id)
-{
-	std::stringstream stream;
-	stream << "process_";
-	stream << process_id;
-	return stream.str();
-}
-
-bool make_dump_dir(const std::string directory)
-{
-	if (CreateDirectoryA(directory.c_str(), NULL) 
-		||  GetLastError() == ERROR_ALREADY_EXISTS)
-	{
-		return true;
-	}
-	return false;
-}
 
 ProcessScanReport* check_modules_in_process(const t_params args)
 {
-	ProcessScanReport *process_report = nullptr;
 	HANDLE hProcess = nullptr;
 	try {
 		hProcess = open_process(args.pid);
@@ -89,20 +71,18 @@ ProcessScanReport* check_modules_in_process(const t_params args)
 		
 	}
 	ProcessScanner scanner(hProcess, args);
-	process_report = scanner.scanRemote();
+	ProcessScanReport *process_report = scanner.scanRemote();
 
 	if (!args.no_dump && !args.quiet) {
 		
-		std::string dir = make_dir_name(args.pid);
-		if (!make_dump_dir(dir)) {
-			dir = "";
-		}
 		if (!args.quiet) {
-			if (scanner.dumpAllModified(*process_report, dir) > 0) {
-				std::cout << "Dumped modified to: " << dir << std::endl;
+			ProcessDumper dumper;
+			if (dumper.dumpAllModified(hProcess, *process_report) > 0) {
+				std::cout << "[+] Dumped modified to: " << dumper.dumpDir << std::endl;
 			}
 		}
 	}
+	CloseHandle(hProcess);
 	return process_report;
 }
 

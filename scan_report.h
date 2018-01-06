@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "pe_sieve_types.h"
+#include "peconv.h"
 
 typedef enum module_scan_status {
 	SCAN_ERROR = -1,
@@ -57,10 +58,14 @@ public:
 	{
 		memset(&summary,0,sizeof(summary));
 		summary.pid = pid;
+		exportsMap = nullptr;
 	}
 	~ProcessScanReport()
 	{
 		deleteModuleReports();
+		if (exportsMap) {
+			delete exportsMap;
+		}
 	}
 
 	void appendReport(ModuleScanReport *report)
@@ -71,6 +76,7 @@ public:
 
 	t_report summary;
 	std::vector<ModuleScanReport*> module_reports; //TODO: make it protected
+	peconv::ExportsMapper *exportsMap;
 
 protected:
 	void deleteModuleReports()

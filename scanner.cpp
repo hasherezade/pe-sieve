@@ -65,84 +65,6 @@ size_t ProcessScanner::enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax,
 	return modules_count;
 }
 
-size_t  report_patches(PatchList &patchesList, std::string reportPath)
-{
-	std::ofstream patch_report;
-	patch_report.open(reportPath);
-	if (patch_report.is_open() == false) {
-		std::cout << "[-] Could not open the file: "<<  reportPath << std::endl;
-	}
-	
-	size_t patches = patchesList.reportPatches(patch_report, ';');
-
-	if (patch_report.is_open()) {
-		patch_report.close();
-	}
-	return patches;
-}
-
-std::string make_dump_path(ULONGLONG modBaseAddr, std::string fname,  std::string directory)
-{
-	//const char* fname = get_file_name(szExePath);
-	std::stringstream stream;
-	if (directory.length() > 0) {
-		stream << directory;
-		stream << "\\";
-	}
-	stream << std::hex << modBaseAddr;
-	if (fname.length() > 0) {
-		stream << ".";
-		stream << fname;
-	} else {
-		stream << ".dll";
-	}
-	return stream.str();
-}
-
-size_t ProcessScanner::dumpAllModified(ProcessScanReport &process_report, std::string directory)
-{
-	HANDLE hProcess = this->processHandle;
-	if (hProcess == nullptr) {
-		return 0;
-	}
-
-	char szModName[MAX_PATH] = { 0 };
-	size_t dumped = 0;
-
-	std::vector<ModuleScanReport*>::iterator itr;
-	for (itr = process_report.module_reports.begin();
-		itr != process_report.module_reports.end();
-		itr++)
-	{
-		ModuleScanReport* mod = *itr;
-		if (mod->status == SCAN_MODIFIED) {
-			memset(szModName, 0, MAX_PATH);
-			std::string modulePath = "";
-			if (GetModuleFileNameExA(processHandle, mod->module, szModName, MAX_PATH)) {
-				modulePath = get_file_name(szModName);
-			}
-			std::string dumpFileName = make_dump_path((ULONGLONG)mod->module, modulePath, directory);
-			if (!peconv::dump_remote_pe(
-				dumpFileName.c_str(), //output file
-				processHandle, 
-				(PBYTE) mod->module, 
-				true, //unmap
-				exportsMap
-				))
-			{
-				std::cerr << "Failed dumping module!" << std::endl;
-				continue;
-			}
-			dumped++;
-			CodeScanReport *code_report = dynamic_cast<CodeScanReport*>(mod);
-			if (code_report != nullptr && code_report->patchesList.size() > 0) {
-				report_patches(code_report->patchesList, dumpFileName + ".tag");
-			}
-		}
-	}
-	return dumped;
-}
-
 t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanReport& process_report)
 {
 	BOOL isWow64 = FALSE;
@@ -192,19 +114,17 @@ t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, ProcessScanRepor
 
 ProcessScanReport* ProcessScanner::scanRemote()
 {
-	ProcessScanReport *process_report = new ProcessScanReport(this->args.pid);
-	t_report &report = process_report->summary;
-
+	ProcessScanReport *pReport = new ProcessScanReport(this->args.pid);
+	t_report &report = pReport->summary;
 
 	HMODULE hMods[1024];
 	const size_t modules_count = enumModules(hMods, sizeof(hMods), args.filter);
 	if (modules_count == 0) {
 		report.errors++;
-		return process_report;
+		return pReport;
 	}
 	if (args.imp_rec) {
-		if (exportsMap) delete exportsMap;
-		exportsMap = new peconv::ExportsMapper();
+		pReport->exportsMap = new peconv::ExportsMapper();
 	}
 
 	report.scanned = 0;
@@ -215,25 +135,136 @@ ProcessScanReport* ProcessScanner::scanRemote()
 		if (!modData.loadOriginal()) {
 			std::cout << "[!][" << args.pid <<  "] Suspicious: could not read the module file!" << std::endl;
 			//make a report that finding original module was not possible
-			process_report->appendReport(new ModuleScanReport(processHandle, hMods[i], SCAN_MODIFIED));
+			pReport->appendReport(new ModuleScanReport(processHandle, hMods[i], SCAN_MODIFIED));
 			report.suspicious++;
 			continue;
 		}
 		
-		t_scan_status is_hollowed = scanForHollows(modData, *process_report);
+		t_scan_status is_hollowed = scanForHollows(modData, *pReport);
 		if (is_hollowed == SCAN_ERROR) {
 			continue;
 		}
-		if (exportsMap != nullptr) {
-			exportsMap->add_to_lookup(modData.szModName, (HMODULE) modData.original_module, (ULONGLONG) modData.moduleHandle);
+		if (pReport->exportsMap != nullptr) {
+			pReport->exportsMap->add_to_lookup(modData.szModName, (HMODULE) modData.original_module, (ULONGLONG) modData.moduleHandle);
 		}
 
 		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
 		//if not hollowed, check for hooks:
 		if (is_hollowed == SCAN_NOT_MODIFIED) {
-			is_hooked = scanForHooks(modData, *process_report);
+			is_hooked = scanForHooks(modData, *pReport);
 		}
 		
 	}
-	return process_report;
+	return pReport;
 }
+
+//---
+
+bool ProcessDumper::make_dump_dir(const std::string directory)
+{
+	if (CreateDirectoryA(directory.c_str(), NULL) 
+		||  GetLastError() == ERROR_ALREADY_EXISTS)
+	{
+		return true;
+	}
+	return false;
+}
+
+std::string ProcessDumper::makeDumpPath(ULONGLONG modBaseAddr, std::string fname)
+{
+	if (!make_dump_dir(this->dumpDir)) {
+		this->dumpDir = ""; // reset path
+	}
+	//const char* fname = get_file_name(szExePath);
+	std::stringstream stream;
+	if (this->dumpDir.length() > 0) {
+		stream << this->dumpDir;
+		stream << "\\";
+	}
+	stream << std::hex << modBaseAddr;
+	if (fname.length() > 0) {
+		stream << ".";
+		stream << fname;
+	} else {
+		stream << ".dll";
+	}
+	return stream.str();
+}
+
+size_t ProcessDumper::reportPatches(ModuleScanReport *mod_report, std::string reportPath)
+{
+	CodeScanReport *code_report = dynamic_cast<CodeScanReport*>(mod_report);
+	if (code_report == nullptr) {
+		return 0;
+	}
+	if (code_report->patchesList.size() == 0) {
+		return 0;
+	}
+
+	std::ofstream patch_report;
+	patch_report.open(reportPath);
+	if (patch_report.is_open() == false) {
+		std::cout << "[-] Could not open the file: "<<  reportPath << std::endl;
+		return 0;
+	}
+	size_t patches = code_report->patchesList.reportPatches(patch_report, ';');
+	if (patch_report.is_open()) {
+		patch_report.close();
+	}
+	return patches;
+}
+
+size_t ProcessDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &process_report)
+{
+	if (processHandle == nullptr) {
+		return 0;
+	}
+
+	DWORD pid = GetProcessId(processHandle);
+	this->dumpDir = ProcessDumper::makeDirName(pid);
+
+	char szModName[MAX_PATH] = { 0 };
+	size_t dumped = 0;
+
+	std::vector<ModuleScanReport*>::iterator itr;
+	for (itr = process_report.module_reports.begin();
+		itr != process_report.module_reports.end();
+		itr++)
+	{
+		ModuleScanReport* mod = *itr;
+		if (mod->status == SCAN_MODIFIED) {
+			memset(szModName, 0, MAX_PATH);
+			std::string modulePath = "";
+			if (GetModuleFileNameExA(processHandle, mod->module, szModName, MAX_PATH)) {
+				modulePath = get_file_name(szModName);
+			}
+			std::string dumpFileName = makeDumpPath((ULONGLONG)mod->module, modulePath);
+			if (!peconv::dump_remote_pe(
+				dumpFileName.c_str(), //output file
+				processHandle, 
+				(PBYTE) mod->module, 
+				true, //unmap
+				process_report.exportsMap
+				))
+			{
+				std::cerr << "Failed dumping module!" << std::endl;
+				continue;
+			}
+			dumped++;
+			reportPatches(mod, dumpFileName + ".tag");
+		}
+	}
+	return dumped;
+}
+std::string ProcessDumper::makeDirName(const DWORD process_id)
+{
+	std::stringstream stream;
+	if (baseDir.length() > 0) {
+		stream << baseDir;
+		stream << "\\";
+	}
+	stream << "process_";
+	stream << process_id;
+	return stream.str();
+}
+
