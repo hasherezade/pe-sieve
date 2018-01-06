@@ -42,7 +42,7 @@ bool ModuleData::reloadWow64()
 
 //---
 
-t_scan_status ProcessScanner::get_scan_status(ModuleScanReport *report)
+t_scan_status get_scan_status(ModuleScanReport *report)
 {
 	if (report == nullptr) {
 		return SCAN_ERROR;
@@ -50,7 +50,7 @@ t_scan_status ProcessScanner::get_scan_status(ModuleScanReport *report)
 	return report->status;
 }
 
-size_t ProcessScanner::enum_modules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters)
+size_t ProcessScanner::enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters)
 {
 	HANDLE hProcess = this->processHandle;
 	if (hProcess == nullptr) return 0;
@@ -143,17 +143,61 @@ size_t ProcessScanner::dumpAllModified(ProcessScanReport &process_report, std::s
 	return dumped;
 }
 
+t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanReport& process_report)
+{
+	BOOL isWow64 = FALSE;
+#ifdef _WIN64
+	IsWow64Process(processHandle, &isWow64);
+#endif
+	HollowingScanner hollows(processHandle);
+	HeadersScanReport *scan_report = hollows.scanRemote(modData);
+	if (scan_report == nullptr) {
+		process_report.summary.errors++;
+		return SCAN_ERROR;
+	}
+	t_scan_status is_hollowed = get_scan_status(scan_report);
+
+	if (is_hollowed == SCAN_MODIFIED && isWow64) {
+		if (modData.reloadWow64()) {
+			delete scan_report; // delete previous report
+			scan_report = hollows.scanRemote(modData);
+		}
+		is_hollowed = get_scan_status(scan_report);
+	}
+	process_report.appendReport(scan_report);
+	if (is_hollowed == SCAN_ERROR) {
+		process_report.summary.errors++;
+	}
+	if (is_hollowed == SCAN_MODIFIED) {
+		process_report.summary.replaced++;
+	}
+	return is_hollowed;
+}
+
+t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, ProcessScanReport& process_report)
+{
+	HookScanner hooks(processHandle);
+	CodeScanReport *scan_report = hooks.scanRemote(modData);
+	t_scan_status is_hooked = get_scan_status(scan_report);
+	process_report.appendReport(scan_report);
+	
+	if (is_hooked == SCAN_MODIFIED) {
+		process_report.summary.hooked++;
+	}
+	if (is_hooked == SCAN_ERROR) {
+		process_report.summary.errors++;
+	}
+	return is_hooked;
+}
+
 ProcessScanReport* ProcessScanner::scanRemote()
 {
 	ProcessScanReport *process_report = new ProcessScanReport(this->args.pid);
 	t_report &report = process_report->summary;
 
-	BOOL isWow64 = FALSE;
-#ifdef _WIN64
-	IsWow64Process(processHandle, &isWow64);
-#endif
+
 	HMODULE hMods[1024];
-	const size_t modules_count = enum_modules(hMods, sizeof(hMods), args.filter);
+	const size_t modules_count = enumModules(hMods, sizeof(hMods), args.filter);
 	if (modules_count == 0) {
 		report.errors++;
 		return process_report;
@@ -176,48 +220,18 @@ ProcessScanReport* ProcessScanner::scanRemote()
 			continue;
 		}
 		
-		t_scan_status is_hollowed = SCAN_NOT_MODIFIED;
-
-		HollowingScanner hollows(processHandle);
-		HeadersScanReport *scan_report = hollows.scanRemote(modData);
-		is_hollowed = get_scan_status(scan_report);
-
-		if (is_hollowed == SCAN_MODIFIED) {
-			if (isWow64 && modData.reloadWow64()) {
-				delete scan_report; // delete previous report
-				scan_report = hollows.scanRemote(modData);
-			}
-			is_hollowed = get_scan_status(scan_report);
-			if (is_hollowed == SCAN_MODIFIED) {
-				if (!args.quiet) {
-					std::cout << "[*][" << args.pid <<  "] The module is replaced by a different PE!" << std::endl;
-				}
-				report.replaced++;
-			}
+		t_scan_status is_hollowed = scanForHollows(modData, *process_report);
+		if (is_hollowed == SCAN_ERROR) {
+			continue;
 		}
-		process_report->appendReport(scan_report);
-
-		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
 		if (exportsMap != nullptr) {
 			exportsMap->add_to_lookup(modData.szModName, (HMODULE) modData.original_module, (ULONGLONG) modData.moduleHandle);
 		}
+
+		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
 		//if not hollowed, check for hooks:
 		if (is_hollowed == SCAN_NOT_MODIFIED) {
-			HookScanner hooks(processHandle);
-			CodeScanReport *scan_report = hooks.scanRemote(modData);
-			is_hooked = get_scan_status(scan_report);
-			process_report->appendReport(scan_report);
-
-			if (is_hooked == SCAN_MODIFIED) {
-				if (!args.quiet) {
-					std::cout << "[*][" << args.pid <<  "] The module is hooked!" << std::endl;
-				}
-				report.hooked++;
-			}
-		}
-		if (is_hollowed == SCAN_ERROR || is_hooked == SCAN_ERROR) {
-			std::cerr << "[-][" << args.pid <<  "] ERROR while checking the module: " << szModName << std::endl;
-			report.errors++;
+			is_hooked = scanForHooks(modData, *process_report);
 		}
 		
 	}

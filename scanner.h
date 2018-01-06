@@ -65,12 +65,12 @@ public:
 
 	ProcessScanReport* scanRemote();
 	size_t dumpAllModified(ProcessScanReport &process_report, std::string directory);
-	t_scan_status scan_for_hollows(PBYTE modBaseAddr, ProcessScanReport *process_report);
-
 
 protected:
-	size_t enum_modules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters);
-	t_scan_status get_scan_status(ModuleScanReport *report);
+	size_t enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters);
+
+	t_scan_status scanForHollows(ModuleData& modData, ProcessScanReport& process_report);
+	t_scan_status scanForHooks(ModuleData& modData, ProcessScanReport& process_report);
 
 	HANDLE processHandle;
 	size_t hModsMax;
