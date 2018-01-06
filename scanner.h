@@ -55,7 +55,6 @@ public:
 	{
 		this->processHandle = procHndl;
 		this->exportsMap = nullptr;
-		ProcessScanReport *process_report = new ProcessScanReport(this->args.pid);
 	}
 
 	~ProcessScanner()
