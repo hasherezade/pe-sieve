@@ -24,16 +24,18 @@ std::string list_modules(const ProcessScanReport &report, t_report_filter filter
 	std::stringstream stream;
 	stream << "\"scans\" : [\n";
 	//summary:
+	bool is_first = true;
 	std::vector<ModuleScanReport*>::const_iterator itr;
 	for (itr = report.module_reports.begin() ; itr != report.module_reports.end(); itr++) {
 		ModuleScanReport *mod = *itr;
 		if (is_shown_type(mod->status, filter)) {
-			if (itr != report.module_reports.begin()) {
+			if (!is_first) {
 				stream << ",\n";
 			}
 			stream << "{\n";
 			mod->toJSON(stream);
 			stream << "\n}";
+			is_first = false;
 		}
 	}
 	stream << "\n";
