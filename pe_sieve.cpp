@@ -74,10 +74,15 @@ ProcessScanReport* check_modules_in_process(const t_params args)
 	ProcessScanner scanner(hProcess, args);
 	ProcessScanReport *process_report = scanner.scanRemote();
 
-	if (process_report != nullptr && !args.no_dump && !args.quiet) {
+	if (process_report != nullptr && !args.quiet) {
 		ProcessDumper dumper;
-		if (dumper.dumpAllModified(hProcess, *process_report) > 0) {
-			std::cout << "[+] Dumped modified to: " << dumper.dumpDir << std::endl;
+		if (!args.no_dump) {
+			if (dumper.dumpAllModified(hProcess, *process_report) > 0) {
+				std::cout << "[+] Dumped modified to: " << dumper.dumpDir << std::endl;
+			}
+		}
+		if (dumper.dumpJsonReport(*process_report)) {
+			std::cout << "[+] Report dumped to: " << dumper.dumpDir << std::endl;
 		}
 	}
 	CloseHandle(hProcess);

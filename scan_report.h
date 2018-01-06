@@ -37,10 +37,10 @@ public:
 
 	const virtual bool toJSON(std::stringstream &outs)
 	{
-		outs << "\"pid\" : ";
-		outs << std::hex << pid << ",\n";
+		//outs << "\"pid\" : ";
+		//outs << std::hex << pid << ",\n";
 		outs << "\"module\" : ";
-		outs << std::hex << (ULONGLONG) module << ",\n";
+		outs << "\"" << std::hex << (ULONGLONG) module << "\"" << ",\n";
 		outs << "\"status\" : " ;
 		outs << status;
 		return true;
@@ -90,4 +90,5 @@ protected:
 		}
 		module_reports.clear();
 	}
+
 };

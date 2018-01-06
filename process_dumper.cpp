@@ -7,6 +7,7 @@
 #include "scanner.h"
 #include "util.h"
 
+#include "report_formatter.h"
 //---
 
 bool ProcessDumper::make_dump_dir(const std::string directory)
@@ -83,6 +84,23 @@ size_t ProcessDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 	}
 	return dumped;
 }
+
+bool ProcessDumper::dumpJsonReport(ProcessScanReport &process_report)
+{
+	std::string report_all = report_to_json(process_report, REPORT_ALL);
+	std::ofstream json_report;
+	json_report.open(dumpDir + "\\report.json");
+	if (json_report.is_open() == false) {
+		return false;
+	}
+	json_report << report_all;
+	if (json_report.is_open()) {
+		json_report.close();
+		return true;
+	}
+	return false;
+}
+
 std::string ProcessDumper::makeDirName(const DWORD process_id)
 {
 	std::stringstream stream;
