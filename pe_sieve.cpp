@@ -9,7 +9,7 @@
 
 #include "util.h"
 #include "process_privilege.h"
-#include "process_dumper.h"
+#include "results_dumper.h"
 
 HANDLE open_process(DWORD processID)
 {
@@ -75,13 +75,13 @@ ProcessScanReport* check_modules_in_process(const t_params args)
 	ProcessScanReport *process_report = scanner.scanRemote();
 
 	if (process_report != nullptr && !args.quiet) {
-		ProcessDumper dumper;
+		ResultsDumper dumper;
 		if (!args.no_dump) {
 			if (dumper.dumpAllModified(hProcess, *process_report) > 0) {
 				std::cout << "[+] Dumped modified to: " << dumper.dumpDir << std::endl;
 			}
 		}
-		if (dumper.dumpJsonReport(*process_report)) {
+		if (dumper.dumpJsonReport(*process_report, REPORT_MODIFIED)) {
 			std::cout << "[+] Report dumped to: " << dumper.dumpDir << std::endl;
 		}
 	}

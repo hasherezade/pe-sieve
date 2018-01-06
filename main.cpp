@@ -95,11 +95,6 @@ void print_report(const ProcessScanReport& report, const t_params args)
 	//summary:
 	const t_report &summary = report.summary;
 	std::cout << report_str;
-	size_t total_modified = summary.hooked + summary.replaced + summary.suspicious;
-	/*if (!args.quiet && total_modified > 0) {
-		std::string directory = make_dir_name(args.pid);
-		std::cout << "\nDumps saved to the directory: " << directory << std::endl;
-	}*/
 	if (!args.json_output) {
 		std::cout << "---" << std::endl;
 	}
@@ -177,6 +172,5 @@ int main(int argc, char *argv[])
 #ifdef _DEBUG
 	system("pause");
 #endif
-	system("pause");
 	return 0;
 }

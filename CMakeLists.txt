@@ -23,7 +23,7 @@ set (srcs
 	scanner.cpp
 	util.cpp
 	report_formatter.cpp
-	process_dumper.cpp
+	results_dumper.cpp
 )
 
 set (hdrs
@@ -34,7 +34,7 @@ set (hdrs
 	scanner.h
 	util.h
 	report_formatter.h
-	process_dumper.h
+	results_dumper.h
 	include/pe_sieve_types.h
 	scan_report.h
 )

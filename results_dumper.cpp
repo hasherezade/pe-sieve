@@ -1,4 +1,4 @@
-#include "process_dumper.h"
+#include "results_dumper.h"
 #include <Windows.h>
 #include <Psapi.h>
 
@@ -7,10 +7,9 @@
 #include "scanner.h"
 #include "util.h"
 
-#include "report_formatter.h"
 //---
 
-bool ProcessDumper::make_dump_dir(const std::string directory)
+bool ResultsDumper::make_dump_dir(const std::string directory)
 {
 	if (CreateDirectoryA(directory.c_str(), NULL) 
 		||  GetLastError() == ERROR_ALREADY_EXISTS)
@@ -20,7 +19,7 @@ bool ProcessDumper::make_dump_dir(const std::string directory)
 	return false;
 }
 
-std::string ProcessDumper::makeDumpPath(ULONGLONG modBaseAddr, std::string fname)
+std::string ResultsDumper::makeDumpPath(ULONGLONG modBaseAddr, std::string fname)
 {
 	if (!make_dump_dir(this->dumpDir)) {
 		this->dumpDir = ""; // reset path
@@ -41,14 +40,14 @@ std::string ProcessDumper::makeDumpPath(ULONGLONG modBaseAddr, std::string fname
 	return stream.str();
 }
 
-size_t ProcessDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &process_report)
+size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &process_report)
 {
 	if (processHandle == nullptr) {
 		return 0;
 	}
 
 	DWORD pid = GetProcessId(processHandle);
-	this->dumpDir = ProcessDumper::makeDirName(pid);
+	this->dumpDir = ResultsDumper::makeDirName(pid);
 
 	char szModName[MAX_PATH] = { 0 };
 	size_t dumped = 0;
@@ -67,7 +66,9 @@ size_t ProcessDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 		if (GetModuleFileNameExA(processHandle, mod->module, szModName, MAX_PATH)) {
 			modulePath = get_file_name(szModName);
 		}
+
 		std::string dumpFileName = makeDumpPath((ULONGLONG)mod->module, modulePath);
+
 		if (!peconv::dump_remote_pe(
 			dumpFileName.c_str(), //output file
 			processHandle, 
@@ -85,9 +86,9 @@ size_t ProcessDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 	return dumped;
 }
 
-bool ProcessDumper::dumpJsonReport(ProcessScanReport &process_report)
+bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, t_report_filter filter)
 {
-	std::string report_all = report_to_json(process_report, REPORT_ALL);
+	std::string report_all = report_to_json(process_report, filter);
 	std::ofstream json_report;
 	json_report.open(dumpDir + "\\report.json");
 	if (json_report.is_open() == false) {
@@ -101,7 +102,7 @@ bool ProcessDumper::dumpJsonReport(ProcessScanReport &process_report)
 	return false;
 }
 
-std::string ProcessDumper::makeDirName(const DWORD process_id)
+std::string ResultsDumper::makeDirName(const DWORD process_id)
 {
 	std::stringstream stream;
 	if (baseDir.length() > 0) {
