@@ -79,13 +79,8 @@ public:
 class HookScanner : public ModuleScanner {
 public:
 
-// HookScanner:
-
 	HookScanner(HANDLE hProc)
-		: ModuleScanner(hProc),// patchesList(patches_list),
-		delimiter(';')
-	{
-	}
+		: ModuleScanner(hProc) { }
 
 	virtual CodeScanReport* scanRemote(ModuleData &moduleData);
 
@@ -93,8 +88,6 @@ private:
 	t_scan_status scanSection(PBYTE modBaseAddr, PBYTE original_module, size_t module_size, size_t section_number, IN CodeScanReport &report);
 
 	bool clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_module, PBYTE loaded_code);
-
-	const char delimiter;
 
 	size_t collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList);
 };
