@@ -42,6 +42,25 @@ void PatchList::deletePatches()
 
 //---
 
+size_t CodeScanReport::generateTags(std::string reportPath)
+{
+	if (patchesList.size() == 0) {
+		return 0;
+	}
+	std::ofstream patch_report;
+	patch_report.open(reportPath);
+	if (patch_report.is_open() == false) {
+		return 0;
+	}
+	size_t patches = patchesList.reportPatches(patch_report, ';');
+	if (patch_report.is_open()) {
+		patch_report.close();
+	}
+	return patches;
+}
+
+//---
+
 bool HookScanner::clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_module, BYTE* loaded_code)
 {
 	BYTE *orig_code = original_module + section_hdr->VirtualAddress;

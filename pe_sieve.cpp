@@ -9,6 +9,7 @@
 
 #include "util.h"
 #include "process_privilege.h"
+#include "process_dumper.h"
 
 HANDLE open_process(DWORD processID)
 {
@@ -56,7 +57,6 @@ bool is_scaner_compatibile(HANDLE hProcess)
 	return true;
 }
 
-
 ProcessScanReport* check_modules_in_process(const t_params args)
 {
 	HANDLE hProcess = nullptr;
@@ -70,16 +70,14 @@ ProcessScanReport* check_modules_in_process(const t_params args)
 		return nullptr;
 		
 	}
+
 	ProcessScanner scanner(hProcess, args);
 	ProcessScanReport *process_report = scanner.scanRemote();
 
-	if (!args.no_dump && !args.quiet) {
-		
-		if (!args.quiet) {
-			ProcessDumper dumper;
-			if (dumper.dumpAllModified(hProcess, *process_report) > 0) {
-				std::cout << "[+] Dumped modified to: " << dumper.dumpDir << std::endl;
-			}
+	if (process_report != nullptr && !args.no_dump && !args.quiet) {
+		ProcessDumper dumper;
+		if (dumper.dumpAllModified(hProcess, *process_report) > 0) {
+			std::cout << "[+] Dumped modified to: " << dumper.dumpDir << std::endl;
 		}
 	}
 	CloseHandle(hProcess);

@@ -46,6 +46,8 @@ public:
 		return true;
 	}
 
+	virtual size_t generateTags(std::string reportPath) { return 0; }
+
 	HMODULE module;
 	DWORD pid;
 	t_scan_status status;

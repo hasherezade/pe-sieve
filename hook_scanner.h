@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include <vector>
+#include <fstream>
 
 #include "scanner.h"
 
@@ -72,6 +73,8 @@ public:
 		outs << "\n}";
 		return true;
 	}
+	
+	size_t generateTags(std::string reportPath);
 
 	PatchList patchesList;
 };
