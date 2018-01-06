@@ -22,19 +22,24 @@ bool is_shown_type(t_scan_status status, t_report_filter filter)
 std::string list_modules(const ProcessScanReport &report, t_report_filter filter)
 {
 	std::stringstream stream;
-	stream << "[\n";
+	stream << "\"scans\" : [\n";
 	//summary:
+	bool is_first = true;
 	std::vector<ModuleScanReport*>::const_iterator itr;
 	for (itr = report.module_reports.begin() ; itr != report.module_reports.end(); itr++) {
 		ModuleScanReport *mod = *itr;
 		if (is_shown_type(mod->status, filter)) {
-			if (itr != report.module_reports.begin()) {
+			if (!is_first) {
 				stream << ",\n";
 			}
-			(*itr)->toJSON(stream);
+			stream << "{\n";
+			mod->toJSON(stream);
+			stream << "\n}";
+			is_first = false;
 		}
 	}
-	stream << "\n]\n";
+	stream << "\n";
+	stream << "]\n";
 	return stream.str();
 }
 
@@ -79,8 +84,8 @@ std::string report_to_json(const ProcessScanReport &process_report, t_report_fil
 	stream << "   \"suspicious\" : "  << std::dec << report.suspicious << "\n";
 	stream << "  },\n";// modified
 	stream << "  \"errors\" : "<< std::dec << report.errors << "\n";
-	stream << " }\n";// scanned
+	stream << " },\n";// scanned
+	stream << list_modules(process_report, filter);
 	stream << "}\n";
-	stream << "\"scans\" : " << list_modules(process_report, filter);
 	return stream.str();
 }

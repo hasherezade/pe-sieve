@@ -26,24 +26,6 @@ char* get_directory(IN char *full_path, OUT char *out_buf, IN const size_t out_b
     return out_buf;
 }
 
-std::string make_dump_path(ULONGLONG modBaseAddr, char* szExePath,  std::string directory)
-{
-	char* fname = get_file_name(szExePath);
-	std::stringstream stream;
-	if (directory.length() > 0) {
-		stream << directory;
-		stream << "\\";
-	}
-	stream << std::hex << modBaseAddr;
-	if (fname) {
-		stream << ".";
-		stream << fname;
-	} else {
-		stream << ".dll";
-	}
-	return stream.str();
-}
-
 char* get_subpath_ptr(char *modulePath, char* searchedPath)
 {
 	if (modulePath == nullptr || searchedPath == nullptr) {

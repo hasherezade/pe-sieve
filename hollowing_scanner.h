@@ -33,7 +33,7 @@ public:
 	{
 	}
 
-	virtual HeadersScanReport* scanRemote(PBYTE remote_addr, PBYTE original_module, size_t module_size);
+	virtual HeadersScanReport* scanRemote(ModuleData &moduleData);
 
 private:
 	bool zero_unused_fields(PBYTE hdr_buffer, size_t hdrs_size);
