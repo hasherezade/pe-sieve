@@ -27,7 +27,9 @@ public:
 
 	ModuleScanReport(HANDLE processHandle, HMODULE _module)
 	{
-		::ModuleScanReport(processHandle, _module, SCAN_NOT_MODIFIED);
+		this->pid = GetProcessId(processHandle);
+		this->module = _module;
+		this->status = SCAN_NOT_MODIFIED;
 	}
 
 	virtual ~ModuleScanReport() {}
