@@ -1,9 +1,51 @@
 #include "report_formatter.h"
-
+#include <string>
 #include <sstream>
 
-std::string report_to_string(const t_report report)
+bool is_shown_type(t_scan_status status, t_report_filter filter)
 {
+	if (filter == REPORT_ALL) {
+		return true;
+	}
+	if (filter & REPORT_ERRORS) {
+		if (status == SCAN_ERROR) return true;
+	}
+	if (filter & REPORT_MODIFIED) {
+		if (status == SCAN_MODIFIED) return true;
+	}
+	if (filter & REPORT_NOT_MODIFIED) {
+		if (status == SCAN_NOT_MODIFIED) return true;
+	}
+	return false;
+}
+
+std::string list_modules(const ProcessScanReport &report, t_report_filter filter)
+{
+	std::stringstream stream;
+	stream << "\"scans\" : [\n";
+	//summary:
+	bool is_first = true;
+	std::vector<ModuleScanReport*>::const_iterator itr;
+	for (itr = report.module_reports.begin() ; itr != report.module_reports.end(); itr++) {
+		ModuleScanReport *mod = *itr;
+		if (is_shown_type(mod->status, filter)) {
+			if (!is_first) {
+				stream << ",\n";
+			}
+			stream << "{\n";
+			mod->toJSON(stream);
+			stream << "\n}";
+			is_first = false;
+		}
+	}
+	stream << "\n";
+	stream << "]\n";
+	return stream.str();
+}
+
+std::string report_to_string(const ProcessScanReport &process_report)
+{
+	const t_report &report = process_report.summary;
 	std::stringstream stream;
 	//summary:
 	size_t total_modified = report.hooked + report.replaced + report.suspicious;
@@ -23,8 +65,9 @@ std::string report_to_string(const t_report report)
 	return stream.str();
 }
 
-std::string report_to_json(const t_report report)
+std::string report_to_json(const ProcessScanReport &process_report, t_report_filter filter)
 {
+	const t_report &report = process_report.summary;
 	std::stringstream stream;
 	//summary:
 	size_t total_modified = report.hooked + report.replaced + report.suspicious;
@@ -41,7 +84,8 @@ std::string report_to_json(const t_report report)
 	stream << "   \"suspicious\" : "  << std::dec << report.suspicious << "\n";
 	stream << "  },\n";// modified
 	stream << "  \"errors\" : "<< std::dec << report.errors << "\n";
-	stream << " }\n";// scanned
+	stream << " },\n";// scanned
+	stream << list_modules(process_report, filter);
 	stream << "}\n";
 	return stream.str();
 }

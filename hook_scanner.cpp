@@ -42,6 +42,25 @@ void PatchList::deletePatches()
 
 //---
 
+size_t CodeScanReport::generateTags(std::string reportPath)
+{
+	if (patchesList.size() == 0) {
+		return 0;
+	}
+	std::ofstream patch_report;
+	patch_report.open(reportPath);
+	if (patch_report.is_open() == false) {
+		return 0;
+	}
+	size_t patches = patchesList.reportPatches(patch_report, ';');
+	if (patch_report.is_open()) {
+		patch_report.close();
+	}
+	return patches;
+}
+
+//---
+
 bool HookScanner::clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_module, BYTE* loaded_code)
 {
 	BYTE *orig_code = original_module + section_hdr->VirtualAddress;
@@ -68,7 +87,7 @@ bool HookScanner::clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_mod
 	return true;
 }
 
-size_t HookScanner::collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size)
+size_t HookScanner::collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, PatchList &patchesList)
 {
 	PatchList::Patch *currPatch = nullptr;
 
@@ -83,14 +102,14 @@ size_t HookScanner::collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_cod
 		}
 		if (currPatch == nullptr) {
 			//open a new patch
-			currPatch = new PatchList::Patch(this->patchesList.size(), (DWORD) rva + i);
-			this->patchesList.insert(currPatch);
+			currPatch = new PatchList::Patch(patchesList.size(), (DWORD) rva + i);
+			patchesList.insert(currPatch);
 		}
 	}
-	return this->patchesList.size();
+	return patchesList.size();
 }
 
-t_scan_status HookScanner::scanSection(PBYTE modBaseAddr, PBYTE original_module, size_t module_size, size_t section_number)
+t_scan_status HookScanner::scanSection(PBYTE modBaseAddr, PBYTE original_module, size_t module_size, size_t section_number, CodeScanReport& report)
 {
 	//get the code section from the module:
 	size_t read_size = 0;
@@ -116,10 +135,12 @@ t_scan_status HookScanner::scanSection(PBYTE modBaseAddr, PBYTE original_module,
 	//check if the code of the loaded module is same as the code of the module on the disk:
 	int res = memcmp(loaded_code, orig_code, smaller_size);
 	if (res != 0) {
-		size_t patches_count = collectPatches(section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size);
+		size_t patches_count = collectPatches(section_hdr->VirtualAddress, orig_code, loaded_code, smaller_size, report.patchesList);
+#ifdef _DEBUG
 		if (patches_count) {
 			std::cout << "Total patches: "  << patches_count << std::endl;
 		}
+#endif
 	}
 	peconv::free_remote_pe_section(loaded_code);
 	loaded_code = NULL;
@@ -129,12 +150,14 @@ t_scan_status HookScanner::scanSection(PBYTE modBaseAddr, PBYTE original_module,
 	return SCAN_NOT_MODIFIED; //not modified
 }
 
-t_scan_status HookScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_module, size_t module_size)
+CodeScanReport* HookScanner::scanRemote(ModuleData& modData)
 {
-	ULONGLONG original_base = peconv::get_image_base(original_module);
-	ULONGLONG new_base = (ULONGLONG) modBaseAddr;
-	if (peconv::has_relocations(original_module) 
-		&& !peconv::relocate_module(original_module, module_size, new_base, original_base))
+	CodeScanReport *my_report = new CodeScanReport(this->processHandle, modData.moduleHandle);
+
+	ULONGLONG original_base = peconv::get_image_base(modData.original_module);
+	ULONGLONG new_base = (ULONGLONG) modData.moduleHandle;
+	if (peconv::has_relocations(modData.original_module) 
+		&& !peconv::relocate_module(modData.original_module, modData.original_size, new_base, original_base))
 	{
 		std::cerr << "[!] Relocating module failed!" << std::endl;
 	}
@@ -142,17 +165,22 @@ t_scan_status HookScanner::scanRemote(PBYTE modBaseAddr, PBYTE original_module, 
 	t_scan_status last_res = SCAN_NOT_MODIFIED;
 	size_t errors = 0;
 	size_t modified = 0;
-	size_t sec_count = peconv::get_sections_count(original_module, module_size);
+	size_t sec_count = peconv::get_sections_count(modData.original_module, modData.original_size);
 	for (size_t i = 0; i < sec_count ; i++) {
-		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(original_module, module_size, i);
+		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(modData.original_module, modData.original_size, i);
 		if (section_hdr == nullptr) continue;
 		if (section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE) {
-			last_res = scanSection(modBaseAddr, original_module, module_size, i);
+			last_res = scanSection((PBYTE) modData.moduleHandle, modData.original_module, modData.original_size, i, *my_report);
 			if (last_res == SCAN_ERROR) errors++;
 			else if (last_res == SCAN_MODIFIED) modified++;
 		}
 	}
-	if (modified > 0) return SCAN_MODIFIED; //the highest priority for modified
-	if (errors > 0) return SCAN_ERROR;
-	return last_res; // last result
+	if (modified > 0) {
+		my_report->status = SCAN_MODIFIED; //the highest priority for modified
+	} else if (errors > 0) {
+		my_report->status = SCAN_ERROR;
+	} else {
+		my_report->status = last_res;
+	}
+	return my_report; // last result
 }

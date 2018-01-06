@@ -84,21 +84,17 @@ void banner()
 	print_help();
 }
 
-void print_report(const t_report report, const t_params args)
+void print_report(const ProcessScanReport& report, const t_params args)
 {
 	std::string report_str;
 	if (args.json_output) {
-		report_str = report_to_json(report);
+		report_str = report_to_json(report, REPORT_MODIFIED);
 	} else {
 		report_str = report_to_string(report);
 	}
 	//summary:
+	const t_report &summary = report.summary;
 	std::cout << report_str;
-	size_t total_modified = report.hooked + report.replaced + report.suspicious;
-	if (!args.quiet && total_modified > 0) {
-		std::string directory = make_dir_name(args.pid);
-		std::cout << "\nDumps saved to the directory: " << directory << std::endl;
-	}
 	if (!args.json_output) {
 		std::cout << "---" << std::endl;
 	}
@@ -167,8 +163,12 @@ int main(int argc, char *argv[])
 	//---
 	std::cout << "PID: " << args.pid << std::endl;
 	std::cout << "Module filter: " << args.filter << std::endl;
-	t_report report = check_modules_in_process(args);
-	print_report(report, args);
+	ProcessScanReport* report = check_modules_in_process(args);
+	if (report != nullptr) {
+		print_report(*report, args);
+		delete report;
+		report = nullptr;
+	}
 #ifdef _DEBUG
 	system("pause");
 #endif

@@ -7,8 +7,6 @@ char* get_file_name(char *full_path);
 
 char* get_directory(IN char *full_path, OUT char *out_buf, IN const size_t out_buf_size);
 
-std::string make_dump_path(ULONGLONG modBaseAddr, char* szExePath,  std::string directory);
-
 char* get_subpath_ptr(char *modulePath, char* searchedPath);
 
 bool is_system_dll(char *szModName, BOOL isWow64);

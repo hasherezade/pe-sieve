@@ -7,12 +7,22 @@
 #define PESIEVE_EXPORTS
 #include "pe_sieve_api.h"
 
+#include "report_formatter.h"
+
 #define LIB_NAME "PE-sieve"
 
 t_report __stdcall PESieve_scan(t_params args)
 {
-	const t_report report = check_modules_in_process(args);
-	return report;
+	const ProcessScanReport* report = check_modules_in_process(args);
+	if (report == nullptr) {
+		t_report nullrep = { 0 };
+		nullrep.pid = args.pid;
+		nullrep.errors = 1;
+		return nullrep;
+	}
+	t_report summary = report->summary;
+	delete report;
+	return summary;
 }
 
 void __stdcall PESieve_help(void)
