@@ -22,6 +22,7 @@ public:
 		peconv::free_pe_buffer(original_module, original_size);
 	}
 
+	bool convertPath();
 	bool loadOriginal();
 	bool reloadWow64();
 
