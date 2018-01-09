@@ -79,9 +79,6 @@ public:
 	t_report summary;
 	std::vector<ModuleScanReport*> module_reports; //TODO: make it protected
 	peconv::ExportsMapper *exportsMap;
-	bool dumpToFile(std::string filename) {
-	
-	}
 
 protected:
 	void deleteModuleReports()
