@@ -117,8 +117,10 @@ t_scan_status HookScanner::scanSection(PBYTE modBaseAddr, PBYTE original_module,
 	if (loaded_code == nullptr) return SCAN_ERROR;
 
 	PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(original_module, module_size, section_number);
-	if (section_hdr == nullptr) return SCAN_ERROR;
-
+	if (section_hdr == nullptr) {
+		peconv::free_remote_pe_section(loaded_code);
+		return SCAN_ERROR;
+	}
 	BYTE *orig_code = original_module + section_hdr->VirtualAddress;
 	
 	//TODO: this should be done on the section's copy...
