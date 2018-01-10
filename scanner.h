@@ -61,10 +61,10 @@ public:
 	{
 	}
 
-	ProcessScanReport* scanRemote();
+	ProcessScanReport* scanRemote(); //throws exceptions
 
 protected:
-	size_t enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters);
+	size_t enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters); //throws exceptions
 
 	t_scan_status scanForHollows(ModuleData& modData, ProcessScanReport& process_report);
 	t_scan_status scanForHooks(ModuleData& modData, ProcessScanReport& process_report);

@@ -60,19 +60,21 @@ bool is_scaner_compatibile(HANDLE hProcess)
 ProcessScanReport* check_modules_in_process(const t_params args)
 {
 	HANDLE hProcess = nullptr;
+	ProcessScanReport *process_report = nullptr;
 	try {
 		hProcess = open_process(args.pid);
 		if (!is_scaner_compatibile(hProcess)) {
 			throw std::exception("Scanner mismatch. Try to use the 64bit version of the scanner.", ERROR_INVALID_PARAMETER);
 		}
+
+		ProcessScanner scanner(hProcess, args);
+		process_report = scanner.scanRemote();
+
 	} catch (std::exception &e) {
 		std::cerr << "[ERROR] " << e.what() << std::endl;
 		return nullptr;
 		
 	}
-
-	ProcessScanner scanner(hProcess, args);
-	ProcessScanReport *process_report = scanner.scanRemote();
 
 	if (process_report != nullptr && !args.quiet) {
 		ResultsDumper dumper;
