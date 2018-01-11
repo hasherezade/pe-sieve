@@ -8,9 +8,9 @@
 
 #include "hook_scanner.h"
 #include "hollowing_scanner.h"
-#include "process_privilege.h"
+#include "utils/process_privilege.h"
 
-#include "util.h"
+#include "utils/util.h"
 
 #include "peconv.h"
 #include "pe_sieve.h"

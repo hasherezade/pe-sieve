@@ -17,28 +17,28 @@ include_directories ( ${PECONV_DIR}/include )
 
 set (srcs
 	pe_sieve.cpp
-	process_privilege.cpp
+	utils/process_privilege.cpp
 	hook_scanner.cpp
 	hollowing_scanner.cpp
 	scanner.cpp
-	util.cpp
+	utils/util.cpp
 	report_formatter.cpp
 	results_dumper.cpp
-	path_converter.cpp
+	utils/path_converter.cpp
 )
 
 set (hdrs
 	pe_sieve.h
-	process_privilege.h
+	utils/process_privilege.h
 	hook_scanner.h
 	hollowing_scanner.h
 	scanner.h
-	util.h
+	utils/util.h
 	report_formatter.h
 	results_dumper.h
 	include/pe_sieve_types.h
 	scan_report.h
-	path_converter.h
+	utils/path_converter.h
 )
 
 # libs

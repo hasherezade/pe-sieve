@@ -4,11 +4,11 @@
 #include <sstream>
 #include <fstream>
 
-#include "util.h"
+#include "utils/util.h"
 
 #include "hollowing_scanner.h"
 #include "hook_scanner.h"
-#include "path_converter.h"
+#include "utils/path_converter.h"
 
 #include <string>
 #include <locale>
