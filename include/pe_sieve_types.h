@@ -11,6 +11,7 @@ typedef struct {
 	bool imp_rec;
 	bool no_dump;
 	bool quiet;
+	bool no_hooks; // don't scan for hooks
 	bool json_output;
 } t_params;
 

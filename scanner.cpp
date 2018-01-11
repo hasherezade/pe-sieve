@@ -183,11 +183,12 @@ ProcessScanReport* ProcessScanner::scanRemote()
 		if (pReport->exportsMap != nullptr) {
 			pReport->exportsMap->add_to_lookup(modData.szModName, (HMODULE) modData.original_module, (ULONGLONG) modData.moduleHandle);
 		}
-
-		t_scan_status is_hooked = SCAN_NOT_MODIFIED;
+		if (args.no_hooks) {
+			continue; // don't scan for hooks
+		}
 		//if not hollowed, check for hooks:
 		if (is_hollowed == SCAN_NOT_MODIFIED) {
-			is_hooked = scanForHooks(modData, *pReport);
+			scanForHooks(modData, *pReport);
 		}
 		
 	}
