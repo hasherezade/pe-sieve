@@ -53,6 +53,24 @@ public:
 	t_scan_status status;
 };
 
+class UnreachableModuleReport : public ModuleScanReport
+{
+public:
+	UnreachableModuleReport(HANDLE processHandle, HMODULE _module)
+		: ModuleScanReport(processHandle, _module, SCAN_MODIFIED)
+	{
+	}
+
+	const virtual bool toJSON(std::stringstream &outs)
+	{
+		outs << "\"unreachable_scan\" : ";
+		outs << "{\n";
+		ModuleScanReport::toJSON(outs);
+		outs << "\n}";
+		return true;
+	}
+};
+
 class ProcessScanReport
 {
 public:

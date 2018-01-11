@@ -169,7 +169,7 @@ ProcessScanReport* ProcessScanner::scanRemote()
 		if (!modData.loadOriginal()) {
 			std::cout << "[!][" << args.pid <<  "] Suspicious: could not read the module file!" << std::endl;
 			//make a report that finding original module was not possible
-			pReport->appendReport(new ModuleScanReport(processHandle, hMods[i], SCAN_MODIFIED));
+			pReport->appendReport(new UnreachableModuleReport(processHandle, hMods[i]));
 			report.suspicious++;
 			continue;
 		}
