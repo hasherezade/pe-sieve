@@ -151,7 +151,7 @@ ProcessScanReport* ProcessScanner::scanRemote()
 	t_report &report = pReport->summary;
 
 	HMODULE hMods[1024];
-	const size_t modules_count = enumModules(hMods, sizeof(hMods), args.filter);
+	const size_t modules_count = enumModules(hMods, sizeof(hMods), args.modules_filter);
 	if (modules_count == 0) {
 		report.errors++;
 		return pReport;

@@ -5,12 +5,18 @@
 
 #include <pshpack4.h> // ensure 4 byte packing of the structures
 
+typedef enum {
+	OUT_FULL = 0,
+	OUT_NO_DUMPS = 1,
+	OUT_NO_DIR = 2
+} t_output_filter;
+
 typedef struct {
 	DWORD pid;
-	DWORD filter;
+	DWORD modules_filter;
 	bool imp_rec;
-	bool no_dump;
-	bool quiet;
+	bool quiet; // do not print log on the stdout
+	t_output_filter out_filter;
 	bool no_hooks; // don't scan for hooks
 	bool json_output;
 } t_params;

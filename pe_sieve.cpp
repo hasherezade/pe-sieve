@@ -76,9 +76,9 @@ ProcessScanReport* check_modules_in_process(const t_params args)
 		
 	}
 
-	if (process_report != nullptr && !args.quiet) {
+	if (process_report != nullptr && !(args.out_filter & OUT_NO_DIR)) {
 		ResultsDumper dumper;
-		if (!args.no_dump) {
+		if (!(args.out_filter & OUT_NO_DUMPS)) {
 			if (dumper.dumpAllModified(hProcess, *process_report) > 0) {
 				std::cout << "[+] Dumped modified to: " << dumper.dumpDir << std::endl;
 			}

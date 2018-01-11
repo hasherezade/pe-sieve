@@ -16,9 +16,9 @@
 #include "pe_sieve.h"
 
 #define PARAM_PID "/pid"
-#define PARAM_FILTER "/filter"
+#define PARAM_MODULES_FILTER "/mfilter"
 #define PARAM_IMP_REC "/imp"
-#define PARAM_NO_DUMP  "/nodump"
+#define PARAM_OUT_FILTER "/ofilter"
 #define PARAM_HELP "/help"
 #define PARAM_HELP2  "/?"
 #define PARAM_VERSION  "/version"
@@ -48,16 +48,18 @@ void print_help()
 	std::cout << "\t: Enable recovering imports. ";
 	std::cout << "(Warning: it may slow down the scan)\n";
 #ifdef _WIN64
-	print_in_color(param_color, PARAM_FILTER);
-	std::cout << " <*filter_id>\n\t: Filter the scanned modules.\n";
-	std::cout << "*filter_id:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
+	print_in_color(param_color, PARAM_MODULES_FILTER);
+	std::cout << " <*mfilter_id>\n\t: Filter the scanned modules.\n";
+	std::cout << "*mfilter_id:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
 #endif
-	print_in_color(param_color, PARAM_NO_DUMP);
-	std::cout << "\t: Do not dump the modified PEs.\n";
+	print_in_color(param_color, PARAM_OUT_FILTER);
+	std::cout << " <*ofilter_id>\n\t: Filter the dumped output.\n";
+	std::cout << "*ofilter_id:\n\t0 - no filter: dump everything (default)\n\t1 - don't dump the modified PEs, but file the report\n\t2 - don't create the output directory at all\n";
+
 	print_in_color(param_color, PARAM_QUIET);
-	std::cout << "\t: Print only the summary. Do not create a directory with outputs.\n";
+	std::cout << "\t: Print only the summary. Do not log on stdout during the scan.\n";
 	print_in_color(param_color, PARAM_JSON);
-	std::cout << "\t: Print the summary formated as JSON.\n";
+	std::cout << "\t: Print the JSON report as the summary.\n";
 
 	print_in_color(hdr_color, "\nInfo: \n");
 	print_in_color(param_color, PARAM_HELP);
@@ -110,7 +112,7 @@ int main(int argc, char *argv[])
 	//---
 	bool info_req = false;
 	t_params args = { 0 };
-	args.filter = LIST_MODULES_ALL;
+	args.modules_filter = LIST_MODULES_ALL;
 
 	//Parse parameters
 	for (int i = 1; i < argc; i++) {
@@ -121,13 +123,14 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], PARAM_IMP_REC)) {
 			args.imp_rec = true;
 		}
-		else if (!strcmp(argv[i], PARAM_NO_DUMP)) {
-			args.no_dump = true;
+		else if (!strcmp(argv[i], PARAM_OUT_FILTER)) {
+			args.out_filter = static_cast<t_output_filter>(atoi(argv[i + 1]));
+			i++;
 		} 
-		else if (!strcmp(argv[i], PARAM_FILTER) && i < argc) {
-			args.filter = atoi(argv[i + 1]);
-			if (args.filter > LIST_MODULES_ALL) {
-				args.filter = LIST_MODULES_ALL;
+		else if (!strcmp(argv[i], PARAM_MODULES_FILTER) && i < argc) {
+			args.modules_filter = atoi(argv[i + 1]);
+			if (args.modules_filter > LIST_MODULES_ALL) {
+				args.modules_filter = LIST_MODULES_ALL;
 			}
 			i++;
 		}
@@ -161,8 +164,11 @@ int main(int argc, char *argv[])
 		}
 	}
 	//---
-	std::cout << "PID: " << args.pid << std::endl;
-	std::cout << "Module filter: " << args.filter << std::endl;
+	if (!args.quiet) {
+		std::cout << "PID: " << args.pid << std::endl;
+		std::cout << "Modules filter: " << args.modules_filter << std::endl;
+		std::cout << "Output filter: " << args.out_filter << std::endl;
+	}
 	ProcessScanReport* report = check_modules_in_process(args);
 	if (report != nullptr) {
 		print_report(*report, args);
