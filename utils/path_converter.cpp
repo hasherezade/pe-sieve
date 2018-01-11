@@ -36,7 +36,10 @@ HANDLE nt_create_file(PCWSTR filePath)
 		NULL,
 		NULL
 	);
-
+	if (status != STATUS_SUCCESS) {
+		std::wcerr << "Cannot open file: " << filePath << ". Error: " << std::hex << status << std::endl;
+		return nullptr;
+	}
 	return hFile;
 }
 
