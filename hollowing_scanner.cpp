@@ -27,9 +27,6 @@ HeadersScanReport* HollowingScanner::scanRemote(ModuleData &moduleData)
 	DWORD ep1 = peconv::get_entry_point_rva(hdr_buffer1);
 	DWORD ep2 = peconv::get_entry_point_rva(hdr_buffer2);
 	if (ep1 != ep2) {
-#ifdef _DEBUG
-		std::cout << "[WARNING] Entry Point overwritten!" << std::endl;
-#endif
 		my_report->epModified = true;
 		peconv::update_entry_point_rva(hdr_buffer1, 0);
 		peconv::update_entry_point_rva(hdr_buffer2, 0);

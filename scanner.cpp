@@ -126,6 +126,9 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanRep
 	if (is_hollowed == SCAN_MODIFIED) {
 		process_report.summary.replaced++;
 	}
+	if (!args.quiet && is_hollowed != SCAN_MODIFIED && scan_report->epModified) {
+		std::cout << "[WARNING] Entry Point overwritten!" << std::endl;
+	}
 	return is_hollowed;
 }
 
