@@ -12,7 +12,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 set ( M_PARSER "libpeconv/libpeconv" )
 
 # modules paths:
-set (PECONV_DIR "${CMAKE_SOURCE_DIR}/${M_PARSER}" CACHE PATH "PEConv main path")
+set (PECONV_DIR "${PROJECT_SOURCE_DIR}/${M_PARSER}" CACHE PATH "PEConv main path")
 include_directories ( ${PECONV_DIR}/include )
 
 set (srcs
