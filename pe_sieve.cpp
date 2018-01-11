@@ -7,8 +7,8 @@
 #include <Windows.h>
 #include "scanner.h"
 
-#include "util.h"
-#include "process_privilege.h"
+#include "utils/util.h"
+#include "utils/process_privilege.h"
 #include "results_dumper.h"
 
 HANDLE open_process(DWORD processID)
