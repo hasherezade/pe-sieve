@@ -61,9 +61,6 @@ bool ModuleData::reloadWow64()
 	bool is_converted = convert_to_wow64_path(szModName);
 	if (!is_converted) return false;
 
-#ifdef _DEBUG
-	std::cout << "Reloading Wow64..." << std::endl;
-#endif
 	//reload it and check again...
 	peconv::free_pe_buffer(original_module, original_size);
 	original_module = peconv::load_pe_module(szModName, original_size, false, false);
