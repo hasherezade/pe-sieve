@@ -1,10 +1,10 @@
 #pragma once
 
 #include <Windows.h>
+#include <Psapi.h>
 #include <map>
 
 #include "peconv.h"
-
 #include "scan_report.h"
 
 class ModuleData {
@@ -64,6 +64,9 @@ public:
 	ProcessScanReport* scanRemote(); //throws exceptions
 
 protected:
+	ProcessScanReport* scanModules(ProcessScanReport *pReport); //throws exceptions
+	ProcessScanReport* scanWorkingSet(ProcessScanReport *pReport);
+
 	size_t enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters); //throws exceptions
 
 	t_scan_status scanForHollows(ModuleData& modData, ProcessScanReport& process_report);
