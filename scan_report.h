@@ -71,6 +71,24 @@ public:
 	}
 };
 
+class RwxModuleReport : public ModuleScanReport
+{
+public:
+	RwxModuleReport(HANDLE processHandle, HMODULE _module)
+		: ModuleScanReport(processHandle, _module, SCAN_MODIFIED)
+	{
+	}
+
+	const virtual bool toJSON(std::stringstream &outs)
+	{
+		outs << "\"workingset_scan\" : ";
+		outs << "{\n";
+		ModuleScanReport::toJSON(outs);
+		outs << "\n}";
+		return true;
+	}
+};
+
 class ProcessScanReport
 {
 public:

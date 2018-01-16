@@ -1,6 +1,6 @@
 #include "scanner.h"
 
-#include <Psapi.h>
+
 #include <sstream>
 #include <fstream>
 
@@ -80,20 +80,6 @@ t_scan_status get_scan_status(ModuleScanReport *report)
 	return report->status;
 }
 
-size_t ProcessScanner::enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters)
-{
-	HANDLE hProcess = this->processHandle;
-	if (hProcess == nullptr) return 0;
-
-	DWORD cbNeeded;
-	if (!EnumProcessModulesEx(hProcess, hMods, hModsMax, &cbNeeded, filters)) {
-		DWORD last_err = GetLastError();
-		throw std::exception("[-] Could not enumerate modules in the process", last_err);
-		return 0;
-	}
-	const size_t modules_count = cbNeeded / sizeof(HMODULE);
-	return modules_count;
-}
 
 t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanReport& process_report)
 {
@@ -148,8 +134,78 @@ t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, ProcessScanRepor
 ProcessScanReport* ProcessScanner::scanRemote()
 {
 	ProcessScanReport *pReport = new ProcessScanReport(this->args.pid);
-	t_report &report = pReport->summary;
+	scanModules(pReport);
+	scanWorkingSet(pReport);
+	return pReport;
+}
 
+ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
+{
+	SYSTEM_INFO si;
+	GetSystemInfo(&si);
+	size_t page_size = si.dwPageSize;
+
+	PSAPI_WORKING_SET_INFORMATION wsi_1 = { 0 };
+	QueryWorkingSet(this->processHandle, (LPVOID)&wsi_1, sizeof(PSAPI_WORKING_SET_INFORMATION));
+#ifdef _DEBUG
+	std::cout << "Number of Entries: " << wsi_1.NumberOfEntries << std::endl;
+#endif
+#if !defined(_WIN64)
+    wsi_1.NumberOfEntries--;
+#endif
+	const size_t entry_size = sizeof(PSAPI_WORKING_SET_BLOCK);
+	DWORD wsi_size = (int)(wsi_1.NumberOfEntries) * entry_size + entry_size + 1024; // The 1024 is to allow for working set growth
+	PSAPI_WORKING_SET_INFORMATION* wsi = (PSAPI_WORKING_SET_INFORMATION*)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, wsi_size);
+
+	if (!QueryWorkingSet(this->processHandle, (LPVOID)wsi, wsi_size)) {
+		pReport->summary.errors++;
+		std::cout << "[-] Could not scan the working set in the process" << GetLastError() << std::endl;
+		HeapFree(GetProcessHeap(), 0, wsi);
+		return pReport;
+	}
+
+	BYTE hdrs[peconv::MAX_HEADER_SIZE] = { 0 };
+
+	for (size_t counter = 0; counter < wsi->NumberOfEntries; counter++) {
+		ULONGLONG page = (ULONGLONG)wsi->WorkingSetInfo[counter].VirtualPage;
+		DWORD protection = (DWORD)wsi->WorkingSetInfo[counter].Protection;
+
+		if ((protection & 2) == 0 || (protection & 4) == 0) {
+			//not WX
+			continue;
+		}
+		ULONGLONG page_addr = page * page_size;
+
+		if (peconv::read_remote_pe_header(this->processHandle,(BYTE*) page_addr, hdrs, peconv::MAX_HEADER_SIZE)) {
+			pReport->appendReport(new RwxModuleReport(processHandle, (HMODULE)page_addr));
+			pReport->summary.suspicious++;
+		}
+	}
+	HeapFree(GetProcessHeap(), 0, wsi);
+	return pReport;
+}
+
+size_t ProcessScanner::enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters)
+{
+	HANDLE hProcess = this->processHandle;
+	if (hProcess == nullptr) return 0;
+
+	DWORD cbNeeded;
+	if (!EnumProcessModulesEx(hProcess, hMods, hModsMax, &cbNeeded, filters)) {
+		DWORD last_err = GetLastError();
+		throw std::exception("[-] Could not enumerate modules in the process", last_err);
+		return 0;
+	}
+	const size_t modules_count = cbNeeded / sizeof(HMODULE);
+	return modules_count;
+}
+
+ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)
+{
+	if (pReport == nullptr) {
+		pReport = new ProcessScanReport(this->args.pid);
+	}
+	t_report &report = pReport->summary;
 	HMODULE hMods[1024];
 	const size_t modules_count = enumModules(hMods, sizeof(hMods), args.modules_filter);
 	if (modules_count == 0) {
