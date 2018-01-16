@@ -151,15 +151,15 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 	std::cout << "Number of Entries: " << wsi_1.NumberOfEntries << std::endl;
 #endif
 #if !defined(_WIN64)
-    wsi_1.NumberOfEntries--;
+	wsi_1.NumberOfEntries--;
 #endif
 	const size_t entry_size = sizeof(PSAPI_WORKING_SET_BLOCK);
-	DWORD wsi_size = (int)(wsi_1.NumberOfEntries) * entry_size + entry_size + 1024; // The 1024 is to allow for working set growth
+	SIZE_T wsi_size = wsi_1.NumberOfEntries * entry_size + entry_size + 1024; // The 1024 is to allow for working set growth
 	PSAPI_WORKING_SET_INFORMATION* wsi = (PSAPI_WORKING_SET_INFORMATION*)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, wsi_size);
 
 	if (!QueryWorkingSet(this->processHandle, (LPVOID)wsi, wsi_size)) {
 		pReport->summary.errors++;
-		std::cout << "[-] Could not scan the working set in the process" << GetLastError() << std::endl;
+		std::cout << "[-] Could not scan the working set in the process. Error: " << GetLastError() << std::endl;
 		HeapFree(GetProcessHeap(), 0, wsi);
 		return pReport;
 	}
