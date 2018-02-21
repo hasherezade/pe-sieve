@@ -139,6 +139,21 @@ ProcessScanReport* ProcessScanner::scanRemote()
 	return pReport;
 }
 
+t_scan_status check_unlisted_module(BYTE hdrs[peconv::MAX_HEADER_SIZE])
+{
+	t_scan_status status = SCAN_NOT_MODIFIED;
+	//check details of the unlisted module...
+	size_t sections_num = peconv::get_sections_count(hdrs, peconv::MAX_HEADER_SIZE);
+	for (size_t i = 0; i < sections_num; i++) {
+		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(hdrs, peconv::MAX_HEADER_SIZE, i);
+		if (section_hdr == nullptr) continue;
+		if (section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE) {
+			status = SCAN_MODIFIED; //if at least one executable section has been found in the PE, it may be suspicious
+		}
+	}
+	return status;
+}
+
 ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 {
 	if (pReport == nullptr) {
@@ -191,6 +206,9 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 		if (peconv::read_remote_pe_header(this->processHandle,(BYTE*) page_addr, hdrs, peconv::MAX_HEADER_SIZE)) {
 			t_scan_status status = SCAN_NOT_MODIFIED;
 			if (is_wx) status = SCAN_MODIFIED; 
+			if (!is_listed_module) {
+				status = check_unlisted_module(hdrs);
+			}
 			
 			WorkingSetScanReport *my_report = new WorkingSetScanReport(processHandle, (HMODULE)page_addr, status);
 			my_report->is_rwx = is_wx;
