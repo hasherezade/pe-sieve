@@ -74,8 +74,8 @@ public:
 class WorkingSetScanReport : public ModuleScanReport
 {
 public:
-	WorkingSetScanReport(HANDLE processHandle, HMODULE _module)
-		: ModuleScanReport(processHandle, _module, SCAN_MODIFIED)
+	WorkingSetScanReport(HANDLE processHandle, HMODULE _module, t_scan_status status)
+		: ModuleScanReport(processHandle, _module, status)
 	{
 	}
 
@@ -92,8 +92,6 @@ public:
 		outs << std::dec << is_manually_loaded;
 		outs << "\n}";
 		return true;
-
-
 	}
 	bool is_rwx;
 	bool is_manually_loaded;

@@ -183,17 +183,23 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 		ULONGLONG page_addr = page * page_size;
 		//if it was already scanned, it means the module was on the list of loaded modules
 		bool is_listed_module = pReport->hasModule((HMODULE)page_addr);
+
 		if (!is_wx && is_listed_module) {
 			//it was already scanned, probably not interesting
 			continue;
 		}
 		if (peconv::read_remote_pe_header(this->processHandle,(BYTE*) page_addr, hdrs, peconv::MAX_HEADER_SIZE)) {
-			WorkingSetScanReport *my_report = new WorkingSetScanReport(processHandle, (HMODULE)page_addr);
+			t_scan_status status = SCAN_NOT_MODIFIED;
+			if (is_wx) status = SCAN_MODIFIED; 
+			
+			WorkingSetScanReport *my_report = new WorkingSetScanReport(processHandle, (HMODULE)page_addr, status);
 			my_report->is_rwx = is_wx;
 			my_report->is_manually_loaded = !is_listed_module;
 
 			pReport->appendReport(my_report);
-			pReport->summary.suspicious++;
+			if (status == SCAN_MODIFIED) {
+				pReport->summary.suspicious++;
+			}
 		}
 	}
 	HeapFree(GetProcessHeap(), 0, wsi);
