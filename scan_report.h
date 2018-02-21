@@ -71,10 +71,10 @@ public:
 	}
 };
 
-class RwxModuleReport : public ModuleScanReport
+class WorkingSetScanReport : public ModuleScanReport
 {
 public:
-	RwxModuleReport(HANDLE processHandle, HMODULE _module)
+	WorkingSetScanReport(HANDLE processHandle, HMODULE _module)
 		: ModuleScanReport(processHandle, _module, SCAN_MODIFIED)
 	{
 	}
@@ -84,9 +84,19 @@ public:
 		outs << "\"workingset_scan\" : ";
 		outs << "{\n";
 		ModuleScanReport::toJSON(outs);
+		outs << ",\n";
+		outs << "\"is_rwx\" : "; 
+		outs << std::dec << is_rwx;
+		outs << ",\n";
+		outs << "\"is_manually_loaded\" : "; 
+		outs << std::dec << is_manually_loaded;
 		outs << "\n}";
 		return true;
+
+
 	}
+	bool is_rwx;
+	bool is_manually_loaded;
 };
 
 class ProcessScanReport
@@ -110,11 +120,20 @@ public:
 	{
 		if (report == nullptr) return;
 		module_reports.push_back(report);
+		scanned_modules.insert(report->module);
+	}
+	bool hasModule(HMODULE page_addr)
+	{
+		if (scanned_modules.find(page_addr) != scanned_modules.end()) {
+			return true; // already scanned this module
+		}
+		return false; // not scanned yet
 	}
 
 	t_report summary;
 	std::vector<ModuleScanReport*> module_reports; //TODO: make it protected
 	peconv::ExportsMapper *exportsMap;
+	std::set<HMODULE> scanned_modules;
 
 protected:
 	void deleteModuleReports()

@@ -141,6 +141,9 @@ ProcessScanReport* ProcessScanner::scanRemote()
 
 ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 {
+	if (pReport == nullptr) {
+		pReport = new ProcessScanReport(this->args.pid);
+	}
 	SYSTEM_INFO si;
 	GetSystemInfo(&si);
 	size_t page_size = si.dwPageSize;
@@ -174,14 +177,22 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 		ULONGLONG page = (ULONGLONG)wsi->WorkingSetInfo[counter].VirtualPage;
 		DWORD protection = (DWORD)wsi->WorkingSetInfo[counter].Protection;
 
-		if ((protection & 2) == 0 || (protection & 4) == 0) {
-			//not WX
+		bool is_wx = (protection & 2) && (protection & 4); // WRITE + EXECUTE -> suspicious
+
+		//calculate the real address of the page:
+		ULONGLONG page_addr = page * page_size;
+		//if it was already scanned, it means the module was on the list of loaded modules
+		bool is_listed_module = pReport->hasModule((HMODULE)page_addr);
+		if (!is_wx && is_listed_module) {
+			//it was already scanned, probably not interesting
 			continue;
 		}
-		ULONGLONG page_addr = page * page_size;
-
 		if (peconv::read_remote_pe_header(this->processHandle,(BYTE*) page_addr, hdrs, peconv::MAX_HEADER_SIZE)) {
-			pReport->appendReport(new RwxModuleReport(processHandle, (HMODULE)page_addr));
+			WorkingSetScanReport *my_report = new WorkingSetScanReport(processHandle, (HMODULE)page_addr);
+			my_report->is_rwx = is_wx;
+			my_report->is_manually_loaded = !is_listed_module;
+
+			pReport->appendReport(my_report);
 			pReport->summary.suspicious++;
 		}
 	}
