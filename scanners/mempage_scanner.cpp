@@ -1,7 +1,8 @@
 #include "mempage_scanner.h"
 
-t_scan_status check_unlisted_module(BYTE hdrs[peconv::MAX_HEADER_SIZE])
+bool has_executable_section(BYTE hdrs[peconv::MAX_HEADER_SIZE])
 {
+	bool has_exec = false;
 	t_scan_status status = SCAN_NOT_MODIFIED;
 	//check details of the unlisted module...
 	size_t sections_num = peconv::get_sections_count(hdrs, peconv::MAX_HEADER_SIZE);
@@ -9,10 +10,11 @@ t_scan_status check_unlisted_module(BYTE hdrs[peconv::MAX_HEADER_SIZE])
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(hdrs, peconv::MAX_HEADER_SIZE, i);
 		if (section_hdr == nullptr) continue;
 		if (section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE) {
-			status = SCAN_MODIFIED; //if at least one executable section has been found in the PE, it may be suspicious
+			has_exec = true;
+			break;
 		}
 	}
-	return status;
+	return has_exec;
 }
 
 MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
@@ -34,12 +36,15 @@ MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 		// this is not a PE file
 		return nullptr;
 	}
+	// if it is W+X always mark it as suspicious
+	t_scan_status status = is_wx ? SCAN_MODIFIED : SCAN_NOT_MODIFIED;
 
-	t_scan_status status = SCAN_NOT_MODIFIED;
-	if (is_wx) status = SCAN_MODIFIED; 
-	// it is a PE file, and it was not on the list of modules...
-	if (!memPage.is_listed_module) {
-		status = check_unlisted_module(hdrs);
+	// otherwise, check othe features of the PE file:
+	if (status != SCAN_MODIFIED) {
+		//is it unlisted PE module with at leas one executable section?
+		if (!memPage.is_listed_module && has_executable_section(hdrs)) {
+			status = SCAN_MODIFIED;
+		}
 	}
 
 	MemPageScanReport *my_report = new MemPageScanReport(processHandle, (HMODULE)memPage.start_va, status);
