@@ -25,6 +25,7 @@ set (srcs
 	report_formatter.cpp
 	results_dumper.cpp
 	utils/path_converter.cpp
+	module_data.cpp
 )
 
 set (hdrs
@@ -39,6 +40,7 @@ set (hdrs
 	include/pe_sieve_types.h
 	scan_report.h
 	utils/path_converter.h
+	module_data.h
 )
 
 # libs
