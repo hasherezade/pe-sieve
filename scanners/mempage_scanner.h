@@ -13,6 +13,9 @@ public:
 	MemPageScanReport(HANDLE processHandle, HMODULE _module, t_scan_status status)
 		: ModuleScanReport(processHandle, _module, status)
 	{
+		 is_rwx = false;
+		 is_manually_loaded = false;
+		 protection = 0;
 	}
 
 	const virtual bool toJSON(std::stringstream &outs)
@@ -26,11 +29,16 @@ public:
 		outs << ",\n";
 		outs << "\"is_manually_loaded\" : "; 
 		outs << std::dec << is_manually_loaded;
+		outs << ",\n";
+		outs << "\"protection\" : "; 
+		outs << std::dec << protection;
 		outs << "\n}";
 		return true;
 	}
+
 	bool is_rwx;
 	bool is_manually_loaded;
+	DWORD protection;
 };
 
 typedef enum {
@@ -52,11 +60,6 @@ public:
 	bool is_readable()
 	{
 		return (protection & MEMPROTECT_R);
-	}
-
-	bool is_wx()
-	{
-		return (protection & MEMPROTECT_X) && (protection & MEMPROTECT_W); // WRITE + EXECUTE -> suspicious
 	}
 
 	ULONGLONG start_va;
