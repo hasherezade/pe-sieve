@@ -13,14 +13,6 @@
 #include <locale>
 #include <codecvt>
 
-t_scan_status get_scan_status(ModuleScanReport *report)
-{
-	if (report == nullptr) {
-		return SCAN_ERROR;
-	}
-	return report->status;
-}
-
 t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanReport& process_report)
 {
 	BOOL isWow64 = FALSE;
@@ -33,14 +25,14 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanRep
 		process_report.summary.errors++;
 		return SCAN_ERROR;
 	}
-	t_scan_status is_hollowed = get_scan_status(scan_report);
+	t_scan_status is_hollowed = ModuleScanReport::get_scan_status(scan_report);
 
 	if (is_hollowed == SCAN_MODIFIED && isWow64) {
 		if (modData.reloadWow64()) {
 			delete scan_report; // delete previous report
 			scan_report = hollows.scanRemote(modData);
 		}
-		is_hollowed = get_scan_status(scan_report);
+		is_hollowed = ModuleScanReport::get_scan_status(scan_report);
 	}
 	process_report.appendReport(scan_report);
 	if (is_hollowed == SCAN_ERROR) {
@@ -59,7 +51,7 @@ t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, ProcessScanRepor
 {
 	HookScanner hooks(processHandle);
 	CodeScanReport *scan_report = hooks.scanRemote(modData);
-	t_scan_status is_hooked = get_scan_status(scan_report);
+	t_scan_status is_hooked = ModuleScanReport::get_scan_status(scan_report);
 	process_report.appendReport(scan_report);
 	
 	if (is_hooked == SCAN_MODIFIED) {
