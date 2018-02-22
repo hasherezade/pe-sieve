@@ -23,14 +23,16 @@ MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 		//it was already scanned, probably not interesting
 		return nullptr;
 	}
-
+	if (!memPage.is_readable()) {
+		//could not access this page
+		return nullptr;
+	}
 	BYTE hdrs[peconv::MAX_HEADER_SIZE] = { 0 };
-
+	
 	if (!peconv::read_remote_pe_header(this->processHandle,(BYTE*) memPage.start_va, hdrs, peconv::MAX_HEADER_SIZE)) {
 		// this is not a PE file
 		return nullptr;
 	}
-
 	t_scan_status status = SCAN_NOT_MODIFIED;
 	if (is_wx) status = SCAN_MODIFIED; 
 	if (!memPage.is_listed_module) {

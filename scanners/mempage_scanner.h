@@ -33,6 +33,14 @@ public:
 	bool is_manually_loaded;
 };
 
+typedef enum {
+	MEMPROTECT_R = 1,
+	MEMPROTECT_X = 2,
+	MEMPROTECT_W = 4,
+	MEMPROTECT_V = 8,
+	MEMPROTECT_G = 16
+} t_mempage_protect;
+
 class MemPageData
 {
 public:
@@ -41,9 +49,14 @@ public:
 
 	virtual ~MemPageData() {}
 
+	bool is_readable()
+	{
+		return (protection & MEMPROTECT_R);
+	}
+
 	bool is_wx()
 	{
-		return (protection & 2) && (protection & 4); // WRITE + EXECUTE -> suspicious
+		return (protection & MEMPROTECT_X) && (protection & MEMPROTECT_W); // WRITE + EXECUTE -> suspicious
 	}
 
 	ULONGLONG start_va;
