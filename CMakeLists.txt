@@ -19,6 +19,7 @@ set (scanners_srcs
 	scanners/hollowing_scanner.cpp
 	scanners/hook_scanner.cpp
 	scanners/module_scanner.cpp
+	scanners/mempage_scanner.cpp
 	scanners/scanner.cpp
 )
 
@@ -26,6 +27,7 @@ set (scanners_hdrs
 	scanners/hollowing_scanner.h
 	scanners/hook_scanner.h
 	scanners/module_scanner.h
+	scanners/mempage_scanner.h
 	scanners/scanner.h
 	scanners/module_scan_report.h
 	scanners/scan_report.h

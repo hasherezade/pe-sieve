@@ -79,28 +79,3 @@ public:
 	}
 };
 
-class WorkingSetScanReport : public ModuleScanReport
-{
-public:
-	WorkingSetScanReport(HANDLE processHandle, HMODULE _module, t_scan_status status)
-		: ModuleScanReport(processHandle, _module, status)
-	{
-	}
-
-	const virtual bool toJSON(std::stringstream &outs)
-	{
-		outs << "\"workingset_scan\" : ";
-		outs << "{\n";
-		ModuleScanReport::toJSON(outs);
-		outs << ",\n";
-		outs << "\"is_rwx\" : "; 
-		outs << std::dec << is_rwx;
-		outs << ",\n";
-		outs << "\"is_manually_loaded\" : "; 
-		outs << std::dec << is_manually_loaded;
-		outs << "\n}";
-		return true;
-	}
-	bool is_rwx;
-	bool is_manually_loaded;
-};

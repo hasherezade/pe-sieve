@@ -8,6 +8,7 @@
 
 #include "hollowing_scanner.h"
 #include "hook_scanner.h"
+#include "mempage_scanner.h"
 
 #include <string>
 #include <locale>
@@ -71,21 +72,6 @@ ProcessScanReport* ProcessScanner::scanRemote()
 	return pReport;
 }
 
-t_scan_status check_unlisted_module(BYTE hdrs[peconv::MAX_HEADER_SIZE])
-{
-	t_scan_status status = SCAN_NOT_MODIFIED;
-	//check details of the unlisted module...
-	size_t sections_num = peconv::get_sections_count(hdrs, peconv::MAX_HEADER_SIZE);
-	for (size_t i = 0; i < sections_num; i++) {
-		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(hdrs, peconv::MAX_HEADER_SIZE, i);
-		if (section_hdr == nullptr) continue;
-		if (section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE) {
-			status = SCAN_MODIFIED; //if at least one executable section has been found in the PE, it may be suspicious
-		}
-	}
-	return status;
-}
-
 ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 {
 	if (pReport == nullptr) {
@@ -118,39 +104,22 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 		return pReport;
 	}
 
-	BYTE hdrs[peconv::MAX_HEADER_SIZE] = { 0 };
+	MemPageScanner workingSetScanner(this->processHandle);
 
 	for (size_t counter = 0; counter < wsi->NumberOfEntries; counter++) {
 		ULONGLONG page = (ULONGLONG)wsi->WorkingSetInfo[counter].VirtualPage;
 		DWORD protection = (DWORD)wsi->WorkingSetInfo[counter].Protection;
 
-		bool is_wx = (protection & 2) && (protection & 4); // WRITE + EXECUTE -> suspicious
-
 		//calculate the real address of the page:
 		ULONGLONG page_addr = page * page_size;
+
+		MemPageData memPage(page_addr, page_size, protection);
 		//if it was already scanned, it means the module was on the list of loaded modules
-		bool is_listed_module = pReport->hasModule((HMODULE)page_addr);
-
-		if (!is_wx && is_listed_module) {
-			//it was already scanned, probably not interesting
-			continue;
-		}
-		if (peconv::read_remote_pe_header(this->processHandle,(BYTE*) page_addr, hdrs, peconv::MAX_HEADER_SIZE)) {
-			t_scan_status status = SCAN_NOT_MODIFIED;
-			if (is_wx) status = SCAN_MODIFIED; 
-			if (!is_listed_module) {
-				status = check_unlisted_module(hdrs);
-			}
-			
-			WorkingSetScanReport *my_report = new WorkingSetScanReport(processHandle, (HMODULE)page_addr, status);
-			my_report->is_rwx = is_wx;
-			my_report->is_manually_loaded = !is_listed_module;
-
-			pReport->appendReport(my_report);
-			if (status == SCAN_MODIFIED) {
-				pReport->summary.suspicious++;
-			}
-		}
+		memPage.is_listed_module = pReport->hasModule((HMODULE)page_addr);
+		
+		MemPageScanReport *my_report = workingSetScanner.scanRemote(memPage);
+		if (my_report == nullptr) continue;
+		pReport->appendReport(my_report);
 	}
 	HeapFree(GetProcessHeap(), 0, wsi);
 	return pReport;
@@ -197,7 +166,6 @@ ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)
 			std::cout << "[!][" << args.pid <<  "] Suspicious: could not read the module file!" << std::endl;
 			//make a report that finding original module was not possible
 			pReport->appendReport(new UnreachableModuleReport(processHandle, hMods[i]));
-			report.suspicious++;
 			continue;
 		}
 		if (!args.quiet) {

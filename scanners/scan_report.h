@@ -33,7 +33,11 @@ public:
 		if (report == nullptr) return;
 		module_reports.push_back(report);
 		scanned_modules.insert(report->module);
+		if (ModuleScanReport::get_scan_status(report) == SCAN_MODIFIED) {
+			summary.suspicious++;
+		}
 	}
+
 	bool hasModule(HMODULE page_addr)
 	{
 		if (scanned_modules.find(page_addr) != scanned_modules.end()) {
