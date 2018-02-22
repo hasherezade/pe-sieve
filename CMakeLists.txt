@@ -28,31 +28,43 @@ set (scanners_hdrs
 	scanners/scan_report.h
 )
 
-set (srcs
-	pe_sieve.cpp
+set (utils_srcs
 	utils/process_privilege.cpp
 	utils/util.cpp
+	utils/path_converter.cpp
+)
+
+set (utils_hdrs
+	utils/util.h
+	utils/path_converter.h
+	utils/process_privilege.h
+)
+
+
+set (srcs
+	pe_sieve.cpp
 	report_formatter.cpp
 	results_dumper.cpp
-	utils/path_converter.cpp
 	module_data.cpp
 	${scanners_srcs}
+	${utils_srcs}
 )
 
 set (hdrs
 	pe_sieve.h
-	utils/process_privilege.h
-	utils/util.h
 	report_formatter.h
 	results_dumper.h
 	include/pe_sieve_types.h
-	utils/path_converter.h
 	module_data.h
 	${scanners_hdrs}
+	${utils_hdrs}
 )
 
 SOURCE_GROUP("Source Files\\scanners" FILES ${scanners_srcs} )
 SOURCE_GROUP("Header Files\\scanners" FILES ${scanners_hdrs} )
+
+SOURCE_GROUP("Source Files\\utils" FILES ${utils_srcs} )
+SOURCE_GROUP("Header Files\\utils" FILES ${utils_hdrs} )
 
 # libs
 add_subdirectory (libpeconv/libpeconv)
