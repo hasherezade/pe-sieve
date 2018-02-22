@@ -5,7 +5,7 @@
 #include "peconv.h"
 
 #include <Windows.h>
-#include "scanner.h"
+#include "scanners/scanner.h"
 
 #include "utils/util.h"
 #include "utils/process_privilege.h"

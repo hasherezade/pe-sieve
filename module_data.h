@@ -5,7 +5,6 @@
 #include <map>
 
 #include "peconv.h"
-#include "scan_report.h"
 
 class ModuleData {
 

@@ -6,7 +6,7 @@
 
 #include "peconv.h"
 #include "scan_report.h"
-#include "module_data.h"
+#include "../module_data.h"
 
 class ModuleScanner {
 public:

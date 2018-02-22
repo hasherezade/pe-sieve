@@ -15,33 +15,44 @@ set ( M_PARSER "libpeconv/libpeconv" )
 set (PECONV_DIR "${PROJECT_SOURCE_DIR}/${M_PARSER}" CACHE PATH "PEConv main path")
 include_directories ( ${PECONV_DIR}/include )
 
+set (scanners_srcs
+	scanners/hollowing_scanner.cpp
+	scanners/hook_scanner.cpp
+	scanners/scanner.cpp
+)
+
+set (scanners_hdrs
+	scanners/hollowing_scanner.h
+	scanners/hook_scanner.h
+	scanners/scanner.h
+	scanners/scan_report.h
+)
+
 set (srcs
 	pe_sieve.cpp
 	utils/process_privilege.cpp
-	hook_scanner.cpp
-	hollowing_scanner.cpp
-	scanner.cpp
 	utils/util.cpp
 	report_formatter.cpp
 	results_dumper.cpp
 	utils/path_converter.cpp
 	module_data.cpp
+	${scanners_srcs}
 )
 
 set (hdrs
 	pe_sieve.h
 	utils/process_privilege.h
-	hook_scanner.h
-	hollowing_scanner.h
-	scanner.h
 	utils/util.h
 	report_formatter.h
 	results_dumper.h
 	include/pe_sieve_types.h
-	scan_report.h
 	utils/path_converter.h
 	module_data.h
+	${scanners_hdrs}
 )
+
+SOURCE_GROUP("Source Files\\scanners" FILES ${scanners_srcs} )
+SOURCE_GROUP("Header Files\\scanners" FILES ${scanners_hdrs} )
 
 # libs
 add_subdirectory (libpeconv/libpeconv)
