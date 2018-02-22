@@ -6,7 +6,6 @@
 
 #include "peconv.h"
 #include "module_scan_report.h"
-#include "../module_data.h"
 
 class MemPageScanReport : public ModuleScanReport
 {

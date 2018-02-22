@@ -21,6 +21,7 @@ set (scanners_srcs
 	scanners/module_scanner.cpp
 	scanners/mempage_scanner.cpp
 	scanners/scanner.cpp
+	scanners/module_data.cpp
 )
 
 set (scanners_hdrs
@@ -31,6 +32,7 @@ set (scanners_hdrs
 	scanners/scanner.h
 	scanners/module_scan_report.h
 	scanners/scan_report.h
+	scanners/module_data.h
 )
 
 set (utils_srcs
@@ -50,7 +52,6 @@ set (srcs
 	pe_sieve.cpp
 	report_formatter.cpp
 	results_dumper.cpp
-	module_data.cpp
 	${scanners_srcs}
 	${utils_srcs}
 )
@@ -60,7 +61,6 @@ set (hdrs
 	report_formatter.h
 	results_dumper.h
 	include/pe_sieve_types.h
-	module_data.h
 	${scanners_hdrs}
 	${utils_hdrs}
 )

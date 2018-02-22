@@ -1,7 +1,7 @@
 #include "module_data.h"
 
-#include "utils/util.h"
-#include "utils/path_converter.h"
+#include "../utils/util.h"
+#include "../utils/path_converter.h"
 
 //---
 bool ModuleData::convertPath()
