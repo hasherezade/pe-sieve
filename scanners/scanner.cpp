@@ -36,9 +36,6 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanRep
 		is_hollowed = ModuleScanReport::get_scan_status(scan_report);
 	}
 	process_report.appendReport(scan_report);
-	if (is_hollowed == SCAN_ERROR) {
-		process_report.summary.errors++;
-	}
 	if (is_hollowed == SCAN_MODIFIED) {
 		process_report.summary.replaced++;
 	}
@@ -57,9 +54,6 @@ t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, ProcessScanRepor
 	
 	if (is_hooked == SCAN_MODIFIED) {
 		process_report.summary.hooked++;
-	}
-	if (is_hooked == SCAN_ERROR) {
-		process_report.summary.errors++;
 	}
 	return is_hooked;
 }

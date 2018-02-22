@@ -36,6 +36,9 @@ public:
 		if (ModuleScanReport::get_scan_status(report) == SCAN_MODIFIED) {
 			summary.suspicious++;
 		}
+		if (ModuleScanReport::get_scan_status(report) == SCAN_ERROR) {
+			summary.errors++;
+		}
 	}
 
 	bool hasModule(HMODULE page_addr)
