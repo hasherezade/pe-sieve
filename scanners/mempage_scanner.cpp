@@ -17,11 +17,10 @@ t_scan_status check_unlisted_module(BYTE hdrs[peconv::MAX_HEADER_SIZE])
 
 MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 {
-	// skip pages that are not readable or not executable
-	if (!(memPage.protection & MEMPROTECT_R) || !(memPage.protection & MEMPROTECT_X)) {
+	// skip pages that are not not executable
+	if (!(memPage.protection & MEMPROTECT_X)) {
 		return nullptr;
 	}
-
 	// WRITE + EXECUTE -> suspicious
 	bool is_wx = (memPage.protection & MEMPROTECT_X) && (memPage.protection & MEMPROTECT_W);
 
