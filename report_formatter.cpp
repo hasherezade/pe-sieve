@@ -11,10 +11,10 @@ bool is_shown_type(t_scan_status status, t_report_filter filter)
 		if (status == SCAN_ERROR) return true;
 	}
 	if (filter & REPORT_MODIFIED) {
-		if (status == SCAN_MODIFIED) return true;
+		if (status == SCAN_SUSPICIOUS) return true;
 	}
 	if (filter & REPORT_NOT_MODIFIED) {
-		if (status == SCAN_NOT_MODIFIED) return true;
+		if (status == SCAN_NOT_SUSPICIOUS) return true;
 	}
 	return false;
 }
@@ -56,6 +56,8 @@ std::string report_to_string(const ProcessScanReport &process_report)
 	stream << "-\n";
 	stream << "Hooked:           " << std::dec << report.hooked << "\n";
 	stream << "Replaced:         " << std::dec << report.replaced << "\n";
+	stream << "Detached:         " << std::dec << report.detached << "\n";
+	stream << "Implanted:        " << std::dec << report.implanted << "\n";
 	stream << "Other:            " << std::dec << other << "\n";
 	stream << "-\n";
 	stream << "Total suspicious:   " << std::dec << report.suspicious << "\n";
@@ -81,6 +83,8 @@ std::string report_to_json(const ProcessScanReport &process_report, t_report_fil
 	stream << "   \"total\" : " << std::dec << report.suspicious << ",\n";
 	stream << "   \"hooked\" : " << std::dec << report.hooked << ",\n";
 	stream << "   \"replaced\" : "  << std::dec << report.replaced << ",\n";
+	stream << "   \"detached\" : " << std::dec << report.detached << ",\n";
+	stream << "   \"implanted\" : "  << std::dec << report.implanted << ",\n";
 	stream << "   \"other\" : "  << std::dec << other_suspicious << "\n";
 	stream << "  },\n";// modified
 	stream << "  \"errors\" : "<< std::dec << report.errors << "\n";

@@ -57,7 +57,7 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 		itr++)
 	{
 		ModuleScanReport* mod = *itr;
-		if (mod->status != SCAN_MODIFIED) {
+		if (mod->status != SCAN_SUSPICIOUS) {
 			continue;
 		}
 		memset(szModName, 0, MAX_PATH);

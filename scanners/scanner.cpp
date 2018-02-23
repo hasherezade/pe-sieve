@@ -28,7 +28,7 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanRep
 	}
 	t_scan_status is_hollowed = ModuleScanReport::get_scan_status(scan_report);
 
-	if (is_hollowed == SCAN_MODIFIED && isWow64) {
+	if (is_hollowed == SCAN_SUSPICIOUS && isWow64) {
 		if (modData.reloadWow64()) {
 			delete scan_report; // delete previous report
 			scan_report = hollows.scanRemote(modData);
@@ -36,10 +36,10 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanRep
 		is_hollowed = ModuleScanReport::get_scan_status(scan_report);
 	}
 	process_report.appendReport(scan_report);
-	if (is_hollowed == SCAN_MODIFIED) {
+	if (is_hollowed == SCAN_SUSPICIOUS) {
 		process_report.summary.replaced++;
 	}
-	if (!args.quiet && is_hollowed != SCAN_MODIFIED && scan_report->epModified) {
+	if (!args.quiet && is_hollowed != SCAN_SUSPICIOUS && scan_report->epModified) {
 		std::cout << "[WARNING] Entry Point overwritten!" << std::endl;
 	}
 	return is_hollowed;
@@ -52,7 +52,7 @@ t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, ProcessScanRepor
 	t_scan_status is_hooked = ModuleScanReport::get_scan_status(scan_report);
 	process_report.appendReport(scan_report);
 	
-	if (is_hooked == SCAN_MODIFIED) {
+	if (is_hooked == SCAN_SUSPICIOUS) {
 		process_report.summary.hooked++;
 	}
 	return is_hooked;
@@ -113,7 +113,13 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 		
 		MemPageScanReport *my_report = workingSetScanner.scanRemote(memPage);
 		if (my_report == nullptr) continue;
+
 		pReport->appendReport(my_report);
+		if (ModuleScanReport::get_scan_status(my_report) == SCAN_SUSPICIOUS) {
+			if (my_report->is_manually_loaded) {
+				pReport->summary.implanted++;
+			}
+		}
 	}
 	HeapFree(GetProcessHeap(), 0, wsi);
 	return pReport;
@@ -160,6 +166,7 @@ ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)
 			std::cout << "[!][" << args.pid <<  "] Suspicious: could not read the module file!" << std::endl;
 			//make a report that finding original module was not possible
 			pReport->appendReport(new UnreachableModuleReport(processHandle, hMods[i]));
+			pReport->summary.detached++;
 			continue;
 		}
 		if (!args.quiet) {
@@ -176,7 +183,7 @@ ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)
 			continue; // don't scan for hooks
 		}
 		//if not hollowed, check for hooks:
-		if (is_hollowed == SCAN_NOT_MODIFIED) {
+		if (is_hollowed == SCAN_NOT_SUSPICIOUS) {
 			scanForHooks(modData, *pReport);
 		}
 	}

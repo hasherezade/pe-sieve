@@ -33,7 +33,7 @@ public:
 		if (report == nullptr) return;
 		module_reports.push_back(report);
 		scanned_modules.insert(report->module);
-		if (ModuleScanReport::get_scan_status(report) == SCAN_MODIFIED) {
+		if (ModuleScanReport::get_scan_status(report) == SCAN_SUSPICIOUS) {
 			summary.suspicious++;
 		}
 		if (ModuleScanReport::get_scan_status(report) == SCAN_ERROR) {

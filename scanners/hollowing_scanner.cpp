@@ -37,10 +37,10 @@ HeadersScanReport* HollowingScanner::scanRemote(ModuleData &moduleData)
 
 	//compare:
 	if (memcmp(hdr_buffer1, hdr_buffer2, hdrs_size) != 0) {
-		my_report->status = SCAN_MODIFIED;
+		my_report->status = SCAN_SUSPICIOUS;
 		return my_report;
 	}
-	my_report->status = SCAN_NOT_MODIFIED;
+	my_report->status = SCAN_NOT_SUSPICIOUS;
 	return my_report;
 }
 

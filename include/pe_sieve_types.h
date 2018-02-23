@@ -22,12 +22,14 @@ typedef struct {
 } t_params;
 
 typedef struct {
-	DWORD pid;
-	DWORD scanned;
-	DWORD replaced;
-	DWORD hooked;
-	DWORD suspicious;
-	DWORD errors;
+	DWORD pid; // pid of the process that was scanned
+	DWORD scanned; // number of all scanned modules
+	DWORD suspicious;// general summary of suspicious
+	DWORD replaced; // PE file replaced in memory (probably hollowed)
+	DWORD detached; // cannot find the file corresponding to the module in memory
+	DWORD hooked; // detected modifications in the code
+	DWORD implanted; // the full PE was probably loaded manually
+	DWORD errors; // errors prevented the scan
 } t_report;
 
 #include <poppack.h> //back to the previous structure packing

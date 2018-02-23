@@ -12,8 +12,8 @@
 
 typedef enum module_scan_status {
 	SCAN_ERROR = -1,
-	SCAN_NOT_MODIFIED = 0,
-	SCAN_MODIFIED = 1
+	SCAN_NOT_SUSPICIOUS = 0,
+	SCAN_SUSPICIOUS = 1
 } t_scan_status;
 
 class ModuleScanReport
@@ -38,7 +38,7 @@ public:
 	{
 		this->pid = GetProcessId(processHandle);
 		this->module = _module;
-		this->status = SCAN_NOT_MODIFIED;
+		this->status = SCAN_NOT_SUSPICIOUS;
 	}
 
 	virtual ~ModuleScanReport() {}
@@ -65,7 +65,7 @@ class UnreachableModuleReport : public ModuleScanReport
 {
 public:
 	UnreachableModuleReport(HANDLE processHandle, HMODULE _module)
-		: ModuleScanReport(processHandle, _module, SCAN_MODIFIED)
+		: ModuleScanReport(processHandle, _module, SCAN_SUSPICIOUS)
 	{
 	}
 

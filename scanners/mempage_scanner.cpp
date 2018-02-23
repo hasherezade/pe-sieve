@@ -3,7 +3,7 @@
 bool has_executable_section(BYTE hdrs[peconv::MAX_HEADER_SIZE])
 {
 	bool has_exec = false;
-	t_scan_status status = SCAN_NOT_MODIFIED;
+	t_scan_status status = SCAN_NOT_SUSPICIOUS;
 	//check details of the unlisted module...
 	size_t sections_num = peconv::get_sections_count(hdrs, peconv::MAX_HEADER_SIZE);
 	for (size_t i = 0; i < sections_num; i++) {
@@ -37,13 +37,13 @@ MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 		return nullptr;
 	}
 	// if it is W+X always mark it as suspicious
-	t_scan_status status = is_wx ? SCAN_MODIFIED : SCAN_NOT_MODIFIED;
+	t_scan_status status = is_wx ? SCAN_SUSPICIOUS : SCAN_NOT_SUSPICIOUS;
 
 	// otherwise, check othe features of the PE file:
-	if (status != SCAN_MODIFIED) {
+	if (status != SCAN_SUSPICIOUS) {
 		//is it unlisted PE module with at leas one executable section?
 		if (!memPage.is_listed_module && has_executable_section(hdrs)) {
-			status = SCAN_MODIFIED;
+			status = SCAN_SUSPICIOUS;
 		}
 	}
 

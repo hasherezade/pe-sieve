@@ -147,9 +147,9 @@ t_scan_status HookScanner::scanSection(PBYTE modBaseAddr, PBYTE original_module,
 	peconv::free_pe_section(loaded_code);
 	loaded_code = NULL;
 	if (res != 0) {
-		return SCAN_MODIFIED; // modified
+		return SCAN_SUSPICIOUS; // modified
 	}
-	return SCAN_NOT_MODIFIED; //not modified
+	return SCAN_NOT_SUSPICIOUS; //not modified
 }
 
 CodeScanReport* HookScanner::scanRemote(ModuleData& modData)
@@ -164,7 +164,7 @@ CodeScanReport* HookScanner::scanRemote(ModuleData& modData)
 		std::cerr << "[!] Relocating module failed!" << std::endl;
 	}
 
-	t_scan_status last_res = SCAN_NOT_MODIFIED;
+	t_scan_status last_res = SCAN_NOT_SUSPICIOUS;
 	size_t errors = 0;
 	size_t modified = 0;
 	size_t sec_count = peconv::get_sections_count(modData.original_module, modData.original_size);
@@ -174,11 +174,11 @@ CodeScanReport* HookScanner::scanRemote(ModuleData& modData)
 		if (section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE) {
 			last_res = scanSection((PBYTE) modData.moduleHandle, modData.original_module, modData.original_size, i, *my_report);
 			if (last_res == SCAN_ERROR) errors++;
-			else if (last_res == SCAN_MODIFIED) modified++;
+			else if (last_res == SCAN_SUSPICIOUS) modified++;
 		}
 	}
 	if (modified > 0) {
-		my_report->status = SCAN_MODIFIED; //the highest priority for modified
+		my_report->status = SCAN_SUSPICIOUS; //the highest priority for modified
 	} else if (errors > 0) {
 		my_report->status = SCAN_ERROR;
 	} else {
