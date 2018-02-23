@@ -4,7 +4,6 @@
 
 #include <fstream>
 
-#include "scanner.h"
 #include "utils/util.h"
 
 //---

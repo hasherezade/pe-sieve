@@ -4,10 +4,10 @@
 #include <iostream>
 
 #include "pe_sieve_types.h"
-#include "scan_report.h"
+#include "scanners/scan_report.h"
 #include "report_formatter.h"
 
-static char VERSION[] = "0.0.9.7.7";
+static char VERSION[] = "0.0.9.8";
 static char URL[] = "https://github.com/hasherezade/pe-sieve";
 
 std::string info();

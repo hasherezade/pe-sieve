@@ -6,8 +6,6 @@
 #include <sstream>
 #include <fstream>
 
-#include "hook_scanner.h"
-#include "hollowing_scanner.h"
 #include "utils/process_privilege.h"
 
 #include "utils/util.h"

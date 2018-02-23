@@ -15,31 +15,61 @@ set ( M_PARSER "libpeconv/libpeconv" )
 set (PECONV_DIR "${PROJECT_SOURCE_DIR}/${M_PARSER}" CACHE PATH "PEConv main path")
 include_directories ( ${PECONV_DIR}/include )
 
+set (scanners_srcs
+	scanners/hollowing_scanner.cpp
+	scanners/hook_scanner.cpp
+	scanners/module_scanner.cpp
+	scanners/mempage_scanner.cpp
+	scanners/scanner.cpp
+	scanners/module_data.cpp
+)
+
+set (scanners_hdrs
+	scanners/hollowing_scanner.h
+	scanners/hook_scanner.h
+	scanners/module_scanner.h
+	scanners/mempage_scanner.h
+	scanners/scanner.h
+	scanners/module_scan_report.h
+	scanners/scan_report.h
+	scanners/module_data.h
+)
+
+set (utils_srcs
+	utils/process_privilege.cpp
+	utils/util.cpp
+	utils/path_converter.cpp
+)
+
+set (utils_hdrs
+	utils/util.h
+	utils/path_converter.h
+	utils/process_privilege.h
+)
+
+
 set (srcs
 	pe_sieve.cpp
-	utils/process_privilege.cpp
-	hook_scanner.cpp
-	hollowing_scanner.cpp
-	scanner.cpp
-	utils/util.cpp
 	report_formatter.cpp
 	results_dumper.cpp
-	utils/path_converter.cpp
+	${scanners_srcs}
+	${utils_srcs}
 )
 
 set (hdrs
 	pe_sieve.h
-	utils/process_privilege.h
-	hook_scanner.h
-	hollowing_scanner.h
-	scanner.h
-	utils/util.h
 	report_formatter.h
 	results_dumper.h
 	include/pe_sieve_types.h
-	scan_report.h
-	utils/path_converter.h
+	${scanners_hdrs}
+	${utils_hdrs}
 )
+
+SOURCE_GROUP("Source Files\\scanners" FILES ${scanners_srcs} )
+SOURCE_GROUP("Header Files\\scanners" FILES ${scanners_hdrs} )
+
+SOURCE_GROUP("Source Files\\utils" FILES ${utils_srcs} )
+SOURCE_GROUP("Header Files\\utils" FILES ${utils_hdrs} )
 
 # libs
 add_subdirectory (libpeconv/libpeconv)

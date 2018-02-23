@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Windows.h>
-#include "scanner.h"
+
 #include "report_formatter.h"
 
 class ResultsDumper

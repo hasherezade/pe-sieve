@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-#include "scanner.h"
+#include "module_scanner.h"
 
 class HeadersScanReport : public ModuleScanReport
 {

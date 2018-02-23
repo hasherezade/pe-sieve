@@ -1,85 +1,18 @@
 #include "scanner.h"
 
-
 #include <sstream>
 #include <fstream>
 
-#include "utils/util.h"
+#include "../utils/util.h"
+#include "../utils/path_converter.h"
 
 #include "hollowing_scanner.h"
 #include "hook_scanner.h"
-#include "utils/path_converter.h"
+#include "mempage_scanner.h"
 
 #include <string>
 #include <locale>
 #include <codecvt>
-
-//---
-bool ModuleData::convertPath()
-{
-	std::string my_path =  convert_to_win32_path(this->szModName);
-	if (my_path.length() == 0) {
-		return false;
-	}
-	// store the new path in the buffer:
-	memset(this->szModName, 0, MAX_PATH);
-
-	// store the new path in the buffer:
-	size_t max_len = my_path.length();
-	if (max_len > MAX_PATH) max_len = MAX_PATH;
-
-	memcpy(this->szModName, my_path.c_str(), max_len);
-	return true;
-}
-
-bool ModuleData::loadOriginal()
-{
-	if (!GetModuleFileNameExA(processHandle, this->moduleHandle, szModName, MAX_PATH)) {
-		is_module_named = false;
-		const char unnamed[] = "unnamed";
-		memcpy(szModName, unnamed, sizeof(unnamed));
-	}
-	peconv::free_pe_buffer(original_module, original_size);
-	original_module = peconv::load_pe_module(szModName, original_size, false, false);
-	if (original_module != nullptr) {
-		return true;
-	}
-	// try to convert path:
-	if (!convertPath()) {
-		return false;
-	}
-	std::cout << "[OK] Converted the path: " << szModName << std::endl;
-	original_module = peconv::load_pe_module(szModName, original_size, false, false);
-	if (!original_module) {
-		return false;
-	}
-	return true;
-}
-
-bool ModuleData::reloadWow64()
-{
-	bool is_converted = convert_to_wow64_path(szModName);
-	if (!is_converted) return false;
-
-	//reload it and check again...
-	peconv::free_pe_buffer(original_module, original_size);
-	original_module = peconv::load_pe_module(szModName, original_size, false, false);
-	if (!original_module) {
-		return false;
-	}
-	return true;
-}
-
-//---
-
-t_scan_status get_scan_status(ModuleScanReport *report)
-{
-	if (report == nullptr) {
-		return SCAN_ERROR;
-	}
-	return report->status;
-}
-
 
 t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanReport& process_report)
 {
@@ -93,19 +26,16 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanRep
 		process_report.summary.errors++;
 		return SCAN_ERROR;
 	}
-	t_scan_status is_hollowed = get_scan_status(scan_report);
+	t_scan_status is_hollowed = ModuleScanReport::get_scan_status(scan_report);
 
 	if (is_hollowed == SCAN_MODIFIED && isWow64) {
 		if (modData.reloadWow64()) {
 			delete scan_report; // delete previous report
 			scan_report = hollows.scanRemote(modData);
 		}
-		is_hollowed = get_scan_status(scan_report);
+		is_hollowed = ModuleScanReport::get_scan_status(scan_report);
 	}
 	process_report.appendReport(scan_report);
-	if (is_hollowed == SCAN_ERROR) {
-		process_report.summary.errors++;
-	}
 	if (is_hollowed == SCAN_MODIFIED) {
 		process_report.summary.replaced++;
 	}
@@ -119,14 +49,11 @@ t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, ProcessScanRepor
 {
 	HookScanner hooks(processHandle);
 	CodeScanReport *scan_report = hooks.scanRemote(modData);
-	t_scan_status is_hooked = get_scan_status(scan_report);
+	t_scan_status is_hooked = ModuleScanReport::get_scan_status(scan_report);
 	process_report.appendReport(scan_report);
 	
 	if (is_hooked == SCAN_MODIFIED) {
 		process_report.summary.hooked++;
-	}
-	if (is_hooked == SCAN_ERROR) {
-		process_report.summary.errors++;
 	}
 	return is_hooked;
 }
@@ -171,36 +98,22 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 		return pReport;
 	}
 
-	BYTE hdrs[peconv::MAX_HEADER_SIZE] = { 0 };
+	MemPageScanner workingSetScanner(this->processHandle);
 
 	for (size_t counter = 0; counter < wsi->NumberOfEntries; counter++) {
 		ULONGLONG page = (ULONGLONG)wsi->WorkingSetInfo[counter].VirtualPage;
 		DWORD protection = (DWORD)wsi->WorkingSetInfo[counter].Protection;
 
-		bool is_wx = (protection & 2) && (protection & 4); // WRITE + EXECUTE -> suspicious
-
 		//calculate the real address of the page:
 		ULONGLONG page_addr = page * page_size;
+
+		MemPageData memPage(page_addr, page_size, protection);
 		//if it was already scanned, it means the module was on the list of loaded modules
-		bool is_listed_module = pReport->hasModule((HMODULE)page_addr);
-
-		if (!is_wx && is_listed_module) {
-			//it was already scanned, probably not interesting
-			continue;
-		}
-		if (peconv::read_remote_pe_header(this->processHandle,(BYTE*) page_addr, hdrs, peconv::MAX_HEADER_SIZE)) {
-			t_scan_status status = SCAN_NOT_MODIFIED;
-			if (is_wx) status = SCAN_MODIFIED; 
-			
-			WorkingSetScanReport *my_report = new WorkingSetScanReport(processHandle, (HMODULE)page_addr, status);
-			my_report->is_rwx = is_wx;
-			my_report->is_manually_loaded = !is_listed_module;
-
-			pReport->appendReport(my_report);
-			if (status == SCAN_MODIFIED) {
-				pReport->summary.suspicious++;
-			}
-		}
+		memPage.is_listed_module = pReport->hasModule((HMODULE)page_addr);
+		
+		MemPageScanReport *my_report = workingSetScanner.scanRemote(memPage);
+		if (my_report == nullptr) continue;
+		pReport->appendReport(my_report);
 	}
 	HeapFree(GetProcessHeap(), 0, wsi);
 	return pReport;
@@ -247,7 +160,6 @@ ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)
 			std::cout << "[!][" << args.pid <<  "] Suspicious: could not read the module file!" << std::endl;
 			//make a report that finding original module was not possible
 			pReport->appendReport(new UnreachableModuleReport(processHandle, hMods[i]));
-			report.suspicious++;
 			continue;
 		}
 		if (!args.quiet) {
@@ -267,7 +179,6 @@ ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)
 		if (is_hollowed == SCAN_NOT_MODIFIED) {
 			scanForHooks(modData, *pReport);
 		}
-		
 	}
 	return pReport;
 }

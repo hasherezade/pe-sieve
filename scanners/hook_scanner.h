@@ -3,7 +3,7 @@
 #include <vector>
 #include <fstream>
 
-#include "scanner.h"
+#include "module_scanner.h"
 
 class PatchList {
 public:
