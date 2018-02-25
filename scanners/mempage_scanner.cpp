@@ -19,8 +19,6 @@ bool MemPageData::fillInfo()
 
 MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 {
-	bool only_executable = false; //scan only executable pages
-
 	if (!memPage.is_info_filled && !memPage.fillInfo()) {
 		return nullptr;
 	}
@@ -31,6 +29,15 @@ MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 		// they are probably legit
 		return nullptr;
 	}
+
+	bool only_executable = true; //scan only executable pages
+	DWORD depFlags = 0;
+	BOOL isPermantent = FALSE;
+	if (GetProcessDEPPolicy( this->processHandle, &depFlags, &isPermantent)){
+		if (depFlags != PROCESS_DEP_ENABLE) { //DEP is disabled, malware can be injected also in non-executable page
+			only_executable = false;
+		}
+	}
 	// is the page executable?
 	bool is_any_exec = (memPage.initial_protect & PAGE_EXECUTE_READWRITE)
 		|| (memPage.initial_protect & PAGE_EXECUTE_READ)
@@ -39,15 +46,8 @@ MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 		|| (memPage.protection & PAGE_EXECUTE_READ)
 		|| (memPage.initial_protect & PAGE_EXECUTE);
 
-	// sometimes non-executable pages can be used to re-map malware before loading into executable ones,
-	// so it is worth to check the non executables also
 	if (only_executable && !is_any_exec) {
 		// scanning only executable was enabled
-		return nullptr;
-	}
-
-	if (!is_any_exec && (memPage.protection == PAGE_READONLY)) {
-		// readonly, skip it
 		return nullptr;
 	}
 	if (!is_any_exec && memPage.is_listed_module) {
