@@ -10,10 +10,10 @@ bool MemPageData::fillInfo()
 		protection = page_info.Protect;
 		return true;
 	}
-	if (basic_protection == 0) { // accerss denied
+	if (GetLastError() == ERROR_INVALID_PARAMETER) {
 		return false;
 	}
-	std::cout << "info error: " << std::dec << GetLastError() << "basicp: " << basic_protection << std::endl;
+	std::cout << "Could not query page: " << std::hex << start_va << " basic protect:" << basic_protection << std::endl;
 	return false;
 }
 
