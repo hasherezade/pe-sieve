@@ -52,20 +52,30 @@ typedef enum {
 class MemPageData
 {
 public:
-	MemPageData(ULONGLONG _start_va, size_t _size, DWORD _protect)
-		: start_va(_start_va), size(_size), protection(_protect), is_listed_module(false) {}
+	MemPageData(HANDLE _process, ULONGLONG _start_va, size_t _size, DWORD _basic_protection)
+		: processHandle(_process), start_va(_start_va), size(_size),
+		basic_protection(_basic_protection), is_listed_module(false),
+		is_info_filled(false)
+	{
+		fillInfo();
+	}
 
 	virtual ~MemPageData() {}
 
-	bool is_readable()
-	{
-		return (protection & MEMPROTECT_R);
-	}
+	bool fillInfo();
+	bool isInfoFilled() { return is_info_filled; }
 
 	ULONGLONG start_va;
 	size_t size;
+	DWORD basic_protection;
 	DWORD protection;
+	DWORD initial_protect;
+	bool is_private;
 	bool is_listed_module;
+
+protected:
+	bool is_info_filled;
+	HANDLE processHandle;
 };
 
 class MemPageScanner {
@@ -77,6 +87,8 @@ public:
 	virtual ~MemPageScanner() {}
 
 	virtual MemPageScanReport* scanRemote(MemPageData &memPageData);
+
+	DWORD getInitialAccess(MemPageData &memPageData);
 
 protected:
 	HANDLE processHandle;

@@ -1,54 +1,69 @@
 #include "mempage_scanner.h"
 
-bool has_executable_section(BYTE hdrs[peconv::MAX_HEADER_SIZE])
+bool MemPageData::fillInfo()
 {
-	bool has_exec = false;
-	t_scan_status status = SCAN_NOT_SUSPICIOUS;
-	//check details of the unlisted module...
-	size_t sections_num = peconv::get_sections_count(hdrs, peconv::MAX_HEADER_SIZE);
-	for (size_t i = 0; i < sections_num; i++) {
-		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(hdrs, peconv::MAX_HEADER_SIZE, i);
-		if (section_hdr == nullptr) continue;
-		if (section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE) {
-			has_exec = true;
-			break;
-		}
+	MEMORY_BASIC_INFORMATION page_info = { 0 };
+	SIZE_T out = VirtualQueryEx(this->processHandle, (LPCVOID) start_va, &page_info, sizeof(page_info));
+	if (out != 0) {
+		initial_protect = page_info.AllocationProtect;
+		is_private = (page_info.Type == MEM_PRIVATE);
+		protection = page_info.Protect;
+		return true;
 	}
-	return has_exec;
+	if (GetLastError() == ERROR_INVALID_PARAMETER) {
+		return false;
+	}
+	std::cout << "Could not query page: " << std::hex << start_va << " basic protect:" << basic_protection << std::endl;
+	return false;
 }
 
 MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 {
-	// skip pages that are not not executable
-	if (!(memPage.protection & MEMPROTECT_X)) {
+	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
 		return nullptr;
 	}
-	// WRITE + EXECUTE -> suspicious
-	bool is_wx = (memPage.protection & MEMPROTECT_X) && (memPage.protection & MEMPROTECT_W);
+	if (!memPage.is_private) {
+		return nullptr;
+	}
+	if (memPage.protection & PAGE_EXECUTE_WRITECOPY) {
+		// they are probably legit
+		return nullptr;
+	}
 
-	if (!is_wx && memPage.is_listed_module) {
+	bool only_executable = true; //scan only executable pages
+	DWORD depFlags = 0;
+	BOOL isPermantent = FALSE;
+	if (GetProcessDEPPolicy( this->processHandle, &depFlags, &isPermantent)){
+		if (depFlags != PROCESS_DEP_ENABLE) { //DEP is disabled, malware can be injected also in non-executable page
+			only_executable = false;
+		}
+	}
+	// is the page executable?
+	bool is_any_exec = (memPage.initial_protect & PAGE_EXECUTE_READWRITE)
+		|| (memPage.initial_protect & PAGE_EXECUTE_READ)
+		|| (memPage.initial_protect & PAGE_EXECUTE)
+		|| (memPage.protection & PAGE_EXECUTE_READWRITE)
+		|| (memPage.protection & PAGE_EXECUTE_READ)
+		|| (memPage.initial_protect & PAGE_EXECUTE);
+
+	if (only_executable && !is_any_exec) {
+		// scanning only executable was enabled
+		return nullptr;
+	}
+	if (!is_any_exec && memPage.is_listed_module) {
 		//it was already scanned, probably not interesting
+		std::cout << std::hex << memPage.start_va << "Aleady listed" << std::endl;
 		return nullptr;
 	}
-
-	BYTE hdrs[peconv::MAX_HEADER_SIZE] = { 0 };
+	static BYTE hdrs[peconv::MAX_HEADER_SIZE] = { 0 };
+	memset(hdrs, 0, peconv::MAX_HEADER_SIZE);
 	if (!peconv::read_remote_pe_header(this->processHandle,(BYTE*) memPage.start_va, hdrs, peconv::MAX_HEADER_SIZE)) {
 		// this is not a PE file
 		return nullptr;
 	}
-	// if it is W+X always mark it as suspicious
-	t_scan_status status = is_wx ? SCAN_SUSPICIOUS : SCAN_NOT_SUSPICIOUS;
-
-	// otherwise, check othe features of the PE file:
-	if (status != SCAN_SUSPICIOUS) {
-		//is it unlisted PE module with at leas one executable section?
-		if (!memPage.is_listed_module && has_executable_section(hdrs)) {
-			status = SCAN_SUSPICIOUS;
-		}
-	}
-
-	MemPageScanReport *my_report = new MemPageScanReport(processHandle, (HMODULE)memPage.start_va, status);
-	my_report->is_rwx = is_wx;
+	std::cout << "[" << std::hex << memPage.start_va << "] " << " initial: " <<  memPage.initial_protect << " current: " << memPage.protection << std::endl;
+	MemPageScanReport *my_report = new MemPageScanReport(processHandle, (HMODULE)memPage.start_va, SCAN_SUSPICIOUS);
+	my_report->is_rwx = (memPage.protection == PAGE_EXECUTE_READWRITE);
 	my_report->is_manually_loaded = !memPage.is_listed_module;
 	my_report->protection = memPage.protection;
 	return my_report;
