@@ -53,7 +53,8 @@ class MemPageData
 {
 public:
 	MemPageData(HANDLE _process, ULONGLONG _start_va, size_t _size, DWORD _basic_protection)
-		: processHandle(_process), start_va(_start_va), size(_size), protection(_basic_protection), is_listed_module(false),
+		: processHandle(_process), start_va(_start_va), size(_size),
+		basic_protection(_basic_protection), is_listed_module(false),
 		is_info_filled(false)
 	{
 		fillInfo();
@@ -62,13 +63,8 @@ public:
 	virtual ~MemPageData() {}
 
 	bool fillInfo();
+	bool isInfoFilled() { return is_info_filled; }
 
-	bool is_readable()
-	{
-		return (protection & MEMPROTECT_R);
-	}
-
-	bool is_info_filled;
 	ULONGLONG start_va;
 	size_t size;
 	DWORD basic_protection;
@@ -78,6 +74,7 @@ public:
 	bool is_listed_module;
 
 protected:
+	bool is_info_filled;
 	HANDLE processHandle;
 };
 

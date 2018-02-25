@@ -19,7 +19,7 @@ bool MemPageData::fillInfo()
 
 MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 {
-	if (!memPage.is_info_filled && !memPage.fillInfo()) {
+	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
 		return nullptr;
 	}
 	if (!memPage.is_private) {
