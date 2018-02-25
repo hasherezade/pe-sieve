@@ -48,7 +48,7 @@ std::string report_to_string(const ProcessScanReport &process_report)
 	const t_report &report = process_report.summary;
 	std::stringstream stream;
 	//summary:
-	size_t other = report.suspicious - (report.hooked + report.replaced);
+	size_t other = report.suspicious - (report.hooked + report.replaced + report.detached + report.implanted);
 	stream << "PID:    " << std::dec << report.pid << "\n";
 	stream << "---" << std::endl;
 	stream << "SUMMARY: \n" << std::endl;
@@ -72,7 +72,7 @@ std::string report_to_json(const ProcessScanReport &process_report, t_report_fil
 	const t_report &report = process_report.summary;
 	std::stringstream stream;
 	//summary:
-	size_t other_suspicious = report.suspicious - (report.hooked + report.replaced);
+	size_t other = report.suspicious - (report.hooked + report.replaced + report.detached + report.implanted);
 	stream << "{\n";
 	stream << " \"pid\" : " << std::dec << report.pid << ",\n";
 	stream << " \"scanned\" : \n";
@@ -85,7 +85,7 @@ std::string report_to_json(const ProcessScanReport &process_report, t_report_fil
 	stream << "   \"replaced\" : "  << std::dec << report.replaced << ",\n";
 	stream << "   \"detached\" : " << std::dec << report.detached << ",\n";
 	stream << "   \"implanted\" : "  << std::dec << report.implanted << ",\n";
-	stream << "   \"other\" : "  << std::dec << other_suspicious << "\n";
+	stream << "   \"other\" : "  << std::dec << other << "\n";
 	stream << "  },\n";// modified
 	stream << "  \"errors\" : "<< std::dec << report.errors << "\n";
 	stream << " },\n";// scanned
