@@ -62,7 +62,10 @@ ProcessScanReport* ProcessScanner::scanRemote()
 {
 	ProcessScanReport *pReport = new ProcessScanReport(this->args.pid);
 	scanModules(pReport);
-	scanWorkingSet(pReport);
+	//dont't scan your own working set
+	if (GetProcessId(this->processHandle) != GetCurrentProcessId()) {
+		scanWorkingSet(pReport);
+	}
 	return pReport;
 }
 
@@ -88,10 +91,11 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 	wsi_1.NumberOfEntries--;
 #endif
 	const size_t entry_size = sizeof(PSAPI_WORKING_SET_BLOCK);
-	SIZE_T wsi_size = wsi_1.NumberOfEntries * entry_size * 2; // Double it to allow for working set growth
+	//TODO: check it!!
+	ULONGLONG wsi_size = wsi_1.NumberOfEntries * entry_size * 2; // Double it to allow for working set growth
 	PSAPI_WORKING_SET_INFORMATION* wsi = (PSAPI_WORKING_SET_INFORMATION*)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, wsi_size);
 
-	if (!QueryWorkingSet(this->processHandle, (LPVOID)wsi, wsi_size)) {
+	if (!QueryWorkingSet(this->processHandle, (LPVOID)wsi, (DWORD)wsi_size)) {
 		pReport->summary.errors++;
 		std::cout << "[-] Could not scan the working set in the process. Error: " << GetLastError() << std::endl;
 		HeapFree(GetProcessHeap(), 0, wsi);
@@ -107,7 +111,7 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 		//calculate the real address of the page:
 		ULONGLONG page_addr = page * page_size;
 
-		MemPageData memPage(page_addr, page_size, protection);
+		MemPageData memPage(this->processHandle, page_addr, page_size, protection);
 		//if it was already scanned, it means the module was on the list of loaded modules
 		memPage.is_listed_module = pReport->hasModule((HMODULE)page_addr);
 		
