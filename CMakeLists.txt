@@ -18,7 +18,6 @@ include_directories ( ${PECONV_DIR}/include )
 set (scanners_srcs
 	scanners/hollowing_scanner.cpp
 	scanners/hook_scanner.cpp
-	scanners/module_scanner.cpp
 	scanners/mempage_scanner.cpp
 	scanners/scanner.cpp
 	scanners/module_data.cpp
