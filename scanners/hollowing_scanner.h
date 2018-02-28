@@ -9,7 +9,7 @@ class HeadersScanReport : public ModuleScanReport
 public:
 	HeadersScanReport(HANDLE processHandle, HMODULE _module)
 		: ModuleScanReport(processHandle, _module),
-		epModified(false) { }
+		epModified(false), archMismatch(false), is64(false) { }
 
 	const virtual bool toJSON(std::stringstream& outs)
 	{
@@ -19,11 +19,19 @@ public:
 		outs << ",\n";
 		outs << "\"ep_modified\" : " ;
 		outs << epModified;
+		outs << ",\n";
+		outs << "\"arch_mismatch\" : " ;
+		outs << archMismatch;
+		outs << ",\n";
+		outs << "\"is64b\" : " ;
+		outs << is64;
 		outs << "\n";
 		outs << "}";
 		return true;
 	}
 	bool epModified;
+	bool archMismatch; // the loaded module is of different architecture than the module read from the corresponding path
+	DWORD is64; // is the remote module 64bit
 };
 
 class HollowingScanner : public ModuleScanner {

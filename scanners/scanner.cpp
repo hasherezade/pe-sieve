@@ -9,6 +9,7 @@
 #include "hollowing_scanner.h"
 #include "hook_scanner.h"
 #include "mempage_scanner.h"
+#include "hook_analyzer.h"
 
 #include <string>
 #include <locale>
@@ -28,7 +29,10 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanRep
 	}
 	t_scan_status is_hollowed = ModuleScanReport::get_scan_status(scan_report);
 
-	if (is_hollowed == SCAN_SUSPICIOUS && isWow64) {
+	if (scan_report->archMismatch && isWow64) {
+#ifdef _DEBUG
+		std::cout << "Arch mismatch, reloading..." << std::endl;
+#endif
 		if (modData.reloadWow64()) {
 			delete scan_report; // delete previous report
 			scan_report = hollows.scanRemote(modData);
@@ -52,9 +56,10 @@ t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, ProcessScanRepor
 	t_scan_status is_hooked = ModuleScanReport::get_scan_status(scan_report);
 	process_report.appendReport(scan_report);
 	
-	if (is_hooked == SCAN_SUSPICIOUS) {
-		process_report.summary.hooked++;
+	if (is_hooked != SCAN_SUSPICIOUS) {
+		return is_hooked;
 	}
+	process_report.summary.hooked++;
 	return is_hooked;
 }
 

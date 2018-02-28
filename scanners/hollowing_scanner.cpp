@@ -4,13 +4,14 @@
 HeadersScanReport* HollowingScanner::scanRemote(ModuleData &moduleData)
 {
 	HeadersScanReport *my_report = new HeadersScanReport(this->processHandle, moduleData.moduleHandle);
-
+	
 	BYTE hdr_buffer1[peconv::MAX_HEADER_SIZE] = { 0 };
 	if (!peconv::read_remote_pe_header(processHandle, (PBYTE) moduleData.moduleHandle, hdr_buffer1, peconv::MAX_HEADER_SIZE)) {
 		std::cerr << "[-] Failed to read the module header" << std::endl;
 		my_report->status = SCAN_ERROR;
 		return my_report;
 	}
+	my_report->is64 = peconv::is64bit(hdr_buffer1);
 
 	size_t hdrs_size = peconv::get_hdrs_size(hdr_buffer1);
 	if (hdrs_size > peconv::MAX_HEADER_SIZE) {
@@ -18,7 +19,16 @@ HeadersScanReport* HollowingScanner::scanRemote(ModuleData &moduleData)
 	}
 	BYTE hdr_buffer2[peconv::MAX_HEADER_SIZE] = { 0 };
 	memcpy(hdr_buffer2, moduleData.original_module, hdrs_size);
-	
+
+	DWORD arch1 = peconv::get_nt_hdr_architecture(hdr_buffer1);
+	DWORD arch2 = peconv::get_nt_hdr_architecture(hdr_buffer2);
+
+	if (arch1 != arch2) {
+		//if there is an architecture mismatch, further comparison makes no sense
+		my_report->archMismatch = true;
+		my_report->status = SCAN_SUSPICIOUS;
+		return my_report;
+	}
 	//normalize before comparing:
 	peconv::update_image_base(hdr_buffer1, 0);
 	peconv::update_image_base(hdr_buffer2, 0);
