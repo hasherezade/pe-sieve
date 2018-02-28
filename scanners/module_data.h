@@ -21,6 +21,14 @@ public:
 		peconv::free_pe_buffer(original_module, original_size);
 	}
 
+	bool is64bit()
+	{
+		if (original_module == nullptr) {
+			return false;
+		}
+		return peconv::is64bit(original_module);
+	}
+
 	bool convertPath();
 	bool loadOriginal();
 	bool reloadWow64();
