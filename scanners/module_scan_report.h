@@ -50,7 +50,7 @@ public:
 		outs << "\"module\" : ";
 		outs << "\"" << std::hex << (ULONGLONG) module << "\"" << ",\n";
 		outs << "\"status\" : " ;
-		outs << status;
+		outs << std::dec << status;
 		return true;
 	}
 

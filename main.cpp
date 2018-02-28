@@ -88,7 +88,7 @@ void print_report(const ProcessScanReport& report, const t_params args)
 {
 	std::string report_str;
 	if (args.json_output) {
-		report_str = report_to_json(report, REPORT_MODIFIED);
+		report_str = report_to_json(report, REPORT_SUSPICIOUS_AND_ERRORS);
 	} else {
 		report_str = report_to_string(report);
 	}

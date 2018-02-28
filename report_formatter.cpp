@@ -10,10 +10,10 @@ bool is_shown_type(t_scan_status status, t_report_filter filter)
 	if (filter & REPORT_ERRORS) {
 		if (status == SCAN_ERROR) return true;
 	}
-	if (filter & REPORT_MODIFIED) {
+	if (filter & REPORT_SUSPICIOUS) {
 		if (status == SCAN_SUSPICIOUS) return true;
 	}
-	if (filter & REPORT_NOT_MODIFIED) {
+	if (filter & REPORT_NOT_SUSPICIOUS) {
 		if (status == SCAN_NOT_SUSPICIOUS) return true;
 	}
 	return false;
@@ -62,7 +62,7 @@ std::string report_to_string(const ProcessScanReport &process_report)
 	stream << "-\n";
 	stream << "Total suspicious:   " << std::dec << report.suspicious << "\n";
 	if (report.errors) {
-		stream << "[!] Reading errors: " << std::dec << report.errors << "\n";
+		stream << "[!] Errors: " << std::dec << report.errors << "\n";
 	}
 	return stream.str();
 }

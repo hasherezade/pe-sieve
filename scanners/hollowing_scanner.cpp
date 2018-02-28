@@ -26,7 +26,7 @@ HeadersScanReport* HollowingScanner::scanRemote(ModuleData &moduleData)
 	if (arch1 != arch2) {
 		//if there is an architecture mismatch, further comparison makes no sense
 		my_report->archMismatch = true;
-		my_report->status = SCAN_SUSPICIOUS;
+		my_report->status = SCAN_ERROR;
 		return my_report;
 	}
 	//normalize before comparing:

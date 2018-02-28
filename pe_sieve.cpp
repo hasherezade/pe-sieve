@@ -83,7 +83,7 @@ ProcessScanReport* check_modules_in_process(const t_params args)
 				std::cout << "[+] Dumped modified to: " << dumper.dumpDir << std::endl;
 			}
 		}
-		if (dumper.dumpJsonReport(*process_report, REPORT_MODIFIED)) {
+		if (dumper.dumpJsonReport(*process_report, REPORT_SUSPICIOUS_AND_ERRORS)) {
 			std::cout << "[+] Report dumped to: " << dumper.dumpDir << std::endl;
 		}
 	}
