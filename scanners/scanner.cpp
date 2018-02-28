@@ -9,7 +9,6 @@
 #include "hollowing_scanner.h"
 #include "hook_scanner.h"
 #include "mempage_scanner.h"
-#include "hook_analyzer.h"
 
 #include <string>
 #include <locale>
