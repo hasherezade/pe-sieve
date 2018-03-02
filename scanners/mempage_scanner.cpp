@@ -17,6 +17,17 @@ bool MemPageData::fillInfo()
 	return false;
 }
 
+bool MemPageScanner::hasPeHeader(MemPageData &memPage)
+{
+	static BYTE hdrs[peconv::MAX_HEADER_SIZE] = { 0 };
+	memset(hdrs, 0, peconv::MAX_HEADER_SIZE);
+	if (!peconv::read_remote_pe_header(this->processHandle,(BYTE*) memPage.start_va, hdrs, peconv::MAX_HEADER_SIZE)) {
+		// this is not a PE file
+		return false;
+	}
+	return true;
+}
+
 MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 {
 	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
@@ -54,11 +65,8 @@ MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 		std::cout << std::hex << memPage.start_va << "Aleady listed" << std::endl;
 		return nullptr;
 	}
-	static BYTE hdrs[peconv::MAX_HEADER_SIZE] = { 0 };
-	memset(hdrs, 0, peconv::MAX_HEADER_SIZE);
-	if (!peconv::read_remote_pe_header(this->processHandle,(BYTE*) memPage.start_va, hdrs, peconv::MAX_HEADER_SIZE)) {
-		// this is not a PE file
-		return nullptr;
+	if (hasPeHeader(memPage) == false) {
+		return nullptr; // not a PE file
 	}
 #ifdef _DEBUG
 	std::cout << "[" << std::hex << memPage.start_va << "] " << " initial: " <<  memPage.initial_protect << " current: " << memPage.protection << std::endl;
