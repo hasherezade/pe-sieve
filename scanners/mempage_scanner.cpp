@@ -4,17 +4,17 @@ bool MemPageData::fillInfo()
 {
 	MEMORY_BASIC_INFORMATION page_info = { 0 };
 	SIZE_T out = VirtualQueryEx(this->processHandle, (LPCVOID) start_va, &page_info, sizeof(page_info));
-	if (out != 0) {
-		initial_protect = page_info.AllocationProtect;
-		is_private = (page_info.Type == MEM_PRIVATE);
-		protection = page_info.Protect;
-		return true;
-	}
-	if (GetLastError() == ERROR_INVALID_PARAMETER) {
+	if (out != sizeof(page_info)) {
+		if (GetLastError() == ERROR_INVALID_PARAMETER) {
+			return false;
+		}
+		std::cout << "Could not query page: " << std::hex << start_va << " basic protect:" << basic_protection << std::endl;
 		return false;
 	}
-	std::cout << "Could not query page: " << std::hex << start_va << " basic protect:" << basic_protection << std::endl;
-	return false;
+	initial_protect = page_info.AllocationProtect;
+	is_private = (page_info.Type == MEM_PRIVATE);
+	protection = page_info.Protect;
+	return true;
 }
 
 bool MemPageScanner::hasPeHeader(MemPageData &memPage)
@@ -54,7 +54,8 @@ MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 		|| (memPage.initial_protect & PAGE_EXECUTE)
 		|| (memPage.protection & PAGE_EXECUTE_READWRITE)
 		|| (memPage.protection & PAGE_EXECUTE_READ)
-		|| (memPage.initial_protect & PAGE_EXECUTE);
+		|| (memPage.initial_protect & PAGE_EXECUTE)
+		|| (memPage.basic_protection & MEMPROTECT_X);
 
 	if (only_executable && !is_any_exec) {
 		// scanning only executable was enabled
@@ -72,7 +73,7 @@ MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 	std::cout << "[" << std::hex << memPage.start_va << "] " << " initial: " <<  memPage.initial_protect << " current: " << memPage.protection << std::endl;
 #endif
 	MemPageScanReport *my_report = new MemPageScanReport(processHandle, (HMODULE)memPage.start_va, SCAN_SUSPICIOUS);
-	my_report->is_rwx = (memPage.protection == PAGE_EXECUTE_READWRITE);
+	my_report->is_rwx = memPage.protection == PAGE_EXECUTE_READWRITE);
 	my_report->is_manually_loaded = !memPage.is_listed_module;
 	my_report->protection = memPage.protection;
 	return my_report;
