@@ -73,7 +73,7 @@ MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 	std::cout << "[" << std::hex << memPage.start_va << "] " << " initial: " <<  memPage.initial_protect << " current: " << memPage.protection << std::endl;
 #endif
 	MemPageScanReport *my_report = new MemPageScanReport(processHandle, (HMODULE)memPage.start_va, SCAN_SUSPICIOUS);
-	my_report->is_rwx = memPage.protection == PAGE_EXECUTE_READWRITE);
+	my_report->is_rwx = (memPage.protection == PAGE_EXECUTE_READWRITE);
 	my_report->is_manually_loaded = !memPage.is_listed_module;
 	my_report->protection = memPage.protection;
 	return my_report;
