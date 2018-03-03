@@ -88,6 +88,8 @@ public:
 
 	virtual MemPageScanReport* scanRemote(MemPageData &memPageData);
 
+	bool hasPeHeader(MemPageData &memPageData);
+
 	DWORD getInitialAccess(MemPageData &memPageData);
 
 protected:
