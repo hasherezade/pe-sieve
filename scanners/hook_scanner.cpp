@@ -183,13 +183,14 @@ bool HookScanner::isRemoteExecutable(PBYTE modBaseAddr, size_t section_number)
 	MEMORY_BASIC_INFORMATION page_info = { 0 };
 	SIZE_T out = VirtualQueryEx(this->processHandle, (LPCVOID) start_va, &page_info, sizeof(page_info));
 	if (out != sizeof(page_info)) {
+#ifdef _DEBUG
 		std::cerr << "Cannot retrieve remote section info" << std::endl;
+#endif
 		return false;
 	}
 	DWORD protection = page_info.Protect;
 	bool is_any_exec = (protection & PAGE_EXECUTE_READWRITE)|| (protection & PAGE_EXECUTE_READ);
 	return is_any_exec;
-	
 }
 
 CodeScanReport* HookScanner::scanRemote(ModuleData& modData)
