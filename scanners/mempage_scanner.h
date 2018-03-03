@@ -13,7 +13,7 @@ public:
 	MemPageScanReport(HANDLE processHandle, HMODULE _module, t_scan_status status)
 		: ModuleScanReport(processHandle, _module, status)
 	{
-		 is_rwx = false;
+		 is_executable = false;
 		 is_manually_loaded = false;
 		 protection = 0;
 	}
@@ -24,8 +24,8 @@ public:
 		outs << "{\n";
 		ModuleScanReport::toJSON(outs);
 		outs << ",\n";
-		outs << "\"is_rwx\" : "; 
-		outs << std::dec << is_rwx;
+		outs << "\"is_executable\" : "; 
+		outs << std::dec << is_executable;
 		outs << ",\n";
 		outs << "\"is_manually_loaded\" : "; 
 		outs << std::dec << is_manually_loaded;
@@ -36,7 +36,7 @@ public:
 		return true;
 	}
 
-	bool is_rwx;
+	bool is_executable;
 	bool is_manually_loaded;
 	DWORD protection;
 };

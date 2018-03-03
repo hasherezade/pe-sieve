@@ -1,4 +1,5 @@
 #include "mempage_scanner.h"
+#include "module_data.h"
 
 bool MemPageData::fillInfo()
 {
@@ -40,14 +41,8 @@ MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 		// they are probably legit
 		return nullptr;
 	}
-	bool only_executable = false;
-	DWORD depFlags = 0;
-	BOOL isPermantent = FALSE;
-	if (GetProcessDEPPolicy( this->processHandle, &depFlags, &isPermantent)){
-		if (depFlags == PROCESS_DEP_ENABLE) { //DEP is fully enabled, scan only executable pages
-			only_executable = true;
-		}
-	}
+	bool only_executable = true;
+
 	// is the page executable?
 	bool is_any_exec = (memPage.initial_protect & PAGE_EXECUTE_READWRITE)
 		|| (memPage.initial_protect & PAGE_EXECUTE_READ)
@@ -57,23 +52,28 @@ MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 		|| (memPage.initial_protect & PAGE_EXECUTE)
 		|| (memPage.basic_protection & MEMPROTECT_X);
 
-	if (only_executable && !is_any_exec) {
-		// scanning only executable was enabled
-		return nullptr;
-	}
 	if (!is_any_exec && memPage.is_listed_module) {
-		//it was already scanned, probably not interesting
+		// probably not interesting
 		std::cout << std::hex << memPage.start_va << "Aleady listed" << std::endl;
 		return nullptr;
 	}
 	if (hasPeHeader(memPage) == false) {
 		return nullptr; // not a PE file
 	}
+	RemoteModuleData remoteModule(this->processHandle, (HMODULE)memPage.start_va);
+	bool is_executable = remoteModule.hasExecutableSection();
+
+	t_scan_status status = is_executable ? SCAN_SUSPICIOUS : SCAN_NOT_SUSPICIOUS;
+	if (!only_executable) {
+		// treat every injected PE file as suspicious, even if it does not have any executable sections
+		status = SCAN_SUSPICIOUS;
+	}
+
 #ifdef _DEBUG
 	std::cout << "[" << std::hex << memPage.start_va << "] " << " initial: " <<  memPage.initial_protect << " current: " << memPage.protection << std::endl;
 #endif
-	MemPageScanReport *my_report = new MemPageScanReport(processHandle, (HMODULE)memPage.start_va, SCAN_SUSPICIOUS);
-	my_report->is_rwx = (memPage.protection == PAGE_EXECUTE_READWRITE);
+	MemPageScanReport *my_report = new MemPageScanReport(processHandle, (HMODULE)memPage.start_va, status);
+	my_report->is_executable = is_executable;
 	my_report->is_manually_loaded = !memPage.is_listed_module;
 	my_report->protection = memPage.protection;
 	return my_report;

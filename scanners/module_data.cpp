@@ -58,3 +58,58 @@ bool ModuleData::reloadWow64()
 	}
 	return true;
 }
+
+//----
+
+bool RemoteModuleData::loadHeader()
+{
+	SIZE_T read_size = 0;
+	if (!peconv::read_remote_pe_header(this->processHandle, (PBYTE)this->modBaseAddr, this->headerBuffer, peconv::MAX_HEADER_SIZE)) {
+		return false;
+	}
+	this->isInit = true;
+	return true;
+}
+
+ULONGLONG RemoteModuleData::getRemoteSectionVa(const size_t section_num)
+{
+	if (!this->isInit) return NULL;
+
+	PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(headerBuffer, peconv::MAX_HEADER_SIZE, section_num);
+	if ((section_hdr == NULL) || section_hdr->SizeOfRawData == 0) {
+		return NULL;
+	}
+	return (ULONGLONG) modBaseAddr + section_hdr->VirtualAddress;
+}
+
+bool RemoteModuleData::isSectionExecutable(size_t section_number)
+{
+	//for special cases when the section is not set executable in headers, but in reality is executable...
+	//get the section header from the module:
+	ULONGLONG start_va = getRemoteSectionVa(section_number);
+	if (start_va == NULL) {
+		return false;
+	}
+	MEMORY_BASIC_INFORMATION page_info = { 0 };
+	SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID) start_va, &page_info, sizeof(page_info));
+	if (out != sizeof(page_info)) {
+#ifdef _DEBUG
+		std::cerr << "Cannot retrieve remote section info" << std::endl;
+#endif
+		return false;
+	}
+	DWORD protection = page_info.Protect;
+	bool is_any_exec = (protection & PAGE_EXECUTE_READWRITE)|| (protection & PAGE_EXECUTE_READ);
+	return is_any_exec;
+}
+
+bool RemoteModuleData::hasExecutableSection()
+{
+	size_t sec_count = peconv::get_sections_count(this->headerBuffer, peconv::MAX_HEADER_SIZE);
+	for (size_t i = 0; i < sec_count ; i++) {
+		if (isSectionExecutable(i)) {
+			return true;
+		}
+	}
+	return false;
+}
