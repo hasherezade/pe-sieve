@@ -158,6 +158,40 @@ t_scan_status HookScanner::scanSection(PBYTE modBaseAddr, PBYTE original_module,
 	return SCAN_NOT_SUSPICIOUS; //not modified
 }
 
+ULONGLONG get_remote_section_va(HANDLE processHandle, BYTE *module_base, const size_t section_num)
+{
+	BYTE header_buffer[peconv::MAX_HEADER_SIZE] = { 0 };
+	SIZE_T read_size = 0;
+	if (!peconv::read_remote_pe_header(processHandle, module_base, header_buffer, peconv::MAX_HEADER_SIZE)) {
+		return NULL;
+	}
+	PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(header_buffer, peconv::MAX_HEADER_SIZE, section_num);
+	if ((section_hdr == NULL) || section_hdr->SizeOfRawData == 0) {
+		return NULL;
+	}
+	return (ULONGLONG) module_base + section_hdr->VirtualAddress;
+}
+
+bool HookScanner::isRemoteExecutable(PBYTE modBaseAddr, size_t section_number)
+{
+	//for special cases when the section is not set executable in headers, but in reality is executable...
+	//get the section header from the module:
+	ULONGLONG start_va = get_remote_section_va(processHandle, modBaseAddr, section_number);
+	if (start_va == NULL) {
+		return false;
+	}
+	MEMORY_BASIC_INFORMATION page_info = { 0 };
+	SIZE_T out = VirtualQueryEx(this->processHandle, (LPCVOID) start_va, &page_info, sizeof(page_info));
+	if (out != sizeof(page_info)) {
+		std::cerr << "Cannot retrieve remote section info" << std::endl;
+		return false;
+	}
+	DWORD protection = page_info.Protect;
+	bool is_any_exec = (protection & PAGE_EXECUTE_READWRITE)|| (protection & PAGE_EXECUTE_READ);
+	return is_any_exec;
+	
+}
+
 CodeScanReport* HookScanner::scanRemote(ModuleData& modData)
 {
 	CodeScanReport *my_report = new CodeScanReport(this->processHandle, modData.moduleHandle);
@@ -177,7 +211,9 @@ CodeScanReport* HookScanner::scanRemote(ModuleData& modData)
 	for (size_t i = 0; i < sec_count ; i++) {
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(modData.original_module, modData.original_size, i);
 		if (section_hdr == nullptr) continue;
-		if (section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE) {
+		if ( (section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
+			|| isRemoteExecutable((PBYTE) modData.moduleHandle, i) )
+		{
 			last_res = scanSection((PBYTE) modData.moduleHandle, modData.original_module, modData.original_size, i, *my_report);
 			if (last_res == SCAN_ERROR) errors++;
 			else if (last_res == SCAN_SUSPICIOUS) modified++;
