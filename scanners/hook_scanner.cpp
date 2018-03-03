@@ -158,11 +158,9 @@ t_scan_status HookScanner::scanSection(PBYTE modBaseAddr, PBYTE original_module,
 	return SCAN_NOT_SUSPICIOUS; //not modified
 }
 
-CodeScanReport* HookScanner::scanRemote(ModuleData& modData)
+CodeScanReport* HookScanner::scanRemote(ModuleData& modData, RemoteModuleData &remoteModData)
 {
 	CodeScanReport *my_report = new CodeScanReport(this->processHandle, modData.moduleHandle);
-
-	RemoteModuleData remoteModule(this->processHandle, modData.moduleHandle);
 
 	ULONGLONG original_base = peconv::get_image_base(modData.original_module);
 	ULONGLONG new_base = (ULONGLONG) modData.moduleHandle;
@@ -180,7 +178,7 @@ CodeScanReport* HookScanner::scanRemote(ModuleData& modData)
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(modData.original_module, modData.original_size, i);
 		if (section_hdr == nullptr) continue;
 		if ( (section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
-			|| remoteModule.isSectionExecutable(i) )
+			|| remoteModData.isSectionExecutable(i) )
 		{
 			last_res = scanSection((PBYTE) modData.moduleHandle, modData.original_module, modData.original_size, i, *my_report);
 			if (last_res == SCAN_ERROR) errors++;

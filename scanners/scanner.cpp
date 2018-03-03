@@ -14,14 +14,14 @@
 #include <locale>
 #include <codecvt>
 
-t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanReport& process_report)
+t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
 	BOOL isWow64 = FALSE;
 #ifdef _WIN64
 	IsWow64Process(processHandle, &isWow64);
 #endif
 	HollowingScanner hollows(processHandle);
-	HeadersScanReport *scan_report = hollows.scanRemote(modData);
+	HeadersScanReport *scan_report = hollows.scanRemote(modData, remoteModData);
 	if (scan_report == nullptr) {
 		process_report.summary.errors++;
 		return SCAN_ERROR;
@@ -34,7 +34,7 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanRep
 #endif
 		if (modData.reloadWow64()) {
 			delete scan_report; // delete previous report
-			scan_report = hollows.scanRemote(modData);
+			scan_report = hollows.scanRemote(modData, remoteModData);
 		}
 		is_hollowed = ModuleScanReport::get_scan_status(scan_report);
 	}
@@ -48,10 +48,10 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, ProcessScanRep
 	return is_hollowed;
 }
 
-t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, ProcessScanReport& process_report)
+t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
 	HookScanner hooks(processHandle);
-	CodeScanReport *scan_report = hooks.scanRemote(modData);
+	CodeScanReport *scan_report = hooks.scanRemote(modData, remoteModData);
 	t_scan_status is_hooked = ModuleScanReport::get_scan_status(scan_report);
 	process_report.appendReport(scan_report);
 	
@@ -168,6 +168,7 @@ ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)
 	for (size_t i = 0; i < modules_count; i++, report.scanned++) {
 		if (processHandle == NULL) break;
 
+		//load module from file:
 		ModuleData modData(processHandle, hMods[i]);
 
 		if (!modData.loadOriginal()) {
@@ -180,7 +181,14 @@ ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)
 		if (!args.quiet) {
 			std::cout << "[*] Scanning: " << modData.szModName << std::endl;
 		}
-		t_scan_status is_hollowed = scanForHollows(modData, *pReport);
+
+		//load data about the remote module
+		RemoteModuleData remoteModData(processHandle, hMods[i]);
+		if (remoteModData.isInitialized() == false) {
+			pReport->summary.errors++;
+			continue;
+		}
+		t_scan_status is_hollowed = scanForHollows(modData, remoteModData, *pReport);
 		if (is_hollowed == SCAN_ERROR) {
 			continue;
 		}
@@ -192,7 +200,7 @@ ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)
 		}
 		//if not hollowed, check for hooks:
 		if (is_hollowed == SCAN_NOT_SUSPICIOUS) {
-			scanForHooks(modData, *pReport);
+			scanForHooks(modData, remoteModData, *pReport);
 		}
 	}
 	return pReport;

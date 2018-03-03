@@ -85,7 +85,7 @@ public:
 	HookScanner(HANDLE hProc)
 		: ModuleScanner(hProc) { }
 
-	virtual CodeScanReport* scanRemote(ModuleData &moduleData);
+	virtual CodeScanReport* scanRemote(ModuleData &moduleData, RemoteModuleData &remoteModData);
 
 private:
 	t_scan_status scanSection(PBYTE modBaseAddr, PBYTE original_module, size_t module_size, size_t section_number, IN CodeScanReport &report);

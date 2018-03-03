@@ -41,7 +41,7 @@ public:
 	{
 	}
 
-	virtual HeadersScanReport* scanRemote(ModuleData &moduleData);
+	virtual HeadersScanReport* scanRemote(ModuleData &moduleData, RemoteModuleData &remoteModData);
 
 private:
 	bool zero_unused_fields(PBYTE hdr_buffer, size_t hdrs_size);
