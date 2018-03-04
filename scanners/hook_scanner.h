@@ -88,8 +88,6 @@ public:
 	virtual CodeScanReport* scanRemote(ModuleData &moduleData);
 
 private:
-	bool isRemoteExecutable(PBYTE modBaseAddr, size_t section_number);
-
 	t_scan_status scanSection(PBYTE modBaseAddr, PBYTE original_module, size_t module_size, size_t section_number, IN CodeScanReport &report);
 
 	bool clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_module, PBYTE loaded_code);
