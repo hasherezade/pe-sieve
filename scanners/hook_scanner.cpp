@@ -153,13 +153,7 @@ CodeScanReport* HookScanner::scanRemote(ModuleData& modData, RemoteModuleData &r
 {
 	CodeScanReport *my_report = new CodeScanReport(this->processHandle, modData.moduleHandle);
 
-	ULONGLONG original_base = peconv::get_image_base(modData.original_module);
-	ULONGLONG new_base = (ULONGLONG) modData.moduleHandle;
-	if (peconv::has_relocations(modData.original_module) 
-		&& !peconv::relocate_module(modData.original_module, modData.original_size, new_base, original_base))
-	{
-		std::cerr << "[!] Relocating module failed!" << std::endl;
-	}
+	modData.relocateToBase(); // before scanning, ensure that the original module is relocated to the base where it was loaded
 
 	t_scan_status last_res = SCAN_NOT_SUSPICIOUS;
 	size_t errors = 0;

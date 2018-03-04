@@ -38,8 +38,27 @@ bool ModuleData::loadOriginal()
 		return false;
 	}
 	std::cout << "[OK] Converted the path: " << szModName << std::endl;
+	is_relocated = false;
 	original_module = peconv::load_pe_module(szModName, original_size, false, false);
 	if (!original_module) {
+		return false;
+	}
+	return true;
+}
+
+bool ModuleData::relocateToBase()
+{
+	if (!original_module) return false;
+	if (is_relocated) return true;
+
+	ULONGLONG original_base = peconv::get_image_base(original_module);
+	ULONGLONG new_base = (ULONGLONG) moduleHandle;
+	if (peconv::has_relocations(original_module) 
+		&& !peconv::relocate_module(original_module, original_size, new_base, original_base))
+	{
+#ifdef _DEBUG
+		std::cerr << "[!] Relocating module failed!" << std::endl;
+#endif
 		return false;
 	}
 	return true;

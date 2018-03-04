@@ -51,6 +51,7 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
 	HookScanner hooks(processHandle);
+
 	CodeScanReport *scan_report = hooks.scanRemote(modData, remoteModData);
 	t_scan_status is_hooked = ModuleScanReport::get_scan_status(scan_report);
 	process_report.appendReport(scan_report);

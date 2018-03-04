@@ -11,7 +11,8 @@ class ModuleData {
 public:
 	ModuleData(HANDLE _processHandle, HMODULE _module)
 		: processHandle(_processHandle), moduleHandle(_module),
-		is_module_named(false), original_size(0), original_module(nullptr)
+		is_module_named(false), original_size(0), original_module(nullptr),
+		is_relocated(false)
 	{
 		memset(szModName, 0, MAX_PATH);
 	}
@@ -32,6 +33,7 @@ public:
 	bool convertPath();
 	bool loadOriginal();
 	bool reloadWow64();
+	bool relocateToBase();
 
 	HANDLE processHandle;
 	HMODULE moduleHandle;
@@ -40,6 +42,9 @@ public:
 
 	PBYTE original_module;
 	size_t original_size;
+
+protected:
+	bool is_relocated;
 
 	friend class PeSection;
 };
