@@ -40,9 +40,9 @@ public:
 
 	PBYTE original_module;
 	size_t original_size;
-};
 
-//---
+	friend class PeSection;
+};
 
 // the module loaded within the scanned process
 class RemoteModuleData
@@ -51,22 +51,32 @@ public:
 	RemoteModuleData(HANDLE _processHandle, HMODULE _modBaseAddr)
 		: processHandle(_processHandle), modBaseAddr(_modBaseAddr)
 	{
-		isInit = false;
+		is_ready = false;
 		memset(headerBuffer, 0, peconv::MAX_HEADER_SIZE);
-		loadHeader();
+		init();
 	}
 
 	virtual ~RemoteModuleData() {}
 
 	bool isSectionExecutable(size_t section_number);
 	bool hasExecutableSection();
+	bool isInitialized()
+	{
+		if (!is_ready) init();
+		return is_ready;
+	}
+
+	BYTE headerBuffer[peconv::MAX_HEADER_SIZE];
 
 protected:
+	bool init();
 	bool loadHeader();
 	ULONGLONG RemoteModuleData::getRemoteSectionVa(const size_t section_num);
 
 	HANDLE processHandle;
 	HMODULE modBaseAddr;
-	BYTE headerBuffer[peconv::MAX_HEADER_SIZE];
-	bool isInit;
+
+	bool is_ready;
+
+	friend class PeSection;
 };

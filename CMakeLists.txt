@@ -32,6 +32,7 @@ set (scanners_hdrs
 	scanners/module_scan_report.h
 	scanners/scan_report.h
 	scanners/module_data.h
+	scanners/pe_section.h
 )
 
 set (utils_srcs

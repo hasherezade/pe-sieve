@@ -60,6 +60,15 @@ bool ModuleData::reloadWow64()
 }
 
 //----
+bool RemoteModuleData::init()
+{
+	this->is_ready = false;
+	if (!loadHeader()) {
+		return false;
+	}
+	this->is_ready = true;
+	return true;
+}
 
 bool RemoteModuleData::loadHeader()
 {
@@ -67,13 +76,12 @@ bool RemoteModuleData::loadHeader()
 	if (!peconv::read_remote_pe_header(this->processHandle, (PBYTE)this->modBaseAddr, this->headerBuffer, peconv::MAX_HEADER_SIZE)) {
 		return false;
 	}
-	this->isInit = true;
 	return true;
 }
 
 ULONGLONG RemoteModuleData::getRemoteSectionVa(const size_t section_num)
 {
-	if (!this->isInit) return NULL;
+	if (!this->isInitialized()) return NULL;
 
 	PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(headerBuffer, peconv::MAX_HEADER_SIZE, section_num);
 	if ((section_hdr == NULL) || section_hdr->SizeOfRawData == 0) {

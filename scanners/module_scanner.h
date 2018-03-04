@@ -16,7 +16,7 @@ public:
 	}
 	virtual ~ModuleScanner() {}
 
-	virtual ModuleScanReport* scanRemote(ModuleData &moduleData) = 0;
+	virtual ModuleScanReport* scanRemote(ModuleData &moduleData, RemoteModuleData &remoteModData) = 0;
 
 protected:
 	HANDLE processHandle;
