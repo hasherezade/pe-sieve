@@ -23,6 +23,7 @@ bool ModuleData::convertPath()
 
 bool ModuleData::loadOriginal()
 {
+	is_relocated = false;
 	if (!GetModuleFileNameExA(processHandle, this->moduleHandle, szModName, MAX_PATH)) {
 		is_module_named = false;
 		const char unnamed[] = "unnamed";
@@ -31,6 +32,7 @@ bool ModuleData::loadOriginal()
 	peconv::free_pe_buffer(original_module, original_size);
 	original_module = peconv::load_pe_module(szModName, original_size, false, false);
 	if (original_module != nullptr) {
+		isManagedCode();
 		return true;
 	}
 	// try to convert path:
@@ -38,11 +40,12 @@ bool ModuleData::loadOriginal()
 		return false;
 	}
 	std::cout << "[OK] Converted the path: " << szModName << std::endl;
-	is_relocated = false;
+	
 	original_module = peconv::load_pe_module(szModName, original_size, false, false);
 	if (!original_module) {
 		return false;
 	}
+	isManagedCode();
 	return true;
 }
 
@@ -76,6 +79,28 @@ bool ModuleData::reloadWow64()
 		return false;
 	}
 	return true;
+}
+
+bool dot_net_check(LPSTR lib_name, DWORD call_via, DWORD thunk_addr, BYTE* modulePtr, peconv::t_function_resolver* func_resolver)
+{
+	std::string name = lib_name;
+	std::transform(name.begin(), name.end(), name.begin(), tolower);
+	if (name != "mscoree.dll") {
+		//break on first that is not a .NET DLL
+		return false;
+	}
+	return true;
+}
+
+bool ModuleData::isManagedCode()
+{
+	peconv::t_on_import_found on_import = dot_net_check;
+	this->is_dot_net = false;
+	this->is_dot_net = peconv::imports_walker(this->original_module, on_import, nullptr);
+	if (this->is_dot_net) {
+		std::cout << "This is a .NET module" << std::endl;
+	}
+	return this->is_dot_net;
 }
 
 //----
