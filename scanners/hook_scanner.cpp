@@ -169,7 +169,8 @@ CodeScanReport* HookScanner::scanRemote(ModuleData& modData, RemoteModuleData &r
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(modData.original_module, modData.original_size, i);
 		if (section_hdr == nullptr) continue;
 		if ( (section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
-			|| remoteModData.isSectionExecutable(i) )
+			||( (i == 0) && remoteModData.isSectionExecutable(i)) ) // for now do it only for the first section
+			//TODO: handle sections that have inside Delayed Imports (they give false positives)
 		{
 			last_res = scanSection(modData, remoteModData, i, *my_report);
 			if (last_res == SCAN_ERROR) errors++;
