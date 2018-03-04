@@ -128,9 +128,9 @@ t_scan_status HookScanner::scanSection(ModuleData& modData, RemoteModuleData &re
 	size_t smaller_size = originalSec.loadedSize > remoteSec.loadedSize ? remoteSec.loadedSize : originalSec.loadedSize;
 #ifdef _DEBUG
 	std::cout << "Code RVA: " 
-		<< std::hex << section_hdr->VirtualAddress 
+		<< std::hex << originalSec.rva
 		<< " to "
-		<< std::hex << section_hdr->SizeOfRawData 
+		<< std::hex << originalSec.loadedSize
 		<< std::endl;
 #endif
 	//check if the code of the loaded module is same as the code of the module on the disk:
