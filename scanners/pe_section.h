@@ -42,7 +42,7 @@ public:
 
 	size_t loadedSize;
 	PBYTE loadedSection;
-	ULONGLONG rva;
+	DWORD rva;
 
 protected:
 

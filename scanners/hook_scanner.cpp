@@ -104,7 +104,7 @@ size_t HookScanner::collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_cod
 	// if there is still unclosed patch, close it now:
 	if (currPatch != nullptr) {
 		//this happens if the patch lasts till the end of code, so, its end is the end of code
-		currPatch->setEnd(rva + code_size);
+		currPatch->setEnd(rva + (DWORD) code_size);
 		currPatch = nullptr;
 	}
 	return patchesList.size();
