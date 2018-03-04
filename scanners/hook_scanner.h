@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include "module_scanner.h"
+#include "pe_section.h"
 
 class PatchList {
 public:
@@ -88,9 +89,9 @@ public:
 	virtual CodeScanReport* scanRemote(ModuleData &moduleData, RemoteModuleData &remoteModData);
 
 private:
-	t_scan_status scanSection(PBYTE modBaseAddr, PBYTE original_module, size_t module_size, size_t section_number, IN CodeScanReport &report);
+	t_scan_status scanSection(ModuleData& modData, size_t section_number, IN CodeScanReport &report);
 
-	bool clearIAT(PIMAGE_SECTION_HEADER section_hdr, PBYTE original_module, PBYTE loaded_code);
+	bool clearIAT(ModuleData& modData, PeSection &originalSec, PeSection &remoteSec);
 
 	size_t collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList);
 };

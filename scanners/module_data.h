@@ -42,8 +42,6 @@ public:
 	size_t original_size;
 };
 
-//---
-
 // the module loaded within the scanned process
 class RemoteModuleData
 {
