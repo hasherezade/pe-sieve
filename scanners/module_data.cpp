@@ -98,7 +98,9 @@ bool ModuleData::isManagedCode()
 	this->is_dot_net = false;
 	this->is_dot_net = peconv::imports_walker(this->original_module, on_import, nullptr);
 	if (this->is_dot_net) {
+#ifdef _DEBUG
 		std::cout << "This is a .NET module" << std::endl;
+#endif
 	}
 	return this->is_dot_net;
 }
