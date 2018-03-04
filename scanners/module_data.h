@@ -40,6 +40,8 @@ public:
 
 	PBYTE original_module;
 	size_t original_size;
+
+	friend class PeSection;
 };
 
 // the module loaded within the scanned process
@@ -75,4 +77,6 @@ protected:
 	HMODULE modBaseAddr;
 
 	bool is_ready;
+
+	friend class PeSection;
 };

@@ -110,10 +110,10 @@ size_t HookScanner::collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_cod
 	return patchesList.size();
 }
 
-t_scan_status HookScanner::scanSection(ModuleData& modData, size_t section_number, CodeScanReport& report)
+t_scan_status HookScanner::scanSection(ModuleData& modData, RemoteModuleData &remoteModData, size_t section_number, CodeScanReport& report)
 {
 	//get the code section from the remote module:
-	PeSection remoteSec(processHandle, modData.moduleHandle, section_number);
+	PeSection remoteSec(remoteModData, section_number);
 	if (!remoteSec.isInitialized()) {
 		return SCAN_ERROR;
 	}
@@ -122,7 +122,7 @@ t_scan_status HookScanner::scanSection(ModuleData& modData, size_t section_numbe
 	if (!originalSec.isInitialized()) {
 		return SCAN_ERROR;
 	}
-	//TODO: this should be done on copy of section from the original module
+
 	clearIAT(modData, originalSec, remoteSec);
 		
 	size_t smaller_size = originalSec.loadedSize > remoteSec.loadedSize ? remoteSec.loadedSize : originalSec.loadedSize;
@@ -171,7 +171,7 @@ CodeScanReport* HookScanner::scanRemote(ModuleData& modData, RemoteModuleData &r
 		if ( (section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
 			|| remoteModData.isSectionExecutable(i) )
 		{
-			last_res = scanSection(modData, i, *my_report);
+			last_res = scanSection(modData, remoteModData, i, *my_report);
 			if (last_res == SCAN_ERROR) errors++;
 			else if (last_res == SCAN_SUSPICIOUS) modified++;
 		}

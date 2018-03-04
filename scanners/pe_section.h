@@ -8,10 +8,10 @@
 class PeSection
 {
 public:
-	PeSection(HANDLE processHandle, HMODULE modBaseAddr, size_t section_number)
+	PeSection(RemoteModuleData& remoteModData, size_t section_number)
 		: loadedSection(nullptr), loadedSize(0), rva(0)
 	{
-		is_ready = loadRemote(processHandle, modBaseAddr, section_number);
+		is_ready = loadRemote(remoteModData, section_number);
 	}
 
 	PeSection(ModuleData& modData, size_t section_number)
@@ -46,11 +46,16 @@ public:
 
 protected:
 
-	bool loadRemote(HANDLE processHandle, HMODULE modBaseAddr, size_t section_number)
+	bool loadRemote(RemoteModuleData& remoteModData, size_t section_number)
 		{
+		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(remoteModData.headerBuffer, peconv::MAX_HEADER_SIZE, section_number);
+		if ((section_hdr == NULL) || section_hdr->SizeOfRawData == 0) {
+			return NULL;
+		}
+		this->rva = section_hdr->VirtualAddress;
 		//get the code section from the module:
 		this->loadedSize = 0;
-		this->loadedSection = peconv::get_remote_pe_section(processHandle, (PBYTE) modBaseAddr, section_number, loadedSize);
+		this->loadedSection = peconv::get_remote_pe_section(remoteModData.processHandle, (PBYTE) remoteModData.modBaseAddr, section_number, loadedSize);
 		if (loadedSection == nullptr) {
 			return false;
 		}
@@ -69,9 +74,7 @@ protected:
 		if (loadedSection == nullptr) {
 			return false;
 		}
-
 		this->rva = section_hdr->VirtualAddress;
-
 		//make a copy of the section:
 		BYTE *orig_code = modData.original_module + section_hdr->VirtualAddress;
 		memcpy(loadedSection, orig_code, orig_code_size);

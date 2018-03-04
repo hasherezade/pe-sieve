@@ -89,7 +89,7 @@ public:
 	virtual CodeScanReport* scanRemote(ModuleData &moduleData, RemoteModuleData &remoteModData);
 
 private:
-	t_scan_status scanSection(ModuleData& modData, size_t section_number, IN CodeScanReport &report);
+	t_scan_status scanSection(ModuleData& modData, RemoteModuleData &remoteModData, size_t section_number, IN CodeScanReport &report);
 
 	bool clearIAT(ModuleData& modData, PeSection &originalSec, PeSection &remoteSec);
 
