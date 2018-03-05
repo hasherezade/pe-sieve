@@ -32,7 +32,7 @@ bool ModuleData::loadOriginal()
 	peconv::free_pe_buffer(original_module, original_size);
 	original_module = peconv::load_pe_module(szModName, original_size, false, false);
 	if (original_module != nullptr) {
-		isManagedCode();
+		this->is_dot_net = isDotNetManagedCode();
 		return true;
 	}
 	// try to convert path:
@@ -45,7 +45,7 @@ bool ModuleData::loadOriginal()
 	if (!original_module) {
 		return false;
 	}
-	isManagedCode();
+	this->is_dot_net = isDotNetManagedCode();
 	return true;
 }
 
@@ -81,28 +81,17 @@ bool ModuleData::reloadWow64()
 	return true;
 }
 
-bool dot_net_check(LPSTR lib_name, DWORD call_via, DWORD thunk_addr, BYTE* modulePtr, peconv::t_function_resolver* func_resolver)
+bool ModuleData::isDotNetManagedCode()
 {
-	std::string name = lib_name;
-	std::transform(name.begin(), name.end(), name.begin(), tolower);
-	if (name != "mscoree.dll") {
-		//break on first that is not a .NET DLL
+	//has a directory entry for .NET header
+	IMAGE_DATA_DIRECTORY* dotNetDir = peconv::get_directory_entry(this->original_module, IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR);
+	if (dotNetDir == nullptr) {
+		//does not have .NET directory
 		return false;
 	}
+	// TODO: parse .NET header
+	std::cout << "This is a .NET module" << std::endl;
 	return true;
-}
-
-bool ModuleData::isManagedCode()
-{
-	peconv::t_on_import_found on_import = dot_net_check;
-	this->is_dot_net = false;
-	this->is_dot_net = peconv::imports_walker(this->original_module, on_import, nullptr);
-	if (this->is_dot_net) {
-#ifdef _DEBUG
-		std::cout << "This is a .NET module" << std::endl;
-#endif
-	}
-	return this->is_dot_net;
 }
 
 //----

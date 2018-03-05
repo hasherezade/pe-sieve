@@ -46,8 +46,7 @@ public:
 	size_t original_size;
 
 protected:
-
-	bool isManagedCode();
+	bool isDotNetManagedCode();
 	bool is_relocated;
 	bool is_dot_net;
 
