@@ -21,14 +21,11 @@ HeadersScanReport* HollowingScanner::scanRemote(ModuleData &moduleData, RemoteMo
 	BYTE hdr_buffer2[peconv::MAX_HEADER_SIZE] = { 0 };
 	memcpy(hdr_buffer2, moduleData.original_module, hdrs_size);
 
-	// some .NET modules overwrite their own EP!
-	// TODO: check if this is a .NET app and treat them differently
+	// some .NET modules overwrite their own headers, so at this point they should be excluded from the comparison
 	DWORD ep1 = peconv::get_entry_point_rva(hdr_buffer1);
 	DWORD ep2 = peconv::get_entry_point_rva(hdr_buffer2);
 	if (ep1 != ep2) {
 		my_report->epModified = true;
-		peconv::update_entry_point_rva(hdr_buffer1, 0);
-		peconv::update_entry_point_rva(hdr_buffer2, 0);
 	}
 	DWORD arch1 = peconv::get_nt_hdr_architecture(hdr_buffer1);
 	DWORD arch2 = peconv::get_nt_hdr_architecture(hdr_buffer2);

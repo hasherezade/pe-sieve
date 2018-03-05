@@ -53,6 +53,7 @@ std::string report_to_string(const ProcessScanReport &process_report)
 	stream << "---" << std::endl;
 	stream << "SUMMARY: \n" << std::endl;
 	stream << "Total scanned:    " << std::dec << report.scanned << "\n";
+	stream << "Skipped:          " << std::dec << report.skipped << "\n";
 	stream << "-\n";
 	stream << "Hooked:           " << std::dec << report.hooked << "\n";
 	stream << "Replaced:         " << std::dec << report.replaced << "\n";
@@ -78,6 +79,7 @@ std::string report_to_json(const ProcessScanReport &process_report, t_report_fil
 	stream << " \"scanned\" : \n";
 	stream << " {\n";
 	stream << "  \"total\" : " << std::dec << report.scanned  << ",\n";
+	stream << "  \"skipped\" : " << std::dec << report.skipped  << ",\n";
 	stream << "  \"modified\" : \n";
 	stream << "  {\n";
 	stream << "   \"total\" : " << std::dec << report.suspicious << ",\n";

@@ -23,6 +23,7 @@ bool ModuleData::convertPath()
 
 bool ModuleData::loadOriginal()
 {
+	is_relocated = false;
 	if (!GetModuleFileNameExA(processHandle, this->moduleHandle, szModName, MAX_PATH)) {
 		is_module_named = false;
 		const char unnamed[] = "unnamed";
@@ -31,6 +32,7 @@ bool ModuleData::loadOriginal()
 	peconv::free_pe_buffer(original_module, original_size);
 	original_module = peconv::load_pe_module(szModName, original_size, false, false);
 	if (original_module != nullptr) {
+		this->is_dot_net = isDotNetManagedCode();
 		return true;
 	}
 	// try to convert path:
@@ -38,11 +40,12 @@ bool ModuleData::loadOriginal()
 		return false;
 	}
 	std::cout << "[OK] Converted the path: " << szModName << std::endl;
-	is_relocated = false;
+	
 	original_module = peconv::load_pe_module(szModName, original_size, false, false);
 	if (!original_module) {
 		return false;
 	}
+	this->is_dot_net = isDotNetManagedCode();
 	return true;
 }
 
@@ -75,6 +78,45 @@ bool ModuleData::reloadWow64()
 	if (!original_module) {
 		return false;
 	}
+	return true;
+}
+
+//TODO: maybe move it to libpeconv?
+IMAGE_COR20_HEADER* get_dotnet_hdr(PBYTE module, size_t module_size, IMAGE_DATA_DIRECTORY* dotNetDir)
+{
+	DWORD rva = dotNetDir->VirtualAddress;
+	DWORD hdr_size = dotNetDir->Size;
+	if (!peconv::validate_ptr(module, module_size, module + rva, hdr_size)) {
+		return nullptr;
+	}
+	IMAGE_COR20_HEADER *dnet_hdr = (IMAGE_COR20_HEADER*)(module + rva);
+	if (!peconv::validate_ptr(module, module_size, module + dnet_hdr->MetaData.VirtualAddress, dnet_hdr->MetaData.Size)) {
+		return nullptr;
+	}
+	DWORD* signature_ptr = (DWORD*)(module + dnet_hdr->MetaData.VirtualAddress);
+	const DWORD dotNetSign = 0x424A5342;
+	if (*signature_ptr != dotNetSign) {
+		//invalid header
+		return nullptr;
+	}
+	return dnet_hdr;
+}
+
+bool ModuleData::isDotNetManagedCode()
+{
+	//has a directory entry for .NET header
+	IMAGE_DATA_DIRECTORY* dotNetDir = peconv::get_directory_entry(this->original_module, IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR);
+	if (dotNetDir == nullptr) {
+		//does not have .NET directory
+		return false;
+	}
+	
+	if (!get_dotnet_hdr(this->original_module, this->original_size, dotNetDir)){
+		return false;
+	}
+#ifdef _DEBUG
+	std::cout << "This is a .NET module" << std::endl;
+#endif
 	return true;
 }
 

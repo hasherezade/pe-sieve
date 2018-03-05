@@ -182,7 +182,11 @@ ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)
 		if (!args.quiet) {
 			std::cout << "[*] Scanning: " << modData.szModName << std::endl;
 		}
-
+		if (modData.isDotNet()) {
+			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
+			pReport->summary.skipped++;
+			continue;
+		}
 		//load data about the remote module
 		RemoteModuleData remoteModData(processHandle, hMods[i]);
 		if (remoteModData.isInitialized() == false) {

@@ -12,7 +12,7 @@ public:
 	ModuleData(HANDLE _processHandle, HMODULE _module)
 		: processHandle(_processHandle), moduleHandle(_module),
 		is_module_named(false), original_size(0), original_module(nullptr),
-		is_relocated(false)
+		is_relocated(false), is_dot_net(false)
 	{
 		memset(szModName, 0, MAX_PATH);
 	}
@@ -30,6 +30,8 @@ public:
 		return peconv::is64bit(original_module);
 	}
 
+	bool isDotNet() { return this->is_dot_net; }
+
 	bool convertPath();
 	bool loadOriginal();
 	bool reloadWow64();
@@ -44,7 +46,9 @@ public:
 	size_t original_size;
 
 protected:
+	bool isDotNetManagedCode();
 	bool is_relocated;
+	bool is_dot_net;
 
 	friend class PeSection;
 };
