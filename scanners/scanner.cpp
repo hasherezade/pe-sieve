@@ -183,7 +183,9 @@ ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)
 			std::cout << "[*] Scanning: " << modData.szModName << std::endl;
 		}
 		if (modData.isDotNet()) {
+#ifdef _DEBUG
 			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
+#endif
 			pReport->summary.skipped++;
 			continue;
 		}
