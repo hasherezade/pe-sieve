@@ -29,7 +29,7 @@ typedef struct {
 	DWORD detached; // cannot find the file corresponding to the module in memory
 	DWORD hooked; // detected modifications in the code
 	DWORD implanted; // the full PE was probably loaded manually
-	DWORD skipped; // some of the modules (i.e. dotNET managed code have different characteristics and this scan does not apply)
+	DWORD skipped; // some of the modules must be skipped (i.e. dotNET managed code have different characteristics and this scan does not apply)
 	DWORD errors; // errors prevented the scan
 } t_report;
 
