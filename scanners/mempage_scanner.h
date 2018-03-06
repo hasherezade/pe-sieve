@@ -71,7 +71,11 @@ public:
 	DWORD protection;
 	DWORD initial_protect;
 	bool is_private;
+	DWORD mapping_type;
 	bool is_listed_module;
+
+	ULONGLONG region_start;
+	ULONGLONG region_end;
 
 protected:
 	bool is_info_filled;
@@ -81,17 +85,18 @@ protected:
 class MemPageScanner {
 public:
 	MemPageScanner(HANDLE procHndl)
-		: processHandle(procHndl)
+		: processHandle(procHndl), isDeepScan(true)
 	{
 	}
 	virtual ~MemPageScanner() {}
 
 	virtual MemPageScanReport* scanRemote(MemPageData &memPageData);
 
-	bool hasPeHeader(MemPageData &memPageData);
-
 	DWORD getInitialAccess(MemPageData &memPageData);
 
 protected:
+	ULONGLONG findPeHeader(MemPageData &memPageData);
+
+	bool isDeepScan;
 	HANDLE processHandle;
 };
