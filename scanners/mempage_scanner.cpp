@@ -73,10 +73,7 @@ MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
 		//probably legit
 		return nullptr;
 	}
-	if (memPage.protection & PAGE_EXECUTE_WRITECOPY) {
-		// they are probably legit
-		return nullptr;
-	}
+
 	bool only_executable = true;
 
 	// is the page executable?
