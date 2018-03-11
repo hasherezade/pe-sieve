@@ -202,9 +202,9 @@ size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE pat
 			//open a new patch
 			currPatch = new PatchList::Patch(patchesList.size(), (DWORD) section_rva + i);
 			patchesList.insert(currPatch);
-			size_t parsed_size = analyzer.analyze(*currPatch);
+			DWORD parsed_size = (DWORD) analyzer.analyze(*currPatch);
 			if (parsed_size > 0) {
-				currPatch->setEnd((DWORD) section_rva + i + parsed_size);
+				currPatch->setEnd(section_rva + i + parsed_size);
 				currPatch = nullptr; // close this patch
 				i += parsed_size;
 				continue;
