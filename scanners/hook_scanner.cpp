@@ -149,24 +149,24 @@ t_scan_status HookScanner::scanSection(ModuleData& modData, RemoteModuleData &re
 	return SCAN_NOT_SUSPICIOUS; //not modified
 }
 
-CodeScanReport* HookScanner::scanRemote(ModuleData& modData, RemoteModuleData &remoteModData)
+CodeScanReport* HookScanner::scanRemote()
 {
-	CodeScanReport *my_report = new CodeScanReport(this->processHandle, modData.moduleHandle);
+	CodeScanReport *my_report = new CodeScanReport(this->processHandle, moduleData.moduleHandle);
 
-	modData.relocateToBase(); // before scanning, ensure that the original module is relocated to the base where it was loaded
+	moduleData.relocateToBase(); // before scanning, ensure that the original module is relocated to the base where it was loaded
 
 	t_scan_status last_res = SCAN_NOT_SUSPICIOUS;
 	size_t errors = 0;
 	size_t modified = 0;
-	size_t sec_count = peconv::get_sections_count(modData.original_module, modData.original_size);
+	size_t sec_count = peconv::get_sections_count(moduleData.original_module, moduleData.original_size);
 	for (size_t i = 0; i < sec_count ; i++) {
-		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(modData.original_module, modData.original_size, i);
+		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(moduleData.original_module, moduleData.original_size, i);
 		if (section_hdr == nullptr) continue;
 		if ( (section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
 			||( (i == 0) && remoteModData.isSectionExecutable(i)) ) // for now do it only for the first section
 			//TODO: handle sections that have inside Delayed Imports (they give false positives)
 		{
-			last_res = scanSection(modData, remoteModData, i, *my_report);
+			last_res = scanSection(moduleData, remoteModData, i, *my_report);
 			if (last_res == SCAN_ERROR) errors++;
 			else if (last_res == SCAN_SUSPICIOUS) modified++;
 		}

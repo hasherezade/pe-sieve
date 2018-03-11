@@ -84,13 +84,14 @@ protected:
 
 class MemPageScanner {
 public:
-	MemPageScanner(HANDLE procHndl)
-		: processHandle(procHndl), isDeepScan(true)
+	MemPageScanner(HANDLE _procHndl, MemPageData &_memPageDatal)
+		: processHandle(_procHndl), memPage(_memPageDatal),
+		isDeepScan(true)
 	{
 	}
 	virtual ~MemPageScanner() {}
 
-	virtual MemPageScanReport* scanRemote(MemPageData &memPageData);
+	virtual MemPageScanReport* scanRemote();
 
 	DWORD getInitialAccess(MemPageData &memPageData);
 
@@ -99,4 +100,5 @@ protected:
 
 	bool isDeepScan;
 	HANDLE processHandle;
+	MemPageData &memPage;
 };

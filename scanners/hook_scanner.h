@@ -83,10 +83,10 @@ public:
 class HookScanner : public ModuleScanner {
 public:
 
-	HookScanner(HANDLE hProc)
-		: ModuleScanner(hProc) { }
+	HookScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData)
+		: ModuleScanner(hProc, moduleData, remoteModData) { }
 
-	virtual CodeScanReport* scanRemote(ModuleData &moduleData, RemoteModuleData &remoteModData);
+	virtual CodeScanReport* scanRemote();
 
 private:
 	t_scan_status scanSection(ModuleData& modData, RemoteModuleData &remoteModData, size_t section_number, IN CodeScanReport &report);
