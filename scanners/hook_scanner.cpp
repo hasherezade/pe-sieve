@@ -113,6 +113,17 @@ bool PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, size_t
 	return true;
 }
 
+bool PatchAnalyzer::parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr)
+{
+	PBYTE ret_ptr = patch_ptr + 5; // next instruction
+	if (ret_ptr[0] != 0xC3) {
+		return false; // this is not push->ret
+	}
+	DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
+	patch.setHookTarget(*lval);
+	return true;
+}
+
 bool PatchAnalyzer::analyze(PatchList::Patch &patch)
 {
 	ULONGLONG section_va = moduleData.rvaToVa(sectionRVA);
@@ -123,6 +134,9 @@ bool PatchAnalyzer::analyze(PatchList::Patch &patch)
 	BYTE op = patch_ptr[0];
 	if (op == OP_JMP) {
 		return parseJmp(patch, patch_ptr, patch_va);
+	}
+	if (op == OP_PUSH_DWORD) {
+		return parsePushRet(patch, patch_ptr);
 	}
 	bool is64bit = this->moduleData.is64bit();
 	size_t mov_instr_len = 5;

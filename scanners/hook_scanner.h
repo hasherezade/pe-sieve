@@ -73,7 +73,8 @@ class PatchAnalyzer
 {
 public:
 	typedef enum {
-		OP_JMP = 0xE9
+		OP_JMP = 0xE9,
+		OP_PUSH_DWORD = 0x68
 	} t_hook_opcode;
 
 	PatchAnalyzer(ModuleData &_moduleData,DWORD _sectionRVA, PBYTE patched_code, size_t code_size)
@@ -86,6 +87,7 @@ public:
 protected:
 	bool parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
 	bool parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr,size_t instr_len);
+	bool parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr);
 	ULONGLONG PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, DWORD instrLen, DWORD lVal);
 
 	ModuleData &moduleData;
