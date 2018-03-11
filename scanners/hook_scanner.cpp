@@ -80,8 +80,12 @@ size_t PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLO
 	return instr_size;
 }
 
-size_t PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, size_t mov_instr_len)
+size_t PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, bool is_long)
 {
+	size_t mov_instr_len = 5;
+	if (is_long) {
+		mov_instr_len = 9;
+	}
 	PBYTE jmp_ptr = patch_ptr + mov_instr_len; // next instruction
 	DWORD reg_id1 = 0;
 	if (jmp_ptr[0] == 0xFF && jmp_ptr[1] >= 0xE0 && jmp_ptr[1] <= 0xEF ) {
@@ -102,15 +106,13 @@ size_t PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, size
 	}
 	size_t patch_size = mov_instr_len;
 	ULONGLONG addr = NULL;
-	if (mov_instr_len == 5) { //32bit
+	if (!is_long) { //32bit
 		DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
 		addr = *lval;
-	} else if (mov_instr_len == 9) { //64bit
+	} else { //64bit
 		mov_instr_len++; // add length of modifier
 		ULONGLONG *lval = (ULONGLONG*)((ULONGLONG) patch_ptr + 1);
 		addr = *lval;
-	} else {
-		return NULL;
 	}
 	patch_size += 2; //add jump reg size
 	patch.setHookTarget(addr);
@@ -145,16 +147,16 @@ size_t PatchAnalyzer::analyze(PatchList::Patch &patch)
 		return parsePushRet(patch, patch_ptr);
 	}
 	bool is64bit = this->moduleData.is64bit();
-	size_t mov_instr_len = 5;
+	bool is_long = false;
 	if (is64bit) {
 		if (op >= 0x40 && op <= 0x4F) { // mov modifier
 			patch_ptr++;
 			op = patch_ptr[0];
-			mov_instr_len = 9;
+			is_long = true;
 		}
 	}
 	if (op >= 0xB8 && op <= 0xBF) { // is mov
-		return parseMovJmp(patch, patch_ptr, mov_instr_len);
+		return parseMovJmp(patch, patch_ptr, is_long);
 	}
 
 	return false;
