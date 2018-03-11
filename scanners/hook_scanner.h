@@ -89,9 +89,9 @@ public:
 	virtual CodeScanReport* scanRemote();
 
 private:
-	t_scan_status scanSection(ModuleData& modData, RemoteModuleData &remoteModData, size_t section_number, IN CodeScanReport &report);
+	t_scan_status scanSection(size_t section_number, IN CodeScanReport &report);
 
-	bool clearIAT(ModuleData& modData, PeSection &originalSec, PeSection &remoteSec);
+	bool clearIAT(PeSection &originalSec, PeSection &remoteSec);
 
-	size_t collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList);
+	size_t collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList);
 };

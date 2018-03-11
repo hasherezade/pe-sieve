@@ -61,9 +61,9 @@ size_t CodeScanReport::generateTags(std::string reportPath)
 
 //---
 
-bool HookScanner::clearIAT(ModuleData& modData, PeSection &originalSec, PeSection &remoteSec)
+bool HookScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
 {
-	IMAGE_DATA_DIRECTORY* iat_dir = peconv::get_directory_entry(modData.original_module, IMAGE_DIRECTORY_ENTRY_IAT);
+	IMAGE_DATA_DIRECTORY* iat_dir = peconv::get_directory_entry(moduleData.original_module, IMAGE_DIRECTORY_ENTRY_IAT);
 	if (!iat_dir) {
 		return false;
 	}
@@ -82,7 +82,7 @@ bool HookScanner::clearIAT(ModuleData& modData, PeSection &originalSec, PeSectio
 	return true;
 }
 
-size_t HookScanner::collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, PatchList &patchesList)
+size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, PatchList &patchesList)
 {
 	PatchList::Patch *currPatch = nullptr;
 
@@ -90,27 +90,27 @@ size_t HookScanner::collectPatches(DWORD rva, PBYTE orig_code, PBYTE patched_cod
 		if (orig_code[i] == patched_code[i]) {
 			if (currPatch != nullptr) {
 				// close the patch
-				currPatch->setEnd(rva + i);
+				currPatch->setEnd(section_rva + i);
 				currPatch = nullptr;
 			}
 			continue;
 		}
 		if (currPatch == nullptr) {
 			//open a new patch
-			currPatch = new PatchList::Patch(patchesList.size(), (DWORD) rva + i);
+			currPatch = new PatchList::Patch(patchesList.size(), (DWORD) section_rva + i);
 			patchesList.insert(currPatch);
 		}
 	}
 	// if there is still unclosed patch, close it now:
 	if (currPatch != nullptr) {
 		//this happens if the patch lasts till the end of code, so, its end is the end of code
-		currPatch->setEnd(rva + (DWORD) code_size);
+		currPatch->setEnd(section_rva + (DWORD) code_size);
 		currPatch = nullptr;
 	}
 	return patchesList.size();
 }
 
-t_scan_status HookScanner::scanSection(ModuleData& modData, RemoteModuleData &remoteModData, size_t section_number, CodeScanReport& report)
+t_scan_status HookScanner::scanSection(size_t section_number, CodeScanReport& report)
 {
 	//get the code section from the remote module:
 	PeSection remoteSec(remoteModData, section_number);
@@ -118,12 +118,12 @@ t_scan_status HookScanner::scanSection(ModuleData& modData, RemoteModuleData &re
 		return SCAN_ERROR;
 	}
 
-	PeSection originalSec(modData, section_number);
+	PeSection originalSec(moduleData, section_number);
 	if (!originalSec.isInitialized()) {
 		return SCAN_ERROR;
 	}
 
-	clearIAT(modData, originalSec, remoteSec);
+	clearIAT(originalSec, remoteSec);
 		
 	size_t smaller_size = originalSec.loadedSize > remoteSec.loadedSize ? remoteSec.loadedSize : originalSec.loadedSize;
 #ifdef _DEBUG
@@ -166,7 +166,7 @@ CodeScanReport* HookScanner::scanRemote()
 			||( (i == 0) && remoteModData.isSectionExecutable(i)) ) // for now do it only for the first section
 			//TODO: handle sections that have inside Delayed Imports (they give false positives)
 		{
-			last_res = scanSection(moduleData, remoteModData, i, *my_report);
+			last_res = scanSection(i, *my_report);
 			if (last_res == SCAN_ERROR) errors++;
 			else if (last_res == SCAN_SUSPICIOUS) modified++;
 		}
