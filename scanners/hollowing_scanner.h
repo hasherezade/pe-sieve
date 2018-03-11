@@ -36,12 +36,12 @@ public:
 
 class HollowingScanner : public ModuleScanner {
 public:
-	HollowingScanner(HANDLE hProc)
-		: ModuleScanner(hProc)
+	HollowingScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData)
+		: ModuleScanner(hProc, moduleData, remoteModData)
 	{
 	}
 
-	virtual HeadersScanReport* scanRemote(ModuleData &moduleData, RemoteModuleData &remoteModData);
+	virtual HeadersScanReport* scanRemote();
 
 private:
 	bool zero_unused_fields(PBYTE hdr_buffer, size_t hdrs_size);

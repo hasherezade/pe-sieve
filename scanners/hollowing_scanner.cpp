@@ -1,7 +1,7 @@
 #include "hollowing_scanner.h"
 #include "peconv.h"
 
-HeadersScanReport* HollowingScanner::scanRemote(ModuleData &moduleData, RemoteModuleData &remoteModData)
+HeadersScanReport* HollowingScanner::scanRemote()
 {
 	HeadersScanReport *my_report = new HeadersScanReport(this->processHandle, moduleData.moduleHandle);
 	if (!remoteModData.isInitialized()) {

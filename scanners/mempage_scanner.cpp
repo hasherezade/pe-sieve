@@ -64,7 +64,7 @@ ULONGLONG MemPageScanner::findPeHeader(MemPageData &memPage)
 	}
 	return PE_NOT_FOUND;
 }
-MemPageScanReport* MemPageScanner::scanRemote(MemPageData &memPage)
+MemPageScanReport* MemPageScanner::scanRemote()
 {
 	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
 		return nullptr;

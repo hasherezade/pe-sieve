@@ -10,14 +10,16 @@
 
 class ModuleScanner {
 public:
-	ModuleScanner(HANDLE procHndl)
-		: processHandle(procHndl)
+	ModuleScanner(HANDLE _procHndl, ModuleData &_moduleData, RemoteModuleData &_remoteModData)
+		: processHandle(_procHndl), moduleData(_moduleData), remoteModData(_remoteModData)
 	{
 	}
 	virtual ~ModuleScanner() {}
 
-	virtual ModuleScanReport* scanRemote(ModuleData &moduleData, RemoteModuleData &remoteModData) = 0;
+	virtual ModuleScanReport* scanRemote() = 0;
 
 protected:
 	HANDLE processHandle;
+	ModuleData &moduleData;
+	RemoteModuleData &remoteModData;
 };

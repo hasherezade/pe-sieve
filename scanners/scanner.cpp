@@ -20,8 +20,8 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 #ifdef _WIN64
 	IsWow64Process(processHandle, &isWow64);
 #endif
-	HollowingScanner hollows(processHandle);
-	HeadersScanReport *scan_report = hollows.scanRemote(modData, remoteModData);
+	HollowingScanner hollows(processHandle, modData, remoteModData);
+	HeadersScanReport *scan_report = hollows.scanRemote();
 	if (scan_report == nullptr) {
 		process_report.summary.errors++;
 		return SCAN_ERROR;
@@ -34,7 +34,7 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 #endif
 		if (modData.reloadWow64()) {
 			delete scan_report; // delete previous report
-			scan_report = hollows.scanRemote(modData, remoteModData);
+			scan_report = hollows.scanRemote();
 		}
 		is_hollowed = ModuleScanReport::get_scan_status(scan_report);
 	}
@@ -50,9 +50,9 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 
 t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
-	HookScanner hooks(processHandle);
+	HookScanner hooks(processHandle, modData, remoteModData);
 
-	CodeScanReport *scan_report = hooks.scanRemote(modData, remoteModData);
+	CodeScanReport *scan_report = hooks.scanRemote();
 	t_scan_status is_hooked = ModuleScanReport::get_scan_status(scan_report);
 	process_report.appendReport(scan_report);
 	
@@ -107,8 +107,6 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 		return pReport;
 	}
 
-	MemPageScanner workingSetScanner(this->processHandle);
-
 	for (size_t counter = 0; counter < wsi->NumberOfEntries; counter++) {
 		ULONGLONG page = (ULONGLONG)wsi->WorkingSetInfo[counter].VirtualPage;
 		DWORD protection = (DWORD)wsi->WorkingSetInfo[counter].Protection;
@@ -120,7 +118,8 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 		//if it was already scanned, it means the module was on the list of loaded modules
 		memPage.is_listed_module = pReport->hasModule((HMODULE)page_addr);
 		
-		MemPageScanReport *my_report = workingSetScanner.scanRemote(memPage);
+		MemPageScanner memPageScanner(this->processHandle, memPage);
+		MemPageScanReport *my_report = memPageScanner.scanRemote();
 		if (my_report == nullptr) continue;
 
 		pReport->appendReport(my_report);
