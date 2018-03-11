@@ -9,7 +9,12 @@ bool PatchList::Patch::reportPatch(std::ofstream &patch_report, const char delim
 	if (patch_report.is_open()) {
 		patch_report << std::hex << startRva;
 		patch_report << delimiter;
-		patch_report << "patch_" << id;
+		if (this->is_hook) {
+			patch_report << "hook_" << id;
+			patch_report << "->" << std::hex << hook_target_va;
+		} else {
+			patch_report << "patch_" << id;
+		}
 		patch_report << delimiter;
 		patch_report << (endRva - startRva);
 		patch_report << std::endl;
@@ -61,6 +66,37 @@ size_t CodeScanReport::generateTags(std::string reportPath)
 
 //---
 
+ULONGLONG PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, DWORD instrLen, DWORD lVal)
+{
+	return (currVA + instrLen) + lVal;
+}
+
+bool PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
+{
+	DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
+	ULONGLONG addr = getJmpDestAddr(patch_va, 5, *lval);
+	patch.setHookTarget(addr);
+	return true;
+}
+
+bool PatchAnalyzer::analyze(PatchList::Patch &patch)
+{
+	ULONGLONG section_va = moduleData.rvaToVa(sectionRVA);
+	ULONGLONG patch_va = moduleData.rvaToVa(patch.startRva);
+	size_t patch_offset = patch.startRva - sectionRVA;
+	PBYTE patch_ptr = this->patchedCode + patch_offset;
+
+	switch (patch_ptr[0]) {
+		case OP_JMP:
+			return parseJmp(patch, patch_ptr, patch_va);
+		default:
+			return false;
+	}
+	return false;
+}
+
+//---
+
 bool HookScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
 {
 	IMAGE_DATA_DIRECTORY* iat_dir = peconv::get_directory_entry(moduleData.original_module, IMAGE_DIRECTORY_ENTRY_IAT);
@@ -84,6 +120,7 @@ bool HookScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
 
 size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, PatchList &patchesList)
 {
+	PatchAnalyzer analyzer(moduleData, section_rva, patched_code, code_size);
 	PatchList::Patch *currPatch = nullptr;
 
 	for (DWORD i = 0; i < (DWORD) code_size; i++) {
@@ -91,6 +128,7 @@ size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE pat
 			if (currPatch != nullptr) {
 				// close the patch
 				currPatch->setEnd(section_rva + i);
+				analyzer.analyze(*currPatch);
 				currPatch = nullptr;
 			}
 			continue;
@@ -105,6 +143,7 @@ size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE pat
 	if (currPatch != nullptr) {
 		//this happens if the patch lasts till the end of code, so, its end is the end of code
 		currPatch->setEnd(section_rva + (DWORD) code_size);
+		analyzer.analyze(*currPatch);
 		currPatch = nullptr;
 	}
 	return patchesList.size();

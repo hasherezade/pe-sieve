@@ -12,13 +12,20 @@ public:
 	{
 	public:
 		Patch(size_t patch_id, DWORD start_rva)
-			: id(patch_id), startRva(start_rva), endRva(start_rva)
+			: id(patch_id), startRva(start_rva), endRva(start_rva),
+			is_hook(false), hook_target_va(NULL)
 		{
 		}
 
 		void setEnd(DWORD end_rva)
 		{
 			endRva = end_rva;
+		}
+		
+		void setHookTarget(DWORD target_va)
+		{
+			hook_target_va = target_va;
+			is_hook = true;
 		}
 
 		bool reportPatch(std::ofstream &patch_report, const char delimiter);
@@ -28,7 +35,12 @@ public:
 		DWORD startRva;
 		DWORD endRva;
 
+		bool is_hook;
+		ULONGLONG hook_target_va;
+
+
 	friend class PatchList;
+	friend class PatchAnalyzer;
 	};
 
 	//constructor:
@@ -55,6 +67,30 @@ public:
 
 // variables:
 	std::vector<Patch*> patches;
+};
+
+class PatchAnalyzer
+{
+public:
+	typedef enum {
+		OP_JMP = 0xE9
+	} t_hook_opcode;
+
+	PatchAnalyzer(ModuleData &_moduleData,DWORD _sectionRVA, PBYTE patched_code, size_t code_size)
+		: moduleData(_moduleData), sectionRVA(_sectionRVA), patchedCode(patched_code), codeSize(code_size)
+	{
+	}
+
+	bool analyze(PatchList::Patch &patch);
+
+protected:
+	bool parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
+	ULONGLONG PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, DWORD instrLen, DWORD lVal);
+
+	ModuleData &moduleData;
+	DWORD sectionRVA;
+	PBYTE patchedCode;
+	size_t codeSize;
 };
 
 class CodeScanReport : public ModuleScanReport
