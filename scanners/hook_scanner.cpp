@@ -88,6 +88,7 @@ size_t PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, bool
 	}
 	PBYTE jmp_ptr = patch_ptr + mov_instr_len; // next instruction
 	DWORD reg_id1 = 0;
+	//TODO: before call/jmp there can be also the modifier...
 	if (jmp_ptr[0] == 0xFF && jmp_ptr[1] >= 0xE0 && jmp_ptr[1] <= 0xEF ) { // jmp reg
 		//jmp reg
 		reg_id1 = jmp_ptr[1] - 0xE0;
