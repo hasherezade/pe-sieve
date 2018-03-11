@@ -187,7 +187,6 @@ size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE pat
 			if (currPatch != nullptr) {
 				// close the patch
 				currPatch->setEnd(section_rva + i);
-				analyzer.analyze(*currPatch);
 				currPatch = nullptr;
 			}
 			continue;
@@ -196,13 +195,13 @@ size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE pat
 			//open a new patch
 			currPatch = new PatchList::Patch(patchesList.size(), (DWORD) section_rva + i);
 			patchesList.insert(currPatch);
+			analyzer.analyze(*currPatch);
 		}
 	}
 	// if there is still unclosed patch, close it now:
 	if (currPatch != nullptr) {
 		//this happens if the patch lasts till the end of code, so, its end is the end of code
 		currPatch->setEnd(section_rva + (DWORD) code_size);
-		analyzer.analyze(*currPatch);
 		currPatch = nullptr;
 	}
 	return patchesList.size();
