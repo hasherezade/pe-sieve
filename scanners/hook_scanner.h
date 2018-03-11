@@ -74,6 +74,7 @@ class PatchAnalyzer
 public:
 	typedef enum {
 		OP_JMP = 0xE9,
+		OP_CALL_DWORD = 0xE8,
 		OP_PUSH_DWORD = 0x68
 	} t_hook_opcode;
 

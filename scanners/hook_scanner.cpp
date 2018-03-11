@@ -140,7 +140,7 @@ size_t PatchAnalyzer::analyze(PatchList::Patch &patch)
 	PBYTE patch_ptr = this->patchedCode + patch_offset;
 
 	BYTE op = patch_ptr[0];
-	if (op == OP_JMP) {
+	if (op == OP_JMP || op == OP_CALL_DWORD) {
 		return parseJmp(patch, patch_ptr, patch_va);
 	}
 	if (op == OP_PUSH_DWORD) {
