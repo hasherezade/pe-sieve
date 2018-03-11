@@ -9,7 +9,12 @@ bool PatchList::Patch::reportPatch(std::ofstream &patch_report, const char delim
 	if (patch_report.is_open()) {
 		patch_report << std::hex << startRva;
 		patch_report << delimiter;
-		patch_report << "patch_" << id;
+		if (this->is_hook) {
+			patch_report << "hook_" << id;
+			patch_report << "->" << std::hex << hook_target_va;
+		} else {
+			patch_report << "patch_" << id;
+		}
 		patch_report << delimiter;
 		patch_report << (endRva - startRva);
 		patch_report << std::endl;
@@ -61,6 +66,107 @@ size_t CodeScanReport::generateTags(std::string reportPath)
 
 //---
 
+ULONGLONG PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, DWORD instrLen, DWORD lVal)
+{
+	return (currVA + instrLen) + lVal;
+}
+
+size_t PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
+{
+	const size_t instr_size = 5;
+	DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
+	ULONGLONG addr = getJmpDestAddr(patch_va, 5, *lval);
+	patch.setHookTarget(addr);
+	return instr_size;
+}
+
+size_t PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, bool is_long)
+{
+	size_t mov_instr_len = 5;
+	if (is_long) {
+		mov_instr_len = 9;
+	}
+	PBYTE jmp_ptr = patch_ptr + mov_instr_len; // next instruction
+	DWORD reg_id1 = 0;
+	//TODO: before call/jmp there can be also the modifier...
+	if (jmp_ptr[0] == 0xFF && jmp_ptr[1] >= 0xE0 && jmp_ptr[1] <= 0xEF ) { // jmp reg
+		//jmp reg
+		reg_id1 = jmp_ptr[1] - 0xE0;
+	} else if (jmp_ptr[0] == 0xFF && jmp_ptr[1] >= 0xD0 && jmp_ptr[1] <= 0xDF ) { // call reg
+		//jmp reg
+		reg_id1 = jmp_ptr[1] - 0xD0;
+	} else {
+#ifdef _DEBUG
+		std::cerr << "It is not MOV->JMP" << std::endl;
+#endif
+		return NULL;
+	}
+	DWORD reg_id2 = patch_ptr[0] - 0xB8;;
+	if (reg_id1 != reg_id2) {
+#ifdef _DEBUG
+		std::cerr << "MOV->JMP : reg mismatch" << std::endl;
+#endif
+		return NULL;
+	}
+	size_t patch_size = mov_instr_len;
+	ULONGLONG addr = NULL;
+	if (!is_long) { //32bit
+		DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
+		addr = *lval;
+	} else { //64bit
+		mov_instr_len++; // add length of modifier
+		ULONGLONG *lval = (ULONGLONG*)((ULONGLONG) patch_ptr + 1);
+		addr = *lval;
+	}
+	patch_size += 2; //add jump reg size
+	patch.setHookTarget(addr);
+	return patch_size;
+}
+
+size_t PatchAnalyzer::parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr)
+{
+	size_t instr_size = 5;
+	PBYTE ret_ptr = patch_ptr + instr_size; // next instruction
+	if (ret_ptr[0] != 0xC3) {
+		return NULL; // this is not push->ret
+	}
+	instr_size++;
+	DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
+	patch.setHookTarget(*lval);
+	return instr_size;
+}
+
+size_t PatchAnalyzer::analyze(PatchList::Patch &patch)
+{
+	ULONGLONG section_va = moduleData.rvaToVa(sectionRVA);
+	ULONGLONG patch_va = moduleData.rvaToVa(patch.startRva);
+	size_t patch_offset = patch.startRva - sectionRVA;
+	PBYTE patch_ptr = this->patchedCode + patch_offset;
+
+	BYTE op = patch_ptr[0];
+	if (op == OP_JMP || op == OP_CALL_DWORD) {
+		return parseJmp(patch, patch_ptr, patch_va);
+	}
+	if (op == OP_PUSH_DWORD) {
+		return parsePushRet(patch, patch_ptr);
+	}
+	bool is64bit = this->moduleData.is64bit();
+	bool is_long = false;
+	if (is64bit) {
+		if (op >= 0x40 && op <= 0x4F) { // mov modifier
+			patch_ptr++;
+			op = patch_ptr[0];
+			is_long = true;
+		}
+	}
+	if (op >= 0xB8 && op <= 0xBF) { // is mov
+		return parseMovJmp(patch, patch_ptr, is_long);
+	}
+	return 0;
+}
+
+//---
+
 bool HookScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
 {
 	IMAGE_DATA_DIRECTORY* iat_dir = peconv::get_directory_entry(moduleData.original_module, IMAGE_DIRECTORY_ENTRY_IAT);
@@ -84,6 +190,7 @@ bool HookScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
 
 size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, PatchList &patchesList)
 {
+	PatchAnalyzer analyzer(moduleData, section_rva, patched_code, code_size);
 	PatchList::Patch *currPatch = nullptr;
 
 	for (DWORD i = 0; i < (DWORD) code_size; i++) {
@@ -99,6 +206,13 @@ size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE pat
 			//open a new patch
 			currPatch = new PatchList::Patch(patchesList.size(), (DWORD) section_rva + i);
 			patchesList.insert(currPatch);
+			DWORD parsed_size = (DWORD) analyzer.analyze(*currPatch);
+			if (parsed_size > 0) {
+				currPatch->setEnd(section_rva + i + parsed_size);
+				currPatch = nullptr; // close this patch
+				i += parsed_size;
+				continue;
+			}
 		}
 	}
 	// if there is still unclosed patch, close it now:

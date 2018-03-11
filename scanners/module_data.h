@@ -32,6 +32,24 @@ public:
 
 	bool isDotNet() { return this->is_dot_net; }
 
+	ULONGLONG rvaToVa(DWORD rva)
+	{
+		return reinterpret_cast<ULONGLONG>(this->moduleHandle) + rva;
+	}
+
+	DWORD vaToRva(ULONGLONG va)
+	{
+		ULONGLONG module_base = reinterpret_cast<ULONGLONG>(this->moduleHandle);
+		if (va < module_base) {
+			return NULL; // not this module
+		}
+		if (va > module_base + this->original_size) {
+			return NULL; // not this module
+		}
+		ULONGLONG diff = (va - module_base);
+		return static_cast<DWORD>(diff);
+	}
+
 	bool convertPath();
 	bool loadOriginal();
 	bool reloadWow64();
