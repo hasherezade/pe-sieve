@@ -158,8 +158,7 @@ size_t PatchAnalyzer::analyze(PatchList::Patch &patch)
 	if (op >= 0xB8 && op <= 0xBF) { // is mov
 		return parseMovJmp(patch, patch_ptr, is_long);
 	}
-
-	return false;
+	return 0;
 }
 
 //---
