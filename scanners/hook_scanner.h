@@ -22,7 +22,7 @@ public:
 			endRva = end_rva;
 		}
 		
-		void setHookTarget(DWORD target_va)
+		void setHookTarget(ULONGLONG target_va)
 		{
 			hook_target_va = target_va;
 			is_hook = true;
