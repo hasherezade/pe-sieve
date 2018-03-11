@@ -71,15 +71,16 @@ ULONGLONG PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, DWORD instrLen, DWORD 
 	return (currVA + instrLen) + lVal;
 }
 
-bool PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
+size_t PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
 {
+	const size_t instr_size = 5;
 	DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
 	ULONGLONG addr = getJmpDestAddr(patch_va, 5, *lval);
 	patch.setHookTarget(addr);
-	return true;
+	return instr_size;
 }
 
-bool PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, size_t mov_instr_len)
+size_t PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, size_t mov_instr_len)
 {
 	PBYTE jmp_ptr = patch_ptr + mov_instr_len; // next instruction
 	DWORD reg_id1 = 0;
@@ -90,41 +91,46 @@ bool PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, size_t
 #ifdef _DEBUG
 		std::cerr << "It is not MOV->JMP" << std::endl;
 #endif
-		return false;
+		return NULL;
 	}
 	DWORD reg_id2 = patch_ptr[0] - 0xB8;;
 	if (reg_id1 != reg_id2) {
 #ifdef _DEBUG
 		std::cerr << "MOV->JMP : reg mismatch" << std::endl;
 #endif
-		return false;
+		return NULL;
 	}
+	size_t patch_size = mov_instr_len;
 	ULONGLONG addr = NULL;
 	if (mov_instr_len == 5) { //32bit
 		DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
 		addr = *lval;
 	} else if (mov_instr_len == 9) { //64bit
+		mov_instr_len++; // add length of modifier
 		ULONGLONG *lval = (ULONGLONG*)((ULONGLONG) patch_ptr + 1);
 		addr = *lval;
 	} else {
-		return false;
+		return NULL;
 	}
+	patch_size += 2; //add jump reg size
 	patch.setHookTarget(addr);
-	return true;
+	return patch_size;
 }
 
-bool PatchAnalyzer::parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr)
+size_t PatchAnalyzer::parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr)
 {
-	PBYTE ret_ptr = patch_ptr + 5; // next instruction
+	size_t instr_size = 5;
+	PBYTE ret_ptr = patch_ptr + instr_size; // next instruction
 	if (ret_ptr[0] != 0xC3) {
-		return false; // this is not push->ret
+		return NULL; // this is not push->ret
 	}
+	instr_size++;
 	DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
 	patch.setHookTarget(*lval);
-	return true;
+	return instr_size;
 }
 
-bool PatchAnalyzer::analyze(PatchList::Patch &patch)
+size_t PatchAnalyzer::analyze(PatchList::Patch &patch)
 {
 	ULONGLONG section_va = moduleData.rvaToVa(sectionRVA);
 	ULONGLONG patch_va = moduleData.rvaToVa(patch.startRva);
@@ -148,9 +154,9 @@ bool PatchAnalyzer::analyze(PatchList::Patch &patch)
 		}
 	}
 	if (op >= 0xB8 && op <= 0xBF) { // is mov
-		this->parseMovJmp(patch, patch_ptr, mov_instr_len);
+		return parseMovJmp(patch, patch_ptr, mov_instr_len);
 	}
-	
+
 	return false;
 }
 
@@ -195,7 +201,13 @@ size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE pat
 			//open a new patch
 			currPatch = new PatchList::Patch(patchesList.size(), (DWORD) section_rva + i);
 			patchesList.insert(currPatch);
-			analyzer.analyze(*currPatch);
+			size_t parsed_size = analyzer.analyze(*currPatch);
+			if (parsed_size > 0) {
+				currPatch->setEnd((DWORD) section_rva + i + parsed_size);
+				currPatch = nullptr; // close this patch
+				i += parsed_size;
+				continue;
+			}
 		}
 	}
 	// if there is still unclosed patch, close it now:

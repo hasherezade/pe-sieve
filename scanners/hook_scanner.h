@@ -82,12 +82,12 @@ public:
 	{
 	}
 
-	bool analyze(PatchList::Patch &patch);
+	size_t analyze(PatchList::Patch &patch);
 
 protected:
-	bool parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
-	bool parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr,size_t instr_len);
-	bool parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr);
+	size_t parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
+	size_t parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr,size_t instr_len);
+	size_t parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr);
 	ULONGLONG PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, DWORD instrLen, DWORD lVal);
 
 	ModuleData &moduleData;
