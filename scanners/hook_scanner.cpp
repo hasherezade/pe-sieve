@@ -79,6 +79,40 @@ bool PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG
 	return true;
 }
 
+bool PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, size_t mov_instr_len)
+{
+	PBYTE jmp_ptr = patch_ptr + mov_instr_len; // next instruction
+	DWORD reg_id1 = 0;
+	if (jmp_ptr[0] == 0xFF && jmp_ptr[1] >= 0xE0 && jmp_ptr[1] <= 0xEF ) {
+		//jmp reg
+		reg_id1 = jmp_ptr[1] - 0xE0;
+	} else {
+#ifdef _DEBUG
+		std::cerr << "It is not MOV->JMP" << std::endl;
+#endif
+		return false;
+	}
+	DWORD reg_id2 = patch_ptr[0] - 0xB8;;
+	if (reg_id1 != reg_id2) {
+#ifdef _DEBUG
+		std::cerr << "MOV->JMP : reg mismatch" << std::endl;
+#endif
+		return false;
+	}
+	ULONGLONG addr = NULL;
+	if (mov_instr_len == 5) { //32bit
+		DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
+		addr = *lval;
+	} else if (mov_instr_len == 9) { //64bit
+		ULONGLONG *lval = (ULONGLONG*)((ULONGLONG) patch_ptr + 1);
+		addr = *lval;
+	} else {
+		return false;
+	}
+	patch.setHookTarget(addr);
+	return true;
+}
+
 bool PatchAnalyzer::analyze(PatchList::Patch &patch)
 {
 	ULONGLONG section_va = moduleData.rvaToVa(sectionRVA);
@@ -86,12 +120,23 @@ bool PatchAnalyzer::analyze(PatchList::Patch &patch)
 	size_t patch_offset = patch.startRva - sectionRVA;
 	PBYTE patch_ptr = this->patchedCode + patch_offset;
 
-	switch (patch_ptr[0]) {
-		case OP_JMP:
-			return parseJmp(patch, patch_ptr, patch_va);
-		default:
-			return false;
+	BYTE op = patch_ptr[0];
+	if (op == OP_JMP) {
+		return parseJmp(patch, patch_ptr, patch_va);
 	}
+	bool is64bit = this->moduleData.is64bit();
+	size_t mov_instr_len = 5;
+	if (is64bit) {
+		if (op >= 0x40 && op <= 0x4F) { // mov modifier
+			patch_ptr++;
+			op = patch_ptr[0];
+			mov_instr_len = 9;
+		}
+	}
+	if (op >= 0xB8 && op <= 0xBF) { // is mov
+		this->parseMovJmp(patch, patch_ptr, mov_instr_len);
+	}
+	
 	return false;
 }
 

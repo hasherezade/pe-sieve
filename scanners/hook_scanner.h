@@ -85,6 +85,7 @@ public:
 
 protected:
 	bool parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
+	bool parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr,size_t instr_len);
 	ULONGLONG PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, DWORD instrLen, DWORD lVal);
 
 	ModuleData &moduleData;
