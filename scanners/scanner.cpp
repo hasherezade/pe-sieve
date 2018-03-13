@@ -66,15 +66,37 @@ t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, RemoteModuleData
 ProcessScanReport* ProcessScanner::scanRemote()
 {
 	ProcessScanReport *pReport = new ProcessScanReport(this->args.pid);
-	scanModules(pReport);
-	//dont't scan your own working set
-	if (GetProcessId(this->processHandle) != GetCurrentProcessId()) {
-		scanWorkingSet(pReport);
+	std::stringstream errorsStr;
+
+	// scan modules
+	bool modulesScanned = true;
+	try {
+		scanModules(pReport);
+	} catch (std::exception &e) {
+		modulesScanned = false;
+		errorsStr << e.what();
+	}
+
+	// scan working set
+	bool workingsetScanned = true;
+	try {
+		//dont't scan your own working set
+		if (GetProcessId(this->processHandle) != GetCurrentProcessId()) {
+			scanWorkingSet(pReport);
+		}
+	} catch (std::exception &e) {
+		workingsetScanned = false;
+		errorsStr << e.what();
+	}
+
+	// throw error only if both scans has failed:
+	if (!modulesScanned && !modulesScanned) {
+		throw std::exception(errorsStr.str().c_str());
 	}
 	return pReport;
 }
 
-ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
+ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport) //throws exceptions
 {
 	if (pReport == nullptr) {
 		pReport = new ProcessScanReport(this->args.pid);
@@ -86,7 +108,7 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 	PSAPI_WORKING_SET_INFORMATION wsi_1 = { 0 };
 	BOOL result = QueryWorkingSet(this->processHandle, (LPVOID)&wsi_1, sizeof(PSAPI_WORKING_SET_INFORMATION));
 	if (result == FALSE && GetLastError() != ERROR_BAD_LENGTH) {
-		std::cout << "[-] Could not scan the working set in the process. Error: " << GetLastError() << std::endl;
+		throw std::exception("Could not scan the working set in the process. ", GetLastError());
 		return nullptr;
 	}
 #ifdef _DEBUG
@@ -102,8 +124,8 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 
 	if (!QueryWorkingSet(this->processHandle, (LPVOID)wsi, (DWORD)wsi_size)) {
 		pReport->summary.errors++;
-		std::cout << "[-] Could not scan the working set in the process. Error: " << GetLastError() << std::endl;
 		HeapFree(GetProcessHeap(), 0, wsi);
+		throw std::exception("Could not scan the working set in the process. ", GetLastError());
 		return pReport;
 	}
 
@@ -133,20 +155,21 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport)
 	return pReport;
 }
 
-size_t ProcessScanner::enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters)
+size_t ProcessScanner::enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters)  //throws exceptions
 {
 	HANDLE hProcess = this->processHandle;
 	if (hProcess == nullptr) return 0;
 
 	DWORD cbNeeded;
 	if (!EnumProcessModulesEx(hProcess, hMods, hModsMax, &cbNeeded, filters)) {
+		throw std::exception("Could not enumerate modules in the process. ", GetLastError());
 		return 0;
 	}
 	const size_t modules_count = cbNeeded / sizeof(HMODULE);
 	return modules_count;
 }
 
-ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)
+ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)  //throws exceptions
 {
 	if (pReport == nullptr) {
 		pReport = new ProcessScanReport(this->args.pid);
