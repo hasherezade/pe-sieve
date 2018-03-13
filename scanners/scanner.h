@@ -27,7 +27,7 @@ protected:
 	ProcessScanReport* scanModules(ProcessScanReport *pReport); //throws exceptions
 	ProcessScanReport* scanWorkingSet(ProcessScanReport *pReport);
 
-	size_t enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters); //throws exceptions
+	size_t enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters);
 
 	t_scan_status scanForHollows(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report);
 	t_scan_status scanForHooks(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report);

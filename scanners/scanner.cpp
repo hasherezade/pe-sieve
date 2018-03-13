@@ -140,8 +140,6 @@ size_t ProcessScanner::enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax,
 
 	DWORD cbNeeded;
 	if (!EnumProcessModulesEx(hProcess, hMods, hModsMax, &cbNeeded, filters)) {
-		DWORD last_err = GetLastError();
-		throw std::exception("[-] Could not enumerate modules in the process", last_err);
 		return 0;
 	}
 	const size_t modules_count = cbNeeded / sizeof(HMODULE);
