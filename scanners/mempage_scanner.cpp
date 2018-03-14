@@ -11,7 +11,9 @@ bool MemPageData::fillInfo()
 		if (GetLastError() == ERROR_INVALID_PARAMETER) {
 			return false;
 		}
-		std::cout << "Could not query page: " << std::hex << start_va << " basic protect:" << basic_protection << std::endl;
+#ifdef _DEBUG
+		std::cout << "Could not query page: " << std::hex << start_va << " basic protect:" << basic_protection << ". Error: " << GetLastError() << std::endl;
+#endif
 		return false;
 	}
 	initial_protect = page_info.AllocationProtect;
