@@ -15,7 +15,8 @@ Use recursive clone to get the repo together with the submodule:
 git clone --recursive https://github.com/hasherezade/pe-sieve.git
 </pre>
 
-Compiled versions:
+Latest builds*:
 -
 32bit: https://drive.google.com/uc?export=download&id=1TWRF1BtTEHMdd42CPZXpSmOxO9DFlovL <br/>
 64bit: https://drive.google.com/uc?export=download&id=1-LvYrTMJpp4LVo_2fBN5urz2DTezEJvi <br/>
+*those builds are available for testing and they may be ahead of the official release
