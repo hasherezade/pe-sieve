@@ -96,8 +96,9 @@ ProcessScanReport* ProcessScanner::scanRemote()
 	return pReport;
 }
 
-ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport) //throws exceptions
+ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *mainReport) //throws exceptions
 {
+	ProcessScanReport *pReport = mainReport;
 	if (pReport == nullptr) {
 		pReport = new ProcessScanReport(this->args.pid);
 	}
@@ -125,8 +126,12 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *pReport) //
 	if (!QueryWorkingSet(this->processHandle, (LPVOID)wsi, (DWORD)wsi_size)) {
 		pReport->summary.errors++;
 		HeapFree(GetProcessHeap(), 0, wsi);
+		if (pReport != mainReport) {
+			delete pReport; // if the report was locally created, delete it now
+			pReport = nullptr;
+		}
 		throw std::exception("Could not scan the working set in the process. ", GetLastError());
-		return pReport;
+		return nullptr;
 	}
 
 	for (size_t counter = 0; counter < wsi->NumberOfEntries; counter++) {
