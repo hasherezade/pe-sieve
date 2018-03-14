@@ -21,6 +21,8 @@ set (scanners_srcs
 	scanners/mempage_scanner.cpp
 	scanners/scanner.cpp
 	scanners/module_data.cpp
+	scanners/patch_list.cpp
+	scanners/patch_analyzer.cpp
 )
 
 set (scanners_hdrs
@@ -33,6 +35,8 @@ set (scanners_hdrs
 	scanners/scan_report.h
 	scanners/module_data.h
 	scanners/pe_section.h
+	scanners/patch_list.h
+	scanners/patch_analyzer.h
 )
 
 set (utils_srcs
