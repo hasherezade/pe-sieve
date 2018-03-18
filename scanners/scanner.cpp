@@ -68,7 +68,7 @@ ProcessScanReport* ProcessScanner::scanRemote()
 	// scan modules
 	bool modulesScanned = true;
 	try {
-		scanModules(pReport);
+		scanModules(*pReport);
 	} catch (std::exception &e) {
 		modulesScanned = false;
 		errorsStr << e.what();
@@ -79,7 +79,7 @@ ProcessScanReport* ProcessScanner::scanRemote()
 	try {
 		//dont't scan your own working set
 		if (GetProcessId(this->processHandle) != GetCurrentProcessId()) {
-			scanWorkingSet(pReport);
+			scanWorkingSet(*pReport);
 		}
 	} catch (std::exception &e) {
 		workingsetScanned = false;
@@ -93,12 +93,8 @@ ProcessScanReport* ProcessScanner::scanRemote()
 	return pReport;
 }
 
-ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *mainReport) //throws exceptions
+size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws exceptions
 {
-	ProcessScanReport *pReport = mainReport;
-	if (pReport == nullptr) {
-		pReport = new ProcessScanReport(this->args.pid);
-	}
 	SYSTEM_INFO si;
 	GetSystemInfo(&si);
 	size_t page_size = si.dwPageSize;
@@ -107,7 +103,7 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *mainReport)
 	BOOL result = QueryWorkingSet(this->processHandle, (LPVOID)&wsi_1, sizeof(PSAPI_WORKING_SET_INFORMATION));
 	if (result == FALSE && GetLastError() != ERROR_BAD_LENGTH) {
 		throw std::exception("Could not scan the working set in the process. ", GetLastError());
-		return nullptr;
+		return 0;
 	}
 #ifdef _DEBUG
 	std::cout << "Number of Entries: " << wsi_1.NumberOfEntries << std::endl;
@@ -121,17 +117,13 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *mainReport)
 	PSAPI_WORKING_SET_INFORMATION* wsi = (PSAPI_WORKING_SET_INFORMATION*)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, wsi_size);
 
 	if (!QueryWorkingSet(this->processHandle, (LPVOID)wsi, (DWORD)wsi_size)) {
-		pReport->summary.errors++;
+		pReport.summary.errors++;
 		HeapFree(GetProcessHeap(), 0, wsi);
-		if (pReport != mainReport) {
-			delete pReport; // if the report was locally created, delete it now
-			pReport = nullptr;
-		}
 		throw std::exception("Could not scan the working set in the process. ", GetLastError());
-		return nullptr;
+		return 0;
 	}
-
-	for (size_t counter = 0; counter < wsi->NumberOfEntries; counter++) {
+	size_t counter = 0;
+	for (counter = 0; counter < wsi->NumberOfEntries; counter++) {
 		ULONGLONG page = (ULONGLONG)wsi->WorkingSetInfo[counter].VirtualPage;
 		DWORD protection = (DWORD)wsi->WorkingSetInfo[counter].Protection;
 
@@ -140,21 +132,21 @@ ProcessScanReport* ProcessScanner::scanWorkingSet(ProcessScanReport *mainReport)
 
 		MemPageData memPage(this->processHandle, page_addr, page_size, protection);
 		//if it was already scanned, it means the module was on the list of loaded modules
-		memPage.is_listed_module = pReport->hasModule((HMODULE)page_addr);
+		memPage.is_listed_module = pReport.hasModule((HMODULE)page_addr);
 		
 		MemPageScanner memPageScanner(this->processHandle, memPage);
 		MemPageScanReport *my_report = memPageScanner.scanRemote();
 		if (my_report == nullptr) continue;
 
-		pReport->appendReport(my_report);
+		pReport.appendReport(my_report);
 		if (ModuleScanReport::get_scan_status(my_report) == SCAN_SUSPICIOUS) {
 			if (my_report->is_manually_loaded) {
-				pReport->summary.implanted++;
+				pReport.summary.implanted++;
 			}
 		}
 	}
 	HeapFree(GetProcessHeap(), 0, wsi);
-	return pReport;
+	return counter;
 }
 
 size_t ProcessScanner::enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters)  //throws exceptions
@@ -171,34 +163,32 @@ size_t ProcessScanner::enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax,
 	return modules_count;
 }
 
-ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)  //throws exceptions
+size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws exceptions
 {
-	if (pReport == nullptr) {
-		pReport = new ProcessScanReport(this->args.pid);
-	}
-	t_report &report = pReport->summary;
+	t_report &report = pReport.summary;
 	HMODULE hMods[1024];
 	const size_t modules_count = enumModules(hMods, sizeof(hMods), args.modules_filter);
 	if (modules_count == 0) {
 		report.errors++;
-		return pReport;
+		return 0;
 	}
 	if (args.imp_rec) {
-		pReport->exportsMap = new peconv::ExportsMapper();
+		pReport.exportsMap = new peconv::ExportsMapper();
 	}
 
 	report.scanned = 0;
-	for (size_t i = 0; i < modules_count; i++, report.scanned++) {
+	size_t counter = 0;
+	for (counter = 0; counter < modules_count; counter++, report.scanned++) {
 		if (processHandle == NULL) break;
 
 		//load module from file:
-		ModuleData modData(processHandle, hMods[i]);
+		ModuleData modData(processHandle, hMods[counter]);
 
 		if (!modData.loadOriginal()) {
 			std::cout << "[!][" << args.pid <<  "] Suspicious: could not read the module file!" << std::endl;
 			//make a report that finding original module was not possible
-			pReport->appendReport(new UnreachableModuleReport(processHandle, hMods[i]));
-			pReport->summary.detached++;
+			pReport.appendReport(new UnreachableModuleReport(processHandle, hMods[counter]));
+			pReport.summary.detached++;
 			continue;
 		}
 		if (!args.quiet) {
@@ -208,30 +198,30 @@ ProcessScanReport* ProcessScanner::scanModules(ProcessScanReport *pReport)  //th
 #ifdef _DEBUG
 			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
 #endif
-			pReport->summary.skipped++;
+			pReport.summary.skipped++;
 			continue;
 		}
 		//load data about the remote module
-		RemoteModuleData remoteModData(processHandle, hMods[i]);
+		RemoteModuleData remoteModData(processHandle, hMods[counter]);
 		if (remoteModData.isInitialized() == false) {
-			pReport->summary.errors++;
+			pReport.summary.errors++;
 			continue;
 		}
-		t_scan_status is_hollowed = scanForHollows(modData, remoteModData, *pReport);
+		t_scan_status is_hollowed = scanForHollows(modData, remoteModData, pReport);
 		if (is_hollowed == SCAN_ERROR) {
 			continue;
 		}
-		if (pReport->exportsMap != nullptr) {
-			pReport->exportsMap->add_to_lookup(modData.szModName, (HMODULE) modData.original_module, (ULONGLONG) modData.moduleHandle);
+		if (pReport.exportsMap != nullptr) {
+			pReport.exportsMap->add_to_lookup(modData.szModName, (HMODULE) modData.original_module, (ULONGLONG) modData.moduleHandle);
 		}
 		if (args.no_hooks) {
 			continue; // don't scan for hooks
 		}
 		//if not hollowed, check for hooks:
 		if (is_hollowed == SCAN_NOT_SUSPICIOUS) {
-			scanForHooks(modData, remoteModData, *pReport);
+			scanForHooks(modData, remoteModData, pReport);
 		}
 	}
-	return pReport;
+	return counter;
 }
 

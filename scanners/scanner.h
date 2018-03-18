@@ -24,8 +24,8 @@ public:
 	ProcessScanReport* scanRemote(); //throws exceptions
 
 protected:
-	ProcessScanReport* scanModules(ProcessScanReport *pReport); //throws exceptions
-	ProcessScanReport* scanWorkingSet(ProcessScanReport *pReport);  //throws exceptions
+	size_t scanModules(ProcessScanReport &pReport); //throws exceptions
+	size_t scanWorkingSet(ProcessScanReport &pReport);  //throws exceptions
 
 	size_t enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters);  //throws exceptions
 
