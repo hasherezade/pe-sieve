@@ -66,7 +66,7 @@ size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE pat
 			if (parsed_size > 0) {
 				currPatch->setEnd(section_rva + i + parsed_size);
 				currPatch = nullptr; // close this patch
-				i += parsed_size;
+				i += (parsed_size - 1); //substract 1 because of i++ executed after continue
 				continue;
 			}
 		}
