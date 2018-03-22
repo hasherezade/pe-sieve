@@ -5,6 +5,7 @@
 
 #include "../utils/util.h"
 #include "../utils/path_converter.h"
+#include "../utils/workingset_enum.h"
 
 #include "hollowing_scanner.h"
 #include "hook_scanner.h"
@@ -14,9 +15,6 @@
 #include <locale>
 #include <codecvt>
 
-#define PAGE_SIZE 0x1000
-const ULONGLONG MAX_32BIT = 0x07FFFFFFF;
-const ULONGLONG MAX_64BIT = 0x07FFFFFFFFFF;
 
 t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
@@ -97,60 +95,6 @@ ProcessScanReport* ProcessScanner::scanRemote()
 	return pReport;
 }
 
-bool get_next_region(HANDLE processHandle, ULONGLONG start_va, ULONGLONG max_va, MEMORY_BASIC_INFORMATION &page_info)
-{
-	for (; start_va < max_va; start_va += PAGE_SIZE) {
-		//std::cout << "Checking: " << std::hex << start_va << " vs " << std::hex << max_va << std::endl;
-		SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID) start_va, &page_info, sizeof(page_info));
-		if (out != sizeof(page_info)) {
-			const DWORD error = GetLastError();
-			if (error == ERROR_INVALID_PARAMETER) {
-				break;
-			}
-			std::cout << "Error:" << std::hex << error << std::endl;
-			continue;
-		}
-		if (page_info.RegionSize == 0) {
-			continue;
-		}
-		return true;
-	}
-	return false;
-}
-
-size_t enum_workingset(HANDLE processHandle, ULONGLONG addr_max, std::set<ULONGLONG> &region_bases)
-{
-	size_t added = 0;
-	for (ULONGLONG next_va = 0; next_va <= addr_max; )
-	{
-		MEMORY_BASIC_INFORMATION page_info = { 0 };
-		if (!get_next_region(processHandle, next_va, addr_max, page_info)) {
-			break;
-		}
-		//std::cout << "Got addr: " << std::hex << page_info.BaseAddress << std::endl;
-		
-		ULONGLONG base = (ULONGLONG) page_info.BaseAddress;
-		next_va = base + page_info.RegionSize; //end of the region
-
-		if (page_info.State & MEM_FREE) continue;
-
-		if ((page_info.State & MEM_COMMIT) == 0) {
-			//skip pages that are not commited
-			continue;
-		}
-		//insert all the pages from this base:
-#ifdef _DEBUG
-		size_t pages_count = page_info.RegionSize / PAGE_SIZE;
-		std::cout << "Next base: "<< std::hex << base << " pages_count: " << pages_count << std::endl;
-#endif
-		for (ULONGLONG page = base; page < next_va; page += PAGE_SIZE) {
-			region_bases.insert(page);
-			added++;
-		}
-	}
-	return added;
-}
-
 size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws exceptions
 {
 	PSAPI_WORKING_SET_INFORMATION wsi_1 = { 0 };
@@ -163,23 +107,17 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 	std::cout << "Number of entries: " << std::dec << wsi_1.NumberOfEntries << std::endl;
 #endif
 
-#ifdef _WIN64
-	ULONGLONG max_addr = MAX_64BIT;
-#else
-	ULONGLONG max_addr = MAX_32BIT;
-#endif
-
 #ifdef _DEBUG
 	DWORD start_tick = GetTickCount();
 #endif
-	std::set<ULONGLONG> region_bases;
-	size_t pages = enum_workingset(processHandle, max_addr, region_bases);
-	std::cout << "Scanning workingset: " << std::dec << pages << " pages." << std::endl;
+	std::set<ULONGLONG> pages;
+	size_t pages_count = enum_workingset(processHandle, pages);
+	std::cout << "Scanning workingset: " << std::dec << pages_count << " pages." << std::endl;
 
 	size_t counter = 0;
 	//now scan all the nodes:
 	std::set<ULONGLONG>::iterator set_itr;
-	for (set_itr = region_bases.begin(); set_itr != region_bases.end(); set_itr++) {
+	for (set_itr = pages.begin(); set_itr != pages.end(); set_itr++) {
 		ULONGLONG page_addr = *set_itr;
 
 		MemPageData memPage(this->processHandle, page_addr, PAGE_SIZE, 0);
