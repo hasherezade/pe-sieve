@@ -143,12 +143,10 @@ size_t enum_workingset(HANDLE processHandle, ULONGLONG addr_max, std::set<ULONGL
 		size_t pages_count = page_info.RegionSize / PAGE_SIZE;
 		std::cout << "Next base: "<< std::hex << base << " pages_count: " << pages_count << std::endl;
 #endif
-		region_bases.insert(base);
-		added++;
-		/*for (ULONGLONG page = base; page < next_va; page += PAGE_SIZE) {
+		for (ULONGLONG page = base; page < next_va; page += PAGE_SIZE) {
 			region_bases.insert(page);
 			added++;
-		}*/
+		}
 	}
 	return added;
 }
@@ -161,8 +159,9 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 		throw std::exception("Could not scan the working set in the process. ", GetLastError());
 		return 0;
 	}
-
-	std::cout << "Number of Entries: " << std::dec << wsi_1.NumberOfEntries << std::endl;
+#ifdef _DEBUG
+	std::cout << "Number of entries: " << std::dec << wsi_1.NumberOfEntries << std::endl;
+#endif
 
 #ifdef _WIN64
 	ULONGLONG max_addr = MAX_64BIT;
@@ -170,22 +169,26 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 	ULONGLONG max_addr = MAX_32BIT;
 #endif
 
+#ifdef _DEBUG
+	DWORD start_tick = GetTickCount();
+#endif
 	std::set<ULONGLONG> region_bases;
 	size_t pages = enum_workingset(processHandle, max_addr, region_bases);
-	std::cout << "Collected pages: " << std::dec << pages << std::endl;
+	std::cout << "Scanning workingset: " << std::dec << pages << " pages." << std::endl;
 
 	size_t counter = 0;
 	//now scan all the nodes:
 	std::set<ULONGLONG>::iterator set_itr;
 	for (set_itr = region_bases.begin(); set_itr != region_bases.end(); set_itr++) {
 		ULONGLONG page_addr = *set_itr;
-		//std::cout << "Scanning node: " << std::hex << page_addr << std::endl;
+
 		MemPageData memPage(this->processHandle, page_addr, PAGE_SIZE, 0);
 		//if it was already scanned, it means the module was on the list of loaded modules
 		memPage.is_listed_module = pReport.hasModule((HMODULE)page_addr);
-		
+
 		MemPageScanner memPageScanner(this->processHandle, memPage);
 		MemPageScanReport *my_report = memPageScanner.scanRemote();
+
 		counter++;
 		if (my_report == nullptr) continue;
 
@@ -196,6 +199,12 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 			}
 		}
 	}
+
+#ifdef _DEBUG
+	DWORD total_time = GetTickCount() - start_tick;
+	std::cout << "Workingset scan time: " << std::dec << total_time << std::endl;
+#endif
+
 	return counter;
 }
 
