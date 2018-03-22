@@ -41,33 +41,26 @@ public:
 	DWORD protection;
 };
 
-typedef enum {
-	MEMPROTECT_R = 1,
-	MEMPROTECT_X = 2,
-	MEMPROTECT_W = 4,
-	MEMPROTECT_V = 8,
-	MEMPROTECT_G = 16
-} t_mempage_protect;
-
 class MemPageData
 {
 public:
-	MemPageData(HANDLE _process, ULONGLONG _start_va, size_t _size, DWORD _basic_protection)
-		: processHandle(_process), start_va(_start_va), size(_size),
-		basic_protection(_basic_protection), is_listed_module(false),
-		is_info_filled(false)
+	MemPageData(HANDLE _process, ULONGLONG _start_va)
+		: processHandle(_process), start_va(_start_va),
+		is_listed_module(false),
+		is_info_filled(false), loadedData(nullptr), loadedSize(0)
 	{
 		fillInfo();
 	}
 
-	virtual ~MemPageData() {}
+	virtual ~MemPageData()
+	{
+		freeRemote();
+	}
 
 	bool fillInfo();
 	bool isInfoFilled() { return is_info_filled; }
 
 	ULONGLONG start_va;
-	size_t size;
-	DWORD basic_protection;
 	DWORD protection;
 	DWORD initial_protect;
 	bool is_private;
@@ -79,8 +72,22 @@ public:
 	ULONGLONG region_end;
 
 protected:
+	bool loadRemote();
+
+	void freeRemote()
+	{
+		peconv::free_aligned(loadedData, loadedSize);
+		loadedData = nullptr;
+		loadedSize = 0;
+	}
+
+	PBYTE loadedData;
+	size_t loadedSize;
+
 	bool is_info_filled;
 	HANDLE processHandle;
+
+	friend class MemPageScanner;
 };
 
 class MemPageScanner {

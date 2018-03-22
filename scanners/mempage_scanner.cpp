@@ -45,20 +45,38 @@ bool read_remote_mem(HANDLE processHandle, BYTE *start_addr, OUT BYTE* buffer, c
 	return false;
 }
 
+bool MemPageData::loadRemote()
+{
+	peconv::free_pe_buffer(this->loadedData, this->loadedSize);
+	size_t region_size = size_t(this->region_end - this->start_va);
+	if (region_size == 0) {
+		return false;
+	}
+	loadedData = peconv::alloc_aligned(region_size, PAGE_READWRITE);
+	if (loadedData == nullptr) {
+		return false;
+	}
+	this->loadedSize = region_size;
+
+	if (!read_remote_mem(this->processHandle, (BYTE*) this->start_va, loadedData, loadedSize)) {
+		freeRemote();
+		return false;
+	}
+	return true;
+}
+
 ULONGLONG MemPageScanner::findPeHeader(MemPageData &memPage)
 {
-	const size_t buffer_size = 2 * peconv::MAX_HEADER_SIZE;
-	static BYTE buffer[buffer_size] = { 0 };
-
-	size_t scan_size = size_t(memPage.region_end - memPage.start_va);
-	if (scan_size > buffer_size) scan_size = buffer_size;
-
-	if (!read_remote_mem(this->processHandle, (BYTE*) memPage.start_va, buffer, scan_size)) {
-		return PE_NOT_FOUND; // could not read the region
+	if (memPage.loadedData == nullptr) {
+		if (! memPage.loadRemote()) return PE_NOT_FOUND;
+		if (memPage.loadedData == nullptr) return PE_NOT_FOUND;
 	}
+	size_t scan_size = memPage.loadedSize;
+	BYTE* buffer_ptr = memPage.loadedData;
+
 	//scan only one page, not the full area
 	for (size_t i = 0; i < scan_size && i < peconv::MAX_HEADER_SIZE; i++) {
-		if (peconv::get_nt_hrds(buffer+i) != nullptr) {
+		if (peconv::get_nt_hrds(buffer_ptr+i) != nullptr) {
 			return  memPage.start_va + i;
 		}
 		if (!this->isDeepScan) {
@@ -67,6 +85,7 @@ ULONGLONG MemPageScanner::findPeHeader(MemPageData &memPage)
 	}
 	return PE_NOT_FOUND;
 }
+
 MemPageScanReport* MemPageScanner::scanRemote()
 {
 	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
@@ -85,8 +104,7 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		|| (memPage.initial_protect & PAGE_EXECUTE)
 		|| (memPage.protection & PAGE_EXECUTE_READWRITE)
 		|| (memPage.protection & PAGE_EXECUTE_READ)
-		|| (memPage.initial_protect & PAGE_EXECUTE)
-		|| (memPage.basic_protection & MEMPROTECT_X);
+		|| (memPage.initial_protect & PAGE_EXECUTE);
 
 	if (!is_any_exec && memPage.is_listed_module) {
 		// probably not interesting

@@ -110,20 +110,20 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 #ifdef _DEBUG
 	DWORD start_tick = GetTickCount();
 #endif
-	std::set<ULONGLONG> pages;
-	size_t pages_count = enum_workingset(processHandle, pages);
+	std::set<ULONGLONG> region_bases;
+	size_t pages_count = enum_workingset(processHandle, region_bases);
 	if (!args.quiet) {
-		std::cout << "Scanning workingset: " << std::dec << pages_count << " pages." << std::endl;
+		std::cout << "Scanning workingset: " << std::dec << pages_count << " memory regions." << std::endl;
 	}
 	size_t counter = 0;
 	//now scan all the nodes:
 	std::set<ULONGLONG>::iterator set_itr;
-	for (set_itr = pages.begin(); set_itr != pages.end(); set_itr++) {
-		ULONGLONG page_addr = *set_itr;
+	for (set_itr = region_bases.begin(); set_itr != region_bases.end(); set_itr++) {
+		ULONGLONG region_base = *set_itr;
 
-		MemPageData memPage(this->processHandle, page_addr, PAGE_SIZE, 0);
+		MemPageData memPage(this->processHandle, region_base);
 		//if it was already scanned, it means the module was on the list of loaded modules
-		memPage.is_listed_module = pReport.hasModule((HMODULE)page_addr);
+		memPage.is_listed_module = pReport.hasModule((HMODULE)region_base);
 
 		MemPageScanner memPageScanner(this->processHandle, memPage);
 		MemPageScanReport *my_report = memPageScanner.scanRemote();
