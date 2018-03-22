@@ -15,6 +15,8 @@
 #include <codecvt>
 
 #define PAGE_SIZE 0x1000
+const ULONGLONG MAX_32BIT = 0x07FFFFFFF;
+const ULONGLONG MAX_64BIT = 0x07FFFFFFFFFF;
 
 t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
@@ -101,25 +103,24 @@ bool get_next_region(HANDLE processHandle, ULONGLONG start_va, ULONGLONG max_va,
 		//std::cout << "Checking: " << std::hex << start_va << " vs " << std::hex << max_va << std::endl;
 		SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID) start_va, &page_info, sizeof(page_info));
 		if (out != sizeof(page_info)) {
-			if (GetLastError() == ERROR_INVALID_PARAMETER) {
-				continue;
+			const DWORD error = GetLastError();
+			if (error == ERROR_INVALID_PARAMETER) {
+				break;
 			}
+			std::cout << "Error:" << std::hex << error << std::endl;
 			continue;
 		}
 		if (page_info.RegionSize == 0) {
 			continue;
 		}
-
-		//std::cout << "Region size: " << std::hex << page_info.RegionSize << std::endl;
 		return true;
 	}
 	return false;
 }
 
-size_t enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &region_bases)
+size_t enum_workingset(HANDLE processHandle, ULONGLONG addr_max, std::set<ULONGLONG> &region_bases)
 {
 	size_t added = 0;
-	ULONGLONG addr_max = 0xFFFFFFFF; //TODO: set proper sizedepending on architecture
 	for (ULONGLONG va = 0; va <= addr_max; )
 	{
 		MEMORY_BASIC_INFORMATION page_info = { 0 };
@@ -130,6 +131,7 @@ size_t enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &region_bases)
 		//insert all the pages from this base:
 		ULONGLONG base = (ULONGLONG) page_info.BaseAddress;
 		region_bases.insert(base);
+		//std::cout << "Next base: "<< std::hex << base << std::endl;
 		added++;
 		va = base + page_info.RegionSize;
 	}
@@ -144,12 +146,17 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 		throw std::exception("Could not scan the working set in the process. ", GetLastError());
 		return 0;
 	}
-#ifdef _DEBUG
+
 	std::cout << "Number of Entries: " << wsi_1.NumberOfEntries << std::endl;
+
+#ifdef _WIN64
+	ULONGLONG max_addr = MAX_64BIT;
+#else
+	ULONGLONG max_addr = MAX_32BIT;
 #endif
 
 	std::set<ULONGLONG> region_bases;
-	size_t pages = enum_workingset(processHandle, region_bases);
+	size_t pages = enum_workingset(processHandle, max_addr, region_bases);
 	std::cout << "Collected pages:" << pages << std::endl;
 
 	size_t counter = 0;
