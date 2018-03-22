@@ -19,6 +19,7 @@ bool MemPageData::fillInfo()
 	initial_protect = page_info.AllocationProtect;
 	mapping_type = page_info.Type;
 	protection = page_info.Protect;
+	alloc_base = (ULONGLONG) page_info.AllocationBase;
 	region_start = (ULONGLONG) page_info.BaseAddress;
 	region_end = region_start + page_info.RegionSize;
 	return true;

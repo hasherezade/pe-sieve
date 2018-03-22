@@ -74,6 +74,7 @@ public:
 	DWORD mapping_type;
 	bool is_listed_module;
 
+	ULONGLONG alloc_base;
 	ULONGLONG region_start;
 	ULONGLONG region_end;
 
