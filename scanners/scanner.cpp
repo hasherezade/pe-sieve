@@ -14,6 +14,8 @@
 #include <locale>
 #include <codecvt>
 
+#define PAGE_SIZE 0x1000
+
 t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
 	BOOL isWow64 = FALSE;
@@ -93,12 +95,49 @@ ProcessScanReport* ProcessScanner::scanRemote()
 	return pReport;
 }
 
+bool get_next_region(HANDLE processHandle, ULONGLONG start_va, ULONGLONG max_va, MEMORY_BASIC_INFORMATION &page_info)
+{
+	for (; start_va < max_va; start_va += PAGE_SIZE) {
+		//std::cout << "Checking: " << std::hex << start_va << " vs " << std::hex << max_va << std::endl;
+		SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID) start_va, &page_info, sizeof(page_info));
+		if (out != sizeof(page_info)) {
+			if (GetLastError() == ERROR_INVALID_PARAMETER) {
+				continue;
+			}
+			continue;
+		}
+		if (page_info.RegionSize == 0) {
+			continue;
+		}
+
+		//std::cout << "Region size: " << std::hex << page_info.RegionSize << std::endl;
+		return true;
+	}
+	return false;
+}
+
+size_t enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &region_bases)
+{
+	size_t added = 0;
+	ULONGLONG addr_max = 0xFFFFFFFF; //TODO: set proper sizedepending on architecture
+	for (ULONGLONG va = 0; va <= addr_max; )
+	{
+		MEMORY_BASIC_INFORMATION page_info = { 0 };
+		if (!get_next_region(processHandle, va, addr_max, page_info)) {
+			break;
+		}
+		//std::cout << "Got addr: " << std::hex << page_info.BaseAddress << std::endl;
+		//insert all the pages from this base:
+		ULONGLONG base = (ULONGLONG) page_info.BaseAddress;
+		region_bases.insert(base);
+		added++;
+		va = base + page_info.RegionSize;
+	}
+	return added;
+}
+
 size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws exceptions
 {
-	SYSTEM_INFO si;
-	GetSystemInfo(&si);
-	size_t page_size = si.dwPageSize;
-
 	PSAPI_WORKING_SET_INFORMATION wsi_1 = { 0 };
 	BOOL result = QueryWorkingSet(this->processHandle, (LPVOID)&wsi_1, sizeof(PSAPI_WORKING_SET_INFORMATION));
 	if (result == FALSE && GetLastError() != ERROR_BAD_LENGTH) {
@@ -108,34 +147,24 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 #ifdef _DEBUG
 	std::cout << "Number of Entries: " << wsi_1.NumberOfEntries << std::endl;
 #endif
-#if !defined(_WIN64)
-	wsi_1.NumberOfEntries--;
-#endif
-	const size_t entry_size = sizeof(PSAPI_WORKING_SET_BLOCK);
-	//TODO: check it!!
-	SIZE_T wsi_size = wsi_1.NumberOfEntries * entry_size * 2; // Double it to allow for working set growth
-	PSAPI_WORKING_SET_INFORMATION* wsi = (PSAPI_WORKING_SET_INFORMATION*)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, wsi_size);
 
-	if (!QueryWorkingSet(this->processHandle, (LPVOID)wsi, (DWORD)wsi_size)) {
-		pReport.summary.errors++;
-		HeapFree(GetProcessHeap(), 0, wsi);
-		throw std::exception("Could not scan the working set in the process. ", GetLastError());
-		return 0;
-	}
+	std::set<ULONGLONG> region_bases;
+	size_t pages = enum_workingset(processHandle, region_bases);
+	std::cout << "Collected pages:" << pages << std::endl;
+
 	size_t counter = 0;
-	for (counter = 0; counter < wsi->NumberOfEntries; counter++) {
-		ULONGLONG page = (ULONGLONG)wsi->WorkingSetInfo[counter].VirtualPage;
-		DWORD protection = (DWORD)wsi->WorkingSetInfo[counter].Protection;
-
-		//calculate the real address of the page:
-		ULONGLONG page_addr = page * page_size;
-
-		MemPageData memPage(this->processHandle, page_addr, page_size, protection);
+	//now scan all the nodes:
+	std::set<ULONGLONG>::iterator set_itr;
+	for (set_itr = region_bases.begin(); set_itr != region_bases.end(); set_itr++) {
+		ULONGLONG page_addr = *set_itr;
+		//std::cout << "Scanning node: " << std::hex << page_addr << std::endl;
+		MemPageData memPage(this->processHandle, page_addr, PAGE_SIZE, 0);
 		//if it was already scanned, it means the module was on the list of loaded modules
 		memPage.is_listed_module = pReport.hasModule((HMODULE)page_addr);
 		
 		MemPageScanner memPageScanner(this->processHandle, memPage);
 		MemPageScanReport *my_report = memPageScanner.scanRemote();
+		counter++;
 		if (my_report == nullptr) continue;
 
 		pReport.appendReport(my_report);
@@ -145,7 +174,6 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 			}
 		}
 	}
-	HeapFree(GetProcessHeap(), 0, wsi);
 	return counter;
 }
 
