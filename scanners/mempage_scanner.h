@@ -55,12 +55,15 @@ public:
 	MemPageData(HANDLE _process, ULONGLONG _start_va, size_t _size, DWORD _basic_protection)
 		: processHandle(_process), start_va(_start_va), size(_size),
 		basic_protection(_basic_protection), is_listed_module(false),
-		is_info_filled(false)
+		is_info_filled(false), loadedData(nullptr), loadedSize(0)
 	{
 		fillInfo();
 	}
 
-	virtual ~MemPageData() {}
+	virtual ~MemPageData()
+	{
+		freeRemote();
+	}
 
 	bool fillInfo();
 	bool isInfoFilled() { return is_info_filled; }
@@ -79,8 +82,22 @@ public:
 	ULONGLONG region_end;
 
 protected:
+	bool loadRemote();
+
+	void freeRemote()
+	{
+		peconv::free_aligned(loadedData, loadedSize);
+		loadedData = nullptr;
+		loadedSize = 0;
+	}
+
+	PBYTE loadedData;
+	size_t loadedSize;
+
 	bool is_info_filled;
 	HANDLE processHandle;
+
+	friend class MemPageScanner;
 };
 
 class MemPageScanner {

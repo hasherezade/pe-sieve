@@ -26,7 +26,7 @@ bool get_next_region(HANDLE processHandle, ULONGLONG start_va, ULONGLONG max_va,
 	return false;
 }
 
-size_t enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &pages_set)
+size_t enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &region_bases)
 {
 
 #ifdef _WIN64
@@ -58,10 +58,8 @@ size_t enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &pages_set)
 		size_t pages_count = page_info.RegionSize / PAGE_SIZE;
 		std::cout << "Next base: "<< std::hex << base << " pages_count: " << pages_count << std::endl;
 #endif
-		for (ULONGLONG page = base; page < next_va; page += PAGE_SIZE) {
-			pages_set.insert(page);
-			added++;
-		}
+		region_bases.insert(base);
+		added++;
 	}
 	return added;
 }
