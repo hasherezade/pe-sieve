@@ -112,8 +112,9 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 #endif
 	std::set<ULONGLONG> pages;
 	size_t pages_count = enum_workingset(processHandle, pages);
-	std::cout << "Scanning workingset: " << std::dec << pages_count << " pages." << std::endl;
-
+	if (!args.quiet) {
+		std::cout << "Scanning workingset: " << std::dec << pages_count << " pages." << std::endl;
+	}
 	size_t counter = 0;
 	//now scan all the nodes:
 	std::set<ULONGLONG>::iterator set_itr;
