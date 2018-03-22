@@ -104,8 +104,7 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		|| (memPage.initial_protect & PAGE_EXECUTE)
 		|| (memPage.protection & PAGE_EXECUTE_READWRITE)
 		|| (memPage.protection & PAGE_EXECUTE_READ)
-		|| (memPage.initial_protect & PAGE_EXECUTE)
-		|| (memPage.basic_protection & MEMPROTECT_X);
+		|| (memPage.initial_protect & PAGE_EXECUTE);
 
 	if (!is_any_exec && memPage.is_listed_module) {
 		// probably not interesting
