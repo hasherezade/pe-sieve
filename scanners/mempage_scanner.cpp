@@ -12,7 +12,7 @@ bool MemPageData::fillInfo()
 			return false;
 		}
 #ifdef _DEBUG
-		std::cout << "Could not query page: " << std::hex << start_va << " basic protect:" << basic_protection << ". Error: " << GetLastError() << std::endl;
+		std::cout << "Could not query page: " << std::hex << start_va << ". Error: " << GetLastError() << std::endl;
 #endif
 		return false;
 	}
