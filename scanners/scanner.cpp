@@ -121,19 +121,34 @@ bool get_next_region(HANDLE processHandle, ULONGLONG start_va, ULONGLONG max_va,
 size_t enum_workingset(HANDLE processHandle, ULONGLONG addr_max, std::set<ULONGLONG> &region_bases)
 {
 	size_t added = 0;
-	for (ULONGLONG va = 0; va <= addr_max; )
+	for (ULONGLONG next_va = 0; next_va <= addr_max; )
 	{
 		MEMORY_BASIC_INFORMATION page_info = { 0 };
-		if (!get_next_region(processHandle, va, addr_max, page_info)) {
+		if (!get_next_region(processHandle, next_va, addr_max, page_info)) {
 			break;
 		}
 		//std::cout << "Got addr: " << std::hex << page_info.BaseAddress << std::endl;
-		//insert all the pages from this base:
+		
 		ULONGLONG base = (ULONGLONG) page_info.BaseAddress;
+		next_va = base + page_info.RegionSize; //end of the region
+
+		if (page_info.State & MEM_FREE) continue;
+
+		if ((page_info.State & MEM_COMMIT) == 0) {
+			//skip pages that are not commited
+			continue;
+		}
+		//insert all the pages from this base:
+#ifdef _DEBUG
+		size_t pages_count = page_info.RegionSize / PAGE_SIZE;
+		std::cout << "Next base: "<< std::hex << base << " pages_count: " << pages_count << std::endl;
+#endif
 		region_bases.insert(base);
-		//std::cout << "Next base: "<< std::hex << base << std::endl;
 		added++;
-		va = base + page_info.RegionSize;
+		/*for (ULONGLONG page = base; page < next_va; page += PAGE_SIZE) {
+			region_bases.insert(page);
+			added++;
+		}*/
 	}
 	return added;
 }
@@ -147,7 +162,7 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 		return 0;
 	}
 
-	std::cout << "Number of Entries: " << wsi_1.NumberOfEntries << std::endl;
+	std::cout << "Number of Entries: " << std::dec << wsi_1.NumberOfEntries << std::endl;
 
 #ifdef _WIN64
 	ULONGLONG max_addr = MAX_64BIT;
@@ -157,7 +172,7 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 
 	std::set<ULONGLONG> region_bases;
 	size_t pages = enum_workingset(processHandle, max_addr, region_bases);
-	std::cout << "Collected pages:" << pages << std::endl;
+	std::cout << "Collected pages: " << std::dec << pages << std::endl;
 
 	size_t counter = 0;
 	//now scan all the nodes:
