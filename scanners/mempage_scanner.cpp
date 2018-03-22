@@ -49,7 +49,7 @@ ULONGLONG MemPageScanner::findPeHeader(MemPageData &memPage)
 	const size_t buffer_size = 2 * peconv::MAX_HEADER_SIZE;
 	static BYTE buffer[buffer_size] = { 0 };
 
-	size_t scan_size = (memPage.region_end - memPage.start_va);
+	size_t scan_size = size_t(memPage.region_end - memPage.start_va);
 	if (scan_size > buffer_size) scan_size = buffer_size;
 
 	if (!read_remote_mem(this->processHandle, (BYTE*) memPage.start_va, buffer, scan_size)) {

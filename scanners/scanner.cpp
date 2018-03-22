@@ -113,7 +113,7 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 #endif
 	const size_t entry_size = sizeof(PSAPI_WORKING_SET_BLOCK);
 	//TODO: check it!!
-	ULONGLONG wsi_size = wsi_1.NumberOfEntries * entry_size * 2; // Double it to allow for working set growth
+	SIZE_T wsi_size = wsi_1.NumberOfEntries * entry_size * 2; // Double it to allow for working set growth
 	PSAPI_WORKING_SET_INFORMATION* wsi = (PSAPI_WORKING_SET_INFORMATION*)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, wsi_size);
 
 	if (!QueryWorkingSet(this->processHandle, (LPVOID)wsi, (DWORD)wsi_size)) {
