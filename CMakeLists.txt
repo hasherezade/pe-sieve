@@ -43,12 +43,14 @@ set (utils_srcs
 	utils/process_privilege.cpp
 	utils/util.cpp
 	utils/path_converter.cpp
+	utils/workingset_enum.cpp
 )
 
 set (utils_hdrs
 	utils/util.h
 	utils/path_converter.h
 	utils/process_privilege.h
+	utils/workingset_enum.h
 )
 
 

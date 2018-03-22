@@ -7,7 +7,7 @@
 #include "scanners/scan_report.h"
 #include "report_formatter.h"
 
-static char VERSION[] = "0.0.9.9.7-b4";
+static char VERSION[] = "0.0.9.9.7-b5X";
 static char URL[] = "https://github.com/hasherezade/pe-sieve";
 
 std::string info();

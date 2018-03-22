@@ -5,6 +5,7 @@
 
 #include "../utils/util.h"
 #include "../utils/path_converter.h"
+#include "../utils/workingset_enum.h"
 
 #include "hollowing_scanner.h"
 #include "hook_scanner.h"
@@ -13,6 +14,7 @@
 #include <string>
 #include <locale>
 #include <codecvt>
+
 
 t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
@@ -95,10 +97,6 @@ ProcessScanReport* ProcessScanner::scanRemote()
 
 size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws exceptions
 {
-	SYSTEM_INFO si;
-	GetSystemInfo(&si);
-	size_t page_size = si.dwPageSize;
-
 	PSAPI_WORKING_SET_INFORMATION wsi_1 = { 0 };
 	BOOL result = QueryWorkingSet(this->processHandle, (LPVOID)&wsi_1, sizeof(PSAPI_WORKING_SET_INFORMATION));
 	if (result == FALSE && GetLastError() != ERROR_BAD_LENGTH) {
@@ -106,36 +104,31 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 		return 0;
 	}
 #ifdef _DEBUG
-	std::cout << "Number of Entries: " << wsi_1.NumberOfEntries << std::endl;
+	std::cout << "Number of entries: " << std::dec << wsi_1.NumberOfEntries << std::endl;
 #endif
-#if !defined(_WIN64)
-	wsi_1.NumberOfEntries--;
-#endif
-	const size_t entry_size = sizeof(PSAPI_WORKING_SET_BLOCK);
-	//TODO: check it!!
-	SIZE_T wsi_size = wsi_1.NumberOfEntries * entry_size * 2; // Double it to allow for working set growth
-	PSAPI_WORKING_SET_INFORMATION* wsi = (PSAPI_WORKING_SET_INFORMATION*)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, wsi_size);
 
-	if (!QueryWorkingSet(this->processHandle, (LPVOID)wsi, (DWORD)wsi_size)) {
-		pReport.summary.errors++;
-		HeapFree(GetProcessHeap(), 0, wsi);
-		throw std::exception("Could not scan the working set in the process. ", GetLastError());
-		return 0;
+#ifdef _DEBUG
+	DWORD start_tick = GetTickCount();
+#endif
+	std::set<ULONGLONG> pages;
+	size_t pages_count = enum_workingset(processHandle, pages);
+	if (!args.quiet) {
+		std::cout << "Scanning workingset: " << std::dec << pages_count << " pages." << std::endl;
 	}
 	size_t counter = 0;
-	for (counter = 0; counter < wsi->NumberOfEntries; counter++) {
-		ULONGLONG page = (ULONGLONG)wsi->WorkingSetInfo[counter].VirtualPage;
-		DWORD protection = (DWORD)wsi->WorkingSetInfo[counter].Protection;
+	//now scan all the nodes:
+	std::set<ULONGLONG>::iterator set_itr;
+	for (set_itr = pages.begin(); set_itr != pages.end(); set_itr++) {
+		ULONGLONG page_addr = *set_itr;
 
-		//calculate the real address of the page:
-		ULONGLONG page_addr = page * page_size;
-
-		MemPageData memPage(this->processHandle, page_addr, page_size, protection);
+		MemPageData memPage(this->processHandle, page_addr, PAGE_SIZE, 0);
 		//if it was already scanned, it means the module was on the list of loaded modules
 		memPage.is_listed_module = pReport.hasModule((HMODULE)page_addr);
-		
+
 		MemPageScanner memPageScanner(this->processHandle, memPage);
 		MemPageScanReport *my_report = memPageScanner.scanRemote();
+
+		counter++;
 		if (my_report == nullptr) continue;
 
 		pReport.appendReport(my_report);
@@ -145,7 +138,12 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 			}
 		}
 	}
-	HeapFree(GetProcessHeap(), 0, wsi);
+
+#ifdef _DEBUG
+	DWORD total_time = GetTickCount() - start_tick;
+	std::cout << "Workingset scan time: " << std::dec << total_time << std::endl;
+#endif
+
 	return counter;
 }
 
