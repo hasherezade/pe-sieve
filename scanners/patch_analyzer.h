@@ -25,7 +25,8 @@ protected:
 	size_t parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr,bool is_long);
 	size_t parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr);
 
-	ULONGLONG PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, DWORD instrLen, DWORD lVal);
+	ULONGLONG getJmpDestAddr(ULONGLONG currVA, int instrLen, int lVal);
+
 	bool is64Modifier(BYTE op);
 	bool isLongModifier(BYTE op);
 
