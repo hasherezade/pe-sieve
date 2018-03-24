@@ -65,6 +65,11 @@ t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, RemoteModuleData
 ProcessScanReport* ProcessScanner::scanRemote()
 {
 	ProcessScanReport *pReport = new ProcessScanReport(this->args.pid);
+
+	char image_buf[MAX_PATH] = { 0 };
+	GetProcessImageFileNameA(this->processHandle, image_buf, MAX_PATH);
+	pReport->mainImagePath = device_path_to_win32_path(image_buf);
+
 	std::stringstream errorsStr;
 
 	// scan modules

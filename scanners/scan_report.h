@@ -20,6 +20,7 @@ public:
 		summary.pid = pid;
 		exportsMap = nullptr;
 	}
+
 	~ProcessScanReport()
 	{
 		deleteModuleReports();
@@ -53,6 +54,8 @@ public:
 	std::vector<ModuleScanReport*> module_reports; //TODO: make it protected
 	peconv::ExportsMapper *exportsMap;
 	std::set<HMODULE> scanned_modules;
+
+	std::string mainImagePath;
 
 protected:
 	void deleteModuleReports()

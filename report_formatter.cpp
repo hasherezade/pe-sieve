@@ -76,6 +76,7 @@ std::string report_to_json(const ProcessScanReport &process_report, t_report_fil
 	size_t other = report.suspicious - (report.hooked + report.replaced + report.detached + report.implanted);
 	stream << "{\n";
 	stream << " \"pid\" : " << std::dec << report.pid << ",\n";
+	stream << " \"main_image_path\" : \"" << process_report.mainImagePath << "\",\n";
 	stream << " \"scanned\" : \n";
 	stream << " {\n";
 	stream << "  \"total\" : " << std::dec << report.scanned  << ",\n";
