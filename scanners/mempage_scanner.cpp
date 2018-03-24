@@ -95,7 +95,6 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		//probably legit
 		return nullptr;
 	}
-
 	bool only_executable = true;
 
 	// is the page executable?
@@ -115,6 +114,7 @@ MemPageScanReport* MemPageScanner::scanRemote()
 	if (pe_header == PE_NOT_FOUND) {
 		return nullptr; // not a PE file
 	}
+
 	RemoteModuleData remoteModule(this->processHandle, (HMODULE)pe_header);
 	bool is_executable = remoteModule.hasExecutableSection();
 
@@ -124,6 +124,16 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		status = SCAN_SUSPICIOUS;
 	}
 
+	if (status == SCAN_SUSPICIOUS && memPage.mapping_type == MEM_MAPPED) {
+		char name[MAX_PATH] = { 0 };
+		if (GetMappedFileNameA(this->processHandle, (LPVOID) memPage.alloc_base, name, MAX_PATH) != 0) {
+			//TODO: check if it is really this content
+#ifdef _DEBUG
+			std::cout << name << std::endl;
+#endif
+			status = SCAN_NOT_SUSPICIOUS;
+		}
+	}
 #ifdef _DEBUG
 	std::cout << "[" << std::hex << memPage.start_va << "] " << " initial: " <<  memPage.initial_protect << " current: " << memPage.protection << std::endl;
 #endif
