@@ -81,26 +81,6 @@ bool ModuleData::reloadWow64()
 	return true;
 }
 
-//TODO: maybe move it to libpeconv?
-IMAGE_COR20_HEADER* get_dotnet_hdr(PBYTE module, size_t module_size, IMAGE_DATA_DIRECTORY* dotNetDir)
-{
-	DWORD rva = dotNetDir->VirtualAddress;
-	DWORD hdr_size = dotNetDir->Size;
-	if (!peconv::validate_ptr(module, module_size, module + rva, hdr_size)) {
-		return nullptr;
-	}
-	IMAGE_COR20_HEADER *dnet_hdr = (IMAGE_COR20_HEADER*)(module + rva);
-	if (!peconv::validate_ptr(module, module_size, module + dnet_hdr->MetaData.VirtualAddress, dnet_hdr->MetaData.Size)) {
-		return nullptr;
-	}
-	DWORD* signature_ptr = (DWORD*)(module + dnet_hdr->MetaData.VirtualAddress);
-	const DWORD dotNetSign = 0x424A5342;
-	if (*signature_ptr != dotNetSign) {
-		//invalid header
-		return nullptr;
-	}
-	return dnet_hdr;
-}
 
 bool ModuleData::isDotNetManagedCode()
 {
@@ -111,7 +91,7 @@ bool ModuleData::isDotNetManagedCode()
 		return false;
 	}
 	
-	if (!get_dotnet_hdr(this->original_module, this->original_size, dotNetDir)){
+	if (!peconv::get_dotnet_hdr(this->original_module, this->original_size, dotNetDir)){
 		return false;
 	}
 #ifdef _DEBUG
