@@ -81,6 +81,9 @@ protected:
 		loadedSize = 0;
 	}
 
+	// checks if the memory area is mapped 1-to-1 from the file on the disk
+	bool isRealMapping();
+
 	PBYTE loadedData;
 	size_t loadedSize;
 

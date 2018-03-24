@@ -1,5 +1,6 @@
 #include "mempage_scanner.h"
 #include "module_data.h"
+#include "../utils/path_converter.h"
 
 #define PE_NOT_FOUND 0
 
@@ -23,6 +24,65 @@ bool MemPageData::fillInfo()
 	region_start = (ULONGLONG) page_info.BaseAddress;
 	region_end = region_start + page_info.RegionSize;
 	return true;
+}
+
+bool MemPageData::isRealMapping()
+{
+	if (this->loadedData == nullptr && !fillInfo()) {
+#ifdef _DEBUG
+		std::cerr << "Not loaded!" << std::endl;
+#endif
+		return false;
+	}
+	char filename[MAX_PATH] = { 0 };
+	if (!GetMappedFileNameA(this->processHandle, (LPVOID) this->alloc_base, filename, MAX_PATH) != 0) {
+		return false;
+	}
+	std::string win32filename = device_path_to_win32_path(filename);
+	if (win32filename.length() == 0) {
+#ifdef _DEBUG
+		std::cerr << "Could not convert" << std::endl;
+#endif
+		return false;
+	}
+#ifdef _DEBUG
+	std::cout << win32filename << std::endl;
+#endif
+	HANDLE file = CreateFileA(win32filename.c_str(), GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	if(file == INVALID_HANDLE_VALUE) {
+#ifdef _DEBUG
+		std::cerr << "Could not open file!" << std::endl;
+#endif
+		return false;
+	}
+	HANDLE mapping = CreateFileMapping(file, 0, PAGE_READONLY, 0, 0, 0);
+	if (!mapping) {
+#ifdef _DEBUG
+		std::cerr << "Could not create mapping!" << std::endl;
+#endif
+		CloseHandle(file);
+		return false;
+	}
+	BYTE *rawData = (BYTE*) MapViewOfFile(mapping, FILE_MAP_READ, 0, 0, 0);
+	if (rawData == nullptr) {
+#ifdef _DEBUG
+		std::cerr << "Could not map view of file" << std::endl;
+#endif
+		CloseHandle(mapping);
+		CloseHandle(file);
+		return false;
+	}
+
+	bool is_same = false;
+	size_t r_size = GetFileSize(file, 0);
+	size_t smaller_size = this->loadedSize > r_size ? r_size : this->loadedSize;
+	if (memcmp(this->loadedData, rawData, smaller_size) == 0) {
+		is_same = true;
+	}
+	UnmapViewOfFile(rawData);
+	CloseHandle(mapping);
+	CloseHandle(file);
+	return is_same;
 }
 
 bool read_remote_mem(HANDLE processHandle, BYTE *start_addr, OUT BYTE* buffer, const size_t buffer_size)
@@ -125,12 +185,8 @@ MemPageScanReport* MemPageScanner::scanRemote()
 	}
 
 	if (status == SCAN_SUSPICIOUS && memPage.mapping_type == MEM_MAPPED) {
-		char name[MAX_PATH] = { 0 };
-		if (GetMappedFileNameA(this->processHandle, (LPVOID) memPage.alloc_base, name, MAX_PATH) != 0) {
-			//TODO: check if it is really this content
-#ifdef _DEBUG
-			std::cout << name << std::endl;
-#endif
+		if (memPage.isRealMapping()) {
+			//this is a legit mapping
 			status = SCAN_NOT_SUSPICIOUS;
 		}
 	}
