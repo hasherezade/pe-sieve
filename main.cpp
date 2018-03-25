@@ -81,6 +81,7 @@ void banner()
 
 	print_in_color(logo_color, logo);
 	std::cout << info();
+	std::cout <<  "---\n";
 	print_help();
 }
 

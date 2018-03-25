@@ -103,7 +103,6 @@ std::string info()
 	stream << "~ from hasherezade with love ~\n";
 	stream << "Detects inline hooks and other in-memory PE modifications\n";
 	stream << "URL: " << URL << "\n";
-	stream << "---\n";
 	return stream.str();
 }
 
