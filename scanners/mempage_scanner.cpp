@@ -34,21 +34,17 @@ bool MemPageData::isRealMapping()
 #endif
 		return false;
 	}
-	char filename[MAX_PATH] = { 0 };
-	if (!GetMappedFileNameA(this->processHandle, (LPVOID) this->alloc_base, filename, MAX_PATH) != 0) {
-		return false;
-	}
-	std::string win32filename = device_path_to_win32_path(filename);
-	if (win32filename.length() == 0) {
+	std::string mapped_filename = RemoteModuleData::getMappedName(this->processHandle, (LPVOID) this->alloc_base);
+	if (mapped_filename.length() == 0) {
 #ifdef _DEBUG
-		std::cerr << "Could not convert" << std::endl;
+		std::cerr << "Could not retrieve name" << std::endl;
 #endif
 		return false;
 	}
 #ifdef _DEBUG
 	std::cout << win32filename << std::endl;
 #endif
-	HANDLE file = CreateFileA(win32filename.c_str(), GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	HANDLE file = CreateFileA(mapped_filename.c_str(), GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	if(file == INVALID_HANDLE_VALUE) {
 #ifdef _DEBUG
 		std::cerr << "Could not open file!" << std::endl;

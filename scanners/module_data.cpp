@@ -4,43 +4,19 @@
 #include "../utils/path_converter.h"
 
 //---
-bool ModuleData::convertPath()
-{
-	std::string my_path =  convert_to_win32_path(this->szModName);
-	if (my_path.length() == 0) {
-		return false;
-	}
-	// store the new path in the buffer:
-	memset(this->szModName, 0, MAX_PATH);
-
-	// store the new path in the buffer:
-	size_t max_len = my_path.length();
-	if (max_len > MAX_PATH) max_len = MAX_PATH;
-
-	memcpy(this->szModName, my_path.c_str(), max_len);
-	return true;
-}
 
 bool ModuleData::loadOriginal()
 {
 	is_relocated = false;
-	if (!GetModuleFileNameExA(processHandle, this->moduleHandle, szModName, MAX_PATH)) {
-		is_module_named = false;
-		const char unnamed[] = "unnamed";
-		memcpy(szModName, unnamed, sizeof(unnamed));
-	}
-	peconv::free_pe_buffer(original_module, original_size);
-	original_module = peconv::load_pe_module(szModName, original_size, false, false);
-	if (original_module != nullptr) {
-		this->is_dot_net = isDotNetManagedCode();
-		return true;
-	}
-	// try to convert path:
-	if (!convertPath()) {
+	std::string my_name = RemoteModuleData::getModuleName(processHandle, this->moduleHandle);
+	if (my_name.length() == 0 || my_name.length() > MAX_PATH) {
+		//invalid length
 		return false;
 	}
-	std::cout << "[OK] Converted the path: " << szModName << std::endl;
-	
+	memcpy(this->szModName, my_name.c_str(), my_name.length());
+	//just in case if something was loaded before...
+	peconv::free_pe_buffer(original_module, original_size);
+
 	original_module = peconv::load_pe_module(szModName, original_size, false, false);
 	if (!original_module) {
 		return false;
@@ -81,7 +57,6 @@ bool ModuleData::reloadWow64()
 	return true;
 }
 
-
 bool ModuleData::isDotNetManagedCode()
 {
 	//has a directory entry for .NET header
@@ -101,6 +76,35 @@ bool ModuleData::isDotNetManagedCode()
 }
 
 //----
+
+std::string RemoteModuleData::getModuleName(HANDLE processHandle, HMODULE modBaseAddr)
+{
+	char filename[MAX_PATH] = { 0 };
+	if (!GetModuleFileNameExA(processHandle, modBaseAddr, filename, MAX_PATH)) {
+		return "";
+	}
+	if (strlen(filename) < 3) return "";
+	//check format:
+	if ((filename[0] >= 'a' && filename[0] <= 'z')
+		|| (filename[0] >= 'A' && filename[0] <= 'Z'))
+	{
+		if (filename[1] = ':') {
+			// format i.e: C:\...
+			return filename;
+		}
+	}
+	return convert_to_win32_path(filename);
+}
+
+std::string RemoteModuleData::getMappedName(HANDLE processHandle, LPVOID modBaseAddr)
+{
+	char filename[MAX_PATH] = { 0 };
+	if (!GetMappedFileNameA(processHandle, modBaseAddr, filename, MAX_PATH) != 0) {
+		return "";
+	}
+	return device_path_to_win32_path(filename);
+}
+
 bool RemoteModuleData::init()
 {
 	this->is_ready = false;

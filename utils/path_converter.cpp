@@ -90,7 +90,6 @@ char get_drive_letter(std::string device_path)
 	//std::cout << "Drives: " << std::hex << drives_bitmask << std::endl;
 
 	for (DWORD i = 0; i < 32; i += 1, drives_bitmask >>= 1) {
-	// Shift 1 to a multiple of 2. 1 << 0 = 1 (0000 0001), 1 << 1 = 2 etc.
 		if ((drives_bitmask & 1) == 1) {
 			char letter[] = "?:";
 			letter[0] = 'A' + (char) i;

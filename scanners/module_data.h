@@ -50,7 +50,6 @@ public:
 		return static_cast<DWORD>(diff);
 	}
 
-	bool convertPath();
 	bool loadOriginal();
 	bool reloadWow64();
 	bool relocateToBase();
@@ -75,6 +74,10 @@ protected:
 class RemoteModuleData
 {
 public:
+
+	static std::string getModuleName(HANDLE _processHandle, HMODULE _modBaseAddr);
+	static std::string getMappedName(HANDLE _processHandle, LPVOID _modBaseAddr);
+
 	RemoteModuleData(HANDLE _processHandle, HMODULE _modBaseAddr)
 		: processHandle(_processHandle), modBaseAddr(_modBaseAddr)
 	{
