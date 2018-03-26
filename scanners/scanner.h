@@ -29,6 +29,7 @@ protected:
 
 	size_t enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters);  //throws exceptions
 
+	t_scan_status scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report);
 	t_scan_status scanForHollows(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report);
 	t_scan_status scanForHooks(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report);
 

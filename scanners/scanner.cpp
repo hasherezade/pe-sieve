@@ -10,11 +10,26 @@
 #include "hollowing_scanner.h"
 #include "hook_scanner.h"
 #include "mempage_scanner.h"
+#include "mapping_scanner.h"
 
 #include <string>
 #include <locale>
 #include <codecvt>
 
+t_scan_status ProcessScanner::scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report)
+{
+	MappingScanner mappingScanner(processHandle, modData);
+
+	MappingScanReport *scan_report = mappingScanner.scanRemote();
+	t_scan_status is_doppel = ModuleScanReport::get_scan_status(scan_report);
+	process_report.appendReport(scan_report);
+	
+	if (is_doppel != SCAN_SUSPICIOUS) {
+		return is_doppel;
+	}
+	process_report.summary.replaced++;
+	return is_doppel;
+}
 
 t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
@@ -187,6 +202,8 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 		//load module from file:
 		ModuleData modData(processHandle, hMods[counter]);
 
+		this->scanForMappingMismatch(modData, pReport);
+
 		if (!modData.loadOriginal()) {
 			std::cout << "[!][" << args.pid <<  "] Suspicious: could not read the module file!" << std::endl;
 			//make a report that finding original module was not possible
@@ -197,6 +214,7 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 		if (!args.quiet) {
 			std::cout << "[*] Scanning: " << modData.szModName << std::endl;
 		}
+
 		if (modData.isDotNet()) {
 #ifdef _DEBUG
 			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;

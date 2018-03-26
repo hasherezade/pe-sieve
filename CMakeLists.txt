@@ -16,6 +16,7 @@ set (PECONV_DIR "${PROJECT_SOURCE_DIR}/${M_PARSER}" CACHE PATH "PEConv main path
 include_directories ( ${PECONV_DIR}/include )
 
 set (scanners_srcs
+	scanners/mapping_scanner.cpp
 	scanners/hollowing_scanner.cpp
 	scanners/hook_scanner.cpp
 	scanners/mempage_scanner.cpp
@@ -26,6 +27,7 @@ set (scanners_srcs
 )
 
 set (scanners_hdrs
+	scanners/mapping_scanner.h
 	scanners/hollowing_scanner.h
 	scanners/hook_scanner.h
 	scanners/module_scanner.h

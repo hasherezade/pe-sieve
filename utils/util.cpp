@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 
 char* get_file_name(char *full_path)
 {
@@ -68,3 +69,10 @@ bool convert_to_wow64_path(char *szModName)
 	memcpy(szModName, syswow_path, sysPathLen);
 	return true;
 }
+
+std::string to_lowercase(std::string str)
+{
+	std::transform(str.begin(), str.end(), str.begin(), tolower);
+	return str;
+}
+

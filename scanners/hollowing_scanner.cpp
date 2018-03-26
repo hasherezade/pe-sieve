@@ -9,6 +9,7 @@ HeadersScanReport* HollowingScanner::scanRemote()
 		my_report->status = SCAN_ERROR;
 		return my_report;
 	}
+
 	BYTE hdr_buffer1[peconv::MAX_HEADER_SIZE] = { 0 };
 	memcpy(hdr_buffer1, remoteModData.headerBuffer, peconv::MAX_HEADER_SIZE);
 	my_report->is64 = peconv::is64bit(hdr_buffer1);
@@ -40,8 +41,8 @@ HeadersScanReport* HollowingScanner::scanRemote()
 	peconv::update_image_base(hdr_buffer1, 0);
 	peconv::update_image_base(hdr_buffer2, 0);
 
-	zero_unused_fields(hdr_buffer1, hdrs_size);
-	zero_unused_fields(hdr_buffer2, hdrs_size);
+	zeroUnusedFields(hdr_buffer1, hdrs_size);
+	zeroUnusedFields(hdr_buffer2, hdrs_size);
 
 	//compare:
 	if (memcmp(hdr_buffer1, hdr_buffer2, hdrs_size) != 0) {
@@ -52,7 +53,7 @@ HeadersScanReport* HollowingScanner::scanRemote()
 	return my_report;
 }
 
-bool HollowingScanner::zero_unused_fields(PBYTE hdr_buffer, size_t hdrs_size)
+bool HollowingScanner::zeroUnusedFields(PBYTE hdr_buffer, size_t hdrs_size)
 {
 	size_t section_num = peconv::get_sections_count(hdr_buffer, hdrs_size);
 	bool is_modified = false;
