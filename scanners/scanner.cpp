@@ -245,4 +245,3 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 	}
 	return counter;
 }
-

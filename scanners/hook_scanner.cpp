@@ -60,7 +60,7 @@ size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE pat
 		}
 		if (currPatch == nullptr) {
 			//open a new patch
-			currPatch = new PatchList::Patch(patchesList.size(), (DWORD) section_rva + i);
+			currPatch = new PatchList::Patch(moduleData.moduleHandle, patchesList.size(), (DWORD) section_rva + i);
 			patchesList.insert(currPatch);
 			DWORD parsed_size = (DWORD) analyzer.analyze(*currPatch);
 			if (parsed_size > 0) {
@@ -141,6 +141,10 @@ CodeScanReport* HookScanner::scanRemote()
 			else if (last_res == SCAN_SUSPICIOUS) modified++;
 		}
 	}
+
+	//post-process collected patches:
+	postProcessScan(*my_report);
+
 	if (modified > 0) {
 		my_report->status = SCAN_SUSPICIOUS; //the highest priority for modified
 	} else if (errors > 0) {
@@ -149,4 +153,17 @@ CodeScanReport* HookScanner::scanRemote()
 		my_report->status = last_res;
 	}
 	return my_report; // last result
+}
+
+bool HookScanner::postProcessScan(IN OUT CodeScanReport &report)
+{
+	
+	// we need only exports from the current module, not the global mapping
+	if (report.patchesList.size() == 0) {
+		return false;
+	}
+	peconv::ExportsMapper local_mapper;
+	local_mapper.add_to_lookup(moduleData.szModName, (HMODULE) moduleData.original_module, (ULONGLONG) moduleData.moduleHandle);
+	report.patchesList.checkForHookedExports(local_mapper);
+	return true;
 }
