@@ -4,16 +4,23 @@
 #include "../utils/path_converter.h"
 
 //---
-
-bool ModuleData::loadOriginal()
+bool ModuleData::loadModuleName()
 {
-	is_relocated = false;
 	std::string my_name = RemoteModuleData::getModuleName(processHandle, this->moduleHandle);
 	if (my_name.length() == 0 || my_name.length() > MAX_PATH) {
 		//invalid length
 		return false;
 	}
 	memcpy(this->szModName, my_name.c_str(), my_name.length());
+	return true;
+}
+
+bool ModuleData::loadOriginal()
+{
+	if (strlen(this->szModName) == 0) {
+		loadModuleName();
+	}
+	is_relocated = false;
 	//just in case if something was loaded before...
 	peconv::free_pe_buffer(original_module, original_size);
 
@@ -43,10 +50,22 @@ bool ModuleData::relocateToBase()
 	return true;
 }
 
+bool ModuleData::switchToWow64Path()
+{
+	BOOL isWow64 = FALSE;
+	if (!IsWow64Process(this->processHandle, &isWow64)) {
+		//failed to retrieve the info...
+		return false;
+	}
+	if (isWow64) {
+		if (convert_to_wow64_path(szModName)) return true;
+	}
+	return false;
+}
+
 bool ModuleData::reloadWow64()
 {
-	bool is_converted = convert_to_wow64_path(szModName);
-	if (!is_converted) return false;
+	if (!switchToWow64Path()) return false;
 
 	//reload it and check again...
 	peconv::free_pe_buffer(original_module, original_size);

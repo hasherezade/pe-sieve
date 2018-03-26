@@ -15,6 +15,7 @@ public:
 		is_relocated(false), is_dot_net(false)
 	{
 		memset(szModName, 0, MAX_PATH);
+		loadModuleName();
 	}
 
 	~ModuleData()
@@ -49,8 +50,9 @@ public:
 		ULONGLONG diff = (va - module_base);
 		return static_cast<DWORD>(diff);
 	}
-
+	
 	bool loadOriginal();
+	bool switchToWow64Path();
 	bool reloadWow64();
 	bool relocateToBase();
 
@@ -63,6 +65,7 @@ public:
 	size_t original_size;
 
 protected:
+	bool loadModuleName();
 	bool isDotNetManagedCode();
 	bool is_relocated;
 	bool is_dot_net;

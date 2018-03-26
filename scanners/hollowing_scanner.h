@@ -44,5 +44,5 @@ public:
 	virtual HeadersScanReport* scanRemote();
 
 private:
-	bool zero_unused_fields(PBYTE hdr_buffer, size_t hdrs_size);
+	bool zeroUnusedFields(PBYTE hdr_buffer, size_t hdrs_size);
 };
