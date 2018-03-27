@@ -20,3 +20,4 @@ Latest builds*:
 *those builds are available for testing and they may be ahead of the official release:
 + [32-bit](https://goo.gl/PnM3U2)
 + [64-bit](https://goo.gl/scP1Hi)
+<hr/>
