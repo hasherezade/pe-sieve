@@ -17,6 +17,7 @@ git clone --recursive https://github.com/hasherezade/pe-sieve.git
 
 Latest builds*:
 -
-32bit: https://drive.google.com/uc?export=download&id=1TWRF1BtTEHMdd42CPZXpSmOxO9DFlovL <br/>
-64bit: https://drive.google.com/uc?export=download&id=1-LvYrTMJpp4LVo_2fBN5urz2DTezEJvi <br/>
++ [32-bit](https://goo.gl/PnM3U2)
++ [64-bit](https://goo.gl/scP1Hi)
+<br/>
 *those builds are available for testing and they may be ahead of the official release
