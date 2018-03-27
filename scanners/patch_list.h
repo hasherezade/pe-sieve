@@ -33,6 +33,8 @@ public:
 	protected:
 		bool resolveHookedExport(peconv::ExportsMapper &expMap);
 
+		std::string getFormattedName();
+
 		size_t id;
 		DWORD startRva;
 		DWORD endRva;

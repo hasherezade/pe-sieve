@@ -157,7 +157,6 @@ CodeScanReport* HookScanner::scanRemote()
 
 bool HookScanner::postProcessScan(IN OUT CodeScanReport &report)
 {
-	
 	// we need only exports from the current module, not the global mapping
 	if (report.patchesList.size() == 0) {
 		return false;

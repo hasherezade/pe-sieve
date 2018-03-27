@@ -1,22 +1,36 @@
 #include "patch_list.h"
 
 #include <iostream>
+#include <sstream>
+
+std::string PatchList::Patch::getFormattedName()
+{
+	std::stringstream stream;
+
+	if (this->hooked_func.length() > 0) {
+		stream << hooked_func;
+	} else {
+		if (this->is_hook) {
+			stream << "hook_" << id;
+		} else {
+			stream << "patch_" << id;
+		}
+	}
+	if (this->is_hook) {
+		stream << "->" << std::hex << hook_target_va;
+	}
+	return stream.str();
+}
 
 bool PatchList::Patch::reportPatch(std::ofstream &patch_report, const char delimiter)
 {
 	if (patch_report.is_open()) {
 		patch_report << std::hex << startRva;
 		patch_report << delimiter;
-		if (this->is_hook) {
-			patch_report << "hook_" << id;
-			patch_report << "->" << std::hex << hook_target_va;
-		} else {
-			patch_report << "patch_" << id;
-		}
+		patch_report << getFormattedName();
 		patch_report << delimiter;
 		patch_report << (endRva - startRva);
-		patch_report << delimiter;
-		patch_report << hooked_func;
+
 		patch_report << std::endl;
 	} else {
 		std::cout << std::hex << startRva << std::endl;
@@ -31,7 +45,7 @@ bool PatchList::Patch::resolveHookedExport(peconv::ExportsMapper &expMap)
 	if (func == nullptr) {
 		return false; // not found
 	}
-	this->hooked_func = func->toString();
+	this->hooked_func = func->nameToString();
 	return true;
 }
 
