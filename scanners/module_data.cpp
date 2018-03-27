@@ -96,13 +96,14 @@ bool ModuleData::isDotNetManagedCode()
 
 //----
 
-std::string RemoteModuleData::getModuleName(HANDLE processHandle, HMODULE modBaseAddr)
+inline std::string get_module_path(HANDLE processHandle, HMODULE modBaseAddr)
 {
 	char filename[MAX_PATH] = { 0 };
 	if (!GetModuleFileNameExA(processHandle, modBaseAddr, filename, MAX_PATH)) {
 		return "";
 	}
 	if (strlen(filename) < 3) return "";
+	
 	//check format:
 	if ((filename[0] >= 'a' && filename[0] <= 'z')
 		|| (filename[0] >= 'A' && filename[0] <= 'Z'))
@@ -115,13 +116,26 @@ std::string RemoteModuleData::getModuleName(HANDLE processHandle, HMODULE modBas
 	return convert_to_win32_path(filename);
 }
 
+std::string RemoteModuleData::getModuleName(HANDLE processHandle, HMODULE modBaseAddr)
+{
+	std::string basic_filename = get_module_path(processHandle, modBaseAddr);
+	//ensure that the path is in a long form:
+	char filename[MAX_PATH] = { 0 };
+	GetLongPathNameA(basic_filename.c_str(), filename, MAX_PATH);
+	return filename;
+}
+
 std::string RemoteModuleData::getMappedName(HANDLE processHandle, LPVOID modBaseAddr)
 {
 	char filename[MAX_PATH] = { 0 };
 	if (!GetMappedFileNameA(processHandle, modBaseAddr, filename, MAX_PATH) != 0) {
 		return "";
 	}
-	return device_path_to_win32_path(filename);
+	std::string basic_filename = device_path_to_win32_path(filename);
+	memset(filename, 0, MAX_PATH); //reset buffer
+	//ensure that the path is in a long form:
+	GetLongPathNameA(basic_filename.c_str(), filename, MAX_PATH);
+	return filename;
 }
 
 bool RemoteModuleData::init()
