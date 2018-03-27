@@ -1,24 +1,51 @@
 #include "patch_list.h"
 
 #include <iostream>
+#include <sstream>
+
+std::string PatchList::Patch::getFormattedName()
+{
+	std::stringstream stream;
+
+	if (this->hooked_func.length() > 0) {
+		stream << hooked_func;
+	} else {
+		if (this->is_hook) {
+			stream << "hook_" << id;
+		} else {
+			stream << "patch_" << id;
+		}
+	}
+	if (this->is_hook) {
+		stream << "->" << std::hex << hook_target_va;
+	}
+	return stream.str();
+}
 
 bool PatchList::Patch::reportPatch(std::ofstream &patch_report, const char delimiter)
 {
 	if (patch_report.is_open()) {
 		patch_report << std::hex << startRva;
 		patch_report << delimiter;
-		if (this->is_hook) {
-			patch_report << "hook_" << id;
-			patch_report << "->" << std::hex << hook_target_va;
-		} else {
-			patch_report << "patch_" << id;
-		}
+		patch_report << getFormattedName();
 		patch_report << delimiter;
 		patch_report << (endRva - startRva);
+
 		patch_report << std::endl;
 	} else {
 		std::cout << std::hex << startRva << std::endl;
 	}
+	return true;
+}
+
+bool PatchList::Patch::resolveHookedExport(peconv::ExportsMapper &expMap)
+{
+	ULONGLONG patch_va = (ULONGLONG) this->moduleBase + this->startRva;
+	const peconv::ExportedFunc *func = expMap.find_export_by_va(patch_va);
+	if (func == nullptr) {
+		return false; // not found
+	}
+	this->hooked_func = func->nameToString();
 	return true;
 }
 
@@ -30,6 +57,19 @@ size_t PatchList::reportPatches(std::ofstream &patch_report, const char delimite
 		patch->reportPatch(patch_report, delimiter);
 	}
 	return patches.size();
+}
+
+size_t PatchList::checkForHookedExports(peconv::ExportsMapper &expMap)
+{
+	size_t hookes_exports = 0;
+	std::vector<Patch*>::iterator itr;
+	for (itr = patches.begin(); itr != patches.end(); itr++) {
+		Patch *patch = *itr;
+		if (patch->resolveHookedExport(expMap)) {
+			hookes_exports++;
+		}
+	}
+	return hookes_exports;
 }
 
 void PatchList::deletePatches()

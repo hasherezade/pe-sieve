@@ -37,3 +37,4 @@ protected:
 	PBYTE patchedCode;
 	size_t codeSize;
 };
+
