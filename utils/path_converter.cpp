@@ -71,9 +71,35 @@ std::string nt_retrieve_file_path(HANDLE hFile)
 	return my_string;
 }
 
+std::string strip_prefix(std::string path)
+{
+	const char prefix[] = "\\\\?\\";
+	const size_t prefix_len = strlen(prefix);
+
+	size_t found_index = path.find(prefix);
+	if (found_index != std::string::npos && found_index == 0) {
+		//std::cout << "Stripped prefix" << std::endl;
+		path.erase (found_index, prefix_len);
+	}
+	return path;
+}
+
 std::string convert_to_win32_path(std::string path)
 {
-	const char *szModName = path.c_str();
+	std::string stripped_path = strip_prefix(path);
+	if (stripped_path.length() < 3) {
+		return "";
+	}
+	//check format:
+	if ((stripped_path[0] >= 'a' && stripped_path[0] <= 'z')
+		|| (stripped_path[0] >= 'A' && stripped_path[0] <= 'Z'))
+	{
+		if (stripped_path[1] = ':') {
+			// format i.e: C:\...
+			return stripped_path;
+		}
+	}
+	const char *szModName = stripped_path.c_str();
 	std::wstring unicode_name(szModName, szModName + strlen(szModName));
 	HANDLE hFile = nt_create_file(unicode_name.c_str());
 	if (hFile == nullptr) {
@@ -136,5 +162,17 @@ std::string device_path_to_win32_path(std::string full_path)
 	char letter[] = "?:";
 	letter[0] = dev_letter;
 	return letter + dir_name;
+}
+
+std::string expand_path(std::string basic_path)
+{
+	char filename[MAX_PATH] = { 0 };
+	if (GetLongPathNameA(basic_path.c_str(), filename, MAX_PATH) == 0) {
+		size_t len = basic_path.length();
+		if (len > MAX_PATH) len = MAX_PATH;
+		//if could not retrieve, process what you have:
+		memcpy(filename, basic_path.c_str(), len);
+	}
+	return strip_prefix(filename);
 }
 
