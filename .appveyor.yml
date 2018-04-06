@@ -22,16 +22,19 @@ configuration:
   
 before_build:
   - git clone https://github.com/hasherezade/libpeconv.git
-  
+
+environment:
+  matrix:
+    - env_arch: "x64"
+    - env_arch: "x86"
+    
 build_script:
-  - mkdir build32
-  - cd build32
-  - cmake .. -G "Visual Studio 14 2015"
-  - cmake --build .
-  - cd ..
-  - mkdir build64
-  - cd build64
-  - cmake .. -G "Visual Studio 14 2015 Win64"
+  - mkdir build
+  - cd build
+  - if [%env_arch%]==[x64] (
+      cmake .. -A x64 )
+  - if [%env_arch%]==[x86] (
+      cmake .. )
   - cmake --build .
   - cd ..
   
