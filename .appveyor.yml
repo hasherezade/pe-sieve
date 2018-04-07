@@ -9,6 +9,8 @@ platform: x64
 branches:
   only:
     - master
+git:
+  submodules: true
 
 install:
   - cinst cmake
@@ -20,9 +22,6 @@ build:
 configuration:
   - Debug
   
-before_build:
-  - git clone https://github.com/hasherezade/libpeconv.git
-
 environment:
   matrix:
     - env_arch: "x64"
