@@ -13,6 +13,7 @@ branches:
 install:
   - cinst cmake
   - set PATH=C:\Program Files\CMake\bin;%PATH%
+  - git submodule update --init --recursive
 
 build:
   verbosity: detailed
@@ -24,9 +25,6 @@ environment:
   matrix:
     - env_arch: "x64"
     - env_arch: "x86"
-        
-before_build:
-  - git clone https://github.com/hasherezade/libpeconv.git
 
 build_script:
   - mkdir build
