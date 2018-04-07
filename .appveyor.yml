@@ -2,16 +2,17 @@ shallow_clone: true
 
 os:
   - Visual Studio 2015
-
+  
 platform: x64
   - x64
-
+  
 branches:
   only:
     - master
+    
 git:
   submodules: true
-
+    
 install:
   - cinst cmake
   - set PATH=C:\Program Files\CMake\bin;%PATH%
