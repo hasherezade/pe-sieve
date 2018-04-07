@@ -9,10 +9,7 @@ platform: x64
 branches:
   only:
     - master
-    
-git:
-  submodules: true
-    
+        
 install:
   - cinst cmake
   - set PATH=C:\Program Files\CMake\bin;%PATH%
@@ -27,7 +24,10 @@ environment:
   matrix:
     - env_arch: "x64"
     - env_arch: "x86"
-    
+        
+before_build:
+  - git clone https://github.com/hasherezade/libpeconv.git
+
 build_script:
   - mkdir build
   - cd build
