@@ -170,7 +170,6 @@ MemPageScanReport* MemPageScanner::scanRemote()
 	if (pe_header == PE_NOT_FOUND) {
 		return nullptr; // not a PE file
 	}
-
 	RemoteModuleData remoteModule(this->processHandle, (HMODULE)pe_header);
 	bool is_executable = remoteModule.hasExecutableSection();
 
@@ -187,7 +186,7 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		}
 	}
 #ifdef _DEBUG
-	std::cout << "[" << std::hex << memPage.start_va << "] " << " initial: " <<  memPage.initial_protect << " current: " << memPage.protection << std::endl;
+	std::cout << "[" << std::hex << memPage.start_va << "] Found a PE in the working set. Status: " << status << std::endl;
 #endif
 	MemPageScanReport *my_report = new MemPageScanReport(processHandle, (HMODULE)pe_header, status);
 	my_report->is_executable = is_executable;

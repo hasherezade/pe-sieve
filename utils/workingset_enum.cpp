@@ -53,11 +53,6 @@ size_t enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &region_bases)
 			//skip pages that are not commited
 			continue;
 		}
-		//insert all the pages from this base:
-#ifdef _DEBUG
-		size_t pages_count = page_info.RegionSize / PAGE_SIZE;
-		std::cout << "Next base: "<< std::hex << base << " pages_count: " << pages_count << std::endl;
-#endif
 		region_bases.insert(base);
 		added++;
 	}
