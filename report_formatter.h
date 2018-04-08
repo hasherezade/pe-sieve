@@ -14,6 +14,8 @@ typedef enum report_filter {
 	REPORT_ALL = REPORT_ERRORS | REPORT_NOT_SUSPICIOUS | REPORT_SUSPICIOUS
 } t_report_filter;
 
+bool is_shown_type(t_scan_status status, t_report_filter filter);
+
 std::string report_to_string(const ProcessScanReport &report);
 
 std::string report_to_json(const ProcessScanReport &report, t_report_filter filter);

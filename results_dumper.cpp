@@ -18,12 +18,11 @@ bool ResultsDumper::make_dump_dir(const std::string directory)
 	return false;
 }
 
-std::string ResultsDumper::makeDumpPath(ULONGLONG modBaseAddr, std::string fname)
+std::string ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname)
 {
 	if (!make_dump_dir(this->dumpDir)) {
 		this->dumpDir = ""; // reset path
 	}
-	//const char* fname = get_file_name(szExePath);
 	std::stringstream stream;
 	if (this->dumpDir.length() > 0) {
 		stream << this->dumpDir;
@@ -66,7 +65,7 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 			modulePath = get_file_name(szModName);
 		}
 
-		std::string dumpFileName = makeDumpPath((ULONGLONG)mod->module, modulePath);
+		std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath);
 
 		if (!peconv::dump_remote_pe(
 			dumpFileName.c_str(), //output file
@@ -85,9 +84,33 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 	return dumped;
 }
 
+bool has_any_shown_type(t_report summary, t_report_filter filter)
+{
+	t_scan_status aggregated_status = summary.suspicious > 0 ? SCAN_SUSPICIOUS : SCAN_NOT_SUSPICIOUS;
+	if (is_shown_type(aggregated_status, filter)) {
+		return true;
+	}
+	aggregated_status = summary.errors > 0 ? SCAN_ERROR : SCAN_NOT_SUSPICIOUS;
+	if (is_shown_type(aggregated_status, filter)) {
+		return true;
+	}
+	return false;
+}
+
 bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, t_report_filter filter)
 {
+	if (!has_any_shown_type(process_report.summary, filter)) {
+		return false;
+	}
 	std::string report_all = report_to_json(process_report, filter);
+	if (report_all.length() == 0) {
+		return false; 
+	}
+
+	//just in case if the directory was not created before:
+	if (!make_dump_dir(this->dumpDir)) {
+		this->dumpDir = ""; // reset path
+	}
 	std::ofstream json_report;
 	json_report.open(dumpDir + "\\report.json");
 	if (json_report.is_open() == false) {

@@ -23,6 +23,6 @@ public:
 	std::string baseDir; // base directory
 
 protected:
-	std::string makeDumpPath(ULONGLONG modBaseAddr, std::string fname);
+	std::string makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname);
 	std::string makeDirName(const DWORD process_id);
 };
