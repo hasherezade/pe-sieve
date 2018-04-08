@@ -46,6 +46,7 @@ set (utils_srcs
 	utils/util.cpp
 	utils/path_converter.cpp
 	utils/workingset_enum.cpp
+	utils/modules_enum.cpp
 )
 
 set (utils_hdrs
@@ -53,8 +54,8 @@ set (utils_hdrs
 	utils/path_converter.h
 	utils/process_privilege.h
 	utils/workingset_enum.h
+	utils/modules_enum.h
 )
-
 
 set (srcs
 	pe_sieve.cpp

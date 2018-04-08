@@ -6,6 +6,7 @@
 #include "../utils/util.h"
 #include "../utils/path_converter.h"
 #include "../utils/workingset_enum.h"
+#include "../utils/modules_enum.h"
 
 #include "hollowing_scanner.h"
 #include "hook_scanner.h"
@@ -158,7 +159,6 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 			}
 		}
 	}
-
 #ifdef _DEBUG
 	DWORD total_time = GetTickCount() - start_tick;
 	std::cout << "Workingset scan time: " << std::dec << total_time << std::endl;
@@ -167,25 +167,11 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 	return counter;
 }
 
-size_t ProcessScanner::enumModules(OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters)  //throws exceptions
-{
-	HANDLE hProcess = this->processHandle;
-	if (hProcess == nullptr) return 0;
-
-	DWORD cbNeeded;
-	if (!EnumProcessModulesEx(hProcess, hMods, hModsMax, &cbNeeded, filters)) {
-		throw std::exception("Could not enumerate modules in the process. ", GetLastError());
-		return 0;
-	}
-	const size_t modules_count = cbNeeded / sizeof(HMODULE);
-	return modules_count;
-}
-
 size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws exceptions
 {
 	t_report &report = pReport.summary;
 	HMODULE hMods[1024];
-	const size_t modules_count = enumModules(hMods, sizeof(hMods), args.modules_filter);
+	const size_t modules_count = enum_modules(this->processHandle, hMods, sizeof(hMods), args.modules_filter);
 	if (modules_count == 0) {
 		report.errors++;
 		return 0;
@@ -197,7 +183,7 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 	report.scanned = 0;
 	size_t counter = 0;
 	for (counter = 0; counter < modules_count; counter++, report.scanned++) {
-		if (processHandle == NULL) break;
+		if (processHandle == nullptr) break;
 
 		//load module from file:
 		ModuleData modData(processHandle, hMods[counter]);
@@ -235,11 +221,8 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 		if (pReport.exportsMap != nullptr) {
 			pReport.exportsMap->add_to_lookup(modData.szModName, (HMODULE) modData.original_module, (ULONGLONG) modData.moduleHandle);
 		}
-		if (args.no_hooks) {
-			continue; // don't scan for hooks
-		}
-		//if not hollowed, check for hooks:
-		if (is_hollowed == SCAN_NOT_SUSPICIOUS) {
+		// if hooks not disabled and process is not hollowed, check for hooks:
+		if (!args.no_hooks && (is_hollowed == SCAN_NOT_SUSPICIOUS)) {
 			scanForHooks(modData, remoteModData, pReport);
 		}
 	}
