@@ -74,6 +74,11 @@ set (hdrs
 	${utils_hdrs}
 )
 
+set (rsrc
+	resources.h
+	resources.rc
+)
+
 SOURCE_GROUP("Source Files\\scanners" FILES ${scanners_srcs} )
 SOURCE_GROUP("Header Files\\scanners" FILES ${scanners_hdrs} )
 
@@ -93,7 +98,7 @@ if(PESIEVE_AS_DLL)
 	)
 	add_library ( ${PROJECT_NAME} SHARED ${dll_hdrs} ${srcs} dll_main.cpp main.def)
 else()
-	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} main.cpp )
+	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} main.cpp )
 endif()
 
 target_link_libraries ( ${PROJECT_NAME} ${PECONV_LIB} )
