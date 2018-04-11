@@ -1,6 +1,7 @@
 #include "mempage_scanner.h"
 #include "module_data.h"
 #include "../utils/path_converter.h"
+#include "../utils/workingset_enum.h"
 
 #define PE_NOT_FOUND 0
 
@@ -79,26 +80,6 @@ bool MemPageData::isRealMapping()
 	CloseHandle(mapping);
 	CloseHandle(file);
 	return is_same;
-}
-
-bool read_remote_mem(HANDLE processHandle, BYTE *start_addr, OUT BYTE* buffer, const size_t buffer_size)
-{
-	if (buffer == nullptr) return false;
-
-	SIZE_T read_size = 0;
-	const SIZE_T step_size = 0x100;
-	SIZE_T to_read_size = buffer_size;
-	memset(buffer, 0, buffer_size);
-	while (to_read_size >= step_size) {
-		BOOL is_ok = ReadProcessMemory(processHandle, start_addr, buffer, to_read_size, &read_size);
-		if (!is_ok) {
-			//try to read less
-			to_read_size -= step_size;
-			continue;
-		}
-		return true;
-	}
-	return false;
 }
 
 bool MemPageData::loadRemote()
