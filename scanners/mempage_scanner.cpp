@@ -125,14 +125,8 @@ ULONGLONG MemPageScanner::findPeHeader(MemPageData &memPage)
 
 MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 {
-	const size_t buffer_size = peconv::MAX_HEADER_SIZE;
-	static BYTE buffer[buffer_size] = { 0 };
-
-	size_t scan_size = (memPage.region_end - memPage.start_va);
-	if (scan_size > buffer_size) scan_size = buffer_size;
-
-	if (!read_remote_mem(this->processHandle, (BYTE*)memPage.start_va, buffer, scan_size)) {
-		return false;
+	if (memPage.loadedData == nullptr) {
+		return nullptr;
 	}
 
 	BYTE prolog32_pattern[] = { 0x55, 0x8b, 0xEC };
@@ -142,8 +136,10 @@ MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 	size_t prolog64_size = sizeof(prolog64_pattern);
 	bool is32bit = false;
 
+	BYTE* buffer = memPageData.loadedData;
+
 	bool pattern_found = false;
-	for (size_t i = 0; (i + prolog64_size) < scan_size; i++) {
+	for (size_t i = 0; (i + prolog64_size) < memPageData.loadedSize; i++) {
 		if (memcmp(buffer + i, prolog32_pattern, prolog32_size) == 0) {
 			pattern_found = true;
 			is32bit = true;
