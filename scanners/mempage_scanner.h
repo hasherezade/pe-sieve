@@ -16,6 +16,7 @@ public:
 		 is_executable = false;
 		 is_manually_loaded = false;
 		 protection = 0;
+		 is_shellcode = false; //PE file
 	}
 
 	const virtual bool toJSON(std::stringstream &outs)
@@ -30,6 +31,9 @@ public:
 		outs << "\"is_manually_loaded\" : "; 
 		outs << std::dec << is_manually_loaded;
 		outs << ",\n";
+		outs << "\"is_shellcode\" : ";
+		outs << std::dec << is_shellcode;
+		outs << ",\n";
 		outs << "\"protection\" : "; 
 		outs << std::dec << protection;
 		outs << "\n}";
@@ -38,6 +42,7 @@ public:
 
 	bool is_executable;
 	bool is_manually_loaded;
+	bool is_shellcode;
 	DWORD protection;
 };
 
@@ -108,7 +113,7 @@ public:
 protected:
 	ULONGLONG findPeHeader(MemPageData &memPageData);
 
-	bool isShellcode(MemPageData &memPageData);
+	MemPageScanReport* scanShellcode(MemPageData &memPageData);
 
 	bool isDeepScan;
 	bool detectShellcode; // is shellcode detection enabled
