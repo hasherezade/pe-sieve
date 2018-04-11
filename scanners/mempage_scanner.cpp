@@ -142,6 +142,40 @@ ULONGLONG MemPageScanner::findPeHeader(MemPageData &memPage)
 	return PE_NOT_FOUND;
 }
 
+bool MemPageScanner::isShellcode(MemPageData &memPageData)
+{
+	const size_t buffer_size = peconv::MAX_HEADER_SIZE;
+	static BYTE buffer[buffer_size] = { 0 };
+
+	size_t scan_size = (memPage.region_end - memPage.start_va);
+	if (scan_size > buffer_size) scan_size = buffer_size;
+
+	if (!read_remote_mem(this->processHandle, (BYTE*)memPage.start_va, buffer, scan_size)) {
+		return false;
+	}
+
+	BYTE prolog32_pattern[] = { 0x55, 0x8b, 0xEC };
+	BYTE prolog64_pattern[] = { 0x40, 0x53, 0x48, 0x83, 0xEC, 0x20 };
+
+	size_t prolog32_size = sizeof(prolog32_pattern);
+	size_t prolog64_size = sizeof(prolog64_pattern);
+
+	bool pattern_found = false;
+	for (size_t i = 0; (i + prolog64_size) < scan_size; i++) {
+		if (memcmp(buffer + i, prolog32_pattern, prolog32_size) == 0) {
+			pattern_found = true;
+			std::cout << std::hex << memPage.region_start << ": contains 32bit shellcode"  << std::endl;
+			break;
+		}
+		if (memcmp(buffer + i, prolog64_pattern, prolog64_size) == 0) {
+			pattern_found = true;
+			std::cout << std::hex << memPage.region_start << " : contains 64bit shellcode" << std::hex << memPage.region_start << std::endl;
+			break;
+		}
+	}
+	return true;
+}
+
 MemPageScanReport* MemPageScanner::scanRemote()
 {
 	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
@@ -162,12 +196,27 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		|| (memPage.initial_protect & PAGE_EXECUTE);
 
 	if (!is_any_exec && memPage.is_listed_module) {
-		// probably not interesting
-		std::cout << std::hex << memPage.start_va << "Aleady listed" << std::endl;
+		// the header is not executable + the module was already listed - > probably not interesting
+#ifdef _DEBUG
+		std::cout << std::hex << memPage.start_va << " : Aleady listed" << std::endl;
+#endif
 		return nullptr;
 	}
 	ULONGLONG pe_header = findPeHeader(memPage);
 	if (pe_header == PE_NOT_FOUND) {
+		if (!this->detectShellcode) {
+			// not a PE file, and we are not interested in checking for shellcode, so just finish it here
+			return nullptr;
+		}
+		if (is_any_exec && (memPage.mapping_type == MEM_PRIVATE ||
+			(memPage.mapping_type == MEM_MAPPED && !memPage.isRealMapping())))
+		{
+#ifdef _DEBUG
+			std::cout << std::hex << memPage.start_va << " : Checking for shellcode" << std::endl;
+#endif
+			this->isShellcode(memPage);
+			//TODO: add to the report?
+		}
 		return nullptr; // not a PE file
 	}
 	RemoteModuleData remoteModule(this->processHandle, (HMODULE)pe_header);

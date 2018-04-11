@@ -146,7 +146,7 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 		//if it was already scanned, it means the module was on the list of loaded modules
 		memPage.is_listed_module = pReport.hasModule((HMODULE)region_base);
 
-		MemPageScanner memPageScanner(this->processHandle, memPage);
+		MemPageScanner memPageScanner(this->processHandle, memPage, this->args.shellcode);
 		MemPageScanReport *my_report = memPageScanner.scanRemote();
 
 		counter++;
