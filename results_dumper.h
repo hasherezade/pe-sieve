@@ -23,6 +23,12 @@ public:
 	std::string baseDir; // base directory
 
 protected:
-	std::string makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname);
+	/**
+	@modBaseAddr : base address where this module was mapped
+	@fname : known name of this module
+	@defaultExtension : default extension - it will be used if no other extension was detected from the previous name
+	*/
+	std::string makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname, std::string defaultExtension);
+
 	std::string makeDirName(const DWORD process_id);
 };

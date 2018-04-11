@@ -4,7 +4,8 @@
 
 #include <fstream>
 
-#include "utils/util.h"
+#include "utils\util.h"
+#include "utils\workingset_enum.h"
 
 //---
 
@@ -18,7 +19,7 @@ bool ResultsDumper::make_dump_dir(const std::string directory)
 	return false;
 }
 
-std::string ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname)
+std::string ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname, std::string default_extension)
 {
 	if (!make_dump_dir(this->dumpDir)) {
 		this->dumpDir = ""; // reset path
@@ -33,9 +34,37 @@ std::string ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, std::string
 		stream << ".";
 		stream << fname;
 	} else {
-		stream << ".dll";
+		stream << default_extension;
 	}
 	return stream.str();
+}
+
+bool dumpAsShellcode(std::string dumpFileName, HANDLE processHandle, PBYTE moduleBase)
+{
+	MEMORY_BASIC_INFORMATION page_info = { 0 };
+	SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID)moduleBase, &page_info, sizeof(page_info));
+	if (out != sizeof(page_info)) {
+		if (GetLastError() == ERROR_INVALID_PARAMETER) {
+			return false;
+		}
+		return false;
+	}
+
+	size_t offset = moduleBase - (PBYTE)page_info.BaseAddress;
+	size_t dump_size = page_info.RegionSize - offset;
+
+	BYTE *buf = peconv::alloc_unaligned(dump_size);
+	if (!buf) return false;
+
+	bool is_ok = false;
+
+	if (read_remote_mem(processHandle, moduleBase, buf, dump_size)) {
+		is_ok = peconv::dump_to_file(dumpFileName.c_str(), buf, dump_size);
+	}
+	
+	peconv::free_unaligned(buf);
+	buf = nullptr;
+	return is_ok;
 }
 
 size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &process_report)
@@ -65,7 +94,7 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 			modulePath = get_file_name(szModName);
 		}
 
-		std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath);
+		std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".dll");
 
 		if (!peconv::dump_remote_pe(
 			dumpFileName.c_str(), //output file
@@ -75,7 +104,10 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 			process_report.exportsMap
 		))
 		{
-			std::cerr << "Failed dumping module!" << std::endl;
+			std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".shc");
+			if (!dumpAsShellcode(dumpFileName, processHandle, (PBYTE)mod->module)) {
+				std::cerr << "Failed dumping module!" << std::endl;
+			}
 			continue;
 		}
 		dumped++;

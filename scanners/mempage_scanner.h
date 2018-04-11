@@ -16,6 +16,7 @@ public:
 		 is_executable = false;
 		 is_manually_loaded = false;
 		 protection = 0;
+		 is_shellcode = false; //PE file
 	}
 
 	const virtual bool toJSON(std::stringstream &outs)
@@ -23,6 +24,9 @@ public:
 		outs << "\"workingset_scan\" : ";
 		outs << "{\n";
 		ModuleScanReport::toJSON(outs);
+		outs << ",\n";
+		outs << "\"is_shellcode\" : ";
+		outs << std::dec << is_shellcode;
 		outs << ",\n";
 		outs << "\"is_executable\" : "; 
 		outs << std::dec << is_executable;
@@ -38,6 +42,7 @@ public:
 
 	bool is_executable;
 	bool is_manually_loaded;
+	bool is_shellcode;
 	DWORD protection;
 };
 
@@ -95,8 +100,9 @@ protected:
 
 class MemPageScanner {
 public:
-	MemPageScanner(HANDLE _procHndl, MemPageData &_memPageDatal)
+	MemPageScanner(HANDLE _procHndl, MemPageData &_memPageDatal, bool _detectShellcode)
 		: processHandle(_procHndl), memPage(_memPageDatal),
+		detectShellcode(_detectShellcode),
 		isDeepScan(true)
 	{
 	}
@@ -104,12 +110,13 @@ public:
 
 	virtual MemPageScanReport* scanRemote();
 
-	DWORD getInitialAccess(MemPageData &memPageData);
-
 protected:
 	ULONGLONG findPeHeader(MemPageData &memPageData);
 
+	MemPageScanReport* scanShellcode(MemPageData &memPageData);
+
 	bool isDeepScan;
+	bool detectShellcode; // is shellcode detection enabled
 	HANDLE processHandle;
 	MemPageData &memPage;
 };
