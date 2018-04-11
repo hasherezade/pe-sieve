@@ -18,6 +18,7 @@ typedef struct {
 	bool quiet; // do not print log on the stdout
 	t_output_filter out_filter;
 	bool no_hooks; // don't scan for hooks
+	bool shellcode; // detect shellcode implants
 	bool json_output;
 } t_params;
 

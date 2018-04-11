@@ -22,6 +22,7 @@
 #define PARAM_VERSION  "/version"
 #define PARAM_QUIET "/quiet"
 #define PARAM_JSON "/json"
+#define PARAM_SHELLCODE "/shellc"
 
 void print_in_color(int color, std::string text)
 {
@@ -45,6 +46,9 @@ void print_help()
 	print_in_color(param_color, PARAM_IMP_REC);
 	std::cout << "\t: Enable recovering imports. ";
 	std::cout << "(Warning: it may slow down the scan)\n";
+	
+	print_in_color(param_color, PARAM_SHELLCODE);
+	std::cout << "\t: Detect shellcode implants. (By default it detects PE only).\n";
 #ifdef _WIN64
 	print_in_color(param_color, PARAM_MODULES_FILTER);
 	std::cout << " <*mfilter_id>\n\t: Filter the scanned modules.\n";
@@ -151,6 +155,9 @@ int main(int argc, char *argv[])
 		}
 		else if (!strcmp(argv[i], PARAM_JSON)) {
 			args.json_output = true;
+		}
+		else if (!strcmp(argv[i], PARAM_SHELLCODE)) {
+			args.shellcode = true;
 		}
 	}
 	//if didn't received PID by explicit parameter, try to parse the first param of the app
