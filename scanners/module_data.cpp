@@ -3,6 +3,9 @@
 #include "../utils/util.h"
 #include "../utils/path_converter.h"
 
+#include <Psapi.h>
+#pragma comment(lib,"psapi.lib")
+
 //---
 bool ModuleData::loadModuleName()
 {

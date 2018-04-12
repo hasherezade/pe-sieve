@@ -17,6 +17,9 @@
 #include <locale>
 #include <codecvt>
 
+#include <Psapi.h>
+#pragma comment(lib,"psapi.lib")
+
 t_scan_status ProcessScanner::scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report)
 {
 	MappingScanner mappingScanner(processHandle, modData);

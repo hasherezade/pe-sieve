@@ -11,8 +11,6 @@
 #include "utils/process_privilege.h"
 #include "results_dumper.h"
 
-#pragma comment(lib,"psapi.lib")
-
 HANDLE open_process(DWORD processID)
 {
 	HANDLE hProcess = OpenProcess(
