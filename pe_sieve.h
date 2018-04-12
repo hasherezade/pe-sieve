@@ -7,8 +7,9 @@
 #include "scanners/scan_report.h"
 #include "report_formatter.h"
 
-static char VERSION[] = "0.0.9.9.9";
-static char URL[] = "https://github.com/hasherezade/pe-sieve";
+static char PESIEVE_VERSION[] = "0.0.9.9.9";
+static DWORD PESIEVE_VERSION_ID = 0x00090909;
+static char PESIEVE_URL[] = "https://github.com/hasherezade/pe-sieve";
 
 std::string info();
 ProcessScanReport* check_modules_in_process(const t_params args);

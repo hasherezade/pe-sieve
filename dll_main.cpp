@@ -33,6 +33,11 @@ void __stdcall PESieve_help(void)
 	MessageBox(NULL, my_info.c_str(), LIB_NAME, MB_ICONINFORMATION);
 }
 
+DWORD __stdcall PESieve_version(void)
+{
+	return PESIEVE_VERSION_ID;
+}
+
 BOOL WINAPI DllMain (HANDLE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
 	switch (fdwReason)

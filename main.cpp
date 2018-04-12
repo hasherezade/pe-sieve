@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
 			++i;
 		}
 		else if (!strcmp(argv[i], PARAM_VERSION)) {
-			std::cout << VERSION << std::endl;
+			std::cout << PESIEVE_VERSION << std::endl;
 			info_req = true;
 		}
 		else if (!strcmp(argv[i], PARAM_QUIET)) {

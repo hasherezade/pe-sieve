@@ -94,7 +94,7 @@ ProcessScanReport* check_modules_in_process(const t_params args)
 std::string info()
 {
 	std::stringstream stream;
-	stream << "version: " << VERSION;
+	stream << "version: " << PESIEVE_VERSION;
 #ifdef _WIN64
 	stream << " (x64)" << "\n\n";
 #else
@@ -102,7 +102,7 @@ std::string info()
 #endif
 	stream << "~ from hasherezade with love ~\n";
 	stream << "Detects inline hooks and other in-memory PE modifications\n";
-	stream << "URL: " << URL << "\n";
+	stream << "URL: " << PESIEVE_URL << "\n";
 	return stream.str();
 }
 
