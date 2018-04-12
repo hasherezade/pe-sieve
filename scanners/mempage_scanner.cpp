@@ -143,12 +143,16 @@ MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 		if (memcmp(buffer + i, prolog32_pattern, prolog32_size) == 0) {
 			pattern_found = true;
 			is32bit = true;
+#ifdef _DEBUG
 			std::cout << std::hex << memPage.region_start << ": contains 32bit shellcode"  << std::endl;
+#endif
 			break;
 		}
 		if (memcmp(buffer + i, prolog64_pattern, prolog64_size) == 0) {
 			pattern_found = true;
+#ifdef _DEBUG
 			std::cout << std::hex << memPage.region_start << " : contains 64bit shellcode" << std::hex << memPage.region_start << std::endl;
+#endif
 			break;
 		}
 	}
