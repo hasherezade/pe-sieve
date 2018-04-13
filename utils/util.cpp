@@ -76,3 +76,21 @@ std::string to_lowercase(std::string str)
 	return str;
 }
 
+std::string escape_path_separators(std::string path)
+{
+	size_t pos = std::string::npos;
+	size_t prev = 0;
+	const char to_escape = '\\';
+	const std::string escaped = "\\\\";
+	do
+	{
+		pos = path.find(to_escape, prev);
+		if (pos == std::string::npos) break;
+
+		path.replace(pos, 1, escaped);
+		prev = pos + escaped.length();
+
+	} while (pos < path.length() && prev < path.length());
+
+	return path;
+}

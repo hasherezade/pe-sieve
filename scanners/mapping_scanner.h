@@ -4,8 +4,7 @@
 #include <Windows.h>
 
 #include "module_scanner.h"
-
-
+#include "../utils/util.h"
 
 class MappingScanReport : public ModuleScanReport
 {
@@ -21,9 +20,9 @@ public:
 		outs << "{\n";
 		ModuleScanReport::toJSON(outs);
 		outs << ",\n";
-		outs << "\"mapped_file\" : \"" << this->mappedFile << "\"";
+		outs << "\"mapped_file\" : \"" << escape_path_separators(this->mappedFile) << "\"";
 		outs << ",\n";
-		outs << "\"module_file\" : \"" << this->moduleFile << "\"";
+		outs << "\"module_file\" : \"" << escape_path_separators(this->moduleFile) << "\"";
 		outs << "\n";
 		outs << "}";
 		return true;
