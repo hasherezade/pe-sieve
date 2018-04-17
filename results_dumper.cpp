@@ -131,7 +131,8 @@ bool has_any_shown_type(t_report summary, t_report_filter filter)
 
 bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, t_report_filter filter)
 {
-	if (!has_any_shown_type(process_report.summary, filter)) {
+	t_report summary = process_report.generateSummary();
+	if (!has_any_shown_type(summary, filter)) {
 		return false;
 	}
 	std::string report_all = report_to_json(process_report, filter);

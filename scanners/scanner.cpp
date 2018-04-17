@@ -20,21 +20,6 @@
 #include <Psapi.h>
 #pragma comment(lib,"psapi.lib")
 
-t_scan_status ProcessScanner::scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report)
-{
-	MappingScanner mappingScanner(processHandle, modData);
-
-	MappingScanReport *scan_report = mappingScanner.scanRemote();
-	t_scan_status is_doppel = ModuleScanReport::get_scan_status(scan_report);
-	process_report.appendReport(scan_report);
-	
-	if (is_doppel != SCAN_SUSPICIOUS) {
-		return is_doppel;
-	}
-	process_report.summary.replaced++;
-	return is_doppel;
-}
-
 t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
 	BOOL isWow64 = FALSE;
@@ -44,7 +29,7 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 	HollowingScanner hollows(processHandle, modData, remoteModData);
 	HeadersScanReport *scan_report = hollows.scanRemote();
 	if (scan_report == nullptr) {
-		process_report.summary.errors++;
+		process_report.addError();
 		return SCAN_ERROR;
 	}
 	t_scan_status is_hollowed = ModuleScanReport::get_scan_status(scan_report);
@@ -60,9 +45,6 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 		is_hollowed = ModuleScanReport::get_scan_status(scan_report);
 	}
 	process_report.appendReport(scan_report);
-	if (is_hollowed == SCAN_SUSPICIOUS) {
-		process_report.summary.replaced++;
-	}
 	return is_hollowed;
 }
 
@@ -77,7 +59,6 @@ t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, RemoteModuleData
 	if (is_hooked != SCAN_SUSPICIOUS) {
 		return is_hooked;
 	}
-	process_report.summary.hooked++;
 	return is_hooked;
 }
 
@@ -156,11 +137,11 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 		if (my_report == nullptr) continue;
 
 		pReport.appendReport(my_report);
-		if (ModuleScanReport::get_scan_status(my_report) == SCAN_SUSPICIOUS) {
+		/*if (ModuleScanReport::get_scan_status(my_report) == SCAN_SUSPICIOUS) {
 			if (my_report->is_manually_loaded) {
 				pReport.summary.implanted++;
 			}
-		}
+		}*/
 	}
 #ifdef _DEBUG
 	DWORD total_time = GetTickCount() - start_tick;
@@ -170,34 +151,41 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 	return counter;
 }
 
+ModuleScanReport* ProcessScanner::scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report)
+{
+	MappingScanner mappingScanner(processHandle, modData);
+
+	MappingScanReport *scan_report = mappingScanner.scanRemote();
+	t_scan_status is_doppel = ModuleScanReport::get_scan_status(scan_report);
+	process_report.appendReport(scan_report);
+	return scan_report;
+}
+
 size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws exceptions
 {
-	t_report &report = pReport.summary;
 	HMODULE hMods[1024];
 	const size_t modules_count = enum_modules(this->processHandle, hMods, sizeof(hMods), args.modules_filter);
 	if (modules_count == 0) {
-		report.errors++;
+		pReport.addError();
 		return 0;
 	}
 	if (args.imp_rec) {
 		pReport.exportsMap = new peconv::ExportsMapper();
 	}
 
-	report.scanned = 0;
 	size_t counter = 0;
-	for (counter = 0; counter < modules_count; counter++, report.scanned++) {
+	for (counter = 0; counter < modules_count; counter++) {
 		if (processHandle == nullptr) break;
 
 		//load module from file:
 		ModuleData modData(processHandle, hMods[counter]);
 
-		this->scanForMappingMismatch(modData, pReport);
+		ModuleScanReport *mappingScanReport = this->scanForMappingMismatch(modData, pReport);
 
 		if (!modData.loadOriginal()) {
 			std::cout << "[!][" << args.pid <<  "] Suspicious: could not read the module file!" << std::endl;
 			//make a report that finding original module was not possible
 			pReport.appendReport(new UnreachableModuleReport(processHandle, hMods[counter]));
-			pReport.summary.detached++;
 			continue;
 		}
 		if (!args.quiet) {
@@ -208,19 +196,23 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 #ifdef _DEBUG
 			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
 #endif
-			pReport.summary.skipped++;
+			pReport.addSkipped();
 			continue;
 		}
 		//load data about the remote module
 		RemoteModuleData remoteModData(processHandle, hMods[counter]);
 		if (remoteModData.isInitialized() == false) {
-			pReport.summary.errors++;
+			pReport.addError();
 			continue;
 		}
 		t_scan_status is_hollowed = scanForHollows(modData, remoteModData, pReport);
 		if (is_hollowed == SCAN_ERROR) {
 			continue;
 		}
+		/*if (is_hollowed == SCAN_NOT_SUSPICIOUS) {
+			//if the content does not differ, ignore the different name of the mapped file
+			mappingScanReport->status = SCAN_NOT_SUSPICIOUS;
+		}*/
 		if (pReport.exportsMap != nullptr) {
 			pReport.exportsMap->add_to_lookup(modData.szModName, (HMODULE) modData.original_module, (ULONGLONG) modData.moduleHandle);
 		}

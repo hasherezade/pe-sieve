@@ -47,7 +47,7 @@ std::string list_modules(const ProcessScanReport &report, t_report_filter filter
 
 std::string report_to_string(const ProcessScanReport &process_report)
 {
-	const t_report &report = process_report.summary;
+	const t_report report = process_report.generateSummary();
 	std::stringstream stream;
 	//summary:
 	size_t other = report.suspicious - (report.hooked + report.replaced + report.detached + report.implanted);
@@ -72,7 +72,7 @@ std::string report_to_string(const ProcessScanReport &process_report)
 
 std::string report_to_json(const ProcessScanReport &process_report, t_report_filter filter)
 {
-	const t_report &report = process_report.summary;
+	const t_report report = process_report.generateSummary();
 	std::stringstream stream;
 	//summary:
 	size_t other = report.suspicious - (report.hooked + report.replaced + report.detached + report.implanted);
