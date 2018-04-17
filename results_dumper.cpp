@@ -58,7 +58,7 @@ bool dumpAsShellcode(std::string dumpFileName, HANDLE processHandle, PBYTE modul
 
 	bool is_ok = false;
 
-	if (read_remote_mem(processHandle, moduleBase, buf, dump_size)) {
+	if (peconv::read_remote_memory(processHandle, moduleBase, buf, dump_size)) {
 		is_ok = peconv::dump_to_file(dumpFileName.c_str(), buf, dump_size);
 	}
 	

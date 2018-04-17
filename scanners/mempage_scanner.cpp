@@ -95,7 +95,7 @@ bool MemPageData::loadRemote()
 	}
 	this->loadedSize = region_size;
 
-	if (!read_remote_mem(this->processHandle, (BYTE*) this->start_va, loadedData, loadedSize)) {
+	if (!peconv::read_remote_memory(this->processHandle, (BYTE*) this->start_va, loadedData, loadedSize)) {
 		freeRemote();
 		return false;
 	}
