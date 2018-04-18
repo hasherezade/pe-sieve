@@ -26,7 +26,7 @@ protected:
 	size_t scanModules(ProcessScanReport &pReport); //throws exceptions
 	size_t scanWorkingSet(ProcessScanReport &pReport);  //throws exceptions
 
-	t_scan_status scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report);
+	ModuleScanReport* scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report);
 	t_scan_status scanForHollows(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report);
 	t_scan_status scanForHooks(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report);
 

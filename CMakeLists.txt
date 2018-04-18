@@ -24,6 +24,7 @@ set (scanners_srcs
 	scanners/module_data.cpp
 	scanners/patch_list.cpp
 	scanners/patch_analyzer.cpp
+	scanners/scan_report.cpp
 )
 
 set (scanners_hdrs

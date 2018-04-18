@@ -103,7 +103,7 @@ void print_report(const ProcessScanReport& report, const t_params args)
 		report_str = report_to_string(report);
 	}
 	//summary:
-	const t_report &summary = report.summary;
+	const t_report summary = report.generateSummary();
 	std::cout << report_str;
 	if (!args.json_output) {
 		std::cout << "---" << std::endl;

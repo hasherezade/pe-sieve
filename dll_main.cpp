@@ -20,7 +20,7 @@ t_report __stdcall PESieve_scan(t_params args)
 		nullrep.errors = 1;
 		return nullrep;
 	}
-	t_report summary = report->summary;
+	t_report summary = report->generateSummary();
 	delete report;
 	return summary;
 }

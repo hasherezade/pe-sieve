@@ -14,11 +14,18 @@
 class ProcessScanReport
 {
 public:
-	ProcessScanReport(DWORD pid)
+	typedef enum {
+		REPORT_MAPPING_SCAN,
+		REPORT_HEADERS_SCAN,
+		REPORT_CODE_SCAN,
+		REPORT_MEMPAGE_SCAN,
+		REPORT_UNREACHABLE_SCAN,
+		REPORT_TYPES_COUNT
+	} report_type_t;
+
+	ProcessScanReport(DWORD _pid)
+		: pid(_pid), exportsMap(nullptr), errorsCount(0), skippedCount(0)
 	{
-		memset(&summary,0,sizeof(summary));
-		summary.pid = pid;
-		exportsMap = nullptr;
 	}
 
 	~ProcessScanReport()
@@ -29,18 +36,25 @@ public:
 		}
 	}
 
+	void addError()
+	{
+		errorsCount++;
+	}
+
+	void addSkipped()
+	{
+		skippedCount++;
+	}
+
 	void appendReport(ModuleScanReport *report)
 	{
 		if (report == nullptr) return;
 		module_reports.push_back(report);
 		scanned_modules.insert(report->module);
-		if (ModuleScanReport::get_scan_status(report) == SCAN_SUSPICIOUS) {
-			summary.suspicious++;
-		}
-		if (ModuleScanReport::get_scan_status(report) == SCAN_ERROR) {
-			summary.errors++;
-		}
+		appendToType(report);
 	}
+
+	void appendToType(ModuleScanReport *report);
 
 	bool hasModule(HMODULE page_addr)
 	{
@@ -50,12 +64,11 @@ public:
 		return false; // not scanned yet
 	}
 
-	t_report summary;
-	std::vector<ModuleScanReport*> module_reports; //TODO: make it protected
-	peconv::ExportsMapper *exportsMap;
-	std::set<HMODULE> scanned_modules;
+	t_report generateSummary() const;
 
 	std::string mainImagePath;
+	std::vector<ModuleScanReport*> module_reports; //TODO: make it protected
+	peconv::ExportsMapper *exportsMap;
 
 protected:
 	void deleteModuleReports()
@@ -67,4 +80,16 @@ protected:
 		}
 		module_reports.clear();
 	}
+
+	size_t countSuspiciousPerType(report_type_t type) const;
+
+	DWORD pid;
+
+	size_t errorsCount;
+	size_t skippedCount;
+
+	std::set<HMODULE> scanned_modules;
+	std::set<ModuleScanReport*> reports_by_type[REPORT_TYPES_COUNT];
+
+	friend class ProcessScanner;
 };
