@@ -209,10 +209,10 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 		if (is_hollowed == SCAN_ERROR) {
 			continue;
 		}
-		/*if (is_hollowed == SCAN_NOT_SUSPICIOUS) {
+		if (is_hollowed == SCAN_NOT_SUSPICIOUS) {
 			//if the content does not differ, ignore the different name of the mapped file
 			mappingScanReport->status = SCAN_NOT_SUSPICIOUS;
-		}*/
+		}
 		if (pReport.exportsMap != nullptr) {
 			pReport.exportsMap->add_to_lookup(modData.szModName, (HMODULE) modData.original_module, (ULONGLONG) modData.moduleHandle);
 		}
