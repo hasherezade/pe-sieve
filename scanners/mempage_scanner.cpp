@@ -113,7 +113,7 @@ ULONGLONG MemPageScanner::findPeHeader(MemPageData &memPage)
 
 	//scan only one page, not the full area
 	for (size_t i = 0; i < scan_size && i < peconv::MAX_HEADER_SIZE; i++) {
-		if (peconv::get_nt_hrds(buffer_ptr+i) != nullptr) {
+		if (peconv::get_nt_hrds(buffer_ptr+i, scan_size-i) != nullptr) {
 			return  memPage.start_va + i;
 		}
 		if (!this->isDeepScan) {
