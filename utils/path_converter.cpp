@@ -110,58 +110,61 @@ std::string convert_to_win32_path(std::string path)
 	return my_path;
 }
 
-char get_drive_letter(std::string device_path)
+std::string remap_to_drive_letter(std::string full_path)
 {
+	size_t full_path_size = full_path.length();
+	if (full_path_size == 0) {
+		return full_path;
+	}
+
 	DWORD drives_bitmask = GetLogicalDrives();
 	//std::cout << "Drives: " << std::hex << drives_bitmask << std::endl;
 
 	for (DWORD i = 0; i < 32; i += 1, drives_bitmask >>= 1) {
 		if ((drives_bitmask & 1) == 1) {
 			char letter[] = "?:";
-			letter[0] = 'A' + (char) i;
+			letter[0] = 'A' + (char)i;
 			//std::cout << "Drive: " << letter << std::endl;
-
 			char out_path[MAX_PATH] = { 0 };
 			if (!QueryDosDeviceA(letter, out_path, MAX_PATH)) {
-				return 0;
+				return full_path;
 			}
-			//std::cout << "Path: " << out_path << std::endl;
-			if (strstr(out_path, device_path.c_str())) {
-				return letter[0];
+			//QueryDosDeviceA returns all possible mappings pointing to this drive letter, divided by a delimiter: ";"
+			//sometimes one device letter is mapped to several paths
+			// i.e. "\Device\VBoxMiniRdr\;E:\vboxsrv\vm_shared"
+			const char delim[] = ";";
+			char *next_token = nullptr;
+
+			char * pch = strtok_s(out_path, delim, &next_token);
+			while (pch != nullptr) {
+				// check if the current path starts from any of the mapped paths
+				std::size_t found = full_path.find(pch);
+				if (found != std::string::npos && found == 0) {
+					size_t dir_len = strlen(pch);
+					//if so, cut out the mappining path/device path and replace it with a drive letter
+					std::string str2 = full_path.substr(dir_len, full_path_size);
+					if (str2[0] != '//' && str2[0] != '\\') {
+						str2 = "\\" + str2;
+					}
+					return letter + str2;
+				}
+				pch = strtok_s(nullptr, delim, &next_token);
 			}
 		}
 	}
-	return 0;;
+	return full_path;
 }
 
 std::string device_path_to_win32_path(std::string full_path)
 {
-	char token = '\\';
-	const size_t full_path_len = full_path.length();
-	const char *str = full_path.c_str();
-	size_t split_point = 0;
-
-	for (size_t i = 0, found = 0; i < full_path_len; i++) {
-		if (full_path[i] == token) {
-			found++;
-			if (found == 3) { // found the split point
-				split_point = i;
-				break;
-			}
-			
-		}
-	}
-	if (split_point == 0) {
-		return "";
-	}
-	std::string dev_name = std::string(str, str + split_point);
-	std::string dir_name = std::string(str + split_point, str + full_path_len);
-	char dev_letter = get_drive_letter(dev_name);
-	if (!dev_letter) return "";
-
-	char letter[] = "?:";
-	letter[0] = dev_letter;
-	return letter + dir_name;
+	std::string path = full_path;
+	//sometimes mapping can be recursive, so resolve it till the root
+	do {
+		std::string remapped_path = remap_to_drive_letter(path);
+		if (remapped_path == path) break;
+		path = remapped_path;
+	} while (true);
+	return path;
 }
 
 std::string expand_path(std::string basic_path)
