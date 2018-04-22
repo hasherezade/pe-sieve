@@ -29,7 +29,7 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 	HollowingScanner hollows(processHandle, modData, remoteModData);
 	HeadersScanReport *scan_report = hollows.scanRemote();
 	if (scan_report == nullptr) {
-		process_report.appendReport(new MalformedHeaderReport(processHandle, modData.moduleHandle, SCAN_ERROR));
+		process_report.appendReport(new MalformedHeaderReport(processHandle, modData.moduleHandle));
 		return SCAN_ERROR;
 	}
 	t_scan_status is_hollowed = ModuleScanReport::get_scan_status(scan_report);

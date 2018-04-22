@@ -25,7 +25,7 @@ public:
 	} report_type_t;
 
 	ProcessScanReport(DWORD _pid)
-		: pid(_pid), exportsMap(nullptr), errorsCount(0)
+		: pid(_pid), exportsMap(nullptr)//, errorsCount(0)
 	{
 	}
 
@@ -42,6 +42,9 @@ public:
 		if (report == nullptr) return;
 		module_reports.push_back(report);
 		scanned_modules.insert(report->module);
+		if (ModuleScanReport::get_scan_status(report) == SCAN_ERROR) {
+			this->errorsCount++;
+		}
 		appendToType(report);
 	}
 
