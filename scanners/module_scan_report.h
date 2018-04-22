@@ -79,3 +79,21 @@ public:
 	}
 };
 
+class MalformedHeaderReport : public ModuleScanReport
+{
+public:
+	MalformedHeaderReport(HANDLE processHandle, HMODULE _module)
+		: ModuleScanReport(processHandle, _module, SCAN_SUSPICIOUS)
+	{
+	}
+
+	const virtual bool toJSON(std::stringstream &outs)
+	{
+		outs << "\"malformed_header\" : ";
+		outs << "{\n";
+		ModuleScanReport::toJSON(outs);
+		outs << "\n}";
+		return true;
+	}
+};
+

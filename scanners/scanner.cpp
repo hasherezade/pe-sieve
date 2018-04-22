@@ -202,7 +202,8 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 		//load data about the remote module
 		RemoteModuleData remoteModData(processHandle, hMods[counter]);
 		if (remoteModData.isInitialized() == false) {
-			pReport.addError();
+			//make a report that initializing remote module was not possible
+			pReport.appendReport(new MalformedHeaderReport(processHandle, hMods[counter]));
 			continue;
 		}
 		t_scan_status is_hollowed = scanForHollows(modData, remoteModData, pReport);
