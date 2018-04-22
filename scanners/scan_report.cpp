@@ -29,6 +29,10 @@ void ProcessScanReport::appendToType(ModuleScanReport *report)
 		this->reports_by_type[REPORT_UNREACHABLE_SCAN].insert(report);
 		return;
 	}
+	if (dynamic_cast<SkippedModuleReport*>(report)) {
+		this->reports_by_type[REPORT_SKIPPED_SCAN].insert(report);
+		return;
+	}
 }
 
 size_t ProcessScanReport::countSuspiciousPerType(report_type_t type) const
@@ -52,7 +56,7 @@ t_report ProcessScanReport::generateSummary() const
 	t_report summary = { 0 };
 	summary.pid = this->pid;
 	summary.errors = static_cast<DWORD>(this->errorsCount);
-	summary.skipped = static_cast<DWORD>(this->skippedCount);
+	summary.skipped = static_cast<DWORD>(this->reports_by_type[REPORT_SKIPPED_SCAN].size());
 	summary.scanned = static_cast<DWORD>(this->reports_by_type[REPORT_HEADERS_SCAN].size());
 
 	std::vector<ModuleScanReport*>::const_iterator itr = module_reports.begin();

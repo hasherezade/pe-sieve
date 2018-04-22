@@ -29,7 +29,7 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 	HollowingScanner hollows(processHandle, modData, remoteModData);
 	HeadersScanReport *scan_report = hollows.scanRemote();
 	if (scan_report == nullptr) {
-		process_report.addError();
+		process_report.appendReport(new MalformedHeaderReport(processHandle, modData.moduleHandle, SCAN_ERROR));
 		return SCAN_ERROR;
 	}
 	t_scan_status is_hollowed = ModuleScanReport::get_scan_status(scan_report);
@@ -75,7 +75,11 @@ ProcessScanReport* ProcessScanner::scanRemote()
 	// scan modules
 	bool modulesScanned = true;
 	try {
-		scanModules(*pReport);
+		size_t scanned = scanModules(*pReport);
+		if (scanned == 0) {
+			modulesScanned = false;
+			errorsStr << "No modules found!";
+		}
 	} catch (std::exception &e) {
 		modulesScanned = false;
 		errorsStr << e.what();
@@ -166,7 +170,6 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 	HMODULE hMods[1024];
 	const size_t modules_count = enum_modules(this->processHandle, hMods, sizeof(hMods), args.modules_filter);
 	if (modules_count == 0) {
-		pReport.addError();
 		return 0;
 	}
 	if (args.imp_rec) {
@@ -196,7 +199,7 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 #ifdef _DEBUG
 			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
 #endif
-			pReport.addSkipped();
+			pReport.appendReport(new SkippedModuleReport(processHandle, hMods[counter]));
 			continue;
 		}
 		//load data about the remote module

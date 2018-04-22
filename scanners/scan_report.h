@@ -20,11 +20,12 @@ public:
 		REPORT_CODE_SCAN,
 		REPORT_MEMPAGE_SCAN,
 		REPORT_UNREACHABLE_SCAN,
+		REPORT_SKIPPED_SCAN,
 		REPORT_TYPES_COUNT
 	} report_type_t;
 
 	ProcessScanReport(DWORD _pid)
-		: pid(_pid), exportsMap(nullptr), errorsCount(0), skippedCount(0)
+		: pid(_pid), exportsMap(nullptr), errorsCount(0)
 	{
 	}
 
@@ -34,16 +35,6 @@ public:
 		if (exportsMap) {
 			delete exportsMap;
 		}
-	}
-
-	void addError()
-	{
-		errorsCount++;
-	}
-
-	void addSkipped()
-	{
-		skippedCount++;
 	}
 
 	void appendReport(ModuleScanReport *report)
@@ -84,9 +75,7 @@ protected:
 	size_t countSuspiciousPerType(report_type_t type) const;
 
 	DWORD pid;
-
 	size_t errorsCount;
-	size_t skippedCount;
 
 	std::set<HMODULE> scanned_modules;
 	std::set<ModuleScanReport*> reports_by_type[REPORT_TYPES_COUNT];

@@ -79,6 +79,25 @@ public:
 	}
 };
 
+class SkippedModuleReport : public ModuleScanReport
+{
+public:
+	SkippedModuleReport(HANDLE processHandle, HMODULE _module)
+		: ModuleScanReport(processHandle, _module, SCAN_NOT_SUSPICIOUS)
+	{
+	}
+
+	const virtual bool toJSON(std::stringstream &outs)
+	{
+		outs << "\"skipped_scan\" : ";
+		outs << "{\n";
+		ModuleScanReport::toJSON(outs);
+		outs << "\n}";
+		return true;
+	}
+};
+
+
 class MalformedHeaderReport : public ModuleScanReport
 {
 public:
