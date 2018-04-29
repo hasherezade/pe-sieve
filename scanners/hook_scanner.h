@@ -10,8 +10,8 @@
 class CodeScanReport : public ModuleScanReport
 {
 public:
-	CodeScanReport(HANDLE processHandle, HMODULE _module)
-		: ModuleScanReport(processHandle, _module) {}
+	CodeScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
+		: ModuleScanReport(processHandle, _module, _moduleSize) {}
 
 	const virtual bool toJSON(std::stringstream &outs)
 	{

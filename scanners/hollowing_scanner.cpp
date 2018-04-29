@@ -3,7 +3,7 @@
 
 HeadersScanReport* HollowingScanner::scanRemote()
 {
-	HeadersScanReport *my_report = new HeadersScanReport(this->processHandle, moduleData.moduleHandle);
+	HeadersScanReport *my_report = new HeadersScanReport(this->processHandle, moduleData.moduleHandle, remoteModData.getModuleSize());
 	if (!remoteModData.isInitialized()) {
 		std::cerr << "[-] Failed to read the module header" << std::endl;
 		my_report->status = SCAN_ERROR;

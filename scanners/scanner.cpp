@@ -29,7 +29,7 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 	HollowingScanner hollows(processHandle, modData, remoteModData);
 	HeadersScanReport *scan_report = hollows.scanRemote();
 	if (scan_report == nullptr) {
-		process_report.appendReport(new MalformedHeaderReport(processHandle, modData.moduleHandle));
+		process_report.appendReport(new MalformedHeaderReport(processHandle, modData.moduleHandle, modData.original_size));
 		return SCAN_ERROR;
 	}
 	t_scan_status is_hollowed = ModuleScanReport::get_scan_status(scan_report);
@@ -132,13 +132,18 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 
 		MemPageData memPage(this->processHandle, region_base);
 		//if it was already scanned, it means the module was on the list of loaded modules
-		memPage.is_listed_module = pReport.hasModule((HMODULE)region_base);
+		memPage.is_listed_module = pReport.hasModule(region_base);
 
 		MemPageScanner memPageScanner(this->processHandle, memPage, this->args.shellcode);
 		MemPageScanReport *my_report = memPageScanner.scanRemote();
 
 		counter++;
 		if (my_report == nullptr) continue;
+
+		// this is a code section inside a PE file that was already detected
+		if (my_report->is_shellcode && pReport.hasModuleContaining((ULONGLONG)my_report->module)) {
+			my_report->status = SCAN_NOT_SUSPICIOUS;
+		}
 
 		pReport.appendReport(my_report);
 		/*if (ModuleScanReport::get_scan_status(my_report) == SCAN_SUSPICIOUS) {
@@ -188,7 +193,7 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 		if (!modData.loadOriginal()) {
 			std::cout << "[!][" << args.pid <<  "] Suspicious: could not read the module file!" << std::endl;
 			//make a report that finding original module was not possible
-			pReport.appendReport(new UnreachableModuleReport(processHandle, hMods[counter]));
+			pReport.appendReport(new UnreachableModuleReport(processHandle, hMods[counter], 0));
 			continue;
 		}
 		if (!args.quiet) {
@@ -199,14 +204,14 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 #ifdef _DEBUG
 			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
 #endif
-			pReport.appendReport(new SkippedModuleReport(processHandle, hMods[counter]));
+			pReport.appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size));
 			continue;
 		}
 		//load data about the remote module
 		RemoteModuleData remoteModData(processHandle, hMods[counter]);
 		if (remoteModData.isInitialized() == false) {
 			//make a report that initializing remote module was not possible
-			pReport.appendReport(new MalformedHeaderReport(processHandle, hMods[counter]));
+			pReport.appendReport(new MalformedHeaderReport(processHandle, hMods[counter], 0));
 			continue;
 		}
 		t_scan_status is_hollowed = scanForHollows(modData, remoteModData, pReport);

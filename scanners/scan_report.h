@@ -10,6 +10,7 @@
 #include "pe_sieve_types.h"
 #include "peconv.h"
 #include "module_scan_report.h"
+#include "scanned_modules.h"
 
 class ProcessScanReport
 {
@@ -25,7 +26,7 @@ public:
 	} report_type_t;
 
 	ProcessScanReport(DWORD _pid)
-		: pid(_pid), exportsMap(nullptr), errorsCount(0)
+		: pid(_pid), exportsMap(nullptr), errorsCount(0), modulesInfo(pid)
 	{
 	}
 
@@ -41,7 +42,9 @@ public:
 	{
 		if (report == nullptr) return;
 		module_reports.push_back(report);
-		scanned_modules.insert(report->module);
+		if (report->moduleSize > 0) {
+			modulesInfo.appendModule(new LoadedModule(report->pid, (ULONGLONG)report->module, report->moduleSize));
+		}
 		if (ModuleScanReport::get_scan_status(report) == SCAN_ERROR) {
 			this->errorsCount++;
 		}
@@ -50,12 +53,20 @@ public:
 
 	void appendToType(ModuleScanReport *report);
 
-	bool hasModule(HMODULE page_addr)
+	bool hasModuleContaining(ULONGLONG page_addr)
 	{
-		if (scanned_modules.find(page_addr) != scanned_modules.end()) {
-			return true; // already scanned this module
+		if (modulesInfo.getModuleContaining(page_addr) == nullptr) {
+			return false;
 		}
-		return false; // not scanned yet
+		return true;
+	}
+
+	bool hasModule(ULONGLONG page_addr)
+	{
+		if (modulesInfo.getModuleAt(page_addr) == nullptr) {
+			return false;
+		}
+		return true;
 	}
 
 	t_report generateSummary() const;
@@ -80,7 +91,7 @@ protected:
 	DWORD pid;
 	size_t errorsCount;
 
-	std::set<HMODULE> scanned_modules;
+	ProcessModules modulesInfo;
 	std::set<ModuleScanReport*> reports_by_type[REPORT_TYPES_COUNT];
 
 	friend class ProcessScanner;

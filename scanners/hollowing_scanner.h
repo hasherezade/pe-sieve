@@ -7,8 +7,8 @@
 class HeadersScanReport : public ModuleScanReport
 {
 public:
-	HeadersScanReport(HANDLE processHandle, HMODULE _module)
-		: ModuleScanReport(processHandle, _module),
+	HeadersScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
+		: ModuleScanReport(processHandle, _module, _moduleSize),
 		epModified(false), archMismatch(false), is64(false) { }
 
 	const virtual bool toJSON(std::stringstream& outs)

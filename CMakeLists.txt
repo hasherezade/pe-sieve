@@ -25,6 +25,7 @@ set (scanners_srcs
 	scanners/patch_list.cpp
 	scanners/patch_analyzer.cpp
 	scanners/scan_report.cpp
+	scanners/scanned_modules.cpp
 )
 
 set (scanners_hdrs
@@ -40,6 +41,7 @@ set (scanners_hdrs
 	scanners/pe_section.h
 	scanners/patch_list.h
 	scanners/patch_analyzer.h
+	scanners/scanned_modules.h
 )
 
 set (utils_srcs

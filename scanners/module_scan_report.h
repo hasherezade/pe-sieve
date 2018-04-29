@@ -27,17 +27,19 @@ public:
 		return report->status;
 	}
 
-	ModuleScanReport(HANDLE processHandle, HMODULE _module, t_scan_status _status)
+	ModuleScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, t_scan_status _status)
 	{
 		this->pid = GetProcessId(processHandle);
 		this->module = _module;
+		this->moduleSize = _moduleSize;
 		this->status = _status;
 	}
 
-	ModuleScanReport(HANDLE processHandle, HMODULE _module)
+	ModuleScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
 	{
 		this->pid = GetProcessId(processHandle);
 		this->module = _module;
+		this->moduleSize = _moduleSize;
 		this->status = SCAN_NOT_SUSPICIOUS;
 	}
 
@@ -57,6 +59,7 @@ public:
 	virtual size_t generateTags(std::string reportPath) { return 0; }
 
 	HMODULE module;
+	size_t moduleSize;
 	DWORD pid;
 	t_scan_status status;
 };
@@ -64,8 +67,8 @@ public:
 class UnreachableModuleReport : public ModuleScanReport
 {
 public:
-	UnreachableModuleReport(HANDLE processHandle, HMODULE _module)
-		: ModuleScanReport(processHandle, _module, SCAN_SUSPICIOUS)
+	UnreachableModuleReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
+		: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_SUSPICIOUS)
 	{
 	}
 
@@ -82,8 +85,8 @@ public:
 class SkippedModuleReport : public ModuleScanReport
 {
 public:
-	SkippedModuleReport(HANDLE processHandle, HMODULE _module)
-		: ModuleScanReport(processHandle, _module, SCAN_NOT_SUSPICIOUS)
+	SkippedModuleReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
+		: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_NOT_SUSPICIOUS)
 	{
 	}
 
@@ -101,8 +104,8 @@ public:
 class MalformedHeaderReport : public ModuleScanReport
 {
 public:
-	MalformedHeaderReport(HANDLE processHandle, HMODULE _module)
-		: ModuleScanReport(processHandle, _module, SCAN_SUSPICIOUS)
+	MalformedHeaderReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
+		: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_SUSPICIOUS)
 	{
 	}
 
