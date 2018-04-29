@@ -25,7 +25,7 @@ public:
 	} report_type_t;
 
 	ProcessScanReport(DWORD _pid)
-		: pid(_pid), exportsMap(nullptr)//, errorsCount(0)
+		: pid(_pid), exportsMap(nullptr), errorsCount(0)
 	{
 	}
 
