@@ -4,7 +4,7 @@
 
 MappingScanReport* MappingScanner::scanRemote()
 {
-	MappingScanReport *my_report = new MappingScanReport(this->processHandle, moduleData.moduleHandle);
+	MappingScanReport *my_report = new MappingScanReport(this->processHandle, moduleData.moduleHandle, moduleData.original_size);
 
 	std::string mapped_name = RemoteModuleData::getMappedName(processHandle, moduleData.moduleHandle);
 	std::string module_name = moduleData.szModName;

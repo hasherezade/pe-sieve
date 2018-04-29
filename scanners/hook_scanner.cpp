@@ -121,7 +121,7 @@ t_scan_status HookScanner::scanSection(size_t section_number, CodeScanReport& re
 
 CodeScanReport* HookScanner::scanRemote()
 {
-	CodeScanReport *my_report = new CodeScanReport(this->processHandle, moduleData.moduleHandle);
+	CodeScanReport *my_report = new CodeScanReport(this->processHandle, moduleData.moduleHandle, moduleData.original_size);
 
 	moduleData.relocateToBase(); // before scanning, ensure that the original module is relocated to the base where it was loaded
 

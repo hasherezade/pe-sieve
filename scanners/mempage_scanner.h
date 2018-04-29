@@ -10,8 +10,8 @@
 class MemPageScanReport : public ModuleScanReport
 {
 public:
-	MemPageScanReport(HANDLE processHandle, HMODULE _module, t_scan_status status)
-		: ModuleScanReport(processHandle, _module, status)
+	MemPageScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, t_scan_status status)
+		: ModuleScanReport(processHandle, _module, _moduleSize, status)
 	{
 		 is_executable = false;
 		 is_manually_loaded = false;

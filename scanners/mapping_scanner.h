@@ -9,8 +9,8 @@
 class MappingScanReport : public ModuleScanReport
 {
 public:
-	MappingScanReport(HANDLE processHandle, HMODULE _module)
-		: ModuleScanReport(processHandle, _module)
+	MappingScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
+		: ModuleScanReport(processHandle, _module, _moduleSize)
 	{
 	}
 
