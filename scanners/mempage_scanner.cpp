@@ -160,7 +160,7 @@ MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 		return nullptr;
 	}
 	//TODO: differentiate the raport: shellcode vs PE
-	const size_t region_size = memPage.region_end - memPage.region_start;
+	const size_t region_size = size_t (memPage.region_end - memPage.region_start);
 	MemPageScanReport *my_report = new MemPageScanReport(processHandle, (HMODULE)memPage.region_start, region_size, SCAN_SUSPICIOUS);
 	my_report->is_executable = true;
 	my_report->is_manually_loaded = !memPage.is_listed_module;
@@ -229,7 +229,7 @@ MemPageScanReport* MemPageScanner::scanRemote()
 #ifdef _DEBUG
 	std::cout << "[" << std::hex << memPage.start_va << "] Found a PE in the working set. Status: " << status << std::endl;
 #endif
-	const size_t pe_size = peconv::get_image_size((const BYTE*)pe_header);
+	const size_t pe_size = remoteModule.getModuleSize();
 	MemPageScanReport *my_report = new MemPageScanReport(processHandle, (HMODULE)pe_header, pe_size, status);
 	my_report->is_executable = is_executable;
 	my_report->is_manually_loaded = !memPage.is_listed_module;

@@ -99,6 +99,12 @@ public:
 		return is_ready;
 	}
 
+	size_t getModuleSize()
+	{
+		if (!is_ready) return 0;
+		return peconv::get_image_size((const BYTE*) headerBuffer);
+	}
+
 	BYTE headerBuffer[peconv::MAX_HEADER_SIZE];
 
 protected:
