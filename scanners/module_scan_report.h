@@ -51,8 +51,6 @@ public:
 		//outs << std::hex << pid << ",\n";
 		outs << "\"module\" : ";
 		outs << "\"" << std::hex << (ULONGLONG) module << "\"" << ",\n";
-		outs << "\"module_size\" : ";
-		outs << "\"" << std::hex << moduleSize << "\"" << ",\n";
 		outs << "\"status\" : " ;
 		outs << std::dec << status;
 		return true;
