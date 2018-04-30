@@ -26,23 +26,25 @@ void ProcessModules::deleteAll()
 	this->modulesMap.clear();
 }
 
-const LoadedModule* ProcessModules::getModuleContaining(ULONGLONG address)
+LoadedModule* ProcessModules::getModuleContaining(ULONGLONG address)
 {
 	std::map<ULONGLONG, LoadedModule*>::iterator start_itr = modulesMap.begin();
 	std::map<ULONGLONG, LoadedModule*>::iterator stop_itr = modulesMap.upper_bound(address);
 	std::map<ULONGLONG, LoadedModule*>::iterator itr = start_itr;
 	for (; itr != stop_itr; itr++ ) {
-		const LoadedModule *module = itr->second;
+		LoadedModule *module = itr->second;
 
 		if (address >= module->start && address < module->end) {
+#ifdef _DEBUG
 			std::cout << "Addr: " << std::hex << address << " found in: " << module->start << " - " << module->end << std::endl;
+#endif
 			return module;
 		}
 	}
 	return nullptr;
 }
 
-const LoadedModule* ProcessModules::getModuleAt(ULONGLONG address)
+LoadedModule* ProcessModules::getModuleAt(ULONGLONG address)
 {
 	std::map<ULONGLONG, LoadedModule*>::iterator itr = modulesMap.find(address);
 	if (itr != modulesMap.end()) {

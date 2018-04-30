@@ -10,7 +10,8 @@
 struct LoadedModule {
 
 	LoadedModule(DWORD _pid, ULONGLONG _start, size_t _moduleSize)
-		: process_id(_pid), start(_start), end(_start + _moduleSize)
+		: process_id(_pid), start(_start), end(_start + _moduleSize),
+		is_suspicious(false)
 	{
 	}
 
@@ -26,6 +27,7 @@ struct LoadedModule {
 	ULONGLONG start;
 	ULONGLONG end;
 	DWORD process_id;
+	bool is_suspicious;
 };
 
 struct ProcessModules {
@@ -42,8 +44,8 @@ struct ProcessModules {
 	bool appendModule(LoadedModule* module);
 	void deleteAll();
 
-	const LoadedModule* getModuleContaining(ULONGLONG address);
-	const LoadedModule* getModuleAt(ULONGLONG address);
+	LoadedModule* getModuleContaining(ULONGLONG address);
+	LoadedModule* getModuleAt(ULONGLONG address);
 
 	std::map<ULONGLONG, LoadedModule*> modulesMap;
 	DWORD process_id;

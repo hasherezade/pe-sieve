@@ -42,16 +42,13 @@ public:
 	{
 		if (report == nullptr) return;
 		module_reports.push_back(report);
-		if (report->moduleSize > 0) {
-			modulesInfo.appendModule(new LoadedModule(report->pid, (ULONGLONG)report->module, report->moduleSize));
-		}
 		if (ModuleScanReport::get_scan_status(report) == SCAN_ERROR) {
 			this->errorsCount++;
 		}
 		appendToType(report);
+		//add to the list of scanned modules:
+		appendToModulesList(report);
 	}
-
-	void appendToType(ModuleScanReport *report);
 
 	bool hasModuleContaining(ULONGLONG page_addr)
 	{
@@ -86,7 +83,10 @@ protected:
 		module_reports.clear();
 	}
 
+	void appendToType(ModuleScanReport *report);
 	size_t countSuspiciousPerType(report_type_t type) const;
+
+	bool appendToModulesList(ModuleScanReport *report);
 
 	DWORD pid;
 	size_t errorsCount;

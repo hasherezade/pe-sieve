@@ -5,6 +5,26 @@
 #include "mempage_scanner.h"
 #include "mapping_scanner.h"
 
+
+bool ProcessScanReport::appendToModulesList(ModuleScanReport *report)
+{
+	if (report->moduleSize == 0) {
+		return false; //skip
+	}
+	ULONGLONG module_start = (ULONGLONG)report->module;
+	LoadedModule* mod = modulesInfo.getModuleAt(module_start);
+	if (mod == nullptr) {
+		//create new only if it was not found
+		mod = new LoadedModule(report->pid, module_start, report->moduleSize);
+		modulesInfo.appendModule(mod);
+	}
+	if (mod->is_suspicious == false) {
+		//update the status
+		mod->is_suspicious = (report->status == SCAN_SUSPICIOUS);
+	}
+	return true;
+}
+
 void ProcessScanReport::appendToType(ModuleScanReport *report)
 {
 	if (report == nullptr) return;
