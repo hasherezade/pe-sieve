@@ -8,12 +8,23 @@ ULONGLONG PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, int instrLen, int lVal
 	return addr;
 }
 
+size_t PatchAnalyzer::parseShortJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
+{
+	const size_t instr_size = 2;
+
+	DWORD *lval = (DWORD*)((ULONGLONG)patch_ptr + 1);
+	ULONGLONG addr = getJmpDestAddr(patch_va, instr_size, int(*lval));
+
+	patch.setHookTarget(addr);
+	return instr_size;
+}
+
 size_t PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
 {
 	const size_t instr_size = 5;
 
 	DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
-	ULONGLONG addr = getJmpDestAddr(patch_va, 5, int(*lval));
+	ULONGLONG addr = getJmpDestAddr(patch_va, instr_size, int(*lval));
 
 	patch.setHookTarget(addr);
 	return instr_size;
@@ -119,6 +130,9 @@ size_t PatchAnalyzer::analyze(PatchList::Patch &patch)
 	BYTE op = patch_ptr[0];
 	if (op == OP_JMP || op == OP_CALL_DWORD) {
 		return parseJmp(patch, patch_ptr, patch_va);
+	}
+	if (op == OP_SHORTJMP) {
+		return parseShortJmp(patch, patch_ptr, patch_va);
 	}
 	if (op == OP_PUSH_DWORD) {
 		return parsePushRet(patch, patch_ptr);
