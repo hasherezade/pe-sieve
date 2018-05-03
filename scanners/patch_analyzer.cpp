@@ -1,9 +1,9 @@
 #include "patch_analyzer.h"
 //---
-
-ULONGLONG PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, int instrLen, int lVal)
+template <typename DELTA_T>
+ULONGLONG PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, int instrLen, DELTA_T lVal)
 {
-	int delta = instrLen + lVal;
+	int delta = instrLen + int(lVal);
 	ULONGLONG addr = currVA + delta;
 	return addr;
 }
@@ -12,8 +12,8 @@ size_t PatchAnalyzer::parseShortJmp(PatchList::Patch &patch, PBYTE patch_ptr, UL
 {
 	const size_t instr_size = 2;
 
-	DWORD *lval = (DWORD*)((ULONGLONG)patch_ptr + 1);
-	ULONGLONG addr = getJmpDestAddr(patch_va, instr_size, int(*lval));
+	BYTE *lval = (BYTE*)((ULONGLONG)patch_ptr + 1);
+	ULONGLONG addr = getJmpDestAddr<BYTE>(patch_va, instr_size, (*lval));
 
 	patch.setHookTarget(addr);
 	return instr_size;
@@ -24,7 +24,7 @@ size_t PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLO
 	const size_t instr_size = 5;
 
 	DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
-	ULONGLONG addr = getJmpDestAddr(patch_va, instr_size, int(*lval));
+	ULONGLONG addr = getJmpDestAddr<DWORD>(patch_va, instr_size, (*lval));
 
 	patch.setHookTarget(addr);
 	return instr_size;
