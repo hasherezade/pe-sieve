@@ -94,7 +94,7 @@ std::string convert_to_win32_path(std::string path)
 	if ((stripped_path[0] >= 'a' && stripped_path[0] <= 'z')
 		|| (stripped_path[0] >= 'A' && stripped_path[0] <= 'Z'))
 	{
-		if (stripped_path[1] = ':') {
+		if (stripped_path[1] == ':') {
 			// format i.e: C:\...
 			return stripped_path;
 		}
