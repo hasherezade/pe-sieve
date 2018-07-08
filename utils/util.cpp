@@ -6,17 +6,24 @@
 
 char* get_file_name(char *full_path)
 {
-	size_t len = strlen(full_path);
-	for (size_t i = len - 2; i >= 0; i--) {
-		if (full_path[i] == '\\' || full_path[i] == '/') {
-			return full_path + (i + 1);
-		}
-	}
-	return nullptr;
+    if (!full_path) return nullptr;
+
+    size_t len = strlen(full_path);
+    if (len < 2) {
+        return full_path;
+    }
+    for (size_t i = len - 2; i > 0; i--) {
+        if (full_path[i] == '\\' || full_path[i] == '/') {
+            return full_path + (i + 1);
+        }
+    }
+    return full_path;
 }
 
 char* get_directory(IN char *full_path, OUT char *out_buf, IN const size_t out_buf_size)
 {
+    if (!full_path) return nullptr;
+
     memset(out_buf, 0, out_buf_size);
     memcpy(out_buf, full_path, out_buf_size);
 
