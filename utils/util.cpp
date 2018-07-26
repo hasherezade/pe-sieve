@@ -73,15 +73,6 @@ char* get_subpath_ptr(char *modulePath, char* searchedPath)
 	return nullptr;
 }
 
-bool is_system_dll(char *szModName, BOOL isWow64)
-{
-	init_syspaths();
-	if (get_subpath_ptr(szModName, g_System32Path)) {
-		return true;
-	}
-	return false;
-}
-
 bool convert_to_wow64_path(char *szModName)
 {
 	init_syspaths();
