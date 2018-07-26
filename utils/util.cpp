@@ -9,46 +9,46 @@ char g_Syswow64Path[MAX_PATH] = { 0 }; //= "C:\\Windows\\SysWOW64";
 
 void init_syspaths()
 {
-    if (!g_System32Path[0]) {
-        memset(g_System32Path, 0, MAX_PATH);
-        GetWindowsDirectory(g_System32Path, MAX_PATH);
-        lstrcatA(g_System32Path, "\\system32");
-    }
-    if (!g_Syswow64Path[0]) {
-        memset(g_Syswow64Path, 0, MAX_PATH);
-        GetWindowsDirectory(g_Syswow64Path, MAX_PATH);
-        lstrcatA(g_Syswow64Path, "\\SysWOW64");
-    }
+	if (!g_System32Path[0]) {
+		memset(g_System32Path, 0, MAX_PATH);
+		GetWindowsDirectory(g_System32Path, MAX_PATH);
+		lstrcatA(g_System32Path, "\\system32");
+	}
+	if (!g_Syswow64Path[0]) {
+		memset(g_Syswow64Path, 0, MAX_PATH);
+		GetWindowsDirectory(g_Syswow64Path, MAX_PATH);
+		lstrcatA(g_Syswow64Path, "\\SysWOW64");
+	}
 }
 
 char* get_file_name(char *full_path)
 {
-    if (!full_path) return nullptr;
+	if (!full_path) return nullptr;
 
-    size_t len = strlen(full_path);
-    if (len < 2) {
-        return full_path;
-    }
-    for (size_t i = len - 2; i > 0; i--) {
-        if (full_path[i] == '\\' || full_path[i] == '/') {
-            return full_path + (i + 1);
-        }
-    }
-    return full_path;
+	size_t len = strlen(full_path);
+	if (len < 2) {
+		return full_path;
+	}
+	for (size_t i = len - 2; i > 0; i--) {
+		if (full_path[i] == '\\' || full_path[i] == '/') {
+			return full_path + (i + 1);
+		}
+	}
+	return full_path;
 }
 
 char* get_directory(IN char *full_path, OUT char *out_buf, IN const size_t out_buf_size)
 {
-    if (!full_path) return nullptr;
+	if (!full_path) return nullptr;
 
-    memset(out_buf, 0, out_buf_size);
-    memcpy(out_buf, full_path, out_buf_size);
+	memset(out_buf, 0, out_buf_size);
+	memcpy(out_buf, full_path, out_buf_size);
 
-    char *name_ptr = get_file_name(out_buf);
-    if (name_ptr != nullptr) {
-        *name_ptr = '\0'; //cut it
-    }
-    return out_buf;
+	char *name_ptr = get_file_name(out_buf);
+	if (name_ptr != nullptr) {
+		*name_ptr = '\0'; //cut it
+	}
+	return out_buf;
 }
 
 char* get_subpath_ptr(char *modulePath, char* searchedPath)
@@ -76,10 +76,10 @@ char* get_subpath_ptr(char *modulePath, char* searchedPath)
 bool convert_to_wow64_path(char *szModName)
 {
 	init_syspaths();
-	size_t sysPathLen = strlen(g_Syswow64Path);
 	if (!get_subpath_ptr(szModName, g_System32Path)) {
 		return false;
 	}
+	size_t sysPathLen = strlen(g_Syswow64Path);
 	memcpy(szModName, g_Syswow64Path, sysPathLen);
 	return true;
 }
