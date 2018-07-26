@@ -4,6 +4,23 @@
 #include <iomanip>
 #include <algorithm>
 
+char g_System32Path[MAX_PATH] = { 0 }; //= "C:\\Windows\\system32";
+char g_Syswow64Path[MAX_PATH] = { 0 }; //= "C:\\Windows\\SysWOW64";
+
+void init_syspaths()
+{
+    if (!g_System32Path[0]) {
+        memset(g_System32Path, 0, MAX_PATH);
+        GetWindowsDirectory(g_System32Path, MAX_PATH);
+        lstrcatA(g_System32Path, "\\system32");
+    }
+    if (!g_Syswow64Path[0]) {
+        memset(g_Syswow64Path, 0, MAX_PATH);
+        GetWindowsDirectory(g_Syswow64Path, MAX_PATH);
+        lstrcatA(g_Syswow64Path, "\\SysWOW64");
+    }
+}
+
 char* get_file_name(char *full_path)
 {
     if (!full_path) return nullptr;
@@ -58,8 +75,8 @@ char* get_subpath_ptr(char *modulePath, char* searchedPath)
 
 bool is_system_dll(char *szModName, BOOL isWow64)
 {
-	char system_path[] = "C:\\Windows\\system32";
-	if (get_subpath_ptr(szModName, system_path)) {
+	init_syspaths();
+	if (get_subpath_ptr(szModName, g_System32Path)) {
 		return true;
 	}
 	return false;
@@ -67,13 +84,12 @@ bool is_system_dll(char *szModName, BOOL isWow64)
 
 bool convert_to_wow64_path(char *szModName)
 {
-	char system_path[] = "C:\\Windows\\system32";
-	char syswow_path[] = "C:\\Windows\\SysWOW64";
-	size_t sysPathLen = strlen(syswow_path);
-	if (!get_subpath_ptr(szModName, system_path)) {
+	init_syspaths();
+	size_t sysPathLen = strlen(g_Syswow64Path);
+	if (!get_subpath_ptr(szModName, g_System32Path)) {
 		return false;
 	}
-	memcpy(szModName, syswow_path, sysPathLen);
+	memcpy(szModName, g_Syswow64Path, sysPathLen);
 	return true;
 }
 
