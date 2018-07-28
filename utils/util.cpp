@@ -90,6 +90,26 @@ std::string to_lowercase(std::string str)
 	return str;
 }
 
+std::string strip_prefix(std::string path, std::string prefix)
+{
+	const size_t prefix_len = prefix.length();
+	if (prefix_len == 0) {
+		return path;
+	}
+	// case insensitive:
+	std::string my_path = to_lowercase(path);
+	prefix = to_lowercase(prefix);
+
+	size_t found_index = my_path.find(prefix);
+	if (found_index != std::string::npos
+		&& found_index == 0) //the found string must be at the beginning
+	{
+		path.erase(found_index, prefix_len);
+	}
+	return path;
+}
+
+
 std::string escape_path_separators(std::string path)
 {
 	size_t pos = std::string::npos;
@@ -107,4 +127,12 @@ std::string escape_path_separators(std::string path)
 	} while (pos < path.length() && prev < path.length());
 
 	return path;
+}
+
+std::string get_system_drive()
+{
+	char buf[MAX_PATH];
+	GetWindowsDirectory(buf, MAX_PATH);
+	buf[2] = '\0'; // cut after the drive letter
+	return std::string(buf);
 }

@@ -10,6 +10,11 @@
 #include <locale>
 #include <codecvt>
 
+#include "util.h"
+
+#define LONG_PATH_PREFIX "\\\\?\\"
+#define GLOBALROOT_NAME "GLOBALROOT"
+
 HANDLE nt_create_file(PCWSTR filePath)
 {
 	HANDLE hFile;
@@ -63,30 +68,13 @@ std::string nt_retrieve_file_path(HANDLE hFile)
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 	std::string my_string = converter.to_bytes(name_info.FileName);
 
-	char buf[MAX_PATH];
-	GetWindowsDirectory(buf, MAX_PATH);
-	buf[2] = '\0'; // cut after the drive letter
-	my_string = std::string(buf) + my_string;
-
+	my_string = get_system_drive() + my_string;
 	return my_string;
-}
-
-std::string strip_prefix(std::string path)
-{
-	const char prefix[] = "\\\\?\\";
-	const size_t prefix_len = strlen(prefix);
-
-	size_t found_index = path.find(prefix);
-	if (found_index != std::string::npos && found_index == 0) {
-		//std::cout << "Stripped prefix" << std::endl;
-		path.erase (found_index, prefix_len);
-	}
-	return path;
 }
 
 std::string convert_to_win32_path(std::string path)
 {
-	std::string stripped_path = strip_prefix(path);
+	std::string stripped_path = strip_prefix(path, LONG_PATH_PREFIX);
 	if (stripped_path.length() < 3) {
 		return "";
 	}
@@ -99,6 +87,7 @@ std::string convert_to_win32_path(std::string path)
 			return stripped_path;
 		}
 	}
+	stripped_path = strip_prefix(stripped_path, GLOBALROOT_NAME);
 	const char *szModName = stripped_path.c_str();
 	std::wstring unicode_name(szModName, szModName + strlen(szModName));
 	HANDLE hFile = nt_create_file(unicode_name.c_str());
@@ -176,6 +165,6 @@ std::string expand_path(std::string basic_path)
 		//if could not retrieve, process what you have:
 		memcpy(filename, basic_path.c_str(), len);
 	}
-	return strip_prefix(filename);
+	return strip_prefix(filename, LONG_PATH_PREFIX);
 }
 
