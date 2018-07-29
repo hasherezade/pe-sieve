@@ -19,12 +19,14 @@ public:
 		outs << ",\n";
 		outs << "\"ep_modified\" : " ;
 		outs << epModified;
-		outs << ",\n";
-		outs << "\"arch_mismatch\" : " ;
-		outs << archMismatch;
-		outs << ",\n";
-		outs << "\"is64b\" : " ;
-		outs << is64;
+		if (archMismatch) {
+			outs << ",\n";
+			outs << "\"arch_mismatch\" : ";
+			outs << archMismatch;
+			outs << ",\n";
+			outs << "\"is64b\" : ";
+			outs << is64;
+		}
 		outs << "\n";
 		outs << "}";
 		return true;
