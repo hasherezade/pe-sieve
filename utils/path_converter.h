@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+//convert from System32 path to the WoW64 equivalent:
+bool convert_to_wow64_path(char *szModName);
+
 //converts path in format: \SystemRoot\... to format: C:\...
 std::string convert_to_win32_path(std::string path);
 

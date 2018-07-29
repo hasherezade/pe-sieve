@@ -1,6 +1,6 @@
 #include "mapping_scanner.h"
 
-#include "../utils/util.h"
+#include "../utils/path_converter.h"
 
 MappingScanReport* MappingScanner::scanRemote()
 {

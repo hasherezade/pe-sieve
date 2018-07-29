@@ -15,6 +15,34 @@
 #define LONG_PATH_PREFIX "\\\\?\\"
 #define GLOBALROOT_NAME "GLOBALROOT"
 
+char g_System32Path[MAX_PATH] = { 0 }; //= "C:\\Windows\\system32";
+char g_Syswow64Path[MAX_PATH] = { 0 }; //= "C:\\Windows\\SysWOW64";
+
+void init_syspaths()
+{
+	if (!g_System32Path[0]) {
+		memset(g_System32Path, 0, MAX_PATH);
+		GetWindowsDirectory(g_System32Path, MAX_PATH);
+		lstrcatA(g_System32Path, "\\system32");
+	}
+	if (!g_Syswow64Path[0]) {
+		memset(g_Syswow64Path, 0, MAX_PATH);
+		GetWindowsDirectory(g_Syswow64Path, MAX_PATH);
+		lstrcatA(g_Syswow64Path, "\\SysWOW64");
+	}
+}
+
+bool convert_to_wow64_path(char *szModName)
+{
+	init_syspaths();
+	if (!get_subpath_ptr(szModName, g_System32Path)) {
+		return false;
+	}
+	size_t sysPathLen = strlen(g_Syswow64Path);
+	memcpy(szModName, g_Syswow64Path, sysPathLen);
+	return true;
+}
+
 HANDLE nt_create_file(PCWSTR filePath)
 {
 	HANDLE hFile;

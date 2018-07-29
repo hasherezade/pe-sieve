@@ -4,23 +4,6 @@
 #include <iomanip>
 #include <algorithm>
 
-char g_System32Path[MAX_PATH] = { 0 }; //= "C:\\Windows\\system32";
-char g_Syswow64Path[MAX_PATH] = { 0 }; //= "C:\\Windows\\SysWOW64";
-
-void init_syspaths()
-{
-	if (!g_System32Path[0]) {
-		memset(g_System32Path, 0, MAX_PATH);
-		GetWindowsDirectory(g_System32Path, MAX_PATH);
-		lstrcatA(g_System32Path, "\\system32");
-	}
-	if (!g_Syswow64Path[0]) {
-		memset(g_Syswow64Path, 0, MAX_PATH);
-		GetWindowsDirectory(g_Syswow64Path, MAX_PATH);
-		lstrcatA(g_Syswow64Path, "\\SysWOW64");
-	}
-}
-
 char* get_file_name(char *full_path)
 {
 	if (!full_path) return nullptr;
@@ -73,17 +56,6 @@ char* get_subpath_ptr(char *modulePath, char* searchedPath)
 	return nullptr;
 }
 
-bool convert_to_wow64_path(char *szModName)
-{
-	init_syspaths();
-	if (!get_subpath_ptr(szModName, g_System32Path)) {
-		return false;
-	}
-	size_t sysPathLen = strlen(g_Syswow64Path);
-	memcpy(szModName, g_Syswow64Path, sysPathLen);
-	return true;
-}
-
 std::string to_lowercase(std::string str)
 {
 	std::transform(str.begin(), str.end(), str.begin(), tolower);
@@ -108,7 +80,6 @@ std::string strip_prefix(std::string path, std::string prefix)
 	}
 	return path;
 }
-
 
 std::string escape_path_separators(std::string path)
 {
