@@ -25,7 +25,7 @@ HANDLE open_process(DWORD processID)
 		if (set_debug_privilege(processID)) {
 			//try again to open
 			hProcess = OpenProcess(
-				PROCESS_QUERY_INFORMATION |PROCESS_VM_READ,
+				PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
 				FALSE, processID
 			);
 			if (hProcess != nullptr) {
