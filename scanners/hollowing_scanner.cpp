@@ -13,6 +13,7 @@ HeadersScanReport* HollowingScanner::scanRemote()
 	BYTE hdr_buffer1[peconv::MAX_HEADER_SIZE] = { 0 };
 	memcpy(hdr_buffer1, remoteModData.headerBuffer, peconv::MAX_HEADER_SIZE);
 	my_report->is64 = peconv::is64bit(hdr_buffer1);
+	my_report->isDotNetModule = moduleData.isDotNet();
 
 	size_t hdrs_size = peconv::get_hdrs_size(hdr_buffer1);
 	if (hdrs_size > peconv::MAX_HEADER_SIZE) {

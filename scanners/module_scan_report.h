@@ -33,6 +33,7 @@ public:
 		this->module = _module;
 		this->moduleSize = _moduleSize;
 		this->status = _status;
+		this->isDotNetModule = false;
 	}
 
 	ModuleScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
@@ -40,6 +41,7 @@ public:
 		this->pid = GetProcessId(processHandle);
 		this->module = _module;
 		this->moduleSize = _moduleSize;
+		this->isDotNetModule = false;
 		this->status = SCAN_NOT_SUSPICIOUS;
 	}
 
@@ -53,6 +55,10 @@ public:
 		outs << "\"" << std::hex << (ULONGLONG) module << "\"" << ",\n";
 		outs << "\"status\" : " ;
 		outs << std::dec << status;
+		if (isDotNetModule) {
+			outs << ",\n";
+			outs << "\"is_dot_net\" : \"" << isDotNetModule << "\"";
+		}
 		return true;
 	}
 
@@ -61,6 +67,8 @@ public:
 	HMODULE module;
 	size_t moduleSize;
 	DWORD pid;
+	bool isDotNetModule;
+
 	t_scan_status status;
 };
 

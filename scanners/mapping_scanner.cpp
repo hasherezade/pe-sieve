@@ -12,6 +12,7 @@ MappingScanReport* MappingScanner::scanRemote()
 	
 	my_report->mappedFile = mapped_name;
 	my_report->moduleFile = module_name;
+	my_report->isDotNetModule = moduleData.isDotNet();
 
 	size_t mod_name_len = module_name.length();
 	if (!is_same && mod_name_len > 0) {
