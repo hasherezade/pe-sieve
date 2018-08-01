@@ -135,6 +135,60 @@ ULONGLONG MemPageScanner::findPeHeader(MemPageData &memPage)
 	return PE_NOT_FOUND;
 }
 
+BYTE* find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size)
+{
+	for (size_t i = 0; (i + pattern_size) < buf_size; i++) {
+		if (memcmp(buffer + i, pattern_buf, pattern_size) == 0) {
+			return (buffer + i);
+		}
+	}
+	return nullptr;
+}
+
+bool MemPageScanner::is_valid_section(MemPageData &memPage, BYTE *hdr_ptr)
+{
+	PIMAGE_SECTION_HEADER hdr_candidate = (PIMAGE_SECTION_HEADER) hdr_ptr;
+	if (!peconv::validate_ptr(memPage.loadedData, memPage.loadedSize, hdr_candidate, sizeof(IMAGE_SECTION_HEADER))) {
+		// probably buffer finished
+		return false;
+	}
+	if (hdr_candidate->PointerToRelocations != 0
+		|| hdr_candidate->NumberOfRelocations != 0
+		|| hdr_candidate->PointerToLinenumbers != 0)
+	{
+		//values that should be NULL are not
+		return false;
+	}
+	if ((hdr_candidate->Characteristics & IMAGE_SCN_MEM_READ)
+		&& (hdr_candidate->Characteristics & IMAGE_SCN_MEM_EXECUTE))
+	{
+		//characteristics looks legit!
+		return (ULONGLONG)hdr_candidate;
+	}
+	return false;
+}
+
+ULONGLONG MemPageScanner::findDestroyedPeHeader(MemPageData &memPage)
+{
+	if (memPage.loadedData == nullptr) {
+		if (!memPage.loadRemote()) return PE_NOT_FOUND;
+		if (memPage.loadedData == nullptr) return PE_NOT_FOUND;
+	}
+	size_t scan_size = memPage.loadedSize;
+	BYTE* buffer_ptr = memPage.loadedData;
+	
+	//find sections table
+	char sec_name[] = ".text";
+	BYTE *hdr_ptr = find_pattern(memPage.loadedData, memPage.loadedSize, (BYTE*)sec_name, strlen(sec_name));
+	if (!hdr_ptr) {
+		return PE_NOT_FOUND;
+	}
+	if (is_valid_section(memPage, hdr_ptr)) {
+		return (ULONGLONG)hdr_ptr - (ULONGLONG) memPage.loadedData;
+	}
+	return PE_NOT_FOUND;
+}
+
 MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 {
 	if (memPage.loadedData == nullptr) {
@@ -171,13 +225,39 @@ MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 	if (pattern_found == false) {
 		return nullptr;
 	}
+
+	bool is_damaged_pe = false;
+	// it may still contain a damaged PE header...
+	ULONGLONG sec_hdr_va = findDestroyedPeHeader(memPage);
+	if (sec_hdr_va != PE_NOT_FOUND) {
+		std::cout << "The detected shellcode is probably a corrupt PE" << std::endl;
+		is_damaged_pe = true;
+		sec_hdr_va += memPage.region_start;
+	}
+
+	ULONGLONG region_start = memPage.region_start;
+	// check a mempage before the current one:
+	if (memPage.region_start > memPage.alloc_base) {
+		MemPageData prevMemPage(this->processHandle, memPage.alloc_base);
+		sec_hdr_va = findDestroyedPeHeader(prevMemPage);
+		if (sec_hdr_va != PE_NOT_FOUND) {
+			std::cout << "The detected shellcode is probably a corrupt PE" << std::endl;
+			is_damaged_pe = true;
+			sec_hdr_va += prevMemPage.region_start;
+			region_start = prevMemPage.region_start;
+		}
+	}
+
 	//TODO: differentiate the raport: shellcode vs PE
-	const size_t region_size = size_t (memPage.region_end - memPage.region_start);
-	MemPageScanReport *my_report = new MemPageScanReport(processHandle, (HMODULE)memPage.region_start, region_size, SCAN_SUSPICIOUS);
+	const size_t region_size = size_t (memPage.region_end - region_start);
+	MemPageScanReport *my_report = new MemPageScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
 	my_report->is_executable = true;
 	my_report->is_manually_loaded = !memPage.is_listed_module;
 	my_report->protection = memPage.protection;
 	my_report->is_shellcode = true;
+	if (is_damaged_pe) {
+		my_report->hdr_candidate = sec_hdr_va;
+	}
 	return my_report;
 }
 
