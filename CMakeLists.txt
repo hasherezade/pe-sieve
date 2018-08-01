@@ -20,8 +20,10 @@ set (scanners_srcs
 	scanners/hollowing_scanner.cpp
 	scanners/hook_scanner.cpp
 	scanners/mempage_scanner.cpp
+	scanners/artefact_scanner.cpp
 	scanners/scanner.cpp
 	scanners/module_data.cpp
+	scanners/mempage_data.cpp
 	scanners/patch_list.cpp
 	scanners/patch_analyzer.cpp
 	scanners/scan_report.cpp
@@ -34,10 +36,12 @@ set (scanners_hdrs
 	scanners/hook_scanner.h
 	scanners/module_scanner.h
 	scanners/mempage_scanner.h
+	scanners/artefact_scanner.h
 	scanners/scanner.h
 	scanners/module_scan_report.h
 	scanners/scan_report.h
 	scanners/module_data.h
+	scanners/mempage_data.h
 	scanners/pe_section.h
 	scanners/patch_list.h
 	scanners/patch_analyzer.h
