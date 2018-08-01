@@ -21,10 +21,10 @@ bool is_valid_section(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD 
 	}
 	if (charact != 0 && (hdr_candidate->Characteristics & charact) == 0) {
 		// required characteristics not found
-		std::cout << "The section " << hdr_candidate->Name << " NOT  valid, charact:" << std::hex << hdr_candidate->Characteristics << std::endl;
+		//std::cout << "The section " << hdr_candidate->Name << " NOT  valid, charact:" << std::hex << hdr_candidate->Characteristics << std::endl;
 		return false;
 	}
-	std::cout << "The section " << hdr_candidate->Name << " is valid!" << std::endl;
+	//std::cout << "The section " << hdr_candidate->Name << " is valid!" << std::endl;
 	return true;
 }
 
@@ -95,7 +95,7 @@ IMAGE_SECTION_HEADER* ArtefactScanner::findSectionsHdr(MemPageData &memPage)
 	return (IMAGE_SECTION_HEADER*)first_sec;
 }
 
-MemPageScanReport* ArtefactScanner::scanRemote()
+ArtefactScanReport* ArtefactScanner::scanRemote()
 {
 	bool is_damaged_pe = false;
 	// it may still contain a damaged PE header...
@@ -128,19 +128,17 @@ MemPageScanReport* ArtefactScanner::scanRemote()
 	if (!is_damaged_pe) {
 		return nullptr;
 	}
-	//TODO: differentiate the raport: shellcode vs PE
 	const size_t region_size = size_t(memPage.region_end - region_start);
-	MemPageScanReport *my_report = new MemPageScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
-	my_report->is_executable = true;
+	ArtefactScanReport *my_report = new ArtefactScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
+
 	my_report->is_manually_loaded = !memPage.is_listed_module;
 	my_report->protection = memPage.protection;
-	my_report->is_shellcode = true;
-	if (is_damaged_pe) {
-		if (calculated_img_size > region_size) {
-			my_report->moduleSize = calculated_img_size;
-		}
-		my_report->sections_count = sec_count;
-		my_report->hdr_candidate = sec_hdr_va;
+
+	if (calculated_img_size > region_size) {
+		my_report->moduleSize = calculated_img_size;
 	}
+	my_report->sections_count = sec_count;
+	my_report->sections_hdrs = sec_hdr_va;
+
 	return my_report;
 }
