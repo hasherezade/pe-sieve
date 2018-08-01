@@ -145,10 +145,10 @@ BYTE* find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_buf, size_t patt
 	return nullptr;
 }
 
-bool MemPageScanner::is_valid_section(MemPageData &memPage, BYTE *hdr_ptr)
+bool is_valid_section(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD charact)
 {
 	PIMAGE_SECTION_HEADER hdr_candidate = (PIMAGE_SECTION_HEADER) hdr_ptr;
-	if (!peconv::validate_ptr(memPage.loadedData, memPage.loadedSize, hdr_candidate, sizeof(IMAGE_SECTION_HEADER))) {
+	if (!peconv::validate_ptr(loadedData, loadedSize, hdr_candidate, sizeof(IMAGE_SECTION_HEADER))) {
 		// probably buffer finished
 		return false;
 	}
@@ -159,20 +159,66 @@ bool MemPageScanner::is_valid_section(MemPageData &memPage, BYTE *hdr_ptr)
 		//values that should be NULL are not
 		return false;
 	}
-	if ((hdr_candidate->Characteristics & IMAGE_SCN_MEM_READ)
-		&& (hdr_candidate->Characteristics & IMAGE_SCN_MEM_EXECUTE))
-	{
-		//characteristics looks legit!
-		return (ULONGLONG)hdr_candidate;
+	if (charact != 0 && (hdr_candidate->Characteristics & charact) == 0) {
+		// required characteristics not found
+		std::cout << "The section " << hdr_candidate->Name << " NOT  valid, charact:" << std::hex << hdr_candidate->Characteristics << std::endl;
+		return false;
 	}
-	return false;
+	std::cout << "The section " << hdr_candidate->Name << " is valid!" << std::endl;
+	return true;
 }
 
-ULONGLONG MemPageScanner::findDestroyedPeHeader(MemPageData &memPage)
+size_t count_section_hdrs(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEADER *hdr_ptr)
+{
+	size_t counter = 0;
+	IMAGE_SECTION_HEADER* curr_sec = hdr_ptr;
+	do {
+		if (!is_valid_section(loadedData, loadedSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
+			break;
+		}
+		curr_sec++;
+		counter++;
+	} while (true);
+
+	return counter;
+}
+
+//calculate image size basing on the sizes of sections
+DWORD calc_image_size(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEADER *hdr_ptr)
+{
+	DWORD max_addr = 0;
+	IMAGE_SECTION_HEADER* curr_sec = hdr_ptr;
+	do {
+		if (!is_valid_section(loadedData, loadedSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
+			break;
+		}
+		DWORD sec_max = curr_sec->VirtualAddress + curr_sec->Misc.VirtualSize;
+		max_addr = (sec_max > max_addr) ? sec_max : max_addr;
+		curr_sec++;
+	} while (true);
+
+	return max_addr;
+}
+
+IMAGE_SECTION_HEADER* get_first_section(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEADER *hdr_ptr)
+{
+	IMAGE_SECTION_HEADER* prev_sec = hdr_ptr;
+	do {
+		if (!is_valid_section(loadedData, loadedSize, (BYTE*) prev_sec, IMAGE_SCN_MEM_READ)) {
+			break;
+		}
+		hdr_ptr = prev_sec;
+		prev_sec--;
+	} while (true);
+
+	return hdr_ptr;
+}
+
+IMAGE_SECTION_HEADER* MemPageScanner::findSectionsHdr(MemPageData &memPage)
 {
 	if (memPage.loadedData == nullptr) {
-		if (!memPage.loadRemote()) return PE_NOT_FOUND;
-		if (memPage.loadedData == nullptr) return PE_NOT_FOUND;
+		if (!memPage.loadRemote()) return nullptr;
+		if (memPage.loadedData == nullptr) return nullptr;
 	}
 	size_t scan_size = memPage.loadedSize;
 	BYTE* buffer_ptr = memPage.loadedData;
@@ -181,12 +227,15 @@ ULONGLONG MemPageScanner::findDestroyedPeHeader(MemPageData &memPage)
 	char sec_name[] = ".text";
 	BYTE *hdr_ptr = find_pattern(memPage.loadedData, memPage.loadedSize, (BYTE*)sec_name, strlen(sec_name));
 	if (!hdr_ptr) {
-		return PE_NOT_FOUND;
+		return nullptr;
 	}
-	if (is_valid_section(memPage, hdr_ptr)) {
-		return (ULONGLONG)hdr_ptr - (ULONGLONG) memPage.loadedData;
+	DWORD charact = IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_EXECUTE;
+	if (!is_valid_section(memPage.loadedData, memPage.loadedSize, hdr_ptr, charact)) {
+		return nullptr;
 	}
-	return PE_NOT_FOUND;
+	// is it really the first section?
+	IMAGE_SECTION_HEADER *first_sec = get_first_section(memPage.loadedData, memPage.loadedSize, (IMAGE_SECTION_HEADER*) hdr_ptr);
+	return (IMAGE_SECTION_HEADER*)first_sec;
 }
 
 MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
@@ -228,23 +277,30 @@ MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 
 	bool is_damaged_pe = false;
 	// it may still contain a damaged PE header...
-	ULONGLONG sec_hdr_va = findDestroyedPeHeader(memPage);
-	if (sec_hdr_va != PE_NOT_FOUND) {
+	ULONGLONG sec_hdr_va = 0;
+	size_t sec_count = 0;
+	DWORD calculated_img_size = 0;
+	IMAGE_SECTION_HEADER* sec_hdr = findSectionsHdr(memPage);
+	if (sec_hdr) {
 		std::cout << "The detected shellcode is probably a corrupt PE" << std::endl;
 		is_damaged_pe = true;
-		sec_hdr_va += memPage.region_start;
+		sec_count = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
+		calculated_img_size = calc_image_size(memPage.loadedData, memPage.loadedSize, sec_hdr);
+		sec_hdr_va = ((ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData) + memPage.region_start;
 	}
 
 	ULONGLONG region_start = memPage.region_start;
 	// check a mempage before the current one:
 	if (memPage.region_start > memPage.alloc_base) {
 		MemPageData prevMemPage(this->processHandle, memPage.alloc_base);
-		sec_hdr_va = findDestroyedPeHeader(prevMemPage);
-		if (sec_hdr_va != PE_NOT_FOUND) {
+		sec_hdr = findSectionsHdr(prevMemPage);
+		if (sec_hdr) {
 			std::cout << "The detected shellcode is probably a corrupt PE" << std::endl;
 			is_damaged_pe = true;
-			sec_hdr_va += prevMemPage.region_start;
 			region_start = prevMemPage.region_start;
+			sec_count = count_section_hdrs(prevMemPage.loadedData, prevMemPage.loadedSize, sec_hdr);
+			calculated_img_size = calc_image_size(prevMemPage.loadedData, prevMemPage.loadedSize, sec_hdr);
+			sec_hdr_va = ((ULONGLONG)sec_hdr - (ULONGLONG)prevMemPage.loadedData) + prevMemPage.region_start;
 		}
 	}
 
@@ -256,6 +312,10 @@ MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 	my_report->protection = memPage.protection;
 	my_report->is_shellcode = true;
 	if (is_damaged_pe) {
+		if (calculated_img_size > region_size) {
+			my_report->moduleSize = calculated_img_size;
+		}
+		my_report->sections_count = sec_count;
 		my_report->hdr_candidate = sec_hdr_va;
 	}
 	return my_report;

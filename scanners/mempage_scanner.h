@@ -33,6 +33,9 @@ public:
 			outs << "\"possible_hdrs\" : ";
 			outs << std::hex << hdr_candidate;
 			outs << ",\n";
+			outs << "\"sections_count\" : ";
+			outs << std::hex << sections_count;
+			outs << ",\n";
 		}
 		outs << "\"is_executable\" : "; 
 		outs << std::dec << is_executable;
@@ -50,6 +53,7 @@ public:
 	bool is_manually_loaded;
 	bool is_shellcode;
 	ULONGLONG hdr_candidate;
+	size_t sections_count;
 	DWORD protection;
 };
 
@@ -119,10 +123,8 @@ public:
 
 protected:
 	ULONGLONG findPeHeader(MemPageData &memPageData);
-	ULONGLONG findDestroyedPeHeader(MemPageData &memPageData);
+	IMAGE_SECTION_HEADER* findSectionsHdr(MemPageData &memPageData);
 	MemPageScanReport* scanShellcode(MemPageData &memPageData);
-
-	bool is_valid_section(MemPageData &memPage, BYTE *hdr_ptr);
 
 	bool isDeepScan;
 	bool detectShellcode; // is shellcode detection enabled
