@@ -31,8 +31,7 @@ public:
 		outs << ",\n";
 		if (is_shellcode && hdr_candidate) {
 			outs << "\"possible_hdrs\" : ";
-			outs << std::hex << hdr_candidate;
-			outs << ",\n";
+			outs << "\"" << std::hex << hdr_candidate << "\"" << ",\n";
 			outs << "\"sections_count\" : ";
 			outs << std::hex << sections_count;
 			outs << ",\n";
