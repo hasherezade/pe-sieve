@@ -276,10 +276,13 @@ bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
 	ULONGLONG sec_offset = (this->report->sections_hdrs - (ULONGLONG)this->report->module);
 	BYTE *hdr_ptr = (sec_offset + vBuf);
 
-	IMAGE_SECTION_HEADER* curr_sec = (IMAGE_SECTION_HEADER*) hdr_ptr;
 	DWORD sec_rva = 0;
 	size_t max_sec_size = 0;
-	do {
+
+	IMAGE_SECTION_HEADER* prev_sec = nullptr;
+	IMAGE_SECTION_HEADER* curr_sec = (IMAGE_SECTION_HEADER*)(hdr_ptr);
+
+	for (size_t i = 0; i < report->sections_count; i++, curr_sec++) {
 		if (!is_valid_section(vBuf, vBufSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
 			break;
 		}
@@ -290,13 +293,26 @@ bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
 		size_t real_sec_size = fetch_region_size(processHandle, (PBYTE)sec_va);
 		if (sec_size > real_sec_size) {
 			curr_sec->Misc.VirtualSize = real_sec_size;
-			std::cout << "Fixed section size: " << std::hex
+			std::cout << i << "# Fixed section size: " << std::hex
 				<< sec_size << " vs real: " << real_sec_size << std::endl;
 		}
-		max_sec_size = (real_sec_size > max_sec_size) ? real_sec_size : max_sec_size;
-		curr_sec++;
 
-	} while (true);
+		max_sec_size = (real_sec_size > max_sec_size) ? real_sec_size : max_sec_size;
+
+		if (prev_sec && curr_sec->Misc.VirtualSize > 0) {
+			ULONGLONG prev_sec_end = prev_sec->VirtualAddress + prev_sec->Misc.VirtualSize;
+			if (prev_sec_end > curr_sec->VirtualAddress) {
+				if (curr_sec->VirtualAddress > prev_sec->VirtualAddress) {
+					DWORD diff = curr_sec->VirtualAddress - prev_sec->VirtualAddress;
+					prev_sec->Misc.VirtualSize = diff;
+					std::cout << "Trimmed section" << std::endl;
+				}
+			}
+		}
+		if (curr_sec->Misc.VirtualSize > 0) {
+			prev_sec = curr_sec;
+		}
+	}
 
 	if (max_sec_size == 0) {
 		return false;
