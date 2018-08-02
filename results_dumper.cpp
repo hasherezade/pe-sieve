@@ -6,7 +6,7 @@
 
 #include "utils\util.h"
 #include "utils\workingset_enum.h"
-
+#include "scanners\artefact_scanner.h"
 //---
 
 bool ResultsDumper::make_dump_dir(const std::string directory)
@@ -97,9 +97,17 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 		))
 		{
 			std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".shc");
-			
+
 			if (!dumpAsShellcode(dumpFileName, processHandle, (PBYTE)mod->module, mod->moduleSize)) {
 				std::cerr << "Failed dumping module!" << std::endl;
+			}
+			ArtefactScanReport* artefactRepot = dynamic_cast<ArtefactScanReport*>(mod);
+			if (artefactRepot) {
+				PeReconstructor peRec(artefactRepot);
+				if (peRec.reconstruct(processHandle)) {
+					std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".rec");
+					peRec.dumpToFile(dumpFileName);
+				}
 			}
 			continue;
 		}

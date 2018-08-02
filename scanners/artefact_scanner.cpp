@@ -223,3 +223,111 @@ ArtefactScanReport* ArtefactScanner::scanRemote()
 	delete peArt;
 	return my_report;
 }
+
+//---
+
+bool PeReconstructor::reconstruct(HANDLE processHandle)
+{
+	if (!this->report) {
+		return false;
+	}
+	freeBuffer();
+
+	this->vBuf = peconv::alloc_aligned(report->moduleSize, PAGE_READWRITE);
+	if (!vBuf) {
+		return false;
+	}
+	this->vBufSize = report->moduleSize;
+
+	bool is_ok = false;
+	size_t read_size = peconv::read_remote_memory(processHandle, (BYTE*)report->module, vBuf, report->moduleSize);
+	if (read_size == 0) {
+		freeBuffer();
+		return false;
+	}
+
+	if (!reconstructSectionsHdr(processHandle)) {
+		return false;
+	}
+
+	bool is_pe_hdr = false;
+	if (this->report->nt_file_hdr) {
+		is_pe_hdr = reconstructPeHdr();
+	}
+	if (is_pe_hdr) {
+		return true;
+	}
+	return false;
+}
+
+bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
+{
+	if (!this->report || !this->vBuf) {
+		return false;
+	}
+
+	if (this->report->sections_hdrs < (ULONGLONG)this->report->module) {
+		return false;
+	}
+
+	ULONGLONG sec_offset = (this->report->sections_hdrs - (ULONGLONG)this->report->module);
+	BYTE *hdr_ptr = (sec_offset + vBuf);
+
+	IMAGE_SECTION_HEADER* curr_sec = (IMAGE_SECTION_HEADER*) hdr_ptr;
+	DWORD sec_rva = 0;
+	size_t max_sec_size = 0;
+	do {
+		if (!is_valid_section(vBuf, vBufSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
+			break;
+		}
+		sec_rva = curr_sec->VirtualAddress;
+		DWORD sec_size = curr_sec->Misc.VirtualSize;
+
+		ULONGLONG sec_va = (ULONGLONG)report->module + sec_rva;
+		size_t real_sec_size = fetch_region_size(processHandle, (PBYTE)sec_va);
+		if (sec_size > real_sec_size) {
+			curr_sec->Misc.VirtualSize = real_sec_size;
+			std::cout << "Fixed section size: " << std::hex
+				<< sec_size << " vs real: " << real_sec_size << std::endl;
+		}
+		max_sec_size = (real_sec_size > max_sec_size) ? real_sec_size : max_sec_size;
+		curr_sec++;
+
+	} while (true);
+
+	if (max_sec_size == 0) {
+		return false;
+	}
+	return true;
+}
+
+bool PeReconstructor::reconstructPeHdr()
+{
+	if (!this->report || !this->vBuf) {
+		return false;
+	}
+
+	if (this->report->nt_file_hdr < (ULONGLONG)this->report->module) {
+		return false;
+	}
+	ULONGLONG nt_offset = this->report->nt_file_hdr - (ULONGLONG)this->report->module;
+	BYTE* nt_ptr = (BYTE*)((ULONGLONG)this->vBuf + nt_offset);
+	BYTE *pe_ptr = nt_ptr - sizeof(DWORD);
+
+	if (!peconv::validate_ptr(vBuf, vBufSize, pe_ptr, sizeof(DWORD))) {
+		return false;
+	}
+	IMAGE_NT_HEADERS32 *nt32 = (IMAGE_NT_HEADERS32*)pe_ptr;
+	//write signature:
+	nt32->Signature = IMAGE_NT_SIGNATURE;
+
+	LONG pe_offset = (ULONGLONG)pe_ptr - (ULONGLONG)this->vBuf;
+	IMAGE_DOS_HEADER* dosHdr = (IMAGE_DOS_HEADER*) vBuf;
+	dosHdr->e_magic = IMAGE_DOS_SIGNATURE;
+	dosHdr->e_lfanew = pe_offset;
+
+	if (peconv::get_nt_hrds(vBuf)) {
+		return true;
+	}
+	return false;
+}

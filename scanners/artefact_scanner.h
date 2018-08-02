@@ -72,7 +72,6 @@ public:
 	size_t sections_count;
 };
 
-
 class ArtefactScanner {
 public:
 	ArtefactScanner(HANDLE _procHndl, MemPageData &_memPageData)
@@ -101,4 +100,40 @@ protected:
 	HANDLE processHandle;
 	MemPageData &memPage;
 	MemPageData *prevMemPage;
+};
+
+class PeReconstructor {
+public:
+	PeReconstructor(ArtefactScanReport* _report)
+		: report(_report),
+		vBuf(nullptr), vBufSize(0)
+	{
+	}
+
+	~PeReconstructor() {
+		freeBuffer();
+	}
+
+	bool reconstruct(HANDLE processHandle);
+
+	bool dumpToFile(std::string dumpFileName)
+	{
+		if (vBuf == nullptr) return false;
+		//TODO: unmap PE
+		return peconv::dump_to_file(dumpFileName.c_str(), vBuf, vBufSize);
+	}
+
+protected:
+	void freeBuffer() {
+		peconv::free_aligned(vBuf);
+		vBuf = nullptr;
+		vBufSize = 0;
+	}
+
+	bool reconstructPeHdr();
+	bool reconstructSectionsHdr(HANDLE processHandle);
+
+	ArtefactScanReport* report;
+	BYTE *vBuf;
+	size_t vBufSize;
 };
