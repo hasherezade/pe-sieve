@@ -4,6 +4,9 @@
 */
 #include "../utils/workingset_enum.h"
 
+#include "peconv.h"
+#include "peconv/fix_imports.h"
+
 #define PE_NOT_FOUND 0
 
 bool is_valid_section(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD charact)
@@ -207,7 +210,7 @@ ArtefactScanReport* ArtefactScanner::scanRemote()
 		return nullptr;
 	}
 
-	BYTE* nt_file_hdr = findNtFileHdr(artPagePtr->loadedData, peArt->sec_hdr_offset);
+	BYTE* nt_file_hdr = findNtFileHdr(artPagePtr->loadedData, size_t(peArt->sec_hdr_offset));
 	if (nt_file_hdr) {
 		peArt->file_hdr_offset = (ULONGLONG)nt_file_hdr - (ULONGLONG)artPagePtr->loadedData;
 	}
@@ -331,3 +334,42 @@ bool PeReconstructor::reconstructPeHdr()
 	}
 	return false;
 }
+
+bool PeReconstructor::dumpToFile(std::string dumpFileName, IN OPTIONAL peconv::ExportsMapper* exportsMap)
+{
+	if (vBuf == nullptr) return false;
+
+	// if the exportsMap is supplied, attempt to recover the (destroyed) import table:
+	if (exportsMap != nullptr) {
+		if (!peconv::fix_imports(vBuf, vBufSize, *exportsMap)) {
+			std::cerr << "Unable to fix imports!" << std::endl;
+		}
+	}
+
+	BYTE* dump_data = vBuf;
+	size_t dump_size = vBufSize;
+	size_t out_size = 0;
+	BYTE* unmapped_module = nullptr;
+
+	ULONGLONG start_addr = (ULONGLONG) report->module;
+	if (unmap) {
+		//if the image base in headers is invalid, set the current base and prevent from relocating PE:
+		if (peconv::get_image_base(vBuf) == 0) {
+			peconv::update_image_base(vBuf, (ULONGLONG)start_addr);
+		}
+		// unmap the PE file (convert from the Virtual Format into Raw Format)
+		unmapped_module = peconv::pe_virtual_to_raw(vBuf, vBufSize, (ULONGLONG)start_addr, out_size, false);
+		if (unmapped_module != NULL) {
+			dump_data = unmapped_module;
+			dump_size = out_size;
+		}
+	}
+	// save the read module into a file
+	bool is_dumped = peconv::dump_to_file(dumpFileName.c_str(), dump_data, dump_size);
+
+	if (unmapped_module) {
+		peconv::free_pe_buffer(unmapped_module, vBufSize);
+	}
+	return is_dumped;
+}
+

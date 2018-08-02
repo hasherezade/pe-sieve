@@ -106,7 +106,7 @@ class PeReconstructor {
 public:
 	PeReconstructor(ArtefactScanReport* _report)
 		: report(_report),
-		vBuf(nullptr), vBufSize(0)
+		vBuf(nullptr), vBufSize(0), unmap(true)
 	{
 	}
 
@@ -116,12 +116,7 @@ public:
 
 	bool reconstruct(HANDLE processHandle);
 
-	bool dumpToFile(std::string dumpFileName)
-	{
-		if (vBuf == nullptr) return false;
-		//TODO: unmap PE
-		return peconv::dump_to_file(dumpFileName.c_str(), vBuf, vBufSize);
-	}
+	bool dumpToFile(std::string dumpFileName, IN OPTIONAL peconv::ExportsMapper* exportsMap = nullptr);
 
 protected:
 	void freeBuffer() {
@@ -136,4 +131,6 @@ protected:
 	ArtefactScanReport* report;
 	BYTE *vBuf;
 	size_t vBufSize;
+
+	bool unmap;
 };

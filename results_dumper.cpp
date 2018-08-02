@@ -105,8 +105,8 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 			if (artefactRepot) {
 				PeReconstructor peRec(artefactRepot);
 				if (peRec.reconstruct(processHandle)) {
-					std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".rec");
-					peRec.dumpToFile(dumpFileName);
+					std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".rec.dll");
+					peRec.dumpToFile(dumpFileName, process_report.exportsMap);
 				}
 			}
 			continue;
