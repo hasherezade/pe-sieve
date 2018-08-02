@@ -187,12 +187,30 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 	return peArt;
 }
 
+PeArtefacts* ArtefactScanner::findInPrevPages(ULONGLONG addr_start, ULONGLONG addr_stop)
+{
+	deletePrevPage();
+	PeArtefacts* peArt = nullptr;
+	ULONGLONG next_addr = addr_start;
+	do {
+		if (next_addr >= addr_stop) {
+			break;
+		}
+		this->prevMemPage = new MemPageData(this->processHandle, next_addr);
+		peArt = findArtefacts(*prevMemPage);
+		if (peArt) {
+			break;
+		}
+		next_addr = prevMemPage->region_end;
+		deletePrevPage();
+	} while (true);
+
+	return peArt;
+}
+
 ArtefactScanReport* ArtefactScanner::scanRemote()
 {
-	if (this->prevMemPage) {
-		delete this->prevMemPage;
-		this->prevMemPage = nullptr;
-	}
+	deletePrevPage();
 
 	bool is_damaged_pe = false;
 	// it may still contain a damaged PE header...
@@ -201,10 +219,11 @@ ArtefactScanReport* ArtefactScanner::scanRemote()
 
 	PeArtefacts *peArt = findArtefacts(memPage);
 	if (!peArt  && (region_start > memPage.alloc_base)) {
-		this->prevMemPage = new MemPageData (this->processHandle, memPage.alloc_base);
-		artPagePtr = prevMemPage;
-		region_start = prevMemPage->region_start;
-		peArt = findArtefacts(*prevMemPage);
+		peArt = findInPrevPages(memPage.alloc_base, memPage.region_start);
+		if (prevMemPage) {
+			artPagePtr = prevMemPage;
+			region_start = prevMemPage->region_start;
+		}
 	}
 	if (!peArt) {
 		//no artefacts found

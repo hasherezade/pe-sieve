@@ -84,14 +84,22 @@ public:
 
 	virtual ~ArtefactScanner()
 	{
-		if (prevMemPage) {
-			delete prevMemPage;
-		}
+		deletePrevPage();
 	}
 
 	virtual ArtefactScanReport* scanRemote();
+
 protected:
+	void deletePrevPage()
+	{
+		if (this->prevMemPage) {
+			delete this->prevMemPage;
+		}
+		this->prevMemPage = nullptr;
+	}
+
 	PeArtefacts* findArtefacts(MemPageData &memPage);
+	PeArtefacts* findInPrevPages(ULONGLONG addr_start, ULONGLONG addr_stop);
 
 	DWORD calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr);
 
