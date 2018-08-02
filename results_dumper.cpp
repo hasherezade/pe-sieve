@@ -6,7 +6,7 @@
 
 #include "utils\util.h"
 #include "utils\workingset_enum.h"
-
+#include "pe_reconstructor.h"
 //---
 
 bool ResultsDumper::make_dump_dir(const std::string directory)
@@ -39,27 +39,19 @@ std::string ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, std::string
 	return stream.str();
 }
 
-bool dumpAsShellcode(std::string dumpFileName, HANDLE processHandle, PBYTE moduleBase)
+bool dumpAsShellcode(std::string dumpFileName, HANDLE processHandle, PBYTE moduleBase, size_t moduleSize)
 {
-	MEMORY_BASIC_INFORMATION page_info = { 0 };
-	SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID)moduleBase, &page_info, sizeof(page_info));
-	if (out != sizeof(page_info)) {
-		if (GetLastError() == ERROR_INVALID_PARAMETER) {
-			return false;
-		}
-		return false;
+	if (!moduleSize) {
+		moduleSize = fetch_region_size(processHandle, moduleBase);
 	}
 
-	size_t offset = moduleBase - (PBYTE)page_info.BaseAddress;
-	size_t dump_size = page_info.RegionSize - offset;
-
-	BYTE *buf = peconv::alloc_unaligned(dump_size);
+	BYTE *buf = peconv::alloc_unaligned(moduleSize);
 	if (!buf) return false;
 
 	bool is_ok = false;
 
-	if (peconv::read_remote_memory(processHandle, moduleBase, buf, dump_size)) {
-		is_ok = peconv::dump_to_file(dumpFileName.c_str(), buf, dump_size);
+	if (peconv::read_remote_memory(processHandle, moduleBase, buf, moduleSize)) {
+		is_ok = peconv::dump_to_file(dumpFileName.c_str(), buf, moduleSize);
 	}
 	
 	peconv::free_unaligned(buf);
@@ -105,8 +97,17 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 		))
 		{
 			std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".shc");
-			if (!dumpAsShellcode(dumpFileName, processHandle, (PBYTE)mod->module)) {
+
+			if (!dumpAsShellcode(dumpFileName, processHandle, (PBYTE)mod->module, mod->moduleSize)) {
 				std::cerr << "Failed dumping module!" << std::endl;
+			}
+			ArtefactScanReport* artefactRepot = dynamic_cast<ArtefactScanReport*>(mod);
+			if (artefactRepot) {
+				PeReconstructor peRec(artefactRepot);
+				if (peRec.reconstruct(processHandle)) {
+					std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".rec.dll");
+					peRec.dumpToFile(dumpFileName, process_report.exportsMap);
+				}
 			}
 			continue;
 		}
