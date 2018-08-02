@@ -94,7 +94,7 @@ IMAGE_SECTION_HEADER* get_first_section(BYTE *loadedData, size_t loadedSize, IMA
 	return hdr_ptr;
 }
 
-IMAGE_SECTION_HEADER* ArtefactScanner::findSectionsHdr(MemPageData &memPage)
+BYTE* ArtefactScanner::findSecByPatterns(MemPageData &memPage)
 {
 	if (memPage.loadedData == nullptr) {
 		if (!memPage.loadRemote()) return nullptr;
@@ -103,6 +103,15 @@ IMAGE_SECTION_HEADER* ArtefactScanner::findSectionsHdr(MemPageData &memPage)
 	//find sections table
 	char sec_name[] = ".text";
 	BYTE *hdr_ptr = find_pattern(memPage.loadedData, memPage.loadedSize, (BYTE*)sec_name, strlen(sec_name));
+	if (hdr_ptr) {
+		return hdr_ptr;
+	}
+	return nullptr;
+}
+
+IMAGE_SECTION_HEADER* ArtefactScanner::findSectionsHdr(MemPageData &memPage)
+{
+	BYTE *hdr_ptr = findSecByPatterns(memPage);
 	if (!hdr_ptr) {
 		return nullptr;
 	}
