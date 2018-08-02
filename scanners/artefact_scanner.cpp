@@ -106,7 +106,24 @@ BYTE* ArtefactScanner::findSecByPatterns(MemPageData &memPage)
 	if (hdr_ptr) {
 		return hdr_ptr;
 	}
-	return nullptr;
+	// try another pattern
+	BYTE sec_ending[] = {
+		0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00,
+		0x20, 0x00, 0x00, 0x60
+	};
+	const size_t sec_ending_size = sizeof(sec_ending);
+	hdr_ptr = find_pattern(memPage.loadedData, memPage.loadedSize, sec_ending, sec_ending_size);
+	if (!hdr_ptr) {
+		return nullptr;
+	}
+	size_t offset_to_bgn = sizeof(IMAGE_SECTION_HEADER) - sec_ending_size;
+	hdr_ptr -= offset_to_bgn;
+	if (!peconv::validate_ptr(memPage.loadedData, memPage.loadedSize, hdr_ptr, sizeof(IMAGE_SECTION_HEADER))) {
+		return nullptr;
+	}
+	return hdr_ptr;
 }
 
 IMAGE_SECTION_HEADER* ArtefactScanner::findSectionsHdr(MemPageData &memPage)
