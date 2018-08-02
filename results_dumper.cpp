@@ -6,7 +6,7 @@
 
 #include "utils\util.h"
 #include "utils\workingset_enum.h"
-#include "scanners\artefact_scanner.h"
+#include "pe_reconstructor.h"
 //---
 
 bool ResultsDumper::make_dump_dir(const std::string directory)

@@ -68,6 +68,7 @@ set (srcs
 	pe_sieve.cpp
 	report_formatter.cpp
 	results_dumper.cpp
+	pe_reconstructor.cpp
 	${scanners_srcs}
 	${utils_srcs}
 )
@@ -76,6 +77,7 @@ set (hdrs
 	pe_sieve.h
 	report_formatter.h
 	results_dumper.h
+	pe_reconstructor.h
 	include/pe_sieve_types.h
 	${scanners_hdrs}
 	${utils_hdrs}

@@ -8,6 +8,8 @@
 #include "module_scan_report.h"
 #include "mempage_scanner.h"
 
+bool is_valid_section(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD charact);
+
 class PeArtefacts {
 public:
 	PeArtefacts() {
@@ -100,37 +102,4 @@ protected:
 	HANDLE processHandle;
 	MemPageData &memPage;
 	MemPageData *prevMemPage;
-};
-
-class PeReconstructor {
-public:
-	PeReconstructor(ArtefactScanReport* _report)
-		: report(_report),
-		vBuf(nullptr), vBufSize(0), unmap(true)
-	{
-	}
-
-	~PeReconstructor() {
-		freeBuffer();
-	}
-
-	bool reconstruct(HANDLE processHandle);
-
-	bool dumpToFile(std::string dumpFileName, IN OPTIONAL peconv::ExportsMapper* exportsMap = nullptr);
-
-protected:
-	void freeBuffer() {
-		peconv::free_aligned(vBuf);
-		vBuf = nullptr;
-		vBufSize = 0;
-	}
-
-	bool reconstructPeHdr();
-	bool reconstructSectionsHdr(HANDLE processHandle);
-
-	ArtefactScanReport* report;
-	BYTE *vBuf;
-	size_t vBufSize;
-
-	bool unmap;
 };
