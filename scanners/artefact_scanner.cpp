@@ -95,50 +95,115 @@ IMAGE_SECTION_HEADER* ArtefactScanner::findSectionsHdr(MemPageData &memPage)
 	return (IMAGE_SECTION_HEADER*)first_sec;
 }
 
-ArtefactScanReport* ArtefactScanner::scanRemote()
+bool is_valid_file_hdr(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD charact)
 {
-	bool is_damaged_pe = false;
-	// it may still contain a damaged PE header...
-	ULONGLONG sec_hdr_va = 0;
-	size_t sec_count = 0;
-	DWORD calculated_img_size = 0;
-	IMAGE_SECTION_HEADER* sec_hdr = findSectionsHdr(memPage);
-	if (sec_hdr) {
-
-		is_damaged_pe = true;
-		sec_count = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
-		calculated_img_size = calc_image_size(memPage.loadedData, memPage.loadedSize, sec_hdr);
-		sec_hdr_va = ((ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData) + memPage.region_start;
+	IMAGE_FILE_HEADER* hdr_candidate = (IMAGE_FILE_HEADER*)hdr_ptr;
+	if (!peconv::validate_ptr(loadedData, loadedSize, hdr_candidate, sizeof(IMAGE_FILE_HEADER))) {
+		// probably buffer finished
+		return false;
 	}
-
-	ULONGLONG region_start = memPage.region_start;
-	// check a mempage before the current one:
-	if (memPage.region_start > memPage.alloc_base) {
-		MemPageData prevMemPage(this->processHandle, memPage.alloc_base);
-		sec_hdr = findSectionsHdr(prevMemPage);
-		if (sec_hdr) {
-			std::cout << "The detected shellcode is probably a corrupt PE" << std::endl;
-			is_damaged_pe = true;
-			region_start = prevMemPage.region_start;
-			sec_count = count_section_hdrs(prevMemPage.loadedData, prevMemPage.loadedSize, sec_hdr);
-			calculated_img_size = calc_image_size(prevMemPage.loadedData, prevMemPage.loadedSize, sec_hdr);
-			sec_hdr_va = ((ULONGLONG)sec_hdr - (ULONGLONG)prevMemPage.loadedData) + prevMemPage.region_start;
-		}
+	if (hdr_candidate->NumberOfSections > 100) {
+		return false;
 	}
-	if (!is_damaged_pe) {
+	if (hdr_candidate->NumberOfSymbols != 0 || hdr_candidate->PointerToSymbolTable != 0) {
+		return false;
+	}
+	if (charact != 0 && (hdr_candidate->Characteristics & charact) == 0) {
+		return false;
+	}
+	return true;
+}
+
+BYTE* ArtefactScanner::findNtFileHdr(BYTE* loadedData, size_t loadedSize)
+{
+	if (loadedData == nullptr) {
 		return nullptr;
 	}
-	const size_t region_size = size_t(memPage.region_end - region_start);
-	ArtefactScanReport *my_report = new ArtefactScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
+	typedef enum {
+		ARCH_32B = 0, 
+		ARCH_64B = 1, 
+		ARCHS_COUNT
+	} t_archs;
 
+	WORD archs[ARCHS_COUNT] = { 0 };
+	archs[ARCH_32B] = 0x014c;
+	archs[ARCH_64B] = 0x8664;
+
+	BYTE *arch_ptr = nullptr;
+	size_t my_arch = 0;
+	for (my_arch = ARCH_32B; my_arch < ARCHS_COUNT; my_arch++) {
+		arch_ptr = find_pattern(loadedData, loadedSize, (BYTE*)&archs[my_arch], sizeof(WORD));
+		if (arch_ptr) {
+			break;
+		}
+	}
+	if (!arch_ptr) {
+		return nullptr;
+	}
+	DWORD charact = IMAGE_FILE_EXECUTABLE_IMAGE;
+	if (my_arch == ARCH_32B) {
+		charact |= IMAGE_FILE_32BIT_MACHINE;
+	}
+	else {
+		charact |= IMAGE_FILE_LARGE_ADDRESS_AWARE;
+	}
+	if (!is_valid_file_hdr(loadedData, loadedSize, arch_ptr, charact)) {
+		return nullptr;
+	}
+	return arch_ptr;
+}
+
+PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
+{
+	IMAGE_SECTION_HEADER* sec_hdr = findSectionsHdr(memPage);
+	if (!sec_hdr) {
+		return nullptr;
+	}
+	PeArtefacts *peArt = new PeArtefacts();
+	peArt->region_start = memPage.region_start;
+	peArt->sec_count = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
+	peArt->calculated_img_size = calc_image_size(memPage.loadedData, memPage.loadedSize, sec_hdr);
+	peArt->sec_hdr_offset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
+	return peArt;
+}
+
+ArtefactScanReport* ArtefactScanner::scanRemote()
+{
+	if (this->prevMemPage) {
+		delete this->prevMemPage;
+		this->prevMemPage = nullptr;
+	}
+
+	bool is_damaged_pe = false;
+	// it may still contain a damaged PE header...
+	ULONGLONG region_start = memPage.region_start;
+	MemPageData *artPagePtr = &memPage;
+
+	PeArtefacts *peArt = findArtefacts(memPage);
+	if (!peArt  && (region_start > memPage.alloc_base)) {
+		this->prevMemPage = new MemPageData (this->processHandle, memPage.alloc_base);
+		artPagePtr = prevMemPage;
+		region_start = prevMemPage->region_start;
+		peArt = findArtefacts(*prevMemPage);
+	}
+	if (!peArt) {
+		//no artefacts found
+		return nullptr;
+	}
+
+	BYTE* nt_file_hdr = findNtFileHdr(artPagePtr->loadedData, peArt->sec_hdr_offset);
+	if (nt_file_hdr) {
+		peArt->file_hdr_offset = (ULONGLONG)nt_file_hdr - (ULONGLONG)artPagePtr->loadedData;
+	}
+
+	const size_t region_size = size_t(memPage.region_end - region_start);
+	ArtefactScanReport *my_report = new ArtefactScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS, *peArt);
 	my_report->is_manually_loaded = !memPage.is_listed_module;
 	my_report->protection = memPage.protection;
 
-	if (calculated_img_size > region_size) {
-		my_report->moduleSize = calculated_img_size;
+	if (peArt->calculated_img_size > region_size) {
+		my_report->moduleSize = peArt->calculated_img_size;
 	}
-	my_report->sections_count = sec_count;
-	my_report->sections_hdrs = sec_hdr_va;
-
+	delete peArt;
 	return my_report;
 }
