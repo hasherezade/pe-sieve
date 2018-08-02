@@ -92,6 +92,8 @@ public:
 protected:
 	PeArtefacts* findArtefacts(MemPageData &memPage);
 
+	DWORD calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr);
+
 	BYTE* findNtFileHdr(BYTE* loadedData, size_t loadedSize);
 
 	IMAGE_SECTION_HEADER* findSectionsHdr(MemPageData &memPageData);

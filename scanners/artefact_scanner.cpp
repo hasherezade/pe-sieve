@@ -1,8 +1,9 @@
 #include "artefact_scanner.h"
 /*
 #include "../utils/path_converter.h"
-#include "../utils/workingset_enum.h"
 */
+#include "../utils/workingset_enum.h"
+
 #define PE_NOT_FOUND 0
 
 bool is_valid_section(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD charact)
@@ -44,20 +45,35 @@ size_t count_section_hdrs(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEA
 }
 
 //calculate image size basing on the sizes of sections
-DWORD calc_image_size(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEADER *hdr_ptr)
+DWORD ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr)
 {
 	DWORD max_addr = 0;
 	IMAGE_SECTION_HEADER* curr_sec = hdr_ptr;
+	DWORD sec_rva = 0;
+	size_t max_sec_size = 0;
 	do {
-		if (!is_valid_section(loadedData, loadedSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
+		if (!is_valid_section(memPage.loadedData, memPage.loadedSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
 			break;
 		}
-		DWORD sec_max = curr_sec->VirtualAddress + curr_sec->Misc.VirtualSize;
-		max_addr = (sec_max > max_addr) ? sec_max : max_addr;
+		sec_rva = curr_sec->VirtualAddress;
+		DWORD sec_size = curr_sec->Misc.VirtualSize;
+
+		ULONGLONG sec_va = (ULONGLONG)memPage.region_start + sec_rva;
+		size_t real_sec_size = fetch_region_size(processHandle, (PBYTE)sec_va);
+		if (sec_size > real_sec_size) {
+			std::cout << "[WARNING] Corrupt section size: " << std::hex
+				<< sec_size << " vs real: " << real_sec_size << std::endl;
+		}
+		max_addr = (sec_rva > max_addr) ? sec_rva : max_addr;
 		curr_sec++;
+
 	} while (true);
 
-	return max_addr;
+	ULONGLONG last_sec_va = (ULONGLONG)memPage.region_start + max_addr;
+	size_t last_sec_size = fetch_region_size(processHandle, (PBYTE)last_sec_va);
+	size_t total_size = max_addr + last_sec_size;
+	std::cout << "Total Size:" << std::hex << total_size << std::endl;
+	return total_size;
 }
 
 IMAGE_SECTION_HEADER* get_first_section(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEADER *hdr_ptr)
@@ -162,7 +178,7 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 	PeArtefacts *peArt = new PeArtefacts();
 	peArt->region_start = memPage.region_start;
 	peArt->sec_count = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
-	peArt->calculated_img_size = calc_image_size(memPage.loadedData, memPage.loadedSize, sec_hdr);
+	peArt->calculated_img_size = calcImageSize(memPage, sec_hdr);
 	peArt->sec_hdr_offset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
 	return peArt;
 }
