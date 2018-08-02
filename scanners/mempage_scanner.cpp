@@ -68,7 +68,9 @@ MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 	ArtefactScanner artefactScanner(this->processHandle, memPage);
 	MemPageScanReport *my_report = artefactScanner.scanRemote();
 	if (my_report != nullptr) {
+#ifdef _DEBUG
 		std::cout << "The detected shellcode is probably a corrupt PE" << std::endl;
+#endif
 		return my_report;
 	}
 	//just a regular shellcode...

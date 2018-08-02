@@ -59,14 +59,15 @@ DWORD ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER 
 			break;
 		}
 		sec_rva = curr_sec->VirtualAddress;
+#ifdef _DEBUG
 		DWORD sec_size = curr_sec->Misc.VirtualSize;
-
 		ULONGLONG sec_va = (ULONGLONG)memPage.region_start + sec_rva;
 		size_t real_sec_size = fetch_region_size(processHandle, (PBYTE)sec_va);
 		if (sec_size > real_sec_size) {
 			std::cout << "[WARNING] Corrupt section size: " << std::hex
 				<< sec_size << " vs real: " << real_sec_size << std::endl;
 		}
+#endif
 		max_addr = (sec_rva > max_addr) ? sec_rva : max_addr;
 		curr_sec++;
 
@@ -75,7 +76,9 @@ DWORD ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER 
 	ULONGLONG last_sec_va = (ULONGLONG)memPage.region_start + max_addr;
 	size_t last_sec_size = fetch_region_size(processHandle, (PBYTE)last_sec_va);
 	size_t total_size = max_addr + last_sec_size;
+#ifdef _DEBUG
 	std::cout << "Total Size:" << std::hex << total_size << std::endl;
+#endif
 	return total_size;
 }
 
@@ -293,8 +296,10 @@ bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
 		size_t real_sec_size = fetch_region_size(processHandle, (PBYTE)sec_va);
 		if (sec_size > real_sec_size) {
 			curr_sec->Misc.VirtualSize = real_sec_size;
+#ifdef _DEBUG
 			std::cout << i << "# Fixed section size: " << std::hex
 				<< sec_size << " vs real: " << real_sec_size << std::endl;
+#endif
 		}
 
 		max_sec_size = (real_sec_size > max_sec_size) ? real_sec_size : max_sec_size;
@@ -305,7 +310,9 @@ bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
 				if (curr_sec->VirtualAddress > prev_sec->VirtualAddress) {
 					DWORD diff = curr_sec->VirtualAddress - prev_sec->VirtualAddress;
 					prev_sec->Misc.VirtualSize = diff;
+#ifdef _DEBUG
 					std::cout << "Trimmed section" << std::endl;
+#endif
 				}
 			}
 		}
