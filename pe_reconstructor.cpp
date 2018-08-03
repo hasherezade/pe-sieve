@@ -31,7 +31,7 @@ bool PeReconstructor::reconstruct(HANDLE processHandle)
 	}
 
 	bool is_pe_hdr = false;
-	if (this->report->artefacts.file_hdr_offset != INVALID_OFFSET) {
+	if (this->report->artefacts.hasNtHdrs()) {
 		is_pe_hdr = reconstructPeHdr();
 	}
 	if (is_pe_hdr) {
@@ -46,11 +46,11 @@ bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
 		return false;
 	}
 
-	if (this->report->artefacts.sec_hdr_offset == INVALID_OFFSET) {
+	if (!this->report->artefacts.hasSectionHdrs()) {
 		return false;
 	}
 
-	ULONGLONG sec_offset = this->report->artefacts.sec_hdr_offset;
+	ULONGLONG sec_offset = this->report->artefacts.secHdrsOffset;
 	BYTE *hdr_ptr = (sec_offset + vBuf);
 
 	DWORD sec_rva = 0;
@@ -59,7 +59,7 @@ bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
 	IMAGE_SECTION_HEADER* prev_sec = nullptr;
 	IMAGE_SECTION_HEADER* curr_sec = (IMAGE_SECTION_HEADER*)(hdr_ptr);
 
-	for (size_t i = 0; i < report->artefacts.sec_count; i++, curr_sec++) {
+	for (size_t i = 0; i < report->artefacts.secCount; i++, curr_sec++) {
 		if (!is_valid_section(vBuf, vBufSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
 			break;
 		}
@@ -107,10 +107,10 @@ bool PeReconstructor::reconstructPeHdr()
 		return false;
 	}
 
-	if (this->report->artefacts.file_hdr_offset == INVALID_OFFSET) {
+	if (!this->report->artefacts.hasNtHdrs()) {
 		return false;
 	}
-	ULONGLONG nt_offset = this->report->artefacts.file_hdr_offset;
+	ULONGLONG nt_offset = this->report->artefacts.ntFileHdrsOffset;
 	BYTE* nt_ptr = (BYTE*)((ULONGLONG)this->vBuf + nt_offset);
 	BYTE *pe_ptr = nt_ptr - sizeof(DWORD);
 

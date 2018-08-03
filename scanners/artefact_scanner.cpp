@@ -206,10 +206,10 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 		return nullptr;
 	}
 	PeArtefacts *peArt = new PeArtefacts();
-	peArt->region_start = memPage.region_start;
-	peArt->sec_count = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
-	peArt->calculated_img_size = calcImageSize(memPage, sec_hdr);
-	peArt->sec_hdr_offset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
+	peArt->regionStart = memPage.region_start;
+	peArt->secCount = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
+	peArt->calculatedImgSize = calcImageSize(memPage, sec_hdr);
+	peArt->secHdrsOffset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
 	return peArt;
 }
 
@@ -256,9 +256,9 @@ ArtefactScanReport* ArtefactScanner::scanRemote()
 		return nullptr;
 	}
 
-	BYTE* nt_file_hdr = findNtFileHdr(artPagePtr->loadedData, size_t(peArt->sec_hdr_offset));
+	BYTE* nt_file_hdr = findNtFileHdr(artPagePtr->loadedData, size_t(peArt->secHdrsOffset));
 	if (nt_file_hdr) {
-		peArt->file_hdr_offset = (ULONGLONG)nt_file_hdr - (ULONGLONG)artPagePtr->loadedData;
+		peArt->ntFileHdrsOffset = (ULONGLONG)nt_file_hdr - (ULONGLONG)artPagePtr->loadedData;
 	}
 
 	const size_t region_size = size_t(memPage.region_end - region_start);
@@ -266,8 +266,8 @@ ArtefactScanReport* ArtefactScanner::scanRemote()
 	my_report->is_manually_loaded = !memPage.is_listed_module;
 	my_report->protection = memPage.protection;
 
-	if (peArt->calculated_img_size > region_size) {
-		my_report->moduleSize = peArt->calculated_img_size;
+	if (peArt->calculatedImgSize > region_size) {
+		my_report->moduleSize = peArt->calculatedImgSize;
 	}
 	delete peArt;
 	return my_report;

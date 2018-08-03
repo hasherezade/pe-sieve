@@ -15,34 +15,44 @@ bool is_valid_section(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD 
 class PeArtefacts {
 public:
 	PeArtefacts() {
-		region_start = INVALID_OFFSET;
-		file_hdr_offset = INVALID_OFFSET;
-		sec_hdr_offset = INVALID_OFFSET;
-		sec_count = 0;
-		calculated_img_size = 0;
+		regionStart = INVALID_OFFSET;
+		ntFileHdrsOffset = INVALID_OFFSET;
+		secHdrsOffset = INVALID_OFFSET;
+		secCount = 0;
+		calculatedImgSize = 0;
+	}
+
+	bool hasNtHdrs()
+	{
+		return (ntFileHdrsOffset != INVALID_OFFSET);
+	}
+
+	bool hasSectionHdrs()
+	{
+		return (secHdrsOffset != INVALID_OFFSET);
 	}
 
 	const virtual bool toJSON(std::stringstream &outs)
 	{
-		if (file_hdr_offset != INVALID_OFFSET) {
+		if (hasNtHdrs()) {
 			outs << ",\n";
 			outs << "\"nt_file_hdr\" : ";
-			outs << "\"" << std::hex << file_hdr_offset << "\"";
+			outs << "\"" << std::hex << ntFileHdrsOffset << "\"";
 		}
 		outs << ",\n";
 		outs << "\"sections_hdrs\" : ";
-		outs << "\"" << std::hex << sec_hdr_offset << "\"";
+		outs << "\"" << std::hex << secHdrsOffset << "\"";
 		outs << ",\n";
 		outs << "\"sections_count\" : ";
-		outs << std::hex << sec_count;
+		outs << std::hex << secCount;
 		return true;
 	}
 
-	LONGLONG region_start;
-	ULONGLONG file_hdr_offset;
-	ULONGLONG sec_hdr_offset;
-	size_t sec_count;
-	DWORD calculated_img_size;
+	LONGLONG regionStart;
+	ULONGLONG ntFileHdrsOffset;
+	ULONGLONG secHdrsOffset;
+	size_t secCount;
+	DWORD calculatedImgSize;
 };
 
 class ArtefactScanReport : public MemPageScanReport
