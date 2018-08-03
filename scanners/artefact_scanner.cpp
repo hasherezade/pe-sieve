@@ -206,10 +206,15 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 		return nullptr;
 	}
 	PeArtefacts *peArt = new PeArtefacts();
-	peArt->regionStart = memPage.region_start;
+	peArt->regionStart =  memPage.region_start;
+	peArt->peBaseOffset = 0;
+
+	peArt->secHdrsOffset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
+	for (ULONGLONG offset = peArt->secHdrsOffset; offset > PAGE_SIZE; offset-=PAGE_SIZE) {
+		peArt->peBaseOffset += PAGE_SIZE;
+	}
 	peArt->secCount = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
 	peArt->calculatedImgSize = calcImageSize(memPage, sec_hdr);
-	peArt->secHdrsOffset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
 	return peArt;
 }
 

@@ -16,6 +16,7 @@ class PeArtefacts {
 public:
 	PeArtefacts() {
 		regionStart = INVALID_OFFSET;
+		peBaseOffset = INVALID_OFFSET;
 		ntFileHdrsOffset = INVALID_OFFSET;
 		secHdrsOffset = INVALID_OFFSET;
 		secCount = 0;
@@ -34,6 +35,9 @@ public:
 
 	const virtual bool toJSON(std::stringstream &outs)
 	{
+		outs << ",\n";
+		outs << "\"pe_base_offset\" : ";
+		outs << "\"" << std::hex << peBaseOffset << "\"";
 		if (hasNtHdrs()) {
 			outs << ",\n";
 			outs << "\"nt_file_hdr\" : ";
@@ -49,6 +53,7 @@ public:
 	}
 
 	LONGLONG regionStart;
+	ULONGLONG peBaseOffset; // PE may not start at the first page of the region
 	ULONGLONG ntFileHdrsOffset;
 	ULONGLONG secHdrsOffset;
 	size_t secCount;
