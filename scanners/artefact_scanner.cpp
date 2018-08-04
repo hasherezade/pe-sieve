@@ -154,6 +154,31 @@ bool is_valid_file_hdr(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD
 	if (hdr_candidate->NumberOfSymbols != 0 || hdr_candidate->PointerToSymbolTable != 0) {
 		return false;
 	}
+	//sanity checks of machine and optional header size:
+	size_t opt_hdr_size = 0;
+	if (hdr_candidate->Machine == IMAGE_FILE_MACHINE_I386) {
+		opt_hdr_size = sizeof(IMAGE_OPTIONAL_HEADER32);
+	}
+	else if (hdr_candidate->Machine == IMAGE_FILE_MACHINE_AMD64) {
+		opt_hdr_size = sizeof(IMAGE_OPTIONAL_HEADER64);
+	}
+	else {
+		// wrong machine ID
+		return false;
+	}
+
+	if (hdr_candidate->SizeOfOptionalHeader < opt_hdr_size) {
+		return false;
+	}
+	if (hdr_candidate->SizeOfOptionalHeader > PAGE_SIZE) {
+		return false;
+	}
+	if (!peconv::validate_ptr(loadedData, loadedSize, hdr_candidate, 
+		sizeof(IMAGE_FILE_HEADER) + hdr_candidate->SizeOfOptionalHeader))
+	{
+		return false;
+	}
+	//check characteristics:
 	if (charact != 0 && (hdr_candidate->Characteristics & charact) == 0) {
 		return false;
 	}
@@ -172,8 +197,8 @@ BYTE* ArtefactScanner::findNtFileHdr(BYTE* loadedData, size_t loadedSize)
 	} t_archs;
 
 	WORD archs[ARCHS_COUNT] = { 0 };
-	archs[ARCH_32B] = 0x014c;
-	archs[ARCH_64B] = 0x8664;
+	archs[ARCH_32B] = IMAGE_FILE_MACHINE_I386;
+	archs[ARCH_64B] = IMAGE_FILE_MACHINE_AMD64;
 
 	BYTE *arch_ptr = nullptr;
 	size_t my_arch = 0;
