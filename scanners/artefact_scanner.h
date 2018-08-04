@@ -62,7 +62,7 @@ public:
 	size_t ntFileHdrsOffset; //offset from the regionStart
 	size_t secHdrsOffset; //offset from the regionStart
 	size_t secCount;
-	DWORD calculatedImgSize;
+	size_t calculatedImgSize;
 };
 
 class ArtefactScanReport : public MemPageScanReport
