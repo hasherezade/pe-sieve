@@ -247,9 +247,9 @@ PeArtefacts* ArtefactScanner::findInPrevPages(ULONGLONG addr_start, ULONGLONG ad
 {
 	deletePrevPage();
 	PeArtefacts* peArt = nullptr;
-	ULONGLONG next_addr = addr_start;
+	ULONGLONG next_addr = addr_stop - PAGE_SIZE;
 	do {
-		if (next_addr >= addr_stop) {
+		if (next_addr < addr_start) {
 			break;
 		}
 		this->prevMemPage = new MemPageData(this->processHandle, next_addr);
@@ -257,7 +257,7 @@ PeArtefacts* ArtefactScanner::findInPrevPages(ULONGLONG addr_start, ULONGLONG ad
 		if (peArt) {
 			break;
 		}
-		next_addr = prevMemPage->region_end;
+		next_addr -= (this->prevMemPage->region_start - PAGE_SIZE);
 		deletePrevPage();
 	} while (true);
 
