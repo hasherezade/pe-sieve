@@ -13,14 +13,18 @@ bool PeReconstructor::reconstruct(HANDLE processHandle)
 	}
 	freeBuffer();
 
-	this->vBuf = peconv::alloc_aligned(report->moduleSize, PAGE_READWRITE);
+	ULONGLONG pe_va = report->artefacts.regionStart + report->artefacts.peBaseOffset;
+	size_t pe_vsize = report->moduleSize - report->artefacts.peBaseOffset;
+
+	this->vBuf = peconv::alloc_aligned(pe_vsize, PAGE_READWRITE);
 	if (!vBuf) {
 		return false;
 	}
-	this->vBufSize = report->moduleSize;
+	this->vBufSize = pe_vsize;
 
 	bool is_ok = false;
-	size_t read_size = peconv::read_remote_memory(processHandle, (BYTE*)report->module, vBuf, report->moduleSize);
+
+	size_t read_size = peconv::read_remote_memory(processHandle, (BYTE*)pe_va, vBuf, pe_vsize);
 	if (read_size == 0) {
 		freeBuffer();
 		return false;
@@ -31,7 +35,7 @@ bool PeReconstructor::reconstruct(HANDLE processHandle)
 	}
 
 	bool is_pe_hdr = false;
-	if (this->report->nt_file_hdr) {
+	if (this->report->artefacts.hasNtHdrs()) {
 		is_pe_hdr = reconstructPeHdr();
 	}
 	if (is_pe_hdr) {
@@ -46,11 +50,11 @@ bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
 		return false;
 	}
 
-	if (this->report->sections_hdrs < (ULONGLONG)this->report->module) {
+	if (!this->report->artefacts.hasSectionHdrs()) {
 		return false;
 	}
 
-	ULONGLONG sec_offset = (this->report->sections_hdrs - (ULONGLONG)this->report->module);
+	ULONGLONG sec_offset = this->report->artefacts.secHdrsOffset - this->report->artefacts.peBaseOffset;
 	BYTE *hdr_ptr = (sec_offset + vBuf);
 
 	DWORD sec_rva = 0;
@@ -59,7 +63,7 @@ bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
 	IMAGE_SECTION_HEADER* prev_sec = nullptr;
 	IMAGE_SECTION_HEADER* curr_sec = (IMAGE_SECTION_HEADER*)(hdr_ptr);
 
-	for (size_t i = 0; i < report->sections_count; i++, curr_sec++) {
+	for (size_t i = 0; i < report->artefacts.secCount; i++, curr_sec++) {
 		if (!is_valid_section(vBuf, vBufSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
 			break;
 		}
@@ -107,10 +111,10 @@ bool PeReconstructor::reconstructPeHdr()
 		return false;
 	}
 
-	if (this->report->nt_file_hdr < (ULONGLONG)this->report->module) {
+	if (!this->report->artefacts.hasNtHdrs()) {
 		return false;
 	}
-	ULONGLONG nt_offset = this->report->nt_file_hdr - (ULONGLONG)this->report->module;
+	ULONGLONG nt_offset = this->report->artefacts.ntFileHdrsOffset - this->report->artefacts.peBaseOffset;
 	BYTE* nt_ptr = (BYTE*)((ULONGLONG)this->vBuf + nt_offset);
 	BYTE *pe_ptr = nt_ptr - sizeof(DWORD);
 
@@ -148,7 +152,7 @@ bool PeReconstructor::dumpToFile(std::string dumpFileName, IN OPTIONAL peconv::E
 	size_t out_size = 0;
 	BYTE* unmapped_module = nullptr;
 
-	ULONGLONG start_addr = (ULONGLONG) report->module;
+	ULONGLONG start_addr = report->artefacts.regionStart + report->artefacts.peBaseOffset;
 	if (unmap) {
 		//if the image base in headers is invalid, set the current base and prevent from relocating PE:
 		if (peconv::get_image_base(vBuf) == 0) {
