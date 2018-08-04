@@ -58,7 +58,7 @@ ULONGLONG ArtefactScanner::calcPeBase(MemPageData &memPage, IMAGE_SECTION_HEADER
 }
 
 //calculate image size basing on the sizes of sections
-DWORD ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr)
+DWORD ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr, ULONGLONG pe_image_base)
 {
 	DWORD max_addr = 0;
 	IMAGE_SECTION_HEADER* curr_sec = hdr_ptr;
@@ -74,7 +74,6 @@ DWORD ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER 
 
 	} while (true);
 
-	ULONGLONG pe_image_base = calcPeBase(memPage, hdr_ptr);
 	ULONGLONG last_sec_va = pe_image_base + max_addr;
 	size_t last_sec_size = fetch_region_size(processHandle, (PBYTE)last_sec_va);
 	size_t total_size = max_addr + last_sec_size;
@@ -238,10 +237,11 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 	peArt->regionStart =  memPage.region_start;
 
 	peArt->secHdrsOffset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
-	peArt->peBaseOffset = calcPeBase(memPage, sec_hdr) - memPage.region_start;
+	ULONGLONG pe_image_base = calcPeBase(memPage, sec_hdr);
+	peArt->peBaseOffset = size_t(pe_image_base - memPage.region_start);
 
 	peArt->secCount = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
-	peArt->calculatedImgSize = calcImageSize(memPage, sec_hdr);
+	peArt->calculatedImgSize = calcImageSize(memPage, sec_hdr, pe_image_base);
 	return peArt;
 }
 
