@@ -103,9 +103,10 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 			}
 			ArtefactScanReport* artefactRepot = dynamic_cast<ArtefactScanReport*>(mod);
 			if (artefactRepot) {
-				PeReconstructor peRec(artefactRepot);
+				ULONGLONG found_pe_base = artefactRepot->artefacts.peImageBase();
+				PeReconstructor peRec(artefactRepot->artefacts);
 				if (peRec.reconstruct(processHandle)) {
-					std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".rec.dll");
+					std::string dumpFileName = makeModuleDumpPath(found_pe_base, modulePath, ".rec.dll");
 					peRec.dumpToFile(dumpFileName, process_report.exportsMap);
 				}
 			}

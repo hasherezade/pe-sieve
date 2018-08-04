@@ -8,13 +8,10 @@
 
 bool PeReconstructor::reconstruct(HANDLE processHandle)
 {
-	if (!this->report) {
-		return false;
-	}
 	freeBuffer();
 
-	ULONGLONG pe_va = report->artefacts.regionStart + report->artefacts.peBaseOffset;
-	size_t pe_vsize = report->moduleSize - report->artefacts.peBaseOffset;
+	ULONGLONG pe_va = artefacts.regionStart + artefacts.peBaseOffset;
+	size_t pe_vsize = artefacts.calculatedImgSize;
 
 	this->vBuf = peconv::alloc_aligned(pe_vsize, PAGE_READWRITE);
 	if (!vBuf) {
@@ -35,7 +32,7 @@ bool PeReconstructor::reconstruct(HANDLE processHandle)
 	}
 
 	bool is_pe_hdr = false;
-	if (this->report->artefacts.hasNtHdrs()) {
+	if (this->artefacts.hasNtHdrs()) {
 		is_pe_hdr = reconstructPeHdr();
 	}
 	if (is_pe_hdr) {
@@ -46,15 +43,15 @@ bool PeReconstructor::reconstruct(HANDLE processHandle)
 
 bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
 {
-	if (!this->report || !this->vBuf) {
+	if (!this->vBuf) {
 		return false;
 	}
 
-	if (!this->report->artefacts.hasSectionHdrs()) {
+	if (!this->artefacts.hasSectionHdrs()) {
 		return false;
 	}
 
-	ULONGLONG sec_offset = this->report->artefacts.secHdrsOffset - this->report->artefacts.peBaseOffset;
+	ULONGLONG sec_offset = this->artefacts.secHdrsOffset - this->artefacts.peBaseOffset;
 	BYTE *hdr_ptr = (sec_offset + vBuf);
 
 	DWORD sec_rva = 0;
@@ -63,14 +60,16 @@ bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
 	IMAGE_SECTION_HEADER* prev_sec = nullptr;
 	IMAGE_SECTION_HEADER* curr_sec = (IMAGE_SECTION_HEADER*)(hdr_ptr);
 
-	for (size_t i = 0; i < report->artefacts.secCount; i++, curr_sec++) {
+	const ULONGLONG pe_img_base = (ULONGLONG)artefacts.peImageBase();
+
+	for (size_t i = 0; i < artefacts.secCount; i++, curr_sec++) {
 		if (!is_valid_section(vBuf, vBufSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
 			break;
 		}
 		sec_rva = curr_sec->VirtualAddress;
 		DWORD sec_size = curr_sec->Misc.VirtualSize;
 
-		ULONGLONG sec_va = (ULONGLONG)report->module + sec_rva;
+		ULONGLONG sec_va = pe_img_base + sec_rva;
 		size_t real_sec_size = fetch_region_size(processHandle, (PBYTE)sec_va);
 		if (sec_size > real_sec_size) {
 			curr_sec->Misc.VirtualSize = real_sec_size;
@@ -107,14 +106,14 @@ bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
 
 bool PeReconstructor::reconstructPeHdr()
 {
-	if (!this->report || !this->vBuf) {
+	if (!this->vBuf) {
 		return false;
 	}
 
-	if (!this->report->artefacts.hasNtHdrs()) {
+	if (!this->artefacts.hasNtHdrs()) {
 		return false;
 	}
-	ULONGLONG nt_offset = this->report->artefacts.ntFileHdrsOffset - this->report->artefacts.peBaseOffset;
+	ULONGLONG nt_offset = this->artefacts.ntFileHdrsOffset - this->artefacts.peBaseOffset;
 	BYTE* nt_ptr = (BYTE*)((ULONGLONG)this->vBuf + nt_offset);
 	BYTE *pe_ptr = nt_ptr - sizeof(DWORD);
 
@@ -152,7 +151,7 @@ bool PeReconstructor::dumpToFile(std::string dumpFileName, IN OPTIONAL peconv::E
 	size_t out_size = 0;
 	BYTE* unmapped_module = nullptr;
 
-	ULONGLONG start_addr = report->artefacts.regionStart + report->artefacts.peBaseOffset;
+	ULONGLONG start_addr = artefacts.regionStart + artefacts.peBaseOffset;
 	if (unmap) {
 		//if the image base in headers is invalid, set the current base and prevent from relocating PE:
 		if (peconv::get_image_base(vBuf) == 0) {

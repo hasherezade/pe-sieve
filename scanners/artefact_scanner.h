@@ -32,6 +32,11 @@ public:
 	{
 		return (secHdrsOffset != INVALID_OFFSET);
 	}
+	
+	ULONGLONG peImageBase()
+	{
+		return this->peBaseOffset + this->regionStart;
+	}
 
 	const virtual bool toJSON(std::stringstream &outs)
 	{
@@ -53,11 +58,11 @@ public:
 	}
 
 	LONGLONG regionStart;
-	ULONGLONG peBaseOffset; // PE may not start at the first page of the region
-	ULONGLONG ntFileHdrsOffset;
-	ULONGLONG secHdrsOffset;
+	size_t peBaseOffset; //offset from the regionStart (PE may not start at the first page of the region)
+	size_t ntFileHdrsOffset; //offset from the regionStart
+	size_t secHdrsOffset; //offset from the regionStart
 	size_t secCount;
-	DWORD calculatedImgSize;
+	size_t calculatedImgSize;
 };
 
 class ArtefactScanReport : public MemPageScanReport
@@ -113,6 +118,7 @@ protected:
 	PeArtefacts* findArtefacts(MemPageData &memPage);
 	PeArtefacts* findInPrevPages(ULONGLONG addr_start, ULONGLONG addr_stop);
 
+	ULONGLONG calcPeBase(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr);
 	DWORD calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr);
 
 	BYTE* findNtFileHdr(BYTE* loadedData, size_t loadedSize);

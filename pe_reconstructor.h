@@ -9,8 +9,8 @@
 
 class PeReconstructor {
 public:
-	PeReconstructor(ArtefactScanReport* _report)
-		: report(_report),
+	PeReconstructor(PeArtefacts _artefacts)
+		: artefacts(_artefacts),
 		vBuf(nullptr), vBufSize(0), unmap(true)
 	{
 	}
@@ -33,7 +33,7 @@ protected:
 	bool reconstructPeHdr();
 	bool reconstructSectionsHdr(HANDLE processHandle);
 
-	ArtefactScanReport* report;
+	PeArtefacts artefacts;
 	BYTE *vBuf;
 	size_t vBufSize;
 

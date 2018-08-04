@@ -45,6 +45,18 @@ size_t count_section_hdrs(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEA
 	return counter;
 }
 
+ULONGLONG ArtefactScanner::calcPeBase(MemPageData &memPage, IMAGE_SECTION_HEADER *sec_hdr)
+{
+	ULONGLONG pe_base_offset = 0;
+
+	ULONGLONG sec_hdrs_offset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
+	for (ULONGLONG offset = sec_hdrs_offset; offset > PAGE_SIZE; offset -= PAGE_SIZE) {
+		pe_base_offset += PAGE_SIZE;
+	}
+	pe_base_offset += memPage.region_start;
+	return pe_base_offset;
+}
+
 //calculate image size basing on the sizes of sections
 DWORD ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr)
 {
@@ -57,21 +69,13 @@ DWORD ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER 
 			break;
 		}
 		sec_rva = curr_sec->VirtualAddress;
-#ifdef _DEBUG
-		DWORD sec_size = curr_sec->Misc.VirtualSize;
-		ULONGLONG sec_va = (ULONGLONG)memPage.region_start + sec_rva;
-		size_t real_sec_size = fetch_region_size(processHandle, (PBYTE)sec_va);
-		if (sec_size > real_sec_size) {
-			std::cout << "[WARNING] Corrupt section size: " << std::hex
-				<< sec_size << " vs real: " << real_sec_size << std::endl;
-		}
-#endif
 		max_addr = (sec_rva > max_addr) ? sec_rva : max_addr;
 		curr_sec++;
 
 	} while (true);
 
-	ULONGLONG last_sec_va = (ULONGLONG)memPage.region_start + max_addr;
+	ULONGLONG pe_image_base = calcPeBase(memPage, hdr_ptr);
+	ULONGLONG last_sec_va = pe_image_base + max_addr;
 	size_t last_sec_size = fetch_region_size(processHandle, (PBYTE)last_sec_va);
 	size_t total_size = max_addr + last_sec_size;
 #ifdef _DEBUG
@@ -232,12 +236,10 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 	}
 	PeArtefacts *peArt = new PeArtefacts();
 	peArt->regionStart =  memPage.region_start;
-	peArt->peBaseOffset = 0;
 
 	peArt->secHdrsOffset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
-	for (ULONGLONG offset = peArt->secHdrsOffset; offset > PAGE_SIZE; offset-=PAGE_SIZE) {
-		peArt->peBaseOffset += PAGE_SIZE;
-	}
+	peArt->peBaseOffset = calcPeBase(memPage, sec_hdr) - memPage.region_start;
+
 	peArt->secCount = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
 	peArt->calculatedImgSize = calcImageSize(memPage, sec_hdr);
 	return peArt;
@@ -247,9 +249,9 @@ PeArtefacts* ArtefactScanner::findInPrevPages(ULONGLONG addr_start, ULONGLONG ad
 {
 	deletePrevPage();
 	PeArtefacts* peArt = nullptr;
-	ULONGLONG next_addr = addr_start;
+	ULONGLONG next_addr = addr_stop - PAGE_SIZE;
 	do {
-		if (next_addr >= addr_stop) {
+		if (next_addr < addr_start) {
 			break;
 		}
 		this->prevMemPage = new MemPageData(this->processHandle, next_addr);
@@ -257,7 +259,7 @@ PeArtefacts* ArtefactScanner::findInPrevPages(ULONGLONG addr_start, ULONGLONG ad
 		if (peArt) {
 			break;
 		}
-		next_addr = prevMemPage->region_end;
+		next_addr -= (this->prevMemPage->region_start - PAGE_SIZE);
 		deletePrevPage();
 	} while (true);
 
@@ -296,8 +298,9 @@ ArtefactScanReport* ArtefactScanner::scanRemote()
 	my_report->is_manually_loaded = !memPage.is_listed_module;
 	my_report->protection = memPage.protection;
 
-	if (peArt->calculatedImgSize > region_size) {
-		my_report->moduleSize = peArt->calculatedImgSize;
+	size_t total_region_size = peArt->calculatedImgSize + peArt->peBaseOffset;
+	if (total_region_size > region_size) {
+		my_report->moduleSize = total_region_size;
 	}
 	delete peArt;
 	return my_report;
