@@ -188,7 +188,7 @@ bool is_valid_file_hdr(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD
 	return true;
 }
 
-BYTE* ArtefactScanner::findNtFileHdr(BYTE* loadedData, size_t loadedSize)
+IMAGE_FILE_HEADER* ArtefactScanner::findNtFileHdr(BYTE* loadedData, size_t loadedSize)
 {
 	if (loadedData == nullptr) {
 		return nullptr;
@@ -224,7 +224,7 @@ BYTE* ArtefactScanner::findNtFileHdr(BYTE* loadedData, size_t loadedSize)
 	if (!is_valid_file_hdr(loadedData, loadedSize, arch_ptr, charact)) {
 		return nullptr;
 	}
-	return arch_ptr;
+	return reinterpret_cast<IMAGE_FILE_HEADER*>(arch_ptr);
 }
 
 PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
@@ -235,12 +235,29 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 	}
 	PeArtefacts *peArt = new PeArtefacts();
 	peArt->regionStart =  memPage.region_start;
-
 	peArt->secHdrsOffset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
+	peArt->secCount = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
+
+	//try to find FileHeader:
+	IMAGE_FILE_HEADER* nt_file_hdr = findNtFileHdr(memPage.loadedData, size_t(peArt->secHdrsOffset));
+	if (nt_file_hdr) {
+		ULONGLONG nt_offset = (ULONGLONG)nt_file_hdr - (ULONGLONG)memPage.loadedData;
+
+		//calculate sections header offset from FileHeader:
+		const size_t headers_size = nt_file_hdr->SizeOfOptionalHeader + sizeof(IMAGE_FILE_HEADER);
+		ULONGLONG sec_hdr_offset = headers_size + nt_offset;
+
+		if (sec_hdr_offset == peArt->secHdrsOffset) {
+			peArt->ntFileHdrsOffset = nt_offset;
+		}
+		else {
+			std::cout << "[WARNING] Sections header misaligned with FileHeader."
+				<< "Expected offset" << std::hex << sec_hdr_offset << " vs real offset" << peArt->secHdrsOffset << std::endl;
+		}
+	}
+
 	ULONGLONG pe_image_base = calcPeBase(memPage, sec_hdr);
 	peArt->peBaseOffset = size_t(pe_image_base - memPage.region_start);
-
-	peArt->secCount = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
 	peArt->calculatedImgSize = calcImageSize(memPage, sec_hdr, pe_image_base);
 	return peArt;
 }
@@ -287,12 +304,6 @@ ArtefactScanReport* ArtefactScanner::scanRemote()
 		//no artefacts found
 		return nullptr;
 	}
-
-	BYTE* nt_file_hdr = findNtFileHdr(artPagePtr->loadedData, size_t(peArt->secHdrsOffset));
-	if (nt_file_hdr) {
-		peArt->ntFileHdrsOffset = (ULONGLONG)nt_file_hdr - (ULONGLONG)artPagePtr->loadedData;
-	}
-
 	const size_t region_size = size_t(memPage.region_end - region_start);
 	ArtefactScanReport *my_report = new ArtefactScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS, *peArt);
 	my_report->is_manually_loaded = !memPage.is_listed_module;

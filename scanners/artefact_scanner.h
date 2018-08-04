@@ -121,7 +121,7 @@ protected:
 	ULONGLONG calcPeBase(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr);
 	DWORD calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr, ULONGLONG pe_image_base);
 
-	BYTE* findNtFileHdr(BYTE* loadedData, size_t loadedSize);
+	IMAGE_FILE_HEADER* findNtFileHdr(BYTE* loadedData, size_t loadedSize);
 	BYTE* findSecByPatterns(MemPageData &memPage);
 	IMAGE_SECTION_HEADER* findSectionsHdr(MemPageData &memPageData);
 
