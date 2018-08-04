@@ -45,12 +45,12 @@ size_t count_section_hdrs(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEA
 	return counter;
 }
 
-ULONGLONG ArtefactScanner::calcPeBase(MemPageData &memPage, IMAGE_SECTION_HEADER *sec_hdr)
+ULONGLONG ArtefactScanner::calcPeBase(MemPageData &memPage, BYTE *sec_hdr)
 {
 	ULONGLONG pe_base_offset = 0;
 
-	ULONGLONG sec_hdrs_offset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
-	for (ULONGLONG offset = sec_hdrs_offset; offset > PAGE_SIZE; offset -= PAGE_SIZE) {
+	ULONGLONG hdrs_offset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
+	for (ULONGLONG offset = hdrs_offset; offset > PAGE_SIZE; offset -= PAGE_SIZE) {
 		pe_base_offset += PAGE_SIZE;
 	}
 	pe_base_offset += memPage.region_start;
@@ -229,34 +229,73 @@ IMAGE_FILE_HEADER* ArtefactScanner::findNtFileHdr(BYTE* loadedData, size_t loade
 
 PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 {
+	ULONGLONG pe_image_base = memPage.region_start;
+
+	IMAGE_FILE_HEADER* nt_file_hdr = nullptr;
+	size_t nt_hdr_search_bound = memPage.loadedSize; //the size that should be searched
+
+	//first try to find section headers:
 	IMAGE_SECTION_HEADER* sec_hdr = findSectionsHdr(memPage);
-	if (!sec_hdr) {
+	if (sec_hdr) {
+		pe_image_base = calcPeBase(memPage, (BYTE*)sec_hdr);
+		const size_t sec_hdr_offset = size_t((ULONGLONG) sec_hdr - (ULONGLONG) memPage.loadedData);
+		nt_hdr_search_bound = sec_hdr_offset;
+	}
+
+	std::cout << "Searching File Header in region:" << std::hex << nt_hdr_search_bound << std::endl;
+	nt_file_hdr = findNtFileHdr(memPage.loadedData, nt_hdr_search_bound);
+	std::cout << "Found!" << std::endl;
+
+	if (nt_file_hdr) {
+		pe_image_base = calcPeBase(memPage, (BYTE*)nt_file_hdr);
+	}
+	if (!sec_hdr && !nt_file_hdr) {
+		std::cout << "Not found!" << std::endl;
+		//neither sections header nor file header found
 		return nullptr;
 	}
+	std::cout << "Found file header or Sections Header" << std::endl;
+
 	PeArtefacts *peArt = new PeArtefacts();
 	peArt->regionStart =  memPage.region_start;
-	peArt->secHdrsOffset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
-	peArt->secCount = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
+	if (sec_hdr) {
+		peArt->secHdrsOffset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
+	}
 
-	//try to find FileHeader:
-	IMAGE_FILE_HEADER* nt_file_hdr = findNtFileHdr(memPage.loadedData, size_t(peArt->secHdrsOffset));
+	// if File Header found, use it to validate or find sections headers:
 	if (nt_file_hdr) {
-		ULONGLONG nt_offset = (ULONGLONG)nt_file_hdr - (ULONGLONG)memPage.loadedData;
+		size_t nt_offset = size_t((ULONGLONG)nt_file_hdr - (ULONGLONG)memPage.loadedData);
 
 		//calculate sections header offset from FileHeader:
 		const size_t headers_size = nt_file_hdr->SizeOfOptionalHeader + sizeof(IMAGE_FILE_HEADER);
-		ULONGLONG sec_hdr_offset = headers_size + nt_offset;
+		size_t sec_hdr_offset = headers_size + nt_offset;
 
-		if (sec_hdr_offset == peArt->secHdrsOffset) {
-			peArt->ntFileHdrsOffset = nt_offset;
+		//validate sections headers:
+		if (peArt->hasSectionHdrs()) {
+			if (sec_hdr_offset == peArt->secHdrsOffset) {
+				peArt->ntFileHdrsOffset = nt_offset;
+			}
+			else {
+				//it has sections headers detected, but not validly aligned:
+				std::cout << "[WARNING] Sections header misaligned with FileHeader."
+					<< "Expected offset" << std::hex << sec_hdr_offset << " vs real offset" << peArt->secHdrsOffset << std::endl;
+			}
 		}
+		// find sections headers:
 		else {
-			std::cout << "[WARNING] Sections header misaligned with FileHeader."
-				<< "Expected offset" << std::hex << sec_hdr_offset << " vs real offset" << peArt->secHdrsOffset << std::endl;
+			peArt->ntFileHdrsOffset = nt_offset;
+			//sections headers are not detected, try to detect them basing on File Header:
+			std::cout << "sections headers are not detected, try to detect them basing on File Header" << std::endl;
+			sec_hdr = (IMAGE_SECTION_HEADER*) ((ULONGLONG)memPage.loadedData + sec_hdr_offset);
+			size_t count =  count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
+			if (count > 0) {
+				peArt->secHdrsOffset = sec_hdr_offset;
+			}
 		}
 	}
-
-	ULONGLONG pe_image_base = calcPeBase(memPage, sec_hdr);
+	if (peArt->hasSectionHdrs()) {
+		peArt->secCount = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
+	}
 	peArt->peBaseOffset = size_t(pe_image_base - memPage.region_start);
 	peArt->calculatedImgSize = calcImageSize(memPage, sec_hdr, pe_image_base);
 	return peArt;
