@@ -13,11 +13,11 @@ ULONGLONG MemPageScanner::findPeHeader(MemPageData &memPage)
 		if (! memPage.loadRemote()) return PE_NOT_FOUND;
 		if (memPage.loadedData == nullptr) return PE_NOT_FOUND;
 	}
-	size_t scan_size = memPage.loadedSize;
+	const size_t scan_size = memPage.loadedSize;
 	BYTE* buffer_ptr = memPage.loadedData;
 
 	//scan only one page, not the full area
-	for (size_t i = 0; i < scan_size && i < peconv::MAX_HEADER_SIZE; i++) {
+	for (size_t i = 0; i < scan_size; i++) {
 		if (peconv::get_nt_hrds(buffer_ptr+i, scan_size-i) != nullptr) {
 			return  memPage.start_va + i;
 		}
