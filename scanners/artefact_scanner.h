@@ -32,6 +32,11 @@ public:
 	{
 		return (secHdrsOffset != INVALID_OFFSET);
 	}
+	
+	ULONGLONG peImageBase()
+	{
+		return this->peBaseOffset + this->regionStart;
+	}
 
 	const virtual bool toJSON(std::stringstream &outs)
 	{
@@ -53,9 +58,9 @@ public:
 	}
 
 	LONGLONG regionStart;
-	ULONGLONG peBaseOffset; // PE may not start at the first page of the region
-	ULONGLONG ntFileHdrsOffset;
-	ULONGLONG secHdrsOffset;
+	size_t peBaseOffset; //offset from the regionStart (PE may not start at the first page of the region)
+	size_t ntFileHdrsOffset; //offset from the regionStart
+	size_t secHdrsOffset; //offset from the regionStart
 	size_t secCount;
 	DWORD calculatedImgSize;
 };
