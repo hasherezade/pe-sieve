@@ -9,6 +9,7 @@
 #include "mempage_scanner.h"
 
 #define INVALID_OFFSET (-1)
+#define PE_NOT_FOUND 0
 
 bool is_valid_section(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD charact);
 
@@ -21,6 +22,7 @@ public:
 		secHdrsOffset = INVALID_OFFSET;
 		secCount = 0;
 		calculatedImgSize = 0;
+		isMzPeFound = false;
 	}
 
 	bool hasNtHdrs()
@@ -38,7 +40,7 @@ public:
 		return this->peBaseOffset + this->regionStart;
 	}
 
-	const virtual bool toJSON(std::stringstream &outs)
+	const virtual bool fieldsToJSON(std::stringstream &outs)
 	{
 		outs << ",\n";
 		outs << "\"pe_base_offset\" : ";
@@ -56,6 +58,15 @@ public:
 		outs << std::hex << secCount;
 		return true;
 	}
+	
+	const virtual bool toJSON(std::stringstream &outs)
+	{
+		outs << "\"artefacts\" : ";
+		outs << "{\n";
+		fieldsToJSON(outs);
+		outs << "\n}";
+		return true;
+	}
 
 	LONGLONG regionStart;
 	size_t peBaseOffset; //offset from the regionStart (PE may not start at the first page of the region)
@@ -63,6 +74,7 @@ public:
 	size_t secHdrsOffset; //offset from the regionStart
 	size_t secCount;
 	size_t calculatedImgSize;
+	bool isMzPeFound;
 };
 
 class ArtefactScanReport : public MemPageScanReport
@@ -107,6 +119,31 @@ public:
 	virtual ArtefactScanReport* scanRemote();
 
 protected:
+	class ArtefactsMapping
+	{
+	public:
+		ArtefactsMapping(MemPageData &_memPage) :
+			memPage(_memPage)
+		{
+			pe_image_base = PE_NOT_FOUND;
+			nt_file_hdr = nullptr;
+			sec_hdr = nullptr;
+		}
+
+		bool foundAny()
+		{
+			if (sec_hdr || nt_file_hdr) {
+				return true;
+			}
+			return false;
+		}
+
+		MemPageData &memPage;
+		ULONGLONG pe_image_base;
+		IMAGE_FILE_HEADER* nt_file_hdr;
+		IMAGE_SECTION_HEADER* sec_hdr;
+	};
+
 	void deletePrevPage()
 	{
 		if (this->prevMemPage) {
@@ -116,6 +153,11 @@ protected:
 	}
 
 	ULONGLONG findMzPeHeader(MemPageData &memPage);
+
+	bool findMzPe(ArtefactsMapping &mapping);
+	bool setSecHdr(ArtefactsMapping &mapping, IMAGE_SECTION_HEADER* _sec_hdr);
+	bool setNtFileHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_FILE_HEADER* _nt_hdr);
+	PeArtefacts *generateArtefacts(ArtefactsMapping &aMap);
 
 	PeArtefacts* findArtefacts(MemPageData &memPage);
 	PeArtefacts* findInPrevPages(ULONGLONG addr_start, ULONGLONG addr_stop);

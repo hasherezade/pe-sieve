@@ -103,7 +103,9 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		std::cout << std::hex << memPage.start_va << " : Checking for shellcode" << std::endl;
 #endif
 		if (isCode(memPage)) {
+#ifdef _DEBUG
 			std::cout << std::hex << memPage.start_va << ": Code pattern found, scanning..." << std::endl;
+#endif
 			return this->scanShellcode(memPage);
 		}
 	}
