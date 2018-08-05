@@ -293,9 +293,12 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 			}
 		}
 	}
-	if (peArt->hasSectionHdrs()) {
-		peArt->secCount = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
+	if (!peArt->hasSectionHdrs()) {
+		// if sections headers not found, treat it as invalid artefact
+		delete peArt;
+		return nullptr;
 	}
+	peArt->secCount = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
 	peArt->peBaseOffset = size_t(pe_image_base - memPage.region_start);
 	peArt->calculatedImgSize = calcImageSize(memPage, sec_hdr, pe_image_base);
 	return peArt;
