@@ -7,33 +7,7 @@
 
 #define PE_NOT_FOUND 0
 
-ULONGLONG MemPageScanner::findPeHeader(MemPageData &memPage)
-{
-	if (memPage.loadedData == nullptr) {
-		if (! memPage.loadRemote()) return PE_NOT_FOUND;
-		if (memPage.loadedData == nullptr) return PE_NOT_FOUND;
-	}
-	const size_t scan_size = memPage.loadedSize;
-	BYTE* buffer_ptr = memPage.loadedData;
 
-	const size_t minimal_size = sizeof(IMAGE_DOS_HEADER) 
-		+ sizeof(IMAGE_FILE_HEADER) 
-		+ sizeof(IMAGE_OPTIONAL_HEADER32);
-
-	//scan only one page, not the full area
-	for (size_t i = 0; i < scan_size; i++) {
-		if ((scan_size - i) < minimal_size) {
-			break;
-		}
-		if (peconv::get_nt_hrds(buffer_ptr+i, scan_size-i) != nullptr) {
-			return  memPage.start_va + i;
-		}
-		if (!this->isDeepScan) {
-			return PE_NOT_FOUND;
-		}
-	}
-	return PE_NOT_FOUND;
-}
 
 bool MemPageScanner::isCode(MemPageData &memPageData)
 {

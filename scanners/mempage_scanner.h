@@ -66,7 +66,6 @@ public:
 	virtual MemPageScanReport* scanRemote();
 
 protected:
-	ULONGLONG findPeHeader(MemPageData &memPageData);
 	bool isCode(MemPageData &memPageData);
 	MemPageScanReport* scanShellcode(MemPageData &memPageData);
 
