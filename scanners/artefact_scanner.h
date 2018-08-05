@@ -42,7 +42,6 @@ public:
 
 	const virtual bool fieldsToJSON(std::stringstream &outs)
 	{
-		outs << ",\n";
 		outs << "\"pe_base_offset\" : ";
 		outs << "\"" << std::hex << peBaseOffset << "\"";
 		if (hasNtHdrs()) {
@@ -95,6 +94,7 @@ public:
 		outs << "\"artefacts_scan\" : ";
 		outs << "{\n";
 		MemPageScanReport::fieldsToJSON(outs);
+		outs << ",\n";
 		artefacts.toJSON(outs);
 		outs << "\n}";
 		return true;
