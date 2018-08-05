@@ -72,7 +72,7 @@ bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
 		ULONGLONG sec_va = pe_img_base + sec_rva;
 		size_t real_sec_size = fetch_region_size(processHandle, (PBYTE)sec_va);
 		if (sec_size > real_sec_size) {
-			curr_sec->Misc.VirtualSize = real_sec_size;
+			curr_sec->Misc.VirtualSize = DWORD(real_sec_size);
 #ifdef _DEBUG
 			std::cout << i << "# Fixed section size: " << std::hex
 				<< sec_size << " vs real: " << real_sec_size << std::endl;
@@ -124,7 +124,7 @@ bool PeReconstructor::reconstructPeHdr()
 	//write signature:
 	nt32->Signature = IMAGE_NT_SIGNATURE;
 
-	LONG pe_offset = (ULONGLONG)pe_ptr - (ULONGLONG)this->vBuf;
+	LONG pe_offset = LONG((ULONGLONG)pe_ptr - (ULONGLONG)this->vBuf);
 	IMAGE_DOS_HEADER* dosHdr = (IMAGE_DOS_HEADER*) vBuf;
 	dosHdr->e_magic = IMAGE_DOS_SIGNATURE;
 	dosHdr->e_lfanew = pe_offset;
