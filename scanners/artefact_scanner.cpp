@@ -58,7 +58,7 @@ ULONGLONG ArtefactScanner::calcPeBase(MemPageData &memPage, BYTE *sec_hdr)
 }
 
 //calculate image size basing on the sizes of sections
-DWORD ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr, ULONGLONG pe_image_base)
+size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr, ULONGLONG pe_image_base)
 {
 	DWORD max_addr = 0;
 	IMAGE_SECTION_HEADER* curr_sec = hdr_ptr;
@@ -227,7 +227,7 @@ IMAGE_FILE_HEADER* ArtefactScanner::findNtFileHdr(BYTE* loadedData, size_t loade
 	return reinterpret_cast<IMAGE_FILE_HEADER*>(arch_ptr);
 }
 
-ULONGLONG ArtefactScanner::findPeHeader(MemPageData &memPage)
+ULONGLONG ArtefactScanner::findMzPeHeader(MemPageData &memPage)
 {
 	if (memPage.loadedData == nullptr) {
 		if (!memPage.loadRemote()) return PE_NOT_FOUND;
@@ -255,7 +255,7 @@ ULONGLONG ArtefactScanner::findPeHeader(MemPageData &memPage)
 PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 {
 	IMAGE_FILE_HEADER* nt_file_hdr = nullptr;
-	ULONGLONG pe_image_base = findPeHeader(memPage);
+	ULONGLONG pe_image_base = findMzPeHeader(memPage);
 	if (pe_image_base != PE_NOT_FOUND) {
 		size_t offset = pe_image_base - memPage.region_start;
 		std::cout << "PE header found!" << std::endl;
@@ -272,7 +272,6 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 			nt_hdr_search_bound = size_t((ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData);
 		}
 		nt_file_hdr = findNtFileHdr(memPage.loadedData, nt_hdr_search_bound);
-		std::cout << "Found!" << std::endl;
 	}
 
 	if (!sec_hdr && !nt_file_hdr) {
@@ -280,6 +279,7 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 		//neither sections header nor file header found
 		return nullptr;
 	}
+
 	std::cout << "Found file header or Sections Header" << std::endl;
 
 	PeArtefacts *peArt = new PeArtefacts();

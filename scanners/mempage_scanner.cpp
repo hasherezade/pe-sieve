@@ -100,11 +100,11 @@ MemPageScanReport* MemPageScanner::scanRemote()
 	if (is_any_exec && (memPage.mapping_type == MEM_PRIVATE ||
 		(memPage.mapping_type == MEM_MAPPED && !memPage.isRealMapping())))
 	{
-//#ifdef _DEBUG
+#ifdef _DEBUG
 		std::cout << std::hex << memPage.start_va << " : Checking for shellcode" << std::endl;
-//#endif
+#endif
 		if (isCode(memPage)) {
-			std::cout << "Code pattern found, scanning.." << std::endl;
+			std::cout << std::hex << memPage.start_va << ": Code pattern found, scanning..." << std::endl;
 			return this->scanShellcode(memPage);
 		}
 	}
