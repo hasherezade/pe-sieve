@@ -227,28 +227,54 @@ IMAGE_FILE_HEADER* ArtefactScanner::findNtFileHdr(BYTE* loadedData, size_t loade
 	return reinterpret_cast<IMAGE_FILE_HEADER*>(arch_ptr);
 }
 
+ULONGLONG ArtefactScanner::findPeHeader(MemPageData &memPage)
+{
+	if (memPage.loadedData == nullptr) {
+		if (!memPage.loadRemote()) return PE_NOT_FOUND;
+		if (memPage.loadedData == nullptr) return PE_NOT_FOUND;
+	}
+	const size_t scan_size = memPage.loadedSize;
+	BYTE* buffer_ptr = memPage.loadedData;
+
+	const size_t minimal_size = sizeof(IMAGE_DOS_HEADER)
+		+ sizeof(IMAGE_FILE_HEADER)
+		+ sizeof(IMAGE_OPTIONAL_HEADER32);
+
+	//scan only one page, not the full area
+	for (size_t i = 0; i < scan_size; i++) {
+		if ((scan_size - i) < minimal_size) {
+			break;
+		}
+		if (peconv::get_nt_hrds(buffer_ptr + i, scan_size - i) != nullptr) {
+			return  memPage.region_start + i;
+		}
+	}
+	return PE_NOT_FOUND;
+}
+
 PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 {
-	ULONGLONG pe_image_base = memPage.region_start;
-
 	IMAGE_FILE_HEADER* nt_file_hdr = nullptr;
-	size_t nt_hdr_search_bound = memPage.loadedSize; //the size that should be searched
+	ULONGLONG pe_image_base = findPeHeader(memPage);
+	if (pe_image_base != PE_NOT_FOUND) {
+		size_t offset = pe_image_base - memPage.region_start;
+		std::cout << "PE header found!" << std::endl;
+		nt_file_hdr = findNtFileHdr(memPage.loadedData + offset, memPage.loadedSize - offset);
+	}
 
 	//first try to find section headers:
 	IMAGE_SECTION_HEADER* sec_hdr = findSectionsHdr(memPage);
-	if (sec_hdr) {
-		pe_image_base = calcPeBase(memPage, (BYTE*)sec_hdr);
-		const size_t sec_hdr_offset = size_t((ULONGLONG) sec_hdr - (ULONGLONG) memPage.loadedData);
-		nt_hdr_search_bound = sec_hdr_offset;
+
+	if (!nt_file_hdr) {
+		size_t nt_hdr_search_bound = memPage.loadedSize; //the size that should be searched
+		std::cout << "Searching File Header in region:" << std::hex << nt_hdr_search_bound << std::endl;
+		if (sec_hdr) {
+			nt_hdr_search_bound = size_t((ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData);
+		}
+		nt_file_hdr = findNtFileHdr(memPage.loadedData, nt_hdr_search_bound);
+		std::cout << "Found!" << std::endl;
 	}
 
-	std::cout << "Searching File Header in region:" << std::hex << nt_hdr_search_bound << std::endl;
-	nt_file_hdr = findNtFileHdr(memPage.loadedData, nt_hdr_search_bound);
-	std::cout << "Found!" << std::endl;
-
-	if (nt_file_hdr) {
-		pe_image_base = calcPeBase(memPage, (BYTE*)nt_file_hdr);
-	}
 	if (!sec_hdr && !nt_file_hdr) {
 		std::cout << "Not found!" << std::endl;
 		//neither sections header nor file header found
@@ -259,7 +285,7 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 	PeArtefacts *peArt = new PeArtefacts();
 	peArt->regionStart =  memPage.region_start;
 	if (sec_hdr) {
-		peArt->secHdrsOffset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
+		peArt->secHdrsOffset = size_t((ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData);
 	}
 
 	// if File Header found, use it to validate or find sections headers:
@@ -293,8 +319,14 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 			}
 		}
 	}
-	if (peArt->hasSectionHdrs()) {
-		peArt->secCount = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
+	if (!peArt->hasSectionHdrs()) {
+		// if sections headers not found, treat it as invalid artefact
+		delete peArt;
+		return nullptr;
+	}
+	peArt->secCount = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
+	if (!pe_image_base) {
+		pe_image_base = calcPeBase(memPage, (BYTE*)sec_hdr);
 	}
 	peArt->peBaseOffset = size_t(pe_image_base - memPage.region_start);
 	peArt->calculatedImgSize = calcImageSize(memPage, sec_hdr, pe_image_base);

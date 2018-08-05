@@ -115,6 +115,8 @@ protected:
 		this->prevMemPage = nullptr;
 	}
 
+	ULONGLONG findPeHeader(MemPageData &memPage);
+
 	PeArtefacts* findArtefacts(MemPageData &memPage);
 	PeArtefacts* findInPrevPages(ULONGLONG addr_start, ULONGLONG addr_stop);
 
