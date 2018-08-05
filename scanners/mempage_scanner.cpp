@@ -35,12 +35,11 @@ ULONGLONG MemPageScanner::findPeHeader(MemPageData &memPage)
 	return PE_NOT_FOUND;
 }
 
-MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
+bool MemPageScanner::isCode(MemPageData &memPageData)
 {
 	if (memPage.loadedData == nullptr) {
 		return nullptr;
 	}
-
 	BYTE prolog32_pattern[] = { 0x55, 0x8b, 0xEC };
 	BYTE prolog64_pattern[] = { 0x40, 0x53, 0x48, 0x83, 0xEC, 0x20 };
 
@@ -56,7 +55,7 @@ MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 			pattern_found = true;
 			is32bit = true;
 #ifdef _DEBUG
-			std::cout << std::hex << memPage.region_start << ": contains 32bit shellcode"  << std::endl;
+			std::cout << std::hex << memPage.region_start << ": contains 32bit shellcode" << std::endl;
 #endif
 			break;
 		}
@@ -68,7 +67,12 @@ MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 			break;
 		}
 	}
-	if (pattern_found == false) {
+	return pattern_found;
+}
+
+MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
+{
+	if (memPage.loadedData == nullptr) {
 		return nullptr;
 	}
 	//shellcode found! now examin it with more details:
@@ -83,7 +87,6 @@ MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 	//just a regular shellcode...
 	ULONGLONG region_start = memPage.region_start;
 
-	//TODO: differentiate the raport: shellcode vs PE
 	const size_t region_size = size_t (memPage.region_end - region_start);
 	my_report = new MemPageScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
 	my_report->is_executable = true;
@@ -131,7 +134,9 @@ MemPageScanReport* MemPageScanner::scanRemote()
 #ifdef _DEBUG
 			std::cout << std::hex << memPage.start_va << " : Checking for shellcode" << std::endl;
 #endif
-			return this->scanShellcode(memPage);
+			if (isCode(memPage)) {
+				return this->scanShellcode(memPage);
+			}
 		}
 		return nullptr; // not a PE file
 	}

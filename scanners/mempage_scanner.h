@@ -67,6 +67,7 @@ public:
 
 protected:
 	ULONGLONG findPeHeader(MemPageData &memPageData);
+	bool isCode(MemPageData &memPageData);
 	MemPageScanReport* scanShellcode(MemPageData &memPageData);
 
 	bool isDeepScan;
