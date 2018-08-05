@@ -9,9 +9,8 @@
 
 bool MemPageScanner::isCode(MemPageData &memPageData)
 {
-	if (memPageData.loadedData == nullptr) {
-		if (!memPageData.loadRemote()) return false;
-		if (memPageData.loadedData == nullptr) return false;
+	if (!memPage.load()) {
+		return false;
 	}
 
 	BYTE prolog32_pattern[] = { 
@@ -26,13 +25,13 @@ bool MemPageScanner::isCode(MemPageData &memPageData)
 
 	bool pattern_found = false;
 
-	if (find_pattern(memPageData.loadedData, memPageData.loadedSize, prolog32_pattern, sizeof(prolog32_pattern))) {
+	if (find_pattern(memPageData.getLoadedData(), memPageData.getLoadedSize(), prolog32_pattern, sizeof(prolog32_pattern))) {
 #ifdef _DEBUG
 		std::cout << std::hex << memPage.region_start << ": contains 32bit shellcode" << std::endl;
 #endif
 		pattern_found = true;
 	}
-	else if (find_pattern(memPageData.loadedData, memPageData.loadedSize, prolog64_pattern, sizeof(prolog64_pattern))) {
+	else if (find_pattern(memPageData.getLoadedData(), memPageData.getLoadedSize(), prolog64_pattern, sizeof(prolog64_pattern))) {
 #ifdef _DEBUG
 		std::cout << std::hex << memPage.region_start << ": contains 64bit shellcode" << std::endl;
 #endif
@@ -43,7 +42,7 @@ bool MemPageScanner::isCode(MemPageData &memPageData)
 
 MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 {
-	if (memPage.loadedData == nullptr) {
+	if (!memPage.load()) {
 		return nullptr;
 	}
 	//shellcode found! now examin it with more details:

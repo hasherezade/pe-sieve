@@ -17,11 +17,13 @@ public:
 
 	virtual ~MemPageData()
 	{
-		freeRemote();
+		_freeRemote();
 	}
 
 	bool fillInfo();
 	bool isInfoFilled() { return is_info_filled; }
+	size_t getLoadedSize() { return loadedSize; }
+	const PBYTE getLoadedData() { return loadedData;  }
 
 	ULONGLONG start_va;
 	DWORD protection;
@@ -34,27 +36,39 @@ public:
 	ULONGLONG region_start;
 	ULONGLONG region_end;
 
-protected:
-	bool loadRemote();
+	bool load()
+	{
+		if (loadedData) {
+			return true;
+		}
+		if (!_loadRemote()) {
+			return false;
+		}
+		//check again:
+		if (loadedData) {
+			return true;
+		}
+		return true;
+	}
 
-	void freeRemote()
+	// checks if the memory area is mapped 1-to-1 from the file on the disk
+	bool isRealMapping();
+
+protected:
+	bool _loadRemote();
+
+	void _freeRemote()
 	{
 		peconv::free_aligned(loadedData, loadedSize);
 		loadedData = nullptr;
 		loadedSize = 0;
 	}
 
-	// checks if the memory area is mapped 1-to-1 from the file on the disk
-	bool isRealMapping();
-
 	PBYTE loadedData;
 	size_t loadedSize;
 
 	bool is_info_filled;
 	HANDLE processHandle;
-
-	friend class MemPageScanner;
-	friend class ArtefactScanner;
 };
 
 BYTE* find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size);

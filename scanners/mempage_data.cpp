@@ -80,7 +80,7 @@ bool MemPageData::isRealMapping()
 	return is_same;
 }
 
-bool MemPageData::loadRemote()
+bool MemPageData::_loadRemote()
 {
 	peconv::free_pe_buffer(this->loadedData, this->loadedSize);
 	size_t region_size = size_t(this->region_end - this->start_va);
@@ -103,7 +103,7 @@ bool MemPageData::loadRemote()
 		size_read = peconv::read_remote_memory(this->processHandle, (BYTE*)this->start_va, loadedData, loadedSize);
 	}
 	if (size_read == 0) {
-		freeRemote();
+		_freeRemote();
 #ifdef _DEBUG
 		std::cerr << "Cannot read remote memory!" << std::endl;
 #endif

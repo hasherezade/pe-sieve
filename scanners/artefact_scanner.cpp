@@ -49,7 +49,7 @@ ULONGLONG ArtefactScanner::calcPeBase(MemPageData &memPage, BYTE *sec_hdr)
 {
 	ULONGLONG pe_base_offset = 0;
 
-	ULONGLONG hdrs_offset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData;
+	ULONGLONG hdrs_offset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.getLoadedData();
 	for (ULONGLONG offset = hdrs_offset; offset > PAGE_SIZE; offset -= PAGE_SIZE) {
 		pe_base_offset += PAGE_SIZE;
 	}
@@ -65,7 +65,7 @@ size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER
 	DWORD sec_rva = 0;
 	size_t max_sec_size = 0;
 	do {
-		if (!is_valid_section(memPage.loadedData, memPage.loadedSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
+		if (!is_valid_section(memPage.getLoadedData(), memPage.getLoadedSize(), (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
 			break;
 		}
 		sec_rva = curr_sec->VirtualAddress;
@@ -99,13 +99,12 @@ IMAGE_SECTION_HEADER* get_first_section(BYTE *loadedData, size_t loadedSize, IMA
 
 BYTE* ArtefactScanner::findSecByPatterns(MemPageData &memPage)
 {
-	if (memPage.loadedData == nullptr) {
-		if (!memPage.loadRemote()) return nullptr;
-		if (memPage.loadedData == nullptr) return nullptr;
+	if (!memPage.load()) {
+		return nullptr;
 	}
 	//find sections table
 	char sec_name[] = ".text";
-	BYTE *hdr_ptr = find_pattern(memPage.loadedData, memPage.loadedSize, (BYTE*)sec_name, strlen(sec_name));
+	BYTE *hdr_ptr = find_pattern(memPage.getLoadedData(), memPage.getLoadedSize(), (BYTE*)sec_name, strlen(sec_name));
 	if (hdr_ptr) {
 		return hdr_ptr;
 	}
@@ -117,13 +116,13 @@ BYTE* ArtefactScanner::findSecByPatterns(MemPageData &memPage)
 		0x20, 0x00, 0x00, 0x60
 	};
 	const size_t sec_ending_size = sizeof(sec_ending);
-	hdr_ptr = find_pattern(memPage.loadedData, memPage.loadedSize, sec_ending, sec_ending_size);
+	hdr_ptr = find_pattern(memPage.getLoadedData(), memPage.getLoadedSize(), sec_ending, sec_ending_size);
 	if (!hdr_ptr) {
 		return nullptr;
 	}
 	size_t offset_to_bgn = sizeof(IMAGE_SECTION_HEADER) - sec_ending_size;
 	hdr_ptr -= offset_to_bgn;
-	if (!peconv::validate_ptr(memPage.loadedData, memPage.loadedSize, hdr_ptr, sizeof(IMAGE_SECTION_HEADER))) {
+	if (!peconv::validate_ptr(memPage.getLoadedData(), memPage.getLoadedSize(), hdr_ptr, sizeof(IMAGE_SECTION_HEADER))) {
 		return nullptr;
 	}
 	return hdr_ptr;
@@ -136,11 +135,11 @@ IMAGE_SECTION_HEADER* ArtefactScanner::findSectionsHdr(MemPageData &memPage)
 		return nullptr;
 	}
 	DWORD charact = IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_EXECUTE;
-	if (!is_valid_section(memPage.loadedData, memPage.loadedSize, hdr_ptr, charact)) {
+	if (!is_valid_section(memPage.getLoadedData(), memPage.getLoadedSize(), hdr_ptr, charact)) {
 		return nullptr;
 	}
 	// is it really the first section?
-	IMAGE_SECTION_HEADER *first_sec = get_first_section(memPage.loadedData, memPage.loadedSize, (IMAGE_SECTION_HEADER*) hdr_ptr);
+	IMAGE_SECTION_HEADER *first_sec = get_first_section(memPage.getLoadedData(), memPage.getLoadedSize(), (IMAGE_SECTION_HEADER*) hdr_ptr);
 	return (IMAGE_SECTION_HEADER*)first_sec;
 }
 
@@ -229,12 +228,12 @@ IMAGE_FILE_HEADER* ArtefactScanner::findNtFileHdr(BYTE* loadedData, size_t loade
 
 ULONGLONG ArtefactScanner::findMzPeHeader(MemPageData &memPage)
 {
-	if (memPage.loadedData == nullptr) {
-		if (!memPage.loadRemote()) return PE_NOT_FOUND;
-		if (memPage.loadedData == nullptr) return PE_NOT_FOUND;
+	if (!memPage.load()) {
+		return PE_NOT_FOUND;
 	}
-	const size_t scan_size = memPage.loadedSize;
-	BYTE* buffer_ptr = memPage.loadedData;
+
+	const size_t scan_size = memPage.getLoadedSize();
+	BYTE* buffer_ptr = memPage.getLoadedData();
 
 	const size_t minimal_size = sizeof(IMAGE_DOS_HEADER)
 		+ sizeof(IMAGE_FILE_HEADER)
@@ -259,19 +258,20 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 	if (pe_image_base != PE_NOT_FOUND) {
 		size_t offset = pe_image_base - memPage.region_start;
 		std::cout << "PE header found!" << std::endl;
-		nt_file_hdr = findNtFileHdr(memPage.loadedData + offset, memPage.loadedSize - offset);
+
+		nt_file_hdr = findNtFileHdr(memPage.getLoadedData() + offset, memPage.getLoadedSize() - offset);
 	}
 
 	//first try to find section headers:
 	IMAGE_SECTION_HEADER* sec_hdr = findSectionsHdr(memPage);
 
 	if (!nt_file_hdr) {
-		size_t nt_hdr_search_bound = memPage.loadedSize; //the size that should be searched
+		size_t nt_hdr_search_bound = memPage.getLoadedSize(); //the size that should be searched
 		std::cout << "Searching File Header in region:" << std::hex << nt_hdr_search_bound << std::endl;
 		if (sec_hdr) {
-			nt_hdr_search_bound = size_t((ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData);
+			nt_hdr_search_bound = size_t((ULONGLONG)sec_hdr - (ULONGLONG)memPage.getLoadedData());
 		}
-		nt_file_hdr = findNtFileHdr(memPage.loadedData, nt_hdr_search_bound);
+		nt_file_hdr = findNtFileHdr(memPage.getLoadedData(), nt_hdr_search_bound);
 	}
 
 	if (!sec_hdr && !nt_file_hdr) {
@@ -285,12 +285,12 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 	PeArtefacts *peArt = new PeArtefacts();
 	peArt->regionStart =  memPage.region_start;
 	if (sec_hdr) {
-		peArt->secHdrsOffset = size_t((ULONGLONG)sec_hdr - (ULONGLONG)memPage.loadedData);
+		peArt->secHdrsOffset = size_t((ULONGLONG)sec_hdr - (ULONGLONG)memPage.getLoadedData());
 	}
 
 	// if File Header found, use it to validate or find sections headers:
 	if (nt_file_hdr) {
-		size_t nt_offset = size_t((ULONGLONG)nt_file_hdr - (ULONGLONG)memPage.loadedData);
+		size_t nt_offset = size_t((ULONGLONG)nt_file_hdr - (ULONGLONG)memPage.getLoadedData());
 
 		//calculate sections header offset from FileHeader:
 		const size_t headers_size = nt_file_hdr->SizeOfOptionalHeader + sizeof(IMAGE_FILE_HEADER);
@@ -312,8 +312,9 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 			peArt->ntFileHdrsOffset = nt_offset;
 			//sections headers are not detected, try to detect them basing on File Header:
 			std::cout << "sections headers are not detected, try to detect them basing on File Header" << std::endl;
-			sec_hdr = (IMAGE_SECTION_HEADER*) ((ULONGLONG)memPage.loadedData + sec_hdr_offset);
-			size_t count =  count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
+			sec_hdr = (IMAGE_SECTION_HEADER*) ((ULONGLONG)memPage.getLoadedData() + sec_hdr_offset);
+
+			size_t count =  count_section_hdrs(memPage.getLoadedData(), memPage.getLoadedSize(), sec_hdr);
 			if (count > 0) {
 				peArt->secHdrsOffset = sec_hdr_offset;
 			}
@@ -324,7 +325,7 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 		delete peArt;
 		return nullptr;
 	}
-	peArt->secCount = count_section_hdrs(memPage.loadedData, memPage.loadedSize, sec_hdr);
+	peArt->secCount = count_section_hdrs(memPage.getLoadedData(), memPage.getLoadedSize(), sec_hdr);
 	if (!pe_image_base) {
 		pe_image_base = calcPeBase(memPage, (BYTE*)sec_hdr);
 	}
