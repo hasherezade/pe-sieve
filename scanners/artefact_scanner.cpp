@@ -279,7 +279,6 @@ bool ArtefactScanner::setSecHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_S
 
 	// try to find NT header relative to the sections header:
 	size_t nt_hdr_search_bound = size_t((ULONGLONG)_sec_hdr - (ULONGLONG)loadedData);
-	std::cout << "Searching File Header in region:" << std::hex << nt_hdr_search_bound << std::endl;
 
 	//search before sections header:
 	aMap.nt_file_hdr = findNtFileHdr(loadedData, nt_hdr_search_bound);
@@ -324,7 +323,6 @@ bool ArtefactScanner::setNtFileHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAG
 
 	if (!aMap.sec_hdr) {
 		//sections headers are not set yet, try to detect them basing on File Header:
-		std::cout << "sections headers are not detected, try to detect them basing on File Header" << std::endl;
 		IMAGE_SECTION_HEADER *sec_hdr = (IMAGE_SECTION_HEADER*)((ULONGLONG)loadedData + sec_hdr_offset);
 		setSecHdr(aMap, sec_hdr);
 		return true;
@@ -375,9 +373,7 @@ PeArtefacts* ArtefactScanner::generateArtefacts(ArtefactScanner::ArtefactsMappin
 PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage)
 {
 	ArtefactsMapping aMap(memPage);
-	if (findMzPe(aMap)) {
-		std::cout << "PE header found!" << std::endl;
-	}
+	findMzPe(aMap);
 
 	//first try to find section headers:
 	IMAGE_SECTION_HEADER *sec_hdr = findSectionsHdr(memPage);
