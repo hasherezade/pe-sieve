@@ -35,10 +35,11 @@ public:
 		outs << ",\n";
 		outs << "\"is_shellcode\" : ";
 		outs << std::dec << is_shellcode;
-		outs << ",\n";
-
-		outs << "\"is_executable\" : ";
-		outs << std::dec << is_executable;
+		if (!is_executable) {
+			outs << ",\n";
+			outs << "\"is_executable\" : ";
+			outs << std::dec << is_executable;
+		}
 		outs << ",\n";
 		outs << "\"is_manually_loaded\" : ";
 		outs << std::dec << is_manually_loaded;
