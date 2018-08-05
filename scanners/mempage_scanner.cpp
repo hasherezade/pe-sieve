@@ -7,8 +7,6 @@
 
 #define PE_NOT_FOUND 0
 
-
-
 bool MemPageScanner::isCode(MemPageData &memPageData)
 {
 	if (memPageData.loadedData == nullptr) {
@@ -16,32 +14,29 @@ bool MemPageScanner::isCode(MemPageData &memPageData)
 		if (memPageData.loadedData == nullptr) return false;
 	}
 
-	BYTE prolog32_pattern[] = { 0x55, 0x8b, 0xEC };
-	BYTE prolog64_pattern[] = { 0x40, 0x53, 0x48, 0x83, 0xEC, 0x20 };
+	BYTE prolog32_pattern[] = { 
+		0x55, // PUSH EBP
+		0x8b, 0xEC // MOV EBP, ESP
+	};
 
-	size_t prolog32_size = sizeof(prolog32_pattern);
-	size_t prolog64_size = sizeof(prolog64_pattern);
-	bool is32bit = false;
-
-	BYTE* buffer = memPageData.loadedData;
+	BYTE prolog64_pattern[] = {
+		0x40, 0x53, // PUSH RBX
+		0x48, 0x83, 0xEC // SUB RSP, ??
+	};
 
 	bool pattern_found = false;
-	for (size_t i = 0; (i + prolog64_size) < memPageData.loadedSize; i++) {
-		if (memcmp(buffer + i, prolog32_pattern, prolog32_size) == 0) {
-			pattern_found = true;
-			is32bit = true;
+
+	if (find_pattern(memPageData.loadedData, memPageData.loadedSize, prolog32_pattern, sizeof(prolog32_pattern))) {
 #ifdef _DEBUG
-			std::cout << std::hex << memPage.region_start << ": contains 32bit shellcode" << std::endl;
+		std::cout << std::hex << memPage.region_start << ": contains 32bit shellcode" << std::endl;
 #endif
-			break;
-		}
-		if (memcmp(buffer + i, prolog64_pattern, prolog64_size) == 0) {
-			pattern_found = true;
+		pattern_found = true;
+	}
+	else if (find_pattern(memPageData.loadedData, memPageData.loadedSize, prolog64_pattern, sizeof(prolog64_pattern))) {
 #ifdef _DEBUG
-			std::cout << std::hex << memPage.region_start << " : contains 64bit shellcode" << std::hex << memPage.region_start << std::endl;
+		std::cout << std::hex << memPage.region_start << ": contains 64bit shellcode" << std::endl;
 #endif
-			break;
-		}
+		pattern_found = true;
 	}
 	return pattern_found;
 }
