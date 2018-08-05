@@ -265,6 +265,7 @@ bool ArtefactScanner::findMzPe(ArtefactScanner::ArtefactsMapping &mapping)
 
 	size_t offset = mapping.pe_image_base - memPage.region_start;
 	mapping.nt_file_hdr = findNtFileHdr(loadedData + offset, loadedSize - offset);
+	mapping.isMzPeFound = true;
 	return true;
 }
 
@@ -354,6 +355,7 @@ PeArtefacts* ArtefactScanner::generateArtefacts(ArtefactScanner::ArtefactsMappin
 
 	PeArtefacts *peArt = new PeArtefacts();
 	peArt->regionStart =  memPage.region_start;
+	peArt->isMzPeFound = aMap.isMzPeFound;
 
 	peArt->secHdrsOffset = size_t((ULONGLONG)aMap.sec_hdr - (ULONGLONG)loadedData);
 	peArt->secCount = count_section_hdrs(loadedData, loadedSize, aMap.sec_hdr);
@@ -439,14 +441,11 @@ ArtefactScanReport* ArtefactScanner::scanRemote()
 		return nullptr;
 	}
 	const size_t region_size = size_t(memPage.region_end - region_start);
+
 	ArtefactScanReport *my_report = new ArtefactScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS, *peArt);
 	my_report->is_manually_loaded = !memPage.is_listed_module;
 	my_report->protection = memPage.protection;
 
-	size_t total_region_size = peArt->calculatedImgSize + peArt->peBaseOffset;
-	if (total_region_size > region_size) {
-		my_report->moduleSize = total_region_size;
-	}
 	delete peArt;
 	return my_report;
 }

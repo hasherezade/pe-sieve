@@ -81,12 +81,18 @@ class ArtefactScanReport : public MemPageScanReport
 public:
 	ArtefactScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, t_scan_status status, PeArtefacts &peArt)
 		: MemPageScanReport(processHandle, _module, _moduleSize, status),
-		artefacts(peArt)
+		artefacts(peArt), 
+		initialRegionSize(_moduleSize)
 	{
 		is_executable = true;
 		is_manually_loaded = true;
 		protection = 0;
-		is_shellcode = true;
+		is_shellcode = isShellcode(peArt);
+
+		size_t total_region_size = peArt.calculatedImgSize + peArt.peBaseOffset;
+		if (total_region_size > this->moduleSize) {
+			this->moduleSize = total_region_size;
+		}
 	}
 
 	const virtual bool toJSON(std::stringstream &outs)
@@ -101,6 +107,23 @@ public:
 	}
 
 	PeArtefacts artefacts;
+	size_t initialRegionSize;
+
+protected:
+	bool isShellcode(PeArtefacts &peArt)
+	{
+		bool is_shellcode = false;
+		if (peArt.peBaseOffset > 0) {
+			// the total region is bigger than the PE
+			is_shellcode = true;
+		}
+		size_t pe_region_size = peArt.calculatedImgSize + peArt.peBaseOffset;
+		if (pe_region_size < this->initialRegionSize) {
+			// the total region is bigger than the PE
+			is_shellcode = true;
+		}
+		return is_shellcode;
+	}
 };
 
 class ArtefactScanner {
@@ -128,6 +151,7 @@ protected:
 			pe_image_base = PE_NOT_FOUND;
 			nt_file_hdr = nullptr;
 			sec_hdr = nullptr;
+			isMzPeFound = false;
 		}
 
 		bool foundAny()
@@ -142,6 +166,7 @@ protected:
 		ULONGLONG pe_image_base;
 		IMAGE_FILE_HEADER* nt_file_hdr;
 		IMAGE_SECTION_HEADER* sec_hdr;
+		bool isMzPeFound;
 	};
 
 	void deletePrevPage()
