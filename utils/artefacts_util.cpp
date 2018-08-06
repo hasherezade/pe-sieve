@@ -29,15 +29,9 @@ bool is_code(BYTE *loadedData, size_t loadedSize)
 	bool pattern_found = false;
 
 	if (find_pattern(loadedData, loadedSize, prolog32_pattern, sizeof(prolog32_pattern))) {
-#ifdef _DEBUG
-		std::cout << std::hex << memPage.region_start << ": contains 32bit shellcode" << std::endl;
-#endif
 		pattern_found = true;
 	}
 	else if (find_pattern(loadedData, loadedSize, prolog64_pattern, sizeof(prolog64_pattern))) {
-#ifdef _DEBUG
-		std::cout << std::hex << memPage.region_start << ": contains 64bit shellcode" << std::endl;
-#endif
 		pattern_found = true;
 	}
 	return pattern_found;
