@@ -165,8 +165,6 @@ CodeScanReport* HookScanner::scanRemote()
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(moduleData.original_module, moduleData.original_size, i);
 		if (section_hdr == nullptr) continue;
 
-		//get the code section from the remote module:
-		bool to_scan = false;
 		if (!(section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
 			&& !remoteModData.isSectionExecutable(i))
 		{
