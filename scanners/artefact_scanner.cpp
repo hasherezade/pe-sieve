@@ -1,5 +1,6 @@
 #include "artefact_scanner.h"
 
+#include "../utils/artefacts_util.h"
 #include "../utils/workingset_enum.h"
 
 #include "peconv.h"

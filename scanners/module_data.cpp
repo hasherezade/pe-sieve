@@ -158,6 +158,7 @@ bool RemoteModuleData::isSectionExecutable(size_t section_number)
 		return false;
 	}
 	MEMORY_BASIC_INFORMATION page_info = { 0 };
+	
 	SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID) start_va, &page_info, sizeof(page_info));
 	if (out != sizeof(page_info)) {
 #ifdef _DEBUG
@@ -165,8 +166,25 @@ bool RemoteModuleData::isSectionExecutable(size_t section_number)
 #endif
 		return false;
 	}
+#ifdef _DEBUG
+	std::cout << std::hex << "Sec: " << section_number << " VA: " << start_va << " t: " << page_info.Type << " p: " << page_info.Protect << std::endl;
+#endif
 	DWORD protection = page_info.Protect;
-	bool is_any_exec = (protection & PAGE_EXECUTE_READWRITE)|| (protection & PAGE_EXECUTE_READ);
+	DWORD initial_protect = page_info.AllocationProtect;
+
+	bool is_any_exec = false;
+	if (page_info.Type == MEM_IMAGE) {
+		is_any_exec = (protection & SECTION_MAP_EXECUTE)
+			|| (protection & SECTION_MAP_EXECUTE_EXPLICIT);
+	}
+	else {
+		is_any_exec = (initial_protect & PAGE_EXECUTE_READWRITE)
+			|| (initial_protect & PAGE_EXECUTE_READ)
+			|| (initial_protect & PAGE_EXECUTE)
+			|| (protection & PAGE_EXECUTE_READWRITE)
+			|| (protection & PAGE_EXECUTE_READ)
+			|| (initial_protect & PAGE_EXECUTE);
+	}
 	return is_any_exec;
 }
 

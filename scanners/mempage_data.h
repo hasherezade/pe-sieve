@@ -70,5 +70,3 @@ protected:
 	bool is_info_filled;
 	HANDLE processHandle;
 };
-
-BYTE* find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size);
