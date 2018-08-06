@@ -88,7 +88,8 @@ t_scan_status HookScanner::scanSection(PeSection &originalSec, PeSection &remote
 		return SCAN_ERROR;
 	}
 	clearIAT(originalSec, remoteSec);
-		
+	//TODO: handle sections that have inside Delayed Imports (they give false positives)
+
 	size_t smaller_size = originalSec.loadedSize > remoteSec.loadedSize ? remoteSec.loadedSize : originalSec.loadedSize;
 #ifdef _DEBUG
 	std::cout << "Code RVA: " 
@@ -129,38 +130,28 @@ CodeScanReport* HookScanner::scanRemote()
 		if (section_hdr == nullptr) continue;
 
 		//get the code section from the remote module:
-
-		PeSection *remoteSec = nullptr;
 		bool to_scan = false;
-		if ((section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)) {
-			to_scan = true;
+		if (!(section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
+			&& !remoteModData.isSectionExecutable(i))
+		{
+			//not executable, skip it
+			continue;
 		}
-		else if (remoteModData.isSectionExecutable(i)) {
-			remoteSec = new PeSection(remoteModData, i);
-			if (!remoteSec->isInitialized()) {
-				delete remoteSec;
-				remoteSec = nullptr;
-			}
-			if (remoteSec && is_code(remoteSec->loadedSection, remoteSec->loadedSize)) {
-				to_scan = true;
-			}
-			else {
-				std::cout << "Code pattern NOT detected!" << std::endl;
-			}
+
+		//get the code section from the remote module:
+		PeSection remoteSec(remoteModData, i);
+		if (!remoteSec.isInitialized()) {
+			continue;
 		}
-		//TODO: handle sections that have inside Delayed Imports (they give false positives)
-		if (to_scan) {
-			std::cout << "Scanning executable section: " << i << std::endl;
+		if ( i == 0 // always scan first section
+			|| is_code(remoteSec.loadedSection, remoteSec.loadedSize))
+		{
+			//std::cout << "Scanning executable section: " << i << std::endl;
 			PeSection originalSec(moduleData, i);
-			if (!remoteSec) {
-				remoteSec = new PeSection(remoteModData, i);
-			}
-			last_res = scanSection(originalSec, *remoteSec, *my_report);
+			last_res = scanSection(originalSec, remoteSec, *my_report);
 			if (last_res == SCAN_ERROR) errors++;
 			else if (last_res == SCAN_SUSPICIOUS) modified++;
 		}
-		delete remoteSec;
-		remoteSec = nullptr;
 	}
 
 	//post-process collected patches:
