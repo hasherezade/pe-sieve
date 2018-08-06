@@ -46,6 +46,41 @@ bool HookScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
 	return true;
 }
 
+bool HookScanner::clearExports(PeSection &originalSec, PeSection &remoteSec)
+{
+	IMAGE_DATA_DIRECTORY* dir = peconv::get_directory_entry(moduleData.original_module, IMAGE_DIRECTORY_ENTRY_EXPORT);
+	if (!dir) {
+		return false;
+	}
+	DWORD iat_rva = dir->VirtualAddress;
+	DWORD iat_size = dir->Size;
+
+	if (originalSec.isContained(iat_rva, iat_size))
+	{
+#ifdef _DEBUG
+		std::cout << "Exports are  is in Code section!" << std::endl;
+#endif
+		DWORD offset = iat_rva - originalSec.rva;
+		IMAGE_EXPORT_DIRECTORY *exports = (IMAGE_EXPORT_DIRECTORY*) ((ULONGLONG)originalSec.loadedSection + offset);
+		if (!peconv::validate_ptr(originalSec.loadedSection, originalSec.loadedSize, exports, sizeof(IMAGE_EXPORT_DIRECTORY))) {
+			return false;
+		}
+		DWORD functions_offset = exports->AddressOfFunctions - originalSec.rva;
+		DWORD functions_count = exports->NumberOfFunctions;
+
+		const size_t func_area_size = functions_count * sizeof(DWORD);
+		if (!peconv::validate_ptr(originalSec.loadedSection, originalSec.loadedSize, 
+			originalSec.loadedSection + functions_offset, 
+			func_area_size))
+		{
+			return false;
+		}
+		memset(originalSec.loadedSection + functions_offset, 0, func_area_size);
+		memset(remoteSec.loadedSection + functions_offset, 0, func_area_size);
+	}
+	return true;
+}
+
 size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList)
 {
 	PatchAnalyzer analyzer(moduleData, section_rva, patched_code, code_size);
@@ -88,6 +123,7 @@ t_scan_status HookScanner::scanSection(PeSection &originalSec, PeSection &remote
 		return SCAN_ERROR;
 	}
 	clearIAT(originalSec, remoteSec);
+	clearExports(originalSec, remoteSec);
 	//TODO: handle sections that have inside Delayed Imports (they give false positives)
 
 	size_t smaller_size = originalSec.loadedSize > remoteSec.loadedSize ? remoteSec.loadedSize : originalSec.loadedSize;

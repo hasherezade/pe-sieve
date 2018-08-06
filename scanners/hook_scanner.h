@@ -45,5 +45,7 @@ private:
 
 	bool clearIAT(PeSection &originalSec, PeSection &remoteSec);
 
+	bool clearExports(PeSection &originalSec, PeSection &remoteSec);
+
 	size_t collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList);
 };
