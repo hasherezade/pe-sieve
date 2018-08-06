@@ -41,7 +41,7 @@ public:
 private:
 	bool postProcessScan(IN OUT CodeScanReport &report);
 
-	t_scan_status scanSection(size_t section_number, IN OUT CodeScanReport &report);
+	t_scan_status scanSection(PeSection &originalSec, PeSection &remoteSec, IN OUT CodeScanReport &report);
 
 	bool clearIAT(PeSection &originalSec, PeSection &remoteSec);
 

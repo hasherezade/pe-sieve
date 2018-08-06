@@ -4,6 +4,7 @@
 
 #include "../utils/path_converter.h"
 #include "../utils/workingset_enum.h"
+#include "../utils/artefacts_util.h"
 
 #define PE_NOT_FOUND 0
 
@@ -12,32 +13,7 @@ bool MemPageScanner::isCode(MemPageData &memPageData)
 	if (!memPage.load()) {
 		return false;
 	}
-
-	BYTE prolog32_pattern[] = { 
-		0x55, // PUSH EBP
-		0x8b, 0xEC // MOV EBP, ESP
-	};
-
-	BYTE prolog64_pattern[] = {
-		0x40, 0x53, // PUSH RBX
-		0x48, 0x83, 0xEC // SUB RSP, ??
-	};
-
-	bool pattern_found = false;
-
-	if (find_pattern(memPageData.getLoadedData(), memPageData.getLoadedSize(), prolog32_pattern, sizeof(prolog32_pattern))) {
-#ifdef _DEBUG
-		std::cout << std::hex << memPage.region_start << ": contains 32bit shellcode" << std::endl;
-#endif
-		pattern_found = true;
-	}
-	else if (find_pattern(memPageData.getLoadedData(), memPageData.getLoadedSize(), prolog64_pattern, sizeof(prolog64_pattern))) {
-#ifdef _DEBUG
-		std::cout << std::hex << memPage.region_start << ": contains 64bit shellcode" << std::endl;
-#endif
-		pattern_found = true;
-	}
-	return pattern_found;
+	return is_code(memPageData.getLoadedData(), memPageData.getLoadedSize());
 }
 
 MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)

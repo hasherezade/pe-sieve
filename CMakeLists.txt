@@ -54,6 +54,7 @@ set (utils_srcs
 	utils/path_converter.cpp
 	utils/workingset_enum.cpp
 	utils/modules_enum.cpp
+	utils/artefacts_util.cpp
 )
 
 set (utils_hdrs
@@ -62,6 +63,7 @@ set (utils_hdrs
 	utils/process_privilege.h
 	utils/workingset_enum.h
 	utils/modules_enum.h
+	utils/artefacts_util.h
 )
 
 set (srcs

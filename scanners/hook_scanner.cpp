@@ -3,7 +3,9 @@
 #include "peconv.h"
 
 #include "patch_analyzer.h"
+#include "../utils/artefacts_util.h"
 //---
+#include <iostream>
 
 size_t CodeScanReport::generateTags(std::string reportPath)
 {
@@ -44,7 +46,7 @@ bool HookScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
 	return true;
 }
 
-size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, PatchList &patchesList)
+size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList)
 {
 	PatchAnalyzer analyzer(moduleData, section_rva, patched_code, code_size);
 	PatchList::Patch *currPatch = nullptr;
@@ -80,19 +82,11 @@ size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE pat
 	return patchesList.size();
 }
 
-t_scan_status HookScanner::scanSection(size_t section_number, CodeScanReport& report)
+t_scan_status HookScanner::scanSection(PeSection &originalSec, PeSection &remoteSec, IN OUT CodeScanReport& report)
 {
-	//get the code section from the remote module:
-	PeSection remoteSec(remoteModData, section_number);
-	if (!remoteSec.isInitialized()) {
+	if (!originalSec.isInitialized() || !remoteSec.isInitialized()) {
 		return SCAN_ERROR;
 	}
-
-	PeSection originalSec(moduleData, section_number);
-	if (!originalSec.isInitialized()) {
-		return SCAN_ERROR;
-	}
-
 	clearIAT(originalSec, remoteSec);
 		
 	size_t smaller_size = originalSec.loadedSize > remoteSec.loadedSize ? remoteSec.loadedSize : originalSec.loadedSize;
@@ -119,6 +113,7 @@ t_scan_status HookScanner::scanSection(size_t section_number, CodeScanReport& re
 	return SCAN_NOT_SUSPICIOUS; //not modified
 }
 
+
 CodeScanReport* HookScanner::scanRemote()
 {
 	CodeScanReport *my_report = new CodeScanReport(this->processHandle, moduleData.moduleHandle, moduleData.original_size);
@@ -132,14 +127,40 @@ CodeScanReport* HookScanner::scanRemote()
 	for (size_t i = 0; i < sec_count ; i++) {
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(moduleData.original_module, moduleData.original_size, i);
 		if (section_hdr == nullptr) continue;
-		if ( (section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
-			||( (i == 0) && remoteModData.isSectionExecutable(i)) ) // for now do it only for the first section
-			//TODO: handle sections that have inside Delayed Imports (they give false positives)
-		{
-			last_res = scanSection(i, *my_report);
+
+		//get the code section from the remote module:
+
+		PeSection *remoteSec = nullptr;
+		bool to_scan = false;
+		if ((section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)) {
+			to_scan = true;
+		}
+		else if (remoteModData.isSectionExecutable(i)) {
+			remoteSec = new PeSection(remoteModData, i);
+			if (!remoteSec->isInitialized()) {
+				delete remoteSec;
+				remoteSec = nullptr;
+			}
+			if (remoteSec && is_code(remoteSec->loadedSection, remoteSec->loadedSize)) {
+				to_scan = true;
+			}
+			else {
+				std::cout << "Code pattern NOT detected!" << std::endl;
+			}
+		}
+		//TODO: handle sections that have inside Delayed Imports (they give false positives)
+		if (to_scan) {
+			std::cout << "Scanning executable section: " << i << std::endl;
+			PeSection originalSec(moduleData, i);
+			if (!remoteSec) {
+				remoteSec = new PeSection(remoteModData, i);
+			}
+			last_res = scanSection(originalSec, *remoteSec, *my_report);
 			if (last_res == SCAN_ERROR) errors++;
 			else if (last_res == SCAN_SUSPICIOUS) modified++;
 		}
+		delete remoteSec;
+		remoteSec = nullptr;
 	}
 
 	//post-process collected patches:
