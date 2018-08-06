@@ -229,10 +229,10 @@ IMAGE_FILE_HEADER* ArtefactScanner::findNtFileHdr(BYTE* loadedData, size_t loade
 	return reinterpret_cast<IMAGE_FILE_HEADER*>(arch_ptr);
 }
 
-ULONGLONG ArtefactScanner::findMzPeHeader(MemPageData &memPage)
+IMAGE_DOS_HEADER* ArtefactScanner::findMzPeHeader(MemPageData &memPage)
 {
 	if (!memPage.load()) {
-		return PE_NOT_FOUND;
+		return nullptr;
 	}
 	const size_t scan_size = memPage.getLoadedSize();
 	BYTE* buffer_ptr = memPage.getLoadedData();
@@ -246,26 +246,45 @@ ULONGLONG ArtefactScanner::findMzPeHeader(MemPageData &memPage)
 		if ((scan_size - i) < minimal_size) {
 			break;
 		}
-		if (peconv::get_nt_hrds(buffer_ptr + i, scan_size - i) != nullptr) {
-			return  memPage.region_start + i;
+		BYTE *dos_hdr = peconv::get_nt_hrds(buffer_ptr + i, scan_size - i);
+		if (dos_hdr != nullptr) {
+			return (IMAGE_DOS_HEADER*) dos_hdr;
 		}
 	}
-	return PE_NOT_FOUND;
+	return nullptr;
 }
 
-bool ArtefactScanner::findMzPe(ArtefactScanner::ArtefactsMapping &mapping)
+bool ArtefactScanner::findMzPe(ArtefactScanner::ArtefactsMapping &aMap)
 {
-	mapping.pe_image_base = findMzPeHeader(mapping.memPage);
-	if (mapping.pe_image_base == PE_NOT_FOUND) {
+	IMAGE_DOS_HEADER* dos_hdr = findMzPeHeader(aMap.memPage);
+	if (!dos_hdr) {
 		return false;
 	}
+	BYTE* loadedData = aMap.memPage.getLoadedData();
+	size_t loadedSize = aMap.memPage.getLoadedSize();
+	if (!peconv::validate_ptr(loadedData, loadedSize, dos_hdr, sizeof(IMAGE_DOS_HEADER))) {
+		return false;
+	}
+	aMap.pe_image_base = memPage.region_start + ((ULONGLONG)dos_hdr - (ULONGLONG)loadedData);
 
-	BYTE* loadedData = mapping.memPage.getLoadedData();
-	size_t loadedSize = mapping.memPage.getLoadedSize();
+	if (setMzPe(aMap, dos_hdr)) {
+		aMap.isMzPeFound = true;
+	}
+	return true;
+}
 
-	size_t offset = mapping.pe_image_base - memPage.region_start;
-	mapping.nt_file_hdr = findNtFileHdr(loadedData + offset, loadedSize - offset);
-	mapping.isMzPeFound = true;
+bool ArtefactScanner::setMzPe(ArtefactsMapping &aMap, IMAGE_DOS_HEADER* _dos_hdr)
+{
+	if (!_dos_hdr) return false;
+	
+	BYTE* loadedData = aMap.memPage.getLoadedData();
+	size_t loadedSize = aMap.memPage.getLoadedSize();
+
+	IMAGE_NT_HEADERS32* pe_hdrs = (IMAGE_NT_HEADERS32*)((ULONGLONG)_dos_hdr + _dos_hdr->e_lfanew);
+	if (!peconv::validate_ptr(loadedData, loadedSize, pe_hdrs, sizeof(IMAGE_NT_HEADERS32))) {
+		return false;
+	}
+	setNtFileHdr(aMap, &pe_hdrs->FileHeader);
 	return true;
 }
 

@@ -177,9 +177,9 @@ protected:
 		this->prevMemPage = nullptr;
 	}
 
-	ULONGLONG findMzPeHeader(MemPageData &memPage);
 
 	bool findMzPe(ArtefactsMapping &mapping);
+	bool setMzPe(ArtefactsMapping &mapping, IMAGE_DOS_HEADER* _dos_hdr);
 	bool setSecHdr(ArtefactsMapping &mapping, IMAGE_SECTION_HEADER* _sec_hdr);
 	bool setNtFileHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_FILE_HEADER* _nt_hdr);
 	PeArtefacts *generateArtefacts(ArtefactsMapping &aMap);
@@ -193,6 +193,7 @@ protected:
 	IMAGE_FILE_HEADER* findNtFileHdr(BYTE* loadedData, size_t loadedSize);
 	BYTE* findSecByPatterns(MemPageData &memPage);
 	IMAGE_SECTION_HEADER* findSectionsHdr(MemPageData &memPageData);
+	IMAGE_DOS_HEADER* findMzPeHeader(MemPageData &memPage);
 
 	HANDLE processHandle;
 	MemPageData &memPage;
