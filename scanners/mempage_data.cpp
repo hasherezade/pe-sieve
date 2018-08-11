@@ -26,6 +26,21 @@ bool MemPageData::fillInfo()
 	return true;
 }
 
+bool MemPageData::hasMappedName()
+{
+	if (!isInfoFilled() && !fillInfo()) {
+		return nullptr;
+	}
+	std::string mapped_filename = RemoteModuleData::getMappedName(this->processHandle, (HMODULE)this->alloc_base);
+	if (mapped_filename.length() == 0) {
+#ifdef _DEBUG
+		std::cerr << "Could not retrieve name" << std::endl;
+#endif
+		return false;
+}
+	return true;
+}
+
 bool MemPageData::isRealMapping()
 {
 	if (this->loadedData == nullptr && !fillInfo()) {

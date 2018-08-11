@@ -52,10 +52,6 @@ MemPageScanReport* MemPageScanner::scanRemote()
 	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
 		return nullptr;
 	}
-	if (memPage.mapping_type == MEM_IMAGE) {
-		//probably legit
-		return nullptr;
-	}
 
 	// is the page executable?
 	bool is_any_exec = (memPage.initial_protect & PAGE_EXECUTE_READWRITE)
@@ -65,22 +61,25 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		|| (memPage.protection & PAGE_EXECUTE_READ)
 		|| (memPage.initial_protect & PAGE_EXECUTE);
 
-	if (!is_any_exec && memPage.is_listed_module) {
-		// the header is not executable + the module was already listed - > probably not interesting
-#ifdef _DEBUG
-		std::cout << std::hex << memPage.start_va << " : Aleady listed" << std::endl;
-#endif
+	if (!is_any_exec) {
+		// probably not interesting
 		return nullptr;
 	}
-	if (is_any_exec && (memPage.mapping_type == MEM_PRIVATE ||
-		(memPage.mapping_type == MEM_MAPPED && !memPage.isRealMapping())))
-	{
-		if (isCode(memPage)) {
+
+	if (memPage.mapping_type == MEM_IMAGE && memPage.hasMappedName()) {
+		//probably legit
+		return nullptr;
+	}
+	if (memPage.mapping_type == MEM_MAPPED && memPage.isRealMapping()) {
+		//probably legit
+		return nullptr;
+	}
+
+	if (is_any_exec && isCode(memPage)) {
 #ifdef _DEBUG
-			std::cout << std::hex << memPage.start_va << ": Code pattern found, scanning..." << std::endl;
+		std::cout << std::hex << memPage.start_va << ": Code pattern found, scanning..." << std::endl;
 #endif
-			return this->scanShellcode(memPage);
-		}
+		return this->scanShellcode(memPage);
 	}
 	return nullptr;
 }

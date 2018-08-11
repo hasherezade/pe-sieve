@@ -51,6 +51,7 @@ public:
 		return true;
 	}
 
+	bool hasMappedName();
 	// checks if the memory area is mapped 1-to-1 from the file on the disk
 	bool isRealMapping();
 
