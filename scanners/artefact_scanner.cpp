@@ -459,7 +459,7 @@ ArtefactScanReport* ArtefactScanner::scanRemote()
 	const size_t region_size = size_t(memPage.region_end - region_start);
 
 	ArtefactScanReport *my_report = new ArtefactScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS, *peArt);
-	my_report->is_manually_loaded = !memPage.is_listed_module;
+	my_report->is_listed_module = !memPage.is_listed_module;
 	my_report->protection = memPage.protection;
 
 	delete peArt;

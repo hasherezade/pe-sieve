@@ -15,7 +15,7 @@ public:
 		: ModuleScanReport(processHandle, _module, _moduleSize, status)
 	{
 		 is_executable = false;
-		 is_manually_loaded = false;
+		 is_listed_module = false;
 		 protection = 0;
 		 is_shellcode = false; //PE file
 		 is_doppel = false;
@@ -47,15 +47,15 @@ public:
 			outs << std::dec << is_doppel;
 		}
 		outs << ",\n";
-		outs << "\"is_manually_loaded\" : ";
-		outs << std::dec << is_manually_loaded;
+		outs << "\"is_listed_module\" : ";
+		outs << std::dec << is_listed_module;
 		outs << ",\n";
 		outs << "\"protection\" : ";
 		outs << std::dec << protection;
 	}
 
 	bool is_executable;
-	bool is_manually_loaded;
+	bool is_listed_module;
 	bool is_shellcode;
 	bool is_doppel;
 	DWORD protection;

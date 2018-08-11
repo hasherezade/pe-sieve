@@ -85,7 +85,6 @@ public:
 		initialRegionSize(_moduleSize)
 	{
 		is_executable = true;
-		is_manually_loaded = true;
 		protection = 0;
 		is_shellcode = false; // isShellcode(peArt);
 
