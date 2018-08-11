@@ -40,10 +40,8 @@ MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 	ULONGLONG region_start = memPage.region_start;
 	const size_t region_size = size_t (memPage.region_end - region_start);
 	my_report = new MemPageScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
-	my_report->is_executable = true;
-	my_report->is_manually_loaded = !memPage.is_listed_module;
-	my_report->protection = memPage.protection;
-	my_report->is_shellcode = true;
+	my_report->has_pe = false;
+	my_report->has_shellcode = true;
 	return my_report;
 }
 
@@ -65,21 +63,31 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		// probably not interesting
 		return nullptr;
 	}
-
+	bool is_doppel = false;
 	if (memPage.mapping_type == MEM_IMAGE && memPage.hasMappedName()) {
 		//probably legit
 		return nullptr;
+	}
+	else {
+		is_doppel = true;
 	}
 	if (memPage.mapping_type == MEM_MAPPED && memPage.isRealMapping()) {
 		//probably legit
 		return nullptr;
 	}
-
+	MemPageScanReport* my_report = nullptr;
 	if (is_any_exec && isCode(memPage)) {
 #ifdef _DEBUG
 		std::cout << std::hex << memPage.start_va << ": Code pattern found, scanning..." << std::endl;
 #endif
-		return this->scanShellcode(memPage);
+		my_report = this->scanShellcode(memPage);
 	}
-	return nullptr;
+	if (!my_report) {
+		return nullptr;
+	}
+	my_report->is_executable = true;
+	my_report->is_listed_module = !memPage.is_listed_module;
+	my_report->protection = memPage.protection;
+	my_report->is_doppel = is_doppel;
+	return my_report;
 }

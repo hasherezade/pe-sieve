@@ -85,9 +85,9 @@ public:
 		initialRegionSize(_moduleSize)
 	{
 		is_executable = true;
-		is_manually_loaded = true;
 		protection = 0;
-		is_shellcode = isShellcode(peArt);
+		has_pe = true;
+		has_shellcode = isShellcode(peArt);
 
 		size_t total_region_size = peArt.calculatedImgSize + peArt.peBaseOffset;
 		if (total_region_size > this->moduleSize) {
@@ -116,12 +116,12 @@ protected:
 		if (peArt.peBaseOffset > 0) {
 			// the total region is bigger than the PE
 			is_shellcode = true;
-		}
+		}/*
 		size_t pe_region_size = peArt.calculatedImgSize + peArt.peBaseOffset;
 		if (pe_region_size < this->initialRegionSize) {
 			// the total region is bigger than the PE
 			is_shellcode = true;
-		}
+		}*/
 		return is_shellcode;
 	}
 };

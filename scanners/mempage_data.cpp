@@ -37,7 +37,7 @@ bool MemPageData::hasMappedName()
 		std::cerr << "Could not retrieve name" << std::endl;
 #endif
 		return false;
-}
+	}
 	return true;
 }
 

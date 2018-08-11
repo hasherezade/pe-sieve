@@ -15,9 +15,11 @@ public:
 		: ModuleScanReport(processHandle, _module, _moduleSize, status)
 	{
 		 is_executable = false;
-		 is_manually_loaded = false;
+		 is_listed_module = false;
 		 protection = 0;
-		 is_shellcode = false; //PE file
+		 has_pe = false; //not a PE file
+		 has_shellcode = true;
+		 is_doppel = false;
 	}
 
 	const virtual bool toJSON(std::stringstream &outs)
@@ -33,24 +35,34 @@ public:
 	{
 		ModuleScanReport::toJSON(outs);
 		outs << ",\n";
-		outs << "\"is_shellcode\" : ";
-		outs << std::dec << is_shellcode;
+		outs << "\"has_pe\" : ";
+		outs << std::dec << has_pe;
+		outs << ",\n";
+		outs << "\"has_shellcode\" : ";
+		outs << std::dec << has_shellcode;
 		if (!is_executable) {
 			outs << ",\n";
 			outs << "\"is_executable\" : ";
 			outs << std::dec << is_executable;
 		}
+		if (is_doppel) {
+			outs << ",\n";
+			outs << "\"is_doppel\" : ";
+			outs << std::dec << is_doppel;
+		}
 		outs << ",\n";
-		outs << "\"is_manually_loaded\" : ";
-		outs << std::dec << is_manually_loaded;
+		outs << "\"is_listed_module\" : ";
+		outs << std::dec << is_listed_module;
 		outs << ",\n";
 		outs << "\"protection\" : ";
 		outs << std::dec << protection;
 	}
 
 	bool is_executable;
-	bool is_manually_loaded;
-	bool is_shellcode;
+	bool is_listed_module;
+	bool has_pe;
+	bool has_shellcode;
+	bool is_doppel;
 	DWORD protection;
 };
 
