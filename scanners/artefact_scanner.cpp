@@ -249,7 +249,7 @@ IMAGE_DOS_HEADER* ArtefactScanner::findMzPeHeader(MemPageData &memPage)
 		}
 		BYTE *dos_hdr = peconv::get_nt_hrds(buffer_ptr + i, scan_size - i);
 		if (dos_hdr != nullptr) {
-			return (IMAGE_DOS_HEADER*) dos_hdr;
+			return (IMAGE_DOS_HEADER*)(buffer_ptr + i);
 		}
 	}
 	return nullptr;
@@ -266,7 +266,7 @@ bool ArtefactScanner::findMzPe(ArtefactScanner::ArtefactsMapping &aMap)
 	if (!peconv::validate_ptr(loadedData, loadedSize, dos_hdr, sizeof(IMAGE_DOS_HEADER))) {
 		return false;
 	}
-	aMap.pe_image_base = memPage.region_start + ((ULONGLONG)dos_hdr - (ULONGLONG)loadedData);
+	aMap.pe_image_base = aMap.memPage.region_start + ((ULONGLONG)dos_hdr - (ULONGLONG)loadedData);
 
 	if (setMzPe(aMap, dos_hdr)) {
 		aMap.isMzPeFound = true;
