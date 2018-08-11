@@ -29,7 +29,7 @@ bool MemPageData::fillInfo()
 bool MemPageData::hasMappedName()
 {
 	if (!isInfoFilled() && !fillInfo()) {
-		return nullptr;
+		return false;
 	}
 	std::string mapped_filename = RemoteModuleData::getMappedName(this->processHandle, (HMODULE)this->alloc_base);
 	if (mapped_filename.length() == 0) {
