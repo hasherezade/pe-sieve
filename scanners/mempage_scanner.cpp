@@ -40,7 +40,8 @@ MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 	ULONGLONG region_start = memPage.region_start;
 	const size_t region_size = size_t (memPage.region_end - region_start);
 	my_report = new MemPageScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
-	my_report->is_shellcode = true;
+	my_report->has_pe = false;
+	my_report->has_shellcode = true;
 	return my_report;
 }
 

@@ -17,7 +17,8 @@ public:
 		 is_executable = false;
 		 is_listed_module = false;
 		 protection = 0;
-		 is_shellcode = false; //PE file
+		 has_pe = false; //not a PE file
+		 has_shellcode = true;
 		 is_doppel = false;
 	}
 
@@ -34,8 +35,11 @@ public:
 	{
 		ModuleScanReport::toJSON(outs);
 		outs << ",\n";
-		outs << "\"is_shellcode\" : ";
-		outs << std::dec << is_shellcode;
+		outs << "\"has_pe\" : ";
+		outs << std::dec << has_pe;
+		outs << ",\n";
+		outs << "\"has_shellcode\" : ";
+		outs << std::dec << has_shellcode;
 		if (!is_executable) {
 			outs << ",\n";
 			outs << "\"is_executable\" : ";
@@ -56,7 +60,8 @@ public:
 
 	bool is_executable;
 	bool is_listed_module;
-	bool is_shellcode;
+	bool has_pe;
+	bool has_shellcode;
 	bool is_doppel;
 	DWORD protection;
 };
