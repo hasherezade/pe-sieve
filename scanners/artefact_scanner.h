@@ -87,7 +87,7 @@ public:
 		is_executable = true;
 		is_manually_loaded = true;
 		protection = 0;
-		is_shellcode = isShellcode(peArt);
+		is_shellcode = false; // isShellcode(peArt);
 
 		size_t total_region_size = peArt.calculatedImgSize + peArt.peBaseOffset;
 		if (total_region_size > this->moduleSize) {

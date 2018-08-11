@@ -65,21 +65,29 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		// probably not interesting
 		return nullptr;
 	}
-
+	bool is_doppel = false;
 	if (memPage.mapping_type == MEM_IMAGE && memPage.hasMappedName()) {
 		//probably legit
 		return nullptr;
+	}
+	else {
+		is_doppel = true;
 	}
 	if (memPage.mapping_type == MEM_MAPPED && memPage.isRealMapping()) {
 		//probably legit
 		return nullptr;
 	}
-
+	MemPageScanReport* my_report = nullptr;
 	if (is_any_exec && isCode(memPage)) {
 #ifdef _DEBUG
 		std::cout << std::hex << memPage.start_va << ": Code pattern found, scanning..." << std::endl;
 #endif
-		return this->scanShellcode(memPage);
+		my_report = this->scanShellcode(memPage);
 	}
-	return nullptr;
+	if (!my_report) {
+		return nullptr;
+	}
+
+	my_report->is_doppel = is_doppel;
+	return my_report;
 }

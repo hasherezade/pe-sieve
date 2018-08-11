@@ -18,6 +18,7 @@ public:
 		 is_manually_loaded = false;
 		 protection = 0;
 		 is_shellcode = false; //PE file
+		 is_doppel = false;
 	}
 
 	const virtual bool toJSON(std::stringstream &outs)
@@ -40,6 +41,11 @@ public:
 			outs << "\"is_executable\" : ";
 			outs << std::dec << is_executable;
 		}
+		if (is_doppel) {
+			outs << ",\n";
+			outs << "\"is_doppel\" : ";
+			outs << std::dec << is_doppel;
+		}
 		outs << ",\n";
 		outs << "\"is_manually_loaded\" : ";
 		outs << std::dec << is_manually_loaded;
@@ -51,6 +57,7 @@ public:
 	bool is_executable;
 	bool is_manually_loaded;
 	bool is_shellcode;
+	bool is_doppel;
 	DWORD protection;
 };
 
