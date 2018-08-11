@@ -22,6 +22,7 @@ bool MemPageData::fillInfo()
 	alloc_base = (ULONGLONG) page_info.AllocationBase;
 	region_start = (ULONGLONG) page_info.BaseAddress;
 	region_end = region_start + page_info.RegionSize;
+	is_info_filled = true;
 	return true;
 }
 
