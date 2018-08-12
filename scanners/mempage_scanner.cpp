@@ -6,8 +6,6 @@
 #include "../utils/workingset_enum.h"
 #include "../utils/artefacts_util.h"
 
-#define PE_NOT_FOUND 0
-
 bool MemPageScanner::isCode(MemPageData &memPageData)
 {
 	if (!memPage.load()) {

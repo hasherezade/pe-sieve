@@ -1,8 +1,6 @@
 #include "mempage_data.h"
 #include "module_data.h"
 
-#define PE_NOT_FOUND 0
-
 bool MemPageData::fillInfo()
 {
 	MEMORY_BASIC_INFORMATION page_info = { 0 };
