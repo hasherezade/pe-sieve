@@ -60,7 +60,7 @@ public:
 	
 	const virtual bool toJSON(std::stringstream &outs)
 	{
-		outs << "\"artefacts\" : ";
+		outs << "\"pe_artefacts\" : ";
 		outs << "{\n";
 		fieldsToJSON(outs);
 		outs << "\n}";
@@ -87,7 +87,7 @@ public:
 		is_executable = true;
 		protection = 0;
 		has_pe = true;
-		has_shellcode = isShellcode(peArt);
+		has_shellcode = false;
 
 		size_t total_region_size = peArt.calculatedImgSize + peArt.peBaseOffset;
 		if (total_region_size > this->moduleSize) {
@@ -97,7 +97,7 @@ public:
 
 	const virtual bool toJSON(std::stringstream &outs)
 	{
-		outs << "\"artefacts_scan\" : ";
+		outs << "\"workingset_scan\" : ";
 		outs << "{\n";
 		MemPageScanReport::fieldsToJSON(outs);
 		outs << ",\n";
@@ -108,30 +108,14 @@ public:
 
 	PeArtefacts artefacts;
 	size_t initialRegionSize;
-
-protected:
-	bool isShellcode(PeArtefacts &peArt)
-	{
-		bool is_shellcode = false;
-		if (peArt.peBaseOffset > 0) {
-			// the total region is bigger than the PE
-			is_shellcode = true;
-		}/*
-		size_t pe_region_size = peArt.calculatedImgSize + peArt.peBaseOffset;
-		if (pe_region_size < this->initialRegionSize) {
-			// the total region is bigger than the PE
-			is_shellcode = true;
-		}*/
-		return is_shellcode;
-	}
 };
 
 class ArtefactScanner {
 public:
 	ArtefactScanner(HANDLE _procHndl, MemPageData &_memPageData)
-		: processHandle(_procHndl), memPage(_memPageData)
+		: processHandle(_procHndl), 
+		memPage(_memPageData), prevMemPage(nullptr), artPagePtr(nullptr)
 	{
-		prevMemPage = nullptr;
 	}
 
 	virtual ~ArtefactScanner()
@@ -175,8 +159,10 @@ protected:
 			delete this->prevMemPage;
 		}
 		this->prevMemPage = nullptr;
+		this->artPagePtr = nullptr;
 	}
 
+	bool hasShellcode(HMODULE region_start, size_t region_size, PeArtefacts &peArt);
 
 	bool findMzPe(ArtefactsMapping &mapping);
 	bool setMzPe(ArtefactsMapping &mapping, IMAGE_DOS_HEADER* _dos_hdr);
@@ -198,4 +184,5 @@ protected:
 	HANDLE processHandle;
 	MemPageData &memPage;
 	MemPageData *prevMemPage;
+	MemPageData *artPagePtr; //pointer to the page where the artefacts were found: either to memPage or to prevMemPage
 };

@@ -435,6 +435,21 @@ PeArtefacts* ArtefactScanner::findInPrevPages(ULONGLONG addr_start, ULONGLONG ad
 	return peArt;
 }
 
+bool ArtefactScanner::hasShellcode(HMODULE region_start, size_t region_size, PeArtefacts &peArt)
+{
+	bool is_shellcode = false;
+	if (peArt.peBaseOffset > 0) {
+		// the total region is bigger than the PE
+		is_shellcode = true;
+	}
+	size_t pe_region_size = peArt.calculatedImgSize + peArt.peBaseOffset;
+	if (region_size > peArt.calculatedImgSize) {
+		// the total region is bigger than the PE
+		is_shellcode = true;
+	}
+	return is_shellcode;
+}
+
 ArtefactScanReport* ArtefactScanner::scanRemote()
 {
 	deletePrevPage();
@@ -442,13 +457,13 @@ ArtefactScanReport* ArtefactScanner::scanRemote()
 	bool is_damaged_pe = false;
 	// it may still contain a damaged PE header...
 	ULONGLONG region_start = memPage.region_start;
-	MemPageData *artPagePtr = &memPage;
+	this->artPagePtr = &memPage;
 
 	PeArtefacts *peArt = findArtefacts(memPage);
 	if (!peArt  && (region_start > memPage.alloc_base)) {
 		peArt = findInPrevPages(memPage.alloc_base, memPage.region_start);
 		if (prevMemPage) {
-			artPagePtr = prevMemPage;
+			this->artPagePtr = prevMemPage;
 			region_start = prevMemPage->region_start;
 		}
 	}
@@ -461,7 +476,7 @@ ArtefactScanReport* ArtefactScanner::scanRemote()
 	ArtefactScanReport *my_report = new ArtefactScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS, *peArt);
 	my_report->is_listed_module = memPage.is_listed_module;
 	my_report->protection = memPage.protection;
-
+	my_report->has_shellcode = hasShellcode((HMODULE)region_start, region_size, *peArt);
 	delete peArt;
 	return my_report;
 }
