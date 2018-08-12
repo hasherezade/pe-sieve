@@ -64,12 +64,13 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		return nullptr;
 	}
 	bool is_doppel = false;
-	if (memPage.mapping_type == MEM_IMAGE && memPage.hasMappedName()) {
-		//probably legit
-		return nullptr;
-	}
-	else {
-		is_doppel = true;
+	if (memPage.mapping_type == MEM_IMAGE) {
+		if (!memPage.hasMappedName()) {
+			is_doppel = true;
+		} else {
+			//probably legit
+			return nullptr;
+		}
 	}
 	if (memPage.mapping_type == MEM_MAPPED && memPage.isRealMapping()) {
 		//probably legit
