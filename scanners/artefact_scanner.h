@@ -60,7 +60,7 @@ public:
 	
 	const virtual bool toJSON(std::stringstream &outs)
 	{
-		outs << "\"artefacts\" : ";
+		outs << "\"pe_artefacts\" : ";
 		outs << "{\n";
 		fieldsToJSON(outs);
 		outs << "\n}";
@@ -97,7 +97,7 @@ public:
 
 	const virtual bool toJSON(std::stringstream &outs)
 	{
-		outs << "\"artefacts_scan\" : ";
+		outs << "\"workingset_scan\" : ";
 		outs << "{\n";
 		MemPageScanReport::fieldsToJSON(outs);
 		outs << ",\n";
