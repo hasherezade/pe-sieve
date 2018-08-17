@@ -33,9 +33,7 @@ public:
 	~ProcessScanReport()
 	{
 		deleteModuleReports();
-		if (exportsMap) {
-			delete exportsMap;
-		}
+		delete exportsMap;
 	}
 
 	void appendReport(ModuleScanReport *report)
