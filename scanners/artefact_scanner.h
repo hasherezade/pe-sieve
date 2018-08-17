@@ -97,13 +97,17 @@ public:
 		}
 	}
 
+	const virtual void fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
+	{
+		MemPageScanReport::fieldsToJSON(outs, level);
+		outs << ",\n";
+		artefacts.toJSON(outs, level);
+	}
+
 	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
 		OUT_PADDED(outs, level, "\"workingset_scan\" : {\n");
-		//outs << "{\n";
-		MemPageScanReport::fieldsToJSON(outs);
-		outs << ",\n";
-		artefacts.toJSON(outs, level);
+		fieldsToJSON(outs, level + 1);
 		outs << "\n";
 		OUT_PADDED(outs, level, "}");
 		return true;

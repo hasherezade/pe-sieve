@@ -13,13 +13,18 @@ public:
 	CodeScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
 		: ModuleScanReport(processHandle, _module, _moduleSize) {}
 
-	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
+	const virtual void fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
-		OUT_PADDED(outs, level, "\"code_scan\" : {\n");
 		ModuleScanReport::toJSON(outs, level);
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"patches\" : ");
 		outs << std::dec << patchesList.size();
+	}
+
+	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
+	{
+		OUT_PADDED(outs, level, "\"code_scan\" : {\n");
+		fieldsToJSON(outs, level + 1);
 		outs << "\n";
 		OUT_PADDED(outs, level, "}");
 		return true;

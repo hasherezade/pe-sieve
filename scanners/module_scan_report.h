@@ -51,7 +51,7 @@ public:
 
 	virtual ~ModuleScanReport() {}
 
-	const virtual bool toJSON(std::stringstream &outs, size_t level= JSON_LEVEL)
+	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
 		//outs << "\"pid\" : ";
 		//outs << std::hex << pid << ",\n";
@@ -91,7 +91,7 @@ public:
 	{
 		OUT_PADDED(outs, level, "\"unreachable_scan\" : ");
 		outs << "{\n";
-		ModuleScanReport::toJSON(outs, level);
+		ModuleScanReport::toJSON(outs, level + 1);
 		outs << "\n";
 		OUT_PADDED(outs, level, "}");
 		return true;
@@ -110,7 +110,7 @@ public:
 	{
 		OUT_PADDED(outs, level, "\"skipped_scan\" : ");
 		outs << "{\n";
-		ModuleScanReport::toJSON(outs);
+		ModuleScanReport::toJSON(outs, level + 1);
 		outs << "\n";
 		OUT_PADDED(outs, level, "}");
 		return true;
@@ -130,7 +130,7 @@ public:
 	{
 		OUT_PADDED(outs, level, "\"malformed_header\" : ");
 		outs << "{\n";
-		ModuleScanReport::toJSON(outs);
+		ModuleScanReport::toJSON(outs, level + 1);
 		outs << "\n";
 		OUT_PADDED(outs, level, "}");
 		return true;
