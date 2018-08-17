@@ -11,24 +11,23 @@ public:
 		: ModuleScanReport(processHandle, _module, _moduleSize),
 		epModified(false), archMismatch(false), is64(false) { }
 
-	const virtual bool toJSON(std::stringstream& outs)
+	const virtual bool toJSON(std::stringstream& outs, size_t level = JSON_LEVEL)
 	{
-		outs << "\"headers_scan\" : ";
-		outs << "{\n";
-		ModuleScanReport::toJSON(outs);
+		OUT_PADDED(outs, level, "\"headers_scan\" : {\n");
+		ModuleScanReport::toJSON(outs, level);
 		outs << ",\n";
-		outs << "\"ep_modified\" : " ;
+		OUT_PADDED(outs, level, "\"ep_modified\" : ");
 		outs << epModified;
 		if (archMismatch) {
 			outs << ",\n";
-			outs << "\"arch_mismatch\" : ";
+			OUT_PADDED(outs, level, "\"arch_mismatch\" : ");
 			outs << archMismatch;
 			outs << ",\n";
-			outs << "\"is64b\" : ";
+			OUT_PADDED(outs, level, "\"is64b\" : ");
 			outs << is64;
 		}
 		outs << "\n";
-		outs << "}";
+		OUT_PADDED(outs, level, "}");
 		return true;
 	}
 	bool epModified;

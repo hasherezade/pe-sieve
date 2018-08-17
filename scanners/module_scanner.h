@@ -8,6 +8,8 @@
 #include "module_scan_report.h"
 #include "module_data.h"
 
+#include "../utils/util.h"
+
 class ModuleScanner {
 public:
 	ModuleScanner(HANDLE _procHndl, ModuleData &_moduleData, RemoteModuleData &_remoteModData)

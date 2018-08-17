@@ -14,9 +14,10 @@ public:
 	{
 	}
 
-	const virtual bool toJSON(std::stringstream& outs)
+	const virtual bool toJSON(std::stringstream& outs, size_t level = JSON_LEVEL)
 	{
-		outs << "\"mapping_scan\" : ";
+		OUT_PADDED(outs, level, "\"mapping_scan\" : ");
+		//outs << "\"mapping_scan\" : ";
 		outs << "{\n";
 		ModuleScanReport::toJSON(outs);
 		outs << ",\n";

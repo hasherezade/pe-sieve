@@ -10,6 +10,8 @@
 #include "pe_sieve_types.h"
 #include "peconv.h"
 
+#include "../utils/util.h"
+
 typedef enum module_scan_status {
 	SCAN_ERROR = -1,
 	SCAN_NOT_SUSPICIOUS = 0,
@@ -19,6 +21,8 @@ typedef enum module_scan_status {
 class ModuleScanReport
 {
 public:
+	static const size_t JSON_LEVEL = 1;
+
 	static t_scan_status get_scan_status(const ModuleScanReport *report)
 	{
 		if (report == nullptr) {
@@ -47,17 +51,20 @@ public:
 
 	virtual ~ModuleScanReport() {}
 
-	const virtual bool toJSON(std::stringstream &outs)
+	const virtual bool toJSON(std::stringstream &outs, size_t level= JSON_LEVEL)
 	{
 		//outs << "\"pid\" : ";
 		//outs << std::hex << pid << ",\n";
-		outs << "\"module\" : ";
+		OUT_PADDED(outs, level, "\"module\" : ");
+		//outs << "\"module\" : ";
 		outs << "\"" << std::hex << (ULONGLONG) module << "\"" << ",\n";
-		outs << "\"status\" : " ;
+		OUT_PADDED(outs, level, "\"status\" : ");
+		//outs << "\"status\" : " ;
 		outs << std::dec << status;
 		if (isDotNetModule) {
 			outs << ",\n";
-			outs << "\"is_dot_net\" : \"" << isDotNetModule << "\"";
+			OUT_PADDED(outs, level, "\"is_dot_net\" : \"");
+			outs << isDotNetModule << "\"";
 		}
 		return true;
 	}
@@ -80,12 +87,13 @@ public:
 	{
 	}
 
-	const virtual bool toJSON(std::stringstream &outs)
+	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
-		outs << "\"unreachable_scan\" : ";
+		OUT_PADDED(outs, level, "\"unreachable_scan\" : ");
 		outs << "{\n";
-		ModuleScanReport::toJSON(outs);
-		outs << "\n}";
+		ModuleScanReport::toJSON(outs, level);
+		outs << "\n";
+		OUT_PADDED(outs, level, "}");
 		return true;
 	}
 };
@@ -98,12 +106,13 @@ public:
 	{
 	}
 
-	const virtual bool toJSON(std::stringstream &outs)
+	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
-		outs << "\"skipped_scan\" : ";
+		OUT_PADDED(outs, level, "\"skipped_scan\" : ");
 		outs << "{\n";
 		ModuleScanReport::toJSON(outs);
-		outs << "\n}";
+		outs << "\n";
+		OUT_PADDED(outs, level, "}");
 		return true;
 	}
 };
@@ -117,12 +126,13 @@ public:
 	{
 	}
 
-	const virtual bool toJSON(std::stringstream &outs)
+	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
-		outs << "\"malformed_header\" : ";
+		OUT_PADDED(outs, level, "\"malformed_header\" : ");
 		outs << "{\n";
 		ModuleScanReport::toJSON(outs);
-		outs << "\n}";
+		outs << "\n";
+		OUT_PADDED(outs, level, "}");
 		return true;
 	}
 };

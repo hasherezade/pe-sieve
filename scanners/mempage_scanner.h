@@ -8,6 +8,8 @@
 #include "module_scan_report.h"
 #include "mempage_data.h"
 
+#include "../utils/util.h"
+
 class MemPageScanReport : public ModuleScanReport
 {
 public:
@@ -22,39 +24,39 @@ public:
 		 is_doppel = false;
 	}
 
-	const virtual bool toJSON(std::stringstream &outs)
+	const virtual bool toJSON(std::stringstream &outs,size_t level = JSON_LEVEL)
 	{
-		outs << "\"workingset_scan\" : ";
-		outs << "{\n";
-		fieldsToJSON(outs);
-		outs << "\n}";
+		OUT_PADDED(outs, level, "\"workingset_scan\" : {\n");
+		fieldsToJSON(outs, level);
+		outs << "\n";
+		OUT_PADDED(outs, level, "}");
 		return true;
 	}
 
-	const virtual void fieldsToJSON(std::stringstream &outs)
+	const virtual void fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
-		ModuleScanReport::toJSON(outs);
+		ModuleScanReport::toJSON(outs, level);
 		outs << ",\n";
-		outs << "\"has_pe\" : ";
+		OUT_PADDED(outs, level, "\"has_pe\" : ");
 		outs << std::dec << has_pe;
 		outs << ",\n";
-		outs << "\"has_shellcode\" : ";
+		OUT_PADDED(outs, level, "\"has_shellcode\" : ");
 		outs << std::dec << has_shellcode;
 		if (!is_executable) {
 			outs << ",\n";
-			outs << "\"is_executable\" : ";
+			OUT_PADDED(outs, level, "\"is_executable\" : ");
 			outs << std::dec << is_executable;
 		}
 		if (is_doppel) {
 			outs << ",\n";
-			outs << "\"is_doppel\" : ";
+			OUT_PADDED(outs, level, "\"is_doppel\" : ");
 			outs << std::dec << is_doppel;
 		}
 		outs << ",\n";
-		outs << "\"is_listed_module\" : ";
+		OUT_PADDED(outs, level, "\"is_listed_module\" : ");
 		outs << std::dec << is_listed_module;
 		outs << ",\n";
-		outs << "\"protection\" : ";
+		OUT_PADDED(outs, level, "\"protection\" : ");
 		outs << std::dec << protection;
 	}
 

@@ -15,6 +15,8 @@ bool is_valid_section(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD 
 
 class PeArtefacts {
 public:
+	static const size_t JSON_LEVEL = 1;
+
 	PeArtefacts() {
 		regionStart = INVALID_OFFSET;
 		peBaseOffset = INVALID_OFFSET;
@@ -40,30 +42,30 @@ public:
 		return this->peBaseOffset + this->regionStart;
 	}
 
-	const virtual bool fieldsToJSON(std::stringstream &outs)
+	const virtual bool fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
-		outs << "\"pe_base_offset\" : ";
+		OUT_PADDED(outs, level, "\"pe_base_offset\" : ");
 		outs << "\"" << std::hex << peBaseOffset << "\"";
 		if (hasNtHdrs()) {
 			outs << ",\n";
-			outs << "\"nt_file_hdr\" : ";
+			OUT_PADDED(outs, level, "\"nt_file_hdr\" : ");
 			outs << "\"" << std::hex << ntFileHdrsOffset << "\"";
 		}
 		outs << ",\n";
-		outs << "\"sections_hdrs\" : ";
+		OUT_PADDED(outs, level, "\"sections_hdrs\" : ");
 		outs << "\"" << std::hex << secHdrsOffset << "\"";
 		outs << ",\n";
-		outs << "\"sections_count\" : ";
+		OUT_PADDED(outs, level, "\"sections_count\" : ");
 		outs << std::hex << secCount;
 		return true;
 	}
 	
-	const virtual bool toJSON(std::stringstream &outs)
+	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
-		outs << "\"pe_artefacts\" : ";
-		outs << "{\n";
-		fieldsToJSON(outs);
-		outs << "\n}";
+		OUT_PADDED(outs, level, "\"pe_artefacts\" : {\n");
+		fieldsToJSON(outs, level + 1);
+		outs << "\n";
+		OUT_PADDED(outs, level, "}");
 		return true;
 	}
 
@@ -95,14 +97,15 @@ public:
 		}
 	}
 
-	const virtual bool toJSON(std::stringstream &outs)
+	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
-		outs << "\"workingset_scan\" : ";
-		outs << "{\n";
+		OUT_PADDED(outs, level, "\"workingset_scan\" : {\n");
+		//outs << "{\n";
 		MemPageScanReport::fieldsToJSON(outs);
 		outs << ",\n";
-		artefacts.toJSON(outs);
-		outs << "\n}";
+		artefacts.toJSON(outs, level);
+		outs << "\n";
+		OUT_PADDED(outs, level, "}");
 		return true;
 	}
 
