@@ -155,9 +155,7 @@ protected:
 
 	void deletePrevPage()
 	{
-		if (this->prevMemPage) {
-			delete this->prevMemPage;
-		}
+		delete this->prevMemPage;
 		this->prevMemPage = nullptr;
 		this->artPagePtr = nullptr;
 	}
