@@ -3,7 +3,7 @@
 #include "../utils/workingset_enum.h"
 
 #include "peconv.h"
-#include "peconv/fix_imports.h"
+
 //---
 
 bool PeReconstructor::reconstruct(HANDLE processHandle)
