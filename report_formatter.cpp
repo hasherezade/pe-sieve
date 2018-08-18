@@ -84,13 +84,15 @@ std::string report_to_json(const ProcessScanReport &process_report, t_report_fil
 	stream << std::dec << report.pid << ",\n";
 	OUT_PADDED(stream, level, "\"main_image_path\" : \"");
 	stream <<  escape_path_separators(process_report.mainImagePath) << "\",\n";
-	OUT_PADDED(stream, level, "\"scanned\" : {\n");
+	OUT_PADDED(stream, level, "\"scanned\" : \n");
+	OUT_PADDED(stream, level, "{\n");
 	//stream << " {\n";
 	OUT_PADDED(stream, level + 1, "\"total\" : ");
 	stream << std::dec << report.scanned  << ",\n";
 	OUT_PADDED(stream, level + 1, "\"skipped\" : ");
 	stream <<  std::dec << report.skipped  << ",\n";
-	OUT_PADDED(stream, level + 1, "\"modified\" : {\n");
+	OUT_PADDED(stream, level + 1, "\"modified\" : \n");
+	OUT_PADDED(stream, level + 1, "{\n");
 	//stream << "  {\n";
 	OUT_PADDED(stream, level + 2, "\"total\" : ");
 	stream <<  std::dec << report.suspicious << ",\n";
