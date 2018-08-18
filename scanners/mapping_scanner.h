@@ -21,7 +21,6 @@ public:
 		OUT_PADDED(outs, level, "\"mapped_file\" : \"" << escape_path_separators(this->mappedFile) << "\"");
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"module_file\" : \"" << escape_path_separators(this->moduleFile) << "\"");
-		outs << "\n";
 	}
 
 	const virtual bool toJSON(std::stringstream& outs, size_t level = JSON_LEVEL)
