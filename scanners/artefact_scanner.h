@@ -25,6 +25,7 @@ public:
 		secCount = 0;
 		calculatedImgSize = 0;
 		isMzPeFound = false;
+		isDll = true;
 	}
 
 	bool hasNtHdrs()
@@ -57,6 +58,9 @@ public:
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"sections_count\" : ");
 		outs << std::hex << secCount;
+		outs << ",\n";
+		OUT_PADDED(outs, level, "\"is_dll\" : ");
+		outs << std::dec << isDll;
 		return true;
 	}
 	
@@ -76,6 +80,7 @@ public:
 	size_t secCount;
 	size_t calculatedImgSize;
 	bool isMzPeFound;
+	bool isDll;
 };
 
 class ArtefactScanReport : public MemPageScanReport

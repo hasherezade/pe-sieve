@@ -387,6 +387,10 @@ PeArtefacts* ArtefactScanner::generateArtefacts(ArtefactScanner::ArtefactsMappin
 	}
 	peArt->peBaseOffset = size_t(aMap.pe_image_base - memPage.region_start);
 	peArt->calculatedImgSize = calcImageSize(memPage, aMap.sec_hdr, aMap.pe_image_base);
+
+	if (aMap.nt_file_hdr) {
+		peArt->isDll = aMap.nt_file_hdr->Characteristics & IMAGE_FILE_DLL;
+	}
 	return peArt;
 }
 
