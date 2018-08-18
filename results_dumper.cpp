@@ -59,6 +59,18 @@ bool dumpAsShellcode(std::string dumpFileName, HANDLE processHandle, PBYTE modul
 	return is_ok;
 }
 
+std::string get_payload_ext(ModuleScanReport* mod)
+{
+	ArtefactScanReport* artefactRepot = dynamic_cast<ArtefactScanReport*>(mod);
+	if (!artefactRepot) {
+		return ".dll"; //default
+	}
+	if (artefactRepot->artefacts.isDll) {
+		return ".dll";
+	}
+	return ".exe";
+}
+
 size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &process_report)
 {
 	if (processHandle == nullptr) {
@@ -85,8 +97,8 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 		if (GetModuleFileNameExA(processHandle, mod->module, szModName, MAX_PATH)) {
 			modulePath = get_file_name(szModName);
 		}
-
-		std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".dll");
+		const std::string payload_ext = get_payload_ext(mod);
+		std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, payload_ext);
 
 		if (!peconv::dump_remote_pe(
 			dumpFileName.c_str(), //output file
@@ -106,7 +118,7 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 				ULONGLONG found_pe_base = artefactRepot->artefacts.peImageBase();
 				PeReconstructor peRec(artefactRepot->artefacts);
 				if (peRec.reconstruct(processHandle)) {
-					std::string dumpFileName = makeModuleDumpPath(found_pe_base, modulePath, ".rec.dll");
+					std::string dumpFileName = makeModuleDumpPath(found_pe_base, modulePath, ".rec" + payload_ext);
 					peRec.dumpToFile(dumpFileName, process_report.exportsMap);
 				}
 			}
