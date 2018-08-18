@@ -14,7 +14,7 @@
 HANDLE open_process(DWORD processID)
 {
 	HANDLE hProcess = OpenProcess(
-		PROCESS_QUERY_INFORMATION |PROCESS_VM_READ,
+		PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
 		FALSE, processID
 	);
 	if (hProcess != nullptr) {
