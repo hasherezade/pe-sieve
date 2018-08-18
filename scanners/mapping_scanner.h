@@ -18,9 +18,9 @@ public:
 	{
 		ModuleScanReport::toJSON(outs, level);
 		outs << ",\n";
-		outs << "\"mapped_file\" : \"" << escape_path_separators(this->mappedFile) << "\"";
+		OUT_PADDED(outs, level, "\"mapped_file\" : \"" << escape_path_separators(this->mappedFile) << "\"");
 		outs << ",\n";
-		outs << "\"module_file\" : \"" << escape_path_separators(this->moduleFile) << "\"";
+		OUT_PADDED(outs, level, "\"module_file\" : \"" << escape_path_separators(this->moduleFile) << "\"");
 		outs << "\n";
 	}
 
