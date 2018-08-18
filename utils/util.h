@@ -2,6 +2,12 @@
 
 #include <Windows.h>
 #include <sstream>
+#include <iomanip>
+
+#define OUT_PADDED(stream, field_size, str) \
+std::cout.fill(' '); \
+if (field_size) stream << std::setw(field_size) << ' '; \
+stream << str;
 
 char* get_file_name(char *full_path);
 

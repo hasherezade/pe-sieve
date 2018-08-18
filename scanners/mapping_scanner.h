@@ -14,17 +14,22 @@ public:
 	{
 	}
 
-	const virtual bool toJSON(std::stringstream& outs)
+	const virtual void fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
-		outs << "\"mapping_scan\" : ";
+		ModuleScanReport::toJSON(outs, level);
+		outs << ",\n";
+		OUT_PADDED(outs, level, "\"mapped_file\" : \"" << escape_path_separators(this->mappedFile) << "\"");
+		outs << ",\n";
+		OUT_PADDED(outs, level, "\"module_file\" : \"" << escape_path_separators(this->moduleFile) << "\"");
+	}
+
+	const virtual bool toJSON(std::stringstream& outs, size_t level = JSON_LEVEL)
+	{
+		OUT_PADDED(outs, level, "\"mapping_scan\" : ");
 		outs << "{\n";
-		ModuleScanReport::toJSON(outs);
-		outs << ",\n";
-		outs << "\"mapped_file\" : \"" << escape_path_separators(this->mappedFile) << "\"";
-		outs << ",\n";
-		outs << "\"module_file\" : \"" << escape_path_separators(this->moduleFile) << "\"";
+		fieldsToJSON(outs, level + 1);
 		outs << "\n";
-		outs << "}";
+		OUT_PADDED(outs, level, "}");
 		return true;
 	}
 	std::string mappedFile;
