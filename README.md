@@ -1,4 +1,4 @@
-<img src="./logo/PE-SIEVE.png" alt="PE-sieve" width=200 alt="PE-sieve">
+<img src="./logo/PE-SIEVE.png" alt="PE-sieve" width=200>
 
 [![Build status](https://ci.appveyor.com/api/projects/status/crlo8iyvi4bm80yp?svg=true)](https://ci.appveyor.com/project/hasherezade/pe-sieve)
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)](https://opensource.org/licenses/BSD-2-Clause)
