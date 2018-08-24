@@ -21,6 +21,11 @@ bool is_code(BYTE *loadedData, size_t loadedSize)
 		0x8b, 0xEC // MOV EBP, ESP
 	};
 
+	BYTE prolog32_2_pattern[] = {
+		0x55, // PUSH EBP
+		0x89, 0xE5 // MOV EBP, ESP
+	};
+
 	BYTE prolog64_pattern[] = {
 		0x40, 0x53, // PUSH RBX
 		0x48, 0x83, 0xEC // SUB RSP, ??
@@ -29,6 +34,9 @@ bool is_code(BYTE *loadedData, size_t loadedSize)
 	bool pattern_found = false;
 
 	if (find_pattern(loadedData, loadedSize, prolog32_pattern, sizeof(prolog32_pattern))) {
+		pattern_found = true;
+	}
+	else if (find_pattern(loadedData, loadedSize, prolog32_2_pattern, sizeof(prolog32_2_pattern))) {
 		pattern_found = true;
 	}
 	else if (find_pattern(loadedData, loadedSize, prolog64_pattern, sizeof(prolog64_pattern))) {
