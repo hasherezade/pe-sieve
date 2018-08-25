@@ -14,7 +14,7 @@ bool MemPageScanner::isCode(MemPageData &memPageData)
 	return is_code(memPageData.getLoadedData(), memPageData.getLoadedSize());
 }
 
-MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
+MemPageScanReport* MemPageScanner::scanExecutableArea(MemPageData &memPageData)
 {
 	if (!memPage.load()) {
 		return nullptr;
@@ -23,15 +23,15 @@ MemPageScanReport* MemPageScanner::scanShellcode(MemPageData &memPageData)
 	ArtefactScanner artefactScanner(this->processHandle, memPage);
 	MemPageScanReport *my_report = artefactScanner.scanRemote();
 	if (my_report) {
-#ifdef _DEBUG
-		std::cout << "The detected shellcode is probably a corrupt PE" << std::endl;
-#endif
+		//pe artefacts found
 		return my_report;
 	}
-	//just a regular shellcode...
-
 	if (!this->detectShellcode) {
 		// not a PE file, and we are not interested in shellcode, so just finish it here
+		return nullptr;
+	}
+	if (!isCode(memPage)) {
+		// shellcode patterns not found
 		return nullptr;
 	}
 	//report about shellcode:
@@ -75,11 +75,11 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		return nullptr;
 	}
 	MemPageScanReport* my_report = nullptr;
-	if (is_any_exec && isCode(memPage)) {
+	if (is_any_exec) {
 #ifdef _DEBUG
-		std::cout << std::hex << memPage.start_va << ": Code pattern found, scanning..." << std::endl;
+		std::cout << std::hex << memPage.start_va << ": Scanning executable area" << std::endl;
 #endif
-		my_report = this->scanShellcode(memPage);
+		my_report = this->scanExecutableArea(memPage);
 	}
 	if (!my_report) {
 		return nullptr;

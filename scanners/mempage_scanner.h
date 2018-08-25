@@ -82,7 +82,7 @@ public:
 
 protected:
 	bool isCode(MemPageData &memPageData);
-	MemPageScanReport* scanShellcode(MemPageData &memPageData);
+	MemPageScanReport* scanExecutableArea(MemPageData &memPageData);
 
 	bool isDeepScan;
 	bool detectShellcode; // is shellcode detection enabled
