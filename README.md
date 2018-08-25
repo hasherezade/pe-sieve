@@ -5,7 +5,7 @@
 [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?original_referer=https://github.com/hasherezade/pe-sieve&text=%23PEsieve%3A+an+open-source+process+scanner%2C+detecting+and+dumping+malicious+implants:%20https://github.com/hasherezade/pe-sieve)
 
 <b>PE-sieve</b> is a light-weitht tool that helps to detect malware running on the system, as well as to collect the potentially malicious material for further analysis. Recognizes and dumps variety of implants within the scanned process: replaced/injected PEs, shellcodes, hooks, and other in-memory patches.<br/>
-Detects inline hooks, hollowed processes etc.
+Detects inline hooks, Process Hollowing, Process Doppelgänging, Reflective DLL Injection, etc.
 
 uses library:
 https://github.com/hasherezade/libpeconv.git
