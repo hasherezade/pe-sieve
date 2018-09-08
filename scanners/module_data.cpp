@@ -189,9 +189,11 @@ bool RemoteModuleData::isSectionExecutable(size_t section_number)
 		is_any_exec = (initial_protect & PAGE_EXECUTE_READWRITE)
 			|| (initial_protect & PAGE_EXECUTE_READ)
 			|| (initial_protect & PAGE_EXECUTE)
+			|| (initial_protect & PAGE_EXECUTE_WRITECOPY)
 			|| (protection & PAGE_EXECUTE_READWRITE)
 			|| (protection & PAGE_EXECUTE_READ)
-			|| (initial_protect & PAGE_EXECUTE);
+			|| (protection & PAGE_EXECUTE)
+			|| (protection & PAGE_EXECUTE_WRITECOPY);
 	}
 	return is_any_exec;
 }

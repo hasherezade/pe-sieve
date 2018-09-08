@@ -81,6 +81,7 @@ public:
 	virtual MemPageScanReport* scanRemote();
 
 protected:
+	bool isExecutable(MemPageData &memPageData);
 	bool isCode(MemPageData &memPageData);
 	MemPageScanReport* scanExecutableArea(MemPageData &memPageData);
 
