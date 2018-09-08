@@ -44,8 +44,7 @@ void print_help()
 
 	print_in_color(hdr_color, "\nOptional: \n");
 	print_in_color(param_color, PARAM_IMP_REC);
-	std::cout << "\t: Enable recovering imports. ";
-	std::cout << "(Warning: it may slow down the scan)\n";
+	std::cout << "\t: Enable recovering imports.\n";
 	
 	print_in_color(param_color, PARAM_SHELLCODE);
 	std::cout << "\t: Detect shellcode implants. (By default it detects PE only).\n";

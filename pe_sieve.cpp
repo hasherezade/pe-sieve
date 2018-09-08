@@ -101,7 +101,7 @@ std::string info()
 	stream << " (x86)" << "\n\n";
 #endif
 	stream << "~ from hasherezade with love ~\n";
-	stream << "Detects inline hooks and other in-memory PE modifications\n";
+	stream << "Scans a given process, recognizes and dumps a variety of in-memory implants:\nreplaced/injected PEs, shellcodes, inline hooks, patches etc.\n";
 	stream << "URL: " << PESIEVE_URL << "\n";
 	return stream.str();
 }
