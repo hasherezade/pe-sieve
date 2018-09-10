@@ -140,6 +140,7 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 		counter++;
 		if (my_report == nullptr) continue;
 
+		my_report->is_listed_module = pReport.hasModule((ULONGLONG) my_report->module);
 		// this is a code section inside a PE file that was already detected
 		if (!my_report->has_pe && pReport.hasModuleContaining((ULONGLONG)my_report->module)) {
 			my_report->status = SCAN_NOT_SUSPICIOUS;

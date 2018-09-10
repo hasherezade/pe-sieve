@@ -105,7 +105,6 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		return nullptr;
 	}
 	my_report->is_executable = true;
-	my_report->is_listed_module = memPage.is_listed_module;
 	my_report->protection = memPage.protection;
 	my_report->is_doppel = is_doppel;
 	return my_report;

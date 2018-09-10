@@ -7,8 +7,8 @@
 #include "scanners/scan_report.h"
 #include "report_formatter.h"
 
-static char PESIEVE_VERSION[] = "0.1.4.3";
-static DWORD PESIEVE_VERSION_ID = 0x00010403; // 00 01 04 03
+static char PESIEVE_VERSION[] = "0.1.4.4";
+static DWORD PESIEVE_VERSION_ID = 0x00010404; // 00 01 04 04
 static char PESIEVE_URL[] = "https://github.com/hasherezade/pe-sieve";
 
 std::string info();
