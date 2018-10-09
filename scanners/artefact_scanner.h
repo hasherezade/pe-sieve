@@ -57,7 +57,7 @@ public:
 		outs << "\"" << std::hex << secHdrsOffset << "\"";
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"sections_count\" : ");
-		outs << std::hex << secCount;
+		outs << std::dec << secCount;
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"is_dll\" : ");
 		outs << std::dec << isDll;
