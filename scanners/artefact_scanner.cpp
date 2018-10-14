@@ -106,18 +106,23 @@ BYTE* ArtefactScanner::findSecByPatterns(BYTE *search_ptr, const size_t max_sear
 	if (!memPage.load()) {
 		return nullptr;
 	}
+	const DWORD charact = IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_EXECUTE;
 	//find sections table
 	char sec_name[] = ".text";
 	BYTE *hdr_ptr = find_pattern(search_ptr, max_search_size, (BYTE*)sec_name, strlen(sec_name));
 	if (hdr_ptr) {
-		return hdr_ptr;
+		// if the section was found by name, check if it has valid characteristics:
+		if (is_valid_section(search_ptr, max_search_size, hdr_ptr, charact)) {
+			return hdr_ptr;
+		}
+		hdr_ptr = nullptr;
 	}
 	// try another pattern
 	BYTE sec_ending[] = {
 		0x00, 0x00, 0x00, 0x00,
 		0x00, 0x00, 0x00, 0x00,
 		0x00, 0x00, 0x00, 0x00,
-		0x20, 0x00, 0x00, 0x60
+		0x20, 0x00, 0x00, 0x60 // common characteristics
 	};
 	const size_t sec_ending_size = sizeof(sec_ending);
 	hdr_ptr = find_pattern(search_ptr, max_search_size, sec_ending, sec_ending_size);
@@ -129,7 +134,10 @@ BYTE* ArtefactScanner::findSecByPatterns(BYTE *search_ptr, const size_t max_sear
 	if (!peconv::validate_ptr(search_ptr, max_search_size, hdr_ptr, sizeof(IMAGE_SECTION_HEADER))) {
 		return nullptr;
 	}
-	return hdr_ptr;
+	if (is_valid_section(search_ptr, max_search_size, hdr_ptr, charact)) {
+		return hdr_ptr;
+	}
+	return nullptr;
 }
 
 IMAGE_SECTION_HEADER* ArtefactScanner::findSectionsHdr(MemPageData &memPage, const size_t max_search_size, const size_t search_offset)
@@ -140,10 +148,6 @@ IMAGE_SECTION_HEADER* ArtefactScanner::findSectionsHdr(MemPageData &memPage, con
 	}
 	BYTE *hdr_ptr = findSecByPatterns(search_ptr, max_search_size);
 	if (!hdr_ptr) {
-		return nullptr;
-	}
-	DWORD charact = IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_EXECUTE;
-	if (!is_valid_section(memPage.getLoadedData(), memPage.getLoadedSize(), hdr_ptr, charact)) {
 		return nullptr;
 	}
 	// is it really the first section?
