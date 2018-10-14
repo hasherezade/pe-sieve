@@ -352,8 +352,8 @@ bool ArtefactScanner::setNtFileHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAG
 	if (sec_hdr_offset != found_offset) {
 		aMap.nt_file_hdr = nullptr;
 		//it has sections headers detected, but not validly aligned:
-		std::cout << "[WARNING] Sections header misaligned with FileHeader."
-			<< "Expected offset" << std::hex << sec_hdr_offset << " vs real offset" << found_offset << std::endl;
+		std::cout << "[WARNING] Sections header misaligned with FileHeader. "
+			<< "Expected offset: " << std::hex << sec_hdr_offset << " vs real offset: " << found_offset << std::endl;
 		return false;
 	}
 	//validation passed:
