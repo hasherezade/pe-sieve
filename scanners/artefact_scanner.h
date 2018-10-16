@@ -187,8 +187,8 @@ protected:
 	size_t calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr, ULONGLONG pe_image_base);
 
 	IMAGE_FILE_HEADER* findNtFileHdr(BYTE* loadedData, size_t loadedSize);
-	BYTE* findSecByPatterns(MemPageData &memPage);
-	IMAGE_SECTION_HEADER* findSectionsHdr(MemPageData &memPageData);
+	BYTE* findSecByPatterns(BYTE *search_ptr, const size_t max_search_size);
+	IMAGE_SECTION_HEADER* findSectionsHdr(MemPageData &memPageData, const size_t max_search_size, const size_t search_offset);
 	IMAGE_DOS_HEADER* findMzPeHeader(MemPageData &memPage);
 
 	HANDLE processHandle;
