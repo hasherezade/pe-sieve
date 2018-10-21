@@ -49,8 +49,8 @@ protected:
 	bool loadRemote(RemoteModuleData& remoteModData, size_t section_number)
 		{
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(remoteModData.headerBuffer, peconv::MAX_HEADER_SIZE, section_number);
-		if ((section_hdr == NULL) || section_hdr->SizeOfRawData == 0) {
-			return NULL;
+		if ((!section_hdr) || section_hdr->Misc.VirtualSize == 0) {
+			return nullptr;
 		}
 		this->rva = section_hdr->VirtualAddress;
 		//get the code section from the module:
@@ -68,7 +68,8 @@ protected:
 		if (section_hdr == nullptr) {
 			return false;
 		}
-		size_t orig_code_size = section_hdr->SizeOfRawData;
+		const size_t raw_code_size = section_hdr->SizeOfRawData;
+		const size_t orig_code_size = section_hdr->Misc.VirtualSize > raw_code_size ? section_hdr->Misc.VirtualSize : raw_code_size;
 
 		loadedSection = peconv::alloc_pe_section(orig_code_size);
 		if (loadedSection == nullptr) {
@@ -77,7 +78,7 @@ protected:
 		this->rva = section_hdr->VirtualAddress;
 		//make a copy of the section:
 		BYTE *orig_code = modData.original_module + section_hdr->VirtualAddress;
-		memcpy(loadedSection, orig_code, orig_code_size);
+		memcpy(loadedSection, orig_code, raw_code_size);
 		loadedSize = orig_code_size;
 		return true;
 	}
