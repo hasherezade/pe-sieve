@@ -71,7 +71,7 @@ std::string get_payload_ext(ModuleScanReport* mod)
 	return ".exe";
 }
 
-size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &process_report)
+size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &process_report, bool unmap)
 {
 	if (processHandle == nullptr) {
 		return 0;
@@ -100,11 +100,12 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 		const std::string payload_ext = get_payload_ext(mod);
 		std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, payload_ext);
 
+		
 		if (!peconv::dump_remote_pe(
 			dumpFileName.c_str(), //output file
 			processHandle, 
 			(PBYTE) mod->module, 
-			true, //unmap
+			unmap, //unmap PE file?
 			process_report.exportsMap
 		))
 		{

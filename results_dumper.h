@@ -17,7 +17,7 @@ public:
 		}
 	}
 
-	size_t dumpAllModified(HANDLE hProcess, ProcessScanReport &process_report);
+	size_t dumpAllModified(HANDLE hProcess, ProcessScanReport &process_report, bool unmap);
 	bool dumpJsonReport(ProcessScanReport &process_report, t_report_filter filter);
 	std::string dumpDir; // dump directory
 	std::string baseDir; // base directory
