@@ -19,6 +19,7 @@ typedef struct {
 	t_output_filter out_filter;
 	bool no_hooks; // don't scan for hooks
 	bool shellcode; // detect shellcode implants
+	bool no_unmap; // do not unmap PE-files (dump in virtual format)
 	bool json_output;
 } t_params;
 
