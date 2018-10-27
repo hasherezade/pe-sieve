@@ -23,7 +23,7 @@
 #define PARAM_QUIET "/quiet"
 #define PARAM_JSON "/json"
 #define PARAM_SHELLCODE "/shellc"
-#define PARAM_NO_UNMAP "/vdump"
+#define PARAM_VDUMP "/vdump"
 
 void print_in_color(int color, std::string text)
 {
@@ -55,8 +55,8 @@ void print_help()
 	std::cout << "*mfilter_id:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
 #endif
 
-	print_in_color(param_color, PARAM_NO_UNMAP);
-	std::cout << "\t: Do not unmap PE files before dumping. (Keep in virtual format).\n";
+	print_in_color(param_color, PARAM_VDUMP);
+	std::cout << "\t: Dump PE as it is in the virtual memory (remap raw sections to be same as virtual).\n";
 
 	print_in_color(param_color, PARAM_OUT_FILTER);
 	std::cout << " <*ofilter_id>\n\t: Filter the dumped output.\n";
@@ -163,8 +163,8 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], PARAM_SHELLCODE)) {
 			args.shellcode = true;
 		}
-		else if (!strcmp(argv[i], PARAM_NO_UNMAP)) {
-			args.no_unmap = true;
+		else if (!strcmp(argv[i], PARAM_VDUMP)) {
+			args.v_dump = true;
 		}
 	}
 	//if didn't received PID by explicit parameter, try to parse the first param of the app
