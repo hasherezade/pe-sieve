@@ -135,18 +135,18 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], PARAM_IMP_REC)) {
 			args.imp_rec = true;
 		}
-		else if (!strcmp(argv[i], PARAM_OUT_FILTER)) {
+		else if (!strcmp(argv[i], PARAM_OUT_FILTER) && (i + 1) < argc) {
 			args.out_filter = static_cast<t_output_filter>(atoi(argv[i + 1]));
 			i++;
 		} 
-		else if (!strcmp(argv[i], PARAM_MODULES_FILTER) && i < argc) {
+		else if (!strcmp(argv[i], PARAM_MODULES_FILTER) && (i + 1) < argc) {
 			args.modules_filter = atoi(argv[i + 1]);
 			if (args.modules_filter > LIST_MODULES_ALL) {
 				args.modules_filter = LIST_MODULES_ALL;
 			}
 			i++;
 		}
-		else if (!strcmp(argv[i], PARAM_PID) && i < argc) {
+		else if (!strcmp(argv[i], PARAM_PID) && (i + 1) < argc) {
 			args.pid = atoi(argv[i + 1]);
 			++i;
 		}
