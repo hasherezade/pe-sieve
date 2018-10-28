@@ -23,7 +23,7 @@
 #define PARAM_QUIET "/quiet"
 #define PARAM_JSON "/json"
 #define PARAM_SHELLCODE "/shellc"
-#define PARAM_VDUMP "/vdump"
+#define PARAM_DUMP_MODE "/dmode"
 
 void print_in_color(int color, std::string text)
 {
@@ -55,12 +55,17 @@ void print_help()
 	std::cout << "*mfilter_id:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
 #endif
 
-	print_in_color(param_color, PARAM_VDUMP);
-	std::cout << "\t: Dump PE as it is in the virtual memory (remap raw sections to be same as virtual).\n";
-
 	print_in_color(param_color, PARAM_OUT_FILTER);
 	std::cout << " <*ofilter_id>\n\t: Filter the dumped output.\n";
 	std::cout << "*ofilter_id:\n\t0 - no filter: dump everything (default)\n\t1 - don't dump the modified PEs, but file the report\n\t2 - don't create the output directory at all\n";
+
+	print_in_color(param_color, PARAM_DUMP_MODE);
+	std::cout << " <*dump_mode>\n\t: Set in which mode the detected PE files should be dumped.\n";
+	std::cout << "*dump_mode:\n"
+		<< "\t" << peconv::PE_DUMP_AUTO << " - autodetect (default)\n"
+		<< "\t" << peconv::PE_DUMP_VIRTUAL << " - virtual (as it is in the memory, no unmapping)\n"
+		<< "\t" << peconv::PE_DUMP_UNMAPPED << " - unmapped (converted to raw using sections' raw headers)\n"
+		<< "\t" << peconv::PE_DUMP_REALIGNED << " - realigned raw (converted raw format to be the same as virtual)\n";
 
 	print_in_color(param_color, PARAM_QUIET);
 	std::cout << "\t: Print only the summary. Do not log on stdout during the scan.\n";
@@ -163,8 +168,9 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], PARAM_SHELLCODE)) {
 			args.shellcode = true;
 		}
-		else if (!strcmp(argv[i], PARAM_VDUMP)) {
-			args.v_dump = true;
+		else if (!strcmp(argv[i], PARAM_DUMP_MODE) && (i + 1) < argc) {
+			args.dump_mode = atoi(argv[i + 1]);
+			++i;
 		}
 	}
 	//if didn't received PID by explicit parameter, try to parse the first param of the app
@@ -186,6 +192,7 @@ int main(int argc, char *argv[])
 		std::cout << "PID: " << args.pid << std::endl;
 		std::cout << "Modules filter: " << args.modules_filter << std::endl;
 		std::cout << "Output filter: " << args.out_filter << std::endl;
+		std::cout << "Dump mode: " << args.dump_mode << std::endl;
 	}
 	ProcessScanReport* report = check_modules_in_process(args);
 	if (report != nullptr) {

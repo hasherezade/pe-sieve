@@ -79,7 +79,11 @@ ProcessScanReport* check_modules_in_process(const t_params args)
 	if (process_report != nullptr && !(args.out_filter & OUT_NO_DIR)) {
 		ResultsDumper dumper;
 		if (!(args.out_filter & OUT_NO_DUMPS)) {
-			if (dumper.dumpAllModified(hProcess, *process_report, !args.v_dump) > 0) {
+			peconv::t_pe_dump_mode dump_mode = peconv::PE_DUMP_AUTO;
+			if (args.dump_mode < peconv::PE_DUMP_MODES_COUNT) {
+				dump_mode = peconv::t_pe_dump_mode(args.dump_mode);
+			}
+			if (dumper.dumpAllModified(hProcess, *process_report, dump_mode) > 0) {
 				std::cout << "[+] Dumped modified to: " << dumper.dumpDir << std::endl;
 			}
 		}
