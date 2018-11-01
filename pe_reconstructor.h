@@ -9,9 +9,9 @@
 
 class PeReconstructor {
 public:
-	PeReconstructor(PeArtefacts _artefacts)
+	PeReconstructor(PeArtefacts _artefacts, peconv::t_pe_dump_mode dump_mode)
 		: artefacts(_artefacts),
-		vBuf(nullptr), vBufSize(0), moduleBase(0), dumpMode(peconv::PE_DUMP_AUTO)
+		vBuf(nullptr), vBufSize(0), moduleBase(0), dumpMode(dump_mode)
 	{
 	}
 
