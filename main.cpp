@@ -64,8 +64,8 @@ void print_help()
 	std::cout << "*dump_mode:\n"
 		<< "\t" << peconv::PE_DUMP_AUTO << " - autodetect (default)\n"
 		<< "\t" << peconv::PE_DUMP_VIRTUAL << " - virtual (as it is in the memory, no unmapping)\n"
-		<< "\t" << peconv::PE_DUMP_UNMAPPED << " - unmapped (converted to raw using sections' raw headers)\n"
-		<< "\t" << peconv::PE_DUMP_REALIGNED << " - realigned raw (converted raw format to be the same as virtual)\n";
+		<< "\t" << peconv::PE_DUMP_UNMAP << " - unmapped (converted to raw using sections' raw headers)\n"
+		<< "\t" << peconv::PE_DUMP_REALIGN << " - realigned raw (converted raw format to be the same as virtual)\n";
 
 	print_in_color(param_color, PARAM_QUIET);
 	std::cout << "\t: Print only the summary. Do not log on stdout during the scan.\n";
