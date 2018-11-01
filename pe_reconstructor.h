@@ -11,7 +11,7 @@ class PeReconstructor {
 public:
 	PeReconstructor(PeArtefacts _artefacts)
 		: artefacts(_artefacts),
-		vBuf(nullptr), vBufSize(0), unmap(true)
+		vBuf(nullptr), vBufSize(0), moduleBase(0), dumpMode(peconv::PE_DUMP_AUTO)
 	{
 	}
 
@@ -28,6 +28,7 @@ protected:
 		peconv::free_aligned(vBuf);
 		vBuf = nullptr;
 		vBufSize = 0;
+		moduleBase = 0;
 	}
 
 	bool reconstructPeHdr();
@@ -36,6 +37,7 @@ protected:
 	PeArtefacts artefacts;
 	BYTE *vBuf;
 	size_t vBufSize;
+	ULONGLONG moduleBase;
 
-	bool unmap;
+	peconv::t_pe_dump_mode dumpMode;
 };

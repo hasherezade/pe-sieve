@@ -10,7 +10,7 @@ bool PeReconstructor::reconstruct(HANDLE processHandle)
 {
 	freeBuffer();
 
-	ULONGLONG pe_va = artefacts.regionStart + artefacts.peBaseOffset;
+	this->moduleBase = artefacts.regionStart + artefacts.peBaseOffset;
 	size_t pe_vsize = artefacts.calculatedImgSize;
 
 	this->vBuf = peconv::alloc_aligned(pe_vsize, PAGE_READWRITE);
@@ -21,7 +21,7 @@ bool PeReconstructor::reconstruct(HANDLE processHandle)
 
 	bool is_ok = false;
 
-	size_t read_size = peconv::read_remote_memory(processHandle, (BYTE*)pe_va, vBuf, pe_vsize);
+	size_t read_size = peconv::read_remote_memory(processHandle, (BYTE*)moduleBase, vBuf, pe_vsize);
 	if (read_size == 0) {
 		freeBuffer();
 		return false;
@@ -139,37 +139,6 @@ bool PeReconstructor::dumpToFile(std::string dumpFileName, IN OPTIONAL peconv::E
 {
 	if (vBuf == nullptr) return false;
 
-	// if the exportsMap is supplied, attempt to recover the (destroyed) import table:
-	if (exportsMap != nullptr) {
-		if (!peconv::fix_imports(vBuf, vBufSize, *exportsMap)) {
-			std::cerr << "Unable to fix imports!" << std::endl;
-		}
-	}
-
-	BYTE* dump_data = vBuf;
-	size_t dump_size = vBufSize;
-	size_t out_size = 0;
-	BYTE* unmapped_module = nullptr;
-
-	ULONGLONG start_addr = artefacts.regionStart + artefacts.peBaseOffset;
-	if (unmap) {
-		//if the image base in headers is invalid, set the current base and prevent from relocating PE:
-		if (peconv::get_image_base(vBuf) == 0) {
-			peconv::update_image_base(vBuf, (ULONGLONG)start_addr);
-		}
-		// unmap the PE file (convert from the Virtual Format into Raw Format)
-		unmapped_module = peconv::pe_virtual_to_raw(vBuf, vBufSize, (ULONGLONG)start_addr, out_size, false);
-		if (unmapped_module != NULL) {
-			dump_data = unmapped_module;
-			dump_size = out_size;
-		}
-	}
 	// save the read module into a file
-	bool is_dumped = peconv::dump_to_file(dumpFileName.c_str(), dump_data, dump_size);
-
-	if (unmapped_module) {
-		peconv::free_pe_buffer(unmapped_module, vBufSize);
-	}
-	return is_dumped;
+	return peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
 }
-
