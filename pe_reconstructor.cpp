@@ -27,8 +27,11 @@ bool PeReconstructor::reconstruct(HANDLE processHandle)
 		return false;
 	}
 
-	if (!reconstructSectionsHdr(processHandle)) {
-		return false;
+	//do not modify section headers if the PE is in raw format, or no unmapping requested
+	if (!peconv::is_pe_raw(vBuf, pe_vsize)) {
+		if (!reconstructSectionsHdr(processHandle)) {
+			return false;
+		}
 	}
 
 	bool is_pe_hdr = false;
