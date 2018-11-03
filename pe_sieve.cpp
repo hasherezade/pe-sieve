@@ -77,7 +77,7 @@ ProcessScanReport* check_modules_in_process(const t_params args)
 	}
 
 	if (process_report != nullptr && !(args.out_filter & OUT_NO_DIR)) {
-		ResultsDumper dumper;
+		ResultsDumper dumper("", args.quiet);
 		if (!(args.out_filter & OUT_NO_DUMPS)) {
 			peconv::t_pe_dump_mode dump_mode = peconv::PE_DUMP_AUTO;
 			if (args.dump_mode < peconv::PE_DUMP_MODES_COUNT) {

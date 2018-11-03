@@ -138,7 +138,7 @@ bool PeReconstructor::reconstructPeHdr()
 	return false;
 }
 
-bool PeReconstructor::dumpToFile(std::string dumpFileName, IN OPTIONAL peconv::ExportsMapper* exportsMap)
+bool PeReconstructor::dumpToFile(std::string dumpFileName, _In_opt_ peconv::ExportsMapper* exportsMap)
 {
 	if (vBuf == nullptr) return false;
 
