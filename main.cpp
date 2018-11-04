@@ -62,7 +62,7 @@ std::string translate_out_filter(const t_output_filter o_filter)
 		case OUT_NO_DUMPS:
 			return "don't dump the modified PEs, but save the report";
 		case OUT_NO_DIR:
-			return "don't create the output directory at all";
+			return "don't dump any files";
 	}
 	return "undefined";
 }

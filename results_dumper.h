@@ -31,5 +31,7 @@ protected:
 	*/
 	std::string makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname, std::string defaultExtension);
 
+	std::string makeOutPath(std::string fname, std::string defaultExtension="");
+
 	std::string makeDirName(const DWORD process_id);
 };

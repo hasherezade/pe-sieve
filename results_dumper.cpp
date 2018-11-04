@@ -39,6 +39,28 @@ std::string ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, std::string
 	return stream.str();
 }
 
+std::string ResultsDumper::makeOutPath(std::string fname, std::string default_extension)
+{
+	//just in case if the directory creation failed:
+	if (!make_dump_dir(this->dumpDir)) {
+		this->dumpDir = ""; // reset path
+	}
+	std::stringstream stream;
+	if (this->dumpDir.length() > 0) {
+		stream << this->dumpDir;
+		stream << "\\";
+	}
+	
+	if (fname.length() > 0) {
+		stream << fname;
+	}
+	else {
+		stream << std::dec << time(nullptr);
+		stream << default_extension;
+	}
+	return stream.str();
+}
+
 bool dumpAsShellcode(std::string dumpFileName, HANDLE processHandle, PBYTE moduleBase, size_t moduleSize)
 {
 	if (!moduleSize) {
@@ -90,8 +112,7 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 		return 0;
 	}
 
-	DWORD pid = GetProcessId(processHandle);
-	this->dumpDir = ResultsDumper::makeDirName(pid);
+	this->dumpDir = ResultsDumper::makeDirName(process_report.getPid());
 
 	char szModName[MAX_PATH] = { 0 };
 	size_t dumped = 0;
@@ -173,12 +194,12 @@ bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, t_report_f
 		return false; 
 	}
 
-	//just in case if the directory was not created before:
-	if (!make_dump_dir(this->dumpDir)) {
-		this->dumpDir = ""; // reset path
-	}
+	//ensure that the directory is created:
+	this->dumpDir = ResultsDumper::makeDirName(process_report.getPid());
+
 	std::ofstream json_report;
-	json_report.open(dumpDir + "\\report.json");
+	std::string report_path = makeOutPath("report.json");
+	json_report.open(report_path);
 	if (json_report.is_open() == false) {
 		return false;
 	}
