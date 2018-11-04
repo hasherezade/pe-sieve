@@ -7,8 +7,9 @@
 
 typedef enum {
 	OUT_FULL = 0,
-	OUT_NO_DUMPS = 1,
-	OUT_NO_DIR = 2
+	OUT_NO_DUMPS,
+	OUT_NO_DIR,
+	OUT_FILTERS_COUNT
 } t_output_filter;
 
 typedef struct {
@@ -19,7 +20,7 @@ typedef struct {
 	t_output_filter out_filter;
 	bool no_hooks; // don't scan for hooks
 	bool shellcode; // detect shellcode implants
-	DWORD dump_mode; 
+	DWORD dump_mode;
 	bool json_output;
 } t_params;
 
