@@ -12,4 +12,4 @@ static DWORD PESIEVE_VERSION_ID = 0x00010409; // 00 01 04 09g
 static char PESIEVE_URL[] = "https://github.com/hasherezade/pe-sieve";
 
 std::string info();
-ProcessScanReport* check_modules_in_process(const t_params args);
+ProcessScanReport* scan_process(const t_params args);

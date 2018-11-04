@@ -13,7 +13,7 @@
 
 t_report __stdcall PESieve_scan(t_params args)
 {
-	const ProcessScanReport* report = check_modules_in_process(args);
+	const ProcessScanReport* report = scan_process(args);
 	if (report == nullptr) {
 		t_report nullrep = { 0 };
 		nullrep.pid = args.pid;

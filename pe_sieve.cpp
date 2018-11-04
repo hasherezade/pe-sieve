@@ -57,7 +57,7 @@ bool is_scaner_compatibile(HANDLE hProcess)
 	return true;
 }
 
-ProcessScanReport* check_modules_in_process(const t_params args)
+ProcessScanReport* scan_process(const t_params args)
 {
 	HANDLE hProcess = nullptr;
 	ProcessScanReport *process_report = nullptr;

@@ -261,7 +261,7 @@ int main(int argc, char *argv[])
 		std::cout << "Output filter: " << translate_out_filter(args.out_filter) << std::endl;
 		std::cout << "Dump mode: " << translate_dump_mode(peconv::t_pe_dump_mode(args.dump_mode)) << std::endl;
 	}
-	ProcessScanReport* report = check_modules_in_process(args);
+	ProcessScanReport* report = scan_process(args);
 	if (report != nullptr) {
 		print_report(*report, args);
 		delete report;
