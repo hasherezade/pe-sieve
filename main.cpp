@@ -13,17 +13,21 @@
 #include "peconv.h"
 #include "pe_sieve.h"
 
+//scan options:
 #define PARAM_PID "/pid"
+#define PARAM_SHELLCODE "/shellc"
 #define PARAM_MODULES_FILTER "/mfilter"
+//dump options:
 #define PARAM_IMP_REC "/imp"
+#define PARAM_DUMP_MODE "/dmode"
+//output options:
 #define PARAM_OUT_FILTER "/ofilter"
+#define PARAM_QUIET "/quiet"
+#define PARAM_JSON "/json"
+//info:
 #define PARAM_HELP "/help"
 #define PARAM_HELP2  "/?"
 #define PARAM_VERSION  "/version"
-#define PARAM_QUIET "/quiet"
-#define PARAM_JSON "/json"
-#define PARAM_SHELLCODE "/shellc"
-#define PARAM_DUMP_MODE "/dmode"
 
 void print_in_color(int color, std::string text)
 {
@@ -39,14 +43,14 @@ void print_help()
 {
 	const int hdr_color = 14;
 	const int param_color = 15;
+	const int separator_color = 6;
 	print_in_color(hdr_color, "Required: \n");
 	print_in_color(param_color, PARAM_PID);
 	std::cout << " <target_pid>\n\t: Set the PID of the target process.\n";
-
 	print_in_color(hdr_color, "\nOptional: \n");
-	print_in_color(param_color, PARAM_IMP_REC);
-	std::cout << "\t: Enable recovering imports.\n";
-	
+
+	print_in_color(separator_color, "\n---scan options---\n");
+
 	print_in_color(param_color, PARAM_SHELLCODE);
 	std::cout << "\t: Detect shellcode implants. (By default it detects PE only).\n";
 #ifdef _WIN64
@@ -55,10 +59,9 @@ void print_help()
 	std::cout << "*mfilter_id:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
 #endif
 
-	print_in_color(param_color, PARAM_OUT_FILTER);
-	std::cout << " <*ofilter_id>\n\t: Filter the dumped output.\n";
-	std::cout << "*ofilter_id:\n\t0 - no filter: dump everything (default)\n\t1 - don't dump the modified PEs, but file the report\n\t2 - don't create the output directory at all\n";
-
+	print_in_color(separator_color, "\n---dump options---\n");
+	print_in_color(param_color, PARAM_IMP_REC);
+	std::cout << "\t: Enable recovering imports.\n";
 	print_in_color(param_color, PARAM_DUMP_MODE);
 	std::cout << " <*dump_mode>\n\t: Set in which mode the detected PE files should be dumped.\n";
 	std::cout << "*dump_mode:\n"
@@ -66,6 +69,14 @@ void print_help()
 		<< "\t" << peconv::PE_DUMP_VIRTUAL << " - virtual (as it is in the memory, no unmapping)\n"
 		<< "\t" << peconv::PE_DUMP_UNMAP << " - unmapped (converted to raw using sections' raw headers)\n"
 		<< "\t" << peconv::PE_DUMP_REALIGN << " - realigned raw (converted raw format to be the same as virtual)\n";
+
+	print_in_color(separator_color, "\n---output options---\n");
+
+	print_in_color(param_color, PARAM_OUT_FILTER);
+	std::cout << " <*ofilter_id>\n\t: Filter the dumped output.\n";
+	std::cout << "*ofilter_id:\n\t0 - no filter: dump everything (default)\n"
+		<< "\t1 - don't dump the modified PEs, but save the report\n"
+		<< "\t2 - don't create the output directory at all\n";
 
 	print_in_color(param_color, PARAM_QUIET);
 	std::cout << "\t: Print only the summary. Do not log on stdout during the scan.\n";
