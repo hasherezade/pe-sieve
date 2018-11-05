@@ -68,6 +68,7 @@ set (utils_hdrs
 
 set (srcs
 	pe_sieve.cpp
+	pe_sieve_params_info.cpp
 	report_formatter.cpp
 	results_dumper.cpp
 	pe_reconstructor.cpp
@@ -77,6 +78,7 @@ set (srcs
 
 set (hdrs
 	pe_sieve.h
+	pe_sieve_params_info.h
 	report_formatter.h
 	results_dumper.h
 	pe_reconstructor.h
