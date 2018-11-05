@@ -1,4 +1,4 @@
-// Scans for modified modules within the process of a given PID
+// Scans the process with a given PID
 // author: hasherezade (hasherezade@gmail.com)
 
 #include "pe_sieve.h"
