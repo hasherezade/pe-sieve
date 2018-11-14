@@ -22,12 +22,12 @@ void init_syspaths()
 {
 	if (!g_System32Path[0]) {
 		memset(g_System32Path, 0, MAX_PATH);
-		GetWindowsDirectory(g_System32Path, MAX_PATH);
+		GetWindowsDirectoryA(g_System32Path, MAX_PATH);
 		lstrcatA(g_System32Path, "\\system32");
 	}
 	if (!g_Syswow64Path[0]) {
 		memset(g_Syswow64Path, 0, MAX_PATH);
-		GetWindowsDirectory(g_Syswow64Path, MAX_PATH);
+		GetWindowsDirectoryA(g_Syswow64Path, MAX_PATH);
 		lstrcatA(g_Syswow64Path, "\\SysWOW64");
 	}
 }
