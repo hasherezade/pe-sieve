@@ -50,7 +50,7 @@ protected:
 		{
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(remoteModData.headerBuffer, peconv::MAX_HEADER_SIZE, section_number);
 		if ((!section_hdr) || section_hdr->Misc.VirtualSize == 0) {
-			return nullptr;
+			return false;
 		}
 		this->rva = section_hdr->VirtualAddress;
 		//get the code section from the module:
