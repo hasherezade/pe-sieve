@@ -34,12 +34,14 @@ HANDLE open_process(DWORD processID)
 		}
 		std::cerr << "[-][" << processID << "] Could not open the process Error: " << last_err << std::endl;
 		std::cerr << "-> Access denied. Try to run the scanner as Administrator." << std::endl;
-		throw std::exception("Could not open the process", ERROR_ACCESS_DENIED);
+		SetLastError(ERROR_ACCESS_DENIED);
+		throw std::runtime_error("Could not open the process");
 		return nullptr;
 	}
 	if (last_err == ERROR_INVALID_PARAMETER) {
 		std::cerr << "-> Is this process still running?" << std::endl;
-		throw std::exception("Could not open the process", ERROR_INVALID_PARAMETER);
+		SetLastError(ERROR_INVALID_PARAMETER);
+		throw std::runtime_error("Could not open the process");
 	}
 	return hProcess;
 }
@@ -89,7 +91,8 @@ ProcessScanReport* scan_process(const t_params args)
 	try {
 		hProcess = open_process(args.pid);
 		if (!is_scaner_compatibile(hProcess)) {
-			throw std::exception("Scanner mismatch. Try to use the 64bit version of the scanner.", ERROR_INVALID_PARAMETER);
+			SetLastError(ERROR_INVALID_PARAMETER);
+			throw std::runtime_error("Scanner mismatch. Try to use the 64bit version of the scanner.");
 		}
 
 		ProcessScanner scanner(hProcess, args);

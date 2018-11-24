@@ -2,6 +2,7 @@
 
 #include <windows.h>
 #include <iostream>
+#include <stdexcept>
 
 #include "pe_sieve_types.h"
 #include "scanners/scan_report.h"

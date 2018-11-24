@@ -99,7 +99,7 @@ ProcessScanReport* ProcessScanner::scanRemote()
 
 	// throw error only if both scans has failed:
 	if (!modulesScanned && !modulesScanned) {
-		throw std::exception(errorsStr.str().c_str());
+		throw std::runtime_error(errorsStr.str());
 	}
 	return pReport;
 }
@@ -109,7 +109,7 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 	PSAPI_WORKING_SET_INFORMATION wsi_1 = { 0 };
 	BOOL result = QueryWorkingSet(this->processHandle, (LPVOID)&wsi_1, sizeof(PSAPI_WORKING_SET_INFORMATION));
 	if (result == FALSE && GetLastError() != ERROR_BAD_LENGTH) {
-		throw std::exception("Could not scan the working set in the process. ", GetLastError());
+		throw std::runtime_error("Could not scan the working set in the process. ");
 		return 0;
 	}
 #ifdef _DEBUG

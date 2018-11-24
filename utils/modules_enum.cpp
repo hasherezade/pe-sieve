@@ -15,7 +15,7 @@ size_t enum_modules(IN HANDLE hProcess, IN OUT HMODULE hMods[], IN const DWORD h
 	}
 #else
 	if (!EnumProcessModules(hProcess, hMods, hModsMax, &cbNeeded)) {
-		throw std::exception("Could not enumerate modules in the process. ", GetLastError());
+		throw std::runtime_error("Could not enumerate modules in the process.");
 		return 0;
 	}
 #endif
