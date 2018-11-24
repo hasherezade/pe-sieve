@@ -114,7 +114,7 @@ else()
 	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} main.cpp )
 endif()
 
-target_link_libraries ( ${PROJECT_NAME} ${PECONV_LIB} )
+target_link_libraries ( ${PROJECT_NAME} ${PECONV_LIB} "psapi.lib" "ntdll.lib")
 
 # dependencies
 add_dependencies(${PROJECT_NAME} libpeconv)
