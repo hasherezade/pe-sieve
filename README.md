@@ -24,6 +24,10 @@ Latest builds*:
 *those builds are available for testing and they may be ahead of the official [release](https://github.com/hasherezade/pe-sieve/releases):
 + [32-bit](https://goo.gl/PnM3U2)
 + [64-bit](https://goo.gl/scP1Hi)
+
+Read more:
+-
+Wiki: https://github.com/hasherezade/pe-sieve/wiki
 <hr/>
 
 logo by [Baran Pirinçal](https://github.com/baranpirincal)
