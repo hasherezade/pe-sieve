@@ -65,7 +65,7 @@ size_t dump_output(ProcessScanReport *process_report, HANDLE hProcess, const t_p
 	if (args.out_filter == OUT_NO_DIR) {
 		return 0;
 	}
-	ResultsDumper dumper("", args.quiet);
+	ResultsDumper dumper(args.output_dir, args.quiet);
 
 	if (dumper.dumpJsonReport(*process_report, REPORT_SUSPICIOUS_AND_ERRORS)) {
 		std::cout << "[+] Report dumped to: " << dumper.dumpDir << std::endl;

@@ -11,6 +11,9 @@
 
 bool ResultsDumper::make_dump_dir(const std::string directory)
 {
+	if (directory.length() == 0) {
+		return true;
+	}
 	if (CreateDirectoryA(directory.c_str(), NULL) 
 		||  GetLastError() == ERROR_ALREADY_EXISTS)
 	{
@@ -21,6 +24,9 @@ bool ResultsDumper::make_dump_dir(const std::string directory)
 
 std::string ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname, std::string default_extension)
 {
+	if (!make_dump_dir(this->baseDir)) {
+		this->baseDir = ""; // reset path
+	}
 	if (!make_dump_dir(this->dumpDir)) {
 		this->dumpDir = ""; // reset path
 	}
@@ -41,6 +47,9 @@ std::string ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, std::string
 
 std::string ResultsDumper::makeOutPath(std::string fname, std::string default_extension)
 {
+	if (!make_dump_dir(this->baseDir)) {
+		this->baseDir = ""; // reset path
+	}
 	//just in case if the directory creation failed:
 	if (!make_dump_dir(this->dumpDir)) {
 		this->dumpDir = ""; // reset path
@@ -50,7 +59,7 @@ std::string ResultsDumper::makeOutPath(std::string fname, std::string default_ex
 		stream << this->dumpDir;
 		stream << "\\";
 	}
-	
+
 	if (fname.length() > 0) {
 		stream << fname;
 	}

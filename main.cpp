@@ -25,6 +25,7 @@
 #define PARAM_OUT_FILTER "/ofilter"
 #define PARAM_QUIET "/quiet"
 #define PARAM_JSON "/json"
+#define PARAM_DIR "/dir"
 //info:
 #define PARAM_HELP "/help"
 #define PARAM_HELP2  "/?"
@@ -96,6 +97,9 @@ void print_help()
 	std::cout << "\t: Print only the summary. Do not log on stdout during the scan.\n";
 	print_in_color(param_color, PARAM_JSON);
 	std::cout << "\t: Print the JSON report as the summary.\n";
+	
+	print_in_color(param_color, PARAM_DIR);
+	std::cout << "\t: Set output directory (default: current directory).\n";
 
 	print_in_color(hdr_color, "\nInfo: \n");
 	print_in_color(param_color, PARAM_HELP);
@@ -142,6 +146,19 @@ void print_report(const ProcessScanReport& report, const t_params args)
 	if (!args.json_output) {
 		std::cout << "---" << std::endl;
 	}
+}
+
+bool set_output_dir(t_params &args, const char *new_dir)
+{
+	if (!new_dir) return false;
+
+	size_t new_len = strlen(new_dir);
+	size_t buffer_len = sizeof(args.output_dir);
+	if (new_len > buffer_len) return false;
+
+	memset(args.output_dir, 0, buffer_len);
+	memcpy(args.output_dir, new_dir, new_len);
+	return true;
 }
 
 int main(int argc, char *argv[])
@@ -195,6 +212,9 @@ int main(int argc, char *argv[])
 		}
 		else if (!strcmp(argv[i], PARAM_DUMP_MODE) && (i + 1) < argc) {
 			args.dump_mode = normalize_dump_mode(atoi(argv[i + 1]));
+			++i;
+		} else if (!strcmp(argv[i], PARAM_DIR) && (i + 1) < argc) {
+			set_output_dir(args, argv[i + 1]);
 			++i;
 		}
 	}

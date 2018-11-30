@@ -22,6 +22,7 @@ typedef struct {
 	bool shellcode; // detect shellcode implants
 	DWORD dump_mode;
 	bool json_output;
+	char output_dir[MAX_PATH];
 } t_params;
 
 typedef struct {
