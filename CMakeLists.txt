@@ -72,6 +72,7 @@ set (srcs
 	report_formatter.cpp
 	results_dumper.cpp
 	pe_reconstructor.cpp
+	color_scheme.h
 	${scanners_srcs}
 	${utils_srcs}
 )

@@ -13,6 +13,7 @@
 
 #include "peconv.h"
 #include "pe_sieve.h"
+#include "color_scheme.h"
 
 //scan options:
 #define PARAM_PID "/pid"
@@ -51,9 +52,9 @@ peconv::t_pe_dump_mode normalize_dump_mode(size_t mode_id)
 
 void print_help()
 {
-	const int hdr_color = 14;
-	const int param_color = 15;
-	const int separator_color = 6;
+	const int hdr_color = HEADER_COLOR;
+	const int param_color = HILIGHTED_COLOR;
+	const int separator_color = SEPARATOR_COLOR;
 	print_in_color(hdr_color, "Required: \n");
 	print_in_color(param_color, PARAM_PID);
 	std::cout << " <target_pid>\n\t: Set the PID of the target process.\n";
@@ -161,6 +162,14 @@ bool set_output_dir(t_params &args, const char *new_dir)
 	return true;
 }
 
+void print_unknown_param(const char *param)
+{
+	print_in_color(WARNING_COLOR, "Unknown parameter: ");
+	std::cout << param << "\n";
+	print_in_color(HILIGHTED_COLOR, "Available parameters:\n\n");
+	print_help();
+}
+
 int main(int argc, char *argv[])
 {
 	if (argc < 2) {
@@ -216,6 +225,9 @@ int main(int argc, char *argv[])
 		} else if (!strcmp(argv[i], PARAM_DIR) && (i + 1) < argc) {
 			set_output_dir(args, argv[i + 1]);
 			++i;
+		} else if (strlen(argv[i]) > 0) {
+			print_unknown_param(argv[i]);
+			return 0;
 		}
 	}
 	//if didn't received PID by explicit parameter, try to parse the first param of the app
