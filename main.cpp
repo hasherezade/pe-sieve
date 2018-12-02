@@ -15,6 +15,7 @@
 #include "pe_sieve.h"
 #include "color_scheme.h"
 
+#define PARAM_SWITCH '/'
 //scan options:
 #define PARAM_PID "/pid"
 #define PARAM_SHELLCODE "/shellc"
@@ -164,7 +165,7 @@ bool set_output_dir(t_params &args, const char *new_dir)
 
 void print_unknown_param(const char *param)
 {
-	print_in_color(WARNING_COLOR, "Unknown parameter: ");
+	print_in_color(WARNING_COLOR, "Invalid parameter: ");
 	std::cout << param << "\n";
 	print_in_color(HILIGHTED_COLOR, "Available parameters:\n\n");
 	print_help();
@@ -225,7 +226,10 @@ int main(int argc, char *argv[])
 		} else if (!strcmp(argv[i], PARAM_DIR) && (i + 1) < argc) {
 			set_output_dir(args, argv[i + 1]);
 			++i;
-		} else if (strlen(argv[i]) > 0) {
+		} else if (strlen(argv[i]) > 0 
+			&& (i > 1 || argv[i][0] == PARAM_SWITCH) //allow for the PID as the first argument
+			)
+		{
 			print_unknown_param(argv[i]);
 			return 0;
 		}
