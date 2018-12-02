@@ -17,8 +17,14 @@ public:
 	{
 		ModuleScanReport::toJSON(outs, level);
 		outs << ",\n";
-		OUT_PADDED(outs, level, "\"patches\" : ");
-		outs << std::dec << patchesList.size();
+		if (patchesList.size() > 0) {
+			OUT_PADDED(outs, level, "\"patches\" : ");
+			outs << std::dec << patchesList.size();
+		}
+		if (unpackedSections.size() > 0) {
+			OUT_PADDED(outs, level, "\"unpacked_code_sections\" : ");
+			outs << std::dec << unpackedSections.size();
+		}
 	}
 
 	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
@@ -32,6 +38,7 @@ public:
 	
 	size_t generateTags(std::string reportPath);
 
+	std::set<DWORD> unpackedSections;
 	PatchList patchesList;
 };
 
