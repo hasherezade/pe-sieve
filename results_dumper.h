@@ -31,4 +31,6 @@ protected:
 	std::string makeOutPath(std::string fname, std::string defaultExtension="");
 
 	std::string makeDirName(const DWORD process_id);
+
+	void makeAndJoinDirectories(std::stringstream& name_stream);
 };

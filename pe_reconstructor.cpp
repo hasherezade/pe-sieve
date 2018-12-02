@@ -141,7 +141,6 @@ bool PeReconstructor::reconstructPeHdr()
 bool PeReconstructor::dumpToFile(std::string dumpFileName, _In_opt_ peconv::ExportsMapper* exportsMap)
 {
 	if (vBuf == nullptr) return false;
-
 	// save the read module into a file
 	return peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
 }
