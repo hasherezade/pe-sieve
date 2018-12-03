@@ -136,18 +136,18 @@ t_scan_status HookScanner::scanSection(PeSection &originalSec, PeSection &remote
 #endif
 	//check if the code of the loaded module is same as the code of the module on the disk:
 	int res = memcmp(remoteSec.loadedSection, originalSec.loadedSection, smaller_size);
-	if (res != 0) {
-		size_t patches_count = collectPatches(originalSec.rva, originalSec.loadedSection, remoteSec.loadedSection, smaller_size, report.patchesList);
-#ifdef _DEBUG
-		if (patches_count) {
-			std::cout << "Total patches: "  << patches_count << std::endl;
-		}
-#endif
+	if (res == 0) {
+		return SCAN_NOT_SUSPICIOUS; //not modified
 	}
-	if (res != 0) {
-		return SCAN_SUSPICIOUS; // modified
+
+	if (originalSec.rawSize == 0) {
+		report.unpackedSections.insert(originalSec.rva);
 	}
-	return SCAN_NOT_SUSPICIOUS; //not modified
+	else {
+		collectPatches(originalSec.rva, originalSec.loadedSection, remoteSec.loadedSection, smaller_size, report.patchesList);
+	}
+	return SCAN_SUSPICIOUS; // modified
+
 }
 
 

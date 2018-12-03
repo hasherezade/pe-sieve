@@ -40,6 +40,7 @@ public:
 		return isInside;
 	}
 
+	size_t rawSize;
 	size_t loadedSize;
 	PBYTE loadedSection;
 	DWORD rva;
@@ -52,6 +53,7 @@ protected:
 		if ((!section_hdr) || section_hdr->Misc.VirtualSize == 0) {
 			return false;
 		}
+		this->rawSize = section_hdr->SizeOfRawData;
 		this->rva = section_hdr->VirtualAddress;
 		//get the code section from the module:
 		this->loadedSize = 0;
@@ -68,6 +70,7 @@ protected:
 		if (section_hdr == nullptr) {
 			return false;
 		}
+		this->rawSize = section_hdr->SizeOfRawData;
 		const size_t raw_code_size = section_hdr->SizeOfRawData;
 		const size_t orig_code_size = section_hdr->Misc.VirtualSize > raw_code_size ? section_hdr->Misc.VirtualSize : raw_code_size;
 
