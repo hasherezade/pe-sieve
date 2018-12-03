@@ -20,6 +20,9 @@ public:
 		if (patchesList.size() > 0) {
 			OUT_PADDED(outs, level, "\"patches\" : ");
 			outs << std::dec << patchesList.size();
+			if (unpackedSections.size() > 0) {
+				outs << ",\n";
+			}
 		}
 		if (unpackedSections.size() > 0) {
 			OUT_PADDED(outs, level, "\"unpacked_code_sections\" : ");
