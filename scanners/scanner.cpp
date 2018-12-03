@@ -10,7 +10,7 @@
 
 #include "headers_scanner.h"
 #include "code_scanner.h"
-#include "mempage_scanner.h"
+#include "workingset_scanner.h"
 #include "mapping_scanner.h"
 
 #include <string>
@@ -134,8 +134,8 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 		//if it was already scanned, it means the module was on the list of loaded modules
 		memPage.is_listed_module = pReport.hasModule(region_base);
 
-		MemPageScanner memPageScanner(this->processHandle, memPage, this->args.shellcode);
-		MemPageScanReport *my_report = memPageScanner.scanRemote();
+		WorkingSetScanner memPageScanner(this->processHandle, memPage, this->args.shellcode);
+		WorkingSetScanReport *my_report = memPageScanner.scanRemote();
 
 		counter++;
 		if (my_report == nullptr) continue;

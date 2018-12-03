@@ -19,7 +19,7 @@ set (scanners_srcs
 	scanners/mapping_scanner.cpp
 	scanners/headers_scanner.cpp
 	scanners/code_scanner.cpp
-	scanners/mempage_scanner.cpp
+	scanners/workingset_scanner.cpp
 	scanners/artefact_scanner.cpp
 	scanners/scanner.cpp
 	scanners/module_data.cpp
@@ -35,7 +35,7 @@ set (scanners_hdrs
 	scanners/headers_scanner.h
 	scanners/code_scanner.h
 	scanners/module_scanner.h
-	scanners/mempage_scanner.h
+	scanners/workingset_scanner.h
 	scanners/artefact_scanner.h
 	scanners/scanner.h
 	scanners/module_scan_report.h

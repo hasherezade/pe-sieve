@@ -10,10 +10,10 @@
 
 #include "../utils/util.h"
 
-class MemPageScanReport : public ModuleScanReport
+class WorkingSetScanReport : public ModuleScanReport
 {
 public:
-	MemPageScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, t_scan_status status)
+	WorkingSetScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, t_scan_status status)
 		: ModuleScanReport(processHandle, _module, _moduleSize, status)
 	{
 		 is_executable = false;
@@ -68,22 +68,22 @@ public:
 	DWORD protection;
 };
 
-class MemPageScanner {
+class WorkingSetScanner {
 public:
-	MemPageScanner(HANDLE _procHndl, MemPageData &_memPageDatal, bool _detectShellcode)
+	WorkingSetScanner(HANDLE _procHndl, MemPageData &_memPageDatal, bool _detectShellcode)
 		: processHandle(_procHndl), memPage(_memPageDatal),
 		detectShellcode(_detectShellcode),
 		isDeepScan(true)
 	{
 	}
-	virtual ~MemPageScanner() {}
+	virtual ~WorkingSetScanner() {}
 
-	virtual MemPageScanReport* scanRemote();
+	virtual WorkingSetScanReport* scanRemote();
 
 protected:
 	bool isExecutable(MemPageData &memPageData);
 	bool isCode(MemPageData &memPageData);
-	MemPageScanReport* scanExecutableArea(MemPageData &memPageData);
+	WorkingSetScanReport* scanExecutableArea(MemPageData &memPageData);
 
 	bool isDeepScan;
 	bool detectShellcode; // is shellcode detection enabled
