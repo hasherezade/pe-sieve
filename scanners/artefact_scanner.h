@@ -6,7 +6,7 @@
 
 #include "peconv.h"
 #include "module_scan_report.h"
-#include "mempage_scanner.h"
+#include "workingset_scanner.h"
 
 #define INVALID_OFFSET (-1)
 #define PE_NOT_FOUND 0
@@ -83,11 +83,11 @@ public:
 	bool isDll;
 };
 
-class ArtefactScanReport : public MemPageScanReport
+class ArtefactScanReport : public WorkingSetScanReport
 {
 public:
 	ArtefactScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, t_scan_status status, PeArtefacts &peArt)
-		: MemPageScanReport(processHandle, _module, _moduleSize, status),
+		: WorkingSetScanReport(processHandle, _module, _moduleSize, status),
 		artefacts(peArt), 
 		initialRegionSize(_moduleSize)
 	{
@@ -104,7 +104,7 @@ public:
 
 	const virtual void fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
-		MemPageScanReport::fieldsToJSON(outs, level);
+		WorkingSetScanReport::fieldsToJSON(outs, level);
 		outs << ",\n";
 		artefacts.toJSON(outs, level);
 	}

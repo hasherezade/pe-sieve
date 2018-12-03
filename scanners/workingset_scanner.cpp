@@ -1,4 +1,4 @@
-#include "mempage_scanner.h"
+#include "workingset_scanner.h"
 #include "module_data.h"
 #include "artefact_scanner.h"
 
@@ -6,7 +6,7 @@
 #include "../utils/workingset_enum.h"
 #include "../utils/artefacts_util.h"
 
-bool MemPageScanner::isCode(MemPageData &memPageData)
+bool WorkingSetScanner::isCode(MemPageData &memPageData)
 {
 	if (!memPage.load()) {
 		return false;
@@ -14,7 +14,7 @@ bool MemPageScanner::isCode(MemPageData &memPageData)
 	return is_code(memPageData.getLoadedData(), memPageData.getLoadedSize());
 }
 
-bool MemPageScanner::isExecutable(MemPageData &memPageData)
+bool WorkingSetScanner::isExecutable(MemPageData &memPageData)
 {
 	bool is_any_exec = false;
 	if (memPage.mapping_type == MEM_IMAGE)
@@ -40,14 +40,14 @@ bool MemPageScanner::isExecutable(MemPageData &memPageData)
 	return is_any_exec;
 }
 
-MemPageScanReport* MemPageScanner::scanExecutableArea(MemPageData &memPageData)
+WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPageData)
 {
 	if (!memPage.load()) {
 		return nullptr;
 	}
 	//shellcode found! now examin it with more details:
 	ArtefactScanner artefactScanner(this->processHandle, memPage);
-	MemPageScanReport *my_report = artefactScanner.scanRemote();
+	WorkingSetScanReport *my_report = artefactScanner.scanRemote();
 	if (my_report) {
 		//pe artefacts found
 		return my_report;
@@ -63,13 +63,13 @@ MemPageScanReport* MemPageScanner::scanExecutableArea(MemPageData &memPageData)
 	//report about shellcode:
 	ULONGLONG region_start = memPage.region_start;
 	const size_t region_size = size_t (memPage.region_end - region_start);
-	my_report = new MemPageScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
+	my_report = new WorkingSetScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
 	my_report->has_pe = false;
 	my_report->has_shellcode = true;
 	return my_report;
 }
 
-MemPageScanReport* MemPageScanner::scanRemote()
+WorkingSetScanReport* WorkingSetScanner::scanRemote()
 {
 	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
 		return nullptr;
@@ -94,7 +94,7 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		//probably legit
 		return nullptr;
 	}
-	MemPageScanReport* my_report = nullptr;
+	WorkingSetScanReport* my_report = nullptr;
 	if (is_any_exec) {
 #ifdef _DEBUG
 		std::cout << std::hex << memPage.start_va << ": Scanning executable area" << std::endl;

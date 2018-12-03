@@ -8,9 +8,9 @@
 #include "../utils/workingset_enum.h"
 #include "../utils/modules_enum.h"
 
-#include "hollowing_scanner.h"
-#include "hook_scanner.h"
-#include "mempage_scanner.h"
+#include "headers_scanner.h"
+#include "code_scanner.h"
+#include "workingset_scanner.h"
 #include "mapping_scanner.h"
 
 #include <string>
@@ -26,7 +26,7 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 #ifdef _WIN64
 	IsWow64Process(processHandle, &isWow64);
 #endif
-	HollowingScanner hollows(processHandle, modData, remoteModData);
+	HeadersScanner hollows(processHandle, modData, remoteModData);
 	HeadersScanReport *scan_report = hollows.scanRemote();
 	if (scan_report == nullptr) {
 		process_report.appendReport(new MalformedHeaderReport(processHandle, modData.moduleHandle, modData.original_size));
@@ -50,7 +50,7 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 
 t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
-	HookScanner hooks(processHandle, modData, remoteModData);
+	CodeScanner hooks(processHandle, modData, remoteModData);
 
 	CodeScanReport *scan_report = hooks.scanRemote();
 	t_scan_status is_hooked = ModuleScanReport::get_scan_status(scan_report);
@@ -134,8 +134,8 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 		//if it was already scanned, it means the module was on the list of loaded modules
 		memPage.is_listed_module = pReport.hasModule(region_base);
 
-		MemPageScanner memPageScanner(this->processHandle, memPage, this->args.shellcode);
-		MemPageScanReport *my_report = memPageScanner.scanRemote();
+		WorkingSetScanner memPageScanner(this->processHandle, memPage, this->args.shellcode);
+		WorkingSetScanReport *my_report = memPageScanner.scanRemote();
 
 		counter++;
 		if (my_report == nullptr) continue;

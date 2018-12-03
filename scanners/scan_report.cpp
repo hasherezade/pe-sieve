@@ -1,8 +1,8 @@
 #include "scan_report.h"
 
-#include "hollowing_scanner.h"
-#include "hook_scanner.h"
-#include "mempage_scanner.h"
+#include "headers_scanner.h"
+#include "code_scanner.h"
+#include "workingset_scanner.h"
 #include "mapping_scanner.h"
 
 
@@ -33,7 +33,7 @@ void ProcessScanReport::appendToType(ModuleScanReport *report)
 		this->reports_by_type[REPORT_HEADERS_SCAN].insert(report);
 		return;
 	}
-	if (dynamic_cast<MemPageScanReport*>(report)) {
+	if (dynamic_cast<WorkingSetScanReport*>(report)) {
 		this->reports_by_type[REPORT_MEMPAGE_SCAN].insert(report);
 		return;
 	}

@@ -1,7 +1,7 @@
-#include "hollowing_scanner.h"
+#include "headers_scanner.h"
 #include "peconv.h"
 
-HeadersScanReport* HollowingScanner::scanRemote()
+HeadersScanReport* HeadersScanner::scanRemote()
 {
 	HeadersScanReport *my_report = new HeadersScanReport(this->processHandle, moduleData.moduleHandle, remoteModData.getModuleSize());
 	if (!remoteModData.isInitialized()) {
@@ -54,7 +54,7 @@ HeadersScanReport* HollowingScanner::scanRemote()
 	return my_report;
 }
 
-bool HollowingScanner::zeroUnusedFields(PBYTE hdr_buffer, size_t hdrs_size)
+bool HeadersScanner::zeroUnusedFields(PBYTE hdr_buffer, size_t hdrs_size)
 {
 	size_t section_num = peconv::get_sections_count(hdr_buffer, hdrs_size);
 	bool is_modified = false;
