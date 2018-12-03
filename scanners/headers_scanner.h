@@ -41,9 +41,9 @@ public:
 	DWORD is64; // is the remote module 64bit
 };
 
-class HollowingScanner : public ModuleScanner {
+class HeadersScanner : public ModuleScanner {
 public:
-	HollowingScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData)
+	HeadersScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData)
 		: ModuleScanner(hProc, moduleData, remoteModData)
 	{
 	}

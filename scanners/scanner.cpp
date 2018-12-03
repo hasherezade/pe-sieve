@@ -8,7 +8,7 @@
 #include "../utils/workingset_enum.h"
 #include "../utils/modules_enum.h"
 
-#include "hollowing_scanner.h"
+#include "headers_scanner.h"
 #include "code_scanner.h"
 #include "mempage_scanner.h"
 #include "mapping_scanner.h"
@@ -26,7 +26,7 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 #ifdef _WIN64
 	IsWow64Process(processHandle, &isWow64);
 #endif
-	HollowingScanner hollows(processHandle, modData, remoteModData);
+	HeadersScanner hollows(processHandle, modData, remoteModData);
 	HeadersScanReport *scan_report = hollows.scanRemote();
 	if (scan_report == nullptr) {
 		process_report.appendReport(new MalformedHeaderReport(processHandle, modData.moduleHandle, modData.original_size));

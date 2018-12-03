@@ -17,7 +17,7 @@ include_directories ( ${PECONV_DIR}/include )
 
 set (scanners_srcs
 	scanners/mapping_scanner.cpp
-	scanners/hollowing_scanner.cpp
+	scanners/headers_scanner.cpp
 	scanners/code_scanner.cpp
 	scanners/mempage_scanner.cpp
 	scanners/artefact_scanner.cpp
@@ -32,7 +32,7 @@ set (scanners_srcs
 
 set (scanners_hdrs
 	scanners/mapping_scanner.h
-	scanners/hollowing_scanner.h
+	scanners/headers_scanner.h
 	scanners/code_scanner.h
 	scanners/module_scanner.h
 	scanners/mempage_scanner.h
