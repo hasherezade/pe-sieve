@@ -9,7 +9,7 @@
 #include "../utils/modules_enum.h"
 
 #include "hollowing_scanner.h"
-#include "hook_scanner.h"
+#include "code_scanner.h"
 #include "mempage_scanner.h"
 #include "mapping_scanner.h"
 
@@ -50,7 +50,7 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 
 t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
-	HookScanner hooks(processHandle, modData, remoteModData);
+	CodeScanner hooks(processHandle, modData, remoteModData);
 
 	CodeScanReport *scan_report = hooks.scanRemote();
 	t_scan_status is_hooked = ModuleScanReport::get_scan_status(scan_report);

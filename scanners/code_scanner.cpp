@@ -1,4 +1,4 @@
-#include "hook_scanner.h"
+#include "code_scanner.h"
 
 #include "peconv.h"
 
@@ -25,7 +25,7 @@ size_t CodeScanReport::generateTags(std::string reportPath)
 }
 //---
 
-bool HookScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
+bool CodeScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
 {
 	IMAGE_DATA_DIRECTORY* iat_dir = peconv::get_directory_entry(moduleData.original_module, IMAGE_DIRECTORY_ENTRY_IAT);
 	if (!iat_dir) {
@@ -46,7 +46,7 @@ bool HookScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
 	return true;
 }
 
-bool HookScanner::clearExports(PeSection &originalSec, PeSection &remoteSec)
+bool CodeScanner::clearExports(PeSection &originalSec, PeSection &remoteSec)
 {
 	IMAGE_DATA_DIRECTORY* dir = peconv::get_directory_entry(moduleData.original_module, IMAGE_DIRECTORY_ENTRY_EXPORT);
 	if (!dir) {
@@ -81,7 +81,7 @@ bool HookScanner::clearExports(PeSection &originalSec, PeSection &remoteSec)
 	return true;
 }
 
-size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList)
+size_t CodeScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList)
 {
 	PatchAnalyzer analyzer(moduleData, section_rva, patched_code, code_size);
 	PatchList::Patch *currPatch = nullptr;
@@ -117,7 +117,7 @@ size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE pat
 	return patchesList.size();
 }
 
-t_scan_status HookScanner::scanSection(PeSection &originalSec, PeSection &remoteSec, IN OUT CodeScanReport& report)
+t_scan_status CodeScanner::scanSection(PeSection &originalSec, PeSection &remoteSec, IN OUT CodeScanReport& report)
 {
 	if (!originalSec.isInitialized() || !remoteSec.isInitialized()) {
 		return SCAN_ERROR;
@@ -151,7 +151,7 @@ t_scan_status HookScanner::scanSection(PeSection &originalSec, PeSection &remote
 }
 
 
-CodeScanReport* HookScanner::scanRemote()
+CodeScanReport* CodeScanner::scanRemote()
 {
 	CodeScanReport *my_report = new CodeScanReport(this->processHandle, moduleData.moduleHandle, moduleData.original_size);
 	my_report->isDotNetModule = moduleData.isDotNet();
@@ -201,7 +201,7 @@ CodeScanReport* HookScanner::scanRemote()
 	return my_report; // last result
 }
 
-bool HookScanner::postProcessScan(IN OUT CodeScanReport &report)
+bool CodeScanner::postProcessScan(IN OUT CodeScanReport &report)
 {
 	// we need only exports from the current module, not the global mapping
 	if (report.patchesList.size() == 0) {

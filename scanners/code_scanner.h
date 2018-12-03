@@ -45,10 +45,10 @@ public:
 	PatchList patchesList;
 };
 
-class HookScanner : public ModuleScanner {
+class CodeScanner : public ModuleScanner {
 public:
 
-	HookScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData)
+	CodeScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData)
 		: ModuleScanner(hProc, moduleData, remoteModData) { }
 
 	virtual CodeScanReport* scanRemote();

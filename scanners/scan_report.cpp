@@ -1,7 +1,7 @@
 #include "scan_report.h"
 
 #include "hollowing_scanner.h"
-#include "hook_scanner.h"
+#include "code_scanner.h"
 #include "mempage_scanner.h"
 #include "mapping_scanner.h"
 
