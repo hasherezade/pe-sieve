@@ -48,6 +48,18 @@ set (scanners_hdrs
 	scanners/scanned_modules.h
 )
 
+set (postprocessors_hdrs
+	postprocessors/report_formatter.h
+	postprocessors/results_dumper.h
+	postprocessors/pe_reconstructor.h
+)
+
+set (postprocessors_srcs
+	postprocessors/report_formatter.cpp
+	postprocessors/results_dumper.cpp
+	postprocessors/pe_reconstructor.cpp
+)
+
 set (utils_srcs
 	utils/process_privilege.cpp
 	utils/util.cpp
@@ -69,22 +81,18 @@ set (utils_hdrs
 set (srcs
 	pe_sieve.cpp
 	pe_sieve_params_info.cpp
-	report_formatter.cpp
-	results_dumper.cpp
-	pe_reconstructor.cpp
 	color_scheme.h
 	${scanners_srcs}
+	${postprocessors_srcs}
 	${utils_srcs}
 )
 
 set (hdrs
 	pe_sieve.h
 	pe_sieve_params_info.h
-	report_formatter.h
-	results_dumper.h
-	pe_reconstructor.h
 	include/pe_sieve_types.h
 	${scanners_hdrs}
+	${postprocessors_hdrs}
 	${utils_hdrs}
 )
 
@@ -93,11 +101,16 @@ set (rsrc
 	resources.rc
 )
 
+# set filters in Visual Studio project:
+
 SOURCE_GROUP("Source Files\\scanners" FILES ${scanners_srcs} )
 SOURCE_GROUP("Header Files\\scanners" FILES ${scanners_hdrs} )
 
 SOURCE_GROUP("Source Files\\utils" FILES ${utils_srcs} )
 SOURCE_GROUP("Header Files\\utils" FILES ${utils_hdrs} )
+
+SOURCE_GROUP("Source Files\\postprocessors" FILES ${postprocessors_srcs} )
+SOURCE_GROUP("Header Files\\postprocessors" FILES ${postprocessors_hdrs} )
 
 # libs
 add_subdirectory (libpeconv/libpeconv)

@@ -5,7 +5,7 @@
 #include <map>
 
 #include "peconv.h"
-#include "scanners/artefact_scanner.h"
+#include "../scanners/artefact_scanner.h"
 
 class PeReconstructor {
 public:

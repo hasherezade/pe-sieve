@@ -3,9 +3,8 @@
 #include <Psapi.h>
 
 #include <fstream>
-
-#include "utils\util.h"
-#include "utils\workingset_enum.h"
+#include "../utils/util.h"
+#include "../utils/workingset_enum.h"
 #include "pe_reconstructor.h"
 
 #define DIR_SEPARATOR "\\"
