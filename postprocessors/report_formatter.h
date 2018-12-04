@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "pe_sieve_types.h"
-#include "scanners/scan_report.h"
+#include "../scanners/scan_report.h"
 
 typedef enum report_filter {
 	REPORT_ERRORS = 1,

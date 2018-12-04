@@ -9,7 +9,7 @@
 
 #include "utils/util.h"
 #include "utils/process_privilege.h"
-#include "results_dumper.h"
+#include "postprocessors/results_dumper.h"
 
 HANDLE open_process(DWORD processID)
 {

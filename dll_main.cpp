@@ -7,8 +7,6 @@
 #define PESIEVE_EXPORTS
 #include "pe_sieve_api.h"
 
-#include "report_formatter.h"
-
 #define LIB_NAME "PE-sieve"
 
 t_report __stdcall PESieve_scan(t_params args)

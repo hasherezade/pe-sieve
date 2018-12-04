@@ -2,7 +2,7 @@
 #include <string>
 #include <sstream>
 
-#include "utils\util.h"
+#include "../utils/util.h"
 
 bool is_shown_type(t_scan_status status, t_report_filter filter)
 {
