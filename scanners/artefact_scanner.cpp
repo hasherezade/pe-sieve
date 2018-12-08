@@ -436,7 +436,10 @@ PeArtefacts* ArtefactScanner::generateArtefacts(ArtefactScanner::ArtefactsMappin
 
 PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_offset)
 {
-	const size_t step_size = sizeof(IMAGE_DOS_HEADER);
+	if (!memPage.load()) {
+		std::cerr << "Cannot read memory page!\n";
+		return nullptr;
+	}
 
 	ArtefactsMapping bestMapping(memPage);
 
