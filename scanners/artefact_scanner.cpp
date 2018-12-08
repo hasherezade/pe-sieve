@@ -347,6 +347,7 @@ bool ArtefactScanner::setSecHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_S
 	//validate by counting the sections:
 	size_t count = count_section_hdrs(loadedData, loadedSize, _sec_hdr);
 	if (count == 0) {
+		std::cout << "Sections count == 0\n";
 		// sections header didn't passed validation
 		return false;
 	}
@@ -464,19 +465,25 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 		IMAGE_SECTION_HEADER *sec_hdr = findSectionsHdr(memPage, max_section_search - min_offset, min_offset);
 		if (sec_hdr) {
 			setSecHdr(aMap, sec_hdr);
+			size_t sec_offset = calc_offset(memPage, aMap.sec_hdr);
+			min_offset = (sec_offset != INVALID_OFFSET && min_offset > sec_offset) ? min_offset : sec_offset;
 		}
 
 		//validate the header and search sections on its base:
-		if (setNtFileHdr(aMap, aMap.nt_file_hdr) && setSecHdr(aMap, aMap.sec_hdr)) {
-			//valid PE found:
-			bestMapping = aMap;
-			break;
+		if (setNtFileHdr(aMap, aMap.nt_file_hdr)) {
+			if (setSecHdr(aMap, aMap.sec_hdr)) {
+				//valid PE found:
+				bestMapping = aMap;
+				break;
+			} else {
+				std::cout << "[WARNING] Sections header didn't pass validation\n";
+			}
 		}
 		
 		bestMapping = (bestMapping < aMap) ? aMap : bestMapping;
 
-		if (!bestMapping.foundAny()) {
-			return nullptr;
+		if (!aMap.foundAny()) {
+			break;
 		}
 		min_offset++;
 	}
