@@ -48,7 +48,7 @@ public:
 		if (loadedData) {
 			return true;
 		}
-		return true;
+		return false;
 	}
 
 	bool hasMappedName();
