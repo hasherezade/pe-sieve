@@ -159,6 +159,28 @@ protected:
 			return false;
 		}
 
+		size_t getScore() const
+		{
+			size_t score = 0;
+			if (sec_hdr) score += 3;
+			if (nt_file_hdr) score += 2;
+			if (dos_hdr) score++;
+			return score;
+		}
+
+		bool operator < (const ArtefactsMapping& map2) const {
+			return getScore() < map2.getScore();
+		}
+
+		ArtefactsMapping& operator = (const ArtefactsMapping& other) {
+			this->pe_image_base = other.pe_image_base;
+			this->dos_hdr = other.dos_hdr;
+			this->nt_file_hdr = other.nt_file_hdr;
+			this->sec_hdr = other.sec_hdr;
+			this->isMzPeFound = other.isMzPeFound;
+			return *this;
+		}
+
 		MemPageData &memPage;
 		ULONGLONG pe_image_base;
 		IMAGE_DOS_HEADER *dos_hdr;
