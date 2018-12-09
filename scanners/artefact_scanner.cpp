@@ -176,7 +176,7 @@ BYTE* ArtefactScanner::findSecByPatterns(BYTE *search_ptr, const size_t max_sear
 IMAGE_SECTION_HEADER* ArtefactScanner::findSectionsHdr(MemPageData &memPage, const size_t max_search_size, const size_t search_offset)
 {
 	BYTE *search_ptr = search_offset + memPage.getLoadedData();
-	if (!peconv::validate_ptr(memPage.getLoadedData(), memPage.getLoadedSize(), search_ptr, max_search_size)) {
+	if (!memPage.validatePtr(search_ptr, max_search_size)) {
 		return nullptr;
 	}
 	BYTE *hdr_ptr = findSecByPatterns(search_ptr, max_search_size);
@@ -281,7 +281,7 @@ IMAGE_DOS_HEADER* ArtefactScanner::findMzPeHeader(MemPageData &memPage, const si
 	}
 	const size_t scan_size = memPage.getLoadedSize() - search_offset;
 	BYTE* buffer_ptr = memPage.getLoadedData() + search_offset;
-	if (!peconv::validate_ptr(memPage.getLoadedData(), memPage.getLoadedSize(), buffer_ptr, scan_size)) {
+	if (!memPage.validatePtr(buffer_ptr, scan_size)) {
 		return nullptr;
 	}
 	const size_t minimal_size = sizeof(IMAGE_DOS_HEADER)
@@ -307,9 +307,7 @@ bool ArtefactScanner::findMzPe(ArtefactScanner::ArtefactsMapping &aMap, const si
 	if (!dos_hdr) {
 		return false;
 	}
-	BYTE* loadedData = aMap.memPage.getLoadedData();
-	size_t loadedSize = aMap.memPage.getLoadedSize();
-	if (!peconv::validate_ptr(loadedData, loadedSize, dos_hdr, sizeof(IMAGE_DOS_HEADER))) {
+	if (!aMap.memPage.validatePtr(dos_hdr, sizeof(IMAGE_DOS_HEADER))) {
 		return false;
 	}
 	if (setMzPe(aMap, dos_hdr)) {
@@ -323,13 +321,13 @@ bool ArtefactScanner::setMzPe(ArtefactsMapping &aMap, IMAGE_DOS_HEADER* _dos_hdr
 	if (!_dos_hdr) return false;
 
 	aMap.dos_hdr = _dos_hdr;
-	BYTE* loadedData = aMap.memPage.getLoadedData();
-	size_t loadedSize = aMap.memPage.getLoadedSize();
 
-	aMap.pe_image_base = aMap.memPage.region_start + ((ULONGLONG)aMap.dos_hdr - (ULONGLONG)loadedData);
+	size_t dos_hdr_offset = calc_offset(aMap.memPage, aMap.dos_hdr);
+	aMap.pe_image_base = aMap.memPage.region_start + dos_hdr_offset;
 
 	IMAGE_NT_HEADERS32* pe_hdrs = (IMAGE_NT_HEADERS32*)((ULONGLONG)_dos_hdr + _dos_hdr->e_lfanew);
-	if (!peconv::validate_ptr(loadedData, loadedSize, pe_hdrs, sizeof(IMAGE_NT_HEADERS32))) {
+	if (!aMap.memPage.validatePtr(pe_hdrs, sizeof(IMAGE_NT_HEADERS32)))
+	{
 		return false;
 	}
 	setNtFileHdr(aMap, &pe_hdrs->FileHeader);

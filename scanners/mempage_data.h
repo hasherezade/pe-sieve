@@ -25,6 +25,11 @@ public:
 	size_t getLoadedSize() { return loadedSize; }
 	const PBYTE getLoadedData() { return loadedData;  }
 
+	bool validatePtr(const LPVOID field_bgn, size_t field_size)
+	{
+		return peconv::validate_ptr(this->loadedData, this->loadedSize, field_bgn, field_size);
+	}
+
 	ULONGLONG start_va; // VA that was requested. May not be beginning of the region.
 	DWORD protection;
 	DWORD initial_protect;
