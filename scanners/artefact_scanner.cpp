@@ -99,18 +99,17 @@ size_t count_section_hdrs(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEA
 	return counter;
 }
 
-ULONGLONG ArtefactScanner::calcPeBase(MemPageData &memPage, BYTE *sec_hdr)
+ULONGLONG ArtefactScanner::calcPeBase(MemPageData &memPage, LPVOID sec_hdr)
 {
-	ULONGLONG pe_base_offset = 0;
-
-	ULONGLONG hdrs_offset = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.getLoadedData();
-	for (ULONGLONG offset = hdrs_offset; offset > PAGE_SIZE; offset -= PAGE_SIZE) {
-		pe_base_offset += PAGE_SIZE;
+	size_t hdrs_offset = calc_offset(memPage, sec_hdr);
+	if (hdrs_offset == INVALID_OFFSET) {
+		std::cout << "Invalid sec_hdr_offset\n";
+		return 0;
 	}
-	pe_base_offset += memPage.region_start;
-	return pe_base_offset;
+	size_t full_pages = hdrs_offset / PAGE_SIZE;
+	std::cout << "Full pages: " << std::dec << full_pages << std::endl;
+	return memPage.region_start + (full_pages * PAGE_SIZE);
 }
-
 //calculate image size basing on the sizes of sections
 size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr, ULONGLONG pe_image_base)
 {
@@ -392,7 +391,7 @@ bool ArtefactScanner::setSecHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_S
 	}
 	aMap.sec_hdr = _sec_hdr;
 	if (!aMap.pe_image_base) {
-		aMap.pe_image_base = calcPeBase(memPage, (BYTE*)aMap.sec_hdr);
+		aMap.pe_image_base = calcPeBase(aMap.memPage, (BYTE*)aMap.sec_hdr);
 	}
 	return true;
 }
@@ -447,7 +446,7 @@ PeArtefacts* ArtefactScanner::generateArtefacts(ArtefactScanner::ArtefactsMappin
 	peArt->ntFileHdrsOffset = calc_offset(memPage, aMap.nt_file_hdr);
 	std::cout << "NT offset: " << std::hex << peArt->ntFileHdrsOffset << std::endl;
 	if (!aMap.pe_image_base) {
-		aMap.pe_image_base = calcPeBase(memPage, (BYTE*)aMap.sec_hdr);
+		aMap.pe_image_base = calcPeBase(aMap.memPage, (BYTE*)aMap.sec_hdr);
 	}
 	peArt->peBaseOffset = size_t(aMap.pe_image_base - memPage.region_start);
 	peArt->calculatedImgSize = calcImageSize(memPage, aMap.sec_hdr, aMap.pe_image_base);
