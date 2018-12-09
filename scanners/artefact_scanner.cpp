@@ -20,11 +20,30 @@ size_t calc_offset(MemPageData &memPage, LPVOID field)
 
 size_t calc_sec_hdrs_offset(MemPageData &memPage, IMAGE_FILE_HEADER* nt_file_hdr)
 {
-	const size_t headers_size = nt_file_hdr->SizeOfOptionalHeader + sizeof(IMAGE_FILE_HEADER);
+	size_t opt_hdr_size = nt_file_hdr->SizeOfOptionalHeader;
+	if (opt_hdr_size == 0) {
+		//try casual values
+		bool is64bit = (nt_file_hdr->Machine == IMAGE_FILE_MACHINE_AMD64) ? true : false;
+		opt_hdr_size = is64bit ? sizeof(IMAGE_OPTIONAL_HEADER64) : sizeof(IMAGE_OPTIONAL_HEADER32);
+	}
+	const size_t headers_size = opt_hdr_size + sizeof(IMAGE_FILE_HEADER);
 	size_t nt_offset = calc_offset(memPage, nt_file_hdr);
 	size_t sec_hdr_offset = headers_size + nt_offset;
 	return sec_hdr_offset;
 }
+
+size_t calc_nt_hdr_offset(MemPageData &memPage, IMAGE_SECTION_HEADER* first_sec, bool is64bit = true)
+{
+	size_t sec_hdr_offset = calc_offset(memPage, first_sec);
+	if (sec_hdr_offset == INVALID_OFFSET) {
+		return INVALID_OFFSET;
+	}
+	size_t opt_hdr_size = is64bit ? sizeof(IMAGE_OPTIONAL_HEADER64) : sizeof(IMAGE_OPTIONAL_HEADER32);
+	const size_t headers_size = opt_hdr_size + sizeof(IMAGE_FILE_HEADER);
+	size_t nt_offset = sec_hdr_offset - headers_size;
+	return nt_offset;
+}
+
 
 bool validate_hdrs_alignment(MemPageData &memPage, IMAGE_FILE_HEADER *nt_file_hdr, IMAGE_SECTION_HEADER* _sec_hdr)
 {
@@ -213,17 +232,16 @@ bool is_valid_file_hdr(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD
 		// wrong machine ID
 		return false;
 	}
-
-	if (hdr_candidate->SizeOfOptionalHeader < opt_hdr_size) {
-		return false;
-	}
 	if (hdr_candidate->SizeOfOptionalHeader > PAGE_SIZE) {
 		return false;
 	}
 	if (!peconv::validate_ptr(loadedData, loadedSize, hdr_candidate, 
-		sizeof(IMAGE_FILE_HEADER) + hdr_candidate->SizeOfOptionalHeader))
+		sizeof(IMAGE_FILE_HEADER) + opt_hdr_size))
 	{
 		return false;
+	}
+	if (hdr_candidate->SizeOfOptionalHeader == opt_hdr_size) {
+		return true;
 	}
 	//check characteristics:
 	if (charact != 0 && (hdr_candidate->Characteristics & charact) == 0) {
@@ -256,6 +274,7 @@ IMAGE_FILE_HEADER* ArtefactScanner::findNtFileHdr(BYTE* loadedData, size_t loade
 		}
 	}
 	if (!arch_ptr) {
+		std::cout << "No architecture pattern found...\n";
 		return nullptr;
 	}
 	DWORD charact = IMAGE_FILE_EXECUTABLE_IMAGE;
@@ -265,6 +284,7 @@ IMAGE_FILE_HEADER* ArtefactScanner::findNtFileHdr(BYTE* loadedData, size_t loade
 	else {
 		charact |= IMAGE_FILE_LARGE_ADDRESS_AWARE;
 	}
+	std::cout << "Found NT header, validating...\n";
 	if (!is_valid_file_hdr(loadedData, loadedSize, arch_ptr, charact)) {
 		return nullptr;
 	}
@@ -345,24 +365,30 @@ bool ArtefactScanner::setSecHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_S
 	//validate by counting the sections:
 	size_t count = count_section_hdrs(loadedData, loadedSize, _sec_hdr);
 	if (count == 0) {
-		std::cout << "Sections count == 0\n";
+		std::cout << "Sections header didn't passed validation\n";
 		// sections header didn't passed validation
 		return false;
 	}
 	//if NT headers not found, search before sections header:
 	if (!aMap.nt_file_hdr) {
+		std::cout << "Trying to find NT header\n";
 		// try to find NT header relative to the sections header:
-		size_t nt_hdr_search_bound = calc_offset(aMap.memPage, _sec_hdr);
-		if (nt_hdr_search_bound == INVALID_OFFSET) {
+		size_t sec_hdr_offset = calc_offset(aMap.memPage, _sec_hdr);
+		if (sec_hdr_offset == INVALID_OFFSET) {
 			return false;
 		}
-		//TODO: make some minimal limit:
-		aMap.nt_file_hdr = findNtFileHdr(loadedData, nt_hdr_search_bound);
+		std::cout << "Sections header at: " << std::hex << sec_hdr_offset << " passed validation\n";
+		//if NT headers not found, search before sections header:
+		if (!aMap.nt_file_hdr) {
+			// try to find NT header relative to the sections header:
+			size_t suggested_offset = calc_nt_hdr_offset(aMap.memPage, _sec_hdr);
+			if (suggested_offset != INVALID_OFFSET) {
+				aMap.nt_file_hdr = findNtFileHdr(loadedData + suggested_offset, sec_hdr_offset - suggested_offset);
+			}
+		}
 	}
-	if (aMap.nt_file_hdr) {
-		if (!validate_hdrs_alignment(memPage, aMap.nt_file_hdr, _sec_hdr)) {
-			return false;
-		}
+	if (aMap.nt_file_hdr && (ULONG_PTR)aMap.nt_file_hdr > (ULONG_PTR)_sec_hdr) {
+		return false; //misaligned
 	}
 	aMap.sec_hdr = _sec_hdr;
 	if (!aMap.pe_image_base) {
@@ -479,6 +505,9 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 			} else {
 				std::cout << "[WARNING] Sections header didn't pass validation\n";
 			}
+		}
+		else {
+			std::cout << "[WARNING] NT header didn't pass validation\n";
 		}
 		
 		bestMapping = (bestMapping < aMap) ? aMap : bestMapping;

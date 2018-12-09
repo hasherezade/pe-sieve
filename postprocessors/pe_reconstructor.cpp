@@ -127,6 +127,13 @@ bool PeReconstructor::reconstructPeHdr()
 	//write signature:
 	nt32->Signature = IMAGE_NT_SIGNATURE;
 
+	IMAGE_FILE_HEADER *file_hdr = &nt32->FileHeader;
+
+	bool is64bit = (file_hdr->Machine == IMAGE_FILE_MACHINE_AMD64) ? true : false;
+
+	if (nt32->FileHeader.SizeOfOptionalHeader == 0) {
+		nt32->FileHeader.SizeOfOptionalHeader = is64bit ? sizeof(IMAGE_OPTIONAL_HEADER64) : sizeof(IMAGE_OPTIONAL_HEADER32);
+	}
 	LONG pe_offset = LONG((ULONGLONG)pe_ptr - (ULONGLONG)this->vBuf);
 	IMAGE_DOS_HEADER* dosHdr = (IMAGE_DOS_HEADER*) vBuf;
 	dosHdr->e_magic = IMAGE_DOS_SIGNATURE;
