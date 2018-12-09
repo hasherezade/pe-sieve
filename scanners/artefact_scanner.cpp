@@ -32,6 +32,19 @@ size_t calc_sec_hdrs_offset(MemPageData &memPage, IMAGE_FILE_HEADER* nt_file_hdr
 	return sec_hdr_offset;
 }
 
+size_t calc_nt_hdr_offset(MemPageData &memPage, IMAGE_SECTION_HEADER* first_sec, bool is64bit = true)
+{
+	size_t sec_hdr_offset = calc_offset(memPage, first_sec);
+	if (sec_hdr_offset == INVALID_OFFSET) {
+		return INVALID_OFFSET;
+	}
+	size_t opt_hdr_size = is64bit ? sizeof(IMAGE_OPTIONAL_HEADER64) : sizeof(IMAGE_OPTIONAL_HEADER32);
+	const size_t headers_size = opt_hdr_size + sizeof(IMAGE_FILE_HEADER);
+	size_t nt_offset = sec_hdr_offset - headers_size;
+	return nt_offset;
+}
+
+
 bool validate_hdrs_alignment(MemPageData &memPage, IMAGE_FILE_HEADER *nt_file_hdr, IMAGE_SECTION_HEADER* _sec_hdr)
 {
 	if (!_sec_hdr) return false;
@@ -360,34 +373,22 @@ bool ArtefactScanner::setSecHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_S
 	if (!aMap.nt_file_hdr) {
 		std::cout << "Trying to find NT header\n";
 		// try to find NT header relative to the sections header:
-		size_t sec_hdrs_start = calc_offset(aMap.memPage, _sec_hdr);
-		if (sec_hdrs_start == INVALID_OFFSET) {
+		size_t sec_hdr_offset = calc_offset(aMap.memPage, _sec_hdr);
+		if (sec_hdr_offset == INVALID_OFFSET) {
 			return false;
 		}
-		//search till the valid header found:
-		for (size_t start_offset = 0; 
-			start_offset < sec_hdrs_start; 
-			start_offset += sizeof(IMAGE_FILE_HEADER))
-		{
-			BYTE *search_ptr = loadedData + start_offset;
-			size_t search_size = sec_hdrs_start - start_offset; //must be before sections headers
-			IMAGE_FILE_HEADER* nt_file_hdr = findNtFileHdr(search_ptr, search_size);
-			if (!nt_file_hdr) {
-				std::cout << "Not found any, failure!\n";
-				break; //not found any, break with failure
-			}
-			size_t nt_file_offset = calc_offset(memPage, nt_file_hdr);
-			std::cout << "Trying NT header at: " << std::hex << nt_file_offset << std::endl;
-			if (validate_hdrs_alignment(memPage, nt_file_hdr, _sec_hdr)) {
-				aMap.nt_file_hdr = nt_file_hdr;
-				break; //found valid one, break with success
+		std::cout << "Sections header at: " << std::hex << sec_hdr_offset << " passed validation\n";
+		//if NT headers not found, search before sections header:
+		if (!aMap.nt_file_hdr) {
+			// try to find NT header relative to the sections header:
+			size_t suggested_offset = calc_nt_hdr_offset(aMap.memPage, _sec_hdr);
+			if (suggested_offset != INVALID_OFFSET) {
+				aMap.nt_file_hdr = findNtFileHdr(loadedData + suggested_offset, sec_hdr_offset - suggested_offset);
 			}
 		}
 	}
-	if (aMap.nt_file_hdr) {
-		if (!validate_hdrs_alignment(memPage, aMap.nt_file_hdr, _sec_hdr)) {
-			return false;
-		}
+	if (aMap.nt_file_hdr && (ULONG_PTR)aMap.nt_file_hdr > (ULONG_PTR)_sec_hdr) {
+		return false; //misaligned
 	}
 	aMap.sec_hdr = _sec_hdr;
 	if (!aMap.pe_image_base) {
