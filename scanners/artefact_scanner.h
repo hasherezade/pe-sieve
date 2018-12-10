@@ -145,6 +145,7 @@ protected:
 			memPage(_memPage)
 		{
 			pe_image_base = PE_NOT_FOUND;
+			dos_hdr = nullptr;
 			nt_file_hdr = nullptr;
 			sec_hdr = nullptr;
 			isMzPeFound = false;
@@ -158,8 +159,31 @@ protected:
 			return false;
 		}
 
+		size_t getScore() const
+		{
+			size_t score = 0;
+			if (sec_hdr) score += 3;
+			if (nt_file_hdr) score += 2;
+			if (dos_hdr) score++;
+			return score;
+		}
+
+		bool operator < (const ArtefactsMapping& map2) const {
+			return getScore() < map2.getScore();
+		}
+
+		ArtefactsMapping& operator = (const ArtefactsMapping& other) {
+			this->pe_image_base = other.pe_image_base;
+			this->dos_hdr = other.dos_hdr;
+			this->nt_file_hdr = other.nt_file_hdr;
+			this->sec_hdr = other.sec_hdr;
+			this->isMzPeFound = other.isMzPeFound;
+			return *this;
+		}
+
 		MemPageData &memPage;
 		ULONGLONG pe_image_base;
+		IMAGE_DOS_HEADER *dos_hdr;
 		IMAGE_FILE_HEADER* nt_file_hdr;
 		IMAGE_SECTION_HEADER* sec_hdr;
 		bool isMzPeFound;
@@ -174,22 +198,22 @@ protected:
 
 	bool hasShellcode(HMODULE region_start, size_t region_size, PeArtefacts &peArt);
 
-	bool findMzPe(ArtefactsMapping &mapping);
+	bool findMzPe(ArtefactsMapping &mapping, const size_t search_offset);
 	bool setMzPe(ArtefactsMapping &mapping, IMAGE_DOS_HEADER* _dos_hdr);
 	bool setSecHdr(ArtefactsMapping &mapping, IMAGE_SECTION_HEADER* _sec_hdr);
 	bool setNtFileHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_FILE_HEADER* _nt_hdr);
 	PeArtefacts *generateArtefacts(ArtefactsMapping &aMap);
 
-	PeArtefacts* findArtefacts(MemPageData &memPage);
+	PeArtefacts* findArtefacts(MemPageData &memPage, size_t start_offset);
 	PeArtefacts* findInPrevPages(ULONGLONG addr_start, ULONGLONG addr_stop);
 
-	ULONGLONG calcPeBase(MemPageData &memPage, BYTE *hdr_ptr);
+	ULONGLONG calcPeBase(MemPageData &memPage, LPVOID hdr_ptr);
 	size_t calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr, ULONGLONG pe_image_base);
 
 	IMAGE_FILE_HEADER* findNtFileHdr(BYTE* loadedData, size_t loadedSize);
 	BYTE* findSecByPatterns(BYTE *search_ptr, const size_t max_search_size);
 	IMAGE_SECTION_HEADER* findSectionsHdr(MemPageData &memPageData, const size_t max_search_size, const size_t search_offset);
-	IMAGE_DOS_HEADER* findMzPeHeader(MemPageData &memPage);
+	IMAGE_DOS_HEADER* findMzPeHeader(MemPageData &memPage, const size_t search_offset);
 
 	HANDLE processHandle;
 	MemPageData &memPage;
