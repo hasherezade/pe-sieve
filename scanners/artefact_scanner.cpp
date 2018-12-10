@@ -73,10 +73,10 @@ bool is_valid_section(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD 
 	}
 	if (charact != 0 && (hdr_candidate->Characteristics & charact) == 0) {
 		// required characteristics not found
-		//std::cout << "The section " << hdr_candidate->Name << " NOT  valid, charact:" << std::hex << hdr_candidate->Characteristics << std::endl;
+		////std::cout << "The section " << hdr_candidate->Name << " NOT  valid, charact:" << std::hex << hdr_candidate->Characteristics << std::endl;
 		return false;
 	}
-	//std::cout << "The section " << hdr_candidate->Name << " is valid!" << std::endl;
+	////std::cout << "The section " << hdr_candidate->Name << " is valid!" << std::endl;
 	return true;
 }
 
@@ -103,11 +103,11 @@ ULONGLONG ArtefactScanner::calcPeBase(MemPageData &memPage, LPVOID sec_hdr)
 	//WARNING: this will be inacurate in cases if the PE is not aligned to the beginning of the page
 	size_t hdrs_offset = calc_offset(memPage, sec_hdr);
 	if (hdrs_offset == INVALID_OFFSET) {
-		std::cout << "Invalid sec_hdr_offset\n";
+		//std::cout << "Invalid sec_hdr_offset\n";
 		return 0;
 	}
 	size_t full_pages = hdrs_offset / PAGE_SIZE;
-	std::cout << "Full pages: " << std::dec << full_pages << std::endl;
+	//std::cout << "Full pages: " << std::dec << full_pages << std::endl;
 	return memPage.region_start + (full_pages * PAGE_SIZE);
 }
 
@@ -134,7 +134,7 @@ size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER
 	size_t last_sec_size = fetch_region_size(processHandle, (PBYTE)last_sec_va);
 	size_t total_size = max_addr + last_sec_size;
 #ifdef _DEBUG
-	std::cout << "Total Size:" << std::hex << total_size << std::endl;
+	//std::cout << "Total Size:" << std::hex << total_size << std::endl;
 #endif
 	return total_size;
 }
@@ -274,7 +274,7 @@ IMAGE_FILE_HEADER* ArtefactScanner::findNtFileHdr(BYTE* loadedData, size_t loade
 		}
 	}
 	if (!arch_ptr) {
-		std::cout << "No architecture pattern found...\n";
+		//std::cout << "No architecture pattern found...\n";
 		return nullptr;
 	}
 	DWORD charact = IMAGE_FILE_EXECUTABLE_IMAGE;
@@ -284,7 +284,7 @@ IMAGE_FILE_HEADER* ArtefactScanner::findNtFileHdr(BYTE* loadedData, size_t loade
 	else {
 		charact |= IMAGE_FILE_LARGE_ADDRESS_AWARE;
 	}
-	std::cout << "Found NT header, validating...\n";
+	//std::cout << "Found NT header, validating...\n";
 	if (!is_valid_file_hdr(loadedData, loadedSize, arch_ptr, charact)) {
 		return nullptr;
 	}
@@ -365,19 +365,19 @@ bool ArtefactScanner::setSecHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_S
 	//validate by counting the sections:
 	size_t count = count_section_hdrs(loadedData, loadedSize, _sec_hdr);
 	if (count == 0) {
-		std::cout << "Sections header didn't passed validation\n";
+		//std::cout << "Sections header didn't passed validation\n";
 		// sections header didn't passed validation
 		return false;
 	}
 	//if NT headers not found, search before sections header:
 	if (!aMap.nt_file_hdr) {
-		std::cout << "Trying to find NT header\n";
+		//std::cout << "Trying to find NT header\n";
 		// try to find NT header relative to the sections header:
 		size_t sec_hdr_offset = calc_offset(aMap.memPage, _sec_hdr);
 		if (sec_hdr_offset == INVALID_OFFSET) {
 			return false;
 		}
-		std::cout << "Sections header at: " << std::hex << sec_hdr_offset << " passed validation\n";
+		//std::cout << "Sections header at: " << std::hex << sec_hdr_offset << " passed validation\n";
 		//if NT headers not found, search before sections header:
 		if (!aMap.nt_file_hdr) {
 			// try to find NT header relative to the sections header:
@@ -419,7 +419,7 @@ bool ArtefactScanner::setNtFileHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAG
 	if (!validate_hdrs_alignment(aMap.memPage, aMap.nt_file_hdr, aMap.sec_hdr)) {
 		aMap.nt_file_hdr = nullptr; // do not allow setting mismatching NT header
 
-		std::cout << "[WARNING] Sections header misaligned with FileHeader." << std::endl;
+		//std::cout << "[WARNING] Sections header misaligned with FileHeader." << std::endl;
 		return false;
 	}
 	//validation passed:
@@ -446,7 +446,7 @@ PeArtefacts* ArtefactScanner::generateArtefacts(ArtefactScanner::ArtefactsMappin
 
 	// if File Header found, use it to validate or find sections headers:
 	peArt->ntFileHdrsOffset = calc_offset(memPage, aMap.nt_file_hdr);
-	std::cout << "NT offset: " << std::hex << peArt->ntFileHdrsOffset << std::endl;
+	//std::cout << "NT offset: " << std::hex << peArt->ntFileHdrsOffset << std::endl;
 	if (!aMap.pe_image_base) {
 		aMap.pe_image_base = calcPeBase(aMap.memPage, (BYTE*)aMap.sec_hdr);
 	}
@@ -470,13 +470,13 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 
 	for (size_t min_offset = start_offset; min_offset < memPage.getLoadedSize(); min_offset++)
 	{
-		std::cout << "Searching DOS header, min_offset: " << std::hex << min_offset << std::endl;
+		//std::cout << "Searching DOS header, min_offset: " << std::hex << min_offset << std::endl;
 
 		ArtefactsMapping aMap(memPage);
 		if (findMzPe(aMap, min_offset)) {
 			size_t dos_offset = calc_offset(memPage, aMap.dos_hdr);
 			min_offset = dos_offset != INVALID_OFFSET ? dos_offset : min_offset;
-			std::cout << "Setting minOffset: " << std::hex << min_offset << std::endl;
+			//std::cout << "Setting minOffset: " << std::hex << min_offset << std::endl;
 		}
 		size_t max_section_search = memPage.getLoadedSize();
 		if (aMap.nt_file_hdr) {
@@ -501,11 +501,11 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 				bestMapping = aMap;
 				break;
 			} else {
-				std::cout << "[WARNING] Sections header didn't pass validation\n";
+				//std::cout << "[WARNING] Sections header didn't pass validation\n";
 			}
 		}
 		else {
-			std::cout << "[WARNING] NT header didn't pass validation\n";
+			//std::cout << "[WARNING] NT header didn't pass validation\n";
 		}
 		
 		bestMapping = (bestMapping < aMap) ? aMap : bestMapping;
