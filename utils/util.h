@@ -25,3 +25,7 @@ std::string escape_path_separators(std::string path);
 
 //get system drive letter, i.e. "C:"
 std::string get_system_drive();
+
+bool dir_exists(const char* path);
+
+bool create_dir_recursively(std::string path);

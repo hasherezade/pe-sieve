@@ -107,3 +107,29 @@ std::string get_system_drive()
 	buf[2] = '\0'; // cut after the drive letter
 	return std::string(buf);
 }
+
+bool dir_exists(const char* szPath)
+{
+	DWORD dwAttrib = GetFileAttributes(szPath);
+
+	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
+		(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+}
+
+bool create_dir_recursively(std::string path)
+{
+	if (dir_exists(path.c_str())) {
+		return true;
+	}
+	size_t pos = 0;
+	do
+	{
+		pos = path.find_first_of("\\/", pos + 1);
+		if (CreateDirectoryA(path.substr(0, pos).c_str(), NULL) == FALSE) {
+			if (GetLastError() != ERROR_ALREADY_EXISTS) {
+				return false;
+			}
+		}
+	} while (pos != std::string::npos);
+	return true;
+}

@@ -15,12 +15,7 @@ bool ResultsDumper::make_dump_dir(const std::string directory)
 	if (directory.length() == 0) {
 		return true;
 	}
-	if (CreateDirectoryA(directory.c_str(), NULL) 
-		||  GetLastError() == ERROR_ALREADY_EXISTS)
-	{
-		return true;
-	}
-	return false;
+	return create_dir_recursively(directory);
 }
 
 void ResultsDumper::makeAndJoinDirectories(std::stringstream& stream)
