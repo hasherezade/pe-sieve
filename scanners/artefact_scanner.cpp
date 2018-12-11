@@ -462,7 +462,6 @@ PeArtefacts* ArtefactScanner::generateArtefacts(ArtefactScanner::ArtefactsMappin
 PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_offset)
 {
 	if (!memPage.load()) {
-		std::cerr << "Cannot read memory page!\n";
 		return nullptr;
 	}
 
