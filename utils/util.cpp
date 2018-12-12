@@ -108,6 +108,15 @@ std::string get_system_drive()
 	return std::string(buf);
 }
 
+std::string get_full_path(const char* szPath)
+{
+	char out_buf[MAX_PATH] = { 0 };
+	if (GetFullPathNameA(szPath, MAX_PATH, out_buf, nullptr) == 0) {
+		return "";
+	}
+	return out_buf;
+}
+
 bool dir_exists(const char* szPath)
 {
 	DWORD dwAttrib = GetFileAttributes(szPath);
@@ -116,8 +125,11 @@ bool dir_exists(const char* szPath)
 		(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
 
-bool create_dir_recursively(std::string path)
+bool create_dir_recursively(std::string in_path)
 {
+	std::string path = get_full_path(in_path.c_str());
+	if (path.length() == 0) path = in_path;
+
 	if (dir_exists(path.c_str())) {
 		return true;
 	}
