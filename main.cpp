@@ -69,7 +69,7 @@ void print_help()
 	print_in_color(param_color, PARAM_MODULES_FILTER);
 	std::cout << " <*mfilter_id>\n\t: Filter the scanned modules.\n";
 	std::cout << "*mfilter_id:\n";
-	for (size_t i = 0; i <= LIST_MODULES_ALL; i++) {
+	for (DWORD i = 0; i <= LIST_MODULES_ALL; i++) {
 		std::cout << "\t" << i << " - " << translate_modules_filter(i) << "\n";
 	}
 #endif
@@ -80,7 +80,7 @@ void print_help()
 	print_in_color(param_color, PARAM_DUMP_MODE);
 	std::cout << " <*dump_mode>\n\t: Set in which mode the detected PE files should be dumped.\n";
 	std::cout << "*dump_mode:\n";
-	for (size_t i = 0; i < peconv::PE_DUMP_MODES_COUNT; i++) {
+	for (DWORD i = 0; i < peconv::PE_DUMP_MODES_COUNT; i++) {
 		peconv::t_pe_dump_mode mode = (peconv::t_pe_dump_mode)(i);
 		std::cout << "\t" << mode << " - " << translate_dump_mode(mode) << "\n";
 	}
@@ -166,8 +166,6 @@ void print_unknown_param(const char *param)
 {
 	print_in_color(WARNING_COLOR, "Invalid parameter: ");
 	std::cout << param << "\n";
-	print_in_color(HILIGHTED_COLOR, "Available parameters:\n\n");
-	print_help();
 }
 
 int main(int argc, char *argv[])
@@ -230,7 +228,12 @@ int main(int argc, char *argv[])
 			)
 		{
 			print_unknown_param(argv[i]);
-			return 0;
+			if (argv[i][0] == PARAM_SWITCH) {
+				print_in_color(HILIGHTED_COLOR, "Available parameters:\n\n");
+				print_help();
+				return 0;
+			}
+			// if the argument didn't have a param switch, print info but do not exit
 		}
 	}
 	//if didn't received PID by explicit parameter, try to parse the first param of the app
