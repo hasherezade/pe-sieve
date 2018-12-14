@@ -13,9 +13,14 @@ bool get_next_region(HANDLE processHandle, ULONGLONG start_va, ULONGLONG max_va,
 		if (out != sizeof(page_info)) {
 			const DWORD error = GetLastError();
 			if (error == ERROR_INVALID_PARAMETER) {
+				//nothing more to read
 				break;
 			}
-			std::cerr << "Error:" << std::hex << error << std::endl;
+			if (error == ERROR_ACCESS_DENIED) {
+				std::cerr << "[WARNING] Cannot query the memory region. Error:" << std::dec << error << std::endl;
+				break;
+			}
+			std::cerr << "[WARNING] Cannot query the memory region. Error:" << std::dec << error << std::endl;
 			continue;
 		}
 		if (page_info.RegionSize == 0) {
