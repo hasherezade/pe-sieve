@@ -21,7 +21,15 @@ std::string PatchList::Patch::getFormattedName()
 	}
 	if (this->hookTargetModule) {
 		ULONGLONG diff = hookTargetVA - hookTargetModule;
-		stream << "[" << std::hex << hookTargetModule << "+" << diff << ":" << isTargetSuspicious << "]";
+		stream << "[";
+		if (hookTargetModName.length() > 0) {
+			stream << hookTargetModName;
+		}
+		else {
+			stream << std::hex << hookTargetModule;
+		}
+		stream << "+" << diff << ":" << isTargetSuspicious;
+		stream << "]";
 	}
 	return stream.str();
 }

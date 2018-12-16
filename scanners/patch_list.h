@@ -33,13 +33,14 @@ public:
 			return hookTargetVA;
 		}
 
-		bool setHookTargetInfo(ULONGLONG targetModuleBase, bool isSuspiocious)
+		bool setHookTargetInfo(ULONGLONG targetModuleBase, bool isSuspiocious, std::string targetModuleName)
 		{
 			if (!isHook || targetModuleBase == 0 || targetModuleBase > this->hookTargetVA) {
 				return false;
 			}
 			this->hookTargetModule = targetModuleBase;
 			this->isTargetSuspicious = isSuspiocious;
+			this->hookTargetModName = targetModuleName;
 			return true;
 		}
 
@@ -61,6 +62,7 @@ public:
 
 		ULONGLONG hookTargetModule;
 		bool isTargetSuspicious;
+		std::string hookTargetModName;
 
 	friend class PatchList;
 	friend class PatchAnalyzer;

@@ -66,6 +66,7 @@ struct ScannedModuleInfo {
 	ULONGLONG moduleAddr;
 	size_t moduleSize;
 	bool isSuspicious;
+	std::string moduleName;
 };
 
 bool findModuleByAddr(std::map<ULONGLONG, ScannedModuleInfo> &modulesMap, PatchList::Patch* currPatch)
@@ -73,28 +74,29 @@ bool findModuleByAddr(std::map<ULONGLONG, ScannedModuleInfo> &modulesMap, PatchL
 	if (!currPatch) return nullptr;
 	ULONGLONG searchedAddr = currPatch->getHookTargetVA();
 	if (searchedAddr == 0) return nullptr;
-
+#ifdef _DEBUG
 	std::cout << "Searching hook address: " << std::hex << searchedAddr << std::endl;
+#endif
 	std::map<ULONGLONG, ScannedModuleInfo>::iterator itr1;
 	std::map<ULONGLONG, ScannedModuleInfo>::iterator lastEl = modulesMap.lower_bound(searchedAddr);
 	for (itr1 = modulesMap.begin(); itr1 != lastEl; itr1++) {
 		ScannedModuleInfo &modInfo = itr1->second;
 		ULONGLONG begin = modInfo.moduleAddr;
 		ULONGLONG end = modInfo.moduleSize + begin;
-
+#ifdef _DEBUG
 		std::cout << "Searching hook in module: " << std::hex << begin << std::endl;
-
+#endif
 		if (searchedAddr >= begin && searchedAddr < end) {
 			DWORD searchedRVA = DWORD(searchedAddr - begin);
 			std::cout << "[+] Address found in module: " << std::hex << modInfo.moduleAddr << std::endl;
-			currPatch->setHookTargetInfo(modInfo.moduleAddr, modInfo.isSuspicious);
+			currPatch->setHookTargetInfo(modInfo.moduleAddr, modInfo.isSuspicious, modInfo.moduleName);
 			return true;
 		}
 	}
 	return false;
 }
 
-size_t mapScannedModules(IN ProcessScanReport& process_report, OUT std::map<ULONGLONG, ScannedModuleInfo> &modulesMap)
+size_t mapScannedModules(IN ProcessScanReport& process_report, IN HANDLE hProcess, OUT std::map<ULONGLONG, ScannedModuleInfo> &modulesMap)
 {
 	std::vector<ModuleScanReport*>::iterator modItr;
 	for (modItr = process_report.module_reports.begin(); modItr != process_report.module_reports.end(); modItr++) {
@@ -111,20 +113,22 @@ size_t mapScannedModules(IN ProcessScanReport& process_report, OUT std::map<ULON
 				continue; //already have this module listed as suspicious
 			}
 		}
+		char moduleName[MAX_PATH] = { 0 };
+		if (GetModuleBaseNameA(hProcess, (HMODULE)modInfo.moduleAddr, moduleName, sizeof(moduleName))) {
+			modInfo.moduleName = moduleName;
+		}
 		modulesMap[modInfo.moduleAddr] = modInfo;
 	}
 	return modulesMap.size();
 }
 
-
 bool ProcessScanner::resolveHooksTargets(ProcessScanReport& process_report)
 {
 	//map all the scanned modules:
 	std::map<ULONGLONG, ScannedModuleInfo> modulesMap;
-	if (!mapScannedModules(process_report, modulesMap)) {
+	if (!mapScannedModules(process_report, this->processHandle, modulesMap)) {
 		std::cout << "Failed to map modules!\n";
 	}
-	std::cout << "Modules mapped, processing code scans!\n";
 	//TODO: map all modules
 	const std::set<ModuleScanReport*> &code_reports = process_report.reportsByType[ProcessScanReport::REPORT_CODE_SCAN];
 	std::set<ModuleScanReport*>::iterator cItr;
