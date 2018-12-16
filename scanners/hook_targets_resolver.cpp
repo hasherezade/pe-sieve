@@ -3,7 +3,6 @@
 #include "scan_report.h"
 #include "code_scanner.h"
 
-
 bool HookTargetResolver::resolveTarget(PatchList::Patch* currPatch)
 {
 	if (!currPatch) return nullptr;
@@ -23,7 +22,9 @@ bool HookTargetResolver::resolveTarget(PatchList::Patch* currPatch)
 #endif
 		if (searchedAddr >= begin && searchedAddr < end) {
 			DWORD searchedRVA = DWORD(searchedAddr - begin);
+#ifdef _DEBUG
 			std::cout << "[+] Address found in module: " << std::hex << modInfo.moduleAddr << std::endl;
+#endif
 			currPatch->setHookTargetInfo(modInfo.moduleAddr, modInfo.isSuspicious, modInfo.moduleName);
 			return true;
 		}
