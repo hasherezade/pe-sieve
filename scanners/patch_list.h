@@ -13,7 +13,7 @@ public:
 	public:
 		Patch(HMODULE module_base, size_t patch_id, DWORD start_rva)
 			: moduleBase(module_base), id(patch_id), startRva(start_rva), endRva(start_rva),
-			is_hook(false), hook_target_va(NULL)
+			isHook(false), hookTargetVA(0), hookTargetModule(0), isTargetSuspicious(false)
 		{
 		}
 
@@ -24,8 +24,23 @@ public:
 		
 		void setHookTarget(ULONGLONG target_va)
 		{
-			hook_target_va = target_va;
-			is_hook = true;
+			hookTargetVA = target_va;
+			isHook = true;
+		}
+
+		ULONGLONG getHookTargetVA()
+		{
+			return hookTargetVA;
+		}
+
+		bool setHookTargetInfo(ULONGLONG targetModuleBase, bool isSuspiocious)
+		{
+			if (!isHook || targetModuleBase == 0 || targetModuleBase > this->hookTargetVA) {
+				return false;
+			}
+			this->hookTargetModule = targetModuleBase;
+			this->isTargetSuspicious = isSuspiocious;
+			return true;
 		}
 
 		bool reportPatch(std::ofstream &patch_report, const char delimiter);
@@ -40,9 +55,12 @@ public:
 		DWORD endRva;
 		HMODULE moduleBase;
 
-		bool is_hook;
-		ULONGLONG hook_target_va;
+		bool isHook;
+		ULONGLONG hookTargetVA;
 		std::string hooked_func;
+
+		ULONGLONG hookTargetModule;
+		bool isTargetSuspicious;
 
 	friend class PatchList;
 	friend class PatchAnalyzer;

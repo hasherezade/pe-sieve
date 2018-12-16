@@ -30,6 +30,8 @@ protected:
 	t_scan_status scanForHollows(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report);
 	t_scan_status scanForHooks(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report);
 
+	bool resolveHooksTargets(ProcessScanReport& process_report);
+
 	HANDLE processHandle;
 	size_t hModsMax;
 	t_params args;
