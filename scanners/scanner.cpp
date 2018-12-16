@@ -12,6 +12,7 @@
 #include "code_scanner.h"
 #include "workingset_scanner.h"
 #include "mapping_scanner.h"
+#include "hook_targets_resolver.h"
 
 #include <string>
 #include <locale>
@@ -62,91 +63,12 @@ t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, RemoteModuleData
 	return is_hooked;
 }
 
-struct ScannedModuleInfo {
-	ULONGLONG moduleAddr;
-	size_t moduleSize;
-	bool isSuspicious;
-	std::string moduleName;
-};
-
-bool findModuleByAddr(std::map<ULONGLONG, ScannedModuleInfo> &modulesMap, PatchList::Patch* currPatch)
-{
-	if (!currPatch) return nullptr;
-	ULONGLONG searchedAddr = currPatch->getHookTargetVA();
-	if (searchedAddr == 0) return nullptr;
-#ifdef _DEBUG
-	std::cout << "Searching hook address: " << std::hex << searchedAddr << std::endl;
-#endif
-	std::map<ULONGLONG, ScannedModuleInfo>::iterator itr1;
-	std::map<ULONGLONG, ScannedModuleInfo>::iterator lastEl = modulesMap.lower_bound(searchedAddr);
-	for (itr1 = modulesMap.begin(); itr1 != lastEl; itr1++) {
-		ScannedModuleInfo &modInfo = itr1->second;
-		ULONGLONG begin = modInfo.moduleAddr;
-		ULONGLONG end = modInfo.moduleSize + begin;
-#ifdef _DEBUG
-		std::cout << "Searching hook in module: " << std::hex << begin << std::endl;
-#endif
-		if (searchedAddr >= begin && searchedAddr < end) {
-			DWORD searchedRVA = DWORD(searchedAddr - begin);
-			std::cout << "[+] Address found in module: " << std::hex << modInfo.moduleAddr << std::endl;
-			currPatch->setHookTargetInfo(modInfo.moduleAddr, modInfo.isSuspicious, modInfo.moduleName);
-			return true;
-		}
-	}
-	return false;
-}
-
-size_t mapScannedModules(IN ProcessScanReport& process_report, IN HANDLE hProcess, OUT std::map<ULONGLONG, ScannedModuleInfo> &modulesMap)
-{
-	std::vector<ModuleScanReport*>::iterator modItr;
-	for (modItr = process_report.module_reports.begin(); modItr != process_report.module_reports.end(); modItr++) {
-		ModuleScanReport* scanReport = *modItr;
-		ScannedModuleInfo modInfo = { 0 };
-		modInfo.moduleAddr = (ULONGLONG)scanReport->module;
-		modInfo.moduleSize = scanReport->moduleSize;
-		modInfo.isSuspicious = (scanReport->status) == SCAN_SUSPICIOUS ? true : false;
-
-		std::map<ULONGLONG, ScannedModuleInfo>::iterator foundItr = modulesMap.find(modInfo.moduleAddr);
-		if (foundItr != modulesMap.end()) {
-			ScannedModuleInfo &info = foundItr->second;
-			if (info.isSuspicious && !modInfo.isSuspicious) {
-				continue; //already have this module listed as suspicious
-			}
-		}
-		char moduleName[MAX_PATH] = { 0 };
-		if (GetModuleBaseNameA(hProcess, (HMODULE)modInfo.moduleAddr, moduleName, sizeof(moduleName))) {
-			modInfo.moduleName = moduleName;
-		}
-		modulesMap[modInfo.moduleAddr] = modInfo;
-	}
-	return modulesMap.size();
-}
-
 bool ProcessScanner::resolveHooksTargets(ProcessScanReport& process_report)
 {
-	//map all the scanned modules:
-	std::map<ULONGLONG, ScannedModuleInfo> modulesMap;
-	if (!mapScannedModules(process_report, this->processHandle, modulesMap)) {
-		std::cout << "Failed to map modules!\n";
-	}
-	//TODO: map all modules
+	HookTargetResolver hookResolver(process_report, this->processHandle);
 	const std::set<ModuleScanReport*> &code_reports = process_report.reportsByType[ProcessScanReport::REPORT_CODE_SCAN];
-	std::set<ModuleScanReport*>::iterator cItr;
-	for (cItr = code_reports.begin(); cItr != code_reports.end(); cItr++) {
-		ModuleScanReport* modrep = *cItr;
-		CodeScanReport *coderep = dynamic_cast<CodeScanReport*>(modrep);
-		if (!coderep) continue;
-
-		std::vector<PatchList::Patch*>::iterator patchItr;
-		for (patchItr = coderep->patchesList.patches.begin();
-			patchItr != coderep->patchesList.patches.end();
-			patchItr++)
-		{
-			PatchList::Patch* currPatch = *patchItr;
-			findModuleByAddr(modulesMap, currPatch);
-		}
-	}
-	return false;
+	size_t resolved_count = hookResolver.resolveAllHooks(code_reports);
+	return (resolved_count > 0);
 }
 
 ProcessScanReport* ProcessScanner::scanRemote()

@@ -71,6 +71,7 @@ public:
 	std::vector<ModuleScanReport*> module_reports; //TODO: make it protected
 	peconv::ExportsMapper *exportsMap;
 
+
 protected:
 	void deleteModuleReports()
 	{

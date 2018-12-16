@@ -28,6 +28,7 @@ set (scanners_srcs
 	scanners/patch_analyzer.cpp
 	scanners/scan_report.cpp
 	scanners/scanned_modules.cpp
+	scanners/hook_targets_resolver.cpp
 )
 
 set (scanners_hdrs
@@ -46,6 +47,7 @@ set (scanners_hdrs
 	scanners/patch_list.h
 	scanners/patch_analyzer.h
 	scanners/scanned_modules.h
+	scanners/hook_targets_resolver.h
 )
 
 set (postprocessors_hdrs
