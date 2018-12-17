@@ -5,9 +5,9 @@
 
 bool HookTargetResolver::resolveTarget(PatchList::Patch* currPatch)
 {
-	if (!currPatch) return nullptr;
+	if (!currPatch) return false;
 	ULONGLONG searchedAddr = currPatch->getHookTargetVA();
-	if (searchedAddr == 0) return nullptr;
+	if (searchedAddr == 0) return false;
 #ifdef _DEBUG
 	std::cout << "Searching hook address: " << std::hex << searchedAddr << std::endl;
 #endif
