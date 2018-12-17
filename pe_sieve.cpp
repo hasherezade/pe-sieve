@@ -11,6 +11,29 @@
 #include "utils/process_privilege.h"
 #include "postprocessors/results_dumper.h"
 
+void check_access_denied(DWORD processID)
+{
+	HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, processID);
+	if (!hProcess) {
+		std::cerr << "-> Access denied. Try to run the scanner as Administrator." << std::endl;
+		return;
+	}
+	process_integrity_t level = get_integrity_level(hProcess);
+	switch (level) {
+		case INTEGRITY_UNKNOWN:
+			std::cerr << "-> Access denied. Could not query the process token." << std::endl;
+			break;
+		case INTEGRITY_SYSTEM:
+			std::cerr << "-> Access denied. Could not access the system process." << std::endl;
+			break;
+		default:
+			std::cerr << "-> Access denied. Try to run the scanner as Administrator." << std::endl;
+			break;
+	}
+	CloseHandle(hProcess);
+	hProcess = NULL;
+}
+
 HANDLE open_process(DWORD processID)
 {
 	HANDLE hProcess = OpenProcess(
@@ -33,7 +56,9 @@ HANDLE open_process(DWORD processID)
 			}
 		}
 		std::cerr << "[-][" << processID << "] Could not open the process Error: " << last_err << std::endl;
-		std::cerr << "-> Access denied. Try to run the scanner as Administrator." << std::endl;
+		//print more info:
+		check_access_denied(processID);
+
 		SetLastError(ERROR_ACCESS_DENIED);
 		throw std::runtime_error("Could not open the process");
 		return nullptr;

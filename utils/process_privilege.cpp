@@ -86,3 +86,84 @@ bool set_debug_privilege(DWORD process_id)
 	CloseHandle(hToken);
 	return is_ok;
 }
+
+process_integrity_t translate_integrity_level(TOKEN_MANDATORY_LABEL *pTIL)
+{
+	DWORD dwIntegrityLevel = *GetSidSubAuthority(pTIL->Label.Sid,
+		(DWORD)(UCHAR)(*GetSidSubAuthorityCount(pTIL->Label.Sid) - 1));
+
+	if (dwIntegrityLevel == SECURITY_MANDATORY_LOW_RID)
+	{
+		// Low Integrity
+		return INTEGRITY_LOW;
+	}
+	if (dwIntegrityLevel >= SECURITY_MANDATORY_MEDIUM_RID &&
+		dwIntegrityLevel < SECURITY_MANDATORY_HIGH_RID)
+	{
+		// Medium Integrity
+		return INTEGRITY_MEDIUM;
+	}
+	if (dwIntegrityLevel >= SECURITY_MANDATORY_HIGH_RID &&
+		dwIntegrityLevel < SECURITY_MANDATORY_SYSTEM_RID)
+	{
+		// High Integrity
+		return INTEGRITY_HIGH;
+	}
+	if (dwIntegrityLevel >= SECURITY_MANDATORY_SYSTEM_RID)
+	{
+		// System Integrity
+		return INTEGRITY_SYSTEM;
+	}
+	return INTEGRITY_UNKNOWN;
+}
+
+process_integrity_t get_integrity_level(HANDLE hProcess)
+{
+	if (!hProcess) {
+		return INTEGRITY_UNKNOWN;
+	}
+
+	HANDLE hToken = NULL;
+	if (!OpenProcessToken(hProcess, TOKEN_QUERY, &hToken)) {
+		//std::cerr << "[-][Cannot Open the ProcessToken" << std::endl;
+		return INTEGRITY_UNKNOWN;
+	}
+	DWORD dwLength = sizeof(TOKEN_GROUPS);
+	TOKEN_MANDATORY_LABEL *ptg = (TOKEN_MANDATORY_LABEL*) calloc(1, dwLength);
+
+	if (!GetTokenInformation(
+		hToken,         // handle to the access token
+		TokenIntegrityLevel,    // get information about the token's groups 
+		(LPVOID)ptg,   // pointer to TOKEN_MANDATORY_LABEL buffer
+		0,              // size of buffer
+		&dwLength       // receives required buffer size
+	))
+	{
+		free(ptg); ptg = nullptr;
+		if (GetLastError() != ERROR_INSUFFICIENT_BUFFER) {
+			CloseHandle(hToken);
+			return INTEGRITY_UNKNOWN;
+		}
+		ptg = (TOKEN_MANDATORY_LABEL*)calloc(1, dwLength);
+		if (!ptg) {
+			//failed allocating
+			CloseHandle(hToken);
+			return INTEGRITY_UNKNOWN;
+		}
+	}
+	process_integrity_t level = INTEGRITY_UNKNOWN;
+	if (GetTokenInformation(
+		hToken,         // handle to the access token
+		TokenIntegrityLevel,    // get information about the token's groups 
+		(LPVOID)ptg,   // pointer to TOKEN_MANDATORY_LABEL buffer
+		dwLength,       // size of buffer
+		&dwLength       // receives required buffer size
+	))
+	{
+		level = translate_integrity_level(ptg);
+	}
+	//cleanup:
+	free(ptg); ptg = nullptr;
+	CloseHandle(hToken);
+	return level;
+}
