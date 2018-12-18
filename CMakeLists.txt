@@ -134,3 +134,5 @@ target_link_libraries ( ${PROJECT_NAME} ${PECONV_LIB} "psapi.lib" "ntdll.lib")
 
 # dependencies
 add_dependencies(${PROJECT_NAME} libpeconv)
+
+INSTALL( TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_BINARY_DIR} COMPONENT ${PROJECT_NAME} )
