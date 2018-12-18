@@ -101,7 +101,7 @@ void print_help()
 	std::cout << "\t: Print the JSON report as the summary.\n";
 	
 	print_in_color(param_color, PARAM_DIR);
-	std::cout << " <output_dir>\n\t: Set output directory (default: current directory).\n";
+	std::cout << " <output_dir>\n\t: Set a root directory for the output (default: current directory).\n";
 	print_in_color(hdr_color, "\nInfo: \n");
 	print_in_color(param_color, PARAM_HELP);
 	std::cout << "    : Print this help.\n";
