@@ -12,7 +12,7 @@ Detects inline hooks, Process Hollowing, Process Doppelgänging, Reflective DLL 
 Uses library:
 https://github.com/hasherezade/libpeconv.git
 
-[FAQ - Frequently Asked Questions](https://github.com/hasherezade/pe-sieve/wiki)
+[FAQ - Frequently Asked Questions](https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ)
 
 Clone:
 -
