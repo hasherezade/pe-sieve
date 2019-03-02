@@ -107,7 +107,7 @@ ProcessScanReport* ProcessScanner::scanRemote()
 	}
 
 	// throw error only if both scans has failed:
-	if (!modulesScanned && !modulesScanned) {
+	if (!modulesScanned && !workingsetScanned) {
 		throw std::runtime_error(errorsStr.str());
 	}
 	//post-process hooks
