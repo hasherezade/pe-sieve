@@ -120,18 +120,23 @@ size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER
 	IMAGE_SECTION_HEADER* curr_sec = hdr_ptr;
 	DWORD sec_rva = 0;
 	size_t max_sec_size = 0;
+	size_t last_sec_size = 0;
 	do {
 		if (!is_valid_section(memPage.getLoadedData(), memPage.getLoadedSize(), (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
 			break;
 		}
 		sec_rva = curr_sec->VirtualAddress;
-		max_addr = (sec_rva > max_addr) ? sec_rva : max_addr;
+		DWORD next_max_addr = (sec_rva > max_addr) ? sec_rva : max_addr;
+		ULONGLONG last_sec_va = pe_image_base + next_max_addr;
+		DWORD next_last_sec_size = fetch_region_size(processHandle, (PBYTE)last_sec_va);
+		if (next_last_sec_size == 0) break; //the section was invalid, skip it
+
+		max_addr = next_max_addr;
+		last_sec_size = next_last_sec_size;
 		curr_sec++;
 
 	} while (true);
 
-	ULONGLONG last_sec_va = pe_image_base + max_addr;
-	size_t last_sec_size = fetch_region_size(processHandle, (PBYTE)last_sec_va);
 	size_t total_size = max_addr + last_sec_size;
 #ifdef _DEBUG
 	//std::cout << "Total Size:" << std::hex << total_size << std::endl;
