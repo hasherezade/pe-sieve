@@ -159,6 +159,9 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 					dumpFileName = makeModuleDumpPath(found_pe_base, modulePath, ".rec" + payload_ext);
 					is_module_dumped = peRec.dumpToFile(dumpFileName, process_report.exportsMap);
 				}
+				else {
+					std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG) mod->module << " failed." << std::endl;
+				}
 			}
 		}
 		else {
