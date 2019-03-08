@@ -165,24 +165,27 @@ bool PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap)
 		return false;
 	}
 	BYTE* iat_ptr = nullptr;
+	size_t iat_size = 0;
 	bool is64bit = peconv::is64bit(vBuf);
 	if (is64bit) {
-		iat_ptr = find_iat<ULONGLONG>(vBuf, vBufSize, exportsMap, 0);
+		iat_ptr = find_iat<ULONGLONG>(vBuf, vBufSize, exportsMap, iat_size, 0);
 	}
 	else {
-		iat_ptr = find_iat<DWORD>(vBuf, vBufSize, exportsMap, 0);
+		iat_ptr = find_iat<DWORD>(vBuf, vBufSize, exportsMap, iat_size, 0);
 	}
 	
 	if (!iat_ptr) return false;
 
 	DWORD iat_offset = iat_ptr - vBuf;
 	std::cout << "[+] Possible IAT found at: " << std::hex << iat_offset << std::endl;
-
-	if (iat_offset == dir->VirtualAddress) {
+	std::cout << "[*] Found IAT size: " << std::hex << iat_size << "\n";
+	if (iat_offset == dir->VirtualAddress && iat_size == dir->Size) {
+		std::cout << "[+] Validated IAT data!\n";
 		return true;
 	}
-	std::cout << "Overwriting IAT offset!\n";
+	std::cout << "[!] Overwriting IAT data!\n";
 	dir->VirtualAddress = iat_offset;
+	dir->Size = iat_size;
 	return true;
 }
 
@@ -207,7 +210,11 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 	
 	DWORD imp_offset = (BYTE*)import_table - vBuf;
 	std::cout << "[+] Possible Import Table at offset: " << std::hex << imp_offset << std::endl;
-	std::cout << "Overwriting Imports offset!\n";
+	if (imp_dir->VirtualAddress == imp_offset) {
+		std::cout << "[*] Validated Imports offset!\n";
+		return true;
+	}
+	std::cout << "[+] Overwriting Imports offset!\n";
 	imp_dir->VirtualAddress = imp_offset;
 	return true;
 }
