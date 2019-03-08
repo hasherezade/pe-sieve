@@ -144,28 +144,41 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 		std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, payload_ext);
 		peconv::t_pe_dump_mode curr_dump_mode = dump_mode;
 
-		bool is_module_dumped = peconv::dump_remote_pe(
-			dumpFileName.c_str(), //output file
-			processHandle,
-			(PBYTE)mod->module,
-			curr_dump_mode, //PE dump mode
-			process_report.exportsMap);
-		
-		if (!is_module_dumped)
-		{
-			dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".shc");
-
-			if (!dumpAsShellcode(dumpFileName, processHandle, (PBYTE)mod->module, mod->moduleSize)) {
-				std::cerr << "[-] Failed dumping module!" << std::endl;
+		bool is_module_dumped = false;
+		bool dump_shellcode = false;
+		//whenever the artefactReport is available, use it to reconstruct a PE
+		ArtefactScanReport* artefactReport = dynamic_cast<ArtefactScanReport*>(mod);
+		if (artefactReport) {
+			if (artefactReport->has_shellcode) {
+				dump_shellcode = true;
 			}
-			ArtefactScanReport* artefactReport = dynamic_cast<ArtefactScanReport*>(mod);
-			if (artefactReport) {
+			if (artefactReport->has_pe) {
 				ULONGLONG found_pe_base = artefactReport->artefacts.peImageBase();
 				PeReconstructor peRec(artefactReport->artefacts, curr_dump_mode);
 				if (peRec.reconstruct(processHandle)) {
 					dumpFileName = makeModuleDumpPath(found_pe_base, modulePath, ".rec" + payload_ext);
 					is_module_dumped = peRec.dumpToFile(dumpFileName, process_report.exportsMap);
 				}
+				else {
+					std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG) mod->module << " failed." << std::endl;
+				}
+			}
+		}
+		else {
+			//artefacts report not available, do a simple dump:
+			is_module_dumped = peconv::dump_remote_pe(
+				dumpFileName.c_str(), //output file
+				processHandle,
+				(PBYTE)mod->module,
+				curr_dump_mode, //PE dump mode
+				process_report.exportsMap);
+		}
+
+		if (!is_module_dumped || dump_shellcode)
+		{
+			dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".shc");
+			if (!dumpAsShellcode(dumpFileName, processHandle, (PBYTE)mod->module, mod->moduleSize)) {
+				std::cerr << "[-] Failed dumping module!" << std::endl;
 			}
 		}
 		if (is_module_dumped) {

@@ -20,7 +20,6 @@ public:
 	}
 
 	bool reconstruct(HANDLE processHandle);
-
 	bool dumpToFile(_In_ std::string dumpFileName, _In_opt_ peconv::ExportsMapper* exportsMap = nullptr);
 
 protected:

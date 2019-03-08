@@ -12,7 +12,10 @@ bool PeReconstructor::reconstruct(HANDLE processHandle)
 
 	this->moduleBase = artefacts.regionStart + artefacts.peBaseOffset;
 	size_t pe_vsize = artefacts.calculatedImgSize;
-
+	if (!pe_vsize) {
+		pe_vsize = fetch_region_size(processHandle, (PBYTE)this->moduleBase);
+		std::cout << "[!] Image size at: " << std::hex << moduleBase << " undetermined, using region size instead: " << pe_vsize << std::endl;
+	}
 	this->vBuf = peconv::alloc_aligned(pe_vsize, PAGE_READWRITE);
 	if (!vBuf) {
 		return false;

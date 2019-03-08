@@ -71,11 +71,9 @@ size_t fetch_region_size(HANDLE processHandle, PBYTE moduleBase)
 	if (out != sizeof(page_info)) {
 		return 0;
 	}
-	if (GetLastError() == ERROR_INVALID_PARAMETER) {
-		return 0;
+	if (page_info.Type == 0) {
+		return 0; //invalid type, skip it
 	}
-	if (page_info.Type == 0) return 0; //invalid type, skip it
-
 	size_t offset = moduleBase - (PBYTE)page_info.BaseAddress;
 	size_t area_size = page_info.RegionSize - offset;
 	return area_size;
