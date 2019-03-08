@@ -2,7 +2,7 @@
 
 #include "../utils/workingset_enum.h"
 
-#include "peconv.h"
+#include "iat_finder.h"
 
 //---
 
@@ -158,97 +158,28 @@ bool PeReconstructor::dumpToFile(std::string dumpFileName, _In_opt_ peconv::Expo
 	return peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
 }
 
-IMAGE_IMPORT_DESCRIPTOR* find_import_table(BYTE* vBuf, size_t vBufSize, DWORD iat_offset, DWORD search_offset = 0)
-{
-	if (!vBuf || !iat_offset) return nullptr;
-	if (vBufSize < sizeof(DWORD)) return nullptr; //should never happen
-
-	size_t max_check = vBufSize - sizeof(DWORD);
-	for (BYTE* ptr = vBuf + search_offset; ptr < vBuf + max_check; ptr++) {
-		DWORD *to_check = (DWORD*)ptr;
-		if (*to_check == iat_offset) { //candidate found
-			size_t offset = (BYTE*)to_check -vBuf;
-			std::cout << "found IAT offset in the binary: " << std::hex << offset << "\n";
-			size_t desc_diff = sizeof(IMAGE_IMPORT_DESCRIPTOR) - sizeof(DWORD);
-			IMAGE_IMPORT_DESCRIPTOR *desc = (IMAGE_IMPORT_DESCRIPTOR*)((BYTE*)to_check - desc_diff);
-			if (!peconv::validate_ptr(vBuf, vBufSize, desc, sizeof(IMAGE_IMPORT_DESCRIPTOR))) {
-				continue; // candidate doesn't fit
-			}
-			size_t desc_offset = (BYTE*)desc - vBuf;
-			std::cout << "Desc offset: " << std::hex << desc_offset << std::endl;
-			if (desc->Name == 0) continue;
-			char* name_ptr = (char*)vBuf + desc->Name;
-			if (!peconv::validate_ptr(vBuf, vBufSize, name_ptr, sizeof(char))) {
-				continue; // candidate doesn't fit
-			}
-			if (!isalnum(name_ptr[0])) continue; // candidate doesn't fit
-			if (strlen(name_ptr) == 0) continue;
-			
-			if (desc->TimeDateStamp != 0 || desc->OriginalFirstThunk == 0) continue;
-			DWORD* orig_thunk = (DWORD*)(vBuf + desc->OriginalFirstThunk);
-			if (!peconv::validate_ptr(vBuf, vBufSize, orig_thunk, sizeof(DWORD))) {
-				continue; // candidate doesn't fit
-			}
-			return desc;
-		}
-	}
-	std::cout << "Import table not found\n";
-	return nullptr;
-}
-
-BYTE* find_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap)
-{
-	if (!vBuf || !exportsMap) return nullptr;
-	if (vBufSize < sizeof(DWORD)) return nullptr; //should never happen
-
-	bool is64b = peconv::is64bit(vBuf); // TODO: make a version for 64 bit
-
-	size_t max_check = vBufSize - sizeof(DWORD);
-	for (BYTE* ptr = vBuf; ptr < vBuf + max_check; ptr++) {
-		DWORD *to_check = (DWORD*)ptr;
-		if (!peconv::validate_ptr(vBuf, vBufSize, to_check, sizeof(DWORD))) break;
-		DWORD possible_rva = (*to_check);
-		if (possible_rva == 0) continue;
-		//std::cout << "checking: " << std::hex << possible_rva << std::endl;
-		const peconv::ExportedFunc *exp = exportsMap->find_export_by_va(possible_rva);
-		if (!exp) continue;
-
-		//validate IAT:
-		ULONGLONG offset = (ptr - vBuf);
-		std::cout << std::hex << offset << " : " << exp->funcName << std::endl;
-
-		BYTE *iat_ptr = ptr;
-		size_t imports = 0;
-		for (DWORD* imp = to_check; imp < (DWORD*)(vBuf + max_check); imp++) {
-			if (*imp == 0) continue;
-			exp = exportsMap->find_export_by_va(*imp);
-			if (!exp) break;
-
-			ULONGLONG offset = ((BYTE*)imp - vBuf);
-			std::cout << std::hex << offset << " : " << exp->funcName << std::endl;
-			imports++;
-		}
-		if (!exp && iat_ptr && imports > 2) {
-			return iat_ptr;
-		}
-	}
-	return nullptr;
-}
-
 bool PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap)
 {
 	IMAGE_DATA_DIRECTORY *dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
 	if (!dir) {
 		return false;
 	}
-	BYTE* iat_ptr = find_iat(vBuf, vBufSize, exportsMap);
+	BYTE* iat_ptr = nullptr;
+	bool is64bit = peconv::is64bit(vBuf);
+	if (is64bit) {
+		iat_ptr = find_iat<ULONGLONG>(vBuf, vBufSize, exportsMap, 0);
+	}
+	else {
+		iat_ptr = find_iat<DWORD>(vBuf, vBufSize, exportsMap, 0);
+	}
+	
 	if (!iat_ptr) return false;
 
 	DWORD iat_offset = iat_ptr - vBuf;
 	std::cout << "[+] Possible IAT found at: " << std::hex << iat_offset << std::endl;
 
 	if (iat_offset == dir->VirtualAddress) {
-		return false;
+		return true;
 	}
 	std::cout << "Overwriting IAT offset!\n";
 	dir->VirtualAddress = iat_offset;
@@ -265,9 +196,9 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 	if (!iat_dir) {
 		return false;
 	}
-	if (iat_dir->VirtualAddress == 0) {
+	//if (iat_dir->VirtualAddress == 0) {
 		if (!findIAT(exportsMap)) return false;
-	}
+	//}
 	DWORD iat_offset = iat_dir->VirtualAddress;
 
 	std::cout << "Searching import table\n";
