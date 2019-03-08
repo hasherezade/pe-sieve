@@ -44,9 +44,14 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::E
 	if (!is_pe_hdr) {
 		return false;
 	}
-	std::cout << "Trying to find ImportTable\n";
+	std::cout << "[*] Trying to find ImportTable for module: " << std::hex << (ULONGLONG)this->moduleBase << "\n";
 	bool imp_found = findImportTable(exportsMap);
-	std::cout << "---\n";
+	if (imp_found) {
+		std::cout << "[+] ImportTable found.\n";
+	}
+	else {
+		std::cout << "[-] ImportTable NOT found!\n";
+	}
 	return true;
 }
 
@@ -177,13 +182,13 @@ bool PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap)
 	if (!iat_ptr) return false;
 
 	DWORD iat_offset = iat_ptr - vBuf;
-	std::cout << "[+] Possible IAT found at: " << std::hex << iat_offset << std::endl;
-	std::cout << "[*] Found IAT size: " << std::hex << iat_size << "\n";
+	//std::cout << "[+] Possible IAT found at: " << std::hex << iat_offset << std::endl;
+	//std::cout << "[*] Found IAT size: " << std::hex << iat_size << "\n";
 	if (iat_offset == dir->VirtualAddress && iat_size == dir->Size) {
-		std::cout << "[+] Validated IAT data!\n";
+		//std::cout << "[+] Validated IAT data!\n";
 		return true;
 	}
-	std::cout << "[!] Overwriting IAT data!\n";
+	//std::cout << "[!] Overwriting IAT data!\n";
 	dir->VirtualAddress = iat_offset;
 	dir->Size = iat_size;
 	return true;
@@ -204,31 +209,46 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 	//}
 	DWORD iat_offset = iat_dir->VirtualAddress;
 
-	std::cout << "Searching import table\n";
+	//std::cout << "Searching import table\n";
 	size_t table_size = 0;
 	
-	IMAGE_IMPORT_DESCRIPTOR* import_table = find_import_table(
-		vBuf,
-		vBufSize,
-		exportsMap,
-		iat_offset,
-		table_size,
-		0 //start offset
-	);
+	IMAGE_IMPORT_DESCRIPTOR* import_table = nullptr;
+	bool is64bit = peconv::is64bit(vBuf);
+	if (is64bit) {
+		import_table = find_import_table<ULONGLONG>(
+			vBuf,
+			vBufSize,
+			exportsMap,
+			iat_offset,
+			table_size,
+			0 //start offset
+		);
+	}
+	else {
+		import_table = find_import_table<DWORD>(
+			vBuf,
+			vBufSize,
+			exportsMap,
+			iat_offset,
+			table_size,
+			0 //start offset
+			);
+	}
+
 	if (!import_table) return false;
 	
 	DWORD imp_offset = (BYTE*)import_table - vBuf;
-	std::cout << "[*] Possible Import Table at offset: " << std::hex << imp_offset << std::endl;
-	std::cout << "[*] Import Table size: " << std::hex << table_size << std::endl;
+	//std::cout << "[*] Possible Import Table at offset: " << std::hex << imp_offset << std::endl;
+	//std::cout << "[*] Import Table size: " << std::hex << table_size << std::endl;
 	if (imp_dir->VirtualAddress == imp_offset && imp_dir->Size == table_size) {
-		std::cout << "[*] Validated Imports offset!\n";
+		//std::cout << "[*] Validated Imports offset!\n";
 		return true;
 	}
 	if (imp_dir->Size == table_size) {
-		std::cout << "[*] Validated Imports size!\n";
+		//std::cout << "[*] Validated Imports size!\n";
 		return true;
 	}
-	std::cout << "[+] Overwriting Imports data!\n";
+	//std::cout << "[+] Overwriting Imports data!\n";
 	imp_dir->VirtualAddress = imp_offset;
 	imp_dir->Size = table_size;
 	return true;
