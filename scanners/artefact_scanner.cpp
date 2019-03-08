@@ -121,25 +121,29 @@ size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER
 	DWORD sec_rva = 0;
 	size_t max_sec_size = 0;
 	size_t last_sec_size = 0;
-	do {
-		if (!is_valid_section(memPage.getLoadedData(), memPage.getLoadedSize(), (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
+
+	for (IMAGE_SECTION_HEADER* curr_sec = hdr_ptr; ; curr_sec++)
+	{
+		if (!peconv::validate_ptr(memPage.getLoadedData(), memPage.getLoadedSize(), curr_sec, sizeof(IMAGE_SECTION_HEADER))) {
+			// probably buffer finished
 			break;
+		}
+		if (curr_sec->Misc.VirtualSize == 0) {
+			continue; //skip empty sections
 		}
 		sec_rva = curr_sec->VirtualAddress;
 		DWORD next_max_addr = (sec_rva > max_addr) ? sec_rva : max_addr;
 		ULONGLONG last_sec_va = pe_image_base + next_max_addr;
-		DWORD next_last_sec_size = fetch_region_size(processHandle, (PBYTE)last_sec_va);
-		if (next_last_sec_size == 0) break; //the section was invalid, skip it
-
+		size_t next_last_sec_size = fetch_region_size(this->processHandle, (PBYTE)last_sec_va);
+		if (next_last_sec_size == 0) {
+			break; //the section was invalid, skip it
+		}
 		max_addr = next_max_addr;
 		last_sec_size = next_last_sec_size;
-		curr_sec++;
-
-	} while (true);
-
+	}
 	size_t total_size = max_addr + last_sec_size;
 #ifdef _DEBUG
-	//std::cout << "Total Size:" << std::hex << total_size << std::endl;
+	std::cout << "Image: " << std::hex << pe_image_base << " Size:" << std::hex << total_size << " max_addr: " << max_addr<< std::endl;
 #endif
 	return total_size;
 }
