@@ -44,12 +44,8 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::E
 	if (!is_pe_hdr) {
 		return false;
 	}
-	std::cout << "Trying to find IAT\n";
-	BYTE *iat_ptr = findIAT(exportsMap);
-	if (iat_ptr) {
-		ULONGLONG offset = (iat_ptr - vBuf);
-		std::cout << "[+] Possible IAT found at: " << std::hex << offset << std::endl;
-	}
+	std::cout << "Trying to find ImportTable\n";
+	bool imp_found = findImportTable(exportsMap);
 	std::cout << "---\n";
 	return true;
 }
@@ -162,16 +158,53 @@ bool PeReconstructor::dumpToFile(std::string dumpFileName, _In_opt_ peconv::Expo
 	return peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
 }
 
+IMAGE_IMPORT_DESCRIPTOR* find_import_table(BYTE* vBuf, size_t vBufSize, DWORD iat_offset, DWORD search_offset = 0)
+{
+	if (!vBuf || !iat_offset) return nullptr;
+	if (vBufSize < sizeof(DWORD)) return nullptr; //should never happen
 
-BYTE* PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap)
+	size_t max_check = vBufSize - sizeof(DWORD);
+	for (BYTE* ptr = vBuf + search_offset; ptr < vBuf + max_check; ptr++) {
+		DWORD *to_check = (DWORD*)ptr;
+		if (*to_check == iat_offset) { //candidate found
+			size_t offset = (BYTE*)to_check -vBuf;
+			std::cout << "found IAT offset in the binary: " << std::hex << offset << "\n";
+			size_t desc_diff = sizeof(IMAGE_IMPORT_DESCRIPTOR) - sizeof(DWORD);
+			IMAGE_IMPORT_DESCRIPTOR *desc = (IMAGE_IMPORT_DESCRIPTOR*)((BYTE*)to_check - desc_diff);
+			if (!peconv::validate_ptr(vBuf, vBufSize, desc, sizeof(IMAGE_IMPORT_DESCRIPTOR))) {
+				continue; // candidate doesn't fit
+			}
+			size_t desc_offset = (BYTE*)desc - vBuf;
+			std::cout << "Desc offset: " << std::hex << desc_offset << std::endl;
+			if (desc->Name == 0) continue;
+			char* name_ptr = (char*)vBuf + desc->Name;
+			if (!peconv::validate_ptr(vBuf, vBufSize, name_ptr, sizeof(char))) {
+				continue; // candidate doesn't fit
+			}
+			if (!isalnum(name_ptr[0])) continue; // candidate doesn't fit
+			if (strlen(name_ptr) == 0) continue;
+			
+			if (desc->TimeDateStamp != 0 || desc->OriginalFirstThunk == 0) continue;
+			DWORD* orig_thunk = (DWORD*)(vBuf + desc->OriginalFirstThunk);
+			if (!peconv::validate_ptr(vBuf, vBufSize, orig_thunk, sizeof(DWORD))) {
+				continue; // candidate doesn't fit
+			}
+			return desc;
+		}
+	}
+	std::cout << "Import table not found\n";
+	return nullptr;
+}
+
+BYTE* find_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap)
 {
 	if (!vBuf || !exportsMap) return nullptr;
-	if (this->vBufSize < sizeof(DWORD)) return nullptr; //should never happen
+	if (vBufSize < sizeof(DWORD)) return nullptr; //should never happen
 
-	bool is64b = peconv::is64bit(this->vBuf); // TODO: make a version for 64 bit
+	bool is64b = peconv::is64bit(vBuf); // TODO: make a version for 64 bit
 
-	size_t max_check = this->vBufSize - sizeof(DWORD);
-	for (BYTE* ptr = vBuf; ptr < this->vBuf + max_check; ptr++) {
+	size_t max_check = vBufSize - sizeof(DWORD);
+	for (BYTE* ptr = vBuf; ptr < vBuf + max_check; ptr++) {
 		DWORD *to_check = (DWORD*)ptr;
 		if (!peconv::validate_ptr(vBuf, vBufSize, to_check, sizeof(DWORD))) break;
 		DWORD possible_rva = (*to_check);
@@ -186,7 +219,7 @@ BYTE* PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap)
 
 		BYTE *iat_ptr = ptr;
 		size_t imports = 0;
-		for (DWORD* imp = to_check; imp < (DWORD*)(this->vBuf + max_check); imp++) {
+		for (DWORD* imp = to_check; imp < (DWORD*)(vBuf + max_check); imp++) {
 			if (*imp == 0) continue;
 			exp = exportsMap->find_export_by_va(*imp);
 			if (!exp) break;
@@ -200,4 +233,50 @@ BYTE* PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap)
 		}
 	}
 	return nullptr;
+}
+
+bool PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap)
+{
+	IMAGE_DATA_DIRECTORY *dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
+	if (!dir) {
+		return false;
+	}
+	BYTE* iat_ptr = find_iat(vBuf, vBufSize, exportsMap);
+	if (!iat_ptr) return false;
+
+	DWORD iat_offset = iat_ptr - vBuf;
+	std::cout << "[+] Possible IAT found at: " << std::hex << iat_offset << std::endl;
+
+	if (iat_offset == dir->VirtualAddress) {
+		return false;
+	}
+	std::cout << "Overwriting IAT offset!\n";
+	dir->VirtualAddress = iat_offset;
+	return true;
+}
+
+bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
+{
+	IMAGE_DATA_DIRECTORY* imp_dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IMPORT, true);
+	if (!imp_dir) {
+		return false;
+	}
+	IMAGE_DATA_DIRECTORY *iat_dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
+	if (!iat_dir) {
+		return false;
+	}
+	if (iat_dir->VirtualAddress == 0) {
+		if (!findIAT(exportsMap)) return false;
+	}
+	DWORD iat_offset = iat_dir->VirtualAddress;
+
+	std::cout << "Searching import table\n";
+	IMAGE_IMPORT_DESCRIPTOR* import_table = find_import_table(vBuf, vBufSize, iat_offset, PAGE_SIZE);
+	if (!import_table) return false;
+	
+	DWORD imp_offset = (BYTE*)import_table - vBuf;
+	std::cout << "[+] Possible Import Table at offset: " << std::hex << imp_offset << std::endl;
+	std::cout << "Overwriting Imports offset!\n";
+	imp_dir->VirtualAddress = imp_offset;
+	return true;
 }

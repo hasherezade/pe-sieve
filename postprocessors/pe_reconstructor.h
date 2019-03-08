@@ -23,7 +23,8 @@ public:
 	bool dumpToFile(IN std::string dumpFileName, IN OPTIONAL peconv::ExportsMapper* exportsMap = nullptr);
 
 protected:
-	BYTE * findIAT(IN peconv::ExportsMapper* exportsMap);
+	bool findIAT(IN peconv::ExportsMapper* exportsMap);
+	bool findImportTable(IN peconv::ExportsMapper* exportsMap);
 
 	void freeBuffer() {
 		peconv::free_aligned(vBuf);
