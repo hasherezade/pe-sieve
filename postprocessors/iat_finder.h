@@ -64,4 +64,9 @@ BYTE* find_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap
 	return nullptr;
 }
 
-IMAGE_IMPORT_DESCRIPTOR* find_import_table(BYTE* vBuf, size_t vBufSize, DWORD iat_offset, size_t search_offset = 0);
+IMAGE_IMPORT_DESCRIPTOR* find_import_table(IN BYTE* vBuf,
+	IN size_t vBufSize, 
+	IN peconv::ExportsMapper* exportsMap,
+	IN DWORD iat_offset,
+	OUT size_t &table_size,
+	IN OPTIONAL size_t search_offset = 0);

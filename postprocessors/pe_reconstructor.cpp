@@ -205,16 +205,31 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 	DWORD iat_offset = iat_dir->VirtualAddress;
 
 	std::cout << "Searching import table\n";
-	IMAGE_IMPORT_DESCRIPTOR* import_table = find_import_table(vBuf, vBufSize, iat_offset, PAGE_SIZE);
+	size_t table_size = 0;
+	
+	IMAGE_IMPORT_DESCRIPTOR* import_table = find_import_table(
+		vBuf,
+		vBufSize,
+		exportsMap,
+		iat_offset,
+		table_size,
+		0 //start offset
+	);
 	if (!import_table) return false;
 	
 	DWORD imp_offset = (BYTE*)import_table - vBuf;
-	std::cout << "[+] Possible Import Table at offset: " << std::hex << imp_offset << std::endl;
-	if (imp_dir->VirtualAddress == imp_offset) {
+	std::cout << "[*] Possible Import Table at offset: " << std::hex << imp_offset << std::endl;
+	std::cout << "[*] Import Table size: " << std::hex << table_size << std::endl;
+	if (imp_dir->VirtualAddress == imp_offset && imp_dir->Size == table_size) {
 		std::cout << "[*] Validated Imports offset!\n";
 		return true;
 	}
-	std::cout << "[+] Overwriting Imports offset!\n";
+	if (imp_dir->Size == table_size) {
+		std::cout << "[*] Validated Imports size!\n";
+		return true;
+	}
+	std::cout << "[+] Overwriting Imports data!\n";
 	imp_dir->VirtualAddress = imp_offset;
+	imp_dir->Size = table_size;
 	return true;
 }
