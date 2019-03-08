@@ -19,10 +19,12 @@ public:
 		freeBuffer();
 	}
 
-	bool reconstruct(HANDLE processHandle);
-	bool dumpToFile(_In_ std::string dumpFileName, _In_opt_ peconv::ExportsMapper* exportsMap = nullptr);
+	bool reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::ExportsMapper* exportsMap = nullptr);
+	bool dumpToFile(IN std::string dumpFileName, IN OPTIONAL peconv::ExportsMapper* exportsMap = nullptr);
 
 protected:
+	BYTE * findIAT(IN peconv::ExportsMapper* exportsMap);
+
 	void freeBuffer() {
 		peconv::free_aligned(vBuf);
 		vBuf = nullptr;

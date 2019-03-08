@@ -6,13 +6,13 @@
 
 //---
 
-bool PeReconstructor::reconstruct(HANDLE processHandle)
+bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::ExportsMapper* exportsMap)
 {
 	freeBuffer();
 
 	this->moduleBase = artefacts.regionStart + artefacts.peBaseOffset;
 	size_t pe_vsize = artefacts.calculatedImgSize;
-	if (!pe_vsize) {
+	if (pe_vsize == 0) {
 		pe_vsize = fetch_region_size(processHandle, (PBYTE)this->moduleBase);
 		std::cout << "[!] Image size at: " << std::hex << moduleBase << " undetermined, using region size instead: " << pe_vsize << std::endl;
 	}
@@ -41,10 +41,17 @@ bool PeReconstructor::reconstruct(HANDLE processHandle)
 	if (this->artefacts.hasNtHdrs()) {
 		is_pe_hdr = reconstructPeHdr();
 	}
-	if (is_pe_hdr) {
-		return true;
+	if (!is_pe_hdr) {
+		return false;
 	}
-	return false;
+	std::cout << "Trying to find IAT\n";
+	BYTE *iat_ptr = findIAT(exportsMap);
+	if (iat_ptr) {
+		ULONGLONG offset = (iat_ptr - vBuf);
+		std::cout << "[+] Possible IAT found at: " << std::hex << offset << std::endl;
+	}
+	std::cout << "---\n";
+	return true;
 }
 
 bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
@@ -142,10 +149,10 @@ bool PeReconstructor::reconstructPeHdr()
 	dosHdr->e_magic = IMAGE_DOS_SIGNATURE;
 	dosHdr->e_lfanew = pe_offset;
 
-	if (peconv::get_nt_hrds(vBuf)) {
-		return true;
+	if (!peconv::get_nt_hrds(vBuf)) {
+		return false;
 	}
-	return false;
+	return true;
 }
 
 bool PeReconstructor::dumpToFile(std::string dumpFileName, _In_opt_ peconv::ExportsMapper* exportsMap)
@@ -153,4 +160,44 @@ bool PeReconstructor::dumpToFile(std::string dumpFileName, _In_opt_ peconv::Expo
 	if (vBuf == nullptr) return false;
 	// save the read module into a file
 	return peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
+}
+
+
+BYTE* PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap)
+{
+	if (!vBuf || !exportsMap) return nullptr;
+	if (this->vBufSize < sizeof(DWORD)) return nullptr; //should never happen
+
+	bool is64b = peconv::is64bit(this->vBuf); // TODO: make a version for 64 bit
+
+	size_t max_check = this->vBufSize - sizeof(DWORD);
+	for (BYTE* ptr = vBuf; ptr < this->vBuf + max_check; ptr++) {
+		DWORD *to_check = (DWORD*)ptr;
+		if (!peconv::validate_ptr(vBuf, vBufSize, to_check, sizeof(DWORD))) break;
+		DWORD possible_rva = (*to_check);
+		if (possible_rva == 0) continue;
+		//std::cout << "checking: " << std::hex << possible_rva << std::endl;
+		const peconv::ExportedFunc *exp = exportsMap->find_export_by_va(possible_rva);
+		if (!exp) continue;
+
+		//validate IAT:
+		ULONGLONG offset = (ptr - vBuf);
+		std::cout << std::hex << offset << " : " << exp->funcName << std::endl;
+
+		BYTE *iat_ptr = ptr;
+		size_t imports = 0;
+		for (DWORD* imp = to_check; imp < (DWORD*)(this->vBuf + max_check); imp++) {
+			if (*imp == 0) continue;
+			exp = exportsMap->find_export_by_va(*imp);
+			if (!exp) break;
+
+			ULONGLONG offset = ((BYTE*)imp - vBuf);
+			std::cout << std::hex << offset << " : " << exp->funcName << std::endl;
+			imports++;
+		}
+		if (!exp && iat_ptr && imports > 2) {
+			return iat_ptr;
+		}
+	}
+	return nullptr;
 }
