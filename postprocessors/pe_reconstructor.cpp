@@ -2,17 +2,17 @@
 
 #include "../utils/workingset_enum.h"
 
-#include "peconv.h"
+#include "iat_finder.h"
 
 //---
 
-bool PeReconstructor::reconstruct(HANDLE processHandle)
+bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::ExportsMapper* exportsMap)
 {
 	freeBuffer();
 
 	this->moduleBase = artefacts.regionStart + artefacts.peBaseOffset;
 	size_t pe_vsize = artefacts.calculatedImgSize;
-	if (!pe_vsize) {
+	if (pe_vsize == 0) {
 		pe_vsize = fetch_region_size(processHandle, (PBYTE)this->moduleBase);
 		std::cout << "[!] Image size at: " << std::hex << moduleBase << " undetermined, using region size instead: " << pe_vsize << std::endl;
 	}
@@ -41,10 +41,18 @@ bool PeReconstructor::reconstruct(HANDLE processHandle)
 	if (this->artefacts.hasNtHdrs()) {
 		is_pe_hdr = reconstructPeHdr();
 	}
-	if (is_pe_hdr) {
-		return true;
+	if (!is_pe_hdr) {
+		return false;
 	}
-	return false;
+	std::cout << "[*] Trying to find ImportTable for module: " << std::hex << (ULONGLONG)this->moduleBase << "\n";
+	bool imp_found = findImportTable(exportsMap);
+	if (imp_found) {
+		std::cout << "[+] ImportTable found.\n";
+	}
+	else {
+		std::cout << "[-] ImportTable NOT found!\n";
+	}
+	return true;
 }
 
 bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
@@ -142,10 +150,10 @@ bool PeReconstructor::reconstructPeHdr()
 	dosHdr->e_magic = IMAGE_DOS_SIGNATURE;
 	dosHdr->e_lfanew = pe_offset;
 
-	if (peconv::get_nt_hrds(vBuf)) {
-		return true;
+	if (!peconv::get_nt_hrds(vBuf)) {
+		return false;
 	}
-	return false;
+	return true;
 }
 
 bool PeReconstructor::dumpToFile(std::string dumpFileName, _In_opt_ peconv::ExportsMapper* exportsMap)
@@ -153,4 +161,95 @@ bool PeReconstructor::dumpToFile(std::string dumpFileName, _In_opt_ peconv::Expo
 	if (vBuf == nullptr) return false;
 	// save the read module into a file
 	return peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
+}
+
+bool PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap)
+{
+	IMAGE_DATA_DIRECTORY *dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
+	if (!dir) {
+		return false;
+	}
+	BYTE* iat_ptr = nullptr;
+	size_t iat_size = 0;
+	bool is64bit = peconv::is64bit(vBuf);
+	if (is64bit) {
+		iat_ptr = find_iat<ULONGLONG>(vBuf, vBufSize, exportsMap, iat_size, 0);
+	}
+	else {
+		iat_ptr = find_iat<DWORD>(vBuf, vBufSize, exportsMap, iat_size, 0);
+	}
+	
+	if (!iat_ptr) return false;
+
+	DWORD iat_offset = iat_ptr - vBuf;
+	//std::cout << "[+] Possible IAT found at: " << std::hex << iat_offset << std::endl;
+	//std::cout << "[*] Found IAT size: " << std::hex << iat_size << "\n";
+	if (iat_offset == dir->VirtualAddress && iat_size == dir->Size) {
+		//std::cout << "[+] Validated IAT data!\n";
+		return true;
+	}
+	//std::cout << "[!] Overwriting IAT data!\n";
+	dir->VirtualAddress = iat_offset;
+	dir->Size = iat_size;
+	return true;
+}
+
+bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
+{
+	IMAGE_DATA_DIRECTORY* imp_dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IMPORT, true);
+	if (!imp_dir) {
+		return false;
+	}
+	IMAGE_DATA_DIRECTORY *iat_dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
+	if (!iat_dir) {
+		return false;
+	}
+	//if (iat_dir->VirtualAddress == 0) {
+		if (!findIAT(exportsMap)) return false;
+	//}
+	DWORD iat_offset = iat_dir->VirtualAddress;
+
+	//std::cout << "Searching import table\n";
+	size_t table_size = 0;
+	
+	IMAGE_IMPORT_DESCRIPTOR* import_table = nullptr;
+	bool is64bit = peconv::is64bit(vBuf);
+	if (is64bit) {
+		import_table = find_import_table<ULONGLONG>(
+			vBuf,
+			vBufSize,
+			exportsMap,
+			iat_offset,
+			table_size,
+			0 //start offset
+		);
+	}
+	else {
+		import_table = find_import_table<DWORD>(
+			vBuf,
+			vBufSize,
+			exportsMap,
+			iat_offset,
+			table_size,
+			0 //start offset
+			);
+	}
+
+	if (!import_table) return false;
+	
+	DWORD imp_offset = (BYTE*)import_table - vBuf;
+	//std::cout << "[*] Possible Import Table at offset: " << std::hex << imp_offset << std::endl;
+	//std::cout << "[*] Import Table size: " << std::hex << table_size << std::endl;
+	if (imp_dir->VirtualAddress == imp_offset && imp_dir->Size == table_size) {
+		//std::cout << "[*] Validated Imports offset!\n";
+		return true;
+	}
+	if (imp_dir->Size == table_size) {
+		//std::cout << "[*] Validated Imports size!\n";
+		return true;
+	}
+	//std::cout << "[+] Overwriting Imports data!\n";
+	imp_dir->VirtualAddress = imp_offset;
+	imp_dir->Size = table_size;
+	return true;
 }

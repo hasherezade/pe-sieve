@@ -54,12 +54,14 @@ set (postprocessors_hdrs
 	postprocessors/report_formatter.h
 	postprocessors/results_dumper.h
 	postprocessors/pe_reconstructor.h
+	postprocessors/iat_finder.h
 )
 
 set (postprocessors_srcs
 	postprocessors/report_formatter.cpp
 	postprocessors/results_dumper.cpp
 	postprocessors/pe_reconstructor.cpp
+	postprocessors/iat_finder.cpp
 )
 
 set (utils_srcs
