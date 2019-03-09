@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <Psapi.h>
 
+
 #include <fstream>
 #include "../utils/util.h"
 #include "../utils/workingset_enum.h"
@@ -73,7 +74,7 @@ std::string ResultsDumper::makeOutPath(std::string fname, std::string default_ex
 bool dumpAsShellcode(std::string dumpFileName, HANDLE processHandle, PBYTE moduleBase, size_t moduleSize)
 {
 	if (!moduleSize) {
-		moduleSize = fetch_region_size(processHandle, moduleBase);
+		moduleSize = peconv::fetch_region_size(processHandle, moduleBase);
 	}
 
 	BYTE *buf = peconv::alloc_unaligned(moduleSize);

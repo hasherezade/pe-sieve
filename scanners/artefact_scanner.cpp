@@ -134,7 +134,7 @@ size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER
 		sec_rva = curr_sec->VirtualAddress;
 		DWORD next_max_addr = (sec_rva > max_addr) ? sec_rva : max_addr;
 		ULONGLONG last_sec_va = pe_image_base + next_max_addr;
-		size_t next_last_sec_size = fetch_region_size(this->processHandle, (PBYTE)last_sec_va);
+		size_t next_last_sec_size = peconv::fetch_region_size(this->processHandle, (PBYTE)last_sec_va);
 		if (next_last_sec_size == 0) {
 			break; //the section was invalid, skip it
 		}

@@ -63,18 +63,3 @@ size_t enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &region_bases)
 	}
 	return added;
 }
-
-size_t fetch_region_size(HANDLE processHandle, PBYTE moduleBase)
-{
-	MEMORY_BASIC_INFORMATION page_info = { 0 };
-	SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID)moduleBase, &page_info, sizeof(page_info));
-	if (out != sizeof(page_info)) {
-		return 0;
-	}
-	if (page_info.Type == 0) {
-		return 0; //invalid type, skip it
-	}
-	size_t offset = moduleBase - (PBYTE)page_info.BaseAddress;
-	size_t area_size = page_info.RegionSize - offset;
-	return area_size;
-}

@@ -7,4 +7,3 @@
 
 size_t enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &region_bases);
 
-size_t fetch_region_size(HANDLE processHandle, PBYTE moduleBase);

@@ -13,7 +13,7 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::E
 	this->moduleBase = artefacts.regionStart + artefacts.peBaseOffset;
 	size_t pe_vsize = artefacts.calculatedImgSize;
 	if (pe_vsize == 0) {
-		pe_vsize = fetch_region_size(processHandle, (PBYTE)this->moduleBase);
+		pe_vsize = peconv::fetch_region_size(processHandle, (PBYTE)this->moduleBase);
 		std::cout << "[!] Image size at: " << std::hex << moduleBase << " undetermined, using region size instead: " << pe_vsize << std::endl;
 	}
 	this->vBuf = peconv::alloc_aligned(pe_vsize, PAGE_READWRITE);
@@ -84,7 +84,7 @@ bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
 		DWORD sec_size = curr_sec->Misc.VirtualSize;
 
 		ULONGLONG sec_va = pe_img_base + sec_rva;
-		size_t real_sec_size = fetch_region_size(processHandle, (PBYTE)sec_va);
+		size_t real_sec_size = peconv::fetch_region_size(processHandle, (PBYTE)sec_va);
 		if (sec_size > real_sec_size) {
 			curr_sec->Misc.VirtualSize = DWORD(real_sec_size);
 #ifdef _DEBUG
