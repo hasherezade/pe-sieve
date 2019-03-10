@@ -38,7 +38,8 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::E
 	}
 
 	bool is_pe_hdr = false;
-	if (this->artefacts.hasNtHdrs()) {
+	if (this->artefacts.hasNtHdrs() && reconstructFileHdr()) {
+		std::cout << "Reconstructing PE header!\n";
 		is_pe_hdr = reconstructPeHdr();
 	}
 	if (!is_pe_hdr) {
@@ -118,13 +119,47 @@ bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
 	return true;
 }
 
-bool PeReconstructor::reconstructPeHdr()
+bool PeReconstructor::reconstructFileHdr()
 {
-	if (!this->vBuf) {
+	if (!this->vBuf || !this->artefacts.hasNtHdrs()) {
 		return false;
 	}
+	BYTE* loadedData = this->vBuf;
+	size_t loadedSize = this->vBufSize;
 
-	if (!this->artefacts.hasNtHdrs()) {
+	ULONGLONG nt_offset = this->artefacts.ntFileHdrsOffset - this->artefacts.peBaseOffset;
+	BYTE* nt_ptr = (BYTE*)((ULONGLONG)this->vBuf + nt_offset);
+	if (is_valid_file_hdr(this->vBuf, this->vBufSize, nt_ptr, 0)) {
+		std::cout << "File Header OK\n";
+		return true;
+	}
+	std::cout << "File Header is invalid!\n";
+	IMAGE_FILE_HEADER* hdr_candidate = (IMAGE_FILE_HEADER*)nt_ptr;
+	if (!peconv::validate_ptr(loadedData, loadedSize, hdr_candidate, sizeof(IMAGE_FILE_HEADER))) {
+		// probably buffer finished
+		return false;
+	}
+	size_t opt_hdr_size = 0;
+	if (artefacts.is64bit) {
+		hdr_candidate->Machine = IMAGE_FILE_MACHINE_AMD64;
+		opt_hdr_size = sizeof(IMAGE_OPTIONAL_HEADER64);
+	}
+	else {
+		hdr_candidate->Machine = IMAGE_FILE_MACHINE_I386;
+		opt_hdr_size = sizeof(IMAGE_OPTIONAL_HEADER32);
+	}
+	
+	hdr_candidate->NumberOfSections = WORD(this->artefacts.secCount);
+	hdr_candidate->SizeOfOptionalHeader = WORD(opt_hdr_size);
+
+	hdr_candidate->NumberOfSymbols = 0;
+	hdr_candidate->PointerToSymbolTable = 0;
+	return true;
+}
+
+bool PeReconstructor::reconstructPeHdr()
+{
+	if (!this->vBuf || !this->artefacts.hasNtHdrs()) {
 		return false;
 	}
 	ULONGLONG nt_offset = this->artefacts.ntFileHdrsOffset - this->artefacts.peBaseOffset;
@@ -137,7 +172,6 @@ bool PeReconstructor::reconstructPeHdr()
 	IMAGE_NT_HEADERS32 *nt32 = (IMAGE_NT_HEADERS32*)pe_ptr;
 	//write signature:
 	nt32->Signature = IMAGE_NT_SIGNATURE;
-
 	IMAGE_FILE_HEADER *file_hdr = &nt32->FileHeader;
 
 	bool is64bit = (file_hdr->Machine == IMAGE_FILE_MACHINE_AMD64) ? true : false;
@@ -149,6 +183,15 @@ bool PeReconstructor::reconstructPeHdr()
 	IMAGE_DOS_HEADER* dosHdr = (IMAGE_DOS_HEADER*) vBuf;
 	dosHdr->e_magic = IMAGE_DOS_SIGNATURE;
 	dosHdr->e_lfanew = pe_offset;
+
+	bool is_fixed = false;
+	if (is64bit) {
+		is_fixed = overwrite_opt_hdr<IMAGE_OPTIONAL_HEADER64>(this->vBuf, this->vBufSize, (IMAGE_OPTIONAL_HEADER64*)&nt32->OptionalHeader, this->artefacts);
+	}
+	else {
+		is_fixed = overwrite_opt_hdr<IMAGE_OPTIONAL_HEADER32>(this->vBuf, this->vBufSize, &nt32->OptionalHeader, this->artefacts);
+	}
+	std::cout << "Overwriten the optional header: " << is_fixed << std::endl;
 
 	if (!peconv::get_nt_hrds(vBuf)) {
 		return false;
@@ -232,7 +275,7 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 			iat_offset,
 			table_size,
 			0 //start offset
-		);
+			);
 	}
 
 	if (!import_table) return false;

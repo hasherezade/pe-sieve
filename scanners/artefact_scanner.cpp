@@ -497,8 +497,8 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 			if (sec_offset != INVALID_OFFSET) min_offset = sec_offset;
 		}
 
-		//validate the header and search sections on its base:
-		if (setNtFileHdr(aMap, aMap.nt_file_hdr)) {
+		//if sections header not set, try to search one basing on File Header
+		if (!aMap.sec_hdr && setNtFileHdr(aMap, aMap.nt_file_hdr)) {
 			if (setSecHdr(aMap, aMap.sec_hdr)) {
 				//valid PE found:
 				bestMapping = aMap;
