@@ -232,7 +232,7 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 			iat_offset,
 			table_size,
 			0 //start offset
-			);
+		);
 	}
 
 	if (!import_table) return false;
