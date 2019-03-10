@@ -44,13 +44,15 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::E
 	if (!is_pe_hdr) {
 		return false;
 	}
-	std::cout << "[*] Trying to find ImportTable for module: " << std::hex << (ULONGLONG)this->moduleBase << "\n";
-	bool imp_found = findImportTable(exportsMap);
-	if (imp_found) {
-		std::cout << "[+] ImportTable found.\n";
-	}
-	else {
-		std::cout << "[-] ImportTable NOT found!\n";
+	if (exportsMap) {
+		std::cout << "[*] Trying to find ImportTable for module: " << std::hex << (ULONGLONG)this->moduleBase << "\n";
+		bool imp_found = findImportTable(exportsMap);
+		if (imp_found) {
+			std::cout << "[+] ImportTable found.\n";
+		}
+		else {
+			std::cout << "[-] ImportTable NOT found!\n";
+		}
 	}
 	return true;
 }
