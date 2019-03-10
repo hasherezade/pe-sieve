@@ -125,9 +125,15 @@ public:
 class ArtefactScanner {
 public:
 	ArtefactScanner(HANDLE _procHndl, MemPageData &_memPageData)
-		: processHandle(_procHndl), 
+		: processHandle(_procHndl), is64bit(false),
 		memPage(_memPageData), prevMemPage(nullptr), artPagePtr(nullptr)
 	{
+#ifdef _WIN64 //is the scanner 64 bit?
+		BOOL isWow64 = FALSE;
+		if (IsWow64Process(_procHndl, &isWow64)) {
+			is64bit = !isWow64;
+		}
+#endif
 	}
 
 	virtual ~ArtefactScanner()
@@ -219,4 +225,5 @@ protected:
 	MemPageData &memPage;
 	MemPageData *prevMemPage;
 	MemPageData *artPagePtr; //pointer to the page where the artefacts were found: either to memPage or to prevMemPage
+	bool is64bit;
 };

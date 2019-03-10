@@ -390,7 +390,7 @@ bool ArtefactScanner::setSecHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_S
 		//if NT headers not found, search before sections header:
 		if (!aMap.nt_file_hdr) {
 			// try to find NT header relative to the sections header:
-			size_t suggested_offset = calc_nt_hdr_offset(aMap.memPage, _sec_hdr);
+			size_t suggested_offset = calc_nt_hdr_offset(aMap.memPage, _sec_hdr, this->is64bit);
 			if (suggested_offset != INVALID_OFFSET && (sec_hdr_offset >= suggested_offset)) {
 				const size_t search_size = sec_hdr_offset - suggested_offset;
 				aMap.nt_file_hdr = findNtFileHdr(loadedData + suggested_offset, search_size);
