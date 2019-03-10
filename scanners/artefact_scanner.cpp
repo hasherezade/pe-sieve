@@ -466,6 +466,7 @@ PeArtefacts* ArtefactScanner::generateArtefacts(ArtefactScanner::ArtefactsMappin
 	if (aMap.nt_file_hdr) {
 		peArt->isDll = ((aMap.nt_file_hdr->Characteristics & IMAGE_FILE_DLL) != 0);
 	}
+	peArt->is64bit = aMap.is64bit;
 	return peArt;
 }
 
@@ -475,13 +476,13 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 		return nullptr;
 	}
 
-	ArtefactsMapping bestMapping(memPage);
+	ArtefactsMapping bestMapping(memPage, this->is64bit);
 
 	for (size_t min_offset = start_offset; min_offset < memPage.getLoadedSize(); min_offset++)
 	{
 		//std::cout << "Searching DOS header, min_offset: " << std::hex << min_offset << std::endl;
 
-		ArtefactsMapping aMap(memPage);
+		ArtefactsMapping aMap(memPage, this->is64bit);
 		if (findMzPe(aMap, min_offset)) {
 			size_t dos_offset = calc_offset(memPage, aMap.dos_hdr);
 			min_offset = dos_offset != INVALID_OFFSET ? dos_offset : min_offset;
