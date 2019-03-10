@@ -39,7 +39,6 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::E
 
 	bool is_pe_hdr = false;
 	if (this->artefacts.hasNtHdrs() && reconstructFileHdr()) {
-		std::cout << "Reconstructing PE header!\n";
 		is_pe_hdr = reconstructPeHdr();
 	}
 	if (!is_pe_hdr) {
@@ -130,15 +129,14 @@ bool PeReconstructor::reconstructFileHdr()
 	ULONGLONG nt_offset = this->artefacts.ntFileHdrsOffset - this->artefacts.peBaseOffset;
 	BYTE* nt_ptr = (BYTE*)((ULONGLONG)this->vBuf + nt_offset);
 	if (is_valid_file_hdr(this->vBuf, this->vBufSize, nt_ptr, 0)) {
-		std::cout << "File Header OK\n";
 		return true;
 	}
-	std::cout << "File Header is invalid!\n";
 	IMAGE_FILE_HEADER* hdr_candidate = (IMAGE_FILE_HEADER*)nt_ptr;
 	if (!peconv::validate_ptr(loadedData, loadedSize, hdr_candidate, sizeof(IMAGE_FILE_HEADER))) {
 		// probably buffer finished
 		return false;
 	}
+
 	size_t opt_hdr_size = 0;
 	if (artefacts.is64bit) {
 		hdr_candidate->Machine = IMAGE_FILE_MACHINE_AMD64;
@@ -148,9 +146,15 @@ bool PeReconstructor::reconstructFileHdr()
 		hdr_candidate->Machine = IMAGE_FILE_MACHINE_I386;
 		opt_hdr_size = sizeof(IMAGE_OPTIONAL_HEADER32);
 	}
-	
-	hdr_candidate->NumberOfSections = WORD(this->artefacts.secCount);
-	hdr_candidate->SizeOfOptionalHeader = WORD(opt_hdr_size);
+	if (this->artefacts.secHdrsOffset) {
+		size_t calc_offset = this->artefacts.secHdrsOffset - (nt_offset + sizeof(IMAGE_FILE_HEADER));
+		if (calc_offset != opt_hdr_size) {
+			std::cout << "[WARNING] Calculated sections header offset is different than the saved one!\n";
+		}
+		hdr_candidate->NumberOfSections = WORD(this->artefacts.secCount);
+		hdr_candidate->SizeOfOptionalHeader = WORD(calc_offset);
+	}
+
 
 	hdr_candidate->NumberOfSymbols = 0;
 	hdr_candidate->PointerToSymbolTable = 0;
@@ -191,8 +195,9 @@ bool PeReconstructor::reconstructPeHdr()
 	else {
 		is_fixed = overwrite_opt_hdr<IMAGE_OPTIONAL_HEADER32>(this->vBuf, this->vBufSize, &nt32->OptionalHeader, this->artefacts);
 	}
-	std::cout << "Overwriten the optional header: " << is_fixed << std::endl;
-
+	if (!is_fixed) {
+		return false;
+	}
 	if (!peconv::get_nt_hrds(vBuf)) {
 		return false;
 	}
