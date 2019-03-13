@@ -128,7 +128,7 @@ bool PeReconstructor::reconstructFileHdr()
 	BYTE* loadedData = this->vBuf;
 	size_t loadedSize = this->vBufSize;
 
-	ULONGLONG nt_offset = this->artefacts.ntFileHdrsOffset - this->artefacts.peBaseOffset;
+	size_t nt_offset = this->artefacts.ntFileHdrsOffset - this->artefacts.peBaseOffset;
 	BYTE* nt_ptr = (BYTE*)((ULONGLONG)this->vBuf + nt_offset);
 	if (is_valid_file_hdr(this->vBuf, this->vBufSize, nt_ptr, 0)) {
 		return true;
@@ -282,7 +282,7 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 			iat_offset,
 			table_size,
 			0 //start offset
-			);
+		);
 	}
 
 	if (!import_table) return false;
@@ -294,10 +294,11 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 		//std::cout << "[*] Validated Imports offset!\n";
 		return true;
 	}
+#ifdef _DEBUG
 	if (imp_dir->Size == table_size) {
-		//std::cout << "[*] Validated Imports size!\n";
-		return true;
+		std::cout << "[*] Validated Imports size!\n";
 	}
+#endif
 	//std::cout << "[+] Overwriting Imports data!\n";
 	imp_dir->VirtualAddress = imp_offset;
 	imp_dir->Size = table_size;
