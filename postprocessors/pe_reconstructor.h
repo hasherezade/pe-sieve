@@ -39,7 +39,7 @@ bool overwrite_opt_hdr(BYTE* vBuf, size_t vBufSize, IMAGE_OPTIONAL_HEADER_T* opt
 class PeReconstructor {
 public:
 	PeReconstructor(PeArtefacts _artefacts, peconv::t_pe_dump_mode &dump_mode)
-		: artefacts(_artefacts),
+		: origArtefacts(_artefacts),
 		vBuf(nullptr), vBufSize(0), moduleBase(0), dumpMode(dump_mode)
 	{
 	}
@@ -66,6 +66,9 @@ protected:
 	bool reconstructPeHdr();
 	bool reconstructSectionsHdr(HANDLE processHandle);
 
+	size_t shiftPeHeader();
+
+	const PeArtefacts origArtefacts;
 	PeArtefacts artefacts;
 	BYTE *vBuf;
 	size_t vBufSize;

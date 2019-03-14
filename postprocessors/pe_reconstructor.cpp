@@ -5,9 +5,69 @@
 #include "iat_finder.h"
 
 //---
+inline bool shift_artefacts(PeArtefacts& artefacts, size_t shift_size)
+{
+	artefacts.ntFileHdrsOffset += shift_size;
+	artefacts.secHdrsOffset += shift_size;
+	return true;
+}
+
+//WARNING: this function shifts also offsets saved in the artefacts
+size_t PeReconstructor::shiftPeHeader()
+{
+	if (!this->artefacts.hasNtHdrs()) return 0;
+
+	const size_t dos_pe_size = sizeof(IMAGE_DOS_HEADER) + sizeof(IMAGE_NT_SIGNATURE);
+	size_t diff = this->artefacts.ntFileHdrsOffset - this->artefacts.peBaseOffset;
+	if (diff >= dos_pe_size) {
+		return 0;
+	}
+	//TODO: shift the header
+	if (!this->artefacts.hasSectionHdrs()) return 0; //cannot proceed
+
+	size_t shift_size = dos_pe_size - diff;
+	size_t hdrs_end = this->artefacts.secHdrsOffset + (this->artefacts.secCount + 1)* sizeof(IMAGE_SECTION_HEADER);
+	if (!is_padding(vBuf + hdrs_end, shift_size, 0)) {
+		return 0; // no empty space, cannot proceed
+	}
+	size_t hdrs_size = hdrs_end - this->artefacts.peBaseOffset;
+	BYTE *new_nt_ptr = vBuf + this->artefacts.peBaseOffset + shift_size;
+	if (!peconv::validate_ptr(vBuf, vBufSize, new_nt_ptr, hdrs_size)) {
+		return 0;
+	}
+
+	size_t pe_offset = (this->artefacts.ntFileHdrsOffset - sizeof(IMAGE_NT_SIGNATURE)) - this->artefacts.peBaseOffset;
+
+	IMAGE_DOS_HEADER dos_template = { 0 };
+	dos_template.e_magic = IMAGE_DOS_SIGNATURE;
+	dos_template.e_lfanew = pe_offset + shift_size;
+
+	//check mz signature:
+	BYTE *mz_ptr = vBuf + this->artefacts.peBaseOffset;
+	if (!peconv::validate_ptr(vBuf, vBufSize, mz_ptr, sizeof(IMAGE_DOS_HEADER))) {
+		return 0;
+	}
+	//check PE signature:
+	DWORD* pe_ptr = (DWORD*)(vBuf + this->artefacts.peBaseOffset + dos_template.e_lfanew);
+	if (!peconv::validate_ptr(vBuf, vBufSize, pe_ptr, sizeof(DWORD))) {
+		return false;
+	}
+	//all checks passed, do the actual headers shift:
+	memmove(new_nt_ptr, (vBuf + this->artefacts.peBaseOffset), hdrs_size);
+
+	//write the DOS header:
+	memcpy(mz_ptr, &dos_template, sizeof(IMAGE_DOS_HEADER));
+
+	//write the PE signature:
+	*pe_ptr = IMAGE_NT_SIGNATURE;
+
+	shift_artefacts(this->artefacts, shift_size);
+	return shift_size;
+}
 
 bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::ExportsMapper* exportsMap)
 {
+	this->artefacts = origArtefacts;
 	freeBuffer();
 
 	this->moduleBase = artefacts.regionStart + artefacts.peBaseOffset;
@@ -22,12 +82,15 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::E
 	}
 	this->vBufSize = pe_vsize;
 
-	bool is_ok = false;
-
 	size_t read_size = peconv::read_remote_area(processHandle, (BYTE*)moduleBase, vBuf, pe_vsize);
 	if (read_size == 0) {
 		freeBuffer();
 		return false;
+	}
+
+	size_t shift_size = shiftPeHeader();
+	if (shiftPeHeader()) {
+		std::cout << "[!] The PE header was shifted by: " << std::hex << shift_size << std::endl;
 	}
 
 	//do not modify section headers if the PE is in raw format, or no unmapping requested
@@ -156,7 +219,6 @@ bool PeReconstructor::reconstructFileHdr()
 		hdr_candidate->NumberOfSections = WORD(this->artefacts.secCount);
 		hdr_candidate->SizeOfOptionalHeader = WORD(calc_offset);
 	}
-
 
 	hdr_candidate->NumberOfSymbols = 0;
 	hdr_candidate->PointerToSymbolTable = 0;
