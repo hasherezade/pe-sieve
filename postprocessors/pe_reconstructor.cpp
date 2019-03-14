@@ -300,7 +300,9 @@ bool PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap)
 		//std::cout << "[+] Validated IAT data!\n";
 		return true;
 	}
-	//std::cout << "[!] Overwriting IAT data!\n";
+	if (iat_offset != dir->VirtualAddress) {
+		std::cout << "[!] Overwriting IAT address!\n";
+	}
 	dir->VirtualAddress = iat_offset;
 	dir->Size = iat_size;
 	return true;
