@@ -27,7 +27,7 @@ size_t PeReconstructor::shiftPeHeader()
 
 	size_t shift_size = dos_pe_size - diff;
 	size_t hdrs_end = this->artefacts.secHdrsOffset + (this->artefacts.secCount + 1)* sizeof(IMAGE_SECTION_HEADER);
-	if (!is_padding(vBuf + hdrs_end, shift_size, 0)) {
+	if (!peconv::is_padding(vBuf + hdrs_end, shift_size, 0)) {
 		return 0; // no empty space, cannot proceed
 	}
 	size_t hdrs_size = hdrs_end - this->artefacts.peBaseOffset;
