@@ -66,7 +66,7 @@ protected:
 
 	bool reconstructFileHdr();
 	bool reconstructPeHdr();
-	bool reconstructSectionsHdr(HANDLE processHandle);
+	bool fixSectionsVirtualSize(HANDLE processHandle);
 
 	size_t shiftPeHeader();
 

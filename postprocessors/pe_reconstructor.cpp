@@ -95,7 +95,7 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::E
 
 	//do not modify section headers if the PE is in raw format, or no unmapping requested
 	if (!peconv::is_pe_raw(vBuf, pe_vsize)) {
-		if (!reconstructSectionsHdr(processHandle)) {
+		if (!fixSectionsVirtualSize(processHandle)) {
 			return false;
 		}
 	}
@@ -120,13 +120,9 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::E
 	return true;
 }
 
-bool PeReconstructor::reconstructSectionsHdr(HANDLE processHandle)
+bool PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 {
-	if (!this->vBuf) {
-		return false;
-	}
-
-	if (!this->artefacts.hasSectionHdrs()) {
+	if (!this->vBuf || !this->artefacts.hasSectionHdrs()) {
 		return false;
 	}
 
