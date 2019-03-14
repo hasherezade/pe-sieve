@@ -65,9 +65,9 @@ size_t PeReconstructor::shiftPeHeader()
 	return shift_size;
 }
 
-//WARNING: this function overwrite artefacts:
 bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::ExportsMapper* exportsMap)
 {
+	this->artefacts = origArtefacts;
 	freeBuffer();
 
 	this->moduleBase = artefacts.regionStart + artefacts.peBaseOffset;
