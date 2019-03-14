@@ -7,7 +7,6 @@
 #include "peconv.h"
 #include "../scanners/artefact_scanner.h"
 
-
 template <typename IMAGE_OPTIONAL_HEADER_T>
 bool overwrite_opt_hdr(BYTE* vBuf, size_t vBufSize, IMAGE_OPTIONAL_HEADER_T* opt_hdr_ptr, PeArtefacts &artefacts)
 {
@@ -34,7 +33,9 @@ bool overwrite_opt_hdr(BYTE* vBuf, size_t vBufSize, IMAGE_OPTIONAL_HEADER_T* opt
 	if (opt_hdr_ptr->SizeOfHeaders > PAGE_SIZE) {
 		opt_hdr_ptr->SizeOfHeaders = 0x400; //typical header size
 	}
-	opt_hdr_ptr->SizeOfImage = artefacts.calculatedImgSize;
+	if (opt_hdr_ptr->SizeOfImage < artefacts.calculatedImgSize) {
+		opt_hdr_ptr->SizeOfImage = artefacts.calculatedImgSize;
+	}
 	return true;
 }
 

@@ -61,6 +61,11 @@ public:
 		OUT_PADDED(outs, level, "\"sections_count\" : ");
 		outs << std::dec << secCount;
 		outs << ",\n";
+#ifdef _DEBUG
+		OUT_PADDED(outs, level, "\"calculated_image_size\" : ");
+		outs << std::hex << this->calculatedImgSize;
+		outs << ",\n";
+#endif
 		OUT_PADDED(outs, level, "\"is_dll\" : ");
 		outs << std::dec << isDll;
 		outs << ",\n";
