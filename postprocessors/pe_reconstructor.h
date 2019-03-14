@@ -66,6 +66,8 @@ protected:
 	bool reconstructPeHdr();
 	bool reconstructSectionsHdr(HANDLE processHandle);
 
+	size_t shiftPeHeader();
+
 	PeArtefacts artefacts;
 	BYTE *vBuf;
 	size_t vBufSize;
