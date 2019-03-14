@@ -89,7 +89,7 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::E
 	}
 
 	size_t shift_size = shiftPeHeader();
-	if (shiftPeHeader()) {
+	if (shift_size) {
 		std::cout << "[!] The PE header was shifted by: " << std::hex << shift_size << std::endl;
 	}
 
