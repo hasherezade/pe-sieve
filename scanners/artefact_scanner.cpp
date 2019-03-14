@@ -122,6 +122,11 @@ size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER
 	size_t max_sec_size = 0;
 	size_t last_sec_size = 0;
 
+	size_t first_area_size = peconv::fetch_region_size(this->processHandle, (PBYTE)pe_image_base);
+	if (first_area_size == 0) {
+		return 0;
+	}
+
 	for (IMAGE_SECTION_HEADER* curr_sec = hdr_ptr; ; curr_sec++)
 	{
 		if (!peconv::validate_ptr(memPage.getLoadedData(), memPage.getLoadedSize(), curr_sec, sizeof(IMAGE_SECTION_HEADER))) {
@@ -142,10 +147,14 @@ size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER
 		last_sec_size = next_last_sec_size;
 	}
 	size_t total_size = max_addr + last_sec_size;
+
+	if (total_size > 0) {
 #ifdef _DEBUG
-	std::cout << "Image: " << std::hex << pe_image_base << " Size:" << std::hex << total_size << " max_addr: " << max_addr<< std::endl;
+		std::cout << "Image: " << std::hex << pe_image_base << " Size:" << std::hex << total_size << " max_addr: " << max_addr << std::endl;
 #endif
-	return total_size;
+		return total_size;
+	}
+	return first_area_size;
 }
 
 IMAGE_SECTION_HEADER* get_first_section(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEADER *hdr_ptr)
