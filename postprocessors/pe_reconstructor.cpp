@@ -92,20 +92,18 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::E
 	if (shift_size) {
 		std::cout << "[!] The PE header was shifted by: " << std::hex << shift_size << std::endl;
 	}
-
-	//do not modify section headers if the PE is in raw format, or no unmapping requested
-	if (!peconv::is_pe_raw(vBuf, pe_vsize)) {
-		if (!fixSectionsVirtualSize(processHandle)) {
-			return false;
-		}
-	}
-
 	bool is_pe_hdr = false;
 	if (this->artefacts.hasNtHdrs() && reconstructFileHdr()) {
 		is_pe_hdr = reconstructPeHdr();
 	}
 	if (!is_pe_hdr) {
 		return false;
+	}
+	//do not modify section headers if the PE is in raw format, or no unmapping requested
+	if (!peconv::is_pe_raw(vBuf, pe_vsize)) {
+		if (!fixSectionsVirtualSize(processHandle)) {
+			return false;
+		}
 	}
 	if (exportsMap) {
 		std::cout << "[*] Trying to find ImportTable for module: " << std::hex << (ULONGLONG)this->moduleBase << "\n";
@@ -267,6 +265,19 @@ bool PeReconstructor::reconstructPeHdr()
 bool PeReconstructor::dumpToFile(std::string dumpFileName, _In_opt_ peconv::ExportsMapper* exportsMap)
 {
 	if (vBuf == nullptr) return false;
+
+	bool is_dumped = false;
+	if (dumpMode == peconv::PE_DUMP_AUTO) {
+		if (!peconv::is_valid_sectons_header(vBuf, vBufSize)) {
+			//in case if header is invalid, try to dump using Virtual Alignment first
+			dumpMode = peconv::PE_DUMP_REALIGN;
+			is_dumped = peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
+			if (is_dumped) {
+				return is_dumped;
+			}
+			is_dumped = peconv::PE_DUMP_AUTO; //revert and try again
+		}
+	}
 	// save the read module into a file
 	return peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
 }
