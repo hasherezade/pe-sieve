@@ -268,8 +268,14 @@ bool PeReconstructor::dumpToFile(std::string dumpFileName, _In_opt_ peconv::Expo
 
 	bool is_dumped = false;
 	if (dumpMode == peconv::PE_DUMP_AUTO) {
-		if (!peconv::is_valid_sectons_header(vBuf, vBufSize)) {
-			//in case if header is invalid, try to dump using Virtual Alignment first
+		bool is_raw_alignment_valid = peconv::is_valid_sectons_alignment(vBuf, vBufSize, true);
+		bool is_virtual_alignment_valid = peconv::is_valid_sectons_alignment(vBuf, vBufSize, false);
+#ifdef _DEBUG
+		std::cout << "Is raw alignment valid: " << is_raw_alignment_valid << std::endl;
+		std::cout << "Is virtual alignment valid: " << is_virtual_alignment_valid << std::endl;
+#endif
+		if (!is_raw_alignment_valid && is_virtual_alignment_valid) {
+			//in case if raw alignment is invalid and virtual valid, try to dump using Virtual Alignment first
 			dumpMode = peconv::PE_DUMP_REALIGN;
 			is_dumped = peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
 			if (is_dumped) {
