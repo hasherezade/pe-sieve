@@ -4,6 +4,25 @@
 #include <peconv.h>
 #include <iostream>
 
+IMAGE_IMPORT_DESCRIPTOR* find_import_table(
+	IN bool is64bit,
+	IN BYTE* vBuf,
+	IN size_t vBufSize,
+	IN peconv::ExportsMapper* exportsMap,
+	IN DWORD iat_offset,
+	OUT size_t &table_size,
+	IN OPTIONAL size_t search_offset
+);
+
+BYTE* find_iat(
+	IN bool is64bit,
+	IN BYTE* vBuf,
+	IN size_t vBufSize,
+	IN peconv::ExportsMapper* exportsMap,
+	IN OUT size_t &iat_size,
+	IN OPTIONAL size_t search_offset
+);
+
 template <typename FIELD_T>
 size_t calc_iat_size(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap, FIELD_T* iat_ptr)
 {
