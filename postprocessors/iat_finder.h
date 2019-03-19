@@ -46,8 +46,7 @@ BYTE* find_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap
 	if (search_offset > vBufSize || max_check < sizeof(FIELD_T)) {
 		return nullptr; //size check failed
 	}
-	
-	for (BYTE* ptr = vBuf; ptr < vBuf + max_check; ptr++) {
+	for (BYTE* ptr = vBuf + search_offset; ptr < vBuf + max_check; ptr++) {
 		FIELD_T *to_check = (FIELD_T*)ptr;
 		if (!peconv::validate_ptr(vBuf, vBufSize, to_check, sizeof(FIELD_T))) break;
 		FIELD_T possible_rva = (*to_check);
