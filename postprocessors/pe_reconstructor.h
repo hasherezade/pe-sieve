@@ -55,7 +55,7 @@ public:
 	bool dumpToFile(IN std::string dumpFileName, IN OPTIONAL peconv::ExportsMapper* exportsMap = nullptr);
 
 protected:
-	bool findIAT(IN peconv::ExportsMapper* exportsMap);
+	bool findIAT(IN peconv::ExportsMapper* exportsMap, size_t start_offset);
 	bool findImportTable(IN peconv::ExportsMapper* exportsMap);
 
 	void freeBuffer() {

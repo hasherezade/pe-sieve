@@ -288,21 +288,16 @@ bool PeReconstructor::dumpToFile(std::string dumpFileName, _In_opt_ peconv::Expo
 	return peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
 }
 
-bool PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap)
+bool PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap, size_t start_offset)
 {
 	IMAGE_DATA_DIRECTORY *dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
 	if (!dir) {
 		return false;
 	}
-	BYTE* iat_ptr = nullptr;
-	size_t iat_size = 0;
+	
 	bool is64bit = peconv::is64bit(vBuf);
-	if (is64bit) {
-		iat_ptr = find_iat<ULONGLONG>(vBuf, vBufSize, exportsMap, iat_size, 0);
-	}
-	else {
-		iat_ptr = find_iat<DWORD>(vBuf, vBufSize, exportsMap, iat_size, 0);
-	}
+	size_t iat_size = 0;
+	BYTE* iat_ptr = find_iat(is64bit, vBuf, vBufSize, exportsMap, iat_size, start_offset);;
 	
 	if (!iat_ptr) return false;
 
@@ -331,18 +326,25 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 	if (!iat_dir) {
 		return false;
 	}
-	//if (iat_dir->VirtualAddress == 0) {
-		if (!findIAT(exportsMap)) return false;
-	//}
-	DWORD iat_offset = iat_dir->VirtualAddress;
 
-	//std::cout << "Searching import table\n";
-	size_t table_size = 0;
-	
 	IMAGE_IMPORT_DESCRIPTOR* import_table = nullptr;
-	bool is64bit = peconv::is64bit(vBuf);
-	if (is64bit) {
-		import_table = find_import_table<ULONGLONG>(
+	size_t table_size = 0;
+
+	for (size_t search_offset = 0; search_offset < vBufSize;) {
+		//if (iat_dir->VirtualAddress == 0) {
+		
+		if (!findIAT(exportsMap, search_offset)) {
+			//can't find any more IAT
+			return false;
+		}
+		//}
+		const DWORD iat_offset = iat_dir->VirtualAddress;
+		const size_t iat_end = iat_offset + iat_dir->Size;
+		std::cout << "[*] Searching import table for IAT: " << std::hex << iat_offset << ", size: " << iat_dir->Size << std::endl;
+		
+		bool is64bit = peconv::is64bit(vBuf);
+		import_table = find_import_table(
+			is64bit,
 			vBuf,
 			vBufSize,
 			exportsMap,
@@ -350,16 +352,13 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 			table_size,
 			0 //start offset
 		);
-	}
-	else {
-		import_table = find_import_table<DWORD>(
-			vBuf,
-			vBufSize,
-			exportsMap,
-			iat_offset,
-			table_size,
-			0 //start offset
-		);
+		if (import_table) break; //import table found!
+
+		// next search should be after thie current IAT:
+		if (iat_end <= search_offset) {
+			break; //this should never happen
+		}
+		search_offset = iat_end;
 	}
 
 	if (!import_table) return false;
