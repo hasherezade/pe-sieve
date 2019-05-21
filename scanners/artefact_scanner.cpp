@@ -127,6 +127,8 @@ size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER
 		return 0;
 	}
 
+	const ULONGLONG main_base = peconv::fetch_alloc_base(this->processHandle, (PBYTE)pe_image_base);
+
 	for (IMAGE_SECTION_HEADER* curr_sec = hdr_ptr; ; curr_sec++)
 	{
 		//we don't know the number of sections, so we should validate each one
@@ -142,6 +144,11 @@ size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER
 		size_t next_last_sec_size = peconv::fetch_region_size(this->processHandle, (PBYTE)last_sec_va);
 		if (next_last_sec_size == 0) {
 			break; //the section was invalid, skip it
+		}
+		ULONGLONG region_base = peconv::fetch_alloc_base(this->processHandle, (PBYTE)last_sec_va);
+		if (region_base != main_base) {
+			std::cout << "[!] Mismatch: region_base : " << std::hex << region_base << " while main base: " << main_base << "\n";
+			break; // out of scope
 		}
 		max_addr = next_max_addr;
 		last_sec_size = next_last_sec_size;
