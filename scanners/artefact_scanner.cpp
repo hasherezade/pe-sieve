@@ -129,8 +129,8 @@ size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER
 
 	for (IMAGE_SECTION_HEADER* curr_sec = hdr_ptr; ; curr_sec++)
 	{
-		if (!peconv::validate_ptr(memPage.getLoadedData(), memPage.getLoadedSize(), curr_sec, sizeof(IMAGE_SECTION_HEADER))) {
-			// probably buffer finished
+		//we don't know the number of sections, so we should validate each one
+		if (!is_valid_section(memPage.getLoadedData(), memPage.getLoadedSize(), (BYTE*)curr_sec, 0)) {
 			break;
 		}
 		if (curr_sec->Misc.VirtualSize == 0) {
