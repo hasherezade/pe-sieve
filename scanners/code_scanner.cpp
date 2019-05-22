@@ -48,6 +48,11 @@ bool CodeScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
 
 bool CodeScanner::clearLoadConfig(PeSection &originalSec, PeSection &remoteSec)
 {
+	// check if the Guard flag is enabled:
+	WORD charact = peconv::get_dll_characteristics(moduleData.original_module);
+	if ((charact & 0x4000) == 0) {
+		return false; //no guard flag
+	}
 	BYTE *ldconf_ptr = peconv::get_load_config_ptr(moduleData.original_module, moduleData.original_size);
 	if (!ldconf_ptr) return false;
 
