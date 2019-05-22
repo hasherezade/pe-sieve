@@ -80,7 +80,7 @@ bool CodeScanner::clearLoadConfig(PeSection &originalSec, PeSection &remoteSec)
 		return false;
 	}
 	//clear the field:
-	size_t sec_offset = cflag_rva - originalSec.rva;
+	size_t sec_offset = size_t(cflag_rva - originalSec.rva);
 	memset(originalSec.loadedSection + sec_offset, 0, field_size);
 	memset(remoteSec.loadedSection + sec_offset, 0, field_size);
 	return true;
