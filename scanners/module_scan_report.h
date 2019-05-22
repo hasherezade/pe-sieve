@@ -53,13 +53,13 @@ public:
 
 	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
-		//outs << "\"pid\" : ";
-		//outs << std::hex << pid << ",\n";
 		OUT_PADDED(outs, level, "\"module\" : ");
-		//outs << "\"module\" : ";
 		outs << "\"" << std::hex << (ULONGLONG) module << "\"" << ",\n";
+		if (moduleFile.length()) {
+			OUT_PADDED(outs, level, "\"module_file\" : ");
+			outs << "\"" << escape_path_separators(moduleFile) << "\"" << ",\n";
+		}
 		OUT_PADDED(outs, level, "\"status\" : ");
-		//outs << "\"status\" : " ;
 		outs << std::dec << status;
 		if (isDotNetModule) {
 			outs << ",\n";
@@ -75,16 +75,17 @@ public:
 	size_t moduleSize;
 	DWORD pid;
 	bool isDotNetModule;
-
+	std::string moduleFile;
 	t_scan_status status;
 };
 
 class UnreachableModuleReport : public ModuleScanReport
 {
 public:
-	UnreachableModuleReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
+	UnreachableModuleReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, std::string _moduleFile)
 		: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_SUSPICIOUS)
 	{
+		moduleFile = _moduleFile;
 	}
 
 	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
@@ -101,9 +102,10 @@ public:
 class SkippedModuleReport : public ModuleScanReport
 {
 public:
-	SkippedModuleReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
+	SkippedModuleReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, std::string _moduleFile)
 		: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_NOT_SUSPICIOUS)
 	{
+		moduleFile = _moduleFile;
 	}
 
 	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
@@ -121,9 +123,10 @@ public:
 class MalformedHeaderReport : public ModuleScanReport
 {
 public:
-	MalformedHeaderReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
+	MalformedHeaderReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, std::string _moduleFile)
 		: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_SUSPICIOUS)
 	{
+		moduleFile = _moduleFile;
 	}
 
 	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
