@@ -101,7 +101,7 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::E
 	}
 	//do not modify section headers if the PE is in raw format, or no unmapping requested
 	if (!peconv::is_pe_raw(vBuf, pe_vsize)) {
-		if (!fixSectionsVirtualSize(processHandle)) {
+		if (!fixSectionsVirtualSize(processHandle) || !fixSectionsCharacteristics(processHandle)) {
 			return false;
 		}
 	}
@@ -173,6 +173,39 @@ bool PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 
 	if (max_sec_size == 0) {
 		return false;
+	}
+	return true;
+}
+
+bool PeReconstructor::fixSectionsCharacteristics(HANDLE processHandle)
+{
+	if (!this->vBuf || !this->artefacts.hasSectionHdrs()) {
+		return false;
+	}
+
+	ULONGLONG sec_offset = this->artefacts.secHdrsOffset - this->artefacts.peBaseOffset;
+	const BYTE *hdr_ptr = (sec_offset + vBuf);
+	IMAGE_SECTION_HEADER* curr_sec = (IMAGE_SECTION_HEADER*)(hdr_ptr);
+
+	const DWORD sec_all_flags = IMAGE_SCN_TYPE_NO_PAD
+		| IMAGE_SCN_CNT_CODE | IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_CNT_UNINITIALIZED_DATA
+		| IMAGE_SCN_LNK_NRELOC_OVFL | IMAGE_SCN_MEM_DISCARDABLE | IMAGE_SCN_MEM_NOT_CACHED
+		| IMAGE_SCN_MEM_NOT_PAGED | IMAGE_SCN_MEM_SHARED | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ
+		| IMAGE_SCN_MEM_WRITE
+		| IMAGE_SCN_NO_DEFER_SPEC_EXC | IMAGE_SCN_GPREL;
+
+	for (size_t i = 0; i < artefacts.secCount; i++, curr_sec++) {
+		if (!is_valid_section(vBuf, vBufSize, (BYTE*)curr_sec, 0)) {
+			break;
+		}
+		//leave only the flags that are valid
+		const DWORD charact = curr_sec->Characteristics;
+		curr_sec->Characteristics = charact & sec_all_flags;
+#ifdef DEBUG
+		if (charact != curr_sec->Characteristics) {
+			std::cout << "Section characteristics overwriten\n";
+		}
+#endif
 	}
 	return true;
 }
