@@ -8,12 +8,23 @@ class IATBlock
 {
 public:
 	IATBlock(BYTE* _iat_ptr)
-	: iat_ptr(_iat_ptr)
+	: iat_ptr(_iat_ptr), iat_size(0), isValid(false)
 	{
+	}
+
+	bool append(ULONGLONG offset, const peconv::ExportedFunc *exp)
+	{
+		if (!exp) return false;
+
+		functions[offset] = exp;
+		std::cout << std::hex << offset << " : " << exp->funcName << std::endl;
+		return true;
 	}
 
 	BYTE* iat_ptr;
 	size_t iat_size;
+	bool isValid;
+	std::map<ULONGLONG, const peconv::ExportedFunc*> functions;
 };
 
 IMAGE_IMPORT_DESCRIPTOR* find_import_table(
@@ -67,6 +78,40 @@ size_t calc_iat_size(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* expo
 }
 
 template <typename FIELD_T>
+size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap, IN OUT IATBlock &iat)
+{
+	if (!vBuf || !exportsMap || !iat.iat_ptr) return 0;
+
+	size_t max_check = vBufSize - sizeof(FIELD_T);
+	if (max_check < sizeof(FIELD_T)) {
+		return 0; //size check failed
+	}
+
+	size_t imports = 0;
+	const peconv::ExportedFunc *exp = nullptr;
+
+	FIELD_T *imp = (FIELD_T*)iat.iat_ptr;
+	for (; imp < (FIELD_T*)(vBuf + max_check); imp++) {
+		if (*imp == 0) continue;
+		exp = exportsMap->find_export_by_va(*imp);
+		if (!exp) break;
+
+		ULONGLONG offset = ((BYTE*)imp - vBuf);
+		iat.append(offset, exp);
+		imports++;
+	}
+	if (!exp && iat.iat_ptr && imports > 1) {
+		size_t diff = (BYTE*)imp - (BYTE*)iat.iat_ptr;
+		iat.iat_size = diff;
+		iat.isValid = true;
+		return iat.iat_size;
+	}
+	iat.isValid = false;
+	return 0; // invalid IAT
+}
+
+
+template <typename FIELD_T>
 IATBlock* find_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap, IN OPTIONAL size_t search_offset = 0)
 {
 	if (!vBuf || !exportsMap) return nullptr;
@@ -87,7 +132,7 @@ IATBlock* find_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* export
 
 		IATBlock *iat_block = new IATBlock(ptr);
 		//validate IAT:
-		size_t _iat_size = calc_iat_size<FIELD_T>(vBuf, vBufSize, exportsMap, to_check);
+		size_t _iat_size = fill_iat<FIELD_T>(vBuf, vBufSize, exportsMap, *iat_block);
 		if (_iat_size > 0) {
 			iat_block->iat_size = _iat_size;
 			return iat_block;
