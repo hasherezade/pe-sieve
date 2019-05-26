@@ -1,22 +1,21 @@
 #include "..\postprocessors\iat_finder.h"
 
-BYTE* find_iat(
+IATBlock* find_iat_block(
 	IN bool is64bit,
 	IN BYTE* vBuf,
 	IN size_t vBufSize,
 	IN peconv::ExportsMapper* exportsMap,
-	IN OUT size_t &iat_size,
 	IN OPTIONAL size_t search_offset
 )
 {
-	BYTE* iat_ptr = nullptr;
+	IATBlock* iat_block = nullptr;
 	if (is64bit) {
-		iat_ptr = find_iat<ULONGLONG>(vBuf, vBufSize, exportsMap, iat_size, search_offset);
+		iat_block = find_iat<ULONGLONG>(vBuf, vBufSize, exportsMap, search_offset);
 	}
 	else {
-		iat_ptr = find_iat<DWORD>(vBuf, vBufSize, exportsMap, iat_size, search_offset);
+		iat_block = find_iat<DWORD>(vBuf, vBufSize, exportsMap, search_offset);
 	}
-	return iat_ptr;
+	return iat_block;
 }
 
 IMAGE_IMPORT_DESCRIPTOR* find_import_table(

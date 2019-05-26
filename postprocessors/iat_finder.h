@@ -4,6 +4,18 @@
 #include <peconv.h>
 #include <iostream>
 
+class IATBlock
+{
+public:
+	IATBlock(BYTE* _iat_ptr)
+	: iat_ptr(_iat_ptr)
+	{
+	}
+
+	BYTE* iat_ptr;
+	size_t iat_size;
+};
+
 IMAGE_IMPORT_DESCRIPTOR* find_import_table(
 	IN bool is64bit,
 	IN BYTE* vBuf,
@@ -14,12 +26,11 @@ IMAGE_IMPORT_DESCRIPTOR* find_import_table(
 	IN OPTIONAL size_t search_offset
 );
 
-BYTE* find_iat(
+IATBlock* find_iat_block(
 	IN bool is64bit,
 	IN BYTE* vBuf,
 	IN size_t vBufSize,
 	IN peconv::ExportsMapper* exportsMap,
-	IN OUT size_t &iat_size,
 	IN OPTIONAL size_t search_offset
 );
 
@@ -56,15 +67,15 @@ size_t calc_iat_size(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* expo
 }
 
 template <typename FIELD_T>
-BYTE* find_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap, IN OUT size_t &iat_size, IN OPTIONAL size_t search_offset = 0)
+IATBlock* find_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap, IN OPTIONAL size_t search_offset = 0)
 {
-	iat_size = 0;
 	if (!vBuf || !exportsMap) return nullptr;
 
 	size_t max_check = vBufSize - sizeof(FIELD_T);
 	if (search_offset > vBufSize || max_check < sizeof(FIELD_T)) {
 		return nullptr; //size check failed
 	}
+	
 	for (BYTE* ptr = vBuf + search_offset; ptr < vBuf + max_check; ptr++) {
 		FIELD_T *to_check = (FIELD_T*)ptr;
 		if (!peconv::validate_ptr(vBuf, vBufSize, to_check, sizeof(FIELD_T))) break;
@@ -74,12 +85,14 @@ BYTE* find_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap
 		const peconv::ExportedFunc *exp = exportsMap->find_export_by_va(possible_rva);
 		if (!exp) continue;
 
+		IATBlock *iat_block = new IATBlock(ptr);
 		//validate IAT:
 		size_t _iat_size = calc_iat_size<FIELD_T>(vBuf, vBufSize, exportsMap, to_check);
 		if (_iat_size > 0) {
-			iat_size = _iat_size;
-			return (BYTE*)to_check;
+			iat_block->iat_size = _iat_size;
+			return iat_block;
 		}
+		delete iat_block; iat_block = nullptr;
 	}
 	return nullptr;
 }

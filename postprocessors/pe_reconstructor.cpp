@@ -329,12 +329,14 @@ bool PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap, size_t start
 	}
 	
 	bool is64bit = peconv::is64bit(vBuf);
-	size_t iat_size = 0;
-	BYTE* iat_ptr = find_iat(is64bit, vBuf, vBufSize, exportsMap, iat_size, start_offset);;
 	
-	if (!iat_ptr) return false;
+	IATBlock* iat_block = find_iat_block(is64bit, vBuf, vBufSize, exportsMap, start_offset);;
+	if (!iat_block) return false;
 
-	DWORD iat_offset = iat_ptr - vBuf;
+	size_t iat_size = iat_block->iat_size;
+	DWORD iat_offset = iat_block->iat_ptr - vBuf;
+	delete iat_block; iat_block = nullptr;
+
 	//std::cout << "[+] Possible IAT found at: " << std::hex << iat_offset << std::endl;
 	//std::cout << "[*] Found IAT size: " << std::hex << iat_size << "\n";
 	if (iat_offset == dir->VirtualAddress && iat_size == dir->Size) {
