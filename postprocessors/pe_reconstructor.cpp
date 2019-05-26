@@ -3,6 +3,7 @@
 #include "../utils/workingset_enum.h"
 
 #include "iat_finder.h"
+#include "import_table_finder.h"
 
 //---
 inline bool shift_artefacts(PeArtefacts& artefacts, size_t shift_size)
