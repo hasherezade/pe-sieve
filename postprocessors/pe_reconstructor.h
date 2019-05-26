@@ -4,8 +4,9 @@
 #include <Psapi.h>
 #include <map>
 
-#include "peconv.h"
+#include <peconv.h>
 #include "../scanners/artefact_scanner.h"
+#include "iat_block.h"
 
 template <typename IMAGE_OPTIONAL_HEADER_T>
 bool overwrite_opt_hdr(BYTE* vBuf, size_t vBufSize, IMAGE_OPTIONAL_HEADER_T* opt_hdr_ptr, PeArtefacts &artefacts)
@@ -48,6 +49,7 @@ public:
 	}
 
 	~PeReconstructor() {
+		deleteFoundIATs();
 		freeBuffer();
 	}
 
@@ -72,11 +74,27 @@ protected:
 
 	size_t shiftPeHeader();
 
+	bool appendFoundIAT(DWORD iat_offset, IATBlock* found_block)
+	{
+		foundIATs[iat_offset] = found_block;
+	}
+
+	void deleteFoundIATs()
+	{
+		std::map<DWORD, IATBlock*>::iterator itr;
+		for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
+			delete itr->second;
+		}
+		foundIATs.clear();
+	}
+
 	const PeArtefacts origArtefacts;
 	PeArtefacts artefacts;
 	BYTE *vBuf;
 	size_t vBufSize;
 	ULONGLONG moduleBase;
+
+	std::map<DWORD, IATBlock*> foundIATs;
 
 	peconv::t_pe_dump_mode &dumpMode;
 };

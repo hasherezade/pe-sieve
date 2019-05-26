@@ -54,6 +54,7 @@ set (postprocessors_hdrs
 	postprocessors/report_formatter.h
 	postprocessors/results_dumper.h
 	postprocessors/pe_reconstructor.h
+	postprocessors/iat_block.h
 	postprocessors/iat_finder.h
 	postprocessors/import_table_finder.h
 )
