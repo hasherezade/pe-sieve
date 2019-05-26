@@ -66,7 +66,7 @@ IATBlock* find_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* export
 		const peconv::ExportedFunc *exp = exportsMap->find_export_by_va(possible_rva);
 		if (!exp) continue;
 
-		IATBlock *iat_block = new IATBlock(ptr);
+		IATBlock *iat_block = new IATBlock(vBuf, vBufSize, ptr);
 		//validate IAT:
 		size_t _iat_size = fill_iat<FIELD_T>(vBuf, vBufSize, exportsMap, *iat_block);
 		if (_iat_size > 0) {

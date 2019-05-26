@@ -53,11 +53,15 @@ public:
 		freeBuffer();
 	}
 
-	bool reconstruct(IN HANDLE processHandle, IN OPTIONAL peconv::ExportsMapper* exportsMap = nullptr);
+	bool reconstruct(IN HANDLE processHandle);
+	bool rebuildImportTable(IN peconv::ExportsMapper* exportsMap);
+
 	bool dumpToFile(IN std::string dumpFileName, IN OPTIONAL peconv::ExportsMapper* exportsMap = nullptr);
 
+	void printFoundIATs(std::string reportPath);
+
 protected:
-	bool findIAT(IN peconv::ExportsMapper* exportsMap, size_t start_offset);
+	IATBlock* findIAT(IN peconv::ExportsMapper* exportsMap, size_t start_offset);
 	bool findImportTable(IN peconv::ExportsMapper* exportsMap);
 
 	void freeBuffer() {
@@ -74,7 +78,7 @@ protected:
 
 	size_t shiftPeHeader();
 
-	bool appendFoundIAT(DWORD iat_offset, IATBlock* found_block)
+	void appendFoundIAT(DWORD iat_offset, IATBlock* found_block)
 	{
 		foundIATs[iat_offset] = found_block;
 	}

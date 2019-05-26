@@ -156,9 +156,11 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 			if (artefactReport->has_pe) {
 				ULONGLONG found_pe_base = artefactReport->artefacts.peImageBase();
 				PeReconstructor peRec(artefactReport->artefacts, curr_dump_mode);
-				if (peRec.reconstruct(processHandle, process_report.exportsMap)) {
+				if (peRec.reconstruct(processHandle)) {
+					peRec.rebuildImportTable(process_report.exportsMap);
 					dumpFileName = makeModuleDumpPath(found_pe_base, modulePath, ".rec" + payload_ext);
 					is_module_dumped = peRec.dumpToFile(dumpFileName, process_report.exportsMap);
+					peRec.printFoundIATs(dumpFileName + ".imports.txt");
 				}
 				else {
 					std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG) mod->module << " failed." << std::endl;
