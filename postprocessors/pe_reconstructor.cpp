@@ -115,6 +115,9 @@ bool PeReconstructor::rebuildImportTable(IN peconv::ExportsMapper* exportsMap)
 	if (!exportsMap) {
 		return false;
 	}
+	if (!collectIATs(exportsMap)) {
+		return false;
+	}
 	std::cout << "[*] Trying to find ImportTable for module: " << std::hex << (ULONGLONG)this->moduleBase << "\n";
 	bool imp_found = findImportTable(exportsMap);
 	if (imp_found) {
@@ -349,11 +352,6 @@ bool PeReconstructor::dumpToFile(std::string dumpFileName, _In_opt_ peconv::Expo
 
 IATBlock* PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap, size_t start_offset)
 {
-	IMAGE_DATA_DIRECTORY *dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
-	if (!dir) {
-		return nullptr;
-	}
-	
 	bool is64bit = peconv::is64bit(vBuf);
 	
 	IATBlock* iat_block = find_iat_block(is64bit, vBuf, vBufSize, exportsMap, start_offset);;
@@ -362,12 +360,11 @@ IATBlock* PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap, size_t 
 	}
 	size_t iat_size = iat_block->iat_size;
 	DWORD iat_offset = iat_block->iat_ptr - vBuf;
-	
-	//std::cout << "[+] Possible IAT found at: " << std::hex << iat_offset << std::endl;
-	//std::cout << "[*] Found IAT size: " << std::hex << iat_size << "\n";
-	if (iat_offset == dir->VirtualAddress && iat_size == dir->Size) {
-		iat_block->isMain = true;
-		//std::cout << "[+] Validated IAT data!\n";
+	IMAGE_DATA_DIRECTORY *dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
+	if (dir) {
+		if (iat_offset == dir->VirtualAddress && iat_size == dir->Size) {
+			iat_block->isMain = true;
+		}
 	}
 	return iat_block;
 }
@@ -407,10 +404,6 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 	if (!iat_dir) {
 		return false;
 	}
-	if (!collectIATs(exportsMap)) {
-		return false;
-	}
-
 	IMAGE_IMPORT_DESCRIPTOR* import_table = nullptr;
 	size_t table_size = 0;
 
@@ -434,8 +427,9 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 			0 //start offset
 		);
 		if (import_table) {
-			//import table found, set this IAT as main
+			//import table found, set it in the IATBlock:
 			currIAT->importTable = import_table;
+			//overwrite the Data Directory:
 			iat_dir->VirtualAddress = iat_offset;
 			iat_dir->Size = currIAT->iat_size;
 			break; 
@@ -454,7 +448,7 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 		std::cout << "[*] Validated Imports size!\n";
 	}
 #endif
-	//std::cout << "[+] Overwriting Imports data!\n";
+	//overwrite the Data Directory:
 	imp_dir->VirtualAddress = imp_offset;
 	imp_dir->Size = table_size;
 	return true;
