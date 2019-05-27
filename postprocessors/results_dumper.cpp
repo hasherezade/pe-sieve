@@ -116,7 +116,7 @@ std::string get_dump_mode_name(peconv::t_pe_dump_mode dump_mode)
 	return "";
 }
 
-size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &process_report, const peconv::t_pe_dump_mode dump_mode)
+size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &process_report, const peconv::t_pe_dump_mode dump_mode, const t_pesieve_imprec_mode imprec_mode)
 {
 	if (processHandle == nullptr) {
 		return 0;
@@ -155,12 +155,14 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 			}
 			if (artefactReport->has_pe) {
 				ULONGLONG found_pe_base = artefactReport->artefacts.peImageBase();
-				PeReconstructor peRec(artefactReport->artefacts, curr_dump_mode);
+				PeReconstructor peRec(artefactReport->artefacts);
 				if (peRec.reconstruct(processHandle)) {
-					peRec.rebuildImportTable(process_report.exportsMap);
+					bool is_imp_rec = peRec.rebuildImportTable(process_report.exportsMap, imprec_mode);
 					dumpFileName = makeModuleDumpPath(found_pe_base, modulePath, ".rec" + payload_ext);
-					is_module_dumped = peRec.dumpToFile(dumpFileName, process_report.exportsMap);
-					peRec.printFoundIATs(dumpFileName + ".imports.txt");
+					is_module_dumped = peRec.dumpToFile(dumpFileName, curr_dump_mode, process_report.exportsMap);
+					if (!is_imp_rec) {
+						peRec.printFoundIATs(dumpFileName + ".imports.txt");
+					}
 				}
 				else {
 					std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG) mod->module << " failed." << std::endl;

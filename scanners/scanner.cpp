@@ -194,7 +194,7 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 	if (modules_count == 0) {
 		return 0;
 	}
-	if (args.imp_rec) {
+	if (args.imprec_mode != PE_IMPREC_NONE) {
 		pReport.exportsMap = new peconv::ExportsMapper();
 	}
 

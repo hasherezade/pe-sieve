@@ -110,7 +110,7 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 	return true;
 }
 
-bool PeReconstructor::rebuildImportTable(IN peconv::ExportsMapper* exportsMap)
+bool PeReconstructor::rebuildImportTable(IN peconv::ExportsMapper* exportsMap, IN const t_pesieve_imprec_mode &imprec_mode)
 {
 	if (!exportsMap) {
 		return false;
@@ -118,15 +118,20 @@ bool PeReconstructor::rebuildImportTable(IN peconv::ExportsMapper* exportsMap)
 	if (!collectIATs(exportsMap)) {
 		return false;
 	}
-	std::cout << "[*] Trying to find ImportTable for module: " << std::hex << (ULONGLONG)this->moduleBase << "\n";
-	bool imp_found = findImportTable(exportsMap);
-	if (imp_found) {
-		std::cout << "[+] ImportTable found.\n";
+	bool imp_recovered = false;
+	if (imprec_mode == PE_IMPREC_UNERASE || imprec_mode == PE_IMPREC_AUTO) {
+		std::cout << "[*] Trying to find ImportTable for module: " << std::hex << (ULONGLONG)this->moduleBase << "\n";
+		bool imp_recovered = findImportTable(exportsMap);
+		if (imp_recovered) {
+			std::cout << "[+] ImportTable found.\n";
+			return imp_recovered;
+		}
 	}
-	else {
-		std::cout << "[-] ImportTable NOT found!\n";
+	if (imprec_mode == PE_IMPREC_REBUILD || imprec_mode == PE_IMPREC_AUTO) {
+		std::cout << "[*] Trying to reconstruct ImportTable for module: " << std::hex << (ULONGLONG)this->moduleBase << "\n";
+		imp_recovered = false; //TODO
 	}
-	return imp_found;
+	return imp_recovered;
 }
 
 bool PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
@@ -324,7 +329,7 @@ void PeReconstructor::printFoundIATs(std::string reportPath)
 	report.close();
 }
 
-bool PeReconstructor::dumpToFile(std::string dumpFileName, _In_opt_ peconv::ExportsMapper* exportsMap)
+bool PeReconstructor::dumpToFile(std::string dumpFileName, peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL peconv::ExportsMapper* exportsMap)
 {
 	if (vBuf == nullptr) return false;
 

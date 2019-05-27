@@ -42,9 +42,9 @@ bool overwrite_opt_hdr(BYTE* vBuf, size_t vBufSize, IMAGE_OPTIONAL_HEADER_T* opt
 
 class PeReconstructor {
 public:
-	PeReconstructor(PeArtefacts _artefacts, peconv::t_pe_dump_mode &dump_mode)
+	PeReconstructor(PeArtefacts _artefacts)
 		: origArtefacts(_artefacts),
-		vBuf(nullptr), vBufSize(0), moduleBase(0), dumpMode(dump_mode)
+		vBuf(nullptr), vBufSize(0), moduleBase(0)
 	{
 	}
 
@@ -54,9 +54,9 @@ public:
 	}
 
 	bool reconstruct(IN HANDLE processHandle);
-	bool rebuildImportTable(IN peconv::ExportsMapper* exportsMap);
+	bool rebuildImportTable(IN peconv::ExportsMapper* exportsMap, IN const t_pesieve_imprec_mode &imprec_mode);
 
-	bool dumpToFile(IN std::string dumpFileName, IN OPTIONAL peconv::ExportsMapper* exportsMap = nullptr);
+	bool dumpToFile(IN std::string dumpFileName, IN peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL peconv::ExportsMapper* exportsMap = nullptr);
 
 	void printFoundIATs(std::string reportPath);
 
@@ -104,6 +104,4 @@ protected:
 	ULONGLONG moduleBase;
 
 	std::map<DWORD, IATBlock*> foundIATs;
-
-	peconv::t_pe_dump_mode &dumpMode;
 };

@@ -51,6 +51,14 @@ peconv::t_pe_dump_mode normalize_dump_mode(size_t mode_id)
 	return (peconv::t_pe_dump_mode) mode_id;
 }
 
+t_pesieve_imprec_mode normalize_imprec_mode(size_t mode_id)
+{
+	if (mode_id > PE_IMPREC_MODES_COUNT) {
+		return PE_IMPREC_NONE;
+	}
+	return (t_pesieve_imprec_mode) mode_id;
+}
+
 void print_help()
 {
 	const int hdr_color = HEADER_COLOR;
@@ -76,7 +84,13 @@ void print_help()
 
 	print_in_color(separator_color, "\n---dump options---\n");
 	print_in_color(param_color, PARAM_IMP_REC);
-	std::cout << "\t: Enable recovering imports.\n";
+	std::cout << " <*imprec_mode>\n\t: Set in which mode the ImportTable should be recovered.\n";;
+	std::cout << "*imprec_mode:\n";
+	for (size_t i = 0; i < PE_IMPREC_MODES_COUNT; i++) {
+		t_pesieve_imprec_mode mode = (t_pesieve_imprec_mode)(i);
+		std::cout << "\t" << mode << " - " << translate_imprec_mode(mode) << "\n";
+	}
+
 	print_in_color(param_color, PARAM_DUMP_MODE);
 	std::cout << " <*dump_mode>\n\t: Set in which mode the detected PE files should be dumped.\n";
 	std::cout << "*dump_mode:\n";
@@ -187,7 +201,11 @@ int main(int argc, char *argv[])
 			info_req = true;
 		}
 		else if (!strcmp(argv[i], PARAM_IMP_REC)) {
-			args.imp_rec = true;
+			args.imprec_mode = PE_IMPREC_AUTO;
+			if ((i + 1) < argc) {
+				args.imprec_mode = normalize_imprec_mode(atoi(argv[i + 1]));
+				++i;
+			}
 		}
 		else if (!strcmp(argv[i], PARAM_OUT_FILTER) && (i + 1) < argc) {
 			args.out_filter = static_cast<t_output_filter>(atoi(argv[i + 1]));

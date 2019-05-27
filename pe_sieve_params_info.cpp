@@ -32,6 +32,21 @@ std::string translate_out_filter(const t_output_filter o_filter)
 	return "undefined";
 }
 
+std::string translate_imprec_mode(const t_pesieve_imprec_mode imprec_mode)
+{
+	switch (imprec_mode) {
+	case PE_IMPREC_NONE:
+		return "none: do not recover imports (default)";
+	case PE_IMPREC_AUTO:
+		return "try to autodetect the most suitable mode";
+	case PE_IMPREC_UNERASE:
+		return "recover erased parts of the partialy damaged ImportTable";
+	case PE_IMPREC_REBUILD:
+		return "build the ImportTable from the scratch, basing on the found IAT(s)";
+	}
+	return "undefined";
+}
+
 std::string translate_modules_filter(DWORD m_filter)
 {
 	switch (m_filter) {
