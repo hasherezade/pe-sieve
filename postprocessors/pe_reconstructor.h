@@ -63,6 +63,7 @@ public:
 protected:
 	IATBlock* findIAT(IN peconv::ExportsMapper* exportsMap, size_t start_offset);
 	bool findImportTable(IN peconv::ExportsMapper* exportsMap);
+	size_t collectIATs(IN peconv::ExportsMapper* exportsMap);
 
 	void freeBuffer() {
 		peconv::free_aligned(vBuf);
@@ -78,9 +79,13 @@ protected:
 
 	size_t shiftPeHeader();
 
-	void appendFoundIAT(DWORD iat_offset, IATBlock* found_block)
+	bool appendFoundIAT(DWORD iat_offset, IATBlock* found_block)
 	{
+		if (foundIATs.find(iat_offset) != foundIATs.end()) {
+			return false; //already exist
+		}
 		foundIATs[iat_offset] = found_block;
+		return true;
 	}
 
 	void deleteFoundIATs()

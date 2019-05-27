@@ -29,8 +29,9 @@ public:
 		std::stringstream stream;
 		stream << "---\nIAT at: " << std::hex << getOffset(iat_ptr) << " size: " << iat_size << "\n";
 		if (this->importTable) {
-			stream << "---\nImportTable: " << std::hex << getOffset(importTable) << "\n";
+			stream << "ImportTable: " << std::hex << getOffset(importTable) << "\n";
 		}
+		stream << "---\n";
 		std::map<ULONGLONG, const peconv::ExportedFunc*>::const_iterator itr;
 		for (itr = functions.begin(); itr != functions.end(); itr++) {
 			ULONGLONG offset = itr->first;
