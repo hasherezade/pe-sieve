@@ -127,6 +127,8 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 	char szModName[MAX_PATH] = { 0 };
 	size_t dumped = 0;
 
+	bool save_imp_report = true;
+
 	std::vector<ModuleScanReport*>::iterator itr;
 	for (itr = process_report.module_reports.begin();
 		itr != process_report.module_reports.end();
@@ -160,7 +162,7 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 					bool is_imp_rec = peRec.rebuildImportTable(process_report.exportsMap, imprec_mode);
 					dumpFileName = makeModuleDumpPath(found_pe_base, modulePath, ".rec" + payload_ext);
 					is_module_dumped = peRec.dumpToFile(dumpFileName, curr_dump_mode, process_report.exportsMap);
-					if (!is_imp_rec) {
+					if (!is_imp_rec || save_imp_report) {
 						peRec.printFoundIATs(dumpFileName + ".imports.txt");
 					}
 				}
