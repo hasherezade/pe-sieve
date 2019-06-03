@@ -36,7 +36,7 @@ size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMa
 		iat.append(offset, exp);
 		imports++;
 	}
-	if (!exp && iat.iat_ptr && imports > 1) {
+	if (!exp && iat.iat_ptr && imports > 0) {
 		size_t diff = (BYTE*)imp - (BYTE*)iat.iat_ptr;
 		iat.iat_size = diff;
 		iat.isValid = true;
