@@ -23,8 +23,7 @@ size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMa
 		return 0; //size check failed
 	}
 
-	iat.thunksCount = 0;
-	iat.isTerminated = false;
+	iat.isTerminated = true;
 	const peconv::ExportedFunc *exp = nullptr;
 
 	bool is_terminated = false;
@@ -40,10 +39,9 @@ size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMa
 		is_terminated = false;
 		ULONGLONG offset = ((BYTE*)imp - vBuf);
 		iat.append(offset, exp);
-		iat.thunksCount++;
 	}
 	iat.isTerminated = is_terminated;
-	if (!exp && iat.iat_ptr && iat.thunksCount > 0) {
+	if (!exp && iat.iat_ptr && iat.countThunks() > 0) {
 		size_t diff = (BYTE*)imp - (BYTE*)iat.iat_ptr;
 		iat.iat_size = diff;
 		return iat.iat_size;
