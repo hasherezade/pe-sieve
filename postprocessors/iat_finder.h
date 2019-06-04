@@ -23,29 +23,33 @@ size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMa
 		return 0; //size check failed
 	}
 
-	size_t imports = 0;
+	iat.thunksCount = 0;
+	iat.isTerminated = false;
 	const peconv::ExportedFunc *exp = nullptr;
 
+	bool is_terminated = false;
 	FIELD_T *imp = (FIELD_T*)iat.iat_ptr;
 	for (; imp < (FIELD_T*)(vBuf + max_check); imp++) {
-		if (*imp == 0) continue;
+		if (*imp == 0) {
+			is_terminated = true;
+			continue;
+		}
 		exp = exportsMap->find_export_by_va(*imp);
 		if (!exp) break;
 
+		is_terminated = false;
 		ULONGLONG offset = ((BYTE*)imp - vBuf);
 		iat.append(offset, exp);
-		imports++;
+		iat.thunksCount++;
 	}
-	if (!exp && iat.iat_ptr && imports > 0) {
+	iat.isTerminated = is_terminated;
+	if (!exp && iat.iat_ptr && iat.thunksCount > 0) {
 		size_t diff = (BYTE*)imp - (BYTE*)iat.iat_ptr;
 		iat.iat_size = diff;
-		iat.isValid = true;
 		return iat.iat_size;
 	}
-	iat.isValid = false;
 	return 0; // invalid IAT
 }
-
 
 template <typename FIELD_T>
 IATBlock* find_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap, IN OPTIONAL size_t search_offset = 0)

@@ -10,7 +10,8 @@ class IATBlock
 public:
 	IATBlock(BYTE* _vBuf, size_t _vBufSize, BYTE* _iat_ptr)
 		: vBuf(_vBuf), vBufSize(_vBufSize),
-		iat_ptr(_iat_ptr), iat_size(0), isValid(false), isMain(false),
+		iat_ptr(_iat_ptr), iat_size(0),
+		thunksCount(0), isMain(false), isTerminated(false),
 		importTable(nullptr)
 	{
 	}
@@ -27,7 +28,7 @@ public:
 	std::string toString()
 	{
 		std::stringstream stream;
-		stream << "---\nIAT at: " << std::hex << getOffset(iat_ptr) << " size: " << iat_size << "\n";
+		stream << "---\nIAT at: " << std::hex << getOffset(iat_ptr) << ", size: " << iat_size << ", thunks: " << thunksCount << ", is_terminated: " << isTerminated << "\n";
 		if (this->importTable) {
 			stream << "ImportTable: " << std::hex << getOffset(importTable) << "\n";
 		}
@@ -42,8 +43,9 @@ public:
 		return stream.str();
 	}
 
-	bool isValid;
-	bool isMain;
+	bool isTerminated; // is the IAT finished by 0
+	bool isMain; // is the IAT set in the Data Directory
+	size_t thunksCount; //how many functions the IAT has
 
 	BYTE* iat_ptr;
 	size_t iat_size;
