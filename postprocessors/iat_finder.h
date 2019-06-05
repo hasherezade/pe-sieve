@@ -33,7 +33,7 @@ size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMa
 		if (*imp == 0) {
 			is_terminated = true;
 			if (series) {
-				iat.thunkSeries.insert(series); //add filled series
+				iat.appendSeries(series); //add filled series
 				series = nullptr;
 			}
 			continue;
@@ -51,7 +51,7 @@ size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMa
 		}
 	}
 	if (series) {
-		iat.thunkSeries.insert(series); //add filled series
+		iat.appendSeries(series); //add filled series
 		series = nullptr;
 	}
 	iat.isTerminated = is_terminated;

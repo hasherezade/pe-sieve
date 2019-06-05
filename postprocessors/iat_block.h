@@ -57,6 +57,11 @@ public:
 	{
 		deleteThunkSeries();
 	}
+	
+	void appendSeries(IATThunksSeries* series)
+	{
+		thunkSeries.insert(series);
+	}
 
 	bool append(ULONGLONG offset, ULONGLONG functionVA, const peconv::ExportedFunc *exp)
 	{
@@ -110,7 +115,6 @@ public:
 	size_t iatSize;
 
 	DWORD importTableOffset;
-	std::set<IATThunksSeries*> thunkSeries;
 
 protected:
 	bool is64bit;
@@ -118,4 +122,8 @@ protected:
 
 	std::map<ULONGLONG, const peconv::ExportedFunc*> functions;
 	std::map<ULONGLONG, ULONGLONG> addrToFunctionVA;
+
+	std::set<IATThunksSeries*> thunkSeries;
+
+	friend class PeReconstructor;
 };

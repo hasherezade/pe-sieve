@@ -11,7 +11,7 @@
 class ImportTableBuffer
 {
 public:
-	ImportTableBuffer(ULONGLONG _descriptorsRVA)
+	ImportTableBuffer(DWORD _descriptorsRVA)
 		: descriptors(nullptr), descriptosCount(0), descriptorsRVA(_descriptorsRVA)
 	{
 	}
@@ -37,7 +37,7 @@ public:
 		return size_bytes;
 	}
 
-	ULONGLONG descriptorsRVA;
+	DWORD descriptorsRVA;
 	IMAGE_IMPORT_DESCRIPTOR *descriptors;
 	size_t descriptosCount;
 };
