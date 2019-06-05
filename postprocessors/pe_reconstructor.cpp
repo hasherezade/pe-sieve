@@ -536,8 +536,8 @@ bool PeReconstructor::appendImportTable(ImportTableBuffer &importTable)
 	if (!last_sec) return false;
 
 	peconv::update_image_size(vBuf, vBufSize);
-	size_t vdiff = (importTable.descriptorsRVA + added_size) - last_sec->VirtualAddress;
-	size_t rdiff = (importTable.descriptorsRVA + import_table_size) - last_sec->VirtualAddress;
+	size_t vdiff = (importTable.getRVA() + added_size) - last_sec->VirtualAddress;
+	size_t rdiff = (importTable.getRVA() + import_table_size) - last_sec->VirtualAddress;
 	last_sec->Misc.VirtualSize = vdiff;
 	last_sec->SizeOfRawData = rdiff;
 
@@ -545,9 +545,9 @@ bool PeReconstructor::appendImportTable(ImportTableBuffer &importTable)
 	if (!imp_dir) {
 		return false;
 	}
-	memcpy(vBuf + importTable.descriptorsRVA, (BYTE*)importTable.descriptors, import_table_size);
+	memcpy(vBuf + importTable.getRVA(), importTable.getFullBuffer(), import_table_size);
 	//overwrite the Data Directory:
-	imp_dir->VirtualAddress = importTable.descriptorsRVA;
+	imp_dir->VirtualAddress = importTable.getRVA();
 	imp_dir->Size = import_table_size;
 	return true;
 }

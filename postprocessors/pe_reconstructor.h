@@ -37,9 +37,25 @@ public:
 		return size_bytes;
 	}
 
+	BYTE* getFullBuffer()
+	{
+		return reinterpret_cast<BYTE*>(descriptors);
+	}
+
+	DWORD getRVA()
+	{
+		return descriptorsRVA;
+	}
+
+protected:
+	IMAGE_IMPORT_DESCRIPTOR * descriptors;
+
+private:
+	
 	DWORD descriptorsRVA;
-	IMAGE_IMPORT_DESCRIPTOR *descriptors;
 	size_t descriptosCount;
+
+friend class PeReconstructor;
 };
 
 template <typename IMAGE_OPTIONAL_HEADER_T>
