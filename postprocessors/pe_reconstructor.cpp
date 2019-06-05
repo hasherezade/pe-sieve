@@ -131,6 +131,18 @@ bool PeReconstructor::rebuildImportTable(IN peconv::ExportsMapper* exportsMap, I
 		std::cout << "[*] Trying to reconstruct ImportTable for module: " << std::hex << (ULONGLONG)this->moduleBase << "\n";
 		if (findIATsCoverage(exportsMap)) {
 			std::cout << "[+] Complete coverage found.\n";
+
+			ImportTableBuffer *impBuf = constructImportTable();
+			if (impBuf) {
+				appendImportTable(*impBuf);
+			}
+			FILE *fp = fopen("descriptors.bin", "wb");
+			if (fp) {
+				fwrite(impBuf->descriptors, sizeof(IMAGE_IMPORT_DESCRIPTOR), impBuf->descriptosCount, fp);
+				fclose(fp);
+				std::cout << "[+] Dumped to file.\n";
+			}
+			delete impBuf;
 		}
 		imp_recovered = false; //TODO
 	}
@@ -478,4 +490,71 @@ bool PeReconstructor::findIATsCoverage(IN peconv::ExportsMapper* exportsMap)
 		}
 	}
 	return (covered == foundIATs.size());
+}
+
+ImportTableBuffer* PeReconstructor::constructImportTable()
+{
+	size_t ready_blocks = 0;
+	std::map<DWORD, IATBlock*>::iterator itr;
+	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
+		IATBlock* iat = itr->second;
+		if (iat->isCovered() && iat->isTerminated) {
+			ready_blocks += iat->thunkSeries.size();
+		}
+	}
+	if (ready_blocks == 0) {
+		return nullptr;
+	}
+	ImportTableBuffer *importTableBuffer = new ImportTableBuffer(this->vBufSize);
+	importTableBuffer->allocDesciptors(ready_blocks + 1);
+	size_t i = 0;
+	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
+		IATBlock* iat = itr->second;
+		if (!iat->isCovered() || !iat->isTerminated) {
+			continue;
+		}
+		std::set<IATThunksSeries*>::iterator sItr;
+		for (sItr = iat->thunkSeries.begin(); sItr != iat->thunkSeries.end(); sItr++) {
+			IATThunksSeries *series = *sItr;
+			importTableBuffer->descriptors[i].FirstThunk = series->startOffset;
+			importTableBuffer->descriptors[i].OriginalFirstThunk = series->startOffset;
+			i++;
+		}
+	}
+	return importTableBuffer;
+}
+
+bool PeReconstructor::appendImportTable(ImportTableBuffer &importTable)
+{
+	const size_t import_table_size = importTable.getFullSize();
+	const size_t added_size = import_table_size + 0x3000;
+	const size_t new_size = this->vBufSize + added_size;
+	BYTE *new_buf = peconv::alloc_aligned(new_size, PAGE_READWRITE);
+	if (!new_buf) {
+		return false;
+	}
+	memcpy(new_buf, this->vBuf, this->vBufSize);
+	this->freeBuffer();
+
+	this->vBuf = new_buf;
+	this->vBufSize = new_size;
+
+	PIMAGE_SECTION_HEADER last_sec = peconv::get_last_section(vBuf, vBufSize, false);
+	if (!last_sec) return false;
+
+	peconv::update_image_size(vBuf, vBufSize);
+	size_t vdiff = (importTable.descriptorsRVA + added_size) - last_sec->VirtualAddress;
+	size_t rdiff = (importTable.descriptorsRVA + import_table_size) - last_sec->VirtualAddress;
+	last_sec->Misc.VirtualSize = vdiff;
+	last_sec->SizeOfRawData = rdiff;
+
+	IMAGE_DATA_DIRECTORY* imp_dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IMPORT, true);
+	if (!imp_dir) {
+		return false;
+	}
+	memcpy(vBuf + importTable.descriptorsRVA, (BYTE*)importTable.descriptors, import_table_size);
+	//overwrite the Data Directory:
+	imp_dir->VirtualAddress = importTable.descriptorsRVA;
+	imp_dir->Size = import_table_size;
+	return true;
 }

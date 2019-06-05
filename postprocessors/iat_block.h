@@ -49,7 +49,7 @@ public:
 	IATBlock(bool _is64bit, BYTE* _vBuf, size_t _vBufSize, BYTE* _iat_ptr)
 		: vBuf(_vBuf), vBufSize(_vBufSize), is64bit(_is64bit),
 		iat_ptr(_iat_ptr), iat_size(0),
-		isMain(false), isTerminated(false),
+		isMain(false), isTerminated(false), isCoverageComplete(false),
 		importTable(nullptr)
 	{
 	}
@@ -88,6 +88,7 @@ public:
 	}
 
 	bool makeCoverage(IN peconv::ExportsMapper* exportsMap);
+	bool isCovered();
 
 	bool isTerminated; // is the IAT finished by 0
 	bool isMain; // is the IAT set in the Data Directory
@@ -111,6 +112,7 @@ protected:
 	BYTE* vBuf;
 	size_t vBufSize;
 	bool is64bit;
+	bool isCoverageComplete;
 
 	std::map<ULONGLONG, const peconv::ExportedFunc*> functions;
 	std::map<ULONGLONG, ULONGLONG> addrToFunctionVA;

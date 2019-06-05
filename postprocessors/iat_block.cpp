@@ -12,5 +12,11 @@ bool IATBlock::makeCoverage(IN peconv::ExportsMapper* exportsMap)
 			covered++;
 		}
 	}
-	return (covered == this->thunkSeries.size());
+	isCoverageComplete = (covered == this->thunkSeries.size());
+	return isCoverageComplete;
+}
+
+bool IATBlock::isCovered()
+{
+	return isCoverageComplete;
 }

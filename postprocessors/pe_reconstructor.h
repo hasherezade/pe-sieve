@@ -8,6 +8,44 @@
 #include "../scanners/artefact_scanner.h"
 #include "iat_block.h"
 
+class ImportTableBuffer
+{
+public:
+	ImportTableBuffer(ULONGLONG _descriptorsRVA)
+		: descriptors(nullptr), descriptosCount(0), descriptorsRVA(_descriptorsRVA),
+		namesBuf(nullptr), namesBufSize(0)
+	{
+	}
+	~ImportTableBuffer()
+	{
+		delete[]descriptors;
+	}
+
+	bool allocDesciptors(size_t descriptors_count)
+	{
+		descriptors = new IMAGE_IMPORT_DESCRIPTOR[descriptors_count];
+		if (!descriptors) return false;
+
+		size_t size_bytes = sizeof(IMAGE_IMPORT_DESCRIPTOR) * descriptors_count;
+		memset(descriptors, 0, size_bytes);
+		descriptosCount = descriptors_count;
+		return true;
+	}
+
+	size_t getFullSize()
+	{
+		size_t size_bytes = sizeof(IMAGE_IMPORT_DESCRIPTOR) * descriptosCount;
+		return size_bytes;
+	}
+
+	ULONGLONG descriptorsRVA;
+	IMAGE_IMPORT_DESCRIPTOR *descriptors;
+	size_t descriptosCount;
+
+	BYTE *namesBuf;
+	size_t namesBufSize;
+};
+
 template <typename IMAGE_OPTIONAL_HEADER_T>
 bool overwrite_opt_hdr(BYTE* vBuf, size_t vBufSize, IMAGE_OPTIONAL_HEADER_T* opt_hdr_ptr, PeArtefacts &artefacts)
 {
@@ -66,6 +104,8 @@ protected:
 	size_t collectIATs(IN peconv::ExportsMapper* exportsMap);
 
 	bool findIATsCoverage(IN peconv::ExportsMapper* exportsMap);
+	ImportTableBuffer* constructImportTable();
+	bool appendImportTable(ImportTableBuffer &importTable);
 
 	void freeBuffer() {
 		peconv::free_aligned(vBuf);
