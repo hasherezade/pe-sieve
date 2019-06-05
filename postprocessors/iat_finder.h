@@ -16,7 +16,7 @@ IATBlock* find_iat_block(
 template <typename FIELD_T>
 size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap, IN OUT IATBlock &iat)
 {
-	if (!vBuf || !exportsMap || !iat.iat_ptr) return 0;
+	if (!vBuf || !exportsMap || !iat.iatOffset) return 0;
 
 	size_t max_check = vBufSize - sizeof(FIELD_T);
 	if (max_check < sizeof(FIELD_T)) {
@@ -28,7 +28,7 @@ size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMa
 
 	IATThunksSeries *series = nullptr;
 	bool is_terminated = true;
-	FIELD_T *imp = (FIELD_T*)iat.iat_ptr;
+	FIELD_T *imp = (FIELD_T*)(iat.iatOffset + (ULONG_PTR)vBuf);
 	for (; imp < (FIELD_T*)(vBuf + max_check); imp++) {
 		if (*imp == 0) {
 			is_terminated = true;
@@ -55,8 +55,9 @@ size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMa
 		series = nullptr;
 	}
 	iat.isTerminated = is_terminated;
-	if (!exp && iat.iat_ptr && iat.countThunks() > 0) {
-		size_t diff = (BYTE*)imp - (BYTE*)iat.iat_ptr;
+	if (!exp && iat.iatOffset && iat.countThunks() > 0) {
+		BYTE *iat_ptr = (BYTE*)(iat.iatOffset + (ULONG_PTR)vBuf);
+		size_t diff = (BYTE*)imp - iat_ptr;
 		iat.iat_size = diff;
 		return iat.iat_size;
 	}
@@ -82,7 +83,8 @@ IATBlock* find_iat(bool is64bit, BYTE* vBuf, size_t vBufSize, IN peconv::Exports
 		const peconv::ExportedFunc *exp = exportsMap->find_export_by_va(possible_rva);
 		if (!exp) continue;
 
-		IATBlock *iat_block = new IATBlock(is64bit, vBuf, vBufSize, ptr);
+		DWORD iat_offset = DWORD(ptr - vBuf);
+		IATBlock *iat_block = new IATBlock(is64bit, iat_offset);
 		//validate IAT:
 		size_t _iat_size = fill_iat<FIELD_T>(vBuf, vBufSize, exportsMap, *iat_block);
 		if (_iat_size > 0) {

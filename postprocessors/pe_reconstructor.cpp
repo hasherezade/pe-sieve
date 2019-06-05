@@ -136,12 +136,6 @@ bool PeReconstructor::rebuildImportTable(IN peconv::ExportsMapper* exportsMap, I
 			if (impBuf) {
 				appendImportTable(*impBuf);
 			}
-			FILE *fp = fopen("descriptors.bin", "wb");
-			if (fp) {
-				fwrite(impBuf->descriptors, sizeof(IMAGE_IMPORT_DESCRIPTOR), impBuf->descriptosCount, fp);
-				fclose(fp);
-				std::cout << "[+] Dumped to file.\n";
-			}
 			delete impBuf;
 		}
 		imp_recovered = false; //TODO
@@ -379,10 +373,9 @@ IATBlock* PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap, size_t 
 		return nullptr;
 	}
 	size_t iat_size = iat_block->iat_size;
-	DWORD iat_offset = iat_block->iat_ptr - vBuf;
 	IMAGE_DATA_DIRECTORY *dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
 	if (dir) {
-		if (iat_offset == dir->VirtualAddress && iat_size == dir->Size) {
+		if (iat_block->iatOffset == dir->VirtualAddress && iat_size == dir->Size) {
 			iat_block->isMain = true;
 		}
 	}
@@ -400,7 +393,7 @@ size_t PeReconstructor::collectIATs(IN peconv::ExportsMapper* exportsMap)
 			break;
 		}
 		found++;
-		const DWORD iat_offset = currIAT->iat_ptr - vBuf;
+		const DWORD iat_offset = currIAT->iatOffset;
 		const size_t iat_end = iat_offset + currIAT->iat_size;
 		if (!appendFoundIAT(iat_offset, currIAT)) {
 			delete currIAT; //this IAT already exist in the map
@@ -431,7 +424,7 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
 		IATBlock *currIAT = itr->second;
 
-		const DWORD iat_offset = currIAT->iat_ptr - vBuf;
+		const DWORD iat_offset = currIAT->iatOffset;
 		const size_t iat_end = iat_offset + currIAT->iat_size;
 
 		std::cout << "[*] Searching import table for IAT: " << std::hex << iat_offset << ", size: " << iat_dir->Size << std::endl;
@@ -448,7 +441,7 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 		);
 		if (import_table) {
 			//import table found, set it in the IATBlock:
-			currIAT->importTable = import_table;
+			currIAT->importTableOffset = DWORD((ULONG_PTR)import_table - (ULONG_PTR)vBuf);
 			//overwrite the Data Directory:
 			iat_dir->VirtualAddress = iat_offset;
 			iat_dir->Size = currIAT->iat_size;

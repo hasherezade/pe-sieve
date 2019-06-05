@@ -24,15 +24,15 @@ public:
 		if (cov) {
 			delete cov; cov = nullptr;
 		}
-		std::cout << "Start: " << std::hex << startOffset << "\n";
+		//std::cout << "Start: " << std::hex << startOffset << "\n";
 		cov = new peconv::ImportedDllCoverage(funcAddresses, *exportsMap);
 		if (!cov->findCoveringDll()) {
-			std::cout << "DLL NOT found\n";
+			//std::cout << "DLL NOT found\n";
 			return false;
 		}
 		
 		size_t covered = cov->mapAddressesToFunctions(cov->dllName);
-		std::cout << "DLL found: " << cov->dllName << " covered num:" << covered << "\n";
+		//std::cout << "DLL found: " << cov->dllName << " covered num:" << covered << "\n";
 		return covered == this->funcAddresses.size();
 	}
 
@@ -46,11 +46,11 @@ public:
 class IATBlock
 {
 public:
-	IATBlock(bool _is64bit, BYTE* _vBuf, size_t _vBufSize, BYTE* _iat_ptr)
-		: vBuf(_vBuf), vBufSize(_vBufSize), is64bit(_is64bit),
-		iat_ptr(_iat_ptr), iat_size(0),
+	IATBlock(bool _is64bit, DWORD _iat_offset)
+		: is64bit(_is64bit),
+		iatOffset(_iat_offset), iat_size(0),
 		isMain(false), isTerminated(false), isCoverageComplete(false),
-		importTable(nullptr)
+		importTableOffset(0)
 	{
 	}
 
@@ -72,9 +72,9 @@ public:
 	std::string toString()
 	{
 		std::stringstream stream;
-		stream << "---\nIAT at: " << std::hex << getOffset(iat_ptr) << ", size: " << iat_size << ", thunks: " << countThunks() << ", is_terminated: " << isTerminated << "\n";
-		if (this->importTable) {
-			stream << "ImportTable: " << std::hex << getOffset(importTable) << "\n";
+		stream << "---\nIAT at: " << std::hex << iatOffset << ", size: " << iat_size << ", thunks: " << countThunks() << ", is_terminated: " << isTerminated << "\n";
+		if (this->importTableOffset) {
+			stream << "ImportTable: " << std::hex << importTableOffset << "\n";
 		}
 		stream << "---\n";
 		std::map<ULONGLONG, const peconv::ExportedFunc*>::const_iterator itr;
@@ -93,24 +93,13 @@ public:
 	bool isTerminated; // is the IAT finished by 0
 	bool isMain; // is the IAT set in the Data Directory
 
-	BYTE* iat_ptr;
+	DWORD iatOffset;
 	size_t iat_size;
-	IMAGE_IMPORT_DESCRIPTOR* importTable;
 
+	DWORD importTableOffset;
 	std::set<IATThunksSeries*> thunkSeries;
 
 protected:
-
-	DWORD getOffset(void* ptr)
-	{
-		if (!peconv::validate_ptr(vBuf, vBufSize, ptr, sizeof(DWORD))) {
-			return 0;
-		}
-		return DWORD((ULONG_PTR)ptr - (ULONG_PTR)vBuf);
-	}
-
-	BYTE* vBuf;
-	size_t vBufSize;
 	bool is64bit;
 	bool isCoverageComplete;
 

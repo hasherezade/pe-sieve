@@ -12,8 +12,7 @@ class ImportTableBuffer
 {
 public:
 	ImportTableBuffer(ULONGLONG _descriptorsRVA)
-		: descriptors(nullptr), descriptosCount(0), descriptorsRVA(_descriptorsRVA),
-		namesBuf(nullptr), namesBufSize(0)
+		: descriptors(nullptr), descriptosCount(0), descriptorsRVA(_descriptorsRVA)
 	{
 	}
 	~ImportTableBuffer()
@@ -41,9 +40,6 @@ public:
 	ULONGLONG descriptorsRVA;
 	IMAGE_IMPORT_DESCRIPTOR *descriptors;
 	size_t descriptosCount;
-
-	BYTE *namesBuf;
-	size_t namesBufSize;
 };
 
 template <typename IMAGE_OPTIONAL_HEADER_T>
