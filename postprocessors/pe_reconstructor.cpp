@@ -372,7 +372,7 @@ IATBlock* PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap, size_t 
 	if (!iat_block) {
 		return nullptr;
 	}
-	size_t iat_size = iat_block->iat_size;
+	size_t iat_size = iat_block->iatSize;
 	IMAGE_DATA_DIRECTORY *dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
 	if (dir) {
 		if (iat_block->iatOffset == dir->VirtualAddress && iat_size == dir->Size) {
@@ -394,7 +394,7 @@ size_t PeReconstructor::collectIATs(IN peconv::ExportsMapper* exportsMap)
 		}
 		found++;
 		const DWORD iat_offset = currIAT->iatOffset;
-		const size_t iat_end = iat_offset + currIAT->iat_size;
+		const size_t iat_end = iat_offset + currIAT->iatSize;
 		if (!appendFoundIAT(iat_offset, currIAT)) {
 			delete currIAT; //this IAT already exist in the map
 		}
@@ -425,7 +425,7 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 		IATBlock *currIAT = itr->second;
 
 		const DWORD iat_offset = currIAT->iatOffset;
-		const size_t iat_end = iat_offset + currIAT->iat_size;
+		const size_t iat_end = iat_offset + currIAT->iatSize;
 
 		std::cout << "[*] Searching import table for IAT: " << std::hex << iat_offset << ", size: " << iat_dir->Size << std::endl;
 		
@@ -444,7 +444,7 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 			currIAT->importTableOffset = DWORD((ULONG_PTR)import_table - (ULONG_PTR)vBuf);
 			//overwrite the Data Directory:
 			iat_dir->VirtualAddress = iat_offset;
-			iat_dir->Size = currIAT->iat_size;
+			iat_dir->Size = currIAT->iatSize;
 			break; 
 		}
 	}

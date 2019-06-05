@@ -48,10 +48,14 @@ class IATBlock
 public:
 	IATBlock(bool _is64bit, DWORD _iat_offset)
 		: is64bit(_is64bit),
-		iatOffset(_iat_offset), iat_size(0),
+		iatOffset(_iat_offset), iatSize(0),
 		isMain(false), isTerminated(false), isCoverageComplete(false),
 		importTableOffset(0)
 	{
+	}
+	~IATBlock()
+	{
+		deleteThunkSeries();
 	}
 
 	bool append(ULONGLONG offset, ULONGLONG functionVA, const peconv::ExportedFunc *exp)
@@ -72,7 +76,7 @@ public:
 	std::string toString()
 	{
 		std::stringstream stream;
-		stream << "---\nIAT at: " << std::hex << iatOffset << ", size: " << iat_size << ", thunks: " << countThunks() << ", is_terminated: " << isTerminated << "\n";
+		stream << "---\nIAT at: " << std::hex << iatOffset << ", size: " << iatSize << ", thunks: " << countThunks() << ", is_terminated: " << isTerminated << "\n";
 		if (this->importTableOffset) {
 			stream << "ImportTable: " << std::hex << importTableOffset << "\n";
 		}
@@ -87,6 +91,15 @@ public:
 		return stream.str();
 	}
 
+	void deleteThunkSeries()
+	{
+		std::set<IATThunksSeries*>::iterator itr;
+		for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); itr++) {
+			delete *itr;
+		}
+		thunkSeries.clear();
+	}
+
 	bool makeCoverage(IN peconv::ExportsMapper* exportsMap);
 	bool isCovered();
 
@@ -94,7 +107,7 @@ public:
 	bool isMain; // is the IAT set in the Data Directory
 
 	DWORD iatOffset;
-	size_t iat_size;
+	size_t iatSize;
 
 	DWORD importTableOffset;
 	std::set<IATThunksSeries*> thunkSeries;

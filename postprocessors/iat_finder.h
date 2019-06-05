@@ -58,8 +58,8 @@ size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMa
 	if (!exp && iat.iatOffset && iat.countThunks() > 0) {
 		BYTE *iat_ptr = (BYTE*)(iat.iatOffset + (ULONG_PTR)vBuf);
 		size_t diff = (BYTE*)imp - iat_ptr;
-		iat.iat_size = diff;
-		return iat.iat_size;
+		iat.iatSize = diff;
+		return iat.iatSize;
 	}
 	return 0; // invalid IAT
 }
@@ -88,7 +88,7 @@ IATBlock* find_iat(bool is64bit, BYTE* vBuf, size_t vBufSize, IN peconv::Exports
 		//validate IAT:
 		size_t _iat_size = fill_iat<FIELD_T>(vBuf, vBufSize, exportsMap, *iat_block);
 		if (_iat_size > 0) {
-			iat_block->iat_size = _iat_size;
+			iat_block->iatSize = _iat_size;
 			return iat_block;
 		}
 		delete iat_block; iat_block = nullptr;
