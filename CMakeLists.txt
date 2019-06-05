@@ -63,6 +63,7 @@ set (postprocessors_srcs
 	postprocessors/report_formatter.cpp
 	postprocessors/results_dumper.cpp
 	postprocessors/pe_reconstructor.cpp
+	postprocessors/iat_block.cpp
 	postprocessors/iat_finder.cpp
 	postprocessors/import_table_finder.cpp
 )

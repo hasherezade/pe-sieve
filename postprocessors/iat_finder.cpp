@@ -10,10 +10,10 @@ IATBlock* find_iat_block(
 {
 	IATBlock* iat_block = nullptr;
 	if (is64bit) {
-		iat_block = find_iat<ULONGLONG>(vBuf, vBufSize, exportsMap, search_offset);
+		iat_block = find_iat<ULONGLONG>(true, vBuf, vBufSize, exportsMap, search_offset);
 	}
 	else {
-		iat_block = find_iat<DWORD>(vBuf, vBufSize, exportsMap, search_offset);
+		iat_block = find_iat<DWORD>(false, vBuf, vBufSize, exportsMap, search_offset);
 	}
 	return iat_block;
 }

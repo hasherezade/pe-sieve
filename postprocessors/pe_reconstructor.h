@@ -65,6 +65,8 @@ protected:
 	bool findImportTable(IN peconv::ExportsMapper* exportsMap);
 	size_t collectIATs(IN peconv::ExportsMapper* exportsMap);
 
+	bool findIATsCoverage(IN peconv::ExportsMapper* exportsMap);
+
 	void freeBuffer() {
 		peconv::free_aligned(vBuf);
 		vBuf = nullptr;

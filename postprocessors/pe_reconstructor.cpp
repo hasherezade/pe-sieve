@@ -129,6 +129,9 @@ bool PeReconstructor::rebuildImportTable(IN peconv::ExportsMapper* exportsMap, I
 	}
 	if (imprec_mode == PE_IMPREC_REBUILD || imprec_mode == PE_IMPREC_AUTO) {
 		std::cout << "[*] Trying to reconstruct ImportTable for module: " << std::hex << (ULONGLONG)this->moduleBase << "\n";
+		if (findIATsCoverage(exportsMap)) {
+			std::cout << "[+] Complete coverage found.\n";
+		}
 		imp_recovered = false; //TODO
 	}
 	return imp_recovered;
@@ -457,4 +460,22 @@ bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 	imp_dir->VirtualAddress = imp_offset;
 	imp_dir->Size = table_size;
 	return true;
+}
+
+bool PeReconstructor::findIATsCoverage(IN peconv::ExportsMapper* exportsMap)
+{
+	size_t covered = 0;
+	std::map<DWORD, IATBlock*>::iterator itr;
+	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
+		IATBlock* iat = itr->second;
+		std::cout << "Covering block: " << std::hex << itr->first << " series: " << iat->thunkSeries.size() << "\n";
+		if (iat->makeCoverage(exportsMap)) {
+			std::cout << "[+]\n";
+			covered++;
+		}
+		else {
+			std::cout << "[-]\n";
+		}
+	}
+	return (covered == foundIATs.size());
 }
