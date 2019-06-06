@@ -168,7 +168,9 @@ public:
 
 	bool isValid()
 	{
-		return this->isCovered() && isTerminated;
+		bool isClean = this->isCovered() && isTerminated;
+		bool isSignificant = (this->functions.size() > 2) && this->isCovered();
+		return isClean || isSignificant;
 	}
 
 	//how many functions the IAT has
