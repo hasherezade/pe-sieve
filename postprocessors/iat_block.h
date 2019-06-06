@@ -166,6 +166,11 @@ public:
 		return true;
 	}
 
+	bool isValid()
+	{
+		return this->isCovered() && isTerminated;
+	}
+
 	//how many functions the IAT has
 	size_t countThunks()
 	{

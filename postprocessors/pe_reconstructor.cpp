@@ -489,7 +489,7 @@ ImportTableBuffer* PeReconstructor::constructImportTable()
 	std::map<DWORD, IATBlock*>::iterator itr;
 	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
 		IATBlock* iat = itr->second;
-		if (iat->isCovered() && iat->isTerminated) {
+		if (iat->isValid()) {
 			ready_blocks += iat->thunkSeries.size();
 		}
 	}
@@ -505,7 +505,7 @@ ImportTableBuffer* PeReconstructor::constructImportTable()
 	size_t i = 0;
 	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
 		IATBlock* iat = itr->second;
-		if (!iat->isCovered() || !iat->isTerminated) {
+		if (!iat->isValid()) {
 			continue;
 		}
 		std::set<IATThunksSeries*>::iterator sItr;
@@ -523,7 +523,7 @@ ImportTableBuffer* PeReconstructor::constructImportTable()
 	i = 0;
 	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
 		IATBlock* iat = itr->second;
-		if (!iat->isCovered() || !iat->isTerminated) {
+		if (!iat->isValid()) {
 			continue;
 		}
 		std::set<IATThunksSeries*>::iterator sItr;
