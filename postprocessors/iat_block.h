@@ -13,6 +13,11 @@ public:
 	{
 	}
 
+	~IATThunksSeries()
+	{
+		delete cov;
+	}
+
 	bool insert(ULONGLONG funcAddr)
 	{
 		funcAddresses.insert(funcAddr);
@@ -21,18 +26,13 @@ public:
 
 	bool makeCoverage(IN peconv::ExportsMapper* exportsMap)
 	{
-		if (cov) {
-			delete cov; cov = nullptr;
-		}
-		//std::cout << "Start: " << std::hex << startOffset << "\n";
+		delete cov; //delete previous
 		cov = new peconv::ImportedDllCoverage(funcAddresses, *exportsMap);
 		if (!cov->findCoveringDll()) {
-			//std::cout << "DLL NOT found\n";
+			// DLL not found
 			return false;
 		}
-		
 		size_t covered = cov->mapAddressesToFunctions(cov->dllName);
-		//std::cout << "DLL found: " << cov->dllName << " covered num:" << covered << "\n";
 		return covered == this->funcAddresses.size();
 	}
 
@@ -129,10 +129,10 @@ public:
 		return true;
 	}
 
-	std::set<ULONGLONG> funcAddresses;
-
 	ULONGLONG startOffset;
-	size_t size;
+
+private:
+	std::set<ULONGLONG> funcAddresses;
 	peconv::ImportedDllCoverage *cov;
 };
 
@@ -146,6 +146,7 @@ public:
 		importTableOffset(0)
 	{
 	}
+
 	~IATBlock()
 	{
 		deleteThunkSeries();
@@ -213,8 +214,8 @@ protected:
 	bool is64bit;
 	bool isCoverageComplete;
 
-	std::map<ULONGLONG, const peconv::ExportedFunc*> functions;
-	std::map<ULONGLONG, ULONGLONG> addrToFunctionVA;
+	std::map<ULONGLONG, const peconv::ExportedFunc*> functions; //TODO: this will be deleted or refactored
+	std::map<ULONGLONG, ULONGLONG> addrToFunctionVA; //TODO: this will be deleted or refactored
 
 	std::set<IATThunksSeries*> thunkSeries;
 

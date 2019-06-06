@@ -8,7 +8,7 @@ bool IATBlock::makeCoverage(IN peconv::ExportsMapper* exportsMap)
 	size_t covered = 0;
 	for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); itr++) {
 		IATThunksSeries* series = *itr;
-		if (series->makeCoverage(exportsMap) && series->cov) {
+		if (series->makeCoverage(exportsMap)) {
 			covered++;
 		}
 	}

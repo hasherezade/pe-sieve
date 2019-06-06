@@ -473,13 +473,11 @@ bool PeReconstructor::findIATsCoverage(IN peconv::ExportsMapper* exportsMap)
 	std::map<DWORD, IATBlock*>::iterator itr;
 	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
 		IATBlock* iat = itr->second;
-		std::cout << "Covering block: " << std::hex << itr->first << " series: " << iat->thunkSeries.size() << "\n";
 		if (iat->makeCoverage(exportsMap)) {
-			std::cout << "[+]\n";
 			covered++;
 		}
 		else {
-			std::cout << "[-]\n";
+			std::cout << "[-] Failed covering block: " << std::hex << itr->first << " series: " << iat->thunkSeries.size() << "\n";
 		}
 	}
 	return (covered == foundIATs.size());
