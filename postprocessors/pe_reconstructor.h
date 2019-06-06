@@ -12,34 +12,68 @@ class ImportTableBuffer
 {
 public:
 	ImportTableBuffer(DWORD _descriptorsRVA)
-		: descriptors(nullptr), descriptosCount(0), descriptorsRVA(_descriptorsRVA)
+		: descriptors(nullptr), descriptosCount(0), 
+		descriptorsRVA(_descriptorsRVA),
+		namesRVA(0), namesBuf(nullptr), namesBufSize(0)
 	{
 	}
+
 	~ImportTableBuffer()
 	{
 		delete[]descriptors;
+		delete[]namesBuf;
 	}
 
 	bool allocDesciptors(size_t descriptors_count)
 	{
 		descriptors = new IMAGE_IMPORT_DESCRIPTOR[descriptors_count];
-		if (!descriptors) return false;
-
+		if (!descriptors) {
+			return false;
+		}
+		memset(descriptors, 0, descriptors_count);
 		size_t size_bytes = sizeof(IMAGE_IMPORT_DESCRIPTOR) * descriptors_count;
 		memset(descriptors, 0, size_bytes);
 		descriptosCount = descriptors_count;
 		return true;
 	}
 
-	size_t getFullSize()
+	bool allocNamesSpace(DWORD names_rva, size_t names_size)
 	{
-		size_t size_bytes = sizeof(IMAGE_IMPORT_DESCRIPTOR) * descriptosCount;
+		if (namesBuf) delete[]namesBuf;
+		this->namesBuf = new BYTE[names_size];
+		if (!this->namesBuf) {
+			this->namesBufSize = 0;
+			return false;
+		}
+		memset(this->namesBuf, 0, names_size);
+		this->namesBufSize = names_size;
+		this->namesRVA = names_rva;
+		return true;
+	}
+
+	BYTE* getNamesSpaceAt(const DWORD rva, size_t required_size)
+	{
+		if (!this->namesBuf) return nullptr;
+		size_t offset = rva - this->namesRVA;
+
+		BYTE* names_ptr = offset + this->namesBuf;
+		if (peconv::validate_ptr(namesBuf, namesBufSize, names_ptr, required_size)) {
+			return names_ptr;
+		}
+		return nullptr;
+	}
+
+	size_t getDescriptorsSize()
+	{
+		if (!descriptors) return 0;
+		const size_t size_bytes = sizeof(IMAGE_IMPORT_DESCRIPTOR) * descriptosCount;
 		return size_bytes;
 	}
 
-	BYTE* getFullBuffer()
+	size_t getNamesSize()
 	{
-		return reinterpret_cast<BYTE*>(descriptors);
+		if (!this->namesBuf) return 0;
+		return this->namesBufSize;
 	}
 
 	DWORD getRVA()
@@ -54,6 +88,10 @@ private:
 	
 	DWORD descriptorsRVA;
 	size_t descriptosCount;
+
+	DWORD namesRVA;
+	BYTE* namesBuf;
+	size_t namesBufSize;
 
 friend class PeReconstructor;
 };

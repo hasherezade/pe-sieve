@@ -36,6 +36,99 @@ public:
 		return covered == this->funcAddresses.size();
 	}
 
+	static size_t getLongestFuncName(std::map<ULONGLONG, std::set<peconv::ExportedFunc>> &addrToFunc)
+	{
+		size_t max_len = 0;
+		std::map<ULONGLONG, std::set<peconv::ExportedFunc>>::iterator itr;
+		for (itr = addrToFunc.begin(); itr != addrToFunc.end(); itr++) {
+			std::set<peconv::ExportedFunc> &expSet = itr->second;
+			const peconv::ExportedFunc& exp = *(expSet.begin());
+			if (exp.isByOrdinal) {
+				continue;
+			}
+			if (exp.funcName.length() > max_len) {
+				max_len = exp.funcName.length();
+			}
+		}
+		return max_len;
+	}
+
+	size_t sizeOfNamesSpace(bool is64b)
+	{
+		size_t space_size = 0;
+		if (!this->cov->isMappingComplete()) {
+			return 0; //TODO: make a workaround for this case
+		}
+		const size_t longest_name = getLongestFuncName(this->cov->addrToFunc);
+		const size_t field_size = is64b ? sizeof(ULONGLONG) : sizeof(DWORD);
+		std::map<ULONGLONG, std::set<peconv::ExportedFunc>>::iterator itr;
+		for (itr = this->cov->addrToFunc.begin(); itr != cov->addrToFunc.end(); itr++) {
+			std::set<peconv::ExportedFunc> &expSet = itr->second;
+			const peconv::ExportedFunc& exp = *(expSet.begin());
+			space_size += field_size;
+			if (!exp.isByOrdinal) {
+				space_size += sizeof(IMAGE_IMPORT_BY_NAME) + longest_name;
+			}
+		}
+		if (space_size > 0) {
+			space_size += sizeof(field_size);
+		}
+		return space_size;
+	}
+
+	bool fillNamesSpace(const BYTE* buf_start, size_t buf_size, DWORD bufRVA, bool is64b)
+	{
+		if (!buf_start) return false;
+
+		if (!this->cov->isMappingComplete()) {
+			return false; //TODO: make a workaround for this case
+		}
+		
+		const size_t longest_name = getLongestFuncName(this->cov->addrToFunc);
+		const size_t field_size = is64b ? sizeof(ULONGLONG) : sizeof(DWORD);
+
+		const size_t thunks_count = this->cov->addrToFunc.size();
+		const size_t thunks_area_size = (thunks_count * field_size) + field_size;
+
+		DWORD names_rva = bufRVA + thunks_area_size;
+
+		//fill thunks:
+		BYTE *buf = const_cast<BYTE*>(buf_start);
+		const BYTE *buf_end = buf_start + buf_size;
+		std::map<ULONGLONG, std::set<peconv::ExportedFunc>>::iterator itr;
+		for (itr = this->cov->addrToFunc.begin(); itr != cov->addrToFunc.end() && buf < buf_end; itr++) {
+
+			std::set<peconv::ExportedFunc> &expSet = itr->second;
+			const peconv::ExportedFunc& exp = *(expSet.begin());
+			if (exp.isByOrdinal) {
+				if (is64b) {
+					ULONGLONG *ord = (ULONGLONG*)buf;
+					*ord = exp.funcOrdinal | IMAGE_ORDINAL_FLAG64;
+				}
+				else {
+					DWORD *ord = (DWORD*)buf;
+					*ord = exp.funcOrdinal | IMAGE_ORDINAL_FLAG32;
+				}
+				buf += field_size;
+				continue;
+			}
+			//by name:
+			if (is64b) {
+				ULONGLONG *val = (ULONGLONG*)buf;
+				*val = names_rva;
+			}
+			else {
+				DWORD *val = (DWORD*)buf;
+				*val = names_rva;
+			}
+			buf += field_size;
+			names_rva += sizeof(IMAGE_IMPORT_BY_NAME) + longest_name;
+
+			//no need to fill names, they will be autofilled during dumping
+		}
+		return true;
+	}
+
 	std::set<ULONGLONG> funcAddresses;
 
 	ULONGLONG startOffset;
