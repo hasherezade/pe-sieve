@@ -77,13 +77,7 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 	this->artefacts = origArtefacts;
 
 	ULONGLONG moduleBase = artefacts.regionStart + artefacts.peBaseOffset;
-	size_t pe_vsize = artefacts.calculatedImgSize;
-	if (pe_vsize == 0) {
-		pe_vsize = peconv::fetch_region_size(processHandle, (PBYTE)moduleBase);
-		std::cout << "[!] Image size at: " << std::hex << moduleBase << " undetermined, using region size instead: " << pe_vsize << std::endl;
-	}
-
-	if (!peBuffer->readRemote(processHandle, moduleBase, pe_vsize)) {
+	if (!peBuffer->readRemote(processHandle, moduleBase, artefacts.calculatedImgSize)) {
 		return false;
 	}
 	std::cout << "Reading remote success!\n";
@@ -100,7 +94,7 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 		return false;
 	}
 	//do not modify section headers if the PE is in raw format, or no unmapping requested
-	if (!peconv::is_pe_raw(peBuffer->vBuf, pe_vsize)) {
+	if (!peconv::is_pe_raw(peBuffer->vBuf, peBuffer->vBufSize)) {
 		if (!fixSectionsVirtualSize(processHandle) || !fixSectionsCharacteristics(processHandle)) {
 			return false;
 		}

@@ -146,6 +146,9 @@ public:
 	}
 
 	bool rebuildImportTable(IN peconv::ExportsMapper* exportsMap, IN const t_pesieve_imprec_mode &imprec_mode);
+	void printFoundIATs(std::string reportPath);
+
+private:
 
 	IATBlock* findIAT(IN peconv::ExportsMapper* exportsMap, size_t start_offset);
 	bool findImportTable(IN peconv::ExportsMapper* exportsMap);
@@ -155,8 +158,6 @@ public:
 	ImportTableBuffer* constructImportTable();
 	bool appendImportTable(ImportTableBuffer &importTable);
 
-	void printFoundIATs(std::string reportPath);
-
 	bool appendFoundIAT(DWORD iat_offset, IATBlock* found_block)
 	{
 		if (foundIATs.find(iat_offset) != foundIATs.end()) {
@@ -165,8 +166,6 @@ public:
 		foundIATs[iat_offset] = found_block;
 		return true;
 	}
-
-protected:
 
 	void deleteFoundIATs()
 	{

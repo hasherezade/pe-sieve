@@ -40,6 +40,10 @@ public:
 
 	bool readRemote(HANDLE process_hndl, ULONGLONG module_base, size_t pe_vsize)
 	{
+		if (pe_vsize == 0) {
+			pe_vsize = peconv::fetch_region_size(process_hndl, (PBYTE)module_base);
+			std::cout << "[!] Image size at: " << std::hex << module_base << " undetermined, using region size instead: " << pe_vsize << std::endl;
+		}
 		if (!allocBuffer(pe_vsize)) {
 			return false;
 		}
