@@ -4,6 +4,32 @@
 
 #include <fstream>
 
+bool PeBuffer::dumpToFile(std::string dumpFileName, peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL peconv::ExportsMapper* exportsMap)
+{
+	if (!vBuf) return false;
+
+	bool is_dumped = false;
+	if (dumpMode == peconv::PE_DUMP_AUTO) {
+		bool is_raw_alignment_valid = peconv::is_valid_sectons_alignment(vBuf, vBufSize, true);
+		bool is_virtual_alignment_valid = peconv::is_valid_sectons_alignment(vBuf, vBufSize, false);
+#ifdef _DEBUG
+		std::cout << "Is raw alignment valid: " << is_raw_alignment_valid << std::endl;
+		std::cout << "Is virtual alignment valid: " << is_virtual_alignment_valid << std::endl;
+#endif
+		if (!is_raw_alignment_valid && is_virtual_alignment_valid) {
+			//in case if raw alignment is invalid and virtual valid, try to dump using Virtual Alignment first
+			dumpMode = peconv::PE_DUMP_REALIGN;
+			is_dumped = peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
+			if (is_dumped) {
+				return is_dumped;
+			}
+			is_dumped = peconv::PE_DUMP_AUTO; //revert and try again
+		}
+	}
+	// save the read module into a file
+	return peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
+}
+
 //---
 inline bool shift_artefacts(PeArtefacts& artefacts, size_t shift_size)
 {
@@ -296,33 +322,8 @@ bool PeReconstructor::reconstructPeHdr()
 	return true;
 }
 
-
 bool PeReconstructor::dumpToFile(std::string dumpFileName, peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL peconv::ExportsMapper* exportsMap)
 {
 	if (!peBuffer) return false;
-	BYTE *vBuf = this->peBuffer->vBuf;
-	const size_t vBufSize = this->peBuffer->vBufSize;
-	const ULONGLONG moduleBase = this->peBuffer->moduleBase;
-	if (!vBuf) return false;
-
-	bool is_dumped = false;
-	if (dumpMode == peconv::PE_DUMP_AUTO) {
-		bool is_raw_alignment_valid = peconv::is_valid_sectons_alignment(vBuf, vBufSize, true);
-		bool is_virtual_alignment_valid = peconv::is_valid_sectons_alignment(vBuf, vBufSize, false);
-#ifdef _DEBUG
-		std::cout << "Is raw alignment valid: " << is_raw_alignment_valid << std::endl;
-		std::cout << "Is virtual alignment valid: " << is_virtual_alignment_valid << std::endl;
-#endif
-		if (!is_raw_alignment_valid && is_virtual_alignment_valid) {
-			//in case if raw alignment is invalid and virtual valid, try to dump using Virtual Alignment first
-			dumpMode = peconv::PE_DUMP_REALIGN;
-			is_dumped = peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
-			if (is_dumped) {
-				return is_dumped;
-			}
-			is_dumped = peconv::PE_DUMP_AUTO; //revert and try again
-		}
-	}
-	// save the read module into a file
-	return peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
+	return peBuffer->dumpToFile(dumpFileName, dumpMode, exportsMap);
 }

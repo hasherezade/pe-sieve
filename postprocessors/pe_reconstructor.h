@@ -99,6 +99,8 @@ public:
 		return true;
 	}
 
+	bool dumpToFile(std::string dumpFileName, peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL peconv::ExportsMapper* exportsMap);
+
 protected:
 	BYTE *vBuf;
 	size_t vBufSize;

@@ -174,13 +174,17 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 			}
 		}
 		else {
-			//artefacts report not available, do a simple dump:
-			is_module_dumped = peconv::dump_remote_pe(
-				dumpFileName.c_str(), //output file
-				processHandle,
-				(PBYTE)mod->module,
-				curr_dump_mode, //PE dump mode
-				process_report.exportsMap);
+			//artefacts not available
+			DWORD mod_size = peconv::get_remote_image_size(processHandle, (BYTE*)mod->module);
+			PeBuffer module_buf;
+			if (module_buf.readRemote(processHandle, (ULONGLONG)mod->module, mod_size)) {
+				ImpReconstructor impRec(&module_buf);
+				bool is_imp_rec = impRec.rebuildImportTable(process_report.exportsMap, imprec_mode);
+				is_module_dumped = module_buf.dumpToFile(dumpFileName, curr_dump_mode, process_report.exportsMap);
+				if (!is_imp_rec || save_imp_report) {
+					impRec.printFoundIATs(dumpFileName + ".imports.txt");
+				}
+			}
 		}
 
 		if (!is_module_dumped || dump_shellcode)
