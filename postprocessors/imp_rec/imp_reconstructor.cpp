@@ -256,31 +256,15 @@ bool ImpReconstructor::appendImportTable(ImportTableBuffer &importTable)
 	if (!peBuffer) return false;
 
 	const size_t import_table_size = importTable.getDescriptorsSize() + importTable.getNamesSize();
-	const size_t added_size = import_table_size + PAGE_SIZE;
+	const size_t added_size = import_table_size + importTable.getDllNamesSize();
 	const size_t new_size = peBuffer->vBufSize + added_size;
 
 	if (!peBuffer->resizeBuffer(new_size)) {
 		return false;
 	}
 
-	PIMAGE_SECTION_HEADER last_sec = peconv::get_last_section(peBuffer->vBuf, peBuffer->vBufSize, false);
-	if (!last_sec) return false;
+	const DWORD imports_start_rva = importTable.getRVA();
+	peBuffer->resizeLastSection((imports_start_rva + import_table_size), (imports_start_rva + added_size));
 
-	peconv::update_image_size(peBuffer->vBuf, peBuffer->vBufSize);
-	size_t vdiff = (importTable.getRVA() + added_size) - last_sec->VirtualAddress;
-	size_t rdiff = (importTable.getRVA() + import_table_size) - last_sec->VirtualAddress;
-	last_sec->Misc.VirtualSize = vdiff;
-	last_sec->SizeOfRawData = rdiff;
-
-	IMAGE_DATA_DIRECTORY* imp_dir = peconv::get_directory_entry(peBuffer->vBuf, IMAGE_DIRECTORY_ENTRY_IMPORT, true);
-	if (!imp_dir) {
-		return false;
-	}
-	memcpy(peBuffer->vBuf + importTable.getRVA(), importTable.descriptors, importTable.getDescriptorsSize());
-	memcpy(peBuffer->vBuf + importTable.namesRVA, importTable.namesBuf, importTable.namesBufSize);
-
-	//overwrite the Data Directory:
-	imp_dir->VirtualAddress = importTable.getRVA();
-	imp_dir->Size = import_table_size;
-	return true;
+	return importTable.setTableInPe(peBuffer->vBuf, peBuffer->vBufSize);
 }

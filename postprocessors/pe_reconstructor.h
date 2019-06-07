@@ -66,6 +66,34 @@ public:
 		this->vBufSize = new_size;
 		return true;
 	}
+	
+	bool resizeLastSection(size_t new_raw_end, size_t new_virtual_end)
+	{
+		PIMAGE_SECTION_HEADER last_sec = peconv::get_last_section(vBuf, vBufSize, false);
+		if (!last_sec) {
+			return false;
+		}
+
+		if (new_virtual_end < last_sec->VirtualAddress || new_raw_end < last_sec->VirtualAddress) {
+			return false;
+		}
+
+		const size_t new_virtual_size = new_virtual_end - last_sec->VirtualAddress;
+		const size_t new_raw_size = new_raw_end - last_sec->VirtualAddress;
+
+		if (last_sec->VirtualAddress + new_virtual_size > this->vBufSize) {
+			//buffer too small
+			return false;
+		}
+
+		if (!peconv::update_image_size(vBuf, new_virtual_end)) {
+			return false;
+		}
+
+		last_sec->Misc.VirtualSize = new_virtual_size;
+		last_sec->SizeOfRawData = new_raw_size;
+		return true;
+	}
 
 protected:
 	BYTE *vBuf;

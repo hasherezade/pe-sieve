@@ -51,18 +51,6 @@ public:
 		return true;
 	}
 
-	BYTE* getNamesSpaceAt(const DWORD rva, size_t required_size)
-	{
-		if (!this->namesBuf) return nullptr;
-		size_t offset = rva - this->namesRVA;
-
-		BYTE* names_ptr = offset + this->namesBuf;
-		if (peconv::validate_ptr(namesBuf, namesBufSize, names_ptr, required_size)) {
-			return names_ptr;
-		}
-		return nullptr;
-	}
-
 	size_t getDescriptorsSize()
 	{
 		if (!descriptors) return 0;
@@ -76,13 +64,60 @@ public:
 		return this->namesBufSize;
 	}
 
+	size_t getDllNamesSize()
+	{
+		return PAGE_SIZE; //TODO: calculate it
+	}
+
 	DWORD getRVA()
 	{
 		return descriptorsRVA;
 	}
 
+	//copy table to the Virtual PE buffer
+	bool setTableInPe(BYTE *vBuf, size_t vBufSize)
+	{
+		if (!descriptors || !namesBuf) {
+			return false;
+		}
+		const size_t descriptors_size_b = getDescriptorsSize();
+		if ((descriptorsRVA + descriptors_size_b) > vBufSize || (namesRVA + namesBufSize) > vBufSize) {
+			// buffer too small
+			return false;
+		}
+		IMAGE_DATA_DIRECTORY* imp_dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IMPORT, true);
+		if (!imp_dir) {
+			//cannot retrieve import directory
+			return false;
+		}
+
+		const size_t import_table_size = getDescriptorsSize() + getNamesSize();
+
+		//copy buffers into PE:
+		memcpy(vBuf + descriptorsRVA, descriptors, descriptors_size_b);
+		memcpy(vBuf + namesRVA, namesBuf, namesBufSize);
+
+		//overwrite the Data Directory:
+		imp_dir->VirtualAddress = descriptorsRVA;
+		imp_dir->Size = import_table_size;
+		return true;
+	}
+
 protected:
-	IMAGE_IMPORT_DESCRIPTOR * descriptors;
+	BYTE * getNamesSpaceAt(const DWORD rva, size_t required_size)
+	{
+		if (!this->namesBuf) return nullptr;
+		size_t offset = rva - this->namesRVA;
+
+		BYTE* names_ptr = offset + this->namesBuf;
+		if (peconv::validate_ptr(namesBuf, namesBufSize, names_ptr, required_size)) {
+			return names_ptr;
+		}
+		return nullptr;
+	}
+
+	IMAGE_IMPORT_DESCRIPTOR* descriptors;
+	friend class ImpReconstructor;
 
 private:
 
@@ -93,7 +128,6 @@ private:
 	BYTE* namesBuf;
 	size_t namesBufSize;
 
-	friend class ImpReconstructor;
 };
 
 class ImpReconstructor {
