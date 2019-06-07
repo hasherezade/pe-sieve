@@ -23,9 +23,9 @@ bool ImpReconstructor::rebuildImportTable(IN peconv::ExportsMapper* exportsMap, 
 		}
 	}
 	if (imprec_mode == PE_IMPREC_REBUILD || imprec_mode == PE_IMPREC_AUTO) {
-		std::cout << "[*] Trying to reconstruct ImportTable for module: " << std::hex << (ULONGLONG)peBuffer->moduleBase << "\n";
+		std::cout << "[*] Trying to rebuild ImportTable for module: " << std::hex << (ULONGLONG)peBuffer->moduleBase << "\n";
 		if (findIATsCoverage(exportsMap)) {
-			std::cout << "[+] Complete coverage found.\n";
+			std::cout << "[+] ImportTable rebuilt.\n";
 
 			ImportTableBuffer *impBuf = constructImportTable();
 			if (impBuf) {
