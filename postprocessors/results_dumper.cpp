@@ -7,6 +7,7 @@
 #include "../utils/util.h"
 #include "../utils/workingset_enum.h"
 #include "pe_reconstructor.h"
+#include "imp_rec/imp_reconstructor.h"
 
 #define DIR_SEPARATOR "\\"
 //---
@@ -116,7 +117,7 @@ std::string get_dump_mode_name(peconv::t_pe_dump_mode dump_mode)
 	return "";
 }
 
-size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &process_report, const peconv::t_pe_dump_mode dump_mode)
+size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &process_report, const peconv::t_pe_dump_mode dump_mode, const t_pesieve_imprec_mode imprec_mode)
 {
 	if (processHandle == nullptr) {
 		return 0;
@@ -126,6 +127,8 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 
 	char szModName[MAX_PATH] = { 0 };
 	size_t dumped = 0;
+
+	bool save_imp_report = true;
 
 	std::vector<ModuleScanReport*>::iterator itr;
 	for (itr = process_report.module_reports.begin();
@@ -155,10 +158,15 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 			}
 			if (artefactReport->has_pe) {
 				ULONGLONG found_pe_base = artefactReport->artefacts.peImageBase();
-				PeReconstructor peRec(artefactReport->artefacts, curr_dump_mode);
-				if (peRec.reconstruct(processHandle, process_report.exportsMap)) {
+				PeReconstructor peRec(artefactReport->artefacts);
+				if (peRec.reconstruct(processHandle)) {
+					ImpReconstructor impRec(peRec.getBuffer());
+					bool is_imp_rec = impRec.rebuildImportTable(process_report.exportsMap, imprec_mode);
 					dumpFileName = makeModuleDumpPath(found_pe_base, modulePath, ".rec" + payload_ext);
-					is_module_dumped = peRec.dumpToFile(dumpFileName, process_report.exportsMap);
+					is_module_dumped = peRec.dumpToFile(dumpFileName, curr_dump_mode, process_report.exportsMap);
+					if (!is_imp_rec || save_imp_report) {
+						impRec.printFoundIATs(dumpFileName + ".imports.txt");
+					}
 				}
 				else {
 					std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG) mod->module << " failed." << std::endl;
@@ -166,13 +174,17 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 			}
 		}
 		else {
-			//artefacts report not available, do a simple dump:
-			is_module_dumped = peconv::dump_remote_pe(
-				dumpFileName.c_str(), //output file
-				processHandle,
-				(PBYTE)mod->module,
-				curr_dump_mode, //PE dump mode
-				process_report.exportsMap);
+			//artefacts not available
+			DWORD mod_size = peconv::get_remote_image_size(processHandle, (BYTE*)mod->module);
+			PeBuffer module_buf;
+			if (module_buf.readRemote(processHandle, (ULONGLONG)mod->module, mod_size)) {
+				ImpReconstructor impRec(&module_buf);
+				bool is_imp_rec = impRec.rebuildImportTable(process_report.exportsMap, imprec_mode);
+				is_module_dumped = module_buf.dumpToFile(dumpFileName, curr_dump_mode, process_report.exportsMap);
+				if (!is_imp_rec || save_imp_report) {
+					impRec.printFoundIATs(dumpFileName + ".imports.txt");
+				}
+			}
 		}
 
 		if (!is_module_dumped || dump_shellcode)
