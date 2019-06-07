@@ -2,8 +2,6 @@
 
 #include "../utils/workingset_enum.h"
 
-#include "iat_finder.h"
-#include "import_table_finder.h"
 #include <fstream>
 
 //---
@@ -17,6 +15,11 @@ inline bool shift_artefacts(PeArtefacts& artefacts, size_t shift_size)
 //WARNING: this function shifts also offsets saved in the artefacts
 size_t PeReconstructor::shiftPeHeader()
 {
+	if (!peBuffer) return 0;
+	BYTE *vBuf = this->peBuffer->vBuf;
+	const size_t vBufSize = this->peBuffer->vBufSize;
+	if (vBuf == nullptr) return 0;
+
 	if (!this->artefacts.hasNtHdrs()) return 0;
 
 	const size_t dos_pe_size = sizeof(IMAGE_DOS_HEADER) + sizeof(IMAGE_NT_SIGNATURE);
@@ -69,26 +72,15 @@ size_t PeReconstructor::shiftPeHeader()
 
 bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 {
+	if (!peBuffer) return false;
+
 	this->artefacts = origArtefacts;
-	freeBuffer();
 
-	this->moduleBase = artefacts.regionStart + artefacts.peBaseOffset;
-	size_t pe_vsize = artefacts.calculatedImgSize;
-	if (pe_vsize == 0) {
-		pe_vsize = peconv::fetch_region_size(processHandle, (PBYTE)this->moduleBase);
-		std::cout << "[!] Image size at: " << std::hex << moduleBase << " undetermined, using region size instead: " << pe_vsize << std::endl;
-	}
-	this->vBuf = peconv::alloc_aligned(pe_vsize, PAGE_READWRITE);
-	if (!vBuf) {
+	ULONGLONG moduleBase = artefacts.regionStart + artefacts.peBaseOffset;
+	if (!peBuffer->readRemote(processHandle, moduleBase, artefacts.calculatedImgSize)) {
 		return false;
 	}
-	this->vBufSize = pe_vsize;
-
-	size_t read_size = peconv::read_remote_area(processHandle, (BYTE*)moduleBase, vBuf, pe_vsize);
-	if (read_size == 0) {
-		freeBuffer();
-		return false;
-	}
+	std::cout << "Reading remote success!\n";
 
 	size_t shift_size = shiftPeHeader();
 	if (shift_size) {
@@ -102,7 +94,7 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 		return false;
 	}
 	//do not modify section headers if the PE is in raw format, or no unmapping requested
-	if (!peconv::is_pe_raw(vBuf, pe_vsize)) {
+	if (!peconv::is_pe_raw(peBuffer->vBuf, peBuffer->vBufSize)) {
 		if (!fixSectionsVirtualSize(processHandle) || !fixSectionsCharacteristics(processHandle)) {
 			return false;
 		}
@@ -110,42 +102,14 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 	return true;
 }
 
-bool PeReconstructor::rebuildImportTable(IN peconv::ExportsMapper* exportsMap, IN const t_pesieve_imprec_mode &imprec_mode)
-{
-	if (!exportsMap) {
-		return false;
-	}
-	if (!collectIATs(exportsMap)) {
-		return false;
-	}
-	bool imp_recovered = false;
-	if (imprec_mode == PE_IMPREC_UNERASE || imprec_mode == PE_IMPREC_AUTO) {
-		std::cout << "[*] Trying to find ImportTable for module: " << std::hex << (ULONGLONG)this->moduleBase << "\n";
-		bool imp_recovered = findImportTable(exportsMap);
-		if (imp_recovered) {
-			std::cout << "[+] ImportTable found.\n";
-			return imp_recovered;
-		}
-	}
-	if (imprec_mode == PE_IMPREC_REBUILD || imprec_mode == PE_IMPREC_AUTO) {
-		std::cout << "[*] Trying to reconstruct ImportTable for module: " << std::hex << (ULONGLONG)this->moduleBase << "\n";
-		if (findIATsCoverage(exportsMap)) {
-			std::cout << "[+] Complete coverage found.\n";
-
-			ImportTableBuffer *impBuf = constructImportTable();
-			if (impBuf) {
-				appendImportTable(*impBuf);
-			}
-			delete impBuf;
-		}
-		imp_recovered = false; //TODO
-	}
-	return imp_recovered;
-}
-
 bool PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 {
-	if (!this->vBuf || !this->artefacts.hasSectionHdrs()) {
+	if (!peBuffer) return false;
+	BYTE *vBuf = this->peBuffer->vBuf;
+	const size_t vBufSize = this->peBuffer->vBufSize;
+	if (!vBuf) return false;
+
+	if (!this->artefacts.hasSectionHdrs()) {
 		return false;
 	}
 
@@ -204,7 +168,12 @@ bool PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 
 bool PeReconstructor::fixSectionsCharacteristics(HANDLE processHandle)
 {
-	if (!this->vBuf || !this->artefacts.hasSectionHdrs()) {
+	if (!peBuffer) return false;
+	BYTE *vBuf = this->peBuffer->vBuf;
+	const size_t vBufSize = this->peBuffer->vBufSize;
+	if (!vBuf) return false;
+
+	if (!this->artefacts.hasSectionHdrs()) {
 		return false;
 	}
 
@@ -237,19 +206,21 @@ bool PeReconstructor::fixSectionsCharacteristics(HANDLE processHandle)
 
 bool PeReconstructor::reconstructFileHdr()
 {
-	if (!this->vBuf || !this->artefacts.hasNtHdrs()) {
+	if (!peBuffer) return false;
+	BYTE *vBuf = this->peBuffer->vBuf;
+	const size_t vBufSize = this->peBuffer->vBufSize;
+	if (!vBuf) return false;
+
+	if (!this->artefacts.hasNtHdrs()) {
 		return false;
 	}
-	BYTE* loadedData = this->vBuf;
-	size_t loadedSize = this->vBufSize;
-
 	size_t nt_offset = this->artefacts.ntFileHdrsOffset - this->artefacts.peBaseOffset;
-	BYTE* nt_ptr = (BYTE*)((ULONGLONG)this->vBuf + nt_offset);
-	if (is_valid_file_hdr(this->vBuf, this->vBufSize, nt_ptr, 0)) {
+	BYTE* nt_ptr = (BYTE*)((ULONGLONG)vBuf + nt_offset);
+	if (is_valid_file_hdr(vBuf, vBufSize, nt_ptr, 0)) {
 		return true;
 	}
 	IMAGE_FILE_HEADER* hdr_candidate = (IMAGE_FILE_HEADER*)nt_ptr;
-	if (!peconv::validate_ptr(loadedData, loadedSize, hdr_candidate, sizeof(IMAGE_FILE_HEADER))) {
+	if (!peconv::validate_ptr(vBuf, vBufSize, hdr_candidate, sizeof(IMAGE_FILE_HEADER))) {
 		// probably buffer finished
 		return false;
 	}
@@ -279,11 +250,16 @@ bool PeReconstructor::reconstructFileHdr()
 
 bool PeReconstructor::reconstructPeHdr()
 {
-	if (!this->vBuf || !this->artefacts.hasNtHdrs()) {
+	if (!peBuffer) return false;
+	BYTE *vBuf = this->peBuffer->vBuf;
+	const size_t vBufSize = this->peBuffer->vBufSize;
+	if (!vBuf) return false;
+
+	if (!this->artefacts.hasNtHdrs()) {
 		return false;
 	}
 	ULONGLONG nt_offset = this->artefacts.ntFileHdrsOffset - this->artefacts.peBaseOffset;
-	BYTE* nt_ptr = (BYTE*)((ULONGLONG)this->vBuf + nt_offset);
+	BYTE* nt_ptr = (BYTE*)((ULONGLONG)vBuf + nt_offset);
 	BYTE *pe_ptr = nt_ptr - sizeof(DWORD);
 
 	if (!peconv::validate_ptr(vBuf, vBufSize, pe_ptr, sizeof(DWORD))) {
@@ -299,17 +275,17 @@ bool PeReconstructor::reconstructPeHdr()
 	if (nt32->FileHeader.SizeOfOptionalHeader == 0) {
 		nt32->FileHeader.SizeOfOptionalHeader = is64bit ? sizeof(IMAGE_OPTIONAL_HEADER64) : sizeof(IMAGE_OPTIONAL_HEADER32);
 	}
-	LONG pe_offset = LONG((ULONGLONG)pe_ptr - (ULONGLONG)this->vBuf);
+	LONG pe_offset = LONG((ULONGLONG)pe_ptr - (ULONGLONG)vBuf);
 	IMAGE_DOS_HEADER* dosHdr = (IMAGE_DOS_HEADER*) vBuf;
 	dosHdr->e_magic = IMAGE_DOS_SIGNATURE;
 	dosHdr->e_lfanew = pe_offset;
 
 	bool is_fixed = false;
 	if (is64bit) {
-		is_fixed = overwrite_opt_hdr<IMAGE_OPTIONAL_HEADER64>(this->vBuf, this->vBufSize, (IMAGE_OPTIONAL_HEADER64*)&nt32->OptionalHeader, this->artefacts);
+		is_fixed = overwrite_opt_hdr<IMAGE_OPTIONAL_HEADER64>(vBuf, vBufSize, (IMAGE_OPTIONAL_HEADER64*)&nt32->OptionalHeader, this->artefacts);
 	}
 	else {
-		is_fixed = overwrite_opt_hdr<IMAGE_OPTIONAL_HEADER32>(this->vBuf, this->vBufSize, &nt32->OptionalHeader, this->artefacts);
+		is_fixed = overwrite_opt_hdr<IMAGE_OPTIONAL_HEADER32>(vBuf, vBufSize, &nt32->OptionalHeader, this->artefacts);
 	}
 	if (!is_fixed) {
 		return false;
@@ -320,27 +296,14 @@ bool PeReconstructor::reconstructPeHdr()
 	return true;
 }
 
-void PeReconstructor::printFoundIATs(std::string reportPath)
-{
-	if (!foundIATs.size()) {
-		return;
-	}
-	std::ofstream report;
-	report.open(reportPath);
-	if (report.is_open() == false) {
-		return;
-	}
-
-	std::map<DWORD, IATBlock*>::iterator itr;
-	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
-		report << itr->second->toString();
-	}
-	report.close();
-}
 
 bool PeReconstructor::dumpToFile(std::string dumpFileName, peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL peconv::ExportsMapper* exportsMap)
 {
-	if (vBuf == nullptr) return false;
+	if (!peBuffer) return false;
+	BYTE *vBuf = this->peBuffer->vBuf;
+	const size_t vBufSize = this->peBuffer->vBufSize;
+	const ULONGLONG moduleBase = this->peBuffer->moduleBase;
+	if (!vBuf) return false;
 
 	bool is_dumped = false;
 	if (dumpMode == peconv::PE_DUMP_AUTO) {
@@ -362,218 +325,4 @@ bool PeReconstructor::dumpToFile(std::string dumpFileName, peconv::t_pe_dump_mod
 	}
 	// save the read module into a file
 	return peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
-}
-
-IATBlock* PeReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap, size_t start_offset)
-{
-	bool is64bit = peconv::is64bit(vBuf);
-	
-	IATBlock* iat_block = find_iat_block(is64bit, vBuf, vBufSize, exportsMap, start_offset);;
-	if (!iat_block) {
-		return nullptr;
-	}
-	size_t iat_size = iat_block->iatSize;
-	IMAGE_DATA_DIRECTORY *dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
-	if (dir) {
-		if (iat_block->iatOffset == dir->VirtualAddress && iat_size == dir->Size) {
-			iat_block->isMain = true;
-		}
-	}
-	return iat_block;
-}
-
-size_t PeReconstructor::collectIATs(IN peconv::ExportsMapper* exportsMap)
-{
-	size_t found = 0;
-	for (size_t search_offset = 0; search_offset < vBufSize;) {
-
-		IATBlock *currIAT = findIAT(exportsMap, search_offset);
-		if (!currIAT) {
-			//can't find any more IAT
-			break;
-		}
-		found++;
-		const DWORD iat_offset = currIAT->iatOffset;
-		const size_t iat_end = iat_offset + currIAT->iatSize;
-		if (!appendFoundIAT(iat_offset, currIAT)) {
-			delete currIAT; //this IAT already exist in the map
-		}
-		// next search should be after thie current IAT:
-		if (iat_end <= search_offset) {
-			break; //this should never happen
-		}
-		search_offset = iat_end;
-	}
-	return found;
-}
-
-bool PeReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
-{
-	IMAGE_DATA_DIRECTORY* imp_dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IMPORT, true);
-	if (!imp_dir) {
-		return false;
-	}
-	IMAGE_DATA_DIRECTORY *iat_dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
-	if (!iat_dir) {
-		return false;
-	}
-	IMAGE_IMPORT_DESCRIPTOR* import_table = nullptr;
-	size_t table_size = 0;
-
-	std::map<DWORD, IATBlock*>::iterator itr;
-	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
-		IATBlock *currIAT = itr->second;
-
-		const DWORD iat_offset = currIAT->iatOffset;
-		const size_t iat_end = iat_offset + currIAT->iatSize;
-
-		std::cout << "[*] Searching import table for IAT: " << std::hex << iat_offset << ", size: " << iat_dir->Size << std::endl;
-		
-		bool is64bit = peconv::is64bit(vBuf);
-		import_table = find_import_table(
-			is64bit,
-			vBuf,
-			vBufSize,
-			exportsMap,
-			iat_offset,
-			table_size,
-			0 //start offset
-		);
-		if (import_table) {
-			//import table found, set it in the IATBlock:
-			currIAT->importTableOffset = DWORD((ULONG_PTR)import_table - (ULONG_PTR)vBuf);
-			//overwrite the Data Directory:
-			iat_dir->VirtualAddress = iat_offset;
-			iat_dir->Size = currIAT->iatSize;
-			break; 
-		}
-	}
-
-	if (!import_table) return false;
-	
-	DWORD imp_offset = (BYTE*)import_table - vBuf;
-	if (imp_dir->VirtualAddress == imp_offset && imp_dir->Size == table_size) {
-		//std::cout << "[*] Validated Imports offset!\n";
-		return true;
-	}
-#ifdef _DEBUG
-	if (imp_dir->Size == table_size) {
-		std::cout << "[*] Validated Imports size!\n";
-	}
-#endif
-	//overwrite the Data Directory:
-	imp_dir->VirtualAddress = imp_offset;
-	imp_dir->Size = table_size;
-	return true;
-}
-
-bool PeReconstructor::findIATsCoverage(IN peconv::ExportsMapper* exportsMap)
-{
-	size_t covered = 0;
-	std::map<DWORD, IATBlock*>::iterator itr;
-	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
-		IATBlock* iat = itr->second;
-		if (iat->makeCoverage(exportsMap)) {
-			covered++;
-		}
-		else {
-			std::cout << "[-] Failed covering block: " << std::hex << itr->first << " series: " << iat->thunkSeries.size() << "\n";
-		}
-	}
-	return (covered == foundIATs.size());
-}
-
-ImportTableBuffer* PeReconstructor::constructImportTable()
-{
-	size_t ready_blocks = 0;
-	std::map<DWORD, IATBlock*>::iterator itr;
-	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
-		IATBlock* iat = itr->second;
-		if (iat->isValid()) {
-			ready_blocks += iat->thunkSeries.size();
-		}
-	}
-	if (ready_blocks == 0) {
-		return nullptr;
-	}
-	ImportTableBuffer *importTableBuffer = new ImportTableBuffer(this->vBufSize);
-	importTableBuffer->allocDesciptors(ready_blocks + 1);
-
-	const size_t names_start_rva = importTableBuffer->getRVA() + importTableBuffer->getDescriptorsSize();
-	size_t orig_thunk_rva = names_start_rva;
-	size_t names_space = 0;
-	size_t i = 0;
-	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
-		IATBlock* iat = itr->second;
-		if (!iat->isValid()) {
-			continue;
-		}
-		std::set<IATThunksSeries*>::iterator sItr;
-		for (sItr = iat->thunkSeries.begin(); sItr != iat->thunkSeries.end(); sItr++, i++) {
-			IATThunksSeries *series = *sItr;
-			importTableBuffer->descriptors[i].FirstThunk = series->startOffset;
-			importTableBuffer->descriptors[i].OriginalFirstThunk = orig_thunk_rva;
-			//calculate size for names
-			const size_t names_space_size = series->sizeOfNamesSpace(this->artefacts.is64bit);
-			names_space += names_space_size;
-			orig_thunk_rva += names_space_size;
-		}
-	}
-	importTableBuffer->allocNamesSpace(names_start_rva, names_space);
-	i = 0;
-	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
-		IATBlock* iat = itr->second;
-		if (!iat->isValid()) {
-			continue;
-		}
-		std::set<IATThunksSeries*>::iterator sItr;
-		for (sItr = iat->thunkSeries.begin(); sItr != iat->thunkSeries.end(); sItr++, i++) {
-			IATThunksSeries *series = *sItr;
-			DWORD name_rva = importTableBuffer->descriptors[i].OriginalFirstThunk;
-			const size_t names_space_size = series->sizeOfNamesSpace(this->artefacts.is64bit);
-			BYTE *buf = importTableBuffer->getNamesSpaceAt(name_rva, names_space_size);
-			if (!buf) {
-				continue;
-			}
-			series->fillNamesSpace(buf, names_space_size, name_rva, this->artefacts.is64bit);
-		}
-	}
-	return importTableBuffer;
-}
-
-bool PeReconstructor::appendImportTable(ImportTableBuffer &importTable)
-{
-	const size_t import_table_size = importTable.getDescriptorsSize() + importTable.getNamesSize();
-	const size_t added_size = import_table_size + PAGE_SIZE;
-	const size_t new_size = this->vBufSize + added_size;
-	BYTE *new_buf = peconv::alloc_aligned(new_size, PAGE_READWRITE);
-	if (!new_buf) {
-		return false;
-	}
-	memcpy(new_buf, this->vBuf, this->vBufSize);
-	this->freeBuffer();
-
-	this->vBuf = new_buf;
-	this->vBufSize = new_size;
-
-	PIMAGE_SECTION_HEADER last_sec = peconv::get_last_section(vBuf, vBufSize, false);
-	if (!last_sec) return false;
-
-	peconv::update_image_size(vBuf, vBufSize);
-	size_t vdiff = (importTable.getRVA() + added_size) - last_sec->VirtualAddress;
-	size_t rdiff = (importTable.getRVA() + import_table_size) - last_sec->VirtualAddress;
-	last_sec->Misc.VirtualSize = vdiff;
-	last_sec->SizeOfRawData = rdiff;
-
-	IMAGE_DATA_DIRECTORY* imp_dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IMPORT, true);
-	if (!imp_dir) {
-		return false;
-	}
-	memcpy(vBuf + importTable.getRVA(), importTable.descriptors, importTable.getDescriptorsSize());
-	memcpy(vBuf + importTable.namesRVA, importTable.namesBuf, importTable.namesBufSize);
-
-	//overwrite the Data Directory:
-	imp_dir->VirtualAddress = importTable.getRVA();
-	imp_dir->Size = import_table_size;
-	return true;
 }

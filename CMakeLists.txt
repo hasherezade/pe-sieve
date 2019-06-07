@@ -50,22 +50,30 @@ set (scanners_hdrs
 	scanners/hook_targets_resolver.h
 )
 
+set (imprec_hdrs
+	postprocessors/imp_rec/imp_reconstructor.h
+	postprocessors/imp_rec/iat_block.h
+	postprocessors/imp_rec/iat_finder.h
+	postprocessors/imp_rec/import_table_finder.h
+)
+
 set (postprocessors_hdrs
 	postprocessors/report_formatter.h
 	postprocessors/results_dumper.h
 	postprocessors/pe_reconstructor.h
-	postprocessors/iat_block.h
-	postprocessors/iat_finder.h
-	postprocessors/import_table_finder.h
+)
+
+set (imprec_srcs
+	postprocessors/imp_rec/imp_reconstructor.cpp
+	postprocessors/imp_rec/iat_block.cpp
+	postprocessors/imp_rec/iat_finder.cpp
+	postprocessors/imp_rec/import_table_finder.cpp
 )
 
 set (postprocessors_srcs
 	postprocessors/report_formatter.cpp
 	postprocessors/results_dumper.cpp
 	postprocessors/pe_reconstructor.cpp
-	postprocessors/iat_block.cpp
-	postprocessors/iat_finder.cpp
-	postprocessors/import_table_finder.cpp
 )
 
 set (utils_srcs
@@ -92,6 +100,7 @@ set (srcs
 	color_scheme.h
 	${scanners_srcs}
 	${postprocessors_srcs}
+	${imprec_srcs}
 	${utils_srcs}
 )
 
@@ -101,6 +110,7 @@ set (hdrs
 	include/pe_sieve_types.h
 	${scanners_hdrs}
 	${postprocessors_hdrs}
+	${imprec_hdrs}
 	${utils_hdrs}
 )
 
@@ -119,6 +129,9 @@ SOURCE_GROUP("Header Files\\utils" FILES ${utils_hdrs} )
 
 SOURCE_GROUP("Source Files\\postprocessors" FILES ${postprocessors_srcs} )
 SOURCE_GROUP("Header Files\\postprocessors" FILES ${postprocessors_hdrs} )
+
+SOURCE_GROUP("Source Files\\postprocessors\\imp_rec" FILES ${imprec_srcs} )
+SOURCE_GROUP("Header Files\\postprocessors\\imp_rec" FILES ${imprec_hdrs} )
 
 # libs
 add_subdirectory (libpeconv/libpeconv)
