@@ -218,7 +218,7 @@ ImportTableBuffer* ImpReconstructor::constructImportTable()
 		if (!iat->isValid()) {
 			continue;
 		}
-		std::set<IATThunksSeries*>::iterator sItr;
+		IATThunksSeriesSet::iterator sItr;
 		for (sItr = iat->thunkSeries.begin(); sItr != iat->thunkSeries.end(); sItr++, i++) {
 			IATThunksSeries *series = *sItr;
 			importTableBuffer->descriptors[i].FirstThunk = series->startOffset;
@@ -239,7 +239,7 @@ ImportTableBuffer* ImpReconstructor::constructImportTable()
 		if (!iat->isValid()) {
 			continue;
 		}
-		std::set<IATThunksSeries*>::iterator sItr;
+		IATThunksSeriesSet::iterator sItr;
 		for (sItr = iat->thunkSeries.begin(); sItr != iat->thunkSeries.end(); sItr++, i++) {
 			IATThunksSeries *series = *sItr;
 			DWORD name_rva = importTableBuffer->descriptors[i].OriginalFirstThunk;

@@ -120,7 +120,7 @@ std::string IATThunksSeries::getDllName()
 
 bool IATBlock::makeCoverage(IN peconv::ExportsMapper* exportsMap)
 {
-	std::set<IATThunksSeries*>::iterator itr;
+	IATThunksSeriesSet::iterator itr;
 
 	size_t covered = 0;
 	for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); itr++) {
@@ -136,7 +136,7 @@ bool IATBlock::makeCoverage(IN peconv::ExportsMapper* exportsMap)
 size_t IATBlock::maxDllLen()
 {
 	size_t max_size = 0;
-	std::set<IATThunksSeries*>::iterator itr;
+	IATThunksSeriesSet::iterator itr;
 	for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); itr++) {
 		IATThunksSeries* series = *itr;
 		size_t curr_size = series->getDllName().length() + 1;

@@ -4,6 +4,7 @@
 
 #include <sstream>
 #include <map>
+#include <set>
 
 class IATThunksSeries
 {
@@ -45,6 +46,17 @@ private:
 	std::set<ULONGLONG> funcAddresses;
 	peconv::ImportedDllCoverage *cov;
 };
+
+struct IATThunksSeriesPtrCompare
+{
+	bool operator()(const IATThunksSeries* lhs, const IATThunksSeries* rhs)
+	{
+		if (!lhs || !rhs) return false;
+		return *lhs < *rhs;
+	}
+};
+
+typedef std::set<IATThunksSeries*, IATThunksSeriesPtrCompare> IATThunksSeriesSet;
 
 class IATBlock
 {
@@ -103,7 +115,7 @@ public:
 
 	void deleteThunkSeries()
 	{
-		std::set<IATThunksSeries*>::iterator itr;
+		IATThunksSeriesSet::iterator itr;
 		for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); itr++) {
 			delete *itr;
 		}
@@ -124,15 +136,7 @@ public:
 	DWORD importTableOffset;
 
 protected:
-	struct IATThunksSeriesPtrCompare
-	{
-		bool operator()(const IATThunksSeries* lhs, const IATThunksSeries* rhs)
-		{
-			if (!lhs || !rhs) return false;
-			return *lhs < *rhs;
-		}
-	};
-	std::set<IATThunksSeries*, IATThunksSeriesPtrCompare> thunkSeries;
+	IATThunksSeriesSet thunkSeries;
 
 	bool is64bit;
 	bool isCoverageComplete;
