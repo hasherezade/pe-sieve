@@ -6,7 +6,6 @@
 
 #include <peconv.h>
 #include "../scanners/artefact_scanner.h"
-#include "iat_block.h"
 
 class PeBuffer {
 public:

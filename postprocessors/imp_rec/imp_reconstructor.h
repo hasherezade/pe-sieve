@@ -5,7 +5,7 @@
 
 #include <peconv.h>
 
-#include "pe_reconstructor.h"
+#include "../pe_reconstructor.h"
 #include "iat_block.h"
 
 class ImportTableBuffer

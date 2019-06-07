@@ -1,8 +1,9 @@
 #include "imp_reconstructor.h"
-#include <fstream>
 
 #include "iat_finder.h"
 #include "import_table_finder.h"
+
+#include <fstream>
 
 bool ImpReconstructor::rebuildImportTable(IN peconv::ExportsMapper* exportsMap, IN const t_pesieve_imprec_mode &imprec_mode)
 {
@@ -54,7 +55,6 @@ void ImpReconstructor::printFoundIATs(std::string reportPath)
 	}
 	report.close();
 }
-
 
 IATBlock* ImpReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap, size_t start_offset)
 {
