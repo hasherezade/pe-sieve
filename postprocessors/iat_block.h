@@ -226,5 +226,5 @@ protected:
 
 	std::set<IATThunksSeries*> thunkSeries;
 
-	friend class PeReconstructor;
+	friend class ImpReconstructor;
 };

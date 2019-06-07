@@ -7,6 +7,7 @@
 #include "../utils/util.h"
 #include "../utils/workingset_enum.h"
 #include "pe_reconstructor.h"
+#include "imp_reconstructor.h"
 
 #define DIR_SEPARATOR "\\"
 //---
@@ -159,11 +160,12 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 				ULONGLONG found_pe_base = artefactReport->artefacts.peImageBase();
 				PeReconstructor peRec(artefactReport->artefacts);
 				if (peRec.reconstruct(processHandle)) {
-					bool is_imp_rec = peRec.rebuildImportTable(process_report.exportsMap, imprec_mode);
+					ImpReconstructor impRec(peRec.getBuffer());
+					bool is_imp_rec = impRec.rebuildImportTable(process_report.exportsMap, imprec_mode);
 					dumpFileName = makeModuleDumpPath(found_pe_base, modulePath, ".rec" + payload_ext);
 					is_module_dumped = peRec.dumpToFile(dumpFileName, curr_dump_mode, process_report.exportsMap);
 					if (!is_imp_rec || save_imp_report) {
-						peRec.printFoundIATs(dumpFileName + ".imports.txt");
+						impRec.printFoundIATs(dumpFileName + ".imports.txt");
 					}
 				}
 				else {

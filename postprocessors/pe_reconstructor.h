@@ -8,92 +8,73 @@
 #include "../scanners/artefact_scanner.h"
 #include "iat_block.h"
 
-class ImportTableBuffer
-{
+class PeBuffer {
 public:
-	ImportTableBuffer(DWORD _descriptorsRVA)
-		: descriptors(nullptr), descriptosCount(0), 
-		descriptorsRVA(_descriptorsRVA),
-		namesRVA(0), namesBuf(nullptr), namesBufSize(0)
+	PeBuffer()
+		: vBuf(nullptr), vBufSize(0), moduleBase(0)
 	{
 	}
 
-	~ImportTableBuffer()
+	~PeBuffer()
 	{
-		delete[]descriptors;
-		delete[]namesBuf;
+		freeBuffer();
 	}
 
-	bool allocDesciptors(size_t descriptors_count)
+	bool allocBuffer(const size_t pe_vsize)
 	{
-		descriptors = new IMAGE_IMPORT_DESCRIPTOR[descriptors_count];
-		if (!descriptors) {
+		freeBuffer();
+		vBuf = peconv::alloc_aligned(pe_vsize, PAGE_READWRITE);
+		if (!vBuf) {
 			return false;
 		}
-		memset(descriptors, 0, descriptors_count);
-		size_t size_bytes = sizeof(IMAGE_IMPORT_DESCRIPTOR) * descriptors_count;
-		memset(descriptors, 0, size_bytes);
-		descriptosCount = descriptors_count;
+		vBufSize = pe_vsize;
 		return true;
 	}
 
-	bool allocNamesSpace(DWORD names_rva, size_t names_size)
+	void freeBuffer()
 	{
-		if (namesBuf) delete[]namesBuf;
-		this->namesBuf = new BYTE[names_size];
-		if (!this->namesBuf) {
-			this->namesBufSize = 0;
+		peconv::free_aligned(vBuf);
+		vBuf = nullptr;
+		vBufSize = 0;
+		moduleBase = 0;
+	}
+
+	bool readRemote(HANDLE process_hndl, ULONGLONG module_base, size_t pe_vsize)
+	{
+		if (!allocBuffer(pe_vsize)) {
 			return false;
 		}
-		memset(this->namesBuf, 0, names_size);
-		this->namesBufSize = names_size;
-		this->namesRVA = names_rva;
+		size_t read_size = peconv::read_remote_area(process_hndl, (BYTE*)module_base, vBuf, pe_vsize);
+		if (read_size == 0) {
+			freeBuffer();
+			return false;
+		}
+		this->moduleBase = module_base;
 		return true;
 	}
-
-	BYTE* getNamesSpaceAt(const DWORD rva, size_t required_size)
+	
+	bool resizeBuffer(size_t new_size)
 	{
-		if (!this->namesBuf) return nullptr;
-		size_t offset = rva - this->namesRVA;
-
-		BYTE* names_ptr = offset + this->namesBuf;
-		if (peconv::validate_ptr(namesBuf, namesBufSize, names_ptr, required_size)) {
-			return names_ptr;
+		BYTE *new_buf = peconv::alloc_aligned(new_size, PAGE_READWRITE);
+		if (!new_buf) {
+			return false;
 		}
-		return nullptr;
-	}
+		size_t smaller_size = (vBufSize < new_size) ? vBufSize : new_size;
+		memcpy(new_buf, this->vBuf, smaller_size);
+		freeBuffer();
 
-	size_t getDescriptorsSize()
-	{
-		if (!descriptors) return 0;
-		const size_t size_bytes = sizeof(IMAGE_IMPORT_DESCRIPTOR) * descriptosCount;
-		return size_bytes;
-	}
-
-	size_t getNamesSize()
-	{
-		if (!this->namesBuf) return 0;
-		return this->namesBufSize;
-	}
-
-	DWORD getRVA()
-	{
-		return descriptorsRVA;
+		this->vBuf = new_buf;
+		this->vBufSize = new_size;
+		return true;
 	}
 
 protected:
-	IMAGE_IMPORT_DESCRIPTOR * descriptors;
+	BYTE *vBuf;
+	size_t vBufSize;
+	ULONGLONG moduleBase;
 
-private:
-	
-	DWORD descriptorsRVA;
-	size_t descriptosCount;
-
-	DWORD namesRVA;
-	BYTE* namesBuf;
-	size_t namesBufSize;
-
-friend class PeReconstructor;
+	friend class ImpReconstructor;
+	friend class PeReconstructor;
 };
 
 template <typename IMAGE_OPTIONAL_HEADER_T>
@@ -131,39 +112,25 @@ bool overwrite_opt_hdr(BYTE* vBuf, size_t vBufSize, IMAGE_OPTIONAL_HEADER_T* opt
 class PeReconstructor {
 public:
 	PeReconstructor(PeArtefacts _artefacts)
-		: origArtefacts(_artefacts),
-		vBuf(nullptr), vBufSize(0), moduleBase(0)
+		: origArtefacts(_artefacts)
 	{
+		this->peBuffer = new PeBuffer();
 	}
 
 	~PeReconstructor() {
-		deleteFoundIATs();
-		freeBuffer();
+		delete peBuffer;
+	}
+	
+	//WARNING: the buffer will be deleted when the PeReconstructor is deleted
+	PeBuffer* getBuffer()
+	{
+		return this->peBuffer;
 	}
 
 	bool reconstruct(IN HANDLE processHandle);
-	bool rebuildImportTable(IN peconv::ExportsMapper* exportsMap, IN const t_pesieve_imprec_mode &imprec_mode);
-
 	bool dumpToFile(IN std::string dumpFileName, IN peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL peconv::ExportsMapper* exportsMap = nullptr);
 
-	void printFoundIATs(std::string reportPath);
-
 protected:
-	IATBlock* findIAT(IN peconv::ExportsMapper* exportsMap, size_t start_offset);
-	bool findImportTable(IN peconv::ExportsMapper* exportsMap);
-	size_t collectIATs(IN peconv::ExportsMapper* exportsMap);
-
-	bool findIATsCoverage(IN peconv::ExportsMapper* exportsMap);
-	ImportTableBuffer* constructImportTable();
-	bool appendImportTable(ImportTableBuffer &importTable);
-
-	void freeBuffer() {
-		peconv::free_aligned(vBuf);
-		vBuf = nullptr;
-		vBufSize = 0;
-		moduleBase = 0;
-	}
-
 	bool reconstructFileHdr();
 	bool reconstructPeHdr();
 	bool fixSectionsVirtualSize(HANDLE processHandle);
@@ -171,29 +138,7 @@ protected:
 
 	size_t shiftPeHeader();
 
-	bool appendFoundIAT(DWORD iat_offset, IATBlock* found_block)
-	{
-		if (foundIATs.find(iat_offset) != foundIATs.end()) {
-			return false; //already exist
-		}
-		foundIATs[iat_offset] = found_block;
-		return true;
-	}
-
-	void deleteFoundIATs()
-	{
-		std::map<DWORD, IATBlock*>::iterator itr;
-		for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
-			delete itr->second;
-		}
-		foundIATs.clear();
-	}
-
 	const PeArtefacts origArtefacts;
 	PeArtefacts artefacts;
-	BYTE *vBuf;
-	size_t vBufSize;
-	ULONGLONG moduleBase;
-
-	std::map<DWORD, IATBlock*> foundIATs;
+	PeBuffer *peBuffer;
 };
