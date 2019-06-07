@@ -18,6 +18,11 @@ public:
 		delete cov;
 	}
 
+	bool operator<(const IATThunksSeries &other) const
+	{
+		return startOffset < other.startOffset;
+	}
+
 	bool insert(ULONGLONG funcAddr)
 	{
 		funcAddresses.insert(funcAddr);
@@ -54,7 +59,12 @@ public:
 	{
 		deleteThunkSeries();
 	}
-	
+
+	bool operator<(const IATBlock &other) const
+	{
+		return iatOffset < other.iatOffset;
+	}
+
 	void appendSeries(IATThunksSeries* series)
 	{
 		thunkSeries.insert(series);
@@ -109,13 +119,21 @@ public:
 	DWORD importTableOffset;
 
 protected:
+	struct IATThunksSeriesPtrCompare
+	{
+		bool operator()(const IATThunksSeries* lhs, const IATThunksSeries* rhs)
+		{
+			if (!lhs || !rhs) return false;
+			return *lhs < *rhs;
+		}
+	};
+	std::set<IATThunksSeries*, IATThunksSeriesPtrCompare> thunkSeries;
+
 	bool is64bit;
 	bool isCoverageComplete;
 
 	std::map<ULONGLONG, const peconv::ExportedFunc*> functions; //TODO: this will be deleted or refactored
 	std::map<ULONGLONG, ULONGLONG> addrToFunctionVA; //TODO: this will be deleted or refactored
-
-	std::set<IATThunksSeries*> thunkSeries;
 
 	friend class ImpReconstructor;
 };
