@@ -101,7 +101,7 @@ size_t dump_output(ProcessScanReport *process_report, HANDLE hProcess, const t_p
 		if (args.dump_mode < peconv::PE_DUMP_MODES_COUNT) {
 			dump_mode = peconv::t_pe_dump_mode(args.dump_mode);
 		}
-		dumped_modules = dumper.dumpAllModified(hProcess, *process_report, dump_mode);
+		dumped_modules = dumper.dumpAllModified(hProcess, *process_report, dump_mode, args.imprec_mode);
 		if (dumped_modules) {
 			std::cout << "[+] Dumped modified to: " << dumper.dumpDir << std::endl;
 		}

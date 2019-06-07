@@ -14,7 +14,7 @@ public:
 	{
 	}
 
-	size_t dumpAllModified(HANDLE hProcess, ProcessScanReport &process_report, const peconv::t_pe_dump_mode dump_mode);
+	size_t dumpAllModified(HANDLE hProcess, ProcessScanReport &process_report, const peconv::t_pe_dump_mode dump_mode, const t_pesieve_imprec_mode imprec_mode);
 	bool dumpJsonReport(ProcessScanReport &process_report, t_report_filter filter);
 	std::string dumpDir; // dump directory
 	std::string baseDir; // base directory

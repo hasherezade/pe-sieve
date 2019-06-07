@@ -12,10 +12,18 @@ typedef enum {
 	OUT_FILTERS_COUNT
 } t_output_filter;
 
+typedef enum {
+	PE_IMPREC_NONE = 0,// do not try to recover imports
+	PE_IMPREC_AUTO, // try to autodetect the most suitable mode
+	PE_IMPREC_UNERASE, // recover erased parts of the partialy damaged import table
+	PE_IMPREC_REBUILD, // build the import table from the scratch, basing on the found IAT(s)
+	PE_IMPREC_MODES_COUNT
+} t_pesieve_imprec_mode;
+
 typedef struct {
 	DWORD pid;
 	DWORD modules_filter;
-	bool imp_rec;
+	t_pesieve_imprec_mode imprec_mode; //import recovery mode
 	bool quiet; // do not print log on the stdout
 	t_output_filter out_filter;
 	bool no_hooks; // don't scan for hooks
