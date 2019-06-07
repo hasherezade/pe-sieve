@@ -71,19 +71,19 @@ public:
 		return true;
 	}
 	
-	bool resizeLastSection(size_t new_raw_end, size_t new_virtual_end)
+	bool resizeLastSection(size_t new_virtual_end)
 	{
 		PIMAGE_SECTION_HEADER last_sec = peconv::get_last_section(vBuf, vBufSize, false);
 		if (!last_sec) {
 			return false;
 		}
 
-		if (new_virtual_end < last_sec->VirtualAddress || new_raw_end < last_sec->VirtualAddress) {
+		if (new_virtual_end < last_sec->VirtualAddress) {
 			return false;
 		}
 
 		const size_t new_virtual_size = new_virtual_end - last_sec->VirtualAddress;
-		const size_t new_raw_size = new_raw_end - last_sec->VirtualAddress;
+		const size_t new_raw_size = new_virtual_size;
 
 		if (last_sec->VirtualAddress + new_virtual_size > this->vBufSize) {
 			//buffer too small

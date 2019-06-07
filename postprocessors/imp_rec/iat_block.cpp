@@ -32,7 +32,6 @@ bool IATThunksSeries::makeCoverage(IN peconv::ExportsMapper* exportsMap)
 	return covered == this->funcAddresses.size();
 }
 
-
 bool IATThunksSeries::fillNamesSpace(const BYTE* buf_start, size_t buf_size, DWORD bufRVA, bool is64b)
 {
 	if (!buf_start || !this->cov) return false;
@@ -111,6 +110,12 @@ size_t IATThunksSeries::sizeOfNamesSpace(bool is64b)
 	return space_size;
 }
 
+std::string IATThunksSeries::getDllName()
+{
+	if (!cov) return "";
+	return cov->dllName + ".dll";
+}
+
 //---
 
 bool IATBlock::makeCoverage(IN peconv::ExportsMapper* exportsMap)
@@ -126,6 +131,24 @@ bool IATBlock::makeCoverage(IN peconv::ExportsMapper* exportsMap)
 	}
 	isCoverageComplete = (covered == this->thunkSeries.size());
 	return isCoverageComplete;
+}
+
+size_t IATBlock::maxDllLen()
+{
+	size_t max_size = 0;
+	std::set<IATThunksSeries*>::iterator itr;
+	for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); itr++) {
+		IATThunksSeries* series = *itr;
+		size_t curr_size = series->getDllName().length() + 1;
+		if (curr_size > max_size) max_size = curr_size;
+	}
+	return max_size;
+}
+
+size_t IATBlock::sizeOfDllsSpace()
+{
+	const size_t max_len = maxDllLen();
+	return max_len * (thunkSeries.size() + 1);
 }
 
 std::string IATBlock::toString()

@@ -209,7 +209,7 @@ ImportTableBuffer* ImpReconstructor::constructImportTable()
 	ImportTableBuffer *importTableBuffer = new ImportTableBuffer(vBufSize);
 	importTableBuffer->allocDesciptors(ready_blocks + 1);
 
-	const size_t names_start_rva = importTableBuffer->getRVA() + importTableBuffer->getDescriptorsSize();
+	const DWORD names_start_rva = importTableBuffer->getRVA() + importTableBuffer->getDescriptorsSize();
 	size_t orig_thunk_rva = names_start_rva;
 	size_t names_space = 0;
 	size_t i = 0;
@@ -229,7 +229,10 @@ ImportTableBuffer* ImpReconstructor::constructImportTable()
 			orig_thunk_rva += names_space_size;
 		}
 	}
+	//fill functions' names:
 	importTableBuffer->allocNamesSpace(names_start_rva, names_space);
+	const DWORD dlls_rva = names_start_rva + names_space;
+	size_t dlls_area_size = 0;
 	i = 0;
 	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
 		IATBlock* iat = itr->second;
@@ -247,6 +250,23 @@ ImportTableBuffer* ImpReconstructor::constructImportTable()
 			}
 			series->fillNamesSpace(buf, names_space_size, name_rva, this->is64bit);
 		}
+		dlls_area_size += iat->sizeOfDllsSpace();
+	}
+	//fill DLLs' names:
+	importTableBuffer->reserveDllsSpace(dlls_rva, dlls_area_size);
+	DWORD dll_name_rva = dlls_rva;
+	i = 0;
+	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
+		IATBlock* iat = itr->second;
+		if (!iat->isValid()) {
+			continue;
+		}
+		size_t max_dll_name = iat->maxDllLen();
+		for (size_t k = 0; k < iat->thunkSeries.size(); k++, i++) {
+			importTableBuffer->descriptors[i].Name = dll_name_rva;
+			dll_name_rva += max_dll_name;
+			//no need to physically fill this name here, it will be done during dumping
+		}
 	}
 	return importTableBuffer;
 }
@@ -255,16 +275,15 @@ bool ImpReconstructor::appendImportTable(ImportTableBuffer &importTable)
 {
 	if (!peBuffer) return false;
 
-	const size_t import_table_size = importTable.getDescriptorsSize() + importTable.getNamesSize();
-	const size_t added_size = import_table_size + importTable.getDllNamesSize();
-	const size_t new_size = peBuffer->vBufSize + added_size;
+	const size_t import_table_size = importTable.getDescriptorsSize() + importTable.getNamesSize() + importTable.getDllNamesSize();
+	const size_t new_size = peBuffer->vBufSize + import_table_size;
 
 	if (!peBuffer->resizeBuffer(new_size)) {
 		return false;
 	}
 
 	const DWORD imports_start_rva = importTable.getRVA();
-	peBuffer->resizeLastSection((imports_start_rva + import_table_size), (imports_start_rva + added_size));
+	peBuffer->resizeLastSection(imports_start_rva + import_table_size);
 
 	return importTable.setTableInPe(peBuffer->vBuf, peBuffer->vBufSize);
 }

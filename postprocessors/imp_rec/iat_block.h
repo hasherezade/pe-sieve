@@ -31,6 +31,8 @@ public:
 
 	bool makeCoverage(IN peconv::ExportsMapper* exportsMap);
 
+	std::string getDllName();
+
 	//calculate the number of bytes required for filling imports names
 	size_t sizeOfNamesSpace(bool is64b);
 
@@ -109,6 +111,9 @@ public:
 	}
 
 	bool makeCoverage(IN peconv::ExportsMapper* exportsMap);
+
+	size_t maxDllLen();
+	size_t sizeOfDllsSpace();
 
 	bool isTerminated; // is the IAT finished by 0
 	bool isMain; // is the IAT set in the Data Directory

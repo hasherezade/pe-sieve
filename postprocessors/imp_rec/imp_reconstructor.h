@@ -14,7 +14,8 @@ public:
 	ImportTableBuffer(DWORD _descriptorsRVA)
 		: descriptors(nullptr), descriptosCount(0),
 		descriptorsRVA(_descriptorsRVA),
-		namesRVA(0), namesBuf(nullptr), namesBufSize(0)
+		namesRVA(0), namesBuf(nullptr), namesBufSize(0),
+		dllsRVA(0), dllsBufSize(0)
 	{
 	}
 
@@ -51,6 +52,18 @@ public:
 		return true;
 	}
 
+	bool reserveDllsSpace(DWORD dlls_rva, size_t dlls_area_size)
+	{
+		this->dllsBufSize = dlls_area_size;
+		this->dllsRVA = dlls_rva;
+		return true;
+	}
+
+	size_t getDescriptosCount()
+	{
+		return descriptosCount;
+	}
+
 	size_t getDescriptorsSize()
 	{
 		if (!descriptors) return 0;
@@ -66,7 +79,7 @@ public:
 
 	size_t getDllNamesSize()
 	{
-		return PAGE_SIZE; //TODO: calculate it
+		return dllsBufSize;
 	}
 
 	DWORD getRVA()
@@ -127,6 +140,9 @@ private:
 	DWORD namesRVA;
 	BYTE* namesBuf;
 	size_t namesBufSize;
+
+	DWORD dllsRVA;
+	size_t dllsBufSize;
 
 };
 
