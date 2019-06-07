@@ -203,8 +203,11 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], PARAM_IMP_REC)) {
 			args.imprec_mode = PE_IMPREC_AUTO;
 			if ((i + 1) < argc) {
-				args.imprec_mode = normalize_imprec_mode(atoi(argv[i + 1]));
-				++i;
+				char* mode_num = argv[i + 1];
+				if (isdigit(mode_num[0])) {
+					args.imprec_mode = normalize_imprec_mode(atoi(mode_num));
+					++i;
+				}
 			}
 		}
 		else if (!strcmp(argv[i], PARAM_OUT_FILTER) && (i + 1) < argc) {
