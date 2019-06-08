@@ -151,6 +151,8 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 		bool is_module_dumped = false;
 		bool dump_shellcode = false;
 		//whenever the artefactReport is available, use it to reconstruct a PE
+
+		PeBuffer module_buf;
 		ArtefactScanReport* artefactReport = dynamic_cast<ArtefactScanReport*>(mod);
 		if (artefactReport) {
 			if (artefactReport->has_shellcode) {
@@ -158,15 +160,9 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 			}
 			if (artefactReport->has_pe) {
 				ULONGLONG found_pe_base = artefactReport->artefacts.peImageBase();
-				PeReconstructor peRec(artefactReport->artefacts);
+				PeReconstructor peRec(artefactReport->artefacts, module_buf);
 				if (peRec.reconstruct(processHandle)) {
-					ImpReconstructor impRec(peRec.getBuffer());
-					bool is_imp_rec = impRec.rebuildImportTable(process_report.exportsMap, imprec_mode);
 					dumpFileName = makeModuleDumpPath(found_pe_base, modulePath, ".rec" + payload_ext);
-					is_module_dumped = peRec.dumpToFile(dumpFileName, curr_dump_mode, process_report.exportsMap);
-					if (!is_imp_rec || save_imp_report) {
-						impRec.printFoundIATs(dumpFileName + ".imports.txt");
-					}
 				}
 				else {
 					std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG) mod->module << " failed." << std::endl;
@@ -174,16 +170,15 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 			}
 		}
 		else {
-			//artefacts not available
-			DWORD mod_size = peconv::get_remote_image_size(processHandle, (BYTE*)mod->module);
-			PeBuffer module_buf;
-			if (module_buf.readRemote(processHandle, (ULONGLONG)mod->module, mod_size)) {
-				ImpReconstructor impRec(&module_buf);
-				bool is_imp_rec = impRec.rebuildImportTable(process_report.exportsMap, imprec_mode);
-				is_module_dumped = module_buf.dumpToFile(dumpFileName, curr_dump_mode, process_report.exportsMap);
-				if (!is_imp_rec || save_imp_report) {
-					impRec.printFoundIATs(dumpFileName + ".imports.txt");
-				}
+			module_buf.readRemote(processHandle, (ULONGLONG)mod->module, mod->moduleSize);
+		}
+
+		if (module_buf.isFilled()) {
+			ImpReconstructor impRec(module_buf);
+			bool is_imp_rec = impRec.rebuildImportTable(process_report.exportsMap, imprec_mode);
+			is_module_dumped = module_buf.dumpToFile(dumpFileName, curr_dump_mode, process_report.exportsMap);
+			if (!is_imp_rec || save_imp_report) {
+				impRec.printFoundIATs(dumpFileName + ".imports.txt");
 			}
 		}
 

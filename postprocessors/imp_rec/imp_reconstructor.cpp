@@ -15,7 +15,7 @@ bool ImpReconstructor::rebuildImportTable(IN peconv::ExportsMapper* exportsMap, 
 	}
 	bool imp_recovered = false;
 	if (imprec_mode == PE_IMPREC_UNERASE || imprec_mode == PE_IMPREC_AUTO) {
-		std::cout << "[*] Trying to find ImportTable for module: " << std::hex << (ULONGLONG)peBuffer->moduleBase << "\n";
+		std::cout << "[*] Trying to find ImportTable for module: " << std::hex << (ULONGLONG)peBuffer.moduleBase << "\n";
 		bool imp_recovered = findImportTable(exportsMap);
 		if (imp_recovered) {
 			std::cout << "[+] ImportTable found.\n";
@@ -23,7 +23,7 @@ bool ImpReconstructor::rebuildImportTable(IN peconv::ExportsMapper* exportsMap, 
 		}
 	}
 	if (imprec_mode == PE_IMPREC_REBUILD || imprec_mode == PE_IMPREC_AUTO) {
-		std::cout << "[*] Trying to rebuild ImportTable for module: " << std::hex << (ULONGLONG)peBuffer->moduleBase << "\n";
+		std::cout << "[*] Trying to rebuild ImportTable for module: " << std::hex << (ULONGLONG)peBuffer.moduleBase << "\n";
 		if (findIATsCoverage(exportsMap)) {
 			std::cout << "[+] ImportTable rebuilt.\n";
 
@@ -58,9 +58,8 @@ void ImpReconstructor::printFoundIATs(std::string reportPath)
 
 IATBlock* ImpReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap, size_t start_offset)
 {
-	if (!peBuffer) return nullptr;
-	BYTE *vBuf = this->peBuffer->vBuf;
-	const size_t vBufSize = this->peBuffer->vBufSize;
+	BYTE *vBuf = this->peBuffer.vBuf;
+	const size_t vBufSize = this->peBuffer.vBufSize;
 	if (!vBuf) return nullptr;
 
 	IATBlock* iat_block = find_iat_block(is64bit, vBuf, vBufSize, exportsMap, start_offset);;
@@ -79,9 +78,8 @@ IATBlock* ImpReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap, size_t
 
 size_t ImpReconstructor::collectIATs(IN peconv::ExportsMapper* exportsMap)
 {
-	if (!peBuffer) return 0;
-	BYTE *vBuf = this->peBuffer->vBuf;
-	const size_t vBufSize = this->peBuffer->vBufSize;
+	BYTE *vBuf = this->peBuffer.vBuf;
+	const size_t vBufSize = this->peBuffer.vBufSize;
 	if (!vBuf) return 0;
 
 	size_t found = 0;
@@ -109,9 +107,8 @@ size_t ImpReconstructor::collectIATs(IN peconv::ExportsMapper* exportsMap)
 
 bool ImpReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 {
-	if (!peBuffer) return false;
-	BYTE *vBuf = this->peBuffer->vBuf;
-	const size_t vBufSize = this->peBuffer->vBufSize;
+	BYTE *vBuf = this->peBuffer.vBuf;
+	const size_t vBufSize = this->peBuffer.vBufSize;
 	if (!vBuf) return false;
 
 	IMAGE_DATA_DIRECTORY* imp_dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IMPORT, true);
@@ -190,9 +187,8 @@ bool ImpReconstructor::findIATsCoverage(IN peconv::ExportsMapper* exportsMap)
 
 ImportTableBuffer* ImpReconstructor::constructImportTable()
 {
-	if (!peBuffer) return false;
-	BYTE *vBuf = this->peBuffer->vBuf;
-	const size_t vBufSize = this->peBuffer->vBufSize;
+	BYTE *vBuf = this->peBuffer.vBuf;
+	const size_t vBufSize = this->peBuffer.vBufSize;
 	if (!vBuf) return false;
 
 	size_t ready_blocks = 0;
@@ -273,17 +269,15 @@ ImportTableBuffer* ImpReconstructor::constructImportTable()
 
 bool ImpReconstructor::appendImportTable(ImportTableBuffer &importTable)
 {
-	if (!peBuffer) return false;
-
 	const size_t import_table_size = importTable.getDescriptorsSize() + importTable.getNamesSize() + importTable.getDllNamesSize();
-	const size_t new_size = peBuffer->vBufSize + import_table_size;
+	const size_t new_size = peBuffer.vBufSize + import_table_size;
 
-	if (!peBuffer->resizeBuffer(new_size)) {
+	if (!peBuffer.resizeBuffer(new_size)) {
 		return false;
 	}
 
 	const DWORD imports_start_rva = importTable.getRVA();
-	peBuffer->resizeLastSection(imports_start_rva + import_table_size);
+	peBuffer.resizeLastSection(imports_start_rva + import_table_size);
 
-	return importTable.setTableInPe(peBuffer->vBuf, peBuffer->vBufSize);
+	return importTable.setTableInPe(peBuffer.vBuf, peBuffer.vBufSize);
 }

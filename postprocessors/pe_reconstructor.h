@@ -19,6 +19,11 @@ public:
 		freeBuffer();
 	}
 
+	bool isFilled()
+	{
+		return (vBuf && vBufSize > 0);
+	}
+
 	bool allocBuffer(const size_t pe_vsize)
 	{
 		freeBuffer();
@@ -144,24 +149,12 @@ bool overwrite_opt_hdr(BYTE* vBuf, size_t vBufSize, IMAGE_OPTIONAL_HEADER_T* opt
 
 class PeReconstructor {
 public:
-	PeReconstructor(PeArtefacts _artefacts)
-		: origArtefacts(_artefacts)
+	PeReconstructor(PeArtefacts _artefacts, PeBuffer &_peBuffer)
+		: origArtefacts(_artefacts), peBuffer(_peBuffer)
 	{
-		this->peBuffer = new PeBuffer();
-	}
-
-	~PeReconstructor() {
-		delete peBuffer;
-	}
-	
-	//WARNING: the buffer will be deleted when the PeReconstructor is deleted
-	PeBuffer* getBuffer()
-	{
-		return this->peBuffer;
 	}
 
 	bool reconstruct(IN HANDLE processHandle);
-	bool dumpToFile(IN std::string dumpFileName, IN peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL peconv::ExportsMapper* exportsMap = nullptr);
 
 protected:
 	bool reconstructFileHdr();
@@ -173,5 +166,5 @@ protected:
 
 	const PeArtefacts origArtefacts;
 	PeArtefacts artefacts;
-	PeBuffer *peBuffer;
+	PeBuffer &peBuffer;
 };

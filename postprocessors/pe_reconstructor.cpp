@@ -41,9 +41,8 @@ inline bool shift_artefacts(PeArtefacts& artefacts, size_t shift_size)
 //WARNING: this function shifts also offsets saved in the artefacts
 size_t PeReconstructor::shiftPeHeader()
 {
-	if (!peBuffer) return 0;
-	BYTE *vBuf = this->peBuffer->vBuf;
-	const size_t vBufSize = this->peBuffer->vBufSize;
+	BYTE *vBuf = this->peBuffer.vBuf;
+	const size_t vBufSize = this->peBuffer.vBufSize;
 	if (vBuf == nullptr) return 0;
 
 	if (!this->artefacts.hasNtHdrs()) return 0;
@@ -98,12 +97,10 @@ size_t PeReconstructor::shiftPeHeader()
 
 bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 {
-	if (!peBuffer) return false;
-
 	this->artefacts = origArtefacts;
 
 	ULONGLONG moduleBase = artefacts.regionStart + artefacts.peBaseOffset;
-	if (!peBuffer->readRemote(processHandle, moduleBase, artefacts.calculatedImgSize)) {
+	if (!peBuffer.readRemote(processHandle, moduleBase, artefacts.calculatedImgSize)) {
 		return false;
 	}
 	std::cout << "Reading remote success!\n";
@@ -120,7 +117,7 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 		return false;
 	}
 	//do not modify section headers if the PE is in raw format, or no unmapping requested
-	if (!peconv::is_pe_raw(peBuffer->vBuf, peBuffer->vBufSize)) {
+	if (!peconv::is_pe_raw(peBuffer.vBuf, peBuffer.vBufSize)) {
 		if (!fixSectionsVirtualSize(processHandle) || !fixSectionsCharacteristics(processHandle)) {
 			return false;
 		}
@@ -130,9 +127,8 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 
 bool PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 {
-	if (!peBuffer) return false;
-	BYTE *vBuf = this->peBuffer->vBuf;
-	const size_t vBufSize = this->peBuffer->vBufSize;
+	BYTE *vBuf = this->peBuffer.vBuf;
+	const size_t vBufSize = this->peBuffer.vBufSize;
 	if (!vBuf) return false;
 
 	if (!this->artefacts.hasSectionHdrs()) {
@@ -194,9 +190,8 @@ bool PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 
 bool PeReconstructor::fixSectionsCharacteristics(HANDLE processHandle)
 {
-	if (!peBuffer) return false;
-	BYTE *vBuf = this->peBuffer->vBuf;
-	const size_t vBufSize = this->peBuffer->vBufSize;
+	BYTE *vBuf = this->peBuffer.vBuf;
+	const size_t vBufSize = this->peBuffer.vBufSize;
 	if (!vBuf) return false;
 
 	if (!this->artefacts.hasSectionHdrs()) {
@@ -232,9 +227,8 @@ bool PeReconstructor::fixSectionsCharacteristics(HANDLE processHandle)
 
 bool PeReconstructor::reconstructFileHdr()
 {
-	if (!peBuffer) return false;
-	BYTE *vBuf = this->peBuffer->vBuf;
-	const size_t vBufSize = this->peBuffer->vBufSize;
+	BYTE *vBuf = this->peBuffer.vBuf;
+	const size_t vBufSize = this->peBuffer.vBufSize;
 	if (!vBuf) return false;
 
 	if (!this->artefacts.hasNtHdrs()) {
@@ -276,9 +270,8 @@ bool PeReconstructor::reconstructFileHdr()
 
 bool PeReconstructor::reconstructPeHdr()
 {
-	if (!peBuffer) return false;
-	BYTE *vBuf = this->peBuffer->vBuf;
-	const size_t vBufSize = this->peBuffer->vBufSize;
+	BYTE *vBuf = this->peBuffer.vBuf;
+	const size_t vBufSize = this->peBuffer.vBufSize;
 	if (!vBuf) return false;
 
 	if (!this->artefacts.hasNtHdrs()) {
@@ -322,8 +315,3 @@ bool PeReconstructor::reconstructPeHdr()
 	return true;
 }
 
-bool PeReconstructor::dumpToFile(std::string dumpFileName, peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL peconv::ExportsMapper* exportsMap)
-{
-	if (!peBuffer) return false;
-	return peBuffer->dumpToFile(dumpFileName, dumpMode, exportsMap);
-}

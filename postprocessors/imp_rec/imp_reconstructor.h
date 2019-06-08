@@ -148,11 +148,11 @@ private:
 
 class ImpReconstructor {
 public:
-	ImpReconstructor(PeBuffer *_peBuffer) 
+	ImpReconstructor(PeBuffer &_peBuffer) 
 	: peBuffer(_peBuffer), is64bit(false)
 	{
-		if (_peBuffer && _peBuffer->vBuf) {
-			this->is64bit = peconv::is64bit(_peBuffer->vBuf);
+		if (peBuffer.vBuf) {
+			this->is64bit = peconv::is64bit(peBuffer.vBuf);
 		}
 	}
 
@@ -192,7 +192,7 @@ private:
 		foundIATs.clear();
 	}
 
-	PeBuffer *peBuffer;
+	PeBuffer &peBuffer;
 	bool is64bit;
 	std::map<DWORD, IATBlock*> foundIATs;
 };
