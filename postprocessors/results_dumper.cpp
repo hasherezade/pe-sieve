@@ -165,7 +165,12 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 		}
 	}
 	else {
-		module_buf.readRemote(processHandle, (ULONGLONG)mod->module, mod->moduleSize);
+		size_t img_size = mod->moduleSize;
+		if (img_size == 0) {
+			//some of the reports may not have moduleSize filled
+			img_size = peconv::get_remote_image_size(processHandle, (BYTE*)mod->module);
+		}
+		module_buf.readRemote(processHandle, (ULONGLONG)mod->module, img_size);
 	}
 
 	if (module_buf.isFilled()) {
