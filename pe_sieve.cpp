@@ -93,7 +93,7 @@ size_t dump_output(ProcessScanReport *process_report, HANDLE hProcess, const t_p
 	ResultsDumper dumper(args.output_dir, args.quiet);
 
 	if (dumper.dumpJsonReport(*process_report, REPORT_SUSPICIOUS_AND_ERRORS)) {
-		std::cout << "[+] Report dumped to: " << dumper.dumpDir << std::endl;
+		std::cout << "[+] Report dumped to: " << dumper.getOutputDir() << std::endl;
 	}
 	size_t dumped_modules = 0;
 	if (args.out_filter != OUT_NO_DUMPS) {
@@ -101,9 +101,9 @@ size_t dump_output(ProcessScanReport *process_report, HANDLE hProcess, const t_p
 		if (args.dump_mode < peconv::PE_DUMP_MODES_COUNT) {
 			dump_mode = peconv::t_pe_dump_mode(args.dump_mode);
 		}
-		dumped_modules = dumper.dumpAllModified(hProcess, *process_report, dump_mode, args.imprec_mode);
+		dumped_modules = dumper.dumpDetectedModules(hProcess, *process_report, dump_mode, args.imprec_mode);
 		if (dumped_modules) {
-			std::cout << "[+] Dumped modified to: " << dumper.dumpDir << std::endl;
+			std::cout << "[+] Dumped modified to: " << dumper.getOutputDir() << std::endl;
 		}
 	}
 	return dumped_modules;
