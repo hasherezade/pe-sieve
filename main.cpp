@@ -226,7 +226,7 @@ int main(int argc, char *argv[])
 			++i;
 		}
 		else if (!strcmp(argv[i], PARAM_VERSION)) {
-			std::cout << PESIEVE_VERSION << std::endl;
+			std::cout << PESIEVE_VERSION << "\n";
 			info_req = true;
 		}
 		else if (!strcmp(argv[i], PARAM_QUIET)) {

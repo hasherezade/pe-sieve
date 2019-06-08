@@ -136,12 +136,13 @@ ProcessScanReport* scan_process(const t_params args)
 std::string info()
 {
 	std::stringstream stream;
-	stream << "version: " << PESIEVE_VERSION;
+	stream << "Version:  " << PESIEVE_VERSION;
 #ifdef _WIN64
-	stream << " (x64)" << "\n\n";
+	stream << " (x64)" << "\n";
 #else
-	stream << " (x86)" << "\n\n";
+	stream << " (x86)" << "\n";
 #endif
+	stream << "Built on: " << __DATE__ << " " << __TIME__ << "\n\n";
 	stream << "~ from hasherezade with love ~\n";
 	stream << "Scans a given process, recognizes and dumps a variety of in-memory implants:\nreplaced/injected PEs, shellcodes, inline hooks, patches etc.\n";
 	stream << "URL: " << PESIEVE_URL << "\n";
