@@ -4,13 +4,16 @@
 #include <map>
 
 #include <peconv.h>
+#include "pe_sieve_types.h"
 
-#include "../pe_reconstructor.h"
+#include "../pe_buffer.h"
 #include "iat_block.h"
 
 class ImportTableBuffer
 {
+
 public:
+
 	ImportTableBuffer(DWORD _descriptorsRVA)
 		: descriptors(nullptr), descriptosCount(0),
 		descriptorsRVA(_descriptorsRVA),
@@ -117,6 +120,7 @@ public:
 	}
 
 protected:
+
 	BYTE * getNamesSpaceAt(const DWORD rva, size_t required_size)
 	{
 		if (!this->namesBuf) return nullptr;
@@ -143,13 +147,14 @@ private:
 
 	DWORD dllsRVA;
 	size_t dllsBufSize;
-
 };
 
 class ImpReconstructor {
+
 public:
+
 	ImpReconstructor(PeBuffer &_peBuffer) 
-	: peBuffer(_peBuffer), is64bit(false)
+		: peBuffer(_peBuffer), is64bit(false)
 	{
 		if (peBuffer.vBuf) {
 			this->is64bit = peconv::is64bit(peBuffer.vBuf);

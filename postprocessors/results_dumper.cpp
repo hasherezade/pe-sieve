@@ -176,7 +176,7 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 		if (module_buf.isFilled()) {
 			ImpReconstructor impRec(module_buf);
 			bool is_imp_rec = impRec.rebuildImportTable(process_report.exportsMap, imprec_mode);
-			is_module_dumped = module_buf.dumpToFile(dumpFileName, curr_dump_mode, process_report.exportsMap);
+			is_module_dumped = module_buf.dumpPeToFile(dumpFileName, curr_dump_mode, process_report.exportsMap);
 			if (!is_imp_rec || save_imp_report) {
 				impRec.printFoundIATs(dumpFileName + ".imports.txt");
 			}

@@ -60,6 +60,7 @@ set (imprec_hdrs
 set (postprocessors_hdrs
 	postprocessors/report_formatter.h
 	postprocessors/results_dumper.h
+	postprocessors/pe_buffer.h
 	postprocessors/pe_reconstructor.h
 )
 
@@ -73,6 +74,7 @@ set (imprec_srcs
 set (postprocessors_srcs
 	postprocessors/report_formatter.cpp
 	postprocessors/results_dumper.cpp
+	postprocessors/pe_buffer.cpp
 	postprocessors/pe_reconstructor.cpp
 )
 
