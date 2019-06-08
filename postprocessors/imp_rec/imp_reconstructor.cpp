@@ -5,7 +5,7 @@
 
 #include <fstream>
 
-bool ImpReconstructor::rebuildImportTable(IN peconv::ExportsMapper* exportsMap, IN const t_pesieve_imprec_mode &imprec_mode)
+bool ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const t_pesieve_imprec_mode &imprec_mode)
 {
 	if (!exportsMap) {
 		return false;
@@ -56,7 +56,7 @@ void ImpReconstructor::printFoundIATs(std::string reportPath)
 	report.close();
 }
 
-IATBlock* ImpReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap, size_t start_offset)
+IATBlock* ImpReconstructor::findIAT(IN const peconv::ExportsMapper* exportsMap, size_t start_offset)
 {
 	BYTE *vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;
@@ -76,7 +76,7 @@ IATBlock* ImpReconstructor::findIAT(IN peconv::ExportsMapper* exportsMap, size_t
 	return iat_block;
 }
 
-size_t ImpReconstructor::collectIATs(IN peconv::ExportsMapper* exportsMap)
+size_t ImpReconstructor::collectIATs(IN const peconv::ExportsMapper* exportsMap)
 {
 	BYTE *vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;
@@ -105,7 +105,7 @@ size_t ImpReconstructor::collectIATs(IN peconv::ExportsMapper* exportsMap)
 	return found;
 }
 
-bool ImpReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
+bool ImpReconstructor::findImportTable(IN const peconv::ExportsMapper* exportsMap)
 {
 	BYTE *vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;
@@ -169,7 +169,7 @@ bool ImpReconstructor::findImportTable(IN peconv::ExportsMapper* exportsMap)
 	return true;
 }
 
-bool ImpReconstructor::findIATsCoverage(IN peconv::ExportsMapper* exportsMap)
+bool ImpReconstructor::findIATsCoverage(IN const peconv::ExportsMapper* exportsMap)
 {
 	size_t covered = 0;
 	std::map<DWORD, IATBlock*>::iterator itr;

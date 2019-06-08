@@ -117,6 +117,76 @@ std::string get_dump_mode_name(peconv::t_pe_dump_mode dump_mode)
 	return "";
 }
 
+bool ResultsDumper::dumpModified(HANDLE processHandle, 
+	ModuleScanReport* mod, 
+	const peconv::ExportsMapper *exportsMap, 
+	const peconv::t_pe_dump_mode dump_mode, 
+	const t_pesieve_imprec_mode imprec_mode
+)
+{
+	bool save_imp_report = true;
+
+	char szModName[MAX_PATH] = { 0 };
+	memset(szModName, 0, MAX_PATH);
+
+	std::string modulePath = "";
+	if (GetModuleFileNameExA(processHandle, mod->module, szModName, MAX_PATH)) {
+		modulePath = get_file_name(szModName);
+	}
+	const std::string payload_ext = get_payload_ext(mod);
+	std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, payload_ext);
+	peconv::t_pe_dump_mode curr_dump_mode = dump_mode;
+
+	bool is_module_dumped = false;
+	bool dump_shellcode = false;
+	//whenever the artefactReport is available, use it to reconstruct a PE
+
+	PeBuffer module_buf;
+	ArtefactScanReport* artefactReport = dynamic_cast<ArtefactScanReport*>(mod);
+	if (artefactReport) {
+		if (artefactReport->has_shellcode) {
+			dump_shellcode = true;
+		}
+		if (artefactReport->has_pe) {
+			ULONGLONG found_pe_base = artefactReport->artefacts.peImageBase();
+			PeReconstructor peRec(artefactReport->artefacts, module_buf);
+			if (peRec.reconstruct(processHandle)) {
+				dumpFileName = makeModuleDumpPath(found_pe_base, modulePath, ".rec" + payload_ext);
+			}
+			else {
+				std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG)mod->module << " failed." << std::endl;
+			}
+		}
+	}
+	else {
+		module_buf.readRemote(processHandle, (ULONGLONG)mod->module, mod->moduleSize);
+	}
+
+	if (module_buf.isFilled()) {
+		ImpReconstructor impRec(module_buf);
+		bool is_imp_rec = impRec.rebuildImportTable(exportsMap, imprec_mode);
+		is_module_dumped = module_buf.dumpPeToFile(dumpFileName, curr_dump_mode, exportsMap);
+		if (!is_imp_rec || save_imp_report) {
+			impRec.printFoundIATs(dumpFileName + ".imports.txt");
+		}
+	}
+
+	if (!is_module_dumped || dump_shellcode)
+	{
+		dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".shc");
+		if (!dumpAsShellcode(dumpFileName, processHandle, (PBYTE)mod->module, mod->moduleSize)) {
+			std::cerr << "[-] Failed dumping module!" << std::endl;
+		}
+	}
+	if (is_module_dumped) {
+		mod->generateTags(dumpFileName + ".tag");
+		if (!this->quiet) {
+			std::cout << "[*] Dumped module to: " + dumpFileName + " as " + get_dump_mode_name(curr_dump_mode) << "\n";
+		}
+	}
+	return is_module_dumped;
+}
+
 size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &process_report, const peconv::t_pe_dump_mode dump_mode, const t_pesieve_imprec_mode imprec_mode)
 {
 	if (processHandle == nullptr) {
@@ -125,10 +195,7 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 
 	this->dumpDir = ResultsDumper::makeDirName(process_report.getPid());
 
-	char szModName[MAX_PATH] = { 0 };
 	size_t dumped = 0;
-
-	bool save_imp_report = true;
 
 	std::vector<ModuleScanReport*>::iterator itr;
 	for (itr = process_report.module_reports.begin();
@@ -139,62 +206,14 @@ size_t ResultsDumper::dumpAllModified(HANDLE processHandle, ProcessScanReport &p
 		if (mod->status != SCAN_SUSPICIOUS) {
 			continue;
 		}
-		memset(szModName, 0, MAX_PATH);
-		std::string modulePath = "";
-		if (GetModuleFileNameExA(processHandle, mod->module, szModName, MAX_PATH)) {
-			modulePath = get_file_name(szModName);
-		}
-		const std::string payload_ext = get_payload_ext(mod);
-		std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, payload_ext);
-		peconv::t_pe_dump_mode curr_dump_mode = dump_mode;
-
-		bool is_module_dumped = false;
-		bool dump_shellcode = false;
-		//whenever the artefactReport is available, use it to reconstruct a PE
-
-		PeBuffer module_buf;
-		ArtefactScanReport* artefactReport = dynamic_cast<ArtefactScanReport*>(mod);
-		if (artefactReport) {
-			if (artefactReport->has_shellcode) {
-				dump_shellcode = true;
-			}
-			if (artefactReport->has_pe) {
-				ULONGLONG found_pe_base = artefactReport->artefacts.peImageBase();
-				PeReconstructor peRec(artefactReport->artefacts, module_buf);
-				if (peRec.reconstruct(processHandle)) {
-					dumpFileName = makeModuleDumpPath(found_pe_base, modulePath, ".rec" + payload_ext);
-				}
-				else {
-					std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG) mod->module << " failed." << std::endl;
-				}
-			}
-		}
-		else {
-			module_buf.readRemote(processHandle, (ULONGLONG)mod->module, mod->moduleSize);
-		}
-
-		if (module_buf.isFilled()) {
-			ImpReconstructor impRec(module_buf);
-			bool is_imp_rec = impRec.rebuildImportTable(process_report.exportsMap, imprec_mode);
-			is_module_dumped = module_buf.dumpPeToFile(dumpFileName, curr_dump_mode, process_report.exportsMap);
-			if (!is_imp_rec || save_imp_report) {
-				impRec.printFoundIATs(dumpFileName + ".imports.txt");
-			}
-		}
-
-		if (!is_module_dumped || dump_shellcode)
-		{
-			dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".shc");
-			if (!dumpAsShellcode(dumpFileName, processHandle, (PBYTE)mod->module, mod->moduleSize)) {
-				std::cerr << "[-] Failed dumping module!" << std::endl;
-			}
-		}
-		if (is_module_dumped) {
+		peconv::ExportsMapper *exportsMap = process_report.exportsMap;
+		if (dumpModified(processHandle,
+			mod,
+			process_report.exportsMap,
+			dump_mode,
+			imprec_mode)
+		) {
 			dumped++;
-			mod->generateTags(dumpFileName + ".tag");
-			if (!this->quiet) {
-				std::cout << "[*] Dumped module to: " + dumpFileName + " as " + get_dump_mode_name(curr_dump_mode) << "\n";
-			}
 		}
 	}
 	return dumped;

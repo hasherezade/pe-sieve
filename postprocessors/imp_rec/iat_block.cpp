@@ -20,7 +20,7 @@ size_t get_longest_func_name(std::map<ULONGLONG, std::set<peconv::ExportedFunc>>
 
 //---
 
-bool IATThunksSeries::makeCoverage(IN peconv::ExportsMapper* exportsMap)
+bool IATThunksSeries::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 {
 	delete cov; //delete previous
 	cov = new peconv::ImportedDllCoverage(funcAddresses, *exportsMap);
@@ -118,7 +118,7 @@ std::string IATThunksSeries::getDllName()
 
 //---
 
-bool IATBlock::makeCoverage(IN peconv::ExportsMapper* exportsMap)
+bool IATBlock::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 {
 	IATThunksSeriesSet::iterator itr;
 

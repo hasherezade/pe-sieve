@@ -38,7 +38,7 @@ public:
 
 	// Requires the internal buffer to contain a valid PE. 
 	// Dumps the PE into a file with a given name.
-	bool dumpPeToFile(IN std::string dumpFileName, IN OUT peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL peconv::ExportsMapper* exportsMap);
+	bool dumpPeToFile(IN std::string dumpFileName, IN OUT peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL const peconv::ExportsMapper* exportsMap);
 
 protected:
 	bool allocBuffer(const size_t pe_vsize)

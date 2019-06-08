@@ -30,7 +30,7 @@ public:
 		return true;
 	}
 
-	bool makeCoverage(IN peconv::ExportsMapper* exportsMap);
+	bool makeCoverage(IN const peconv::ExportsMapper* exportsMap);
 
 	std::string getDllName();
 
@@ -122,7 +122,7 @@ public:
 		thunkSeries.clear();
 	}
 
-	bool makeCoverage(IN peconv::ExportsMapper* exportsMap);
+	bool makeCoverage(IN const peconv::ExportsMapper* exportsMap);
 
 	size_t maxDllLen();
 	size_t sizeOfDllsSpace();

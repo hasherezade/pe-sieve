@@ -67,7 +67,7 @@ bool PeBuffer::resizeLastSection(size_t new_img_size)
 	return true;
 }
 
-bool PeBuffer::dumpPeToFile(IN std::string dumpFileName, IN OUT peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL peconv::ExportsMapper* exportsMap)
+bool PeBuffer::dumpPeToFile(IN std::string dumpFileName, IN OUT peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL const peconv::ExportsMapper* exportsMap)
 {
 	if (!vBuf) return false;
 

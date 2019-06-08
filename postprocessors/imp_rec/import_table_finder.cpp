@@ -4,7 +4,7 @@ IMAGE_IMPORT_DESCRIPTOR* find_import_table(
 	IN bool is64bit,
 	IN BYTE* vBuf,
 	IN size_t vBufSize,
-	IN peconv::ExportsMapper* exportsMap,
+	IN const peconv::ExportsMapper* exportsMap,
 	IN DWORD iat_offset,
 	OUT size_t &table_size,
 	IN OPTIONAL size_t search_offset

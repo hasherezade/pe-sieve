@@ -166,16 +166,16 @@ public:
 		deleteFoundIATs();
 	}
 
-	bool rebuildImportTable(IN peconv::ExportsMapper* exportsMap, IN const t_pesieve_imprec_mode &imprec_mode);
+	bool rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const t_pesieve_imprec_mode &imprec_mode);
 	void printFoundIATs(std::string reportPath);
 
 private:
 
-	IATBlock* findIAT(IN peconv::ExportsMapper* exportsMap, size_t start_offset);
-	bool findImportTable(IN peconv::ExportsMapper* exportsMap);
-	size_t collectIATs(IN peconv::ExportsMapper* exportsMap);
+	IATBlock* findIAT(IN const peconv::ExportsMapper* exportsMap, size_t start_offset);
+	bool findImportTable(IN const peconv::ExportsMapper* exportsMap);
+	size_t collectIATs(IN const peconv::ExportsMapper* exportsMap);
 
-	bool findIATsCoverage(IN peconv::ExportsMapper* exportsMap);
+	bool findIATsCoverage(IN const peconv::ExportsMapper* exportsMap);
 	ImportTableBuffer* constructImportTable();
 	bool appendImportTable(ImportTableBuffer &importTable);
 

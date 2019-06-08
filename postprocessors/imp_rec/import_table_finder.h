@@ -2,7 +2,7 @@
 #include <peconv.h>
 
 template <typename FIELD_T>
-bool is_valid_import_descriptor(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap, IMAGE_IMPORT_DESCRIPTOR* desc)
+bool is_valid_import_descriptor(BYTE* vBuf, size_t vBufSize, IN const peconv::ExportsMapper* exportsMap, IMAGE_IMPORT_DESCRIPTOR* desc)
 {
 	if (!peconv::validate_ptr(vBuf, vBufSize, desc, sizeof(IMAGE_IMPORT_DESCRIPTOR))) {
 		return false; //buffer finished
@@ -40,7 +40,7 @@ bool is_valid_import_descriptor(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsM
 }
 
 template <typename FIELD_T>
-size_t calc_import_table_size(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap, IMAGE_IMPORT_DESCRIPTOR* first_desc)
+size_t calc_import_table_size(BYTE* vBuf, size_t vBufSize, IN const peconv::ExportsMapper* exportsMap, IMAGE_IMPORT_DESCRIPTOR* first_desc)
 {
 	if (!vBuf || !exportsMap || !first_desc) return 0;
 
@@ -61,9 +61,8 @@ size_t calc_import_table_size(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMap
 	return diff + sizeof(IMAGE_IMPORT_DESCRIPTOR);
 }
 
-
 template <typename FIELD_T>
-IMAGE_IMPORT_DESCRIPTOR* find_first_import_descriptor(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap, IMAGE_IMPORT_DESCRIPTOR* found_desc)
+IMAGE_IMPORT_DESCRIPTOR* find_first_import_descriptor(BYTE* vBuf, size_t vBufSize, IN const peconv::ExportsMapper* exportsMap, IMAGE_IMPORT_DESCRIPTOR* found_desc)
 {
 	if (!vBuf || !exportsMap || !found_desc) return nullptr;
 
@@ -85,7 +84,7 @@ IMAGE_IMPORT_DESCRIPTOR* find_first_import_descriptor(BYTE* vBuf, size_t vBufSiz
 template <typename FIELD_T>
 IMAGE_IMPORT_DESCRIPTOR* find_import_table(IN BYTE* vBuf,
 	IN size_t vBufSize,
-	IN peconv::ExportsMapper* exportsMap,
+	IN const peconv::ExportsMapper* exportsMap,
 	IN DWORD iat_offset,
 	OUT size_t &table_size,
 	IN OPTIONAL size_t search_offset)
@@ -124,7 +123,7 @@ IMAGE_IMPORT_DESCRIPTOR* find_import_table(
 	IN bool is64bit,
 	IN BYTE* vBuf,
 	IN size_t vBufSize,
-	IN peconv::ExportsMapper* exportsMap,
+	IN const peconv::ExportsMapper* exportsMap,
 	IN DWORD iat_offset,
 	OUT size_t &table_size,
 	IN OPTIONAL size_t search_offset

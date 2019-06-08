@@ -4,7 +4,7 @@ IATBlock* find_iat_block(
 	IN bool is64bit,
 	IN BYTE* vBuf,
 	IN size_t vBufSize,
-	IN peconv::ExportsMapper* exportsMap,
+	IN const peconv::ExportsMapper* exportsMap,
 	IN OPTIONAL size_t search_offset
 )
 {

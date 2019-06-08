@@ -9,12 +9,12 @@ IATBlock* find_iat_block(
 	IN bool is64bit,
 	IN BYTE* vBuf,
 	IN size_t vBufSize,
-	IN peconv::ExportsMapper* exportsMap,
+	IN const peconv::ExportsMapper* exportsMap,
 	IN OPTIONAL size_t search_offset
 );
 
 template <typename FIELD_T>
-size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap, IN OUT IATBlock &iat)
+size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN const peconv::ExportsMapper* exportsMap, IN OUT IATBlock &iat)
 {
 	if (!vBuf || !exportsMap || !iat.iatOffset) return 0;
 
@@ -65,7 +65,7 @@ size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMa
 }
 
 template <typename FIELD_T>
-IATBlock* find_iat(bool is64bit, BYTE* vBuf, size_t vBufSize, IN peconv::ExportsMapper* exportsMap, IN OPTIONAL size_t search_offset = 0)
+IATBlock* find_iat(bool is64bit, BYTE* vBuf, size_t vBufSize, IN const peconv::ExportsMapper* exportsMap, IN OPTIONAL size_t search_offset = 0)
 {
 	if (!vBuf || !exportsMap) return nullptr;
 

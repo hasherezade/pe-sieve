@@ -21,6 +21,9 @@ public:
 	bool quiet;
 
 protected:
+
+	bool dumpModified(HANDLE processHandle, ModuleScanReport* mod, const peconv::ExportsMapper *exportsMap, const peconv::t_pe_dump_mode dump_mode, const t_pesieve_imprec_mode imprec_mode);
+
 	/**
 	@modBaseAddr : base address where this module was mapped
 	@fname : known name of this module
