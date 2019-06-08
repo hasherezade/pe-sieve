@@ -132,24 +132,19 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 {
 	bool save_imp_report = true;
 
-	char szModName[MAX_PATH] = { 0 };
-	memset(szModName, 0, MAX_PATH);
-
-	std::string modulePath = "";
-	if (GetModuleFileNameExA(processHandle, mod->module, szModName, MAX_PATH)) {
-		modulePath = get_file_name(szModName);
-	}
+	const std::string module_name = get_file_name(mod->moduleFile);
 	const std::string payload_ext = get_payload_ext(mod);
-	std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, payload_ext);
+
+	std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, payload_ext);
 	peconv::t_pe_dump_mode curr_dump_mode = dump_mode;
 
 	bool is_module_dumped = false;
 	bool dump_shellcode = false;
-	//whenever the artefactReport is available, use it to reconstruct a PE
 
 	PeBuffer module_buf;
 	ArtefactScanReport* artefactReport = dynamic_cast<ArtefactScanReport*>(mod);
 	if (artefactReport) {
+		//whenever the artefactReport is available, use it to reconstruct a PE
 		if (artefactReport->has_shellcode) {
 			dump_shellcode = true;
 		}
@@ -157,7 +152,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 			ULONGLONG found_pe_base = artefactReport->artefacts.peImageBase();
 			PeReconstructor peRec(artefactReport->artefacts, module_buf);
 			if (peRec.reconstruct(processHandle)) {
-				dumpFileName = makeModuleDumpPath(found_pe_base, modulePath, ".rec" + payload_ext);
+				dumpFileName = makeModuleDumpPath(found_pe_base, module_name, ".rec" + payload_ext);
 			}
 			else {
 				std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG)mod->module << " failed." << std::endl;
@@ -184,7 +179,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 
 	if (!is_module_dumped || dump_shellcode)
 	{
-		dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, modulePath, ".shc");
+		dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, ".shc");
 		if (!dumpAsShellcode(dumpFileName, processHandle, (PBYTE)mod->module, mod->moduleSize)) {
 			std::cerr << "[-] Failed dumping module!" << std::endl;
 		}

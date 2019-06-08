@@ -4,34 +4,22 @@
 #include <iomanip>
 #include <algorithm>
 
-char* get_file_name(char *full_path)
+std::string get_file_name(std::string str)
 {
-	if (!full_path) return nullptr;
-
-	size_t len = strlen(full_path);
-	if (len < 2) {
-		return full_path;
+	size_t found = str.find_last_of("/\\");
+	if (found == std::string::npos) {
+		return str;
 	}
-	for (size_t i = len - 2; i > 0; i--) {
-		if (full_path[i] == '\\' || full_path[i] == '/') {
-			return full_path + (i + 1);
-		}
-	}
-	return full_path;
+	return str.substr(found + 1);
 }
 
-char* get_directory(IN char *full_path, OUT char *out_buf, IN const size_t out_buf_size)
+std::string get_directory(IN std::string str)
 {
-	if (!full_path) return nullptr;
-
-	memset(out_buf, 0, out_buf_size);
-	memcpy(out_buf, full_path, out_buf_size);
-
-	char *name_ptr = get_file_name(out_buf);
-	if (name_ptr != nullptr) {
-		*name_ptr = '\0'; //cut it
+	size_t found = str.find_last_of("/\\");
+	if (found == std::string::npos) {
+		return str;
 	}
-	return out_buf;
+	return str.substr(0, found);
 }
 
 char* get_subpath_ptr(char *modulePath, char* searchedPath)
