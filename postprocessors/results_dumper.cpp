@@ -1,9 +1,10 @@
 #include "results_dumper.h"
+
 #include <Windows.h>
 #include <Psapi.h>
 
-
 #include <fstream>
+
 #include "../utils/util.h"
 #include "../utils/workingset_enum.h"
 #include "pe_reconstructor.h"
@@ -11,6 +12,7 @@
 
 #define DIR_SEPARATOR "\\"
 
+using namespace pesieve;
 //---
 std::string get_payload_ext(ModuleScanReport* mod)
 {
@@ -35,6 +37,24 @@ std::string get_dump_mode_name(peconv::t_pe_dump_mode dump_mode)
 		return "Realigned";
 	}
 	return "";
+}
+
+peconv::t_pe_dump_mode convert_to_peconv_dump_mode(const pesieve::t_dump_mode dump_mode)
+{
+	switch (dump_mode) {
+	case pesieve::PE_DUMP_AUTO:
+		return peconv::PE_DUMP_AUTO;
+
+	case pesieve::PE_DUMP_VIRTUAL:
+		return peconv::PE_DUMP_VIRTUAL;
+
+	case pesieve::PE_DUMP_UNMAP:
+		return peconv::PE_DUMP_UNMAP;
+
+	case pesieve::PE_DUMP_REALIGN:
+		return peconv::PE_DUMP_REALIGN;
+	}
+	return peconv::PE_DUMP_AUTO;
 }
 
 bool has_any_shown_type(t_report summary, t_report_filter filter)
@@ -89,8 +109,8 @@ bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, t_report_f
 
 size_t ResultsDumper::dumpDetectedModules(HANDLE processHandle, 
 	ProcessScanReport &process_report, 
-	const peconv::t_pe_dump_mode dump_mode, 
-	const t_pesieve_imprec_mode imprec_mode)
+	const pesieve::t_dump_mode dump_mode, 
+	const t_imprec_mode imprec_mode)
 {
 	if (processHandle == nullptr) {
 		return 0;
@@ -126,8 +146,8 @@ size_t ResultsDumper::dumpDetectedModules(HANDLE processHandle,
 bool ResultsDumper::dumpModule(HANDLE processHandle,
 	ModuleScanReport* mod,
 	const peconv::ExportsMapper *exportsMap,
-	const peconv::t_pe_dump_mode dump_mode,
-	const t_pesieve_imprec_mode imprec_mode
+	const pesieve::t_dump_mode dump_mode,
+	const t_imprec_mode imprec_mode
 )
 {
 	bool save_imp_report = true;
@@ -136,7 +156,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 	const std::string payload_ext = get_payload_ext(mod);
 
 	std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, payload_ext);
-	peconv::t_pe_dump_mode curr_dump_mode = dump_mode;
+	peconv::t_pe_dump_mode curr_dump_mode = convert_to_peconv_dump_mode(dump_mode);
 
 	bool is_module_dumped = false;
 	bool dump_shellcode = false;

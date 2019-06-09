@@ -64,7 +64,7 @@ public:
 		return true;
 	}
 
-	t_report generateSummary() const;
+	pesieve::t_report generateSummary() const;
 	DWORD getPid() { return pid; }
 
 	std::string mainImagePath;

@@ -14,7 +14,7 @@ public:
 	}
 	
 	// dump all modules detected as suspicious during the process scan
-	size_t dumpDetectedModules(HANDLE hProcess, ProcessScanReport &process_report, const peconv::t_pe_dump_mode dump_mode, const t_pesieve_imprec_mode imprec_mode);
+	size_t dumpDetectedModules(HANDLE hProcess, ProcessScanReport &process_report, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
 
 	// dump JSON report from the process scan
 	bool dumpJsonReport(ProcessScanReport &process_report, t_report_filter filter);
@@ -26,7 +26,7 @@ public:
 
 protected:
 
-	bool dumpModule(HANDLE processHandle, ModuleScanReport* mod, const peconv::ExportsMapper *exportsMap, const peconv::t_pe_dump_mode dump_mode, const t_pesieve_imprec_mode imprec_mode);
+	bool dumpModule(HANDLE processHandle, ModuleScanReport* mod, const peconv::ExportsMapper *exportsMap, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
 	
 	static bool dumpAsShellcode(std::string dumpFileName, HANDLE processHandle, PBYTE moduleBase, size_t moduleSize);
 

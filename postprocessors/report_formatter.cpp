@@ -4,6 +4,8 @@
 
 #include "../utils/util.h"
 
+using namespace pesieve;
+
 bool is_shown_type(t_scan_status status, t_report_filter filter)
 {
 	if (filter == REPORT_ALL) {

@@ -21,6 +21,8 @@
 #include <Psapi.h>
 #pragma comment(lib,"psapi.lib")
 
+using namespace pesieve;
+
 t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
 	BOOL isWow64 = FALSE;

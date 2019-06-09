@@ -5,6 +5,7 @@
 #include "workingset_scanner.h"
 #include "mapping_scanner.h"
 
+using namespace pesieve;
 
 bool ProcessScanReport::appendToModulesList(ModuleScanReport *report)
 {
@@ -71,7 +72,7 @@ size_t ProcessScanReport::countSuspiciousPerType(report_type_t type) const
 	return suspicious;
 }
 
-t_report ProcessScanReport::generateSummary() const
+pesieve::t_report ProcessScanReport::generateSummary() const
 {
 	t_report summary = { 0 };
 	summary.pid = this->pid;

@@ -12,5 +12,5 @@
 extern "C" {
 	void PESIEVE_API __stdcall PESieve_help(void);
 	DWORD PESIEVE_API __stdcall PESieve_version(void);
-	t_report PESIEVE_API __stdcall PESieve_scan(t_params args);
+	pesieve::t_report PESIEVE_API __stdcall PESieve_scan(pesieve::t_params args);
 };
