@@ -18,24 +18,34 @@ bool ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* export
 	bool imp_recovered = false;
 	if (imprec_mode == PE_IMPREC_UNERASE || imprec_mode == PE_IMPREC_AUTO) {
 		std::cout << "[*] Trying to find ImportTable for module: " << std::hex << (ULONGLONG)peBuffer.moduleBase << "\n";
-		bool imp_recovered = findImportTable(exportsMap);
-		if (imp_recovered) {
+		bool is_valid = this->isDefaultImportValid(exportsMap);
+		if (is_valid) {
+			std::cout << "[+] Valid Import Table already set.\n";
+			return is_valid;
+		}
+		imp_recovered = findImportTable(exportsMap);
+		if (!imp_recovered) {
 			std::cout << "[+] ImportTable found.\n";
 			return imp_recovered;
+		}
+		else if (imprec_mode != PE_IMPREC_AUTO){
+			std::cout << "[-] ImportTable NOT found.\n";
 		}
 	}
 	if (imprec_mode == PE_IMPREC_REBUILD || imprec_mode == PE_IMPREC_AUTO) {
 		std::cout << "[*] Trying to rebuild ImportTable for module: " << std::hex << (ULONGLONG)peBuffer.moduleBase << "\n";
 		if (findIATsCoverage(exportsMap)) {
 			std::cout << "[+] ImportTable rebuilt.\n";
-
 			ImportTableBuffer *impBuf = constructImportTable();
 			if (impBuf) {
-				appendImportTable(*impBuf);
+				imp_recovered = appendImportTable(*impBuf);
 			}
 			delete impBuf;
 		}
-		imp_recovered = false; //TODO
+		if (!imp_recovered) {
+			std::cout << "[-] ImportTable NOT rebuilt.\n";
+		}
+		
 	}
 	return imp_recovered;
 }
@@ -56,6 +66,41 @@ void ImpReconstructor::printFoundIATs(std::string reportPath)
 		report << itr->second->toString();
 	}
 	report.close();
+}
+
+bool ImpReconstructor::isDefaultImportValid(IN const peconv::ExportsMapper* exportsMap)
+{
+	BYTE *vBuf = this->peBuffer.vBuf;
+	const size_t vBufSize = this->peBuffer.vBufSize;
+	if (!vBuf) return false;
+
+	IMAGE_DATA_DIRECTORY *iat_dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
+	if (!iat_dir) return false;
+
+	IMAGE_DATA_DIRECTORY *imp_dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IMPORT, true);
+	if (!imp_dir) return false;
+
+	DWORD iat_offset = iat_dir->VirtualAddress;
+	IATBlock* iat_block = find_iat_block(is64bit, vBuf, vBufSize, exportsMap, iat_offset);
+	if (!iat_block) {
+		return false;
+	}
+	bool is64bit = peconv::is64bit(vBuf);
+	size_t table_size = 0;
+	IMAGE_IMPORT_DESCRIPTOR *import_table = find_import_table(
+		is64bit,
+		vBuf,
+		vBufSize,
+		exportsMap,
+		iat_offset,
+		table_size,
+		0 //start offset
+	);
+	DWORD imp_table_offset = DWORD((ULONG_PTR)import_table - (ULONG_PTR)vBuf);
+	if (imp_dir->VirtualAddress == imp_table_offset) {
+		return true;
+	}
+	return false;
 }
 
 IATBlock* ImpReconstructor::findIAT(IN const peconv::ExportsMapper* exportsMap, size_t start_offset)
@@ -130,9 +175,9 @@ bool ImpReconstructor::findImportTable(IN const peconv::ExportsMapper* exportsMa
 
 		const DWORD iat_offset = currIAT->iatOffset;
 		const size_t iat_end = iat_offset + currIAT->iatSize;
-
+#ifdef _DEBUG
 		std::cout << "[*] Searching import table for IAT: " << std::hex << iat_offset << ", size: " << currIAT->iatSize << std::endl;
-
+#endif
 		bool is64bit = peconv::is64bit(vBuf);
 		import_table = find_import_table(
 			is64bit,

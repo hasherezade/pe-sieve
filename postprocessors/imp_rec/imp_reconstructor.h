@@ -175,6 +175,8 @@ private:
 	bool findImportTable(IN const peconv::ExportsMapper* exportsMap);
 	size_t collectIATs(IN const peconv::ExportsMapper* exportsMap);
 
+	bool isDefaultImportValid(IN const peconv::ExportsMapper* exportsMap);
+
 	bool findIATsCoverage(IN const peconv::ExportsMapper* exportsMap);
 	ImportTableBuffer* constructImportTable();
 	bool appendImportTable(ImportTableBuffer &importTable);
