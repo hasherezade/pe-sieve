@@ -96,10 +96,18 @@ set (utils_hdrs
 	utils/artefacts_util.h
 )
 
+set (params_info_hdrs
+	params_info/pe_sieve_params_info.h
+)
+
+set (params_info_srcs
+	params_info/pe_sieve_params_info.cpp
+)
+
 set (srcs
 	pe_sieve.cpp
-	pe_sieve_params_info.cpp
 	color_scheme.h
+	${params_info_srcs}
 	${scanners_srcs}
 	${postprocessors_srcs}
 	${imprec_srcs}
@@ -108,8 +116,8 @@ set (srcs
 
 set (hdrs
 	pe_sieve.h
-	pe_sieve_params_info.h
 	include/pe_sieve_types.h
+	${params_info_hdrs}
 	${scanners_hdrs}
 	${postprocessors_hdrs}
 	${imprec_hdrs}
@@ -128,6 +136,9 @@ SOURCE_GROUP("Header Files\\scanners" FILES ${scanners_hdrs} )
 
 SOURCE_GROUP("Source Files\\utils" FILES ${utils_srcs} )
 SOURCE_GROUP("Header Files\\utils" FILES ${utils_hdrs} )
+
+SOURCE_GROUP("Source Files\\params_info" FILES ${params_info_srcs} )
+SOURCE_GROUP("Header Files\\params_info" FILES ${params_info_hdrs} )
 
 SOURCE_GROUP("Source Files\\postprocessors" FILES ${postprocessors_srcs} )
 SOURCE_GROUP("Header Files\\postprocessors" FILES ${postprocessors_hdrs} )

@@ -10,7 +10,7 @@
 
 class ProcessScanner {
 public:
-	ProcessScanner(HANDLE procHndl, t_params _args)
+	ProcessScanner(HANDLE procHndl, pesieve::t_params _args)
 		: args(_args)
 	{
 		this->processHandle = procHndl;
@@ -34,6 +34,6 @@ protected:
 
 	HANDLE processHandle;
 	size_t hModsMax;
-	t_params args;
+	pesieve::t_params args;
 };
 

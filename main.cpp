@@ -9,10 +9,10 @@
 #include "utils/process_privilege.h"
 
 #include "utils/util.h"
-#include "pe_sieve_params_info.h"
 
-#include "peconv.h"
 #include "pe_sieve.h"
+#include "params_info/pe_sieve_params_info.h"
+
 #include "color_scheme.h"
 
 #define PARAM_SWITCH '/'
@@ -33,6 +33,8 @@
 #define PARAM_HELP2  "/?"
 #define PARAM_VERSION  "/version"
 
+using namespace pesieve;
+
 void print_in_color(int color, std::string text)
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -41,22 +43,6 @@ void print_in_color(int color, std::string text)
 	std::cout << text;
 	FlushConsoleInputBuffer(hConsole);
 	SetConsoleTextAttribute(hConsole, 7); // back to default color
-}
-
-peconv::t_pe_dump_mode normalize_dump_mode(size_t mode_id)
-{
-	if (mode_id > peconv::PE_DUMP_MODES_COUNT) {
-		return peconv::PE_DUMP_AUTO;
-	}
-	return (peconv::t_pe_dump_mode) mode_id;
-}
-
-t_pesieve_imprec_mode normalize_imprec_mode(size_t mode_id)
-{
-	if (mode_id > PE_IMPREC_MODES_COUNT) {
-		return PE_IMPREC_NONE;
-	}
-	return (t_pesieve_imprec_mode) mode_id;
 }
 
 void print_help()
@@ -87,7 +73,7 @@ void print_help()
 	std::cout << " <*imprec_mode>\n\t: Set in which mode the ImportTable should be recovered.\n";;
 	std::cout << "*imprec_mode:\n";
 	for (size_t i = 0; i < PE_IMPREC_MODES_COUNT; i++) {
-		t_pesieve_imprec_mode mode = (t_pesieve_imprec_mode)(i);
+		t_imprec_mode mode = (t_imprec_mode)(i);
 		std::cout << "\t" << mode << " - " << translate_imprec_mode(mode) << "\n";
 	}
 

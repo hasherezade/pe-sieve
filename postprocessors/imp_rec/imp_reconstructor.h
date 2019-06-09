@@ -166,7 +166,7 @@ public:
 		deleteFoundIATs();
 	}
 
-	bool rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const t_pesieve_imprec_mode &imprec_mode);
+	bool rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode);
 	void printFoundIATs(std::string reportPath);
 
 private:

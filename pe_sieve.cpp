@@ -11,6 +11,8 @@
 #include "utils/process_privilege.h"
 #include "postprocessors/results_dumper.h"
 
+using namespace pesieve;
+
 void check_access_denied(DWORD processID)
 {
 	HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, processID);
@@ -84,7 +86,7 @@ bool is_scaner_compatibile(HANDLE hProcess)
 	return true;
 }
 
-size_t dump_output(ProcessScanReport *process_report, HANDLE hProcess, const t_params args)
+size_t dump_output(ProcessScanReport *process_report, HANDLE hProcess, const pesieve::t_params args)
 {
 	if (!process_report || !hProcess) return 0;
 	if (args.out_filter == OUT_NO_DIR) {
@@ -97,9 +99,9 @@ size_t dump_output(ProcessScanReport *process_report, HANDLE hProcess, const t_p
 	}
 	size_t dumped_modules = 0;
 	if (args.out_filter != OUT_NO_DUMPS) {
-		peconv::t_pe_dump_mode dump_mode = peconv::PE_DUMP_AUTO;
+		pesieve::t_dump_mode dump_mode = pesieve::PE_DUMP_AUTO;
 		if (args.dump_mode < peconv::PE_DUMP_MODES_COUNT) {
-			dump_mode = peconv::t_pe_dump_mode(args.dump_mode);
+			dump_mode = pesieve::t_dump_mode(args.dump_mode);
 		}
 		dumped_modules = dumper.dumpDetectedModules(hProcess, *process_report, dump_mode, args.imprec_mode);
 		if (dumped_modules) {

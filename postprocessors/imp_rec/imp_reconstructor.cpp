@@ -5,7 +5,9 @@
 
 #include <fstream>
 
-bool ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const t_pesieve_imprec_mode &imprec_mode)
+using namespace pesieve;
+
+bool ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode)
 {
 	if (!exportsMap) {
 		return false;
@@ -129,7 +131,7 @@ bool ImpReconstructor::findImportTable(IN const peconv::ExportsMapper* exportsMa
 		const DWORD iat_offset = currIAT->iatOffset;
 		const size_t iat_end = iat_offset + currIAT->iatSize;
 
-		std::cout << "[*] Searching import table for IAT: " << std::hex << iat_offset << ", size: " << iat_dir->Size << std::endl;
+		std::cout << "[*] Searching import table for IAT: " << std::hex << iat_offset << ", size: " << currIAT->iatSize << std::endl;
 
 		bool is64bit = peconv::is64bit(vBuf);
 		import_table = find_import_table(
