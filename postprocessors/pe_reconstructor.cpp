@@ -76,8 +76,6 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 	if (!peBuffer.readRemote(processHandle, moduleBase, artefacts.calculatedImgSize)) {
 		return false;
 	}
-	std::cout << "Reading remote success!\n";
-
 	size_t shift_size = shiftPeHeader();
 	if (shift_size) {
 		std::cout << "[!] The PE header was shifted by: " << std::hex << shift_size << std::endl;
