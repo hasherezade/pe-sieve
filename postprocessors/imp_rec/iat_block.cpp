@@ -29,6 +29,7 @@ bool IATThunksSeries::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 		return false;
 	}
 	size_t covered = cov->mapAddressesToFunctions(cov->dllName);
+	this->dllFullName = exportsMap->get_dll_fullname(cov->dllName);
 	return covered == this->funcAddresses.size();
 }
 
@@ -56,20 +57,6 @@ bool IATThunksSeries::fillNamesSpace(const BYTE* buf_start, size_t buf_size, DWO
 
 		std::set<peconv::ExportedFunc> &expSet = itr->second;
 		const peconv::ExportedFunc& exp = *(expSet.begin());
-		if (exp.isByOrdinal) {
-			if (is64b) {
-				ULONGLONG *ord = (ULONGLONG*)buf;
-				*ord = IMAGE_ORDINAL_FLAG64;
-			}
-			else {
-				DWORD *ord = (DWORD*)buf;
-				*ord = IMAGE_ORDINAL_FLAG32;
-			}
-			//no need to fill with real value, it will be autofilled during dumping
-			buf += field_size;
-			continue;
-		}
-		//by name:
 		if (is64b) {
 			ULONGLONG *val = (ULONGLONG*)buf;
 			*val = names_rva;
@@ -100,9 +87,7 @@ size_t IATThunksSeries::sizeOfNamesSpace(bool is64b)
 		std::set<peconv::ExportedFunc> &expSet = itr->second;
 		const peconv::ExportedFunc& exp = *(expSet.begin());
 		space_size += field_size;
-		if (!exp.isByOrdinal) {
-			space_size += sizeof(IMAGE_IMPORT_BY_NAME) + longest_name;
-		}
+		space_size += sizeof(IMAGE_IMPORT_BY_NAME) + longest_name;
 	}
 	if (space_size > 0) {
 		space_size += sizeof(field_size);
@@ -112,8 +97,7 @@ size_t IATThunksSeries::sizeOfNamesSpace(bool is64b)
 
 std::string IATThunksSeries::getDllName()
 {
-	if (!cov) return "";
-	return cov->dllName + ".dll";
+	return this->dllFullName;
 }
 
 //---

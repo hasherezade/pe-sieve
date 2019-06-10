@@ -43,6 +43,7 @@ public:
 	ULONGLONG startOffset;
 
 private:
+	std::string dllFullName;
 	std::set<ULONGLONG> funcAddresses;
 	peconv::ImportedDllCoverage *cov;
 };
