@@ -24,11 +24,11 @@ bool ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* export
 			return is_valid;
 		}
 		imp_recovered = findImportTable(exportsMap);
-		if (!imp_recovered) {
+		if (imp_recovered) {
 			std::cout << "[+] ImportTable found.\n";
 			return imp_recovered;
 		}
-		else if (imprec_mode != PE_IMPREC_AUTO){
+		else {
 			std::cout << "[-] ImportTable NOT found.\n";
 		}
 	}
@@ -45,7 +45,6 @@ bool ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* export
 		if (!imp_recovered) {
 			std::cout << "[-] ImportTable NOT rebuilt.\n";
 		}
-		
 	}
 	return imp_recovered;
 }
@@ -85,6 +84,7 @@ bool ImpReconstructor::isDefaultImportValid(IN const peconv::ExportsMapper* expo
 	if (!iat_block) {
 		return false;
 	}
+	const size_t start_offset = peconv::get_hdrs_size(vBuf);
 	bool is64bit = peconv::is64bit(vBuf);
 	size_t table_size = 0;
 	IMAGE_IMPORT_DESCRIPTOR *import_table = find_import_table(
@@ -94,7 +94,7 @@ bool ImpReconstructor::isDefaultImportValid(IN const peconv::ExportsMapper* expo
 		exportsMap,
 		iat_offset,
 		table_size,
-		0 //start offset
+		start_offset
 	);
 	DWORD imp_table_offset = DWORD((ULONG_PTR)import_table - (ULONG_PTR)vBuf);
 	if (imp_dir->VirtualAddress == imp_table_offset) {
@@ -130,7 +130,9 @@ size_t ImpReconstructor::collectIATs(IN const peconv::ExportsMapper* exportsMap)
 	if (!vBuf) return 0;
 
 	size_t found = 0;
-	for (size_t search_offset = 0; search_offset < vBufSize;) {
+	const size_t pe_hdr_size = peconv::get_hdrs_size(vBuf); //if the buffer is not a valid PE, it will be 0
+
+	for (size_t search_offset = pe_hdr_size; search_offset < vBufSize;) {
 
 		IATBlock *currIAT = findIAT(exportsMap, search_offset);
 		if (!currIAT) {
@@ -169,6 +171,8 @@ bool ImpReconstructor::findImportTable(IN const peconv::ExportsMapper* exportsMa
 	IMAGE_IMPORT_DESCRIPTOR* import_table = nullptr;
 	size_t table_size = 0;
 
+	const size_t start_offset = peconv::get_hdrs_size(vBuf);
+	
 	std::map<DWORD, IATBlock*>::iterator itr;
 	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
 		IATBlock *currIAT = itr->second;
@@ -186,7 +190,7 @@ bool ImpReconstructor::findImportTable(IN const peconv::ExportsMapper* exportsMa
 			exportsMap,
 			iat_offset,
 			table_size,
-			0 //start offset
+			start_offset
 		);
 		if (import_table) {
 			//import table found, set it in the IATBlock:

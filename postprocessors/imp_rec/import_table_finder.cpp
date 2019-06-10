@@ -18,7 +18,7 @@ IMAGE_IMPORT_DESCRIPTOR* find_import_table(
 			exportsMap,
 			iat_offset,
 			table_size,
-			0 //start offset
+			search_offset
 			);
 	}
 	else {
@@ -28,7 +28,7 @@ IMAGE_IMPORT_DESCRIPTOR* find_import_table(
 			exportsMap,
 			iat_offset,
 			table_size,
-			0 //start offset
+			search_offset
 			);
 	}
 	return import_table;
