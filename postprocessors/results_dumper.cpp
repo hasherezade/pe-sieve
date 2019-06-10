@@ -152,7 +152,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 {
 	bool save_imp_report = true;
 
-	const std::string module_name = get_file_name(mod->moduleFile);
+	const std::string module_name = peconv::get_file_name(mod->moduleFile);
 	const std::string payload_ext = get_payload_ext(mod);
 
 	std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, payload_ext);

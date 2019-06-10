@@ -4,24 +4,6 @@
 #include <iomanip>
 #include <algorithm>
 
-std::string get_file_name(std::string str)
-{
-	size_t found = str.find_last_of("/\\");
-	if (found == std::string::npos) {
-		return str;
-	}
-	return str.substr(found + 1);
-}
-
-std::string get_directory(IN std::string str)
-{
-	size_t found = str.find_last_of("/\\");
-	if (found == std::string::npos) {
-		return str;
-	}
-	return str.substr(0, found);
-}
-
 char* get_subpath_ptr(char *modulePath, char* searchedPath)
 {
 	if (modulePath == nullptr || searchedPath == nullptr) {

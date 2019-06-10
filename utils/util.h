@@ -9,10 +9,6 @@ std::cout.fill(' '); \
 if (field_size) stream << std::setw(field_size) << ' '; \
 stream << str;
 
-std::string get_file_name(std::string str);
-
-std::string get_directory(IN std::string str);
-
 char* get_subpath_ptr(char *modulePath, char* searchedPath);
 
 std::string to_lowercase(std::string);
