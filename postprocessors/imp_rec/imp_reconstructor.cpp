@@ -61,12 +61,15 @@ bool ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* export
 	if (imprec_mode == PE_IMPREC_REBUILD || imprec_mode == PE_IMPREC_AUTO) {
 		std::cout << "[*] Trying to rebuild ImportTable for module: " << std::hex << (ULONGLONG)peBuffer.moduleBase << "\n";
 		if (findIATsCoverage(exportsMap)) {
-			std::cout << "[+] ImportTable rebuilt.\n";
+			
 			ImportTableBuffer *impBuf = constructImportTable();
 			if (impBuf) {
 				imp_recovered = appendImportTable(*impBuf);
 			}
-			delete impBuf;
+			delete impBuf; impBuf = nullptr;
+			if (imp_recovered) {
+				std::cout << "[+] ImportTable rebuilt.\n";
+			}
 		}
 		if (!imp_recovered) {
 			std::cout << "[-] ImportTable NOT rebuilt.\n";
