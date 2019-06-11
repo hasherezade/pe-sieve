@@ -361,9 +361,8 @@ bool ImpReconstructor::appendImportTable(ImportTableBuffer &importTable)
 	if (!peBuffer.resizeBuffer(new_size)) {
 		return false;
 	}
-
+	
 	const DWORD imports_start_rva = importTable.getRVA();
 	peBuffer.resizeLastSection(imports_start_rva + import_table_size);
-
 	return importTable.setTableInPe(peBuffer.vBuf, peBuffer.vBufSize);
 }

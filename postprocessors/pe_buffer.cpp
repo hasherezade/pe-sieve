@@ -28,10 +28,14 @@ bool PeBuffer::resizeBuffer(size_t new_size)
 	if (!new_buf) {
 		return false;
 	}
+	//preserve the module base:
+	ULONGLONG module_base = this->moduleBase;
+
 	size_t smaller_size = (vBufSize < new_size) ? vBufSize : new_size;
 	memcpy(new_buf, this->vBuf, smaller_size);
 	freeBuffer();
 
+	this->moduleBase = module_base;
 	this->vBuf = new_buf;
 	this->vBufSize = new_size;
 	return true;
