@@ -18,7 +18,7 @@ public:
 		: descriptors(nullptr), descriptosCount(0),
 		descriptorsRVA(_descriptorsRVA),
 		namesRVA(0), namesBuf(nullptr), namesBufSize(0),
-		dllsRVA(0), dllsBufSize(0)
+		dllsRVA(0), dllsBufSize(0), dllsBuf(nullptr)
 	{
 	}
 
@@ -26,6 +26,7 @@ public:
 	{
 		delete[]descriptors;
 		delete[]namesBuf;
+		delete[]dllsBuf;
 	}
 
 	bool allocDesciptors(size_t descriptors_count)
@@ -43,7 +44,7 @@ public:
 
 	bool allocNamesSpace(DWORD names_rva, size_t names_size)
 	{
-		if (namesBuf) delete[]namesBuf;
+		delete[]namesBuf;
 		this->namesBuf = new BYTE[names_size];
 		if (!this->namesBuf) {
 			this->namesBufSize = 0;
@@ -55,8 +56,14 @@ public:
 		return true;
 	}
 
-	bool reserveDllsSpace(DWORD dlls_rva, size_t dlls_area_size)
+	bool allocDllsSpace(DWORD dlls_rva, size_t dlls_area_size)
 	{
+		delete[]dllsBuf;
+		this->dllsBuf = new BYTE[dlls_area_size];
+		if (!this->dllsBuf) {
+			this->dllsBufSize = 0;
+			return false;
+		}
 		this->dllsBufSize = dlls_area_size;
 		this->dllsRVA = dlls_rva;
 		return true;
@@ -93,7 +100,7 @@ public:
 	//copy table to the Virtual PE buffer
 	bool setTableInPe(BYTE *vBuf, size_t vBufSize)
 	{
-		if (!descriptors || !namesBuf) {
+		if (!descriptors || !namesBuf || !dllsBuf) {
 			return false;
 		}
 		const size_t descriptors_size_b = getDescriptorsSize();
@@ -112,6 +119,7 @@ public:
 		//copy buffers into PE:
 		memcpy(vBuf + descriptorsRVA, descriptors, descriptors_size_b);
 		memcpy(vBuf + namesRVA, namesBuf, namesBufSize);
+		memcpy(vBuf + dllsRVA, dllsBuf, dllsBufSize);
 
 		//overwrite the Data Directory:
 		imp_dir->VirtualAddress = descriptorsRVA;
@@ -121,17 +129,9 @@ public:
 
 protected:
 
-	BYTE * getNamesSpaceAt(const DWORD rva, size_t required_size)
-	{
-		if (!this->namesBuf) return nullptr;
-		size_t offset = rva - this->namesRVA;
+	BYTE * getNamesSpaceAt(const DWORD rva, size_t required_size);
 
-		BYTE* names_ptr = offset + this->namesBuf;
-		if (peconv::validate_ptr(namesBuf, namesBufSize, names_ptr, required_size)) {
-			return names_ptr;
-		}
-		return nullptr;
-	}
+	BYTE* getDllSpaceAt(const DWORD rva, size_t required_size);
 
 	IMAGE_IMPORT_DESCRIPTOR* descriptors;
 	friend class ImpReconstructor;
@@ -146,6 +146,7 @@ private:
 	size_t namesBufSize;
 
 	DWORD dllsRVA;
+	BYTE* dllsBuf;
 	size_t dllsBufSize;
 };
 

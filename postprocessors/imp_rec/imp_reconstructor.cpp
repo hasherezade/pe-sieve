@@ -7,6 +7,32 @@
 
 using namespace pesieve;
 
+
+BYTE* get_buffer_space_at(IN BYTE* buffer, IN const size_t buffer_size, IN const DWORD buffer_rva, IN const DWORD required_rva, IN const size_t required_size)
+{
+	if (!buffer || buffer_rva > required_rva) return nullptr;
+	size_t offset = required_rva - buffer_rva;
+
+	BYTE* req_ptr = offset + buffer;
+	if (peconv::validate_ptr(buffer, buffer_size, req_ptr, required_size)) {
+		return req_ptr;
+	}
+	return nullptr;
+}
+//---
+
+BYTE* ImportTableBuffer::getNamesSpaceAt(const DWORD rva, size_t required_size)
+{
+	return get_buffer_space_at(this->namesBuf, this->namesBufSize, this->namesRVA, rva, required_size);
+}
+
+BYTE* ImportTableBuffer::getDllSpaceAt(const DWORD rva, size_t required_size)
+{
+	return get_buffer_space_at(this->dllsBuf, this->dllsBufSize, this->dllsRVA, rva, required_size);
+}
+
+//---
+
 bool ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode)
 {
 	if (!exportsMap) {
@@ -300,7 +326,7 @@ ImportTableBuffer* ImpReconstructor::constructImportTable()
 		dlls_area_size += iat->sizeOfDllsSpace();
 	}
 	//fill DLLs' names:
-	importTableBuffer->reserveDllsSpace(dlls_rva, dlls_area_size);
+	importTableBuffer->allocDllsSpace(dlls_rva, dlls_area_size);
 	DWORD dll_name_rva = dlls_rva;
 	i = 0;
 	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
@@ -309,10 +335,16 @@ ImportTableBuffer* ImpReconstructor::constructImportTable()
 			continue;
 		}
 		size_t max_dll_name = iat->maxDllLen();
-		for (size_t k = 0; k < iat->thunkSeries.size(); k++, i++) {
+		IATThunksSeriesSet::iterator sItr;
+		for (sItr = iat->thunkSeries.begin(); sItr != iat->thunkSeries.end(); sItr++, i++) {
+			IATThunksSeries *series = *sItr;
 			importTableBuffer->descriptors[i].Name = dll_name_rva;
+			BYTE *buf = importTableBuffer->getDllSpaceAt(dll_name_rva, max_dll_name);
+			if (buf) {
+				//fill the name:
+				memcpy(buf, series->getDllName().c_str(), series->getDllName().length() + 1);
+			}
 			dll_name_rva += max_dll_name;
-			//no need to physically fill this name here, it will be done during dumping
 		}
 	}
 	return importTableBuffer;
