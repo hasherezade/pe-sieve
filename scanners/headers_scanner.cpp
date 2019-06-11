@@ -1,5 +1,5 @@
 #include "headers_scanner.h"
-#include "peconv.h"
+#include <peconv.h>
 
 HeadersScanReport* HeadersScanner::scanRemote()
 {

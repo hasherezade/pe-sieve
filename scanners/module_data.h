@@ -4,7 +4,7 @@
 #include <Psapi.h>
 #include <map>
 
-#include "peconv.h"
+#include <peconv.h>
 
 class ModuleData {
 

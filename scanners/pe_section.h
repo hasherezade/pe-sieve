@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-#include "peconv.h"
+#include <peconv.h>
 #include "module_data.h"
 
 class PeSection

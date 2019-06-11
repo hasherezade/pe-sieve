@@ -4,7 +4,7 @@
 #include <vector>
 #include <fstream>
 
-#include "peconv.h"
+#include <peconv.h>
 
 class PatchList {
 public:

@@ -2,7 +2,7 @@
 // author: hasherezade (hasherezade@gmail.com)
 
 #include "pe_sieve.h"
-#include "peconv.h"
+#include <peconv.h>
 
 #include <Windows.h>
 #include "scanners/scanner.h"

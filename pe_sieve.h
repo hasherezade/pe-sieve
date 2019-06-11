@@ -9,7 +9,7 @@
 #include "postprocessors/report_formatter.h"
 
 static char PESIEVE_VERSION[] = "0.1.9.5";
-static DWORD PESIEVE_VERSION_ID = 0x00010900; // 00 01 09 00
+static DWORD PESIEVE_VERSION_ID = 0x00010905; // 00 01 09 00
 static char PESIEVE_URL[] = "https://github.com/hasherezade/pe-sieve";
 
 std::string info();

@@ -3,8 +3,7 @@
 #include "../utils/artefacts_util.h"
 #include "../utils/workingset_enum.h"
 
-#include "peconv.h"
-#include "peconv/fix_imports.h"
+#include <peconv.h>
 
 size_t calc_offset(MemPageData &memPage, LPVOID field)
 {

@@ -4,7 +4,7 @@
 #include <Psapi.h>
 #include <map>
 
-#include "peconv.h"
+#include <peconv.h>
 #include "module_scan_report.h"
 #include "workingset_scanner.h"
 

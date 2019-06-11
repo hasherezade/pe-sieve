@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <map>
 
-#include "peconv.h"
+#include <peconv.h>
 #include "scan_report.h"
 
 #include "module_data.h"

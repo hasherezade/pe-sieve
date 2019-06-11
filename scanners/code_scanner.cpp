@@ -1,6 +1,6 @@
 #include "code_scanner.h"
 
-#include "peconv.h"
+#include <peconv.h>
 
 #include "patch_analyzer.h"
 #include "../utils/artefacts_util.h"
