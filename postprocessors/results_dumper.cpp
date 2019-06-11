@@ -14,16 +14,15 @@
 
 using namespace pesieve;
 //---
-std::string get_payload_ext(ModuleScanReport* mod)
+std::string get_payload_ext(const ArtefactScanReport& artefactRepot)
 {
-	ArtefactScanReport* artefactRepot = dynamic_cast<ArtefactScanReport*>(mod);
-	if (!artefactRepot) {
-		return ".dll"; //default
+	if (!artefactRepot.has_pe) {
+		return "shc";
 	}
-	if (artefactRepot->artefacts.isDll) {
-		return ".dll";
+	if (artefactRepot.artefacts.isDll) {
+		return "dll";
 	}
-	return ".exe";
+	return "exe";
 }
 
 std::string get_dump_mode_name(peconv::t_pe_dump_mode dump_mode)
@@ -152,18 +151,18 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 {
 	bool save_imp_report = true;
 
-	const std::string module_name = peconv::get_file_name(mod->moduleFile);
-	const std::string payload_ext = get_payload_ext(mod);
-
-	std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, payload_ext);
 	peconv::t_pe_dump_mode curr_dump_mode = convert_to_peconv_dump_mode(dump_mode);
 
 	bool is_module_dumped = false;
 	bool dump_shellcode = false;
 
+	std::string payload_ext = "";
+
 	PeBuffer module_buf;
+
 	ArtefactScanReport* artefactReport = dynamic_cast<ArtefactScanReport*>(mod);
 	if (artefactReport) {
+		payload_ext = get_payload_ext(*artefactReport);
 		//whenever the artefactReport is available, use it to reconstruct a PE
 		if (artefactReport->has_shellcode) {
 			dump_shellcode = true;
@@ -171,10 +170,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 		if (artefactReport->has_pe) {
 			ULONGLONG found_pe_base = artefactReport->artefacts.peImageBase();
 			PeReconstructor peRec(artefactReport->artefacts, module_buf);
-			if (peRec.reconstruct(processHandle)) {
-				dumpFileName = makeModuleDumpPath(found_pe_base, module_name, ".rec" + payload_ext);
-			}
-			else {
+			if (!peRec.reconstruct(processHandle)) {
 				std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG)mod->module << " failed." << std::endl;
 			}
 		}
@@ -186,12 +182,18 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 			img_size = peconv::get_remote_image_size(processHandle, (BYTE*)mod->module);
 		}
 		module_buf.readRemote(processHandle, (ULONGLONG)mod->module, img_size);
+		payload_ext = module_buf.isValidPe() ? "dll" : "shc";
 	}
+
+	const std::string module_name = peconv::get_file_name(mod->moduleFile);
+	std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, payload_ext);
 
 	if (module_buf.isFilled()) {
 		ImpReconstructor impRec(module_buf);
 		bool is_imp_rec = impRec.rebuildImportTable(exportsMap, imprec_mode);
-		is_module_dumped = module_buf.dumpPeToFile(dumpFileName, curr_dump_mode, exportsMap);
+		if (module_buf.isValidPe()) {
+			is_module_dumped = module_buf.dumpPeToFile(dumpFileName, curr_dump_mode, exportsMap);
+		}
 		if (!is_imp_rec || save_imp_report) {
 			impRec.printFoundIATs(dumpFileName + ".imports.txt");
 		}
@@ -199,7 +201,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 
 	if (!is_module_dumped || dump_shellcode)
 	{
-		dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, ".shc");
+		dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, "shc");
 		if (!dumpAsShellcode(dumpFileName, processHandle, (PBYTE)mod->module, mod->moduleSize)) {
 			std::cerr << "[-] Failed dumping module!" << std::endl;
 		}
@@ -265,7 +267,7 @@ std::string ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, std::string
 		stream << ".";
 		stream << fname;
 	} else {
-		stream << default_extension;
+		stream << "." << default_extension;
 	}
 	return stream.str();
 }

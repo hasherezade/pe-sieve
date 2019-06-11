@@ -19,6 +19,15 @@ public:
 		return (vBuf && vBufSize > 0);
 	}
 
+	bool isValidPe()
+	{
+		if (!vBuf) return false;
+		if (peconv::get_nt_hrds(vBuf, vBufSize)) {
+			return true;
+		}
+		return false;
+	}
+
 	// Returns the size of the internal buffer
 	size_t getBufferSize()
 	{

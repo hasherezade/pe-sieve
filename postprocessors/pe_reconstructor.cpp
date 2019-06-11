@@ -93,7 +93,7 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 			return false;
 		}
 	}
-	return true;
+	return peBuffer.isValidPe();
 }
 
 bool PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
