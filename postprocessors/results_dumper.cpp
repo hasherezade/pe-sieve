@@ -157,6 +157,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 	std::string payload_ext = "";
 
 	PeBuffer module_buf;
+	bool is_corrupt_pe = false;
 
 	ArtefactScanReport* artefactReport = dynamic_cast<ArtefactScanReport*>(mod);
 	if (artefactReport) {
@@ -169,21 +170,25 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 			ULONGLONG found_pe_base = artefactReport->artefacts.peImageBase();
 			PeReconstructor peRec(artefactReport->artefacts, module_buf);
 			if (!peRec.reconstruct(processHandle)) {
+				is_corrupt_pe = true;
 				payload_ext = "corrupt_" + payload_ext;
 				std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG)mod->module << " failed." << std::endl;
 			}
 		}
 	}
-	else {
+	// if it is not an artefact report, or reconstructing by artefacts failed, read it from the memory:
+	if (!artefactReport || is_corrupt_pe) {
 		size_t img_size = mod->moduleSize;
 		if (img_size == 0) {
 			//some of the reports may not have moduleSize filled
 			img_size = peconv::get_remote_image_size(processHandle, (BYTE*)mod->module);
 		}
 		module_buf.readRemote(processHandle, (ULONGLONG)mod->module, img_size);
+	}
+	//if no extension selected yet, do it now:
+	if (payload_ext.length() == 0) {
 		payload_ext = module_buf.isValidPe() ? "dll" : "shc";
 	}
-
 	const std::string module_name = peconv::get_file_name(mod->moduleFile);
 	std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, payload_ext);
 	bool is_module_dumped = false;
@@ -191,8 +196,10 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 	if (module_buf.isFilled()) {
 		ImpReconstructor impRec(module_buf);
 		bool is_imp_rec = impRec.rebuildImportTable(exportsMap, imprec_mode);
-		if (module_buf.isValidPe()) {
-			is_module_dumped = module_buf.dumpPeToFile(dumpFileName, curr_dump_mode, exportsMap);
+		
+		is_module_dumped = module_buf.dumpPeToFile(dumpFileName, curr_dump_mode, exportsMap);
+		if (!is_module_dumped) {
+			is_module_dumped = module_buf.dumpToFile(dumpFileName);
 		}
 		if (!is_imp_rec || save_imp_report) {
 			impRec.printFoundIATs(dumpFileName + ".imports.txt");
@@ -205,9 +212,8 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 			payload_ext = "shc";
 		}
 		dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, payload_ext);
-		if (!dumpAsShellcode(dumpFileName, processHandle, (PBYTE)mod->module, mod->moduleSize)) {
-			std::cerr << "[-] Failed dumping module!" << std::endl;
-		}
+		module_buf.readRemote(processHandle, (ULONGLONG)mod->module, mod->moduleSize);
+		is_module_dumped = module_buf.dumpToFile(dumpFileName);
 	}
 	if (is_module_dumped) {
 		mod->generateTags(dumpFileName + ".tag");
@@ -215,27 +221,10 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 			std::cout << "[*] Dumped module to: " + dumpFileName + " as " + get_dump_mode_name(curr_dump_mode) << "\n";
 		}
 	}
+	else {
+		std::cerr << "[-] Failed dumping module!" << std::endl;
+	}
 	return is_module_dumped;
-}
-
-bool ResultsDumper::dumpAsShellcode(std::string dumpFileName, HANDLE processHandle, PBYTE moduleBase, size_t moduleSize)
-{
-	if (!moduleSize) {
-		moduleSize = peconv::fetch_region_size(processHandle, moduleBase);
-	}
-
-	BYTE *buf = peconv::alloc_unaligned(moduleSize);
-	if (!buf) return false;
-
-	bool is_ok = false;
-
-	if (peconv::read_remote_area(processHandle, moduleBase, buf, moduleSize)) {
-		is_ok = peconv::dump_to_file(dumpFileName.c_str(), buf, moduleSize);
-	}
-
-	peconv::free_unaligned(buf);
-	buf = nullptr;
-	return is_ok;
 }
 
 void ResultsDumper::makeAndJoinDirectories(std::stringstream& stream)

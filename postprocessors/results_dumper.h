@@ -27,8 +27,6 @@ public:
 protected:
 
 	bool dumpModule(HANDLE processHandle, ModuleScanReport* mod, const peconv::ExportsMapper *exportsMap, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
-	
-	static bool dumpAsShellcode(std::string dumpFileName, HANDLE processHandle, PBYTE moduleBase, size_t moduleSize);
 
 	/**
 	@modBaseAddr : base address where this module was mapped

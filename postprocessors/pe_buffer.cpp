@@ -73,7 +73,7 @@ bool PeBuffer::resizeLastSection(size_t new_img_size)
 
 bool PeBuffer::dumpPeToFile(IN std::string dumpFileName, IN OUT peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL const peconv::ExportsMapper* exportsMap)
 {
-	if (!vBuf) return false;
+	if (!vBuf || !isValidPe()) return false;
 
 	bool is_dumped = false;
 	if (dumpMode == peconv::PE_DUMP_AUTO) {
@@ -95,4 +95,10 @@ bool PeBuffer::dumpPeToFile(IN std::string dumpFileName, IN OUT peconv::t_pe_dum
 	}
 	// save the read module into a file
 	return peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
+}
+
+bool PeBuffer::dumpToFile(IN std::string dumpFileName)
+{
+	if (!vBuf) return false;
+	return peconv::dump_to_file(dumpFileName.c_str(), vBuf, vBufSize);
 }
