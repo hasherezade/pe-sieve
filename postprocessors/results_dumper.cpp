@@ -153,9 +153,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 
 	peconv::t_pe_dump_mode curr_dump_mode = convert_to_peconv_dump_mode(dump_mode);
 
-	bool is_module_dumped = false;
 	bool dump_shellcode = false;
-
 	std::string payload_ext = "";
 
 	PeBuffer module_buf;
@@ -171,6 +169,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 			ULONGLONG found_pe_base = artefactReport->artefacts.peImageBase();
 			PeReconstructor peRec(artefactReport->artefacts, module_buf);
 			if (!peRec.reconstruct(processHandle)) {
+				payload_ext = "corrupt_" + payload_ext;
 				std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG)mod->module << " failed." << std::endl;
 			}
 		}
@@ -187,6 +186,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 
 	const std::string module_name = peconv::get_file_name(mod->moduleFile);
 	std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, payload_ext);
+	bool is_module_dumped = false;
 
 	if (module_buf.isFilled()) {
 		ImpReconstructor impRec(module_buf);
@@ -201,7 +201,10 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 
 	if (!is_module_dumped || dump_shellcode)
 	{
-		dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, "shc");
+		if (dump_shellcode) {
+			payload_ext = "shc";
+		}
+		dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, payload_ext);
 		if (!dumpAsShellcode(dumpFileName, processHandle, (PBYTE)mod->module, mod->moduleSize)) {
 			std::cerr << "[-] Failed dumping module!" << std::endl;
 		}
