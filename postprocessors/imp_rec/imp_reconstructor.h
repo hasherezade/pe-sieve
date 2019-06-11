@@ -64,6 +64,7 @@ public:
 			this->dllsBufSize = 0;
 			return false;
 		}
+		memset(this->dllsBuf, 0, dlls_area_size);
 		this->dllsBufSize = dlls_area_size;
 		this->dllsRVA = dlls_rva;
 		return true;
