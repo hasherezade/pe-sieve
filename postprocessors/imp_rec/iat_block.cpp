@@ -124,7 +124,9 @@ bool IATBlock::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 		if (!splitted.size()) {
 			continue;
 		}
+#ifdef _DEBUG
 		std::cout << "Uncovered series splitted into: " << splitted.size() << " series\n";
+#endif
 		this->thunkSeries.erase(series);
 		this->thunkSeries.insert(splitted.begin(), splitted.end());
 		
@@ -132,7 +134,6 @@ bool IATBlock::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 	}
 
 	size_t covered_count = 0;
-
 	for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); itr++) {
 		IATThunksSeries* series = *itr;
 		
@@ -171,7 +172,9 @@ IATThunksSeriesSet IATBlock::splitSeries(IN IATThunksSeries* series, IN const pe
 		if (!new_series) {
 			new_series = new IATThunksSeries(offset);
 			last_dll = func->libName;
+#ifdef _DEBUG
 			std::cout << std::hex << "addr:  " << offset << " set DLL: " << last_dll << "\n";
+#endif
 		}
 		new_series->insert(offset, func_addr);
 	}
