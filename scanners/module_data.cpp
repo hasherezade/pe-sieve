@@ -184,6 +184,7 @@ bool RemoteModuleData::isSectionExecutable(size_t section_number)
 	if (page_info.Type == MEM_IMAGE) {
 		is_any_exec = (protection & SECTION_MAP_EXECUTE)
 			|| (protection & SECTION_MAP_EXECUTE_EXPLICIT);
+		if (is_any_exec) return true;
 	}
 	is_any_exec = (initial_protect & PAGE_EXECUTE_READWRITE)
 		|| (initial_protect & PAGE_EXECUTE_READ)
