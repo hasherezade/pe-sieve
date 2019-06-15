@@ -42,12 +42,12 @@ size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN const peconv::ExportsMapper* exp
 		if (!exp) break;
 		
 		is_terminated = false;
-		ULONGLONG offset = ((BYTE*)imp - vBuf);
+		DWORD offset = ((BYTE*)imp - vBuf);
 		iat.append(offset, *imp, exp);
 
 		if (!series) series = new IATThunksSeries(offset);
 		if (series) {
-			series->insert(*imp);
+			series->insert(offset, *imp);
 		}
 	}
 	if (series) {

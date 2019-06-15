@@ -28,9 +28,10 @@ bool IATThunksSeries::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 		// DLL not found
 		return false;
 	}
-	size_t covered = cov->mapAddressesToFunctions(cov->dllName);
+	size_t covered_count = cov->mapAddressesToFunctions(cov->dllName);
 	this->dllFullName = exportsMap->get_dll_fullname(cov->dllName);
-	return covered == this->funcAddresses.size();
+	this->covered = (covered_count == this->funcAddresses.size());
+	return this->covered;
 }
 
 bool IATThunksSeries::fillNamesSpace(const BYTE* buf_start, size_t buf_size, DWORD bufRVA, bool is64b)
@@ -104,17 +105,83 @@ std::string IATThunksSeries::getDllName()
 
 bool IATBlock::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 {
-	IATThunksSeriesSet::iterator itr;
+	if (!exportsMap) return false;
 
-	size_t covered = 0;
+	IATThunksSeriesSet::iterator itr;
+	std::set<IATThunksSeries*>to_split;
+
 	for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); itr++) {
 		IATThunksSeries* series = *itr;
-		if (series->makeCoverage(exportsMap)) {
-			covered++;
+		if (!series->makeCoverage(exportsMap)) {
+			to_split.insert(series);
 		}
 	}
-	isCoverageComplete = (covered == this->thunkSeries.size());
+
+	std::set<IATThunksSeries*>::iterator sItr;
+	for (sItr = to_split.begin(); sItr != to_split.end(); sItr++) {
+		IATThunksSeries *series = *sItr;
+		IATThunksSeriesSet splitted = splitSeries(series, *exportsMap);
+		if (!splitted.size()) {
+			continue;
+		}
+#ifdef _DEBUG
+		std::cout << "Uncovered series splitted into: " << splitted.size() << " series\n";
+#endif
+		this->thunkSeries.erase(series);
+		this->thunkSeries.insert(splitted.begin(), splitted.end());
+		
+		delete series; // delete the series that have been splitted
+	}
+
+	size_t covered_count = 0;
+	for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); itr++) {
+		IATThunksSeries* series = *itr;
+		
+		if (series->isCovered() || series ->makeCoverage(exportsMap)) {
+			covered_count++;
+		}
+	}
+
+	isCoverageComplete = (covered_count == this->thunkSeries.size());
 	return isCoverageComplete;
+}
+
+IATThunksSeriesSet IATBlock::splitSeries(IN IATThunksSeries* series, IN const peconv::ExportsMapper &exportsMap)
+{
+	IATThunksSeriesSet splitted;
+	if (!series) return splitted;
+
+	std::map<DWORD, ULONGLONG> addresses = series->getRvaToFuncMap();
+
+	IATThunksSeries *new_series = nullptr;
+	std::map<DWORD, ULONGLONG>::iterator itr;
+	std::string last_dll = "";
+
+	for (itr = addresses.begin(); itr != addresses.end(); itr++) {
+		ULONGLONG func_addr = itr->second;
+		DWORD offset = itr->first;
+		const peconv::ExportedFunc *func = exportsMap.find_export_by_va(func_addr);
+		if (new_series && (!func || func->libName != last_dll)) {
+			//close series
+			splitted.insert(new_series);
+			new_series = nullptr;
+			last_dll = "";
+		}
+		if (!func) continue;
+
+		if (!new_series) {
+			new_series = new IATThunksSeries(offset);
+			last_dll = func->libName;
+#ifdef _DEBUG
+			std::cout << std::hex << "addr:  " << offset << " set DLL: " << last_dll << "\n";
+#endif
+		}
+		new_series->insert(offset, func_addr);
+	}
+	if (new_series) {
+		splitted.insert(new_series);
+	}
+	return splitted;
 }
 
 size_t IATBlock::maxDllLen()

@@ -9,8 +9,8 @@
 class IATThunksSeries
 {
 public:
-	IATThunksSeries(ULONGLONG start_offset)
-		: startOffset(start_offset), cov(nullptr)
+	IATThunksSeries(DWORD start_offset)
+		: startOffset(start_offset), cov(nullptr), covered(false)
 	{
 	}
 
@@ -24,14 +24,20 @@ public:
 		return startOffset < other.startOffset;
 	}
 
-	bool insert(ULONGLONG funcAddr)
+	bool insert(DWORD rva, ULONGLONG funcAddr)
 	{
+		rvaToFuncVA[rva] = funcAddr;
 		funcAddresses.insert(funcAddr);
 		return true;
 	}
 
 	bool makeCoverage(IN const peconv::ExportsMapper* exportsMap);
-
+	
+	bool isCovered()
+	{
+		return covered;
+	}
+	
 	std::string getDllName();
 
 	//calculate the number of bytes required for filling imports names
@@ -40,17 +46,25 @@ public:
 	// fill the buffer with imports thunks and names
 	bool fillNamesSpace(const BYTE* buf_start, size_t buf_size, DWORD bufRVA, bool is64b);
 
-	ULONGLONG startOffset;
+	std::map<DWORD, ULONGLONG> getRvaToFuncMap()
+	{
+		return rvaToFuncVA;
+	}
+
+	DWORD startOffset;
 
 private:
+	bool covered;
 	std::string dllFullName;
 	std::set<ULONGLONG> funcAddresses;
+	std::map<DWORD, ULONGLONG> rvaToFuncVA;
+
 	peconv::ImportedDllCoverage *cov;
 };
 
 struct IATThunksSeriesPtrCompare
 {
-	bool operator()(const IATThunksSeries* lhs, const IATThunksSeries* rhs)
+	bool operator()(const IATThunksSeries* lhs, const IATThunksSeries* rhs) const
 	{
 		if (!lhs || !rhs) return false;
 		return *lhs < *rhs;
@@ -137,6 +151,8 @@ public:
 	DWORD importTableOffset;
 
 protected:
+	IATThunksSeriesSet splitSeries(IN IATThunksSeries* notCoveredSeries, IN const peconv::ExportsMapper& exportsMap);
+
 	IATThunksSeriesSet thunkSeries;
 
 	bool is64bit;
