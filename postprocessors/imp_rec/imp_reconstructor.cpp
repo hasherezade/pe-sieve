@@ -41,6 +41,15 @@ bool ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* export
 	if (!collectIATs(exportsMap)) {
 		return false;
 	}
+	if (!peBuffer.isValidPe()) {
+		// this is possibly a shellcode, stop after collecting the IATs
+		return false;
+	}
+	if (peconv::is_pe_raw(peBuffer.vBuf, peBuffer.vBufSize)) {
+		std::cout << "[-] ImportTable NOT recovered: the PE is in a raw format!\n";
+		return false;
+	}
+
 	bool imp_recovered = false;
 	if (imprec_mode == PE_IMPREC_UNERASE || imprec_mode == PE_IMPREC_AUTO) {
 		std::cout << "[*] Trying to find ImportTable for module: " << std::hex << (ULONGLONG)peBuffer.moduleBase << "\n";
@@ -58,6 +67,7 @@ bool ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* export
 			std::cout << "[-] ImportTable NOT found.\n";
 		}
 	}
+
 	if (imprec_mode == PE_IMPREC_REBUILD || imprec_mode == PE_IMPREC_AUTO) {
 		std::cout << "[*] Trying to rebuild ImportTable for module: " << std::hex << (ULONGLONG)peBuffer.moduleBase << "\n";
 		if (findIATsCoverage(exportsMap)) {
