@@ -115,9 +115,8 @@ public:
 
 	bool isValid()
 	{
-		bool isClean = this->isCovered() && isTerminated;
-		bool isSignificant = (this->functions.size() > 2) && this->isCovered();
-		return isClean || isSignificant;
+		//allow for every block with complete coverage
+		return isCovered();
 	}
 
 	//how many functions the IAT has
