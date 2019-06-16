@@ -51,6 +51,11 @@ public:
 
 	bool dumpToFile(IN std::string dumpFileName);
 
+	ULONGLONG getModuleBase()
+	{
+		return moduleBase;
+	}
+
 protected:
 	bool allocBuffer(const size_t pe_vsize)
 	{

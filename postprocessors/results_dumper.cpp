@@ -208,7 +208,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 		payload_ext = module_buf.isValidPe() ? "dll" : "shc";
 	}
 	const std::string module_name = get_module_file_name(processHandle, *mod);
-	std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, payload_ext);
+	std::string dumpFileName = makeModuleDumpPath(module_buf.getModuleBase(), module_name, payload_ext);
 	bool is_module_dumped = false;
 
 	if (module_buf.isFilled()) {
@@ -230,8 +230,8 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 		if (dump_shellcode) {
 			payload_ext = "shc";
 		}
-		dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, payload_ext);
 		module_buf.readRemote(processHandle, (ULONGLONG)mod->module, mod->moduleSize);
+		dumpFileName = makeModuleDumpPath(module_buf.getModuleBase(), module_name, payload_ext);
 		is_module_dumped = module_buf.dumpToFile(dumpFileName);
 		curr_dump_mode = peconv::PE_DUMP_VIRTUAL;
 	}
