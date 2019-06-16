@@ -493,7 +493,7 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 		ArtefactsMapping aMap(memPage, this->is64bit);
 		if (findMzPe(aMap, min_offset)) {
 			size_t dos_offset = calc_offset(memPage, aMap.dos_hdr);
-			min_offset = dos_offset != INVALID_OFFSET ? dos_offset : min_offset;
+			min_offset = (dos_offset != INVALID_OFFSET) ? dos_offset : min_offset;
 			//std::cout << "Setting minOffset: " << std::hex << min_offset << std::endl;
 		}
 		size_t max_section_search = memPage.getLoadedSize();
@@ -503,9 +503,13 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 				min_offset = nt_offset;
 			}
 			//don't search in full module, only in the first mem page:
-			max_section_search = PAGE_SIZE < memPage.getLoadedSize() ? PAGE_SIZE : memPage.getLoadedSize();
+			max_section_search = (PAGE_SIZE < memPage.getLoadedSize()) ? PAGE_SIZE : memPage.getLoadedSize();
 		}
-		IMAGE_SECTION_HEADER *sec_hdr = findSectionsHdr(memPage, max_section_search - min_offset, min_offset);
+		if (max_section_search <= min_offset) {
+			continue;
+		}
+		const size_t diff = max_section_search - min_offset;
+		IMAGE_SECTION_HEADER *sec_hdr = findSectionsHdr(memPage, diff, min_offset);
 		if (sec_hdr) {
 			setSecHdr(aMap, sec_hdr);
 			size_t sec_offset = calc_offset(memPage, aMap.sec_hdr);
