@@ -7,6 +7,7 @@
 #include "../utils/path_converter.h"
 #include "../utils/workingset_enum.h"
 #include "../utils/modules_enum.h"
+#include "../utils/process_privilege.h"
 
 #include "headers_scanner.h"
 #include "code_scanner.h"
@@ -80,6 +81,7 @@ bool ProcessScanner::resolveHooksTargets(ProcessScanReport& process_report)
 
 ProcessScanReport* ProcessScanner::scanRemote()
 {
+	this->isDEP = is_DEP_enabled(this->processHandle);
 	ProcessScanReport *pReport = new ProcessScanReport(this->args.pid);
 
 	char image_buf[MAX_PATH] = { 0 };
@@ -151,6 +153,7 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 		MemPageData memPage(this->processHandle, region_base);
 		//if it was already scanned, it means the module was on the list of loaded modules
 		memPage.is_listed_module = pReport.hasModule(region_base);
+		memPage.is_dep_enabled = this->isDEP;
 
 		WorkingSetScanner memPageScanner(this->processHandle, memPage, this->args.shellcode);
 		WorkingSetScanReport *my_report = memPageScanner.scanRemote();

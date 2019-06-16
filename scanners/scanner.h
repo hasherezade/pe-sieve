@@ -11,7 +11,7 @@
 class ProcessScanner {
 public:
 	ProcessScanner(HANDLE procHndl, pesieve::t_params _args)
-		: args(_args)
+		: args(_args), isDEP(false)
 	{
 		this->processHandle = procHndl;
 	}
@@ -33,6 +33,7 @@ protected:
 	bool resolveHooksTargets(ProcessScanReport& process_report);
 
 	HANDLE processHandle;
+	bool isDEP;
 	size_t hModsMax;
 	pesieve::t_params args;
 };

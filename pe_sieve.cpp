@@ -121,7 +121,6 @@ ProcessScanReport* scan_process(const t_params args)
 			SetLastError(ERROR_INVALID_PARAMETER);
 			throw std::runtime_error("Scanner mismatch. Try to use the 64bit version of the scanner.");
 		}
-
 		ProcessScanner scanner(hProcess, args);
 		process_report = scanner.scanRemote();
 

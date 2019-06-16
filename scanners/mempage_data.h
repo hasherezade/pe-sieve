@@ -10,7 +10,8 @@ public:
 	MemPageData(HANDLE _process, ULONGLONG _start_va)
 		: processHandle(_process), start_va(_start_va),
 		is_listed_module(false),
-		is_info_filled(false), loadedData(nullptr), loadedSize(0)
+		is_info_filled(false), loadedData(nullptr), loadedSize(0),
+		is_dep_enabled(false)
 	{
 		fillInfo();
 	}
@@ -36,6 +37,7 @@ public:
 	bool is_private;
 	DWORD mapping_type;
 	bool is_listed_module;
+	bool is_dep_enabled;
 
 	ULONGLONG alloc_base;
 	ULONGLONG region_start;
