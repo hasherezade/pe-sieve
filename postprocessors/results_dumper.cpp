@@ -200,6 +200,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 		is_module_dumped = module_buf.dumpPeToFile(dumpFileName, curr_dump_mode, exportsMap);
 		if (!is_module_dumped) {
 			is_module_dumped = module_buf.dumpToFile(dumpFileName);
+			curr_dump_mode = peconv::PE_DUMP_VIRTUAL;
 		}
 		if (!is_imp_rec || save_imp_report) {
 			impRec.printFoundIATs(dumpFileName + ".imports.txt");
@@ -214,11 +215,14 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 		dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, payload_ext);
 		module_buf.readRemote(processHandle, (ULONGLONG)mod->module, mod->moduleSize);
 		is_module_dumped = module_buf.dumpToFile(dumpFileName);
+		curr_dump_mode = peconv::PE_DUMP_VIRTUAL;
 	}
 	if (is_module_dumped) {
 		mod->generateTags(dumpFileName + ".tag");
 		if (!this->quiet) {
-			std::cout << "[*] Dumped module to: " + dumpFileName + " as " + get_dump_mode_name(curr_dump_mode) << "\n";
+			std::string mode_info = get_dump_mode_name(curr_dump_mode);
+			if (mode_info.length() > 0) mode_info = " as " + mode_info;
+			std::cout << "[*] Dumped module to: " + dumpFileName + mode_info << "\n";
 		}
 	}
 	else {
