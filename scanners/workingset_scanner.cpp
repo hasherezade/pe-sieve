@@ -38,13 +38,8 @@ bool WorkingSetScanner::isExecutable(MemPageData &memPageData)
 
 	//DEP is disabled, check also pages that are readable
 	if (!memPage.is_dep_enabled) {
-
 		is_any_exec = (memPage.protection & PAGE_READWRITE)
 			|| (memPage.protection & PAGE_READONLY);
-
-		if (memPage.mapping_type == MEM_IMAGE) {
-			is_any_exec = is_any_exec || (memPage.protection & SECTION_MAP_READ);
-		}
 	}
 	return is_any_exec;
 }
