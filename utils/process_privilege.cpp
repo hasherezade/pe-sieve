@@ -183,6 +183,13 @@ bool is_DEP_enabled(HANDLE processHandle)
 
 	BOOL is_ok = GetProcessDEPPolicy(processHandle, &flags, &is_permanent);
 	if (!is_ok) {
+#ifdef _WIN64
+		BOOL isRemoteWow64 = FALSE;
+		IsWow64Process(processHandle, &isRemoteWow64);
+		if (!isRemoteWow64) {
+			return true; // it is a 64 bit process, DEP is enabled
+		}
+#endif
 		std::cerr << "Could not fetch the DEP status\n";
 		return false;
 	}
