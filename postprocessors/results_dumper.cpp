@@ -76,6 +76,22 @@ bool make_dump_dir(const std::string directory)
 	}
 	return create_dir_recursively(directory);
 }
+
+std::string get_module_file_name(HANDLE processHandle, const ModuleScanReport& mod)
+{
+	if (mod.moduleFile.length() > 0) {
+		return peconv::get_file_name(mod.moduleFile);
+	}
+
+	char szModName[MAX_PATH] = { 0 };
+	memset(szModName, 0, MAX_PATH);
+
+	std::string modulePath = "";
+	if (GetModuleFileNameExA(processHandle, (HMODULE)mod.module, szModName, MAX_PATH)) {
+		modulePath = peconv::get_file_name(szModName);
+	}
+	return modulePath;
+}
 //---
 
 bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, t_report_filter filter)
@@ -149,6 +165,8 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 	const t_imprec_mode imprec_mode
 )
 {
+	if (!mod) return false;
+
 	bool save_imp_report = true;
 
 	peconv::t_pe_dump_mode curr_dump_mode = convert_to_peconv_dump_mode(dump_mode);
@@ -189,7 +207,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 	if (payload_ext.length() == 0) {
 		payload_ext = module_buf.isValidPe() ? "dll" : "shc";
 	}
-	const std::string module_name = peconv::get_file_name(mod->moduleFile);
+	const std::string module_name = get_module_file_name(processHandle, *mod);
 	std::string dumpFileName = makeModuleDumpPath((ULONGLONG)mod->module, module_name, payload_ext);
 	bool is_module_dumped = false;
 
