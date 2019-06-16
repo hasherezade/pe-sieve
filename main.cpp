@@ -19,6 +19,7 @@
 //scan options:
 #define PARAM_PID "/pid"
 #define PARAM_SHELLCODE "/shellc"
+#define PARAM_DATA "/data"
 #define PARAM_MODULES_FILTER "/mfilter"
 //dump options:
 #define PARAM_IMP_REC "/imp"
@@ -59,6 +60,8 @@ void print_help()
 
 	print_in_color(param_color, PARAM_SHELLCODE);
 	std::cout << "\t: Detect shellcode implants. (By default it detects PE only).\n";
+	print_in_color(param_color, PARAM_DATA);
+	std::cout << "\t: If DEP is disabled scan also non-executable memory\n\t(which potentially can be executed).\n";
 #ifdef _WIN64
 	print_in_color(param_color, PARAM_MODULES_FILTER);
 	std::cout << " <*mfilter_id>\n\t: Filter the scanned modules.\n";
@@ -223,6 +226,9 @@ int main(int argc, char *argv[])
 		}
 		else if (!strcmp(argv[i], PARAM_SHELLCODE)) {
 			args.shellcode = true;
+		}
+		else if (!strcmp(argv[i], PARAM_DATA)) {
+			args.data = true;
 		}
 		else if (!strcmp(argv[i], PARAM_DUMP_MODE) && (i + 1) < argc) {
 			args.dump_mode = normalize_dump_mode(atoi(argv[i + 1]));

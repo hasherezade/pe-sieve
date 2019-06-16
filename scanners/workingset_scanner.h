@@ -70,22 +70,24 @@ public:
 
 class WorkingSetScanner {
 public:
-	WorkingSetScanner(HANDLE _procHndl, MemPageData &_memPageDatal, bool _detectShellcode)
+	WorkingSetScanner(HANDLE _procHndl, MemPageData &_memPageDatal, bool _detectShellcode, bool _scanData)
 		: processHandle(_procHndl), memPage(_memPageDatal),
 		detectShellcode(_detectShellcode),
-		isDeepScan(true)
+		scanData(_scanData)
 	{
 	}
+
 	virtual ~WorkingSetScanner() {}
 
 	virtual WorkingSetScanReport* scanRemote();
 
 protected:
 	bool isExecutable(MemPageData &memPageData);
+	bool isPotentiallyExecutable(MemPageData &memPageData);
 	bool isCode(MemPageData &memPageData);
 	WorkingSetScanReport* scanExecutableArea(MemPageData &memPageData);
 
-	bool isDeepScan;
+	bool scanData; //scan also non-executable areas if DEP is disabled
 	bool detectShellcode; // is shellcode detection enabled
 	HANDLE processHandle;
 	MemPageData &memPage;
