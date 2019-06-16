@@ -24,9 +24,7 @@ bool WorkingSetScanner::isExecutable(MemPageData &memPageData)
 			|| (memPage.initial_protect & SECTION_MAP_EXECUTE)
 			|| (memPage.initial_protect & SECTION_MAP_EXECUTE_EXPLICIT);
 		
-		if (is_any_exec) {
-			return is_any_exec;
-		}
+		if (is_any_exec) return true;
 	}
 	is_any_exec = (memPage.initial_protect & PAGE_EXECUTE_READWRITE)
 		|| (memPage.initial_protect & PAGE_EXECUTE_READ)
@@ -36,7 +34,18 @@ bool WorkingSetScanner::isExecutable(MemPageData &memPageData)
 		|| (memPage.protection & PAGE_EXECUTE_READ)
 		|| (memPage.protection & PAGE_EXECUTE)
 		|| (memPage.protection & PAGE_EXECUTE_WRITECOPY);
+	if (is_any_exec) return true;
 
+	//DEP is disabled, check also pages that are readable
+	if (!memPage.is_dep_enabled) {
+
+		is_any_exec = (memPage.protection & PAGE_READWRITE)
+			|| (memPage.protection & PAGE_READONLY);
+
+		if (memPage.mapping_type == MEM_IMAGE) {
+			is_any_exec = is_any_exec || (memPage.protection & SECTION_MAP_READ);
+		}
+	}
 	return is_any_exec;
 }
 

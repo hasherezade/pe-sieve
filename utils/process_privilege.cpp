@@ -167,3 +167,25 @@ process_integrity_t get_integrity_level(HANDLE hProcess)
 	CloseHandle(hToken);
 	return level;
 }
+
+bool is_DEP_enabled(HANDLE processHandle)
+{
+	DEP_SYSTEM_POLICY_TYPE global_dep = GetSystemDEPPolicy();
+	if (global_dep == DEPPolicyAlwaysOff) {
+		return false;
+	}
+	if (global_dep == DEPPolicyAlwaysOn) {
+		return true;
+	}
+	// 
+	DWORD flags = 0;
+	BOOL is_permanent = FALSE;
+
+	BOOL is_ok = GetProcessDEPPolicy(processHandle, &flags, &is_permanent);
+	if (!is_ok) {
+		std::cerr << "Could not fetch the DEP status\n";
+		return false;
+	}
+	const bool is_DEP = (flags & PROCESS_DEP_ENABLE) || (flags & PROCESS_DEP_DISABLE_ATL_THUNK_EMULATION);
+	return is_DEP;
+}

@@ -13,3 +13,6 @@ typedef enum {
 bool set_debug_privilege(DWORD process_id);
 
 process_integrity_t get_integrity_level(HANDLE hProcess);
+
+bool is_DEP_enabled(HANDLE hProcess);
+
