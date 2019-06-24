@@ -45,7 +45,10 @@ bool ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* export
 		// this is possibly a shellcode, stop after collecting the IATs
 		return false;
 	}
-	if (peconv::is_pe_raw(peBuffer.vBuf, peBuffer.vBufSize)) {
+
+	if (!peconv::is_pe_raw_eq_virtual(peBuffer.vBuf, peBuffer.vBufSize)
+		&& peconv::is_pe_raw(peBuffer.vBuf, peBuffer.vBufSize))
+	{
 		std::cout << "[-] ImportTable NOT recovered: the PE is in a raw format!\n";
 		return false;
 	}
