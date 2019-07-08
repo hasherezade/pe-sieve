@@ -64,10 +64,6 @@ t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, RemoteModuleData
 
 	scan_report->moduleFile = modData.szModName;
 	process_report.appendReport(scan_report);
-	
-	if (is_hooked != SCAN_SUSPICIOUS) {
-		return is_hooked;
-	}
 	return is_hooked;
 }
 
