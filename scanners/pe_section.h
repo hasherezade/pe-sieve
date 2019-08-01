@@ -74,7 +74,7 @@ protected:
 		const size_t raw_code_size = section_hdr->SizeOfRawData;
 		const size_t orig_code_size = section_hdr->Misc.VirtualSize > raw_code_size ? section_hdr->Misc.VirtualSize : raw_code_size;
 
-		loadedSection = peconv::alloc_pe_section(orig_code_size);
+		loadedSection = peconv::alloc_unaligned(orig_code_size);
 		if (loadedSection == nullptr) {
 			return false;
 		}
@@ -91,7 +91,7 @@ protected:
 		if (!loadedSection) {
 			return;
 		}
-		peconv::free_pe_section(loadedSection);
+		peconv::free_unaligned(loadedSection);
 		loadedSection = nullptr;
 		loadedSize = 0;
 	}
