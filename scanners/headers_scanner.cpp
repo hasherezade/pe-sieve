@@ -45,6 +45,9 @@ HeadersScanReport* HeadersScanner::scanRemote()
 	zeroUnusedFields(hdr_buffer1, hdrs_size);
 	zeroUnusedFields(hdr_buffer2, hdrs_size);
 
+	if (isSecHdrModified(hdr_buffer1, hdr_buffer2, hdrs_size)) {
+		my_report->secHdrModified = true;
+	}
 	//compare:
 	if (memcmp(hdr_buffer1, hdr_buffer2, hdrs_size) != 0) {
 		my_report->status = SCAN_SUSPICIOUS;
@@ -70,3 +73,30 @@ bool HeadersScanner::zeroUnusedFields(PBYTE hdr_buffer, size_t hdrs_size)
 	return is_modified;
 }
 
+bool HeadersScanner::isSecHdrModified(PBYTE hdr_buffer1, PBYTE hdr_buffer2, size_t hdrs_size)
+{
+	size_t section_num1 = peconv::get_sections_count(hdr_buffer1, hdrs_size);
+	size_t section_num2 = peconv::get_sections_count(hdr_buffer2, hdrs_size);
+	if (section_num1 != section_num2) {
+		return true;
+	}
+
+	for (size_t i = 0; i < section_num1; i++) {
+		PIMAGE_SECTION_HEADER sec_hdr1 = peconv::get_section_hdr(hdr_buffer1, hdrs_size, i);
+		PIMAGE_SECTION_HEADER sec_hdr2 = peconv::get_section_hdr(hdr_buffer1, hdrs_size, i);
+		if (!sec_hdr1 && !sec_hdr2) {
+			continue;
+		}
+		else if (!sec_hdr1 || !sec_hdr2) {
+			return true; //modified
+		}
+
+		if (sec_hdr1->VirtualAddress != sec_hdr2->VirtualAddress) {
+			return true;
+		}
+		if (sec_hdr1->Misc.VirtualSize != sec_hdr2->Misc.VirtualSize) {
+			return true;
+		}
+	}
+	return false;
+}

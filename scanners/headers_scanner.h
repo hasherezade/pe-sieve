@@ -18,6 +18,9 @@ public:
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"ep_modified\" : ");
 		outs << epModified;
+		outs << ",\n";
+		OUT_PADDED(outs, level, "\"sec_hdr_modified\" : ");
+		outs << secHdrModified;
 		if (archMismatch) {
 			outs << ",\n";
 			OUT_PADDED(outs, level, "\"arch_mismatch\" : ");
@@ -36,7 +39,9 @@ public:
 		OUT_PADDED(outs, level, "}");
 		return true;
 	}
+
 	bool epModified;
+	bool secHdrModified;
 	bool archMismatch; // the loaded module is of different architecture than the module read from the corresponding path
 	DWORD is64; // is the remote module 64bit
 };
@@ -52,4 +57,5 @@ public:
 
 private:
 	bool zeroUnusedFields(PBYTE hdr_buffer, size_t hdrs_size);
+	bool isSecHdrModified(PBYTE hdr_buffer1, PBYTE hdr_buffer2, size_t hdrs_size);
 };
