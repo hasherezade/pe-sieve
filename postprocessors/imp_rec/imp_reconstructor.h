@@ -8,6 +8,7 @@
 
 #include "../pe_buffer.h"
 #include "iat_block.h"
+#include "../utils/artefacts_util.h"
 
 class ImportTableBuffer
 {
@@ -158,8 +159,12 @@ public:
 	ImpReconstructor(PeBuffer &_peBuffer) 
 		: peBuffer(_peBuffer), is64bit(false)
 	{
-		if (peBuffer.vBuf) {
+		if (!peBuffer.vBuf) return;
+		if (peBuffer.isValidPe()) {
 			this->is64bit = peconv::is64bit(peBuffer.vBuf);
+		}
+		else {
+			this->is64bit = is_64bit_code(peBuffer.vBuf, peBuffer.vBufSize);
 		}
 	}
 
