@@ -48,6 +48,7 @@ namespace pesieve {
 		DWORD scanned; // number of all scanned modules
 		DWORD suspicious;// general summary of suspicious
 		DWORD replaced; // PE file replaced in memory (probably hollowed)
+		DWORD hdr_mod; // PE header is modified (but not replaced)
 		DWORD detached; // cannot find the file corresponding to the module in memory
 		DWORD hooked; // detected modifications in the code
 		DWORD implanted; // the full PE was probably loaded manually

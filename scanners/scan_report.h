@@ -84,6 +84,7 @@ protected:
 
 	void appendToType(ModuleScanReport *report);
 	size_t countSuspiciousPerType(report_type_t type) const;
+	size_t countHdrsReplaced() const;
 
 	bool appendToModulesList(ModuleScanReport *report);
 

@@ -45,9 +45,8 @@ HeadersScanReport* HeadersScanner::scanRemote()
 	zeroUnusedFields(hdr_buffer1, hdrs_size);
 	zeroUnusedFields(hdr_buffer2, hdrs_size);
 
-	if (isSecHdrModified(hdr_buffer1, hdr_buffer2, hdrs_size)) {
-		my_report->secHdrModified = true;
-	}
+	my_report->secHdrModified = isSecHdrModified(hdr_buffer1, hdr_buffer2, hdrs_size);
+
 	//compare:
 	if (memcmp(hdr_buffer1, hdr_buffer2, hdrs_size) != 0) {
 		my_report->status = SCAN_SUSPICIOUS;

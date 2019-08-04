@@ -72,6 +72,26 @@ size_t ProcessScanReport::countSuspiciousPerType(report_type_t type) const
 	return suspicious;
 }
 
+size_t ProcessScanReport::countHdrsReplaced() const
+{
+	size_t replaced = 0;
+	const report_type_t type = report_type_t::REPORT_HEADERS_SCAN;
+
+	std::set<ModuleScanReport*>::iterator itr;
+	for (itr = this->reportsByType[type].begin(); itr != this->reportsByType[type].end(); itr++) {
+		ModuleScanReport* report = *itr;
+		if (ModuleScanReport::get_scan_status(report) == SCAN_SUSPICIOUS) {
+			HeadersScanReport *hdrRep = dynamic_cast<HeadersScanReport*>(report);
+			if (!hdrRep) continue; //it should not happen
+
+			if (hdrRep->isHdrReplaced()) {
+				replaced++;
+			}
+		}
+	}
+	return replaced;
+}
+
 pesieve::t_report ProcessScanReport::generateSummary() const
 {
 	t_report summary = { 0 };
@@ -91,9 +111,11 @@ pesieve::t_report ProcessScanReport::generateSummary() const
 		}
 		
 	}
+
+	summary.replaced = countHdrsReplaced();
 	summary.hooked = countSuspiciousPerType(REPORT_CODE_SCAN);
 	summary.implanted = countSuspiciousPerType(REPORT_MEMPAGE_SCAN);
-	summary.replaced = countSuspiciousPerType(REPORT_HEADERS_SCAN);
+	summary.hdr_mod = countSuspiciousPerType(REPORT_HEADERS_SCAN) - summary.replaced;
 	summary.detached = countSuspiciousPerType(REPORT_UNREACHABLE_SCAN);
 	
 	return summary;

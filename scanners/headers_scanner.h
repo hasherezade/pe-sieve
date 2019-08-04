@@ -9,18 +9,23 @@ class HeadersScanReport : public ModuleScanReport
 public:
 	HeadersScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
 		: ModuleScanReport(processHandle, _module, _moduleSize),
-		epModified(false), archMismatch(false), is64(false) { }
+		secHdrModified(false), epModified(false), archMismatch(false), is64(false) { }
 
 
 	const virtual void fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
+		bool is_replaced = isHdrReplaced();
 		ModuleScanReport::toJSON(outs, level);
+		outs << ",\n";
+		OUT_PADDED(outs, level, "\"is_pe_replaced\" : ");
+
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"ep_modified\" : ");
 		outs << epModified;
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"sec_hdr_modified\" : ");
 		outs << secHdrModified;
+
 		if (archMismatch) {
 			outs << ",\n";
 			OUT_PADDED(outs, level, "\"arch_mismatch\" : ");
@@ -38,6 +43,11 @@ public:
 		outs << "\n";
 		OUT_PADDED(outs, level, "}");
 		return true;
+	}
+
+	bool isHdrReplaced()
+	{
+		return secHdrModified;
 	}
 
 	bool epModified;

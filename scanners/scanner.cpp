@@ -36,8 +36,7 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 		process_report.appendReport(new MalformedHeaderReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
 		return SCAN_ERROR;
 	}
-	t_scan_status is_hollowed = ModuleScanReport::get_scan_status(scan_report);
-
+	
 	if (scan_report->archMismatch && isWow64) {
 #ifdef _DEBUG
 		std::cout << "Arch mismatch, reloading..." << std::endl;
@@ -46,11 +45,15 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 			delete scan_report; // delete previous report
 			scan_report = hollows.scanRemote();
 		}
-		is_hollowed = ModuleScanReport::get_scan_status(scan_report);
 	}
 	scan_report->moduleFile = modData.szModName;
 	process_report.appendReport(scan_report);
-	return is_hollowed;
+
+	t_scan_status is_suspicious = ModuleScanReport::get_scan_status(scan_report);
+	if (is_suspicious && !scan_report->isHdrReplaced()) {
+		return SCAN_NOT_SUSPICIOUS;
+	}
+	return is_suspicious;
 }
 
 t_scan_status ProcessScanner::scanForHooks(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
