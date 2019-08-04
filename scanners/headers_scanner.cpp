@@ -97,6 +97,9 @@ bool HeadersScanner::isSecHdrModified(PBYTE hdr_buffer1, PBYTE hdr_buffer2, size
 		if (sec_hdr1->Misc.VirtualSize != sec_hdr2->Misc.VirtualSize) {
 			return true;
 		}
+		if (sec_hdr1->PointerToRawData != sec_hdr2->PointerToRawData) {
+			return true;
+		}
 	}
 	return false;
 }
