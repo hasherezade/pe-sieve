@@ -83,7 +83,7 @@ bool HeadersScanner::isSecHdrModified(PBYTE hdr_buffer1, PBYTE hdr_buffer2, size
 
 	for (size_t i = 0; i < section_num1; i++) {
 		PIMAGE_SECTION_HEADER sec_hdr1 = peconv::get_section_hdr(hdr_buffer1, hdrs_size, i);
-		PIMAGE_SECTION_HEADER sec_hdr2 = peconv::get_section_hdr(hdr_buffer1, hdrs_size, i);
+		PIMAGE_SECTION_HEADER sec_hdr2 = peconv::get_section_hdr(hdr_buffer2, hdrs_size, i);
 		if (!sec_hdr1 && !sec_hdr2) {
 			continue;
 		}
