@@ -2,9 +2,8 @@
 
 #include <iostream>
 
-const ULONGLONG MAX_32BIT = 0x07FFFFFFF;
-const ULONGLONG MAX_64BIT = 0x07FFFFFFFFFF;
-
+const ULONGLONG MAX_32BIT = 0x7FFFFFFFF;
+const ULONGLONG MAX_64BIT = 0x7FFFFFFFFFFF;
 bool get_next_region(HANDLE processHandle, ULONGLONG start_va, ULONGLONG max_va, MEMORY_BASIC_INFORMATION &page_info)
 {
 	for (; start_va < max_va; start_va += PAGE_SIZE) {
