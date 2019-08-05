@@ -24,14 +24,14 @@ bool overwrite_opt_hdr(BYTE* vBuf, size_t vBufSize, IMAGE_OPTIONAL_HEADER_T* opt
 	else {
 		opt_hdr_ptr->Magic = IMAGE_NT_OPTIONAL_HDR32_MAGIC;
 	}
-
-	if (opt_hdr_ptr->SectionAlignment > PAGE_SIZE) {
+	//set typical values for the fields that has been erased:
+	if (opt_hdr_ptr->SectionAlignment == 0) {
 		opt_hdr_ptr->SectionAlignment = PAGE_SIZE;
 	}
-	if (opt_hdr_ptr->FileAlignment > PAGE_SIZE) {
+	if (opt_hdr_ptr->FileAlignment == 0) {
 		opt_hdr_ptr->FileAlignment = 0x200; // typical file alignment
 	}
-	if (opt_hdr_ptr->SizeOfHeaders > PAGE_SIZE) {
+	if (opt_hdr_ptr->SizeOfHeaders == 0) {
 		opt_hdr_ptr->SizeOfHeaders = 0x400; //typical header size
 	}
 	if (opt_hdr_ptr->SizeOfImage < artefacts.calculatedImgSize) {
