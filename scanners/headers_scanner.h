@@ -18,6 +18,7 @@ public:
 		ModuleScanReport::toJSON(outs, level);
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"is_pe_replaced\" : ");
+		outs << is_replaced;
 
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"ep_modified\" : ");
