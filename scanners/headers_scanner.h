@@ -9,7 +9,11 @@ class HeadersScanReport : public ModuleScanReport
 public:
 	HeadersScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
 		: ModuleScanReport(processHandle, _module, _moduleSize),
-		secHdrModified(false), epModified(false), archMismatch(false), is64(false) { }
+		dosHdrModified(false), fileHdrModified(false), ntHdrModified(false),
+		secHdrModified(false), 
+		epModified(false), archMismatch(false), is64(false)
+	{
+	}
 
 
 	const virtual void fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
@@ -19,7 +23,15 @@ public:
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"is_pe_replaced\" : ");
 		outs << is_replaced;
-
+		outs << ",\n";
+		OUT_PADDED(outs, level, "\"dos_hdr_modified\" : ");
+		outs << dosHdrModified;
+		outs << ",\n";
+		OUT_PADDED(outs, level, "\"file_hdr_modified\" : ");
+		outs << fileHdrModified;
+		outs << ",\n";
+		OUT_PADDED(outs, level, "\"nt_hdr_modified\" : ");
+		outs << ntHdrModified;
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"ep_modified\" : ");
 		outs << epModified;
@@ -52,6 +64,9 @@ public:
 	}
 
 	bool epModified;
+	bool dosHdrModified;
+	bool fileHdrModified;
+	bool ntHdrModified;
 	bool secHdrModified;
 	bool archMismatch; // the loaded module is of different architecture than the module read from the corresponding path
 	DWORD is64; // is the remote module 64bit
@@ -68,5 +83,8 @@ public:
 
 private:
 	bool zeroUnusedFields(PBYTE hdr_buffer, size_t hdrs_size);
-	bool isSecHdrModified(PBYTE hdr_buffer1, PBYTE hdr_buffer2, size_t hdrs_size);
+	bool isSecHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size);
+	bool isDosHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size);
+	bool isFileHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size);
+	bool isNtHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size);
 };
