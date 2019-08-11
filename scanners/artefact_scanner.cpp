@@ -97,8 +97,34 @@ size_t count_section_hdrs(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEA
 	return counter;
 }
 
+ULONGLONG ArtefactScanner::_findMZoffset(MemPageData &memPage, LPVOID sec_hdr)
+{
+	size_t hdrs_offset = calc_offset(memPage, sec_hdr);
+	if (hdrs_offset == INVALID_OFFSET) {
+		return INVALID_OFFSET;
+	}
+	const BYTE mz_sig[] = "MZ\x90";
+
+	BYTE *min_search = memPage.getLoadedData();
+	BYTE *start_ptr = min_search + hdrs_offset - sizeof(mz_sig);
+	size_t space = PAGE_SIZE;
+	//std::cout << "Searching the MZ header starting from: " << std::hex << hdrs_offset << "\n";
+	for (BYTE *search_ptr = start_ptr; search_ptr >= min_search && space > 0; search_ptr--, space--) {
+		if (search_ptr[0] == mz_sig[0] && search_ptr[1] == mz_sig[1] && search_ptr[2] == mz_sig[2]) {
+			//std::cout << "MZ header found!\n";
+			return calc_offset(memPage, search_ptr);
+		}
+	}
+	//std::cout << "MZ header not found :(\n";
+	return INVALID_OFFSET;
+}
+
 ULONGLONG ArtefactScanner::calcPeBase(MemPageData &memPage, LPVOID sec_hdr)
 {
+	ULONGLONG found_mz = _findMZoffset(memPage, sec_hdr);
+	if (found_mz != INVALID_OFFSET) {
+		return memPage.region_start + found_mz;
+	}
 	//WARNING: this will be inacurate in cases if the PE is not aligned to the beginning of the page
 	size_t hdrs_offset = calc_offset(memPage, sec_hdr);
 	if (hdrs_offset == INVALID_OFFSET) {

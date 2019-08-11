@@ -227,6 +227,7 @@ protected:
 	PeArtefacts* findArtefacts(MemPageData &memPage, size_t start_offset);
 	PeArtefacts* findInPrevPages(ULONGLONG addr_start, ULONGLONG addr_stop);
 
+	ULONGLONG _findMZoffset(MemPageData &memPage, LPVOID hdr_ptr);
 	ULONGLONG calcPeBase(MemPageData &memPage, LPVOID hdr_ptr);
 	size_t calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr, ULONGLONG pe_image_base);
 
