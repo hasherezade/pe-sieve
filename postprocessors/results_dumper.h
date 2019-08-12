@@ -29,9 +29,9 @@ protected:
 	bool dumpModule(HANDLE processHandle, ModuleScanReport* mod, const peconv::ExportsMapper *exportsMap, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
 
 	/**
-	@modBaseAddr : base address where this module was mapped
-	@fname : known name of this module
-	@defaultExtension : default extension - it will be used if no other extension was detected from the previous name
+	\param modBaseAddr : base address where this module was mapped
+	\param fname : known name of this module
+	\param defaultExtension : default extension - it will be used if no other extension was detected from the previous name
 	*/
 	std::string makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname, std::string defaultExtension);
 
