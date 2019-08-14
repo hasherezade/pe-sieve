@@ -4,36 +4,6 @@
 #include <iomanip>
 #include <algorithm>
 
-char* get_file_name(char *full_path)
-{
-	if (!full_path) return nullptr;
-
-	size_t len = strlen(full_path);
-	if (len < 2) {
-		return full_path;
-	}
-	for (size_t i = len - 2; i > 0; i--) {
-		if (full_path[i] == '\\' || full_path[i] == '/') {
-			return full_path + (i + 1);
-		}
-	}
-	return full_path;
-}
-
-char* get_directory(IN char *full_path, OUT char *out_buf, IN const size_t out_buf_size)
-{
-	if (!full_path) return nullptr;
-
-	memset(out_buf, 0, out_buf_size);
-	memcpy(out_buf, full_path, out_buf_size);
-
-	char *name_ptr = get_file_name(out_buf);
-	if (name_ptr != nullptr) {
-		*name_ptr = '\0'; //cut it
-	}
-	return out_buf;
-}
-
 char* get_subpath_ptr(char *modulePath, char* searchedPath)
 {
 	if (modulePath == nullptr || searchedPath == nullptr) {
@@ -106,4 +76,42 @@ std::string get_system_drive()
 	GetWindowsDirectory(buf, MAX_PATH);
 	buf[2] = '\0'; // cut after the drive letter
 	return std::string(buf);
+}
+
+std::string get_full_path(const char* szPath)
+{
+	char out_buf[MAX_PATH] = { 0 };
+	if (GetFullPathNameA(szPath, MAX_PATH, out_buf, nullptr) == 0) {
+		return "";
+	}
+	return out_buf;
+}
+
+bool dir_exists(const char* szPath)
+{
+	DWORD dwAttrib = GetFileAttributes(szPath);
+
+	return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
+		(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+}
+
+bool create_dir_recursively(std::string in_path)
+{
+	std::string path = get_full_path(in_path.c_str());
+	if (path.length() == 0) path = in_path;
+
+	if (dir_exists(path.c_str())) {
+		return true;
+	}
+	size_t pos = 0;
+	do
+	{
+		pos = path.find_first_of("\\/", pos + 1);
+		if (CreateDirectoryA(path.substr(0, pos).c_str(), NULL) == FALSE) {
+			if (GetLastError() != ERROR_ALREADY_EXISTS) {
+				return false;
+			}
+		}
+	} while (pos != std::string::npos);
+	return true;
 }

@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-#include "peconv.h"
+#include <peconv.h>
 #include "module_data.h"
 
 class PeSection
@@ -40,6 +40,7 @@ public:
 		return isInside;
 	}
 
+	size_t rawSize;
 	size_t loadedSize;
 	PBYTE loadedSection;
 	DWORD rva;
@@ -49,9 +50,10 @@ protected:
 	bool loadRemote(RemoteModuleData& remoteModData, size_t section_number)
 		{
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(remoteModData.headerBuffer, peconv::MAX_HEADER_SIZE, section_number);
-		if ((section_hdr == NULL) || section_hdr->SizeOfRawData == 0) {
-			return NULL;
+		if ((!section_hdr) || section_hdr->Misc.VirtualSize == 0) {
+			return false;
 		}
+		this->rawSize = section_hdr->SizeOfRawData;
 		this->rva = section_hdr->VirtualAddress;
 		//get the code section from the module:
 		this->loadedSize = 0;
@@ -68,16 +70,18 @@ protected:
 		if (section_hdr == nullptr) {
 			return false;
 		}
-		size_t orig_code_size = section_hdr->SizeOfRawData;
+		this->rawSize = section_hdr->SizeOfRawData;
+		const size_t raw_code_size = section_hdr->SizeOfRawData;
+		const size_t orig_code_size = section_hdr->Misc.VirtualSize > raw_code_size ? section_hdr->Misc.VirtualSize : raw_code_size;
 
-		loadedSection = peconv::alloc_pe_section(orig_code_size);
+		loadedSection = peconv::alloc_unaligned(orig_code_size);
 		if (loadedSection == nullptr) {
 			return false;
 		}
 		this->rva = section_hdr->VirtualAddress;
 		//make a copy of the section:
 		BYTE *orig_code = modData.original_module + section_hdr->VirtualAddress;
-		memcpy(loadedSection, orig_code, orig_code_size);
+		memcpy(loadedSection, orig_code, raw_code_size);
 		loadedSize = orig_code_size;
 		return true;
 	}
@@ -87,7 +91,7 @@ protected:
 		if (!loadedSection) {
 			return;
 		}
-		peconv::free_pe_section(loadedSection);
+		peconv::free_unaligned(loadedSection);
 		loadedSection = nullptr;
 		loadedSize = 0;
 	}

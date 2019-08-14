@@ -10,14 +10,28 @@ std::string PatchList::Patch::getFormattedName()
 	if (this->hooked_func.length() > 0) {
 		stream << hooked_func;
 	} else {
-		if (this->is_hook) {
+		if (this->isHook) {
 			stream << "hook_" << id;
 		} else {
 			stream << "patch_" << id;
 		}
 	}
-	if (this->is_hook) {
-		stream << "->" << std::hex << hook_target_va;
+	if (this->isHook) {
+		stream << "->" << std::hex << hookTargetVA;
+	}
+	if (this->hookTargetModule) {
+		ULONGLONG diff = hookTargetVA - hookTargetModule;
+		stream << "[";
+		stream << std::hex << hookTargetModule;
+		stream << "+" << diff << ":";
+		if (hookTargetModName.length() > 0) {
+			stream << hookTargetModName;
+		}
+		else {
+			stream << "(unnamed)";
+		}
+		stream << ":" << isTargetSuspicious;
+		stream << "]";
 	}
 	return stream.str();
 }

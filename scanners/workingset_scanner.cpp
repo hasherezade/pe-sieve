@@ -1,4 +1,4 @@
-#include "mempage_scanner.h"
+#include "workingset_scanner.h"
 #include "module_data.h"
 #include "artefact_scanner.h"
 
@@ -6,7 +6,7 @@
 #include "../utils/workingset_enum.h"
 #include "../utils/artefacts_util.h"
 
-bool MemPageScanner::isCode(MemPageData &memPageData)
+bool WorkingSetScanner::isCode(MemPageData &memPageData)
 {
 	if (!memPage.load()) {
 		return false;
@@ -14,7 +14,7 @@ bool MemPageScanner::isCode(MemPageData &memPageData)
 	return is_code(memPageData.getLoadedData(), memPageData.getLoadedSize());
 }
 
-bool MemPageScanner::isExecutable(MemPageData &memPageData)
+bool WorkingSetScanner::isExecutable(MemPageData &memPageData)
 {
 	bool is_any_exec = false;
 	if (memPage.mapping_type == MEM_IMAGE)
@@ -23,10 +23,8 @@ bool MemPageScanner::isExecutable(MemPageData &memPageData)
 			|| (memPage.protection & SECTION_MAP_EXECUTE_EXPLICIT)
 			|| (memPage.initial_protect & SECTION_MAP_EXECUTE)
 			|| (memPage.initial_protect & SECTION_MAP_EXECUTE_EXPLICIT);
-		
-		if (is_any_exec) {
-			return is_any_exec;
-		}
+
+		if (is_any_exec) return true;
 	}
 	is_any_exec = (memPage.initial_protect & PAGE_EXECUTE_READWRITE)
 		|| (memPage.initial_protect & PAGE_EXECUTE_READ)
@@ -36,18 +34,33 @@ bool MemPageScanner::isExecutable(MemPageData &memPageData)
 		|| (memPage.protection & PAGE_EXECUTE_READ)
 		|| (memPage.protection & PAGE_EXECUTE)
 		|| (memPage.protection & PAGE_EXECUTE_WRITECOPY);
+	if (is_any_exec) return true;
 
+	if (this->scanData) {
+		is_any_exec = isPotentiallyExecutable(memPageData);
+	}
 	return is_any_exec;
 }
 
-MemPageScanReport* MemPageScanner::scanExecutableArea(MemPageData &memPageData)
+bool WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageData)
+{
+	bool is_any_exec = false;
+	if (!memPage.is_dep_enabled) {
+		//DEP is disabled, check also pages that are readable
+		is_any_exec = (memPage.protection & PAGE_READWRITE)
+			|| (memPage.protection & PAGE_READONLY);
+	}
+	return is_any_exec;
+}
+
+WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPageData)
 {
 	if (!memPage.load()) {
 		return nullptr;
 	}
 	//shellcode found! now examin it with more details:
 	ArtefactScanner artefactScanner(this->processHandle, memPage);
-	MemPageScanReport *my_report = artefactScanner.scanRemote();
+	WorkingSetScanReport *my_report = artefactScanner.scanRemote();
 	if (my_report) {
 		//pe artefacts found
 		return my_report;
@@ -63,13 +76,13 @@ MemPageScanReport* MemPageScanner::scanExecutableArea(MemPageData &memPageData)
 	//report about shellcode:
 	ULONGLONG region_start = memPage.region_start;
 	const size_t region_size = size_t (memPage.region_end - region_start);
-	my_report = new MemPageScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
+	my_report = new WorkingSetScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
 	my_report->has_pe = false;
 	my_report->has_shellcode = true;
 	return my_report;
 }
 
-MemPageScanReport* MemPageScanner::scanRemote()
+WorkingSetScanReport* WorkingSetScanner::scanRemote()
 {
 	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
 		return nullptr;
@@ -94,7 +107,7 @@ MemPageScanReport* MemPageScanner::scanRemote()
 		//probably legit
 		return nullptr;
 	}
-	MemPageScanReport* my_report = nullptr;
+	WorkingSetScanReport* my_report = nullptr;
 	if (is_any_exec) {
 #ifdef _DEBUG
 		std::cout << std::hex << memPage.start_va << ": Scanning executable area" << std::endl;

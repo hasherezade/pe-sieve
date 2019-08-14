@@ -9,10 +9,6 @@ std::cout.fill(' '); \
 if (field_size) stream << std::setw(field_size) << ' '; \
 stream << str;
 
-char* get_file_name(char *full_path);
-
-char* get_directory(IN char *full_path, OUT char *out_buf, IN const size_t out_buf_size);
-
 char* get_subpath_ptr(char *modulePath, char* searchedPath);
 
 std::string to_lowercase(std::string);
@@ -25,3 +21,7 @@ std::string escape_path_separators(std::string path);
 
 //get system drive letter, i.e. "C:"
 std::string get_system_drive();
+
+bool dir_exists(const char* path);
+
+bool create_dir_recursively(std::string path);

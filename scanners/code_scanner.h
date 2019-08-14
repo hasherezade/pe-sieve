@@ -17,8 +17,17 @@ public:
 	{
 		ModuleScanReport::toJSON(outs, level);
 		outs << ",\n";
-		OUT_PADDED(outs, level, "\"patches\" : ");
-		outs << std::dec << patchesList.size();
+		if (patchesList.size() > 0) {
+			OUT_PADDED(outs, level, "\"patches\" : ");
+			outs << std::dec << patchesList.size();
+			if (unpackedSections.size() > 0) {
+				outs << ",\n";
+			}
+		}
+		if (unpackedSections.size() > 0) {
+			OUT_PADDED(outs, level, "\"unpacked_code_sections\" : ");
+			outs << std::dec << unpackedSections.size();
+		}
 	}
 
 	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
@@ -32,13 +41,14 @@ public:
 	
 	size_t generateTags(std::string reportPath);
 
+	std::set<DWORD> unpackedSections;
 	PatchList patchesList;
 };
 
-class HookScanner : public ModuleScanner {
+class CodeScanner : public ModuleScanner {
 public:
 
-	HookScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData)
+	CodeScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData)
 		: ModuleScanner(hProc, moduleData, remoteModData) { }
 
 	virtual CodeScanReport* scanRemote();
@@ -51,6 +61,8 @@ private:
 	bool clearIAT(PeSection &originalSec, PeSection &remoteSec);
 
 	bool clearExports(PeSection &originalSec, PeSection &remoteSec);
+
+	bool clearLoadConfig(PeSection &originalSec, PeSection &remoteSec);
 
 	size_t collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList);
 };

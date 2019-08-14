@@ -2,9 +2,8 @@
 
 #include <iostream>
 
-const ULONGLONG MAX_32BIT = 0x07FFFFFFF;
-const ULONGLONG MAX_64BIT = 0x07FFFFFFFFFF;
-
+const ULONGLONG MAX_32BIT = 0x7FFFFFFFF;
+const ULONGLONG MAX_64BIT = 0x7FFFFFFFFFFF;
 bool get_next_region(HANDLE processHandle, ULONGLONG start_va, ULONGLONG max_va, MEMORY_BASIC_INFORMATION &page_info)
 {
 	for (; start_va < max_va; start_va += PAGE_SIZE) {
@@ -13,9 +12,14 @@ bool get_next_region(HANDLE processHandle, ULONGLONG start_va, ULONGLONG max_va,
 		if (out != sizeof(page_info)) {
 			const DWORD error = GetLastError();
 			if (error == ERROR_INVALID_PARAMETER) {
+				//nothing more to read
 				break;
 			}
-			std::cerr << "Error:" << std::hex << error << std::endl;
+			if (error == ERROR_ACCESS_DENIED) {
+				std::cerr << "[WARNING] Cannot query the memory region. Error:" << std::dec << error << std::endl;
+				break;
+			}
+			std::cerr << "[WARNING] Cannot query the memory region. Error:" << std::dec << error << std::endl;
 			continue;
 		}
 		if (page_info.RegionSize == 0) {
@@ -57,19 +61,4 @@ size_t enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &region_bases)
 		added++;
 	}
 	return added;
-}
-
-size_t fetch_region_size(HANDLE processHandle, PBYTE moduleBase)
-{
-	MEMORY_BASIC_INFORMATION page_info = { 0 };
-	SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID)moduleBase, &page_info, sizeof(page_info));
-	if (out != sizeof(page_info)) {
-		if (GetLastError() == ERROR_INVALID_PARAMETER) {
-			return 0;
-		}
-		return 0;
-	}
-	size_t offset = moduleBase - (PBYTE)page_info.BaseAddress;
-	size_t area_size = page_info.RegionSize - offset;
-	return area_size;
 }

@@ -1,6 +1,6 @@
-#include "hook_scanner.h"
+#include "code_scanner.h"
 
-#include "peconv.h"
+#include <peconv.h>
 
 #include "patch_analyzer.h"
 #include "../utils/artefacts_util.h"
@@ -25,7 +25,7 @@ size_t CodeScanReport::generateTags(std::string reportPath)
 }
 //---
 
-bool HookScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
+bool CodeScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
 {
 	IMAGE_DATA_DIRECTORY* iat_dir = peconv::get_directory_entry(moduleData.original_module, IMAGE_DIRECTORY_ENTRY_IAT);
 	if (!iat_dir) {
@@ -46,7 +46,47 @@ bool HookScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
 	return true;
 }
 
-bool HookScanner::clearExports(PeSection &originalSec, PeSection &remoteSec)
+bool CodeScanner::clearLoadConfig(PeSection &originalSec, PeSection &remoteSec)
+{
+	// check if the Guard flag is enabled:
+	WORD charact = peconv::get_dll_characteristics(moduleData.original_module);
+	if ((charact & 0x4000) == 0) {
+		return false; //no guard flag
+	}
+	BYTE *ldconf_ptr = peconv::get_load_config_ptr(moduleData.original_module, moduleData.original_size);
+	if (!ldconf_ptr) return false;
+
+	peconv::t_load_config_ver ver = peconv::get_load_config_version(moduleData.original_module, moduleData.original_size, ldconf_ptr);
+	if (ver != peconv::LOAD_CONFIG_W8_VER && ver != peconv::LOAD_CONFIG_W10_VER) {
+		return false; // nothing to cleanup
+	}
+	ULONGLONG cflag_va = 0;
+	size_t field_size = 0;
+	if (this->moduleData.is64bit()) {
+		peconv::IMAGE_LOAD_CONFIG_DIR64_W8* ldc = (peconv::IMAGE_LOAD_CONFIG_DIR64_W8*) ldconf_ptr;
+		cflag_va = ldc->GuardCFCheckFunctionPointer;
+		field_size = sizeof(ULONGLONG);
+	}
+	else {
+		peconv::IMAGE_LOAD_CONFIG_DIR32_W8* ldc = (peconv::IMAGE_LOAD_CONFIG_DIR32_W8*) ldconf_ptr;
+		cflag_va = ldc->GuardCFCheckFunctionPointer;
+		field_size = sizeof(DWORD);
+	}
+	if (cflag_va == 0) return false;
+
+	const ULONGLONG module_base = (ULONG_PTR)moduleData.moduleHandle;
+	const ULONGLONG cflag_rva = cflag_va - module_base;
+	if (!originalSec.isContained(cflag_rva, field_size)) {
+		return false;
+	}
+	//clear the field:
+	size_t sec_offset = size_t(cflag_rva - originalSec.rva);
+	memset(originalSec.loadedSection + sec_offset, 0, field_size);
+	memset(remoteSec.loadedSection + sec_offset, 0, field_size);
+	return true;
+}
+
+bool CodeScanner::clearExports(PeSection &originalSec, PeSection &remoteSec)
 {
 	IMAGE_DATA_DIRECTORY* dir = peconv::get_directory_entry(moduleData.original_module, IMAGE_DIRECTORY_ENTRY_EXPORT);
 	if (!dir) {
@@ -81,7 +121,7 @@ bool HookScanner::clearExports(PeSection &originalSec, PeSection &remoteSec)
 	return true;
 }
 
-size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList)
+size_t CodeScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList)
 {
 	PatchAnalyzer analyzer(moduleData, section_rva, patched_code, code_size);
 	PatchList::Patch *currPatch = nullptr;
@@ -117,13 +157,14 @@ size_t HookScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE pat
 	return patchesList.size();
 }
 
-t_scan_status HookScanner::scanSection(PeSection &originalSec, PeSection &remoteSec, IN OUT CodeScanReport& report)
+t_scan_status CodeScanner::scanSection(PeSection &originalSec, PeSection &remoteSec, IN OUT CodeScanReport& report)
 {
 	if (!originalSec.isInitialized() || !remoteSec.isInitialized()) {
 		return SCAN_ERROR;
 	}
 	clearIAT(originalSec, remoteSec);
 	clearExports(originalSec, remoteSec);
+	clearLoadConfig(originalSec, remoteSec);
 	//TODO: handle sections that have inside Delayed Imports (they give false positives)
 
 	size_t smaller_size = originalSec.loadedSize > remoteSec.loadedSize ? remoteSec.loadedSize : originalSec.loadedSize;
@@ -136,22 +177,22 @@ t_scan_status HookScanner::scanSection(PeSection &originalSec, PeSection &remote
 #endif
 	//check if the code of the loaded module is same as the code of the module on the disk:
 	int res = memcmp(remoteSec.loadedSection, originalSec.loadedSection, smaller_size);
-	if (res != 0) {
-		size_t patches_count = collectPatches(originalSec.rva, originalSec.loadedSection, remoteSec.loadedSection, smaller_size, report.patchesList);
-#ifdef _DEBUG
-		if (patches_count) {
-			std::cout << "Total patches: "  << patches_count << std::endl;
-		}
-#endif
+	if (res == 0) {
+		return SCAN_NOT_SUSPICIOUS; //not modified
 	}
-	if (res != 0) {
-		return SCAN_SUSPICIOUS; // modified
+
+	if (originalSec.rawSize == 0) {
+		report.unpackedSections.insert(originalSec.rva);
 	}
-	return SCAN_NOT_SUSPICIOUS; //not modified
+	else {
+		collectPatches(originalSec.rva, originalSec.loadedSection, remoteSec.loadedSection, smaller_size, report.patchesList);
+	}
+	return SCAN_SUSPICIOUS; // modified
+
 }
 
 
-CodeScanReport* HookScanner::scanRemote()
+CodeScanReport* CodeScanner::scanRemote()
 {
 	CodeScanReport *my_report = new CodeScanReport(this->processHandle, moduleData.moduleHandle, moduleData.original_size);
 	my_report->isDotNetModule = moduleData.isDotNet();
@@ -201,7 +242,7 @@ CodeScanReport* HookScanner::scanRemote()
 	return my_report; // last result
 }
 
-bool HookScanner::postProcessScan(IN OUT CodeScanReport &report)
+bool CodeScanner::postProcessScan(IN OUT CodeScanReport &report)
 {
 	// we need only exports from the current module, not the global mapping
 	if (report.patchesList.size() == 0) {

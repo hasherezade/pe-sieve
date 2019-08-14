@@ -16,11 +16,16 @@ public:
 
 	const virtual void fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
-		ModuleScanReport::toJSON(outs, level);
+		OUT_PADDED(outs, level, "\"module\" : ");
+		outs << "\"" << std::hex << (ULONGLONG)module << "\"" << ",\n";
+
+		OUT_PADDED(outs, level, "\"module_file\" : \"" << escape_path_separators(this->moduleFile) << "\"");
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"mapped_file\" : \"" << escape_path_separators(this->mappedFile) << "\"");
+
 		outs << ",\n";
-		OUT_PADDED(outs, level, "\"module_file\" : \"" << escape_path_separators(this->moduleFile) << "\"");
+		OUT_PADDED(outs, level, "\"status\" : ");
+		outs << std::dec << status;
 	}
 
 	const virtual bool toJSON(std::stringstream& outs, size_t level = JSON_LEVEL)
@@ -32,8 +37,8 @@ public:
 		OUT_PADDED(outs, level, "}");
 		return true;
 	}
+
 	std::string mappedFile;
-	std::string moduleFile;
 };
 
 //is the mapped file name different than the module file name?

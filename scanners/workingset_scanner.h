@@ -4,16 +4,16 @@
 #include <Psapi.h>
 #include <map>
 
-#include "peconv.h"
+#include <peconv.h>
 #include "module_scan_report.h"
 #include "mempage_data.h"
 
 #include "../utils/util.h"
 
-class MemPageScanReport : public ModuleScanReport
+class WorkingSetScanReport : public ModuleScanReport
 {
 public:
-	MemPageScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, t_scan_status status)
+	WorkingSetScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, t_scan_status status)
 		: ModuleScanReport(processHandle, _module, _moduleSize, status)
 	{
 		 is_executable = false;
@@ -68,24 +68,26 @@ public:
 	DWORD protection;
 };
 
-class MemPageScanner {
+class WorkingSetScanner {
 public:
-	MemPageScanner(HANDLE _procHndl, MemPageData &_memPageDatal, bool _detectShellcode)
+	WorkingSetScanner(HANDLE _procHndl, MemPageData &_memPageDatal, bool _detectShellcode, bool _scanData)
 		: processHandle(_procHndl), memPage(_memPageDatal),
 		detectShellcode(_detectShellcode),
-		isDeepScan(true)
+		scanData(_scanData)
 	{
 	}
-	virtual ~MemPageScanner() {}
 
-	virtual MemPageScanReport* scanRemote();
+	virtual ~WorkingSetScanner() {}
+
+	virtual WorkingSetScanReport* scanRemote();
 
 protected:
 	bool isExecutable(MemPageData &memPageData);
+	bool isPotentiallyExecutable(MemPageData &memPageData);
 	bool isCode(MemPageData &memPageData);
-	MemPageScanReport* scanExecutableArea(MemPageData &memPageData);
+	WorkingSetScanReport* scanExecutableArea(MemPageData &memPageData);
 
-	bool isDeepScan;
+	bool scanData; //scan also non-executable areas if DEP is disabled
 	bool detectShellcode; // is shellcode detection enabled
 	HANDLE processHandle;
 	MemPageData &memPage;

@@ -7,8 +7,8 @@
 #include <string>
 #include <vector>
 
+#include <peconv.h>
 #include "pe_sieve_types.h"
-#include "peconv.h"
 #include "module_scan_report.h"
 #include "scanned_modules.h"
 
@@ -64,7 +64,8 @@ public:
 		return true;
 	}
 
-	t_report generateSummary() const;
+	pesieve::t_report generateSummary() const;
+	DWORD getPid() { return pid; }
 
 	std::string mainImagePath;
 	std::vector<ModuleScanReport*> module_reports; //TODO: make it protected
@@ -83,6 +84,7 @@ protected:
 
 	void appendToType(ModuleScanReport *report);
 	size_t countSuspiciousPerType(report_type_t type) const;
+	size_t countHdrsReplaced() const;
 
 	bool appendToModulesList(ModuleScanReport *report);
 
@@ -90,7 +92,7 @@ protected:
 	size_t errorsCount;
 
 	ProcessModules modulesInfo;
-	std::set<ModuleScanReport*> reports_by_type[REPORT_TYPES_COUNT];
+	std::set<ModuleScanReport*> reportsByType[REPORT_TYPES_COUNT];
 
 	friend class ProcessScanner;
 };

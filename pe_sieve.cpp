@@ -1,15 +1,40 @@
-// Scans for modified modules within the process of a given PID
+// Scans the process with a given PID
 // author: hasherezade (hasherezade@gmail.com)
 
 #include "pe_sieve.h"
-#include "peconv.h"
+#include <peconv.h>
 
 #include <Windows.h>
 #include "scanners/scanner.h"
 
 #include "utils/util.h"
 #include "utils/process_privilege.h"
-#include "results_dumper.h"
+#include "postprocessors/results_dumper.h"
+
+using namespace pesieve;
+
+void check_access_denied(DWORD processID)
+{
+	HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, processID);
+	if (!hProcess) {
+		std::cerr << "-> Access denied. Try to run the scanner as Administrator." << std::endl;
+		return;
+	}
+	process_integrity_t level = get_integrity_level(hProcess);
+	switch (level) {
+		case INTEGRITY_UNKNOWN:
+			std::cerr << "-> Access denied. Could not query the process token." << std::endl;
+			break;
+		case INTEGRITY_SYSTEM:
+			std::cerr << "-> Access denied. Could not access the system process." << std::endl;
+			break;
+		default:
+			std::cerr << "-> Access denied. Try to run the scanner as Administrator." << std::endl;
+			break;
+	}
+	CloseHandle(hProcess);
+	hProcess = NULL;
+}
 
 HANDLE open_process(DWORD processID)
 {
@@ -33,13 +58,17 @@ HANDLE open_process(DWORD processID)
 			}
 		}
 		std::cerr << "[-][" << processID << "] Could not open the process Error: " << last_err << std::endl;
-		std::cerr << "-> Access denied. Try to run the scanner as Administrator." << std::endl;
-		throw std::exception("Could not open the process", ERROR_ACCESS_DENIED);
+		//print more info:
+		check_access_denied(processID);
+
+		SetLastError(ERROR_ACCESS_DENIED);
+		throw std::runtime_error("Could not open the process");
 		return nullptr;
 	}
 	if (last_err == ERROR_INVALID_PARAMETER) {
 		std::cerr << "-> Is this process still running?" << std::endl;
-		throw std::exception("Could not open the process", ERROR_INVALID_PARAMETER);
+		SetLastError(ERROR_INVALID_PARAMETER);
+		throw std::runtime_error("Could not open the process");
 	}
 	return hProcess;
 }
@@ -57,16 +86,41 @@ bool is_scaner_compatibile(HANDLE hProcess)
 	return true;
 }
 
-ProcessScanReport* check_modules_in_process(const t_params args)
+size_t dump_output(ProcessScanReport *process_report, HANDLE hProcess, const pesieve::t_params args)
+{
+	if (!process_report || !hProcess) return 0;
+	if (args.out_filter == OUT_NO_DIR) {
+		return 0;
+	}
+	ResultsDumper dumper(args.output_dir, args.quiet);
+
+	if (dumper.dumpJsonReport(*process_report, REPORT_SUSPICIOUS_AND_ERRORS)) {
+		std::cout << "[+] Report dumped to: " << dumper.getOutputDir() << std::endl;
+	}
+	size_t dumped_modules = 0;
+	if (args.out_filter != OUT_NO_DUMPS) {
+		pesieve::t_dump_mode dump_mode = pesieve::PE_DUMP_AUTO;
+		if (args.dump_mode < peconv::PE_DUMP_MODES_COUNT) {
+			dump_mode = pesieve::t_dump_mode(args.dump_mode);
+		}
+		dumped_modules = dumper.dumpDetectedModules(hProcess, *process_report, dump_mode, args.imprec_mode);
+		if (dumped_modules) {
+			std::cout << "[+] Dumped modified to: " << dumper.getOutputDir() << std::endl;
+		}
+	}
+	return dumped_modules;
+}
+
+ProcessScanReport* scan_process(const t_params args)
 {
 	HANDLE hProcess = nullptr;
 	ProcessScanReport *process_report = nullptr;
 	try {
 		hProcess = open_process(args.pid);
 		if (!is_scaner_compatibile(hProcess)) {
-			throw std::exception("Scanner mismatch. Try to use the 64bit version of the scanner.", ERROR_INVALID_PARAMETER);
+			SetLastError(ERROR_INVALID_PARAMETER);
+			throw std::runtime_error("Scanner mismatch. Try to use the 64bit version of the scanner.");
 		}
-
 		ProcessScanner scanner(hProcess, args);
 		process_report = scanner.scanRemote();
 
@@ -75,18 +129,7 @@ ProcessScanReport* check_modules_in_process(const t_params args)
 		return nullptr;
 		
 	}
-
-	if (process_report != nullptr && !(args.out_filter & OUT_NO_DIR)) {
-		ResultsDumper dumper;
-		if (!(args.out_filter & OUT_NO_DUMPS)) {
-			if (dumper.dumpAllModified(hProcess, *process_report) > 0) {
-				std::cout << "[+] Dumped modified to: " << dumper.dumpDir << std::endl;
-			}
-		}
-		if (dumper.dumpJsonReport(*process_report, REPORT_SUSPICIOUS_AND_ERRORS)) {
-			std::cout << "[+] Report dumped to: " << dumper.dumpDir << std::endl;
-		}
-	}
+	dump_output(process_report, hProcess, args);
 	CloseHandle(hProcess);
 	return process_report;
 }
@@ -94,12 +137,13 @@ ProcessScanReport* check_modules_in_process(const t_params args)
 std::string info()
 {
 	std::stringstream stream;
-	stream << "version: " << PESIEVE_VERSION;
+	stream << "Version:  " << PESIEVE_VERSION;
 #ifdef _WIN64
-	stream << " (x64)" << "\n\n";
+	stream << " (x64)" << "\n";
 #else
-	stream << " (x86)" << "\n\n";
+	stream << " (x86)" << "\n";
 #endif
+	stream << "Built on: " << __DATE__ << "\n\n";
 	stream << "~ from hasherezade with love ~\n";
 	stream << "Scans a given process, recognizes and dumps a variety of in-memory implants:\nreplaced/injected PEs, shellcodes, inline hooks, patches etc.\n";
 	stream << "URL: " << PESIEVE_URL << "\n";

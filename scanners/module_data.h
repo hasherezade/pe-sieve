@@ -4,7 +4,7 @@
 #include <Psapi.h>
 #include <map>
 
-#include "peconv.h"
+#include <peconv.h>
 
 class ModuleData {
 
@@ -110,7 +110,7 @@ public:
 protected:
 	bool init();
 	bool loadHeader();
-	ULONGLONG RemoteModuleData::getRemoteSectionVa(const size_t section_num);
+	ULONGLONG getRemoteSectionVa(const size_t section_num);
 
 	HANDLE processHandle;
 	HMODULE modBaseAddr;

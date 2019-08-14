@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-#include "peconv.h"
+#include <peconv.h>
 
 class MemPageData
 {
@@ -10,7 +10,8 @@ public:
 	MemPageData(HANDLE _process, ULONGLONG _start_va)
 		: processHandle(_process), start_va(_start_va),
 		is_listed_module(false),
-		is_info_filled(false), loadedData(nullptr), loadedSize(0)
+		is_info_filled(false), loadedData(nullptr), loadedSize(0),
+		is_dep_enabled(false)
 	{
 		fillInfo();
 	}
@@ -25,12 +26,18 @@ public:
 	size_t getLoadedSize() { return loadedSize; }
 	const PBYTE getLoadedData() { return loadedData;  }
 
+	bool validatePtr(const LPVOID field_bgn, size_t field_size)
+	{
+		return peconv::validate_ptr(this->loadedData, this->loadedSize, field_bgn, field_size);
+	}
+
 	ULONGLONG start_va; // VA that was requested. May not be beginning of the region.
 	DWORD protection;
 	DWORD initial_protect;
 	bool is_private;
 	DWORD mapping_type;
 	bool is_listed_module;
+	bool is_dep_enabled;
 
 	ULONGLONG alloc_base;
 	ULONGLONG region_start;
@@ -48,7 +55,7 @@ public:
 		if (loadedData) {
 			return true;
 		}
-		return true;
+		return false;
 	}
 
 	bool hasMappedName();

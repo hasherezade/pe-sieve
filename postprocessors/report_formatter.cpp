@@ -2,7 +2,9 @@
 #include <string>
 #include <sstream>
 
-#include "utils\util.h"
+#include "../utils/util.h"
+
+using namespace pesieve;
 
 bool is_shown_type(t_scan_status status, t_report_filter filter)
 {
@@ -52,7 +54,7 @@ std::string report_to_string(const ProcessScanReport &process_report)
 	const t_report report = process_report.generateSummary();
 	std::stringstream stream;
 	//summary:
-	size_t other = report.suspicious - (report.hooked + report.replaced + report.detached + report.implanted);
+	size_t other = report.suspicious - (report.hooked + report.replaced + report.detached + report.implanted + report.hdr_mod);
 	stream << "PID:    " << std::dec << report.pid << "\n";
 	stream << "---" << std::endl;
 	stream << "SUMMARY: \n" << std::endl;
@@ -61,6 +63,7 @@ std::string report_to_string(const ProcessScanReport &process_report)
 	stream << "-\n";
 	stream << "Hooked:           " << std::dec << report.hooked << "\n";
 	stream << "Replaced:         " << std::dec << report.replaced << "\n";
+	stream << "HdrsModified:     " << std::dec << report.hdr_mod << "\n";
 	stream << "Detached:         " << std::dec << report.detached << "\n";
 	stream << "Implanted:        " << std::dec << report.implanted << "\n";
 	stream << "Other:            " << std::dec << other << "\n";
@@ -78,7 +81,7 @@ std::string report_to_json(const ProcessScanReport &process_report, t_report_fil
 	std::stringstream stream;
 	//summary:
 	size_t level = 1;
-	size_t other = report.suspicious - (report.hooked + report.replaced + report.detached + report.implanted);
+	size_t other = report.suspicious - (report.hooked + report.replaced + report.detached + report.implanted + report.hdr_mod);
 	stream << "{\n";
 	OUT_PADDED(stream, level, "\"pid\" : ");
 	stream << std::dec << report.pid << ",\n";
@@ -100,6 +103,8 @@ std::string report_to_json(const ProcessScanReport &process_report, t_report_fil
 	stream << std::dec << report.hooked << ",\n";
 	OUT_PADDED(stream, level + 2, "\"replaced\" : ");
 	stream << std::dec << report.replaced << ",\n";
+	OUT_PADDED(stream, level + 2, "\"hdr_modified\" : ");
+	stream << std::dec << report.hdr_mod << ",\n";
 	OUT_PADDED(stream, level + 2, "\"detached\" : ");
 	stream << std::dec << report.detached << ",\n";
 	OUT_PADDED(stream, level + 2, "\"implanted\" : ");

@@ -10,19 +10,31 @@
 
 #include "utils/util.h"
 
-#include "peconv.h"
 #include "pe_sieve.h"
+#include "params_info/pe_sieve_params_info.h"
 
+#include "color_scheme.h"
+
+#define PARAM_SWITCH '/'
+//scan options:
 #define PARAM_PID "/pid"
+#define PARAM_SHELLCODE "/shellc"
+#define PARAM_DATA "/data"
 #define PARAM_MODULES_FILTER "/mfilter"
+//dump options:
 #define PARAM_IMP_REC "/imp"
+#define PARAM_DUMP_MODE "/dmode"
+//output options:
 #define PARAM_OUT_FILTER "/ofilter"
+#define PARAM_QUIET "/quiet"
+#define PARAM_JSON "/json"
+#define PARAM_DIR "/dir"
+//info:
 #define PARAM_HELP "/help"
 #define PARAM_HELP2  "/?"
 #define PARAM_VERSION  "/version"
-#define PARAM_QUIET "/quiet"
-#define PARAM_JSON "/json"
-#define PARAM_SHELLCODE "/shellc"
+
+using namespace pesieve;
 
 void print_in_color(int color, std::string text)
 {
@@ -36,32 +48,63 @@ void print_in_color(int color, std::string text)
 
 void print_help()
 {
-	const int hdr_color = 14;
-	const int param_color = 15;
+	const int hdr_color = HEADER_COLOR;
+	const int param_color = HILIGHTED_COLOR;
+	const int separator_color = SEPARATOR_COLOR;
 	print_in_color(hdr_color, "Required: \n");
 	print_in_color(param_color, PARAM_PID);
 	std::cout << " <target_pid>\n\t: Set the PID of the target process.\n";
-
 	print_in_color(hdr_color, "\nOptional: \n");
-	print_in_color(param_color, PARAM_IMP_REC);
-	std::cout << "\t: Enable recovering imports.\n";
-	
+
+	print_in_color(separator_color, "\n---scan options---\n");
+
 	print_in_color(param_color, PARAM_SHELLCODE);
 	std::cout << "\t: Detect shellcode implants. (By default it detects PE only).\n";
+	print_in_color(param_color, PARAM_DATA);
+	std::cout << "\t: If DEP is disabled scan also non-executable memory\n\t(which potentially can be executed).\n";
 #ifdef _WIN64
 	print_in_color(param_color, PARAM_MODULES_FILTER);
 	std::cout << " <*mfilter_id>\n\t: Filter the scanned modules.\n";
-	std::cout << "*mfilter_id:\n\t0 - no filter\n\t1 - 32bit\n\t2 - 64bit\n\t3 - all (default)\n";
+	std::cout << "*mfilter_id:\n";
+	for (DWORD i = 0; i <= LIST_MODULES_ALL; i++) {
+		std::cout << "\t" << i << " - " << translate_modules_filter(i) << "\n";
+	}
 #endif
+
+	print_in_color(separator_color, "\n---dump options---\n");
+	print_in_color(param_color, PARAM_IMP_REC);
+	std::cout << " <*imprec_mode>\n\t: Set in which mode the ImportTable should be recovered.\n";;
+	std::cout << "*imprec_mode:\n";
+	for (size_t i = 0; i < PE_IMPREC_MODES_COUNT; i++) {
+		t_imprec_mode mode = (t_imprec_mode)(i);
+		std::cout << "\t" << mode << " - " << translate_imprec_mode(mode) << "\n";
+	}
+
+	print_in_color(param_color, PARAM_DUMP_MODE);
+	std::cout << " <*dump_mode>\n\t: Set in which mode the detected PE files should be dumped.\n";
+	std::cout << "*dump_mode:\n";
+	for (DWORD i = 0; i < peconv::PE_DUMP_MODES_COUNT; i++) {
+		peconv::t_pe_dump_mode mode = (peconv::t_pe_dump_mode)(i);
+		std::cout << "\t" << mode << " - " << translate_dump_mode(mode) << "\n";
+	}
+
+	print_in_color(separator_color, "\n---output options---\n");
+
 	print_in_color(param_color, PARAM_OUT_FILTER);
 	std::cout << " <*ofilter_id>\n\t: Filter the dumped output.\n";
-	std::cout << "*ofilter_id:\n\t0 - no filter: dump everything (default)\n\t1 - don't dump the modified PEs, but file the report\n\t2 - don't create the output directory at all\n";
+	std::cout << "*ofilter_id:\n";
+	for (size_t i = 0; i < OUT_FILTERS_COUNT; i++) {
+		t_output_filter mode = (t_output_filter)(i);
+		std::cout << "\t" << mode << " - " << translate_out_filter(mode) << "\n";
+	}
 
 	print_in_color(param_color, PARAM_QUIET);
 	std::cout << "\t: Print only the summary. Do not log on stdout during the scan.\n";
 	print_in_color(param_color, PARAM_JSON);
 	std::cout << "\t: Print the JSON report as the summary.\n";
-
+	
+	print_in_color(param_color, PARAM_DIR);
+	std::cout << " <output_dir>\n\t: Set a root directory for the output (default: current directory).\n";
 	print_in_color(hdr_color, "\nInfo: \n");
 	print_in_color(param_color, PARAM_HELP);
 	std::cout << "    : Print this help.\n";
@@ -109,6 +152,25 @@ void print_report(const ProcessScanReport& report, const t_params args)
 	}
 }
 
+bool set_output_dir(t_params &args, const char *new_dir)
+{
+	if (!new_dir) return false;
+
+	size_t new_len = strlen(new_dir);
+	size_t buffer_len = sizeof(args.output_dir);
+	if (new_len > buffer_len) return false;
+
+	memset(args.output_dir, 0, buffer_len);
+	memcpy(args.output_dir, new_dir, new_len);
+	return true;
+}
+
+void print_unknown_param(const char *param)
+{
+	print_in_color(WARNING_COLOR, "Invalid parameter: ");
+	std::cout << param << "\n";
+}
+
 int main(int argc, char *argv[])
 {
 	if (argc < 2) {
@@ -128,25 +190,32 @@ int main(int argc, char *argv[])
 			info_req = true;
 		}
 		else if (!strcmp(argv[i], PARAM_IMP_REC)) {
-			args.imp_rec = true;
+			args.imprec_mode = PE_IMPREC_AUTO;
+			if ((i + 1) < argc) {
+				char* mode_num = argv[i + 1];
+				if (isdigit(mode_num[0])) {
+					args.imprec_mode = normalize_imprec_mode(atoi(mode_num));
+					++i;
+				}
+			}
 		}
-		else if (!strcmp(argv[i], PARAM_OUT_FILTER)) {
+		else if (!strcmp(argv[i], PARAM_OUT_FILTER) && (i + 1) < argc) {
 			args.out_filter = static_cast<t_output_filter>(atoi(argv[i + 1]));
 			i++;
 		} 
-		else if (!strcmp(argv[i], PARAM_MODULES_FILTER) && i < argc) {
+		else if (!strcmp(argv[i], PARAM_MODULES_FILTER) && (i + 1) < argc) {
 			args.modules_filter = atoi(argv[i + 1]);
 			if (args.modules_filter > LIST_MODULES_ALL) {
 				args.modules_filter = LIST_MODULES_ALL;
 			}
 			i++;
 		}
-		else if (!strcmp(argv[i], PARAM_PID) && i < argc) {
+		else if (!strcmp(argv[i], PARAM_PID) && (i + 1) < argc) {
 			args.pid = atoi(argv[i + 1]);
 			++i;
 		}
 		else if (!strcmp(argv[i], PARAM_VERSION)) {
-			std::cout << PESIEVE_VERSION << std::endl;
+			std::cout << PESIEVE_VERSION << "\n";
 			info_req = true;
 		}
 		else if (!strcmp(argv[i], PARAM_QUIET)) {
@@ -157,6 +226,27 @@ int main(int argc, char *argv[])
 		}
 		else if (!strcmp(argv[i], PARAM_SHELLCODE)) {
 			args.shellcode = true;
+		}
+		else if (!strcmp(argv[i], PARAM_DATA)) {
+			args.data = true;
+		}
+		else if (!strcmp(argv[i], PARAM_DUMP_MODE) && (i + 1) < argc) {
+			args.dump_mode = normalize_dump_mode(atoi(argv[i + 1]));
+			++i;
+		} else if (!strcmp(argv[i], PARAM_DIR) && (i + 1) < argc) {
+			set_output_dir(args, argv[i + 1]);
+			++i;
+		} else if (strlen(argv[i]) > 0 
+			&& (i > 1 || argv[i][0] == PARAM_SWITCH) //allow for the PID as the first argument
+			)
+		{
+			print_unknown_param(argv[i]);
+			if (argv[i][0] == PARAM_SWITCH) {
+				print_in_color(HILIGHTED_COLOR, "Available parameters:\n\n");
+				print_help();
+				return 0;
+			}
+			// if the argument didn't have a param switch, print info but do not exit
 		}
 	}
 	//if didn't received PID by explicit parameter, try to parse the first param of the app
@@ -176,10 +266,11 @@ int main(int argc, char *argv[])
 	//---
 	if (!args.quiet) {
 		std::cout << "PID: " << args.pid << std::endl;
-		std::cout << "Modules filter: " << args.modules_filter << std::endl;
-		std::cout << "Output filter: " << args.out_filter << std::endl;
+		std::cout << "Modules filter: " << translate_modules_filter(args.modules_filter) << std::endl;
+		std::cout << "Output filter: " << translate_out_filter(args.out_filter) << std::endl;
+		std::cout << "Dump mode: " << translate_dump_mode(args.dump_mode) << std::endl;
 	}
-	ProcessScanReport* report = check_modules_in_process(args);
+	ProcessScanReport* report = scan_process(args);
 	if (report != nullptr) {
 		print_report(*report, args);
 		delete report;

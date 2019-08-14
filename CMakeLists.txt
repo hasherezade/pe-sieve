@@ -17,9 +17,9 @@ include_directories ( ${PECONV_DIR}/include )
 
 set (scanners_srcs
 	scanners/mapping_scanner.cpp
-	scanners/hollowing_scanner.cpp
-	scanners/hook_scanner.cpp
-	scanners/mempage_scanner.cpp
+	scanners/headers_scanner.cpp
+	scanners/code_scanner.cpp
+	scanners/workingset_scanner.cpp
 	scanners/artefact_scanner.cpp
 	scanners/scanner.cpp
 	scanners/module_data.cpp
@@ -28,14 +28,15 @@ set (scanners_srcs
 	scanners/patch_analyzer.cpp
 	scanners/scan_report.cpp
 	scanners/scanned_modules.cpp
+	scanners/hook_targets_resolver.cpp
 )
 
 set (scanners_hdrs
 	scanners/mapping_scanner.h
-	scanners/hollowing_scanner.h
-	scanners/hook_scanner.h
+	scanners/headers_scanner.h
+	scanners/code_scanner.h
 	scanners/module_scanner.h
-	scanners/mempage_scanner.h
+	scanners/workingset_scanner.h
 	scanners/artefact_scanner.h
 	scanners/scanner.h
 	scanners/module_scan_report.h
@@ -46,6 +47,35 @@ set (scanners_hdrs
 	scanners/patch_list.h
 	scanners/patch_analyzer.h
 	scanners/scanned_modules.h
+	scanners/hook_targets_resolver.h
+)
+
+set (imprec_hdrs
+	postprocessors/imp_rec/imp_reconstructor.h
+	postprocessors/imp_rec/iat_block.h
+	postprocessors/imp_rec/iat_finder.h
+	postprocessors/imp_rec/import_table_finder.h
+)
+
+set (postprocessors_hdrs
+	postprocessors/report_formatter.h
+	postprocessors/results_dumper.h
+	postprocessors/pe_buffer.h
+	postprocessors/pe_reconstructor.h
+)
+
+set (imprec_srcs
+	postprocessors/imp_rec/imp_reconstructor.cpp
+	postprocessors/imp_rec/iat_block.cpp
+	postprocessors/imp_rec/iat_finder.cpp
+	postprocessors/imp_rec/import_table_finder.cpp
+)
+
+set (postprocessors_srcs
+	postprocessors/report_formatter.cpp
+	postprocessors/results_dumper.cpp
+	postprocessors/pe_buffer.cpp
+	postprocessors/pe_reconstructor.cpp
 )
 
 set (utils_srcs
@@ -66,22 +96,31 @@ set (utils_hdrs
 	utils/artefacts_util.h
 )
 
+set (params_info_hdrs
+	params_info/pe_sieve_params_info.h
+)
+
+set (params_info_srcs
+	params_info/pe_sieve_params_info.cpp
+)
+
 set (srcs
 	pe_sieve.cpp
-	report_formatter.cpp
-	results_dumper.cpp
-	pe_reconstructor.cpp
+	color_scheme.h
+	${params_info_srcs}
 	${scanners_srcs}
+	${postprocessors_srcs}
+	${imprec_srcs}
 	${utils_srcs}
 )
 
 set (hdrs
 	pe_sieve.h
-	report_formatter.h
-	results_dumper.h
-	pe_reconstructor.h
 	include/pe_sieve_types.h
+	${params_info_hdrs}
 	${scanners_hdrs}
+	${postprocessors_hdrs}
+	${imprec_hdrs}
 	${utils_hdrs}
 )
 
@@ -90,11 +129,22 @@ set (rsrc
 	resources.rc
 )
 
+# set filters in Visual Studio project:
+
 SOURCE_GROUP("Source Files\\scanners" FILES ${scanners_srcs} )
 SOURCE_GROUP("Header Files\\scanners" FILES ${scanners_hdrs} )
 
 SOURCE_GROUP("Source Files\\utils" FILES ${utils_srcs} )
 SOURCE_GROUP("Header Files\\utils" FILES ${utils_hdrs} )
+
+SOURCE_GROUP("Source Files\\params_info" FILES ${params_info_srcs} )
+SOURCE_GROUP("Header Files\\params_info" FILES ${params_info_hdrs} )
+
+SOURCE_GROUP("Source Files\\postprocessors" FILES ${postprocessors_srcs} )
+SOURCE_GROUP("Header Files\\postprocessors" FILES ${postprocessors_hdrs} )
+
+SOURCE_GROUP("Source Files\\postprocessors\\imp_rec" FILES ${imprec_srcs} )
+SOURCE_GROUP("Header Files\\postprocessors\\imp_rec" FILES ${imprec_hdrs} )
 
 # libs
 add_subdirectory (libpeconv/libpeconv)
@@ -112,7 +162,9 @@ else()
 	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} main.cpp )
 endif()
 
-target_link_libraries ( ${PROJECT_NAME} ${PECONV_LIB} )
+target_link_libraries ( ${PROJECT_NAME} ${PECONV_LIB} "psapi.lib" "ntdll.lib")
 
 # dependencies
 add_dependencies(${PROJECT_NAME} libpeconv)
+
+INSTALL( TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_BINARY_DIR} COMPONENT ${PROJECT_NAME} )

@@ -10,7 +10,6 @@ branches:
         
 install:
   - git submodule update --init --recursive
-  - cinst cmake
   - set PATH=C:\Program Files\CMake\bin;%PATH%
 
 build:
