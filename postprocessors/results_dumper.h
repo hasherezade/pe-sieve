@@ -24,6 +24,8 @@ public:
 		return this->dumpDir;
 	}
 
+	std::string makeOutPath(std::string fname, std::string defaultExtension = "");
+
 protected:
 
 	bool dumpModule(HANDLE processHandle, ModuleScanReport* mod, const peconv::ExportsMapper *exportsMap, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
@@ -34,8 +36,6 @@ protected:
 	\param defaultExtension : default extension - it will be used if no other extension was detected from the previous name
 	*/
 	std::string makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname, std::string defaultExtension);
-
-	std::string makeOutPath(std::string fname, std::string defaultExtension="");
 
 	std::string makeDirName(const DWORD process_id);
 

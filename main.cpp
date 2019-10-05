@@ -30,6 +30,7 @@
 #define PARAM_QUIET "quiet"
 #define PARAM_JSON "json"
 #define PARAM_DIR "dir"
+#define PARAM_MINIDUMP "minidmp"
 //info:
 #define PARAM_HELP "help"
 #define PARAM_HELP2  "?"
@@ -109,6 +110,9 @@ void print_help()
 	std::cout << "\t: Print only the summary. Do not log on stdout during the scan.\n";
 	print_param_in_color(param_color, PARAM_JSON);
 	std::cout << "\t: Print the JSON report as the summary.\n";
+
+	print_param_in_color(param_color, PARAM_MINIDUMP);
+	std::cout << ": Create a minidump of the full suspicious process.\n";
 	
 	print_param_in_color(param_color, PARAM_DIR);
 	std::cout << " <output_dir>\n\t: Set a root directory for the output (default: current directory).\n";
@@ -266,6 +270,9 @@ int main(int argc, char *argv[])
 		}
 		else if (!strcmp(param, PARAM_JSON)) {
 			args.json_output = true;
+		}
+		else if (!strcmp(param, PARAM_MINIDUMP)) {
+			args.minidump = true;
 		}
 		else if (!strcmp(param, PARAM_SHELLCODE)) {
 			args.shellcode = true;
