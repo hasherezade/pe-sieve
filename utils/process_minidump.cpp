@@ -13,7 +13,7 @@ BOOL (*_MiniDumpWriteDump)(
 	) = NULL;
 
 
-bool load_minidump_func()
+bool load_MiniDumpWriteDump()
 {
 	if (_MiniDumpWriteDump != NULL) {
 		return true; // already loaded
@@ -33,12 +33,16 @@ bool load_minidump_func()
 		PMINIDUMP_USER_STREAM_INFORMATION,
 		PMINIDUMP_CALLBACK_INFORMATION
 	)) proc;
-	return true;
+
+	if (_MiniDumpWriteDump != NULL) {
+		return true; // loaded
+	}
+	return false;
 }
 
 bool make_minidump(DWORD pid, std::string out_file)
 {
-	if (!load_minidump_func()) return false;
+	if (!load_MiniDumpWriteDump()) return false;
 
 	HANDLE procHndl  = OpenProcess(PROCESS_ALL_ACCESS, 0, pid);
 	if (procHndl == NULL) {
