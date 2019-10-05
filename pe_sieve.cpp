@@ -112,9 +112,15 @@ size_t dump_output(ProcessScanReport *process_report, HANDLE hProcess, const pes
 	if (args.minidump) {
 		pesieve::t_report report = process_report->generateSummary();
 		if (report.suspicious > 0) {
-			std::string dump_file = dumper.makeOutPath("minidump.dmp");
+			std::cout << "[*] Creating minidump..." << std::endl;
+			std::string original_path = process_report->mainImagePath;
+			std::string file_name = peconv::get_file_name(original_path);
+			std::string dump_file = dumper.makeOutPath(file_name + ".dmp");
 			if (make_minidump(process_report->getPid(), dump_file)) {
 				std::cout << "[+] Minidump saved to: " << dump_file << std::endl;
+			}
+			else {
+				std::cout << "[-] Creating minidump failed! " << std::endl;
 			}
 		}
 	}
