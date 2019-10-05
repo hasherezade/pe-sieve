@@ -41,7 +41,7 @@ bool make_minidump(DWORD pid, std::string out_file)
 	if (!load_minidump_func()) return false;
 
 	HANDLE procHndl  = OpenProcess(PROCESS_ALL_ACCESS, 0, pid);
-	if (procHndl == INVALID_HANDLE_VALUE) return false;
+	if (procHndl == NULL) return false;
 
 	HANDLE outFile = CreateFileA(out_file.c_str(), GENERIC_ALL, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (outFile == INVALID_HANDLE_VALUE) {
