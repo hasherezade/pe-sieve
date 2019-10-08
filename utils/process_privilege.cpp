@@ -168,9 +168,35 @@ process_integrity_t get_integrity_level(HANDLE hProcess)
 	return level;
 }
 
+BOOL _get_process_DEP_policy(HANDLE processHandle, DWORD &flags, BOOL &is_permanent)
+{
+	//load the function GetProcessDEPPolicy dynamically, to provide backward compatibility with systems that don't have it
+	HMODULE kernelLib = LoadLibraryA("kernel32.dll");
+	if (!kernelLib) return FALSE;
+
+	FARPROC procPtr = GetProcAddress(kernelLib, "GetProcessDEPPolicy");
+	if (!procPtr) return FALSE;
+
+	BOOL (WINAPI *_GetProcessDEPPolicy)(HANDLE, LPDWORD, PBOOL) = (BOOL(WINAPI *)(HANDLE, LPDWORD, PBOOL))procPtr;
+	return _GetProcessDEPPolicy(processHandle, &flags, &is_permanent);
+}
+
+DEP_SYSTEM_POLICY_TYPE _get_system_DEP_policy()
+{
+	//load the function GetSystemDEPPolicy dynamically, to provide backward compatibility with systems that don't have it
+	HMODULE kernelLib = LoadLibraryA("kernel32.dll");
+	if (!kernelLib) return DEPPolicyAlwaysOff;
+
+	FARPROC procPtr = GetProcAddress(kernelLib, "GetSystemDEPPolicy");
+	if (!procPtr) return DEPPolicyAlwaysOff; //in old systems where this function does not exist, DEP is Off
+
+	DEP_SYSTEM_POLICY_TYPE(WINAPI *_GetSystemDEPPolicy)(VOID) = (DEP_SYSTEM_POLICY_TYPE(WINAPI *)(VOID))procPtr;
+	return _GetSystemDEPPolicy();
+}
+
 bool is_DEP_enabled(HANDLE processHandle)
 {
-	DEP_SYSTEM_POLICY_TYPE global_dep = GetSystemDEPPolicy();
+	DEP_SYSTEM_POLICY_TYPE global_dep = _get_system_DEP_policy();
 	if (global_dep == DEPPolicyAlwaysOff) {
 		return false;
 	}
@@ -180,8 +206,7 @@ bool is_DEP_enabled(HANDLE processHandle)
 	// 
 	DWORD flags = 0;
 	BOOL is_permanent = FALSE;
-
-	BOOL is_ok = GetProcessDEPPolicy(processHandle, &flags, &is_permanent);
+	BOOL is_ok = _get_process_DEP_policy(processHandle, flags, is_permanent);
 	if (!is_ok) {
 #ifdef _WIN64
 		BOOL isRemoteWow64 = FALSE;
@@ -190,7 +215,9 @@ bool is_DEP_enabled(HANDLE processHandle)
 			return true; // it is a 64 bit process, DEP is enabled
 		}
 #endif
+#ifdef _DEBUG
 		std::cerr << "Could not fetch the DEP status\n";
+#endif
 		return false;
 	}
 	const bool is_DEP = (flags & PROCESS_DEP_ENABLE) || (flags & PROCESS_DEP_DISABLE_ATL_THUNK_EMULATION);

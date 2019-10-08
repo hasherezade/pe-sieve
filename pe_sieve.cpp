@@ -9,6 +9,7 @@
 
 #include "utils/util.h"
 #include "utils/process_privilege.h"
+#include "utils/process_minidump.h"
 #include "postprocessors/results_dumper.h"
 
 using namespace pesieve;
@@ -106,6 +107,21 @@ size_t dump_output(ProcessScanReport *process_report, HANDLE hProcess, const pes
 		dumped_modules = dumper.dumpDetectedModules(hProcess, *process_report, dump_mode, args.imprec_mode);
 		if (dumped_modules) {
 			std::cout << "[+] Dumped modified to: " << dumper.getOutputDir() << std::endl;
+		}
+	}
+	if (args.minidump) {
+		pesieve::t_report report = process_report->generateSummary();
+		if (report.suspicious > 0) {
+			std::cout << "[*] Creating minidump..." << std::endl;
+			std::string original_path = process_report->mainImagePath;
+			std::string file_name = peconv::get_file_name(original_path);
+			std::string dump_file = dumper.makeOutPath(file_name + ".dmp");
+			if (make_minidump(process_report->getPid(), dump_file)) {
+				std::cout << "[+] Minidump saved to: " << dump_file << std::endl;
+			}
+			else {
+				std::cout << "[-] Creating minidump failed! " << std::endl;
+			}
 		}
 	}
 	return dumped_modules;
