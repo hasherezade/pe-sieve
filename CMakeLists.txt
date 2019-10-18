@@ -79,6 +79,7 @@ set (postprocessors_srcs
 )
 
 set (utils_srcs
+	utils/process_util.cpp
 	utils/process_privilege.cpp
 	utils/process_minidump.cpp
 	utils/util.cpp
@@ -91,6 +92,7 @@ set (utils_srcs
 set (utils_hdrs
 	utils/util.h
 	utils/path_converter.h
+	utils/process_util.h
 	utils/process_privilege.h
 	utils/process_minidump.h
 	utils/workingset_enum.h

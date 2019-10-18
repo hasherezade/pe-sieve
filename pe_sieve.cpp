@@ -8,6 +8,7 @@
 #include "scanners/scanner.h"
 
 #include "utils/util.h"
+#include "utils/process_util.h"
 #include "utils/process_privilege.h"
 #include "utils/process_minidump.h"
 #include "postprocessors/results_dumper.h"
@@ -77,9 +78,9 @@ HANDLE open_process(DWORD processID)
 bool is_scaner_compatibile(HANDLE hProcess)
 {
 	BOOL isCurrWow64 = FALSE;
-	IsWow64Process(GetCurrentProcess(), &isCurrWow64);
+	is_process_wow64(GetCurrentProcess(), &isCurrWow64);
 	BOOL isRemoteWow64 = FALSE;
-	IsWow64Process(hProcess, &isRemoteWow64);
+	is_process_wow64(hProcess, &isRemoteWow64);
 	if (isCurrWow64 && !isRemoteWow64) {
 		std::cerr << "-> Try to use the 64bit version of the scanner." << std::endl;
 		return false;

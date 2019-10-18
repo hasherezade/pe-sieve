@@ -8,6 +8,7 @@
 #include "../utils/workingset_enum.h"
 #include "../utils/modules_enum.h"
 #include "../utils/process_privilege.h"
+#include "../utils/process_util.h"
 
 #include "headers_scanner.h"
 #include "code_scanner.h"
@@ -28,7 +29,7 @@ t_scan_status ProcessScanner::scanForHollows(ModuleData& modData, RemoteModuleDa
 {
 	BOOL isWow64 = FALSE;
 #ifdef _WIN64
-	IsWow64Process(processHandle, &isWow64);
+	is_process_wow64(processHandle, &isWow64);
 #endif
 	HeadersScanner hollows(processHandle, modData, remoteModData);
 	HeadersScanReport *scan_report = hollows.scanRemote();

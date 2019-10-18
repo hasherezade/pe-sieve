@@ -1,4 +1,5 @@
 #include "process_privilege.h"
+#include "process_util.h"
 
 #include <iostream>
 
@@ -210,7 +211,7 @@ bool is_DEP_enabled(HANDLE processHandle)
 	if (!is_ok) {
 #ifdef _WIN64
 		BOOL isRemoteWow64 = FALSE;
-		IsWow64Process(processHandle, &isRemoteWow64);
+		is_process_wow64(processHandle, &isRemoteWow64);
 		if (!isRemoteWow64) {
 			return true; // it is a 64 bit process, DEP is enabled
 		}

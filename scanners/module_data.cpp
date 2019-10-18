@@ -2,6 +2,7 @@
 
 #include "../utils/util.h"
 #include "../utils/path_converter.h"
+#include "../utils/process_util.h"
 
 #include <Psapi.h>
 #pragma comment(lib,"psapi.lib")
@@ -56,7 +57,7 @@ bool ModuleData::relocateToBase()
 bool ModuleData::switchToWow64Path()
 {
 	BOOL isWow64 = FALSE;
-	if (!IsWow64Process(this->processHandle, &isWow64)) {
+	if (!is_process_wow64(this->processHandle, &isWow64)) {
 		//failed to retrieve the info...
 		return false;
 	}

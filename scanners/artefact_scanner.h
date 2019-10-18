@@ -7,6 +7,7 @@
 #include <peconv.h>
 #include "module_scan_report.h"
 #include "workingset_scanner.h"
+#include "../utils/process_util.h"
 
 #define INVALID_OFFSET (-1)
 #define PE_NOT_FOUND 0
@@ -141,7 +142,7 @@ public:
 	{
 #ifdef _WIN64 //is the scanner 64 bit?
 		BOOL isWow64 = FALSE;
-		if (IsWow64Process(_procHndl, &isWow64)) {
+		if (is_process_wow64(_procHndl, &isWow64)) {
 			is64bit = !isWow64;
 		}
 #endif
