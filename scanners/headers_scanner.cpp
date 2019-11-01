@@ -145,8 +145,8 @@ bool HeadersScanner::isNtHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_bu
 	if (peconv::is64bit(hdr_buffer2) != is64) {
 		return true;
 	}
-	BYTE *nt1 = peconv::get_nt_hrds(hdr_buffer1, hdrs_size);
-	BYTE *nt2 = peconv::get_nt_hrds(hdr_buffer2, hdrs_size);
+	BYTE *nt1 = peconv::get_nt_hdrs(hdr_buffer1, hdrs_size);
+	BYTE *nt2 = peconv::get_nt_hdrs(hdr_buffer2, hdrs_size);
 	if (!nt1 && !nt2) return false;
 	if (!nt1 || !nt2) return true;
 

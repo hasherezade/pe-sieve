@@ -280,7 +280,7 @@ bool PeReconstructor::reconstructPeHdr()
 	if (!is_fixed) {
 		return false;
 	}
-	if (!peconv::get_nt_hrds(vBuf)) {
+	if (!peconv::get_nt_hdrs(vBuf)) {
 		return false;
 	}
 	return true;

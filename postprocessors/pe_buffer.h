@@ -22,7 +22,7 @@ public:
 	bool isValidPe()
 	{
 		if (!vBuf) return false;
-		if (peconv::get_nt_hrds(vBuf, vBufSize)) {
+		if (peconv::get_nt_hdrs(vBuf, vBufSize)) {
 			return true;
 		}
 		return false;

@@ -363,7 +363,7 @@ IMAGE_DOS_HEADER* ArtefactScanner::findMzPeHeader(MemPageData &memPage, const si
 		if ((scan_size - i) < minimal_size) {
 			break;
 		}
-		BYTE *dos_hdr = peconv::get_nt_hrds(buffer_ptr + i, scan_size - i);
+		BYTE *dos_hdr = peconv::get_nt_hdrs(buffer_ptr + i, scan_size - i);
 		if (dos_hdr != nullptr) {
 			return (IMAGE_DOS_HEADER*)(buffer_ptr + i);
 		}
