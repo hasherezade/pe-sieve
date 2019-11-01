@@ -51,6 +51,8 @@ bool validate_hdrs_alignment(MemPageData &memPage, IMAGE_FILE_HEADER *nt_file_hd
 	size_t sec_offset_hdrs = calc_sec_hdrs_offset(memPage, nt_file_hdr);
 	size_t sec_offset = calc_offset(memPage, _sec_hdr);
 	if (sec_offset_hdrs != sec_offset) {
+		std::cout << std::hex << "sec_offset_hdrs: " << sec_offset_hdrs << " vs: " << sec_offset << "\n";
+
 		return false;
 	}
 	return true;
@@ -125,12 +127,21 @@ ULONGLONG ArtefactScanner::calcPeBase(MemPageData &memPage, LPVOID sec_hdr)
 	if (found_mz != INVALID_OFFSET) {
 		return memPage.region_start + found_mz;
 	}
-	//WARNING: this will be inacurate in cases if the PE is not aligned to the beginning of the page
+	
 	size_t hdrs_offset = calc_offset(memPage, sec_hdr);
 	if (hdrs_offset == INVALID_OFFSET) {
 		//std::cout << "Invalid sec_hdr_offset\n";
 		return 0;
 	}
+	//search by stub patterns
+	size_t search_start = (hdrs_offset > PAGE_SIZE) ? hdrs_offset - PAGE_SIZE: 0;
+	IMAGE_DOS_HEADER *dos_hdr = findDosHdrByPatterns(memPage, search_start, hdrs_offset);
+	size_t dos_offset = calc_offset(memPage, dos_hdr);
+	if (dos_offset != INVALID_OFFSET) {
+		return memPage.region_start + dos_offset;
+	}
+
+	//WARNING: this will be inacurate in cases if the PE is not aligned to the beginning of the page
 	size_t full_pages = hdrs_offset / PAGE_SIZE;
 	//std::cout << "Full pages: " << std::dec << full_pages << std::endl;
 	return memPage.region_start + (full_pages * PAGE_SIZE);
@@ -203,7 +214,61 @@ IMAGE_SECTION_HEADER* get_first_section(BYTE *loadedData, size_t loadedSize, IMA
 	return hdr_ptr;
 }
 
-BYTE* ArtefactScanner::findSecByPatterns(BYTE *search_ptr, const size_t max_search_size)
+IMAGE_DOS_HEADER* ArtefactScanner::findDosHdrByPatterns(MemPageData &memPage, const size_t start_offset, size_t hdrs_offset)
+{
+	BYTE *search_ptr = memPage.getLoadedData() + start_offset;
+	BYTE *max_search = search_ptr + hdrs_offset;
+
+	size_t max_search_size = max_search - search_ptr;
+	if (!memPage.validatePtr(search_ptr, max_search_size)) {
+		return nullptr;
+	}
+	return _findDosHdrByPatterns(search_ptr, max_search_size);
+}
+
+IMAGE_DOS_HEADER* ArtefactScanner::_findDosHdrByPatterns(BYTE *search_ptr, const size_t max_search_size)
+{
+	if (!memPage.load()) {
+		return nullptr;
+	}
+
+	const size_t patterns_count = 2;
+	const size_t pattern_size = 14;
+	BYTE stub_patterns[patterns_count][pattern_size] = { // common beginnnig of DOS stubs
+		{
+			0x0E, 0x1F, 0xBA, 0x0E, 0x00, 0xB4,
+			0x09, 0xCD, 0x21, 0xB8, 0x01, 0x4C,
+			0xCD, 0x21
+		},
+		{
+			0xBA, 0x10, 0x00, 0x0E, 0x1F, 0xB4, 
+			0x09, 0xCD, 0x21, 0xB8, 0x01, 0x4C,
+			0xCD, 0x21
+		}
+	};
+
+	const size_t dos_hdr_size = sizeof(IMAGE_DOS_HEADER);
+
+	BYTE *stub_ptr = nullptr;
+	IMAGE_DOS_HEADER *dos_ptr = nullptr;
+	for (size_t i = 0; i < patterns_count; i++) {
+		BYTE *pattern = stub_patterns[i];
+		stub_ptr = find_pattern(search_ptr, max_search_size, pattern, pattern_size);
+		if (!stub_ptr) {
+			continue;
+		}
+		size_t offset_to_bgn = sizeof(IMAGE_DOS_HEADER);
+		dos_ptr = (IMAGE_DOS_HEADER*)(stub_ptr - offset_to_bgn);
+		if (!peconv::validate_ptr(search_ptr, max_search_size, dos_ptr, sizeof(IMAGE_DOS_HEADER))) {
+			continue;
+		}
+		return dos_ptr;
+		
+	}
+	return nullptr;
+}
+
+BYTE* ArtefactScanner::_findSecByPatterns(BYTE *search_ptr, const size_t max_search_size)
 {
 	if (!memPage.load()) {
 		return nullptr;
@@ -257,13 +322,13 @@ BYTE* ArtefactScanner::findSecByPatterns(BYTE *search_ptr, const size_t max_sear
 	return nullptr;
 }
 
-IMAGE_SECTION_HEADER* ArtefactScanner::findSectionsHdr(MemPageData &memPage, const size_t max_search_size, const size_t search_offset)
+IMAGE_SECTION_HEADER* ArtefactScanner::findSecByPatterns(MemPageData &memPage, const size_t max_search_size, const size_t search_offset)
 {
 	BYTE *search_ptr = search_offset + memPage.getLoadedData();
 	if (!memPage.validatePtr(search_ptr, max_search_size)) {
 		return nullptr;
 	}
-	BYTE *hdr_ptr = findSecByPatterns(search_ptr, max_search_size);
+	BYTE *hdr_ptr = _findSecByPatterns(search_ptr, max_search_size);
 	if (!hdr_ptr) {
 		return nullptr;
 	}
@@ -499,7 +564,7 @@ bool ArtefactScanner::setNtFileHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAG
 	if (!validate_hdrs_alignment(aMap.memPage, aMap.nt_file_hdr, aMap.sec_hdr)) {
 		aMap.nt_file_hdr = nullptr; // do not allow setting mismatching NT header
 
-		//std::cout << "[WARNING] Sections header misaligned with FileHeader." << std::endl;
+		std::cout << "[WARNING] Sections header misaligned with FileHeader." << std::endl;
 		return false;
 	}
 	//validation passed:
@@ -584,7 +649,7 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 			//search sections by pattens:
 			if (max_section_search > min_offset) {
 				const size_t diff = max_section_search - min_offset;
-				IMAGE_SECTION_HEADER *sec_hdr = findSectionsHdr(memPage, diff, min_offset);
+				IMAGE_SECTION_HEADER *sec_hdr = findSecByPatterns(memPage, diff, min_offset);
 				setSecHdr(aMap, sec_hdr);
 			}
 		}
