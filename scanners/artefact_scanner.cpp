@@ -622,11 +622,14 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 		if (findMzPe(aMap, min_offset)) {
 			const size_t dos_offset = calc_offset(memPage, aMap.dos_hdr);
 			min_offset = (dos_offset != INVALID_OFFSET) ? dos_offset : min_offset;
-
+#ifdef _DEBUG
 			std::cout << std::hex << "Page: " << aMap.memPage.start_va << " Found DOS Header at: " << dos_offset << "\n";
+#endif
 		}
 		else {
+#ifdef _DEBUG
 			std::cout << std::hex << "Page: " << aMap.memPage.start_va << " Searching NT Header at: " << min_offset << "\n";
+#endif
 			IMAGE_FILE_HEADER *nt_hdr = findNtFileHdr(aMap.memPage, min_offset, memPage.getLoadedSize());
 			setNtFileHdr(aMap, nt_hdr);
 		}
@@ -659,6 +662,21 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 #ifdef _DEBUG
 			std::cout << "Setting minOffset to SecHdr offset: " << std::hex << min_offset << "\n";
 #endif
+			if (!aMap.dos_hdr) {
+				const size_t start = (sec_offset > PAGE_SIZE) ? (sec_offset - PAGE_SIZE) : 0;
+				//std::cout << "Searching DOS header by patterns " << std::hex << start << "\n";
+				aMap.dos_hdr = findDosHdrByPatterns(aMap.memPage, start, sec_offset);
+				if (!aMap.nt_file_hdr) {
+					IMAGE_NT_HEADERS32 *nt_ptr = (IMAGE_NT_HEADERS32*)((ULONG_PTR)aMap.dos_hdr + aMap.dos_hdr->e_lfanew);
+#ifdef _DEBUG
+					const size_t nt_offset = calc_offset(memPage, nt_ptr);
+					std::cout << "Found PE offset: " << std::hex << aMap.dos_hdr->e_lfanew << " NT offset: " << nt_offset << "\n";
+#endif
+					if (aMap.memPage.validatePtr(nt_ptr, sizeof(IMAGE_NT_HEADERS32))) {
+						setNtFileHdr(aMap, &nt_ptr->FileHeader);
+					}
+				}
+			}
 		}
 
 		bestMapping = (bestMapping < aMap) ? aMap : bestMapping;
