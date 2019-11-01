@@ -528,8 +528,11 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 			if (nt_offset != INVALID_OFFSET && nt_offset > min_offset) {
 				min_offset = nt_offset;
 			}
-			//don't search in full module, only in the first mem page:
+			//don't search sections in full module, only in the first mem page after the NT header:
 			max_section_search = (PAGE_SIZE < memPage.getLoadedSize()) ? PAGE_SIZE : memPage.getLoadedSize();
+			if (max_section_search + min_offset <= memPage.getLoadedSize()) {
+				max_section_search += min_offset; //move the search window
+			}
 		}
 		if (max_section_search <= min_offset) {
 			continue;
