@@ -219,25 +219,40 @@ BYTE* ArtefactScanner::findSecByPatterns(BYTE *search_ptr, const size_t max_sear
 		}
 		hdr_ptr = nullptr;
 	}
+
 	// try another pattern
-	BYTE sec_ending[] = {
-		0x00, 0x00, 0x00, 0x00,
-		0x00, 0x00, 0x00, 0x00,
-		0x00, 0x00, 0x00, 0x00,
-		0x20, 0x00, 0x00, 0x60 // common characteristics
+	const size_t patterns_count = 2;
+	const size_t pattern_size = sizeof(DWORD) * 4;
+	BYTE charact_patterns[patterns_count][pattern_size] = { // common characteristics
+		{
+			0x00, 0x00, 0x00, 0x00,
+			0x00, 0x00, 0x00, 0x00,
+			0x00, 0x00, 0x00, 0x00,
+			0x20, 0x00, 0x00, 0x60
+		},
+		{
+			0x00, 0x00, 0x00, 0x00,
+			0x00, 0x00, 0x00, 0x00,
+			0x00, 0x00, 0x00, 0x00,
+			0x40, 0x00, 0x00, 0xC0
+		}
 	};
-	const size_t sec_ending_size = sizeof(sec_ending);
-	hdr_ptr = find_pattern(search_ptr, max_search_size, sec_ending, sec_ending_size);
-	if (!hdr_ptr) {
-		return nullptr;
-	}
-	size_t offset_to_bgn = sizeof(IMAGE_SECTION_HEADER) - sec_ending_size;
-	hdr_ptr -= offset_to_bgn;
-	if (!peconv::validate_ptr(search_ptr, max_search_size, hdr_ptr, sizeof(IMAGE_SECTION_HEADER))) {
-		return nullptr;
-	}
-	if (is_valid_section(search_ptr, max_search_size, hdr_ptr, charact)) {
-		return hdr_ptr;
+
+	for (size_t i = 0; i < patterns_count; i++) {
+		BYTE *sec_ending = charact_patterns[i];
+		const size_t sec_ending_size = pattern_size;
+		hdr_ptr = find_pattern(search_ptr, max_search_size, sec_ending, sec_ending_size);
+		if (!hdr_ptr) {
+			continue;
+		}
+		size_t offset_to_bgn = sizeof(IMAGE_SECTION_HEADER) - sec_ending_size;
+		hdr_ptr -= offset_to_bgn;
+		if (!peconv::validate_ptr(search_ptr, max_search_size, hdr_ptr, sizeof(IMAGE_SECTION_HEADER))) {
+			continue;
+		}
+		if (is_valid_section(search_ptr, max_search_size, hdr_ptr, charact)) {
+			return hdr_ptr;
+		}
 	}
 	return nullptr;
 }
