@@ -573,6 +573,13 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 				setSecHdr(aMap, sec_hdr);
 			}
 		}
+		if (aMap.sec_hdr) {
+			const size_t sec_offset = calc_offset(memPage, aMap.sec_hdr);
+			if (sec_offset != INVALID_OFFSET) min_offset = sec_offset;
+#ifdef _DEBUG
+			std::cout << "Setting minOffset to SecHdr offset: " << std::hex << min_offset << "\n";
+#endif
+		}
 
 		bestMapping = (bestMapping < aMap) ? aMap : bestMapping;
 
