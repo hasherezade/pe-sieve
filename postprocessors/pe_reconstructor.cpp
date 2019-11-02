@@ -226,8 +226,8 @@ bool PeReconstructor::reconstructFileHdr()
 		opt_hdr_size = sizeof(IMAGE_OPTIONAL_HEADER32);
 	}
 	if (this->artefacts.secHdrsOffset) {
-		size_t calc_offset = this->artefacts.secHdrsOffset - (nt_offset + sizeof(IMAGE_FILE_HEADER));
-		calc_offset -= this->artefacts.peBaseOffset;
+		const size_t sec_offset = this->artefacts.secHdrsOffset - this->artefacts.peBaseOffset;
+		size_t calc_offset = sec_offset - (nt_offset + sizeof(IMAGE_FILE_HEADER));
 
 		if (calc_offset != opt_hdr_size) {
 			std::cout << "[WARNING] Calculated sections header offset is different than the saved one!\n";
