@@ -669,7 +669,8 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 				const size_t start = (sec_offset > PAGE_SIZE) ? (sec_offset - PAGE_SIZE) : 0;
 				//std::cout << "Searching DOS header by patterns " << std::hex << start << "\n";
 				aMap.dos_hdr = findDosHdrByPatterns(aMap.memPage, start, sec_offset);
-				if (!aMap.nt_file_hdr) {
+				const bool is_dos_valid = aMap.memPage.validatePtr(aMap.dos_hdr, sizeof(IMAGE_DOS_HEADER));
+				if (is_dos_valid && !aMap.nt_file_hdr) {
 					IMAGE_NT_HEADERS32 *nt_ptr = (IMAGE_NT_HEADERS32*)((ULONG_PTR)aMap.dos_hdr + aMap.dos_hdr->e_lfanew);
 #ifdef _DEBUG
 					const size_t nt_offset = calc_offset(memPage, nt_ptr);
