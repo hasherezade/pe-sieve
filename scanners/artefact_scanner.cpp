@@ -462,11 +462,12 @@ IMAGE_DOS_HEADER* ArtefactScanner::findMzPeHeader(MemPageData &memPage, const si
 
 	//scan only one page, not the full area
 	for (size_t i = 0; i < scan_size; i++) {
-		if ((scan_size - i) < minimal_size) {
+		const size_t remaining_size = scan_size - i;
+		if (remaining_size < minimal_size) {
 			break;
 		}
 		const BYTE* pe_candidate = buffer_ptr + i;
-		BYTE *nt_hdr = peconv::get_nt_hdrs(pe_candidate, scan_size - i);
+		BYTE *nt_hdr = peconv::get_nt_hdrs(pe_candidate, remaining_size);
 		if (nt_hdr != nullptr) {
 			//it was possible to retrieve the NT header, so the PE candidate passed validation
 			return (IMAGE_DOS_HEADER*)(pe_candidate);
