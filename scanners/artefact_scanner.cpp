@@ -223,7 +223,12 @@ IMAGE_DOS_HEADER* ArtefactScanner::findDosHdrByPatterns(MemPageData &memPage, co
 	if (!memPage.validatePtr(search_ptr, max_search_size)) {
 		return nullptr;
 	}
-	return _findDosHdrByPatterns(search_ptr, max_search_size);
+	IMAGE_DOS_HEADER* dos_hdr = _findDosHdrByPatterns(search_ptr, max_search_size);
+	const bool is_dos_valid = memPage.validatePtr(dos_hdr, sizeof(IMAGE_DOS_HEADER));
+	if (is_dos_valid) {
+		return dos_hdr;
+	}
+	return nullptr;
 }
 
 IMAGE_DOS_HEADER* ArtefactScanner::_findDosHdrByPatterns(BYTE *search_ptr, const size_t max_search_size)
@@ -258,12 +263,14 @@ IMAGE_DOS_HEADER* ArtefactScanner::_findDosHdrByPatterns(BYTE *search_ptr, const
 			continue;
 		}
 		size_t offset_to_bgn = sizeof(IMAGE_DOS_HEADER);
-		dos_ptr = (IMAGE_DOS_HEADER*)(stub_ptr - offset_to_bgn);
+		if ((ULONG_PTR)stub_ptr < offset_to_bgn) {
+			return nullptr;
+		}
+		dos_ptr = (IMAGE_DOS_HEADER*)((ULONG_PTR)stub_ptr - offset_to_bgn);
 		if (!peconv::validate_ptr(search_ptr, max_search_size, dos_ptr, sizeof(IMAGE_DOS_HEADER))) {
 			continue;
 		}
 		return dos_ptr;
-		
 	}
 	return nullptr;
 }
@@ -669,8 +676,7 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 				const size_t start = (sec_offset > PAGE_SIZE) ? (sec_offset - PAGE_SIZE) : 0;
 				//std::cout << "Searching DOS header by patterns " << std::hex << start << "\n";
 				aMap.dos_hdr = findDosHdrByPatterns(aMap.memPage, start, sec_offset);
-				const bool is_dos_valid = aMap.memPage.validatePtr(aMap.dos_hdr, sizeof(IMAGE_DOS_HEADER));
-				if (is_dos_valid && !aMap.nt_file_hdr) {
+				if (aMap.dos_hdr && !aMap.nt_file_hdr) {
 					IMAGE_NT_HEADERS32 *nt_ptr = (IMAGE_NT_HEADERS32*)((ULONG_PTR)aMap.dos_hdr + aMap.dos_hdr->e_lfanew);
 #ifdef _DEBUG
 					const size_t nt_offset = calc_offset(memPage, nt_ptr);
