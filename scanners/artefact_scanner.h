@@ -46,6 +46,17 @@ public:
 		return this->peBaseOffset + this->regionStart;
 	}
 
+	ULONGLONG dropPeBase(const ULONGLONG offset_with_pe_base) const
+	{
+		if (peBaseOffset == INVALID_OFFSET || offset_with_pe_base == INVALID_OFFSET) {
+			return INVALID_OFFSET;
+		}
+		if (offset_with_pe_base < peBaseOffset) {
+			return INVALID_OFFSET;
+		}
+		return offset_with_pe_base - peBaseOffset;
+	}
+
 	const virtual bool fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
 		OUT_PADDED(outs, level, "\"pe_base_offset\" : ");

@@ -21,26 +21,27 @@ size_t PeReconstructor::shiftPeHeader()
 	if (!this->artefacts.hasNtHdrs()) return 0;
 
 	const size_t dos_pe_size = sizeof(IMAGE_DOS_HEADER) + sizeof(IMAGE_NT_SIGNATURE);
-	size_t diff = this->artefacts.ntFileHdrsOffset - this->artefacts.peBaseOffset;
-	if (diff >= dos_pe_size) {
+	const size_t nt_offset = this->artefacts.dropPeBase(this->artefacts.ntFileHdrsOffset);
+	if (nt_offset == INVALID_OFFSET || nt_offset >= dos_pe_size) {
 		return 0;
 	}
 	//TODO: shift the header
 	if (!this->artefacts.hasSectionHdrs()) return 0; //cannot proceed
 
-	size_t shift_size = dos_pe_size - diff;
+	size_t shift_size = dos_pe_size - nt_offset;
 	size_t hdrs_end = this->artefacts.secHdrsOffset + (this->artefacts.secCount + 1)* sizeof(IMAGE_SECTION_HEADER);
 	if (!peconv::is_padding(vBuf + hdrs_end, shift_size, 0)) {
 		return 0; // no empty space, cannot proceed
 	}
-	size_t hdrs_size = hdrs_end - this->artefacts.peBaseOffset;
+	size_t hdrs_size = this->artefacts.dropPeBase(hdrs_end);
 	BYTE *new_nt_ptr = vBuf + this->artefacts.peBaseOffset + shift_size;
 	if (!peconv::validate_ptr(vBuf, vBufSize, new_nt_ptr, hdrs_size)) {
 		return 0;
 	}
-
-	size_t pe_offset = (this->artefacts.ntFileHdrsOffset - sizeof(IMAGE_NT_SIGNATURE)) - this->artefacts.peBaseOffset;
-
+	if (nt_offset < sizeof(IMAGE_NT_SIGNATURE)) {
+		return 0;
+	}
+	const size_t pe_offset = nt_offset - sizeof(IMAGE_NT_SIGNATURE);
 	IMAGE_DOS_HEADER dos_template = { 0 };
 	dos_template.e_magic = IMAGE_DOS_SIGNATURE;
 	dos_template.e_lfanew = pe_offset + shift_size;
@@ -53,7 +54,7 @@ size_t PeReconstructor::shiftPeHeader()
 	//check PE signature:
 	DWORD* pe_ptr = (DWORD*)(vBuf + this->artefacts.peBaseOffset + dos_template.e_lfanew);
 	if (!peconv::validate_ptr(vBuf, vBufSize, pe_ptr, sizeof(DWORD))) {
-		return false;
+		return 0;
 	}
 	//all checks passed, do the actual headers shift:
 	memmove(new_nt_ptr, (vBuf + this->artefacts.peBaseOffset), hdrs_size);
@@ -105,8 +106,7 @@ bool PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 	if (!this->artefacts.hasSectionHdrs()) {
 		return false;
 	}
-
-	ULONGLONG sec_offset = this->artefacts.secHdrsOffset - this->artefacts.peBaseOffset;
+	ULONGLONG sec_offset = this->artefacts.dropPeBase(this->artefacts.secHdrsOffset);
 	BYTE *hdr_ptr = (sec_offset + vBuf);
 
 	DWORD sec_rva = 0;
@@ -169,7 +169,7 @@ bool PeReconstructor::fixSectionsCharacteristics(HANDLE processHandle)
 		return false;
 	}
 
-	ULONGLONG sec_offset = this->artefacts.secHdrsOffset - this->artefacts.peBaseOffset;
+	ULONGLONG sec_offset = this->artefacts.dropPeBase(this->artefacts.secHdrsOffset);
 	const BYTE *hdr_ptr = (sec_offset + vBuf);
 	IMAGE_SECTION_HEADER* curr_sec = (IMAGE_SECTION_HEADER*)(hdr_ptr);
 
@@ -205,7 +205,7 @@ bool PeReconstructor::reconstructFileHdr()
 	if (!this->artefacts.hasNtHdrs()) {
 		return false;
 	}
-	size_t nt_offset = this->artefacts.ntFileHdrsOffset - this->artefacts.peBaseOffset;
+	size_t nt_offset = this->artefacts.dropPeBase(this->artefacts.ntFileHdrsOffset);
 	BYTE* nt_ptr = (BYTE*)((ULONGLONG)vBuf + nt_offset);
 	if (is_valid_file_hdr(vBuf, vBufSize, nt_ptr, 0)) {
 		return true;
@@ -226,7 +226,7 @@ bool PeReconstructor::reconstructFileHdr()
 		opt_hdr_size = sizeof(IMAGE_OPTIONAL_HEADER32);
 	}
 	if (this->artefacts.secHdrsOffset) {
-		const size_t sec_offset = this->artefacts.secHdrsOffset - this->artefacts.peBaseOffset;
+		const size_t sec_offset = this->artefacts.dropPeBase(this->artefacts.secHdrsOffset);
 		size_t calc_offset = sec_offset - (nt_offset + sizeof(IMAGE_FILE_HEADER));
 
 		if (calc_offset != opt_hdr_size) {
@@ -250,7 +250,7 @@ bool PeReconstructor::reconstructPeHdr()
 	if (!this->artefacts.hasNtHdrs()) {
 		return false;
 	}
-	ULONGLONG nt_offset = this->artefacts.ntFileHdrsOffset - this->artefacts.peBaseOffset;
+	ULONGLONG nt_offset = this->artefacts.dropPeBase(this->artefacts.ntFileHdrsOffset);
 	BYTE* nt_ptr = (BYTE*)((ULONGLONG)vBuf + nt_offset);
 	BYTE *pe_ptr = nt_ptr - sizeof(DWORD);
 
