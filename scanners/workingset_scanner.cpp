@@ -83,8 +83,6 @@ WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPage
 	return my_report;
 }
 
-
-
 WorkingSetScanReport* WorkingSetScanner::scanRemote()
 {
 	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
@@ -112,11 +110,12 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 			RemoteModuleData remoteModData(this->processHandle, (HMODULE)memPage.alloc_base);
 			//load module from file:
 			ModuleData modData(processHandle, (HMODULE)memPage.alloc_base, memPage.mapped_name);
-			if (modData.loadOriginal()) {
-				t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, NULL);
-				if (status == SCAN_NOT_SUSPICIOUS) {
-					return nullptr;
-				}
+			t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, processReport);
+			if (status == SCAN_NOT_SUSPICIOUS) {
+				if (modData.isDotNet()) return nullptr; // skip .NET modules: too many false positives
+
+				ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport);
+				return nullptr;
 			}
 			std::cout << "[!] " << std::hex << memPage.alloc_base << ": mapped filename: " << memPage.mapped_name << "; module_ name:" << memPage.module_name << std::endl;
 		}

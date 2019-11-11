@@ -7,6 +7,7 @@
 #include <peconv.h>
 #include "module_scan_report.h"
 #include "mempage_data.h"
+#include "scan_report.h"
 
 #include "../utils/util.h"
 
@@ -92,10 +93,10 @@ protected:
 
 class WorkingSetScanner {
 public:
-	WorkingSetScanner(HANDLE _procHndl, MemPageData &_memPageDatal, bool _detectShellcode, bool _scanData)
+	WorkingSetScanner(HANDLE _procHndl, MemPageData &_memPageDatal, bool _detectShellcode, bool _scanData, ProcessScanReport* _process_report)
 		: processHandle(_procHndl), memPage(_memPageDatal),
 		detectShellcode(_detectShellcode),
-		scanData(_scanData)
+		scanData(_scanData), processReport(_process_report)
 	{
 	}
 
@@ -113,4 +114,6 @@ protected:
 	bool detectShellcode; // is shellcode detection enabled
 	HANDLE processHandle;
 	MemPageData &memPage;
+
+	ProcessScanReport* processReport;
 };

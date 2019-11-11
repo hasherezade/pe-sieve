@@ -3,6 +3,11 @@
 
 HeadersScanReport* HeadersScanner::scanRemote()
 {
+	if (!moduleData.isInitialized() && !moduleData.loadOriginal()) {
+		std::cerr << "[-] Module not initialized" << std::endl;
+		return nullptr;
+	}
+
 	HeadersScanReport *my_report = new HeadersScanReport(this->processHandle, moduleData.moduleHandle, remoteModData.getModuleSize());
 	if (!remoteModData.isInitialized()) {
 		std::cerr << "[-] Failed to read the module header" << std::endl;

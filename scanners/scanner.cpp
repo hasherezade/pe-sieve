@@ -167,7 +167,7 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 		memPage.is_listed_module = pReport.hasModule(region_base);
 		memPage.is_dep_enabled = this->isDEP;
 
-		WorkingSetScanner memPageScanner(this->processHandle, memPage, this->args.shellcode, this->args.data);
+		WorkingSetScanner memPageScanner(this->processHandle, memPage, this->args.shellcode, this->args.data, &pReport);
 		WorkingSetScanReport *my_report = memPageScanner.scanRemote();
 
 		counter++;
