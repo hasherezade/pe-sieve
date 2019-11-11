@@ -106,12 +106,18 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 			return nullptr;
 		}
 		else {
-
+			if (this->processReport->hasModuleContaining(memPage.region_start)) {
+				// already scanned
+				return nullptr;
+			}
 			RemoteModuleData remoteModData(this->processHandle, (HMODULE)memPage.alloc_base);
 			//load module from file:
 			ModuleData modData(processHandle, (HMODULE)memPage.alloc_base, memPage.mapped_name);
 			t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, processReport);
-			if (status == SCAN_NOT_SUSPICIOUS) {
+			if (status == SCAN_SUSPICIOUS) {
+				return nullptr; //treat it as hollowed
+			}
+			else if (status == SCAN_NOT_SUSPICIOUS) {
 				if (modData.isDotNet()) return nullptr; // skip .NET modules: too many false positives
 
 				ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport);
