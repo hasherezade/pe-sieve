@@ -22,6 +22,7 @@ public:
 		 has_pe = false; //not a PE file
 		 has_shellcode = true;
 		 is_doppel = false;
+		 mapping_type = 0;
 	}
 
 	const virtual bool toJSON(std::stringstream &outs,size_t level = JSON_LEVEL)
@@ -57,7 +58,10 @@ public:
 		outs << std::dec << is_listed_module;
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"protection\" : ");
-		outs << std::dec << protection;
+		outs << "\"" << std::hex << protection << "\"";
+		outs << ",\n";
+		OUT_PADDED(outs, level, "\"mapping_type\" : ");
+		outs << "\"" << translate_mapping_type(mapping_type) << "\"";
 	}
 
 	bool is_executable;
@@ -66,6 +70,18 @@ public:
 	bool has_shellcode;
 	bool is_doppel;
 	DWORD protection;
+	DWORD mapping_type;
+
+protected:
+	static std::string translate_mapping_type(DWORD type)
+	{
+		switch (type) {
+		case MEM_PRIVATE: return "MEM_PRIVATE";
+		case MEM_MAPPED: return "MEM_MAPPED";
+		case MEM_IMAGE: return "MEM_IMAGE";
+		}
+		return "unknown";
+	}
 };
 
 class WorkingSetScanner {

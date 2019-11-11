@@ -24,7 +24,21 @@ bool MemPageData::fillInfo()
 	return true;
 }
 
-bool MemPageData::hasMappedName()
+bool MemPageData::loadModuleName()
+{
+	const HMODULE mod_base = (HMODULE)this->alloc_base;
+	std::string module_name = RemoteModuleData::getModuleName(processHandle, mod_base);
+	if (module_name.length() == 0) {
+#ifdef _DEBUG
+		std::cerr << "Could not retrieve module name" << std::endl;
+#endif
+		return false;
+	}
+	this->module_name = module_name;
+	return true;
+}
+
+bool MemPageData::loadMappedName()
 {
 	if (!isInfoFilled() && !fillInfo()) {
 		return false;
@@ -36,6 +50,7 @@ bool MemPageData::hasMappedName()
 #endif
 		return false;
 	}
+	this->mapped_name = mapped_filename;
 	return true;
 }
 
@@ -47,8 +62,7 @@ bool MemPageData::isRealMapping()
 #endif
 		return false;
 	}
-	std::string mapped_filename = RemoteModuleData::getMappedName(this->processHandle, (LPVOID) this->alloc_base);
-	if (mapped_filename.length() == 0) {
+	if (!loadMappedName()) {
 #ifdef _DEBUG
 		std::cerr << "Could not retrieve name" << std::endl;
 #endif
@@ -57,7 +71,7 @@ bool MemPageData::isRealMapping()
 #ifdef _DEBUG
 	std::cout << mapped_filename << std::endl;
 #endif
-	HANDLE file = CreateFileA(mapped_filename.c_str(), GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	HANDLE file = CreateFileA(this->mapped_name.c_str(), GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	if(file == INVALID_HANDLE_VALUE) {
 #ifdef _DEBUG
 		std::cerr << "Could not open file!" << std::endl;

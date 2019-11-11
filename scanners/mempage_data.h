@@ -43,6 +43,9 @@ public:
 	ULONGLONG region_start;
 	ULONGLONG region_end;
 
+	std::string mapped_name; //if the region is mapped from a file
+	std::string module_name; //if the region is on the list of loaded PEs
+
 	bool load()
 	{
 		if (loadedData) {
@@ -58,7 +61,8 @@ public:
 		return false;
 	}
 
-	bool hasMappedName();
+	bool loadMappedName();
+	bool loadModuleName();
 	// checks if the memory area is mapped 1-to-1 from the file on the disk
 	bool isRealMapping();
 

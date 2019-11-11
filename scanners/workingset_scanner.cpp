@@ -96,12 +96,18 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 	}
 	bool is_doppel = false;
 	if (memPage.mapping_type == MEM_IMAGE) {
-		if (!memPage.hasMappedName()) {
+		if (!memPage.loadMappedName()) {
+			//cannot retrieve the mapped file name: it may indicate that a transacted file was used (as in Process Doppelganging)
 			is_doppel = true;
-		} else {
-			//probably legit
+		}
+		if (!is_doppel && memPage.loadModuleName()) {
+			//probably legit: it was scanned in details during the modules scan
 			return nullptr;
 		}
+		else {
+			std::cout << "[!] " << std::hex << memPage.alloc_base << ": mapped filename: " << memPage.mapped_name << "; module_ name:" << memPage.module_name << std::endl;
+		}
+		
 	}
 	if (memPage.mapping_type == MEM_MAPPED && memPage.isRealMapping()) {
 		//probably legit
@@ -119,6 +125,7 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 	}
 	my_report->is_executable = true;
 	my_report->protection = memPage.protection;
+	my_report->mapping_type = memPage.mapping_type;
 	my_report->is_doppel = is_doppel;
 	return my_report;
 }
