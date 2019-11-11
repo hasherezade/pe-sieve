@@ -62,6 +62,11 @@ public:
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"mapping_type\" : ");
 		outs << "\"" << translate_mapping_type(mapping_type) << "\"";
+		if (mapped_name.length()) {
+			outs << ",\n";
+			OUT_PADDED(outs, level, "\"mapped_name\" : ");
+			outs << "\"" << escape_path_separators(mapped_name) << "\"";
+		}
 	}
 
 	bool is_executable;
@@ -71,6 +76,7 @@ public:
 	bool is_doppel;
 	DWORD protection;
 	DWORD mapping_type;
+	std::string mapped_name; //if the region is mapped from a file
 
 protected:
 	static std::string translate_mapping_type(DWORD type)

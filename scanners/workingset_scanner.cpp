@@ -127,5 +127,6 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 	my_report->protection = memPage.protection;
 	my_report->mapping_type = memPage.mapping_type;
 	my_report->is_doppel = is_doppel;
+	my_report->mapped_name = memPage.mapped_name;
 	return my_report;
 }
