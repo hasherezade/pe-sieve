@@ -83,6 +83,38 @@ WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPage
 	return my_report;
 }
 
+bool WorkingSetScanner::scanDisconnectedImg()
+{
+	if (this->processReport->hasModuleContaining(memPage.region_start)) {
+		// already scanned
+		return true;
+	}
+	if (!memPage.loadMappedName()) {
+		//cannot retrieve the mapped name
+		return false;
+	}
+	HMODULE module_start = (HMODULE)memPage.region_start;
+	RemoteModuleData remoteModData(this->processHandle, module_start);
+	//load module from file:
+	ModuleData modData(processHandle, module_start, memPage.mapped_name);
+	
+	t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, NULL); //check only, do not add to the report
+	if (status == SCAN_NOT_SUSPICIOUS) {
+		if (modData.isDotNet()) {
+#ifdef _DEBUG
+			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
+#endif
+			if (processReport) {
+				processReport->appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
+			}
+			return true;
+		}
+		ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport);
+		return true;
+	}
+	return false;
+}
+
 WorkingSetScanReport* WorkingSetScanner::scanRemote()
 {
 	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
@@ -95,45 +127,31 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 		// probably not interesting
 		return nullptr;
 	}
-	bool is_doppel = false;
-	if (memPage.mapping_type == MEM_IMAGE) {
-		if (!memPage.loadMappedName()) {
-			//cannot retrieve the mapped file name: it may indicate that a transacted file was used (as in Process Doppelganging)
-			is_doppel = true;
-		}
-		if (!is_doppel && memPage.loadModuleName()) {
-			//probably legit: it was scanned in details during the modules scan
-			return nullptr;
-		}
-		else {
-			if (this->processReport->hasModuleContaining(memPage.region_start)) {
-				// already scanned
-				return nullptr;
-			}
-			RemoteModuleData remoteModData(this->processHandle, (HMODULE)memPage.alloc_base);
-			//load module from file:
-			ModuleData modData(processHandle, (HMODULE)memPage.alloc_base, memPage.mapped_name);
-			t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, NULL);
-			if (status == SCAN_NOT_SUSPICIOUS) {
-				if (modData.isDotNet()) {
-#ifdef _DEBUG
-					std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
-#endif
-					if (processReport) {
-						processReport->appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
-					}
-					return nullptr;
-				}
-				ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport);
-				return nullptr;
-			}
-			std::cout << "[!] " << std::hex << memPage.alloc_base << ": mapped filename: " << memPage.mapped_name << "; module_ name:" << memPage.module_name << std::endl;
-		}
-	}
+
 	if (memPage.mapping_type == MEM_MAPPED && memPage.isRealMapping()) {
 		//probably legit
 		return nullptr;
 	}
+
+	if (memPage.mapping_type == MEM_IMAGE) {
+
+		const bool is_peb_module = memPage.loadModuleName();
+		const bool is_mapped_name = memPage.loadMappedName();
+
+		if (is_peb_module && is_mapped_name) {
+			//probably legit
+			return nullptr;
+		}
+		if (!is_peb_module) {
+			if (scanDisconnectedImg()) {
+				return nullptr; //scanned as disconnected
+			}
+			//scanning as disconnected module failed, continue scanning as an implant
+			std::cout << "[!] " << std::hex << memPage.alloc_base << ": mapped filename: " << memPage.mapped_name << std::endl;
+		}
+		
+	}
+
 	WorkingSetScanReport* my_report = nullptr;
 	if (is_any_exec) {
 #ifdef _DEBUG
@@ -147,7 +165,6 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 	my_report->is_executable = true;
 	my_report->protection = memPage.protection;
 	my_report->mapping_type = memPage.mapping_type;
-	my_report->is_doppel = is_doppel;
 	my_report->mapped_name = memPage.mapped_name;
 	return my_report;
 }

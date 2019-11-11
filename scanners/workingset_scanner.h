@@ -22,7 +22,6 @@ public:
 		 protection = 0;
 		 has_pe = false; //not a PE file
 		 has_shellcode = true;
-		 is_doppel = false;
 		 mapping_type = 0;
 	}
 
@@ -49,11 +48,6 @@ public:
 			OUT_PADDED(outs, level, "\"is_executable\" : ");
 			outs << std::dec << is_executable;
 		}
-		if (is_doppel) {
-			outs << ",\n";
-			OUT_PADDED(outs, level, "\"is_doppel\" : ");
-			outs << std::dec << is_doppel;
-		}
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"is_listed_module\" : ");
 		outs << std::dec << is_listed_module;
@@ -74,7 +68,6 @@ public:
 	bool is_listed_module;
 	bool has_pe;
 	bool has_shellcode;
-	bool is_doppel;
 	DWORD protection;
 	DWORD mapping_type;
 	std::string mapped_name; //if the region is mapped from a file
@@ -105,6 +98,8 @@ public:
 	virtual WorkingSetScanReport* scanRemote();
 
 protected:
+	bool scanDisconnectedImg();
+
 	bool isExecutable(MemPageData &memPageData);
 	bool isPotentiallyExecutable(MemPageData &memPageData);
 	bool isCode(MemPageData &memPageData);
