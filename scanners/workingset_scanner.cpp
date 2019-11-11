@@ -1,6 +1,7 @@
 #include "workingset_scanner.h"
 #include "module_data.h"
 #include "artefact_scanner.h"
+#include "scanner.h"
 
 #include "../utils/path_converter.h"
 #include "../utils/workingset_enum.h"
@@ -82,6 +83,8 @@ WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPage
 	return my_report;
 }
 
+
+
 WorkingSetScanReport* WorkingSetScanner::scanRemote()
 {
 	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
@@ -105,6 +108,16 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 			return nullptr;
 		}
 		else {
+
+			RemoteModuleData remoteModData(this->processHandle, (HMODULE)memPage.alloc_base);
+			//load module from file:
+			ModuleData modData(processHandle, (HMODULE)memPage.alloc_base, memPage.mapped_name);
+			if (modData.loadOriginal()) {
+				t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, NULL);
+				if (status == SCAN_NOT_SUSPICIOUS) {
+					return nullptr;
+				}
+			}
 			std::cout << "[!] " << std::hex << memPage.alloc_base << ": mapped filename: " << memPage.mapped_name << "; module_ name:" << memPage.module_name << std::endl;
 		}
 		

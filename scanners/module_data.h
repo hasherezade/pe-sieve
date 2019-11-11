@@ -18,6 +18,15 @@ public:
 		loadModuleName();
 	}
 
+	ModuleData(HANDLE _processHandle, HMODULE _module, std::string module_name)
+		: processHandle(_processHandle), moduleHandle(_module),
+		is_module_named(false), original_size(0), original_module(nullptr),
+		is_relocated(false), is_dot_net(false)
+	{
+		memset(szModName, 0, MAX_PATH);
+		memcpy(this->szModName, module_name.c_str(), module_name.length());
+	}
+
 	~ModuleData()
 	{
 		peconv::free_pe_buffer(original_module, original_size);
