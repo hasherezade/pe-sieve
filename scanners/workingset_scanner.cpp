@@ -105,7 +105,7 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 			return nullptr;
 		}
 		else {
-			std::cout << "{!] " << std::hex << memPage.alloc_base << ": mapped filename: " << memPage.mapped_name << "; module_ name:" << memPage.module_name << std::endl;
+			std::cout << "[!] " << std::hex << memPage.alloc_base << ": mapped filename: " << memPage.mapped_name << "; module_ name:" << memPage.module_name << std::endl;
 		}
 		
 	}
