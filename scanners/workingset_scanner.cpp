@@ -96,7 +96,7 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 	}
 	bool is_doppel = false;
 	if (memPage.mapping_type == MEM_IMAGE) {
-		if (!memPage.hasMappedName()) {
+		if (!memPage.loadMappedName()) {
 			is_doppel = true;
 		} else {
 			//probably legit

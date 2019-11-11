@@ -43,6 +43,8 @@ public:
 	ULONGLONG region_start;
 	ULONGLONG region_end;
 
+	std::string mapped_name; //if the region is mapped from a file
+
 	bool load()
 	{
 		if (loadedData) {
@@ -58,7 +60,7 @@ public:
 		return false;
 	}
 
-	bool hasMappedName();
+	bool loadMappedName();
 	// checks if the memory area is mapped 1-to-1 from the file on the disk
 	bool isRealMapping();
 
