@@ -24,6 +24,20 @@ bool MemPageData::fillInfo()
 	return true;
 }
 
+bool MemPageData::loadModuleName()
+{
+	const HMODULE mod_base = (HMODULE)this->alloc_base;
+	std::string module_name = RemoteModuleData::getModuleName(processHandle, mod_base);
+	if (module_name.length() == 0) {
+#ifdef _DEBUG
+		std::cerr << "Could not retrieve module name" << std::endl;
+#endif
+		return false;
+	}
+	this->module_name = module_name;
+	return true;
+}
+
 bool MemPageData::loadMappedName()
 {
 	if (!isInfoFilled() && !fillInfo()) {
@@ -36,7 +50,6 @@ bool MemPageData::loadMappedName()
 #endif
 		return false;
 	}
-	std::cout << "Retrieved mapped filename: " << mapped_filename << std::endl;
 	this->mapped_name = mapped_filename;
 	return true;
 }
