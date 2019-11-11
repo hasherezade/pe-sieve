@@ -113,19 +113,22 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 			RemoteModuleData remoteModData(this->processHandle, (HMODULE)memPage.alloc_base);
 			//load module from file:
 			ModuleData modData(processHandle, (HMODULE)memPage.alloc_base, memPage.mapped_name);
-			t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, processReport);
-			if (status == SCAN_SUSPICIOUS) {
-				return nullptr; //treat it as hollowed
-			}
-			else if (status == SCAN_NOT_SUSPICIOUS) {
-				if (modData.isDotNet()) return nullptr; // skip .NET modules: too many false positives
-
+			t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, NULL);
+			if (status == SCAN_NOT_SUSPICIOUS) {
+				if (modData.isDotNet()) {
+#ifdef _DEBUG
+					std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
+#endif
+					if (processReport) {
+						processReport->appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
+					}
+					return nullptr;
+				}
 				ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport);
 				return nullptr;
 			}
 			std::cout << "[!] " << std::hex << memPage.alloc_base << ": mapped filename: " << memPage.mapped_name << "; module_ name:" << memPage.module_name << std::endl;
 		}
-		
 	}
 	if (memPage.mapping_type == MEM_MAPPED && memPage.isRealMapping()) {
 		//probably legit
