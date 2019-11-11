@@ -68,9 +68,6 @@ bool MemPageData::isRealMapping()
 #endif
 		return false;
 	}
-#ifdef _DEBUG
-	std::cout << mapped_filename << std::endl;
-#endif
 	HANDLE file = CreateFileA(this->mapped_name.c_str(), GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	if(file == INVALID_HANDLE_VALUE) {
 #ifdef _DEBUG
