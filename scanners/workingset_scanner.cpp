@@ -37,7 +37,7 @@ bool WorkingSetScanner::isExecutable(MemPageData &memPageData)
 		|| (memPage.protection & PAGE_EXECUTE_WRITECOPY);
 	if (is_any_exec) return true;
 
-	if (this->scanData) {
+	if (this->args.data) {
 		is_any_exec = isPotentiallyExecutable(memPageData);
 	}
 	return is_any_exec;
@@ -66,7 +66,7 @@ WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPage
 		//pe artefacts found
 		return my_report;
 	}
-	if (!this->detectShellcode) {
+	if (!this->args.shellcode) {
 		// not a PE file, and we are not interested in shellcode, so just finish it here
 		return nullptr;
 	}
@@ -115,7 +115,9 @@ bool WorkingSetScanner::scanDisconnectedImg()
 			}
 			return true;
 		}
-		ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport);
+		if (!args.no_hooks) {
+			ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport);
+		}
 		return true;
 	}
 	return false;

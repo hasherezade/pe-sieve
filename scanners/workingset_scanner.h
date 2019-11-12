@@ -86,10 +86,10 @@ protected:
 
 class WorkingSetScanner {
 public:
-	WorkingSetScanner(HANDLE _procHndl, MemPageData &_memPageDatal, bool _detectShellcode, bool _scanData, ProcessScanReport* _process_report)
+	WorkingSetScanner(HANDLE _procHndl, MemPageData &_memPageDatal, pesieve::t_params _args, ProcessScanReport* _process_report)
 		: processHandle(_procHndl), memPage(_memPageDatal),
-		detectShellcode(_detectShellcode),
-		scanData(_scanData), processReport(_process_report)
+		args(_args),
+		processReport(_process_report)
 	{
 	}
 
@@ -105,10 +105,9 @@ protected:
 	bool isCode(MemPageData &memPageData);
 	WorkingSetScanReport* scanExecutableArea(MemPageData &memPageData);
 
-	bool scanData; //scan also non-executable areas if DEP is disabled
-	bool detectShellcode; // is shellcode detection enabled
 	HANDLE processHandle;
 	MemPageData &memPage;
 
 	ProcessScanReport* processReport;
+	pesieve::t_params args;
 };
