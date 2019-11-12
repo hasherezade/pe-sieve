@@ -85,29 +85,31 @@ WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPage
 
 bool WorkingSetScanner::scanDisconnectedImg()
 {
-	const HMODULE module_start = (HMODULE)memPage.alloc_base;
-
-	if (this->processReport->hasModuleContaining((ULONGLONG)module_start)) {
-		if (this->processReport->hasModuleContaining(memPage.region_start)) {
-			// already scanned
+	const bool show_info = (!args.quiet);
 #ifdef _DEBUG
-			std::cout << "[*] This area was already scanned: " << std::hex << memPage.region_start << std::endl;
+	show_info = true;
 #endif
-			return true;
-		}
-		//it may be a shellcode after the loaded PE
-		return false;
+	const HMODULE module_start = (HMODULE)memPage.region_start;
+	if (this->processReport->hasModuleContaining((ULONGLONG)module_start)) {
+#ifdef _DEBUG
+		std::cout << "[*] This area was already scanned: " << std::hex << memPage.region_start << std::endl;
+#endif
+		return true;
 	}
 	if (!memPage.loadMappedName()) {
 		//cannot retrieve the mapped name
 		return false;
 	}
-	if (!args.quiet) {
+	
+	if (show_info) {
 		std::cout << "[!] Scanning detached: " << std::hex << module_start << " : " << memPage.mapped_name << std::endl;
 	}
+#ifdef _DEBUG
+	std::cout << "[!] Scanning detached: " << std::hex << module_start << " : " << memPage.mapped_name << std::endl;
+#endif
 	RemoteModuleData remoteModData(this->processHandle, module_start);
 	if (!remoteModData.isInitialized()) {
-		if (!args.quiet) {
+		if (show_info) {
 			std::cout << "[-] Could not read the remote PE at: " << std::hex << module_start << std::endl;
 		}
 		return false;
@@ -170,7 +172,7 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 		}
 		if (!is_peb_module) {
 #ifdef _DEBUG
-			std::cout << "Detected disconnected MEM_IMG: " << memPage.region_start << std::endl;
+			std::cout << "[!] Detected a disconnected MEM_IMG: " << memPage.region_start << std::endl;
 #endif
 			if (scanDisconnectedImg()) {
 				return nullptr; //scanned as disconnected
