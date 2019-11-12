@@ -147,9 +147,10 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 				return nullptr; //scanned as disconnected
 			}
 			//scanning as disconnected module failed, continue scanning as an implant
+#ifdef _DEBUG
 			std::cout << "[!] " << std::hex << memPage.alloc_base << ": mapped filename: " << memPage.mapped_name << std::endl;
+#endif
 		}
-		
 	}
 
 	WorkingSetScanReport* my_report = nullptr;

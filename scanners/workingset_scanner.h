@@ -57,7 +57,7 @@ public:
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"mapping_type\" : ");
 		outs << "\"" << translate_mapping_type(mapping_type) << "\"";
-		if (mapped_name.length()) {
+		if (mapping_type == MEM_IMAGE || mapping_type == MEM_MAPPED) {
 			outs << ",\n";
 			OUT_PADDED(outs, level, "\"mapped_name\" : ");
 			outs << "\"" << escape_path_separators(mapped_name) << "\"";
