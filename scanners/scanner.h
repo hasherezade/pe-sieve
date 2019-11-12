@@ -22,13 +22,14 @@ public:
 
 	ProcessScanReport* scanRemote(); //throws exceptions
 
+	static t_scan_status scanForHollows(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report);
+	static t_scan_status scanForHooks(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report);
+
 protected:
 	size_t scanModules(ProcessScanReport &pReport); //throws exceptions
 	size_t scanWorkingSet(ProcessScanReport &pReport);  //throws exceptions
 
 	ModuleScanReport* scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report);
-	t_scan_status scanForHollows(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report);
-	t_scan_status scanForHooks(ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report);
 
 	bool resolveHooksTargets(ProcessScanReport& process_report);
 
