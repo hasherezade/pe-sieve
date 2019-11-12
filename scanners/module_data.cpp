@@ -30,6 +30,13 @@ bool ModuleData::loadOriginal()
 
 	original_module = peconv::load_pe_module(szModName, original_size, false, false);
 	if (!original_module) {
+		//if the module was not loaded, the FS redirection could be the reason...
+		PVOID old_val;
+		Wow64DisableWow64FsRedirection(&old_val);
+		original_module = peconv::load_pe_module(szModName, original_size, false, false);
+		Wow64RevertWow64FsRedirection(old_val);
+	}
+	if (!original_module) {
 		return false;
 	}
 	this->is_dot_net = isDotNetManagedCode();
