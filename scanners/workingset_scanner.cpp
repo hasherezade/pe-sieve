@@ -94,11 +94,17 @@ bool WorkingSetScanner::scanDisconnectedImg()
 		return false;
 	}
 	HMODULE module_start = (HMODULE)memPage.region_start;
+
+#ifdef _DEBUG
+	std::cout << "[!] " << std::hex << module_start << ": mapped filename: " << memPage.mapped_name << std::endl;
+#endif
+	
 	RemoteModuleData remoteModData(this->processHandle, module_start);
+	if (!remoteModData.isInitialized()) return false;
 	//load module from file:
 	ModuleData modData(processHandle, module_start, memPage.mapped_name);
 	
-	t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, NULL); //check only, do not add to the report
+	t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, processReport);
 	if (status == SCAN_NOT_SUSPICIOUS) {
 		if (modData.isDotNet()) {
 #ifdef _DEBUG
@@ -147,9 +153,6 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 				return nullptr; //scanned as disconnected
 			}
 			//scanning as disconnected module failed, continue scanning as an implant
-#ifdef _DEBUG
-			std::cout << "[!] " << std::hex << memPage.alloc_base << ": mapped filename: " << memPage.mapped_name << std::endl;
-#endif
 		}
 	}
 
