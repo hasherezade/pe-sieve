@@ -85,7 +85,7 @@ WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPage
 
 bool WorkingSetScanner::scanDisconnectedImg()
 {
-	const bool show_info = (!args.quiet);
+	bool show_info = (!args.quiet);
 #ifdef _DEBUG
 	show_info = true;
 #endif
