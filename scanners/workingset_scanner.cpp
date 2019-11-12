@@ -85,22 +85,31 @@ WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPage
 
 bool WorkingSetScanner::scanDisconnectedImg()
 {
-	if (this->processReport->hasModuleContaining(memPage.region_start)) {
-		// already scanned
-		return true;
+	const HMODULE module_start = (HMODULE)memPage.alloc_base;
+
+	if (this->processReport->hasModuleContaining((ULONGLONG)module_start)) {
+		if (this->processReport->hasModuleContaining(memPage.region_start)) {
+			// already scanned
+			return true;
+		}
+		//it may be a shellcode after the loaded PE
+		return false;
 	}
 	if (!memPage.loadMappedName()) {
 		//cannot retrieve the mapped name
 		return false;
 	}
-	HMODULE module_start = (HMODULE)memPage.region_start;
-
-#ifdef _DEBUG
-	std::cout << "[!] " << std::hex << module_start << ": mapped filename: " << memPage.mapped_name << std::endl;
-#endif
-	
+	if (!args.quiet) {
+		std::cout << "[!] Scanning detached: " << std::hex << module_start << " : " << memPage.mapped_name << std::endl;
+	}
 	RemoteModuleData remoteModData(this->processHandle, module_start);
-	if (!remoteModData.isInitialized()) return false;
+	if (!remoteModData.isInitialized()) {
+		if (!args.quiet) {
+			std::cout << "[-] Could not read the remote PE at: " << std::hex << module_start << std::endl;
+		}
+		return false;
+	}
+
 	//load module from file:
 	ModuleData modData(processHandle, module_start, memPage.mapped_name);
 	
