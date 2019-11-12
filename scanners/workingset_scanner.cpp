@@ -89,13 +89,20 @@ bool WorkingSetScanner::scanDisconnectedImg()
 #ifdef _DEBUG
 	show_info = true;
 #endif
-	const HMODULE module_start = (HMODULE)memPage.region_start;
+	const HMODULE module_start = (HMODULE)memPage.alloc_base;
+
 	if (this->processReport->hasModuleContaining((ULONGLONG)module_start)) {
+		if (this->processReport->hasModuleContaining(memPage.region_start)) {
 #ifdef _DEBUG
-		std::cout << "[*] This area was already scanned: " << std::hex << memPage.region_start << std::endl;
+			std::cout << "[*] This area was already scanned: " << std::hex << memPage.region_start << std::endl;
 #endif
-		return true;
+			// already scanned
+			return true;
+		}
+		//it may be a shellcode after the loaded PE
+		return false;
 	}
+
 	if (!memPage.loadMappedName()) {
 		//cannot retrieve the mapped name
 		return false;
