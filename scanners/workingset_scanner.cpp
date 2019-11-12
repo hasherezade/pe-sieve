@@ -90,6 +90,9 @@ bool WorkingSetScanner::scanDisconnectedImg()
 	if (this->processReport->hasModuleContaining((ULONGLONG)module_start)) {
 		if (this->processReport->hasModuleContaining(memPage.region_start)) {
 			// already scanned
+#ifdef _DEBUG
+			std::cout << "[*] This area was already scanned: " << std::hex << memPage.region_start << std::endl;
+#endif
 			return true;
 		}
 		//it may be a shellcode after the loaded PE
@@ -113,7 +116,10 @@ bool WorkingSetScanner::scanDisconnectedImg()
 	//load module from file:
 	ModuleData modData(processHandle, module_start, memPage.mapped_name);
 	
-	t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, processReport);
+	const t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, processReport);
+#ifdef _DEBUG
+	std::cout << "[*] Scanned for hollows. Status: " << status << std::endl;
+#endif
 	if (status == SCAN_NOT_SUSPICIOUS) {
 		if (modData.isDotNet()) {
 #ifdef _DEBUG
@@ -125,7 +131,10 @@ bool WorkingSetScanner::scanDisconnectedImg()
 			return true;
 		}
 		if (!args.no_hooks) {
-			ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport);
+			const t_scan_status hooks_stat = ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport);
+#ifdef _DEBUG
+			std::cout << "[*] Scanned for hooks. Status: " << hooks_stat << std::endl;
+#endif
 		}
 		return true;
 	}
@@ -160,10 +169,16 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 			return nullptr;
 		}
 		if (!is_peb_module) {
+#ifdef _DEBUG
+			std::cout << "Detected disconnected MEM_IMG: " << memPage.region_start << std::endl;
+#endif
 			if (scanDisconnectedImg()) {
 				return nullptr; //scanned as disconnected
 			}
 			//scanning as disconnected module failed, continue scanning as an implant
+#ifdef _DEBUG
+			std::cout << "Continue to scan the disconnedted MEM_IMG as normal mem page: " << memPage.region_start << std::endl;
+#endif
 		}
 	}
 
