@@ -83,7 +83,7 @@ class UnreachableModuleReport : public ModuleScanReport
 {
 public:
 	UnreachableModuleReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, std::string _moduleFile)
-		: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_SUSPICIOUS)
+		: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_ERROR)
 	{
 		moduleFile = _moduleFile;
 	}
@@ -119,7 +119,6 @@ public:
 	}
 };
 
-
 class MalformedHeaderReport : public ModuleScanReport
 {
 public:
@@ -139,4 +138,3 @@ public:
 		return true;
 	}
 };
-
