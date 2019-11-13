@@ -7,7 +7,6 @@ HeadersScanReport* HeadersScanner::scanRemote()
 		std::cerr << "[-] Module not initialized" << std::endl;
 		return nullptr;
 	}
-
 	HeadersScanReport *my_report = new HeadersScanReport(this->processHandle, moduleData.moduleHandle, remoteModData.getModuleSize());
 	if (!remoteModData.isInitialized()) {
 		std::cerr << "[-] Failed to read the module header" << std::endl;
@@ -37,11 +36,9 @@ HeadersScanReport* HeadersScanner::scanRemote()
 	DWORD arch1 = peconv::get_nt_hdr_architecture(hdr_buffer1);
 	DWORD arch2 = peconv::get_nt_hdr_architecture(hdr_buffer2);
 	if (arch1 != arch2) {
-		my_report->archMismatch = true;
+		// this often happend in .NET modules
 		//if there is an architecture mismatch it may indicate that a different version of the app was loaded (possibly legit)
-		//TODO: implement a better verification, for now mark as suspicious
-		my_report->status = SCAN_SUSPICIOUS;
-		return my_report;
+		my_report->archMismatch = true;
 	}
 	//normalize before comparing:
 	peconv::update_image_base(hdr_buffer1, 0);
@@ -61,13 +58,23 @@ HeadersScanReport* HeadersScanner::scanRemote()
 	my_report->ntHdrModified = isNtHdrModified(hdr_buffer1, hdr_buffer2, hdrs_size);
 	my_report->secHdrModified = isSecHdrModified(hdr_buffer1, hdr_buffer2, hdrs_size);
 
-	if (my_report->isDotNetModule && !my_report->secHdrModified) {
-		//.NET modules may overwrite some parts of their own headers
-		my_report->status = SCAN_NOT_SUSPICIOUS;
+	if (moduleData.isDotNet()) {
+#ifdef _DEBUG
+		std::cout << "[#] .NET module detected as SUSPICIOUS\n";
+#endif
+		if (!my_report->isHdrReplaced()
+			&& (my_report->archMismatch && my_report->epModified)
+			)
+		{
+			//.NET modules may overwrite some parts of their own headers
+#ifdef _DEBUG
+			std::cout << "[#] Filtered out modifications typical for .NET files, setting as not suspicious\n";
+#endif
+			my_report->status = SCAN_NOT_SUSPICIOUS;
+			return my_report;
+		}
 	}
-	else {
-		my_report->status = SCAN_SUSPICIOUS;
-	}
+	my_report->status = SCAN_SUSPICIOUS;
 	return my_report;
 }
 
