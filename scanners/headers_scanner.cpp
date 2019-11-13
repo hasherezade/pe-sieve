@@ -7,12 +7,12 @@ HeadersScanReport* HeadersScanner::scanRemote()
 		std::cerr << "[-] Module not initialized" << std::endl;
 		return nullptr;
 	}
-	HeadersScanReport *my_report = new HeadersScanReport(this->processHandle, moduleData.moduleHandle, remoteModData.getModuleSize());
 	if (!remoteModData.isInitialized()) {
 		std::cerr << "[-] Failed to read the module header" << std::endl;
-		my_report->status = SCAN_ERROR;
-		return my_report;
+		return nullptr;
 	}
+
+	HeadersScanReport *my_report = new HeadersScanReport(this->processHandle, moduleData.moduleHandle, remoteModData.getModuleSize());
 
 	BYTE hdr_buffer1[peconv::MAX_HEADER_SIZE] = { 0 };
 	memcpy(hdr_buffer1, remoteModData.headerBuffer, peconv::MAX_HEADER_SIZE);
