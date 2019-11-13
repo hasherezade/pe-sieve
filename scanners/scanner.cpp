@@ -31,12 +31,6 @@ t_scan_status ProcessScanner::scanForHollows(HANDLE processHandle, ModuleData& m
 #ifdef _WIN64
 	is_process_wow64(processHandle, &isWow64);
 #endif
-	if (!remoteModData.isInitialized()) {
-		if (process_report) {
-			process_report->appendReport(new MalformedHeaderReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
-		}
-		return SCAN_ERROR;
-	}
 	HeadersScanner hollows(processHandle, modData, remoteModData);
 	HeadersScanReport *scan_report = hollows.scanRemote();
 	if (!scan_report) {
