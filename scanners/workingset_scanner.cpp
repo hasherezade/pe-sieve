@@ -125,7 +125,7 @@ bool WorkingSetScanner::scanDisconnectedImg()
 	//load module from file:
 	ModuleData modData(processHandle, module_start, memPage.mapped_name);
 	
-	const t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, NULL);
+	const t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, processReport);
 #ifdef _DEBUG
 	std::cout << "[*] Scanned for hollows. Status: " << status << std::endl;
 #endif
