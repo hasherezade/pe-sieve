@@ -126,6 +126,10 @@ bool WorkingSetScanner::scanDisconnectedImg()
 #ifdef _DEBUG
 	std::cout << "[*] Scanned for hollows. Status: " << status << std::endl;
 #endif
+	if (status == SCAN_ERROR) {
+		//failed scanning it as a loaded PE module
+		return false;
+	}
 	if (status == SCAN_NOT_SUSPICIOUS) {
 		if (modData.isDotNet()) {
 #ifdef _DEBUG
@@ -142,9 +146,8 @@ bool WorkingSetScanner::scanDisconnectedImg()
 			std::cout << "[*] Scanned for hooks. Status: " << hooks_stat << std::endl;
 #endif
 		}
-		return true;
 	}
-	return false;
+	return true;
 }
 
 WorkingSetScanReport* WorkingSetScanner::scanRemote()
@@ -169,9 +172,8 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 
 		const bool is_peb_module = memPage.loadModuleName();
 		const bool is_mapped_name = memPage.loadMappedName();
-
 		if (is_peb_module && is_mapped_name) {
-			//probably legit
+			//probably legit: it was scanned during the modules scan
 			return nullptr;
 		}
 		if (!is_peb_module) {
@@ -179,7 +181,7 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 			std::cout << "[!] Detected a disconnected MEM_IMG: " << memPage.region_start << std::endl;
 #endif
 			if (scanDisconnectedImg()) {
-				return nullptr; //scanned as disconnected
+				return nullptr; //scanned as a disconnected PE module
 			}
 			//scanning as disconnected module failed, continue scanning as an implant
 #ifdef _DEBUG
