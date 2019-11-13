@@ -191,9 +191,16 @@ t_scan_status CodeScanner::scanSection(PeSection &originalSec, PeSection &remote
 
 }
 
-
 CodeScanReport* CodeScanner::scanRemote()
 {
+	if (!moduleData.isInitialized()) {
+		std::cerr << "[-] Module not initialized" << std::endl;
+		return nullptr;
+	}
+	if (!remoteModData.isInitialized()) {
+		std::cerr << "[-] Failed to read the module header" << std::endl;
+		return nullptr;
+	}
 	CodeScanReport *my_report = new CodeScanReport(this->processHandle, moduleData.moduleHandle, moduleData.original_size);
 	my_report->isDotNetModule = moduleData.isDotNet();
 	moduleData.relocateToBase(); // before scanning, ensure that the original module is relocated to the base where it was loaded
