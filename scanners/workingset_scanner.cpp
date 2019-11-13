@@ -111,9 +111,6 @@ bool WorkingSetScanner::scanDisconnectedImg()
 	if (show_info) {
 		std::cout << "[!] Scanning detached: " << std::hex << module_start << " : " << memPage.mapped_name << std::endl;
 	}
-#ifdef _DEBUG
-	std::cout << "[!] Scanning detached: " << std::hex << module_start << " : " << memPage.mapped_name << std::endl;
-#endif
 	RemoteModuleData remoteModData(this->processHandle, module_start);
 	if (!remoteModData.isInitialized()) {
 		if (show_info) {
