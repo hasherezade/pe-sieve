@@ -688,7 +688,9 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 				}
 			}
 		}
-
+		if (!setSecHdr(aMap, aMap.sec_hdr)) {
+			aMap.sec_hdr = nullptr;
+		}
 		bestMapping = (bestMapping < aMap) ? aMap : bestMapping;
 
 		//do not continue the search if no artefacts found:
@@ -738,7 +740,6 @@ ArtefactScanReport* ArtefactScanner::scanRemote()
 {
 	deletePrevPage();
 
-	bool is_damaged_pe = false;
 	// it may still contain a damaged PE header...
 	ULONGLONG region_start = memPage.region_start;
 	this->artPagePtr = &memPage;
