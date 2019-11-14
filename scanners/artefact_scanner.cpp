@@ -81,6 +81,7 @@ bool is_valid_section(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD 
 	return true;
 }
 
+
 size_t count_section_hdrs(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEADER *hdr_ptr)
 {
 	if (!loadedData || !hdr_ptr) {
@@ -275,6 +276,52 @@ IMAGE_DOS_HEADER* ArtefactScanner::_findDosHdrByPatterns(BYTE *search_ptr, const
 	return nullptr;
 }
 
+bool ArtefactScanner::_validateSecRegions(MemPageData &memPage, LPVOID sec_hdr, size_t sec_count)
+{
+	if (!memPage.getLoadedData() || !sec_hdr) {
+		return 0;
+	}
+	ULONGLONG pe_image_base = this->calcPeBase(memPage, sec_hdr);
+	bool has_non_zero = false;
+
+	IMAGE_SECTION_HEADER* curr_sec = (IMAGE_SECTION_HEADER*)sec_hdr;
+	for (size_t i = 0; i < sec_count; i++, curr_sec++) {
+		if (curr_sec->VirtualAddress && curr_sec->Misc.VirtualSize) {
+			has_non_zero = true;
+		}
+	}
+	if (!has_non_zero) return false;
+
+	MEMORY_BASIC_INFORMATION module_start_info = { 0 };
+	if (!peconv::fetch_region_info(processHandle, (BYTE*)pe_image_base, module_start_info)) {
+		return false;
+	}
+	
+	//are the regions valid?
+	curr_sec = (IMAGE_SECTION_HEADER*)sec_hdr;
+
+	for (size_t i = 0; i < sec_count; i++, curr_sec++) {
+		if (curr_sec->VirtualAddress == 0) continue;
+
+		ULONGLONG last_sec_va = pe_image_base + curr_sec->VirtualAddress;
+
+		MEMORY_BASIC_INFORMATION page_info = { 0 };
+		if (!peconv::fetch_region_info(processHandle, (BYTE*)last_sec_va, page_info)) {
+#ifdef _DEBUG
+			std::cout << std::hex << last_sec_va << " couldn't fetch module info" << std::endl;
+#endif
+			return false;
+		}
+		if (page_info.AllocationBase != module_start_info.AllocationBase) {
+#ifdef _DEBUG
+			std::cout << "[-] SecBase mismatch: " << std::hex << page_info.AllocationBase << " with module base: " << module_start_info.AllocationBase << std::endl;
+#endif
+			return false;
+		}
+	}
+	return true;
+}
+
 BYTE* ArtefactScanner::_findSecByPatterns(BYTE *search_ptr, const size_t max_search_size)
 {
 	if (!memPage.load()) {
@@ -341,6 +388,13 @@ IMAGE_SECTION_HEADER* ArtefactScanner::findSecByPatterns(MemPageData &memPage, c
 	}
 	// is it really the first section?
 	IMAGE_SECTION_HEADER *first_sec = get_first_section(memPage.getLoadedData(), memPage.getLoadedSize(), (IMAGE_SECTION_HEADER*) hdr_ptr);
+	if (!first_sec) return nullptr;
+
+	size_t count = count_section_hdrs(memPage.getLoadedData(), memPage.getLoadedSize(), first_sec);
+	if (!_validateSecRegions(memPage, first_sec, count)) {
+		std::cout << std::hex << memPage.region_start <<  " Validating sections regions failed!\n";
+		return nullptr;
+	}
 	return (IMAGE_SECTION_HEADER*)first_sec;
 }
 
