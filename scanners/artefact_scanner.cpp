@@ -184,7 +184,10 @@ size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER
 		}
 		ULONGLONG region_base = peconv::fetch_alloc_base(this->processHandle, (PBYTE)last_sec_va);
 		if (region_base != main_base) {
+			//it can happen if the PE is in a RAW format instead of Virtual
+#ifdef _DEBUG
 			std::cout << "[!] Mismatch: region_base : " << std::hex << region_base << " while main base: " << main_base << "\n";
+#endif
 			break; // out of scope
 		}
 		max_addr = next_max_addr;
@@ -278,6 +281,9 @@ IMAGE_DOS_HEADER* ArtefactScanner::_findDosHdrByPatterns(BYTE *search_ptr, const
 
 bool ArtefactScanner::_validateSecRegions(MemPageData &memPage, LPVOID sec_hdr, size_t sec_count, ULONGLONG pe_image_base, bool is_virtual)
 {
+	if (!sec_hdr || !sec_count) {
+		return false;
+	}
 	MEMORY_BASIC_INFORMATION module_start_info = { 0 };
 	if (!peconv::fetch_region_info(processHandle, (BYTE*)pe_image_base, module_start_info)) {
 		return false;
