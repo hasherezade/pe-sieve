@@ -329,11 +329,8 @@ bool ArtefactScanner::_validateSecRegions(MemPageData &memPage, LPVOID sec_hdr, 
 	if (!has_non_zero) return false;
 
 	//validate Virtual Sections alignment
-	ULONGLONG diff = (ULONGLONG)sec_hdr - (ULONGLONG)memPage.getLoadedData();
-	//std::cout << "Checking section header: " << std::hex << (ULONGLONG)memPage.region_start << " hdr at: " << diff << "\n";
 	bool is_ok = _validateSecRegions(memPage, sec_hdr, sec_count, pe_image_base, true);
 	if (!is_ok) {
-		//std::cout << "Virtual failed!\n";
 		//maybe it is raw?
 		is_ok = _validateSecRegions(memPage, sec_hdr, sec_count, pe_image_base, false);
 #ifdef _DEBUG
@@ -421,11 +418,13 @@ IMAGE_SECTION_HEADER* ArtefactScanner::findSecByPatterns(MemPageData &memPage, c
 	IMAGE_SECTION_HEADER *first_sec = get_first_section(memPage.getLoadedData(), memPage.getLoadedSize(), (IMAGE_SECTION_HEADER*) hdr_ptr);
 	if (!first_sec) return nullptr;
 
+	ULONGLONG diff = (ULONGLONG)first_sec - (ULONGLONG)memPage.getLoadedData();
 	size_t count = count_section_hdrs(memPage.getLoadedData(), memPage.getLoadedSize(), first_sec);
 	if (!_validateSecRegions(memPage, first_sec, count)) {
-		std::cout << std::hex << memPage.region_start <<  " Validating sections regions failed!\n";
+		std::cout << "[!] section header: " << std::hex << (ULONGLONG)memPage.region_start << " hdr at: " << diff << " : validation failed!\n";
 		return nullptr;
 	}
+	std::cout << "[+] section header: " << std::hex << (ULONGLONG)memPage.region_start << " hdr at: " << diff << " : validation OK!\n";
 	return (IMAGE_SECTION_HEADER*)first_sec;
 }
 
@@ -631,6 +630,7 @@ bool ArtefactScanner::setSecHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_S
 		return false; //misaligned
 	}
 	aMap.sec_hdr = _sec_hdr;
+	aMap.sec_count = count;
 	if (!aMap.pe_image_base) {
 		aMap.pe_image_base = calcPeBase(aMap.memPage, (BYTE*)aMap.sec_hdr);
 	}
@@ -753,10 +753,14 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 		}
 		if (aMap.sec_hdr) {
 			const size_t sec_offset = calc_offset(memPage, aMap.sec_hdr);
-			if (sec_offset != INVALID_OFFSET && sec_offset > min_offset) min_offset = sec_offset;
+			if (sec_offset != INVALID_OFFSET && sec_offset > min_offset) {
+				const size_t sections_area_size = aMap.sec_count * sizeof(IMAGE_SECTION_HEADER);
+				min_offset = (sec_offset + sections_area_size);
 #ifdef _DEBUG
-			std::cout << "Setting minOffset to SecHdr offset: " << std::hex << min_offset << "\n";
+				std::cout << "Setting minOffset to SecHdr end offset: " << std::hex << min_offset << "\n";
 #endif
+			}
+
 			if (!aMap.dos_hdr) {
 				const size_t start = (sec_offset > PAGE_SIZE) ? (sec_offset - PAGE_SIZE) : 0;
 				//std::cout << "Searching DOS header by patterns " << std::hex << start << "\n";
