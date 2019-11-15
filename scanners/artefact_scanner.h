@@ -245,6 +245,7 @@ protected:
 
 	IMAGE_FILE_HEADER* findNtFileHdr(MemPageData &memPage, const size_t start_offset, size_t stop_offset = INVALID_OFFSET);
 
+	bool _validateSecRegions(MemPageData &memPage,  LPVOID sec_hdr, size_t sec_count, ULONGLONG pe_image_base, bool is_virtual);
 	bool _validateSecRegions(MemPageData &memPage, LPVOID sec_hdr, size_t sec_count);
 	BYTE* _findSecByPatterns(BYTE *search_ptr, const size_t max_search_size);
 	IMAGE_SECTION_HEADER* findSecByPatterns(MemPageData &memPageData, const size_t max_search_size, const size_t search_offset);
