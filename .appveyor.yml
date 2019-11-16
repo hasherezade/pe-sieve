@@ -20,6 +20,7 @@ configuration:
   - Debug
   
 environment:
+  artifactName: $(APPVEYOR_PROJECT_NAME)-$(APPVEYOR_REPO_COMMIT)
   matrix:
     - env_arch: "x64"
     - env_arch: "x86"
@@ -34,7 +35,11 @@ before_build:
   
 build_script:
   - cmake --build . --config %CONFIGURATION% --target install
-
+  
+after_build:
+  - mkdir %artifactName%
+  - cp *.exe %artifactName%
+  
 artifacts:
-  - path: build\%CONFIGURATION%
+  - path: build\%artifactName%
     
