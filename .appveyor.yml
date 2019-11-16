@@ -20,7 +20,7 @@ configuration:
   - Debug
   
 environment:
-  artifactName: $(APPVEYOR_PROJECT_NAME)-$(APPVEYOR_REPO_COMMIT)
+  artifactName: $(APPVEYOR_PROJECT_NAME)-$(APPVEYOR_REPO_COMMIT)-$(CONFIGURATION)
   matrix:
     - env_arch: "x64"
     - env_arch: "x86"
@@ -38,7 +38,7 @@ build_script:
   
 after_build:
   - mkdir %artifactName%
-  - cp -r %CONFIGURATION% %artifactName%
+  - cp -r %CONFIGURATION%/* %artifactName%
   
 artifacts:
   - path: build\%artifactName%
