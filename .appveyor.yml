@@ -36,6 +36,6 @@ build_script:
   - cmake --build . --config %CONFIGURATION% --target install
 
 artifacts:
-  - path: build
+  - path: build\%CONFIGURATION%
     name: build
     
