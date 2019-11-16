@@ -1,12 +1,22 @@
 #include "process_util.h"
 
+HMODULE g_kernel32Hndl = nullptr;
+
+HMODULE get_kernel32_hndl()
+{
+	if (!g_kernel32Hndl) {
+		g_kernel32Hndl = LoadLibraryA("kernel32.dll");
+	}
+	return g_kernel32Hndl;
+}
+
 BOOL is_process_wow64(IN HANDLE processHandle, OUT BOOL* isProcWow64)
 {
 	if (isProcWow64) {
 		(*isProcWow64) = FALSE; //set default output value: FALSE
 	}
 
-	HMODULE kernelLib = LoadLibraryA("kernel32.dll");
+	HMODULE kernelLib = get_kernel32_hndl();
 	if (!kernelLib) return FALSE;
 
 	FARPROC procPtr = GetProcAddress(kernelLib, "IsWow64Process");
@@ -18,7 +28,7 @@ BOOL is_process_wow64(IN HANDLE processHandle, OUT BOOL* isProcWow64)
 
 BOOL wow64_disable_fs_redirection(OUT PVOID* OldValue)
 {
-	HMODULE kernelLib = LoadLibraryA("kernel32.dll");
+	HMODULE kernelLib = get_kernel32_hndl();
 	if (!kernelLib) return FALSE;
 
 	FARPROC procPtr = GetProcAddress(kernelLib, "Wow64DisableWow64FsRedirection");
@@ -30,7 +40,7 @@ BOOL wow64_disable_fs_redirection(OUT PVOID* OldValue)
 
 BOOL wow64_revert_fs_redirection(IN PVOID OldValue)
 {
-	HMODULE kernelLib = LoadLibraryA("kernel32.dll");
+	HMODULE kernelLib = get_kernel32_hndl();
 	if (!kernelLib) return FALSE;
 
 	FARPROC procPtr = GetProcAddress(kernelLib, "Wow64RevertWow64FsRedirection");
