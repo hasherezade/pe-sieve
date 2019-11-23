@@ -109,7 +109,6 @@ bool PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 	ULONGLONG sec_offset = this->artefacts.dropPeBase(this->artefacts.secHdrsOffset);
 	BYTE *hdr_ptr = (sec_offset + vBuf);
 
-	DWORD sec_rva = 0;
 	size_t max_sec_size = 0;
 
 	IMAGE_SECTION_HEADER* prev_sec = nullptr;
@@ -121,8 +120,8 @@ bool PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 		if (!is_valid_section(vBuf, vBufSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
 			break;
 		}
-		sec_rva = curr_sec->VirtualAddress;
-		DWORD sec_size = curr_sec->Misc.VirtualSize;
+		const DWORD sec_rva = curr_sec->VirtualAddress;
+		const DWORD sec_size = curr_sec->Misc.VirtualSize;
 
 		ULONGLONG sec_va = pe_img_base + sec_rva;
 		size_t real_sec_size = peconv::fetch_region_size(processHandle, (PBYTE)sec_va);
