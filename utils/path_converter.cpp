@@ -98,7 +98,7 @@ std::string nt_retrieve_file_path(HANDLE hFile)
 	return my_string;
 }
 
-std::string convert_to_win32_path(std::string path)
+std::string convert_to_win32_path(const std::string &path)
 {
 	std::string stripped_path = strip_prefix(path, LONG_PATH_PREFIX);
 	if (stripped_path.length() < 3) {
@@ -170,7 +170,7 @@ std::string remap_to_drive_letter(std::string full_path)
 	return full_path;
 }
 
-std::string device_path_to_win32_path(std::string full_path)
+std::string device_path_to_win32_path(const std::string &full_path)
 {
 	std::string path = full_path;
 	//sometimes mapping can be recursive, so resolve it till the root

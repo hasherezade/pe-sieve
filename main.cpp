@@ -38,7 +38,7 @@
 
 using namespace pesieve;
 
-void print_in_color(int color, std::string text)
+void print_in_color(int color, const std::string &text)
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	FlushConsoleInputBuffer(hConsole);
@@ -48,7 +48,7 @@ void print_in_color(int color, std::string text)
 	SetConsoleTextAttribute(hConsole, 7); // back to default color
 }
 
-void print_param_in_color(int color, std::string text)
+void print_param_in_color(int color, const std::string &text)
 {
 	print_in_color(color, PARAM_SWITCH1 + text);
 }
