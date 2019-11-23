@@ -75,7 +75,6 @@ bool PeBuffer::dumpPeToFile(IN std::string dumpFileName, IN OUT peconv::t_pe_dum
 {
 	if (!vBuf || !isValidPe()) return false;
 
-	bool is_dumped = false;
 	if (dumpMode == peconv::PE_DUMP_AUTO) {
 		bool is_raw_alignment_valid = peconv::is_valid_sectons_alignment(vBuf, vBufSize, true);
 		bool is_virtual_alignment_valid = peconv::is_valid_sectons_alignment(vBuf, vBufSize, false);
@@ -86,11 +85,11 @@ bool PeBuffer::dumpPeToFile(IN std::string dumpFileName, IN OUT peconv::t_pe_dum
 		if (!is_raw_alignment_valid && is_virtual_alignment_valid) {
 			//in case if raw alignment is invalid and virtual valid, try to dump using Virtual Alignment first
 			dumpMode = peconv::PE_DUMP_REALIGN;
-			is_dumped = peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
+			bool is_dumped = peconv::dump_pe(dumpFileName.c_str(), vBuf, vBufSize, moduleBase, dumpMode, exportsMap);
 			if (is_dumped) {
 				return is_dumped;
 			}
-			is_dumped = peconv::PE_DUMP_AUTO; //revert and try again
+			dumpMode = peconv::PE_DUMP_AUTO; //revert and try again
 		}
 	}
 	// save the read module into a file
