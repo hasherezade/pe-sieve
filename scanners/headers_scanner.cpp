@@ -159,7 +159,7 @@ bool HeadersScanner::isFileHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_
 
 bool HeadersScanner::isNtHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size)
 {
-	bool is64 = peconv::is64bit(hdr_buffer1);
+	const bool is64 = peconv::is64bit(hdr_buffer1);
 	if (peconv::is64bit(hdr_buffer2) != is64) {
 		return true;
 	}
@@ -168,19 +168,9 @@ bool HeadersScanner::isNtHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_bu
 	if (!nt1 && !nt2) return false;
 	if (!nt1 || !nt2) return true;
 
-	if (is64) {
-		IMAGE_NT_HEADERS64* nt1_64 = (IMAGE_NT_HEADERS64*) nt1;
-		IMAGE_NT_HEADERS64* nt2_64 = (IMAGE_NT_HEADERS64*) nt2;
-		if (memcmp(nt1, nt2, sizeof(IMAGE_NT_HEADERS64)) == 0) {
-			return false;
-		}
-	}
-	else {
-		IMAGE_NT_HEADERS64* nt1_64 = (IMAGE_NT_HEADERS64*)nt1;
-		IMAGE_NT_HEADERS64* nt2_64 = (IMAGE_NT_HEADERS64*)nt2;
-		if (memcmp(nt1, nt2, sizeof(IMAGE_NT_HEADERS64)) == 0) {
-			return false;
-		}
+	const size_t nt_hdr_size = is64 ? sizeof(IMAGE_NT_HEADERS64) : sizeof(IMAGE_NT_HEADERS32);
+	if (memcmp(nt1, nt2, nt_hdr_size) == 0) {
+		return false;
 	}
 	return true;
 }
