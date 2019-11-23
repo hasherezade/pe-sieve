@@ -251,7 +251,6 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 
 void ResultsDumper::makeAndJoinDirectories(std::stringstream& stream)
 {
-	bool is_created = true;
 	if (!make_dump_dir(this->baseDir)) {
 		this->baseDir = ""; // reset path
 	}

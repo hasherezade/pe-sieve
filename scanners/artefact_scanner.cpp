@@ -653,7 +653,6 @@ bool ArtefactScanner::setNtFileHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAG
 	BYTE* loadedData = aMap.memPage.getLoadedData();
 	size_t loadedSize = aMap.memPage.getLoadedSize();
 
-	size_t nt_offset = calc_offset(aMap.memPage, aMap.nt_file_hdr);
 	//calculate sections header offset from FileHeader:
 	if (!aMap.sec_hdr) {
 		// set sections headers basing on File Header, do not validate yet
