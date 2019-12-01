@@ -61,7 +61,7 @@ void print_help()
 	const int separator_color = SEPARATOR_COLOR;
 	print_in_color(hdr_color, "Required: \n");
 	print_param_in_color(param_color, PARAM_PID);
-	std::cout << " <target_pid>\n\t: Set the PID of the target process.\n\t(decimal or hexadecimal with '0x' prefix)\n";
+	std::cout << " <target_pid>\n\t: Set the PID of the target process.\n\t(decimal, or hexadecimal with '0x' prefix)\n";
 	print_in_color(hdr_color, "\nOptional: \n");
 
 	print_in_color(separator_color, "\n---scan options---\n");
