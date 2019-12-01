@@ -4,6 +4,69 @@
 #include <iomanip>
 #include <algorithm>
 
+bool is_hex(const char *buf, size_t len)
+{
+	for (size_t i = 0; i < len; i++) {
+		if (buf[i] >= '0' && buf[i] <= '9') continue;
+		if (buf[i] >= 'A' && buf[i] <= 'F') continue;
+		if (buf[i] >= 'a' && buf[i] <= 'f') continue;
+		return false;
+	}
+	return true;
+}
+
+bool is_dec(const char *buf, size_t len)
+{
+	for (size_t i = 0; i < len; i++) {
+		if (buf[i] >= '0' && buf[i] <= '9') continue;
+		return false;
+	}
+	return true;
+}
+
+long get_number(const char *my_buf)
+{
+	const char hex_pattern[] = "0x";
+	size_t hex_pattern_len = strlen(hex_pattern);
+
+	const size_t len = strlen(my_buf);
+	if (len == 0) return 0;
+
+	long out = 0;
+	const size_t min_length = 1; //tolerate number with at least 1 character is fine
+	if (len > hex_pattern_len) {
+		if (strncmp(my_buf, hex_pattern, hex_pattern_len) == 0) {
+			if (!is_hex(my_buf + hex_pattern_len, min_length)) return 0;
+
+			out = std::stoul(my_buf, nullptr, 16);
+			return out;
+		}
+	}
+	if (!is_dec(my_buf, min_length)) return 0;
+
+	out = std::stoul(my_buf, nullptr, 10);
+	return out;
+}
+
+bool is_number(const char* my_buf)
+{
+	const char hex_pattern[] = "0x";
+	size_t hex_pattern_len = strlen(hex_pattern);
+
+	const size_t len = strlen(my_buf);
+	if (len == 0) return false;
+
+	if (len > hex_pattern_len) {
+		if (strncmp(my_buf, hex_pattern, hex_pattern_len) == 0) {
+			if (!is_hex(my_buf + hex_pattern_len, len - hex_pattern_len)) return false;
+
+			return true;
+		}
+	}
+	if (!is_dec(my_buf, len)) return false;
+	return true;
+}
+
 char* get_subpath_ptr(char *modulePath, char* searchedPath)
 {
 	if (modulePath == nullptr || searchedPath == nullptr) {

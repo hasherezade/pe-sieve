@@ -61,7 +61,7 @@ void print_help()
 	const int separator_color = SEPARATOR_COLOR;
 	print_in_color(hdr_color, "Required: \n");
 	print_param_in_color(param_color, PARAM_PID);
-	std::cout << " <target_pid>\n\t: Set the PID of the target process.\n";
+	std::cout << " <target_pid>\n\t: Set the PID of the target process.\n\t(decimal or hexadecimal with '0x' prefix)\n";
 	print_in_color(hdr_color, "\nOptional: \n");
 
 	print_in_color(separator_color, "\n---scan options---\n");
@@ -195,19 +195,6 @@ bool is_param(const char *str)
 	return false;
 }
 
-bool is_num(const char *str)
-{
-	if (!str) return false;
-
-	const size_t len = strlen(str);
-	if (len < 1) return false;
-
-	for (size_t i = 0; i < len; i++) {
-		if (!isdigit(str[i])) return false;
-	}
-	return true;
-}
-
 int main(int argc, char *argv[])
 {
 	if (argc < 2) {
@@ -223,7 +210,7 @@ int main(int argc, char *argv[])
 	//Parse parameters
 	for (int i = 1; i < argc; i++) {
 		if (!is_param(argv[i])) {
-			if (i == 1 && is_num(argv[i])) {
+			if (i == 1 && is_number(argv[i])) {
 				//allow for PID as a first parameter
 				continue;
 			}
@@ -258,11 +245,7 @@ int main(int argc, char *argv[])
 			i++;
 		}
 		else if (!strcmp(param, PARAM_PID) && (i + 1) < argc) {
-			if (std::strncmp(argv[i + 1], "0x", 0) == 0 && (strlen(argv[i + 1]) > 2)) {
-				args.pid = std::stoul(argv[i + 1], nullptr, 16);
-            		} else {
-                		args.pid = atoi(argv[i + 1]);
-            		}
+			args.pid = get_number(argv[i + 1]);
 			++i;
 		}
 		else if (!strcmp(param, PARAM_VERSION)) {
@@ -305,7 +288,7 @@ int main(int argc, char *argv[])
 #endif
 			return 0; // info requested, pid not given. finish.
 		}
-		if (argc >= 2 && is_num(argv[1])) args.pid = atoi(argv[1]);
+		if (argc >= 2 && is_number(argv[1])) args.pid = get_number(argv[1]);
 		if (args.pid == 0) {
 			print_help();
 			return 0;
