@@ -258,7 +258,11 @@ int main(int argc, char *argv[])
 			i++;
 		}
 		else if (!strcmp(param, PARAM_PID) && (i + 1) < argc) {
-			args.pid = atoi(argv[i + 1]);
+			if (std::strncmp(argv[i + 1], "0x", 0) == 0 && (strlen(argv[i + 1]) > 2)) {
+				args.pid = std::stoul(argv[i + 1], nullptr, 16);
+            		} else {
+                		args.pid = atoi(argv[i + 1]);
+            		}
 			++i;
 		}
 		else if (!strcmp(param, PARAM_VERSION)) {
