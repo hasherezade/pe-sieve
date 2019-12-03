@@ -78,7 +78,7 @@ BYTE* search_jump(BYTE *buf, size_t buf_size)
 	if (arg_size >= buf_size) return nullptr;
 
 	const size_t end_offset = buf_size - arg_size - 1;
-	for (size_t i = end_offset; i >= 0; i--) {
+	for (int i = end_offset; i >= 0; i--) {
 		BYTE nextb = buf[i];
 		if (buf[i] == 0xFF && buf[i + 1] == 0x25) { // JMP
 			//TODO: check if the address of the jump is a valid address of _CorExeMain
