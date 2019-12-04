@@ -69,62 +69,6 @@ size_t PeReconstructor::shiftPeHeader()
 	return shift_size;
 }
 
-
-BYTE* search_jump(BYTE *buf, size_t buf_size)
-{
-	// search the jump pattern, i.e.:
-	//JMP DWORD NEAR [0X402000] : FF2500204000
-	const size_t arg_size = sizeof(DWORD);
-	if (arg_size >= buf_size) return nullptr;
-
-	const size_t end_offset = buf_size - arg_size - 1;
-	for (int i = end_offset; i >= 0; i--) {
-		BYTE nextb = buf[i];
-		if (buf[i] == 0xFF && buf[i + 1] == 0x25) { // JMP
-			//TODO: check if the address of the jump is a valid address of _CorExeMain
-			return buf + i;
-		}
-	}
-	return nullptr;
-}
-
-bool PeReconstructor::fixDotNetEntryPoint()
-{
-	if (!peBuffer.vBuf) return false;
-
-	DWORD ep_rva = peconv::get_entry_point_rva(peBuffer.vBuf);
-	std::cout << "[*] This is a .NET payload and require Enty Point corection. Current EP: "  << std::hex << ep_rva << "\n";
-
-	PIMAGE_SECTION_HEADER sec_hdr = peconv::get_section_hdr(peBuffer.vBuf, peBuffer.vBufSize, 0);
-	if (!sec_hdr) return false;
-
-	BYTE *sec_ptr = peBuffer.vBuf + sec_hdr->VirtualAddress;
-	if (!peconv::validate_ptr(peBuffer.vBuf, peBuffer.vBufSize, sec_ptr, sec_hdr->SizeOfRawData)) {
-		return false;
-	}
-
-	BYTE* jump_ptr = search_jump(sec_ptr, sec_hdr->SizeOfRawData);
-	if (jump_ptr == nullptr) return false;
-	
-	size_t offset = jump_ptr - peBuffer.vBuf;
-	peconv::update_entry_point_rva(peBuffer.vBuf, static_cast<DWORD>(offset));
-	std::cout << "[*] Found possible Entry Point: " << std::hex << offset << std::endl;
-	return true;
-}
-
-bool PeReconstructor::isDotNet()
-{
-	if (!peBuffer.vBuf) return false;
-
-	IMAGE_DATA_DIRECTORY* dotnet_ptr = peconv::get_directory_entry(peBuffer.vBuf, IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR, false);
-	if (!dotnet_ptr) return false;
-
-	if (peconv::get_dotnet_hdr(peBuffer.vBuf, peBuffer.vBufSize, dotnet_ptr)) {
-		return true;
-	}
-	return false;
-}
-
 bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 {
 	this->artefacts = origArtefacts;
@@ -148,9 +92,6 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 	if (!peconv::is_pe_raw(peBuffer.vBuf, peBuffer.vBufSize)) {
 		if (!fixSectionsVirtualSize(processHandle) || !fixSectionsCharacteristics(processHandle)) {
 			return false;
-		}
-		if (isDotNet()) {
-			fixDotNetEntryPoint();
 		}
 	}
 	return peBuffer.isValidPe();
