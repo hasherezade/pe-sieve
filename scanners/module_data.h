@@ -85,6 +85,7 @@ public:
 	size_t original_size;
 
 protected:
+	bool _loadOriginal(bool disableFSredir);
 	bool loadModuleName();
 	bool isDotNetManagedCode();
 	bool is_relocated;

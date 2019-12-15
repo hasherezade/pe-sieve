@@ -21,6 +21,16 @@ bool ModuleData::loadModuleName()
 
 bool ModuleData::loadOriginal()
 {
+	//disable FS redirection by default
+	if (_loadOriginal(true)) {
+		return true;
+	}
+	//if loading with FS redirection has failed, try without
+	return _loadOriginal(false);
+}
+
+bool ModuleData::_loadOriginal(bool disableFSredir)
+{
 	if (strlen(this->szModName) == 0) {
 		loadModuleName();
 	}
@@ -28,19 +38,18 @@ bool ModuleData::loadOriginal()
 	//just in case if something was loaded before...
 	peconv::free_pe_buffer(original_module, original_size);
 
-	original_module = peconv::load_pe_module(szModName, original_size, false, false);
-	if (!original_module) {
-		//if the module was not loaded, the FS redirection could be the reason...
-		PVOID old_val;
-		if (wow64_disable_fs_redirection(&old_val)) {
-			original_module = peconv::load_pe_module(szModName, original_size, false, false);
-			wow64_revert_fs_redirection(old_val);
+	bool isRedirDisabled = false;
+	PVOID old_val;
+	if (disableFSredir) {
+		isRedirDisabled = wow64_disable_fs_redirection(&old_val);
 #ifdef _DEBUG
-			if (original_module) {
-				std::cout << "[+] Loaded file by disabling FS redirection:" << szModName << "\n";
-			}
+		std::cout << "[+] Loadeding file by disabling FS redirection:" << szModName << "\n";
 #endif
-		}
+	}
+	original_module = peconv::load_pe_module(szModName, original_size, false, false);
+
+	if (isRedirDisabled) {
+		wow64_revert_fs_redirection(old_val);
 	}
 	if (!original_module) {
 		return false;
