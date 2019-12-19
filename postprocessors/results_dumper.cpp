@@ -138,7 +138,7 @@ size_t ResultsDumper::dumpDetectedModules(HANDLE processHandle,
 	std::vector<ModuleScanReport*>::iterator itr;
 	for (itr = process_report.module_reports.begin();
 		itr != process_report.module_reports.end();
-		itr++)
+		++itr)
 	{
 		ModuleScanReport* mod = *itr;
 		if (mod->status != SCAN_SUSPICIOUS) {
@@ -271,7 +271,7 @@ void ResultsDumper::makeAndJoinDirectories(std::stringstream& stream)
 	}
 }
 
-std::string ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname, std::string default_extension)
+std::string ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname, const std::string &default_extension)
 {
 	std::stringstream stream;
 	makeAndJoinDirectories(stream);
@@ -285,7 +285,7 @@ std::string ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, std::string
 	return stream.str();
 }
 
-std::string ResultsDumper::makeOutPath(std::string fname, std::string default_extension)
+std::string ResultsDumper::makeOutPath(std::string fname, const std::string& default_extension)
 {
 	std::stringstream stream;
 	makeAndJoinDirectories(stream);

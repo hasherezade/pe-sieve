@@ -5,7 +5,7 @@ size_t get_longest_func_name(std::map<ULONGLONG, std::set<peconv::ExportedFunc>>
 {
 	size_t max_len = 0;
 	std::map<ULONGLONG, std::set<peconv::ExportedFunc>>::iterator itr;
-	for (itr = addrToFunc.begin(); itr != addrToFunc.end(); itr++) {
+	for (itr = addrToFunc.begin(); itr != addrToFunc.end(); ++itr) {
 		std::set<peconv::ExportedFunc> &expSet = itr->second;
 		const peconv::ExportedFunc& exp = *(expSet.begin());
 		if (exp.isByOrdinal) {
@@ -54,7 +54,7 @@ bool IATThunksSeries::fillNamesSpace(const BYTE* buf_start, size_t buf_size, DWO
 	BYTE *buf = const_cast<BYTE*>(buf_start);
 	const BYTE *buf_end = buf_start + buf_size;
 	std::map<ULONGLONG, std::set<peconv::ExportedFunc>>::iterator itr;
-	for (itr = this->cov->addrToFunc.begin(); itr != cov->addrToFunc.end() && buf < buf_end; itr++) {
+	for (itr = this->cov->addrToFunc.begin(); itr != cov->addrToFunc.end() && buf < buf_end; ++itr) {
 
 		std::set<peconv::ExportedFunc> &expSet = itr->second;
 		const peconv::ExportedFunc& exp = *(expSet.begin());
@@ -84,7 +84,7 @@ size_t IATThunksSeries::sizeOfNamesSpace(bool is64b)
 	const size_t longest_name = get_longest_func_name(this->cov->addrToFunc);
 	const size_t field_size = is64b ? sizeof(ULONGLONG) : sizeof(DWORD);
 	std::map<ULONGLONG, std::set<peconv::ExportedFunc>>::iterator itr;
-	for (itr = this->cov->addrToFunc.begin(); itr != cov->addrToFunc.end(); itr++) {
+	for (itr = this->cov->addrToFunc.begin(); itr != cov->addrToFunc.end(); ++itr) {
 		std::set<peconv::ExportedFunc> &expSet = itr->second;
 		const peconv::ExportedFunc& exp = *(expSet.begin());
 		space_size += field_size;
@@ -110,7 +110,7 @@ bool IATBlock::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 	IATThunksSeriesSet::iterator itr;
 	std::set<IATThunksSeries*>to_split;
 
-	for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); itr++) {
+	for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); ++itr) {
 		IATThunksSeries* series = *itr;
 		if (!series->makeCoverage(exportsMap)) {
 			to_split.insert(series);
@@ -118,7 +118,7 @@ bool IATBlock::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 	}
 
 	std::set<IATThunksSeries*>::iterator sItr;
-	for (sItr = to_split.begin(); sItr != to_split.end(); sItr++) {
+	for (sItr = to_split.begin(); sItr != to_split.end(); ++sItr) {
 		IATThunksSeries *series = *sItr;
 		IATThunksSeriesSet splitted = splitSeries(series, *exportsMap);
 		if (!splitted.size()) {
@@ -134,7 +134,7 @@ bool IATBlock::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 	}
 
 	size_t covered_count = 0;
-	for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); itr++) {
+	for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); ++itr) {
 		IATThunksSeries* series = *itr;
 		
 		if (series->isCovered() || series ->makeCoverage(exportsMap)) {
@@ -157,7 +157,7 @@ IATThunksSeriesSet IATBlock::splitSeries(IN IATThunksSeries* series, IN const pe
 	std::map<DWORD, ULONGLONG>::iterator itr;
 	std::string last_dll = "";
 
-	for (itr = addresses.begin(); itr != addresses.end(); itr++) {
+	for (itr = addresses.begin(); itr != addresses.end(); ++itr) {
 		ULONGLONG func_addr = itr->second;
 		DWORD offset = itr->first;
 		const peconv::ExportedFunc *func = exportsMap.find_export_by_va(func_addr);
@@ -188,7 +188,7 @@ size_t IATBlock::maxDllLen()
 {
 	size_t max_size = 0;
 	IATThunksSeriesSet::iterator itr;
-	for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); itr++) {
+	for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); ++itr) {
 		IATThunksSeries* series = *itr;
 		size_t curr_size = series->getDllName().length() + 1;
 		if (curr_size > max_size) max_size = curr_size;
@@ -211,7 +211,7 @@ std::string IATBlock::toString()
 	}
 	stream << "---\n";
 	std::map<ULONGLONG, const peconv::ExportedFunc*>::const_iterator itr;
-	for (itr = functions.begin(); itr != functions.end(); itr++) {
+	for (itr = functions.begin(); itr != functions.end(); ++itr) {
 		ULONGLONG offset = itr->first;
 		const peconv::ExportedFunc* exp = itr->second;
 

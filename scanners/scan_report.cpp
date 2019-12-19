@@ -63,7 +63,7 @@ size_t ProcessScanReport::countSuspiciousPerType(report_type_t type) const
 	}
 	size_t suspicious = 0;
 	std::set<ModuleScanReport*>::iterator itr;
-	for (itr = this->reportsByType[type].begin(); itr != this->reportsByType[type].end(); itr++) {
+	for (itr = this->reportsByType[type].begin(); itr != this->reportsByType[type].end(); ++itr) {
 		ModuleScanReport* report = *itr;
 		if (ModuleScanReport::get_scan_status(report) == SCAN_SUSPICIOUS) {
 			suspicious++;
@@ -78,7 +78,7 @@ size_t ProcessScanReport::countHdrsReplaced() const
 	const report_type_t type = report_type_t::REPORT_HEADERS_SCAN;
 
 	std::set<ModuleScanReport*>::iterator itr;
-	for (itr = this->reportsByType[type].begin(); itr != this->reportsByType[type].end(); itr++) {
+	for (itr = this->reportsByType[type].begin(); itr != this->reportsByType[type].end(); ++itr) {
 		ModuleScanReport* report = *itr;
 		if (ModuleScanReport::get_scan_status(report) == SCAN_SUSPICIOUS) {
 			HeadersScanReport *hdrRep = dynamic_cast<HeadersScanReport*>(report);
@@ -101,7 +101,7 @@ pesieve::t_report ProcessScanReport::generateSummary() const
 	summary.scanned = static_cast<DWORD>(this->reportsByType[REPORT_HEADERS_SCAN].size());
 
 	std::vector<ModuleScanReport*>::const_iterator itr = module_reports.begin();
-	for (; itr != module_reports.end(); itr++) {
+	for (; itr != module_reports.end(); ++itr) {
 		ModuleScanReport* report = *itr;
 		if (ModuleScanReport::get_scan_status(report) == SCAN_SUSPICIOUS) {
 			summary.suspicious++;

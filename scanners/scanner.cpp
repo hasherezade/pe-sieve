@@ -159,7 +159,7 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 	size_t counter = 0;
 	//now scan all the nodes:
 	std::set<ULONGLONG>::iterator set_itr;
-	for (set_itr = region_bases.begin(); set_itr != region_bases.end(); set_itr++) {
+	for (set_itr = region_bases.begin(); set_itr != region_bases.end(); ++set_itr) {
 		ULONGLONG region_base = *set_itr;
 
 		MemPageData memPage(this->processHandle, region_base);

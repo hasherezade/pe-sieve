@@ -89,7 +89,7 @@ size_t PatchList::checkForHookedExports(peconv::ExportsMapper &expMap)
 void PatchList::deletePatches()
 {
 	std::vector<Patch*>::iterator itr;
-	for (itr = patches.begin(); itr != patches.end(); itr++) {
+	for (itr = patches.begin(); itr != patches.end(); ++itr) {
 		Patch *patch = *itr;
 		delete patch;
 	}

@@ -24,7 +24,7 @@ public:
 		return this->dumpDir;
 	}
 
-	std::string makeOutPath(std::string fname, std::string defaultExtension = "");
+	std::string makeOutPath(std::string fname, const std::string& defaultExtension = "");
 
 protected:
 
@@ -35,7 +35,7 @@ protected:
 	\param fname : known name of this module
 	\param defaultExtension : default extension - it will be used if no other extension was detected from the previous name
 	*/
-	std::string makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname, std::string defaultExtension);
+	std::string makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname, const std::string &defaultExtension);
 
 	std::string makeDirName(const DWORD process_id);
 

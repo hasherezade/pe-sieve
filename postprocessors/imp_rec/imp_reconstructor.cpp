@@ -345,14 +345,14 @@ ImportTableBuffer* ImpReconstructor::constructImportTable()
 	importTableBuffer->allocDllsSpace(dlls_rva, dlls_area_size);
 	DWORD dll_name_rva = dlls_rva;
 	i = 0;
-	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
+	for (itr = foundIATs.begin(); itr != foundIATs.end(); ++itr) {
 		IATBlock* iat = itr->second;
 		if (!iat->isValid()) {
 			continue;
 		}
 		size_t max_dll_name = iat->maxDllLen();
 		IATThunksSeriesSet::iterator sItr;
-		for (sItr = iat->thunkSeries.begin(); sItr != iat->thunkSeries.end(); sItr++, i++) {
+		for (sItr = iat->thunkSeries.begin(); sItr != iat->thunkSeries.end(); ++sItr, ++i) {
 			IATThunksSeries *series = *sItr;
 			importTableBuffer->descriptors[i].Name = dll_name_rva;
 			BYTE *buf = importTableBuffer->getDllSpaceAt(dll_name_rva, max_dll_name);

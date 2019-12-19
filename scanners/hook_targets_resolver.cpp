@@ -36,7 +36,7 @@ size_t HookTargetResolver::resolveAllHooks(const std::set<ModuleScanReport*> &co
 {
 	size_t resolved = 0;
 	std::set<ModuleScanReport*>::iterator cItr;
-	for (cItr = code_reports.begin(); cItr != code_reports.end(); cItr++) {
+	for (cItr = code_reports.begin(); cItr != code_reports.end(); ++cItr) {
 		ModuleScanReport* modrep = *cItr;
 		CodeScanReport *coderep = dynamic_cast<CodeScanReport*>(modrep);
 		if (!coderep) continue;
@@ -44,7 +44,7 @@ size_t HookTargetResolver::resolveAllHooks(const std::set<ModuleScanReport*> &co
 		std::vector<PatchList::Patch*>::iterator patchItr;
 		for (patchItr = coderep->patchesList.patches.begin();
 			patchItr != coderep->patchesList.patches.end();
-			patchItr++)
+			++patchItr)
 		{
 			PatchList::Patch* currPatch = *patchItr;
 			if (resolveTarget(currPatch)) {
@@ -58,7 +58,7 @@ size_t HookTargetResolver::resolveAllHooks(const std::set<ModuleScanReport*> &co
 size_t HookTargetResolver::mapScannedModules(ProcessScanReport& process_report, HANDLE hProcess)
 {
 	std::vector<ModuleScanReport*>::iterator modItr;
-	for (modItr = process_report.module_reports.begin(); modItr != process_report.module_reports.end(); modItr++) {
+	for (modItr = process_report.module_reports.begin(); modItr != process_report.module_reports.end(); ++modItr) {
 		ModuleScanReport* scanReport = *modItr;
 		ScannedModuleInfo modInfo = { 0 };
 		modInfo.moduleAddr = (ULONGLONG)scanReport->module;
