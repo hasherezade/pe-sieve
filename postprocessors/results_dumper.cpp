@@ -69,7 +69,7 @@ bool has_any_shown_type(t_report summary, t_report_filter filter)
 	return false;
 }
 
-bool make_dump_dir(const std::string directory)
+bool make_dump_dir(const std::string& directory)
 {
 	if (directory.length() == 0) {
 		return true;

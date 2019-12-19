@@ -323,13 +323,13 @@ ImportTableBuffer* ImpReconstructor::constructImportTable()
 	const DWORD dlls_rva = names_start_rva + names_space;
 	size_t dlls_area_size = 0;
 	i = 0;
-	for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
+	for (itr = foundIATs.begin(); itr != foundIATs.end(); ++itr) {
 		IATBlock* iat = itr->second;
 		if (!iat->isValid()) {
 			continue;
 		}
 		IATThunksSeriesSet::iterator sItr;
-		for (sItr = iat->thunkSeries.begin(); sItr != iat->thunkSeries.end(); sItr++, i++) {
+		for (sItr = iat->thunkSeries.begin(); sItr != iat->thunkSeries.end(); ++sItr++, ++i) {
 			IATThunksSeries *series = *sItr;
 			DWORD name_rva = importTableBuffer->descriptors[i].OriginalFirstThunk;
 			const size_t names_space_size = series->sizeOfNamesSpace(this->is64bit);

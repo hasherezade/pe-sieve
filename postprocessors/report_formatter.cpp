@@ -31,7 +31,7 @@ std::string list_modules(const ProcessScanReport &report, t_report_filter filter
 	OUT_PADDED(stream, level, "\"scans\" : [\n");
 	bool is_first = true;
 	std::vector<ModuleScanReport*>::const_iterator itr;
-	for (itr = report.module_reports.begin() ; itr != report.module_reports.end(); itr++) {
+	for (itr = report.module_reports.begin() ; itr != report.module_reports.end(); ++itr) {
 		ModuleScanReport *mod = *itr;
 		if (is_shown_type(mod->status, filter)) {
 			if (!is_first) {

@@ -13,7 +13,7 @@ bool HookTargetResolver::resolveTarget(PatchList::Patch* currPatch)
 #endif
 	std::map<ULONGLONG, ScannedModuleInfo>::iterator itr1;
 	std::map<ULONGLONG, ScannedModuleInfo>::iterator lastEl = modulesMap.lower_bound(searchedAddr);
-	for (itr1 = modulesMap.begin(); itr1 != lastEl; itr1++) {
+	for (itr1 = modulesMap.begin(); itr1 != lastEl; ++itr1) {
 		ScannedModuleInfo &modInfo = itr1->second;
 		ULONGLONG begin = modInfo.moduleAddr;
 		ULONGLONG end = modInfo.moduleSize + begin;

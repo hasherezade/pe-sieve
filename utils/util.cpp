@@ -158,7 +158,7 @@ bool dir_exists(const char* szPath)
 		(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
 
-bool create_dir_recursively(std::string in_path)
+bool create_dir_recursively(const std::string& in_path)
 {
 	std::string path = get_full_path(in_path.c_str());
 	if (path.length() == 0) path = in_path;

@@ -34,4 +34,4 @@ std::string get_system_drive();
 
 bool dir_exists(const char* path);
 
-bool create_dir_recursively(std::string path);
+bool create_dir_recursively(const std::string& path);

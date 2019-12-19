@@ -77,7 +77,7 @@ size_t PatchList::checkForHookedExports(peconv::ExportsMapper &expMap)
 {
 	size_t hookes_exports = 0;
 	std::vector<Patch*>::iterator itr;
-	for (itr = patches.begin(); itr != patches.end(); itr++) {
+	for (itr = patches.begin(); itr != patches.end(); ++itr) {
 		Patch *patch = *itr;
 		if (patch->resolveHookedExport(expMap)) {
 			hookes_exports++;
