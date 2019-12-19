@@ -35,6 +35,7 @@
 #define PARAM_HELP "help"
 #define PARAM_HELP2  "?"
 #define PARAM_VERSION "version"
+#define PARAM_VERSION2 "ver"
 
 using namespace pesieve;
 
@@ -248,7 +249,7 @@ int main(int argc, char *argv[])
 			args.pid = get_number(argv[i + 1]);
 			++i;
 		}
-		else if (!strcmp(param, PARAM_VERSION)) {
+		else if (!strcmp(param, PARAM_VERSION) || !strcmp(param, PARAM_VERSION2)) {
 			std::cout << PESIEVE_VERSION << "\n";
 			info_req = true;
 		}
