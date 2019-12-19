@@ -77,7 +77,6 @@ HANDLE nt_create_file(PCWSTR filePath)
 
 std::string nt_retrieve_file_path(HANDLE hFile)
 {
-	wchar_t my_buffer[MAX_PATH] = { 0 };
 	IO_STATUS_BLOCK status_block = { 0 };
 
 	struct MY_FILE_NAME_INFORMATION {

@@ -66,7 +66,7 @@ bool PatchList::Patch::resolveHookedExport(peconv::ExportsMapper &expMap)
 size_t PatchList::reportPatches(std::ofstream &patch_report, const char delimiter)
 {
 	std::vector<Patch*>::iterator itr;
-	for (itr = patches.begin(); itr != patches.end(); itr++) {
+	for (itr = patches.begin(); itr != patches.end(); ++itr) {
 		Patch *patch = *itr;
 		patch->reportPatch(patch_report, delimiter);
 	}

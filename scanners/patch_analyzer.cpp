@@ -122,7 +122,6 @@ bool PatchAnalyzer::isLongModifier(BYTE op)
 
 size_t PatchAnalyzer::analyze(PatchList::Patch &patch)
 {
-	ULONGLONG section_va = moduleData.rvaToVa(sectionRVA);
 	ULONGLONG patch_va = moduleData.rvaToVa(patch.startRva);
 	size_t patch_offset = patch.startRva - sectionRVA;
 	PBYTE patch_ptr = this->patchedCode + patch_offset;
