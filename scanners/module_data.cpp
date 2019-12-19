@@ -38,7 +38,7 @@ bool ModuleData::_loadOriginal(bool disableFSredir)
 	//just in case if something was loaded before...
 	peconv::free_pe_buffer(original_module, original_size);
 
-	bool isRedirDisabled = false;
+	BOOL isRedirDisabled = FALSE;
 	PVOID old_val;
 	if (disableFSredir) {
 		isRedirDisabled = wow64_disable_fs_redirection(&old_val);
