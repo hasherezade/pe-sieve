@@ -33,7 +33,7 @@ public:
 
 	ModuleScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, t_scan_status _status)
 	{
-		this->pid = GetProcessId(processHandle);
+		this->pid = peconv::get_process_id(processHandle);
 		this->module = _module;
 		this->moduleSize = _moduleSize;
 		this->status = _status;
@@ -42,7 +42,7 @@ public:
 
 	ModuleScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
 	{
-		this->pid = GetProcessId(processHandle);
+		this->pid = peconv::get_process_id(processHandle);
 		this->module = _module;
 		this->moduleSize = _moduleSize;
 		this->isDotNetModule = false;

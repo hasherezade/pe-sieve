@@ -119,7 +119,7 @@ ProcessScanReport* ProcessScanner::scanRemote()
 	bool workingsetScanned = true;
 	try {
 		//dont't scan your own working set
-		if (GetProcessId(this->processHandle) != GetCurrentProcessId()) {
+		if (peconv::get_process_id(this->processHandle) != GetCurrentProcessId()) {
 			scanWorkingSet(*pReport);
 		}
 	} catch (std::exception &e) {
