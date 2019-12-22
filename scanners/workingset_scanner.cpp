@@ -142,12 +142,12 @@ bool WorkingSetScanner::scanDisconnectedImg()
 		}
 		//Temporarly disabled
 		//TODO: implement checking to which base the module was really relocated (it may be different than the load base)
-		/*if (!args.no_hooks) {
+		if (!args.no_hooks) {
 			const t_scan_status hooks_stat = ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport);
 #ifdef _DEBUG
 			std::cout << "[*] Scanned for hooks. Status: " << hooks_stat << std::endl;
 #endif
-		}*/
+		}
 	}
 	return true;
 }
