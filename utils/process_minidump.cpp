@@ -12,7 +12,6 @@ BOOL (*_MiniDumpWriteDump)(
 	PMINIDUMP_CALLBACK_INFORMATION    CallbackParam
 	) = NULL;
 
-
 bool load_MiniDumpWriteDump()
 {
 	if (_MiniDumpWriteDump != NULL) {
@@ -66,5 +65,5 @@ bool make_minidump(DWORD pid, std::string out_file)
 
 	CloseHandle(outFile);
 	CloseHandle(procHndl);
-	return isDumped;
+	return (isDumped) ? true : false;
 }
