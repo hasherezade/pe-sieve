@@ -203,7 +203,7 @@ CodeScanReport* CodeScanner::scanRemote()
 	}
 	CodeScanReport *my_report = new CodeScanReport(this->processHandle, moduleData.moduleHandle, moduleData.original_size);
 	my_report->isDotNetModule = moduleData.isDotNet();
-	moduleData.relocateToBase(); // before scanning, ensure that the original module is relocated to the base where it was loaded
+	moduleData.relocateToBase(remoteModData.getRemoteBase()); // before scanning, ensure that the original module is relocated to the base where it was loaded
 	
 	t_scan_status last_res = SCAN_NOT_SUSPICIOUS;
 	size_t errors = 0;

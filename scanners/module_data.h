@@ -74,7 +74,7 @@ public:
 
 	bool switchToWow64Path();
 	bool reloadWow64();
-	bool relocateToBase();
+	bool relocateToBase(ULONGLONG new_base);
 
 	HANDLE processHandle;
 	HMODULE moduleHandle;
@@ -126,6 +126,12 @@ public:
 	{
 		if (!is_ready) return 0;
 		return peconv::get_image_size((const BYTE*) headerBuffer);
+	}
+
+	ULONGLONG getRemoteBase()
+	{
+		if (!is_ready) return 0;
+		return peconv::get_image_base((const BYTE*)headerBuffer);
 	}
 
 	BYTE headerBuffer[peconv::MAX_HEADER_SIZE];
