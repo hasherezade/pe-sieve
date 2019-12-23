@@ -233,6 +233,14 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 		if (!args.quiet) {
 			std::cout << "[*] Scanning: " << modData.szModName << std::endl;
 		}
+
+		if (modData.isDotNet()) {
+#ifdef _DEBUG
+			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
+#endif
+			pReport.appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
+			continue;
+		}
 		//load data about the remote module
 		RemoteModuleData remoteModData(processHandle, hMods[counter]);
 		if (remoteModData.isInitialized() == false) {
@@ -250,14 +258,6 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 		}
 		if (pReport.exportsMap != nullptr) {
 			pReport.exportsMap->add_to_lookup(modData.szModName, (HMODULE) modData.original_module, (ULONGLONG) modData.moduleHandle);
-		}
-		if (modData.isDotNet()) {
-#ifdef _DEBUG
-			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
-#endif
-			pReport.appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
-			//do not scan a .NET module for hooks/patches
-			continue;
 		}
 		// if hooks not disabled and process is not hollowed, check for hooks:
 		if (!args.no_hooks && (is_hollowed == SCAN_NOT_SUSPICIOUS)) {
