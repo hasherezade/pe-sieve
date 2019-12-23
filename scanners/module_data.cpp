@@ -62,7 +62,6 @@ bool ModuleData::relocateToBase(ULONGLONG new_base)
 {
 	if (!original_module) return false;
 	if (is_relocated) return true;
-	if (!should_relocate) return false;
 
 	ULONGLONG original_base = peconv::get_image_base(original_module);
 	if (peconv::has_relocations(original_module) 
@@ -71,6 +70,8 @@ bool ModuleData::relocateToBase(ULONGLONG new_base)
 #ifdef _DEBUG
 		std::cerr << "[!] Relocating module failed!" << std::endl;
 #endif
+		peconv::update_image_base(original_module, new_base);
+		is_relocated = true;
 		return false;
 	}
 	return true;
