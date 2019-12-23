@@ -93,6 +93,9 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 		if (!fixSectionsVirtualSize(processHandle) || !fixSectionsCharacteristics(processHandle)) {
 			return false;
 		}
+		if (!peconv::update_image_base(peBuffer.vBuf, peBuffer.getModuleBase())) {
+			return false;
+		}
 	}
 	return peBuffer.isValidPe();
 }
