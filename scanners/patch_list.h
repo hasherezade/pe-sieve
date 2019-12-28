@@ -68,6 +68,13 @@ public:
 	friend class PatchAnalyzer;
 	};
 
+	PatchList & operator=(const PatchList &other)
+	{
+		deletePatches();
+		this->patches.insert(patches.begin(), other.patches.begin(), other.patches.end());
+		return *this;
+	}
+
 	//constructor:
 	PatchList() {}
 

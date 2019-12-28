@@ -289,21 +289,22 @@ CodeScanReport* CodeScanner::scanRemote()
 	last_res = scanUsingBase(load_base, remote_code, my_report->patchesList);
 	
 	if (load_base != hdr_base && last_res == SCAN_SUSPICIOUS) {
+#ifdef _DEBUG
 		std::cout << "[WARNING] Load Base: " << std::hex << load_base << " is different than the Hdr Base: " << hdr_base << "\n";
+#endif
 		PatchList list2;
 		t_scan_status scan_res2 = scanUsingBase(hdr_base, remote_code, list2);
-		std::cout << "list2 size:" << list2.size() << " vs previous list: " << my_report->patchesList.size() << "\n";
 		if (list2.size() < my_report->patchesList.size()) {
-			std::cout << "Using patches list for the base: " << hdr_base << " list size:" << list2.size() << " vs previous list: " << my_report->patchesList.size() << "\n";
 			correct_base = hdr_base;
-			my_report->patchesList.deletePatches();
-			last_res = scanUsingBase(correct_base, remote_code, my_report->patchesList);
+			my_report->patchesList = list2;
+			last_res = scan_res2;
 		}
-		std::cout << "Using patches list for the base: " << correct_base << " list size:" << my_report->patchesList.size() << "\n";
+#ifdef _DEBUG
+		std::cout << "Using patches list for the base: " << correct_base << " list size: " << my_report->patchesList.size() << "\n";
+#endif
 	}
-	
-	this->freeExecutableSections(remote_code);
 
+	this->freeExecutableSections(remote_code);
 	//post-process collected patches:
 	postProcessScan(*my_report);
 
