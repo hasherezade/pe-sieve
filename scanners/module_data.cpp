@@ -34,7 +34,6 @@ bool ModuleData::_loadOriginal(bool disableFSredir)
 	if (strlen(this->szModName) == 0) {
 		loadModuleName();
 	}
-	is_relocated = false;
 	//just in case if something was loaded before...
 	peconv::free_pe_buffer(original_module, original_size);
 
@@ -61,19 +60,20 @@ bool ModuleData::_loadOriginal(bool disableFSredir)
 bool ModuleData::relocateToBase(ULONGLONG new_base)
 {
 	if (!original_module) return false;
-	if (is_relocated) return true;
 
 	ULONGLONG original_base = peconv::get_image_base(original_module);
+	if (original_base == new_base) {
+		return true; // already relocated
+	}
 	if (peconv::has_relocations(original_module) 
 		&& !peconv::relocate_module(original_module, original_size, new_base, original_base))
 	{
 #ifdef _DEBUG
 		std::cerr << "[!] Relocating module failed!" << std::endl;
 #endif
-		peconv::update_image_base(original_module, new_base);
-		is_relocated = true;
 		return false;
 	}
+	peconv::update_image_base(original_module, new_base);
 	return true;
 }
 

@@ -12,7 +12,7 @@ public:
 	ModuleData(HANDLE _processHandle, HMODULE _module)
 		: processHandle(_processHandle), moduleHandle(_module),
 		is_module_named(false), original_size(0), original_module(nullptr),
-		is_relocated(false), is_dot_net(false)
+		is_dot_net(false)
 	{
 		memset(szModName, 0, MAX_PATH);
 		loadModuleName();
@@ -21,7 +21,7 @@ public:
 	ModuleData(HANDLE _processHandle, HMODULE _module, std::string module_name)
 		: processHandle(_processHandle), moduleHandle(_module),
 		is_module_named(false), original_size(0), original_module(nullptr),
-		is_relocated(false), is_dot_net(false)
+		is_dot_net(false)
 	{
 		memset(szModName, 0, MAX_PATH);
 		memcpy(this->szModName, module_name.c_str(), module_name.length());
@@ -65,6 +65,12 @@ public:
 		return original_module != nullptr;
 	}
 	
+	ULONGLONG getHdrImageBase()
+	{
+		if (!original_module) return 0;
+		return peconv::get_image_base((const BYTE*)original_module);
+	}
+
 	bool loadOriginal();
 
 	bool switchToWow64Path();
@@ -83,7 +89,6 @@ protected:
 	bool _loadOriginal(bool disableFSredir);
 	bool loadModuleName();
 	bool isDotNetManagedCode();
-	bool is_relocated;
 	bool is_dot_net;
 
 	friend class PeSection;
@@ -121,10 +126,15 @@ public:
 		return peconv::get_image_size((const BYTE*) headerBuffer);
 	}
 
-	ULONGLONG getRemoteBase()
+	ULONGLONG getHdrImageBase()
 	{
 		if (!is_ready) return 0;
 		return peconv::get_image_base((const BYTE*)headerBuffer);
+	}
+
+	size_t getHeaderSize()
+	{
+		return peconv::MAX_HEADER_SIZE;
 	}
 
 	BYTE headerBuffer[peconv::MAX_HEADER_SIZE];
