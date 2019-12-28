@@ -54,9 +54,14 @@ public:
 	virtual CodeScanReport* scanRemote();
 
 private:
-	bool postProcessScan(IN OUT CodeScanReport &report);
+	size_t collectExecutableSections(RemoteModuleData &remoteModData, std::map<size_t, PeSection*> &sections);
 
-	t_scan_status scanSection(PeSection &originalSec, PeSection &remoteSec, IN OUT CodeScanReport &report);
+	void freeExecutableSections(std::map<size_t, PeSection*> &sections);
+
+	bool postProcessScan(IN OUT CodeScanReport &report);
+	
+	t_scan_status scanUsingBase(IN ULONGLONG load_base, IN std::map<size_t, PeSection*> &remote_code, OUT PatchList &patchesList);
+	t_scan_status scanSection(PeSection &originalSec, PeSection &remoteSec, OUT PatchList &patchesList);
 
 	bool clearIAT(PeSection &originalSec, PeSection &remoteSec);
 
@@ -66,3 +71,4 @@ private:
 
 	size_t collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList);
 };
+

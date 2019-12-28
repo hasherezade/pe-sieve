@@ -157,7 +157,8 @@ size_t CodeScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE pat
 	return patchesList.size();
 }
 
-t_scan_status CodeScanner::scanSection(PeSection &originalSec, PeSection &remoteSec, IN OUT CodeScanReport& report)
+
+t_scan_status CodeScanner::scanSection(PeSection &originalSec, PeSection &remoteSec, OUT PatchList &patchesList)
 {
 	if (!originalSec.isInitialized() || !remoteSec.isInitialized()) {
 		return SCAN_ERROR;
@@ -181,14 +182,83 @@ t_scan_status CodeScanner::scanSection(PeSection &originalSec, PeSection &remote
 		return SCAN_NOT_SUSPICIOUS; //not modified
 	}
 
-	if (originalSec.rawSize == 0) {
+	/*if (originalSec.rawSize == 0) {
 		report.unpackedSections.insert(originalSec.rva);
-	}
-	else {
-		collectPatches(originalSec.rva, originalSec.loadedSection, remoteSec.loadedSection, smaller_size, report.patchesList);
-	}
+	}*/
+	collectPatches(originalSec.rva, originalSec.loadedSection, remoteSec.loadedSection, smaller_size, patchesList);
 	return SCAN_SUSPICIOUS; // modified
+}
 
+size_t CodeScanner::collectExecutableSections(RemoteModuleData &_remoteModData, std::map<size_t, PeSection*> &sections)
+{
+	size_t initial_size = sections.size();
+	size_t sec_count = peconv::get_sections_count(_remoteModData.headerBuffer, _remoteModData.getHeaderSize());
+	for (size_t i = 0; i < sec_count; i++) {
+		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(_remoteModData.headerBuffer, _remoteModData.getHeaderSize(), i);
+		if (section_hdr == nullptr) continue;
+
+		if (!(section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
+			&& !_remoteModData.isSectionExecutable(i))
+		{
+			//not executable, skip it
+			continue;
+		}
+
+		//get the code section from the remote module:
+		PeSection *remoteSec = new PeSection(_remoteModData, i);
+		if (!remoteSec->isInitialized()) {
+			continue;
+		}
+		if (i == 0 // always scan first section
+			|| is_code(remoteSec->loadedSection, remoteSec->loadedSize))
+		{
+			sections[i] = remoteSec;
+		}
+	}
+	return sections.size() - initial_size;
+}
+
+void CodeScanner::freeExecutableSections(std::map<size_t, PeSection*> &sections)
+{
+	std::map<size_t, PeSection*>::iterator itr;
+	for (itr = sections.begin(); itr != sections.end(); itr++) {
+		PeSection *sec = itr->second;
+		delete sec;
+	}
+	sections.clear();
+}
+
+t_scan_status CodeScanner::scanUsingBase(IN ULONGLONG load_base, IN std::map<size_t, PeSection*> &remote_code, OUT PatchList &patchesList)
+{
+	t_scan_status last_res = SCAN_NOT_SUSPICIOUS;
+
+	// before scanning, ensure that the original module is relocated to the base where it was loaded
+	if (!moduleData.relocateToBase(load_base)) {
+		return SCAN_ERROR;
+	}
+
+	size_t errors = 0;
+	size_t modified = 0;
+	std::map<size_t, PeSection*>::iterator itr;
+	
+	for (itr = remote_code.begin(); itr != remote_code.end(); itr++) {
+		size_t sec_indx = itr->first;
+		PeSection *remoteSec = itr->second;
+
+		PeSection originalSec(moduleData, sec_indx);
+		last_res = scanSection(originalSec, *remoteSec, patchesList);
+
+		if (last_res == SCAN_ERROR) errors++;
+		else if (last_res == SCAN_SUSPICIOUS) modified++;
+	}
+
+	if (modified > 0) {
+		last_res = SCAN_SUSPICIOUS; //the highest priority for modified
+	}
+	else if (errors > 0) {
+		last_res = SCAN_ERROR;
+	}
+	return last_res;
 }
 
 CodeScanReport* CodeScanner::scanRemote()
@@ -203,49 +273,41 @@ CodeScanReport* CodeScanner::scanRemote()
 	}
 	CodeScanReport *my_report = new CodeScanReport(this->processHandle, moduleData.moduleHandle, moduleData.original_size);
 	my_report->isDotNetModule = moduleData.isDotNet();
-	moduleData.relocateToBase(remoteModData.getRemoteBase()); // before scanning, ensure that the original module is relocated to the base where it was loaded
 	
 	t_scan_status last_res = SCAN_NOT_SUSPICIOUS;
-	size_t errors = 0;
-	size_t modified = 0;
-	size_t sec_count = peconv::get_sections_count(moduleData.original_module, moduleData.original_size);
-	for (size_t i = 0; i < sec_count ; i++) {
-		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(moduleData.original_module, moduleData.original_size, i);
-		if (section_hdr == nullptr) continue;
+	std::map<size_t, PeSection*> remote_code;
 
-		if (!(section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
-			&& !remoteModData.isSectionExecutable(i))
-		{
-			//not executable, skip it
-			continue;
-		}
-
-		//get the code section from the remote module:
-		PeSection remoteSec(remoteModData, i);
-		if (!remoteSec.isInitialized()) {
-			continue;
-		}
-		if ( i == 0 // always scan first section
-			|| is_code(remoteSec.loadedSection, remoteSec.loadedSize))
-		{
-			//std::cout << "Scanning executable section: " << i << std::endl;
-			PeSection originalSec(moduleData, i);
-			last_res = scanSection(originalSec, remoteSec, *my_report);
-			if (last_res == SCAN_ERROR) errors++;
-			else if (last_res == SCAN_SUSPICIOUS) modified++;
-		}
+	if (!collectExecutableSections(remoteModData, remote_code)) {
+		my_report->status = last_res;
+		return my_report;
 	}
+
+	ULONGLONG load_base = (ULONGLONG)moduleData.moduleHandle;
+	ULONGLONG hdr_base = remoteModData.getHdrImageBase();
+
+	ULONGLONG correct_base = load_base;
+	last_res = scanUsingBase(load_base, remote_code, my_report->patchesList);
+	
+	if (load_base != hdr_base && last_res == SCAN_SUSPICIOUS) {
+		std::cout << "[WARNING] Load Base: " << std::hex << load_base << " is different than the Hdr Base: " << hdr_base << "\n";
+		PatchList list2;
+		t_scan_status scan_res2 = scanUsingBase(hdr_base, remote_code, list2);
+		std::cout << "list2 size:" << list2.size() << " vs previous list: " << my_report->patchesList.size() << "\n";
+		if (list2.size() < my_report->patchesList.size()) {
+			std::cout << "Using patches list for the base: " << hdr_base << " list size:" << list2.size() << " vs previous list: " << my_report->patchesList.size() << "\n";
+			correct_base = hdr_base;
+			my_report->patchesList.deletePatches();
+			last_res = scanUsingBase(correct_base, remote_code, my_report->patchesList);
+		}
+		std::cout << "Using patches list for the base: " << correct_base << " list size:" << my_report->patchesList.size() << "\n";
+	}
+	
+	this->freeExecutableSections(remote_code);
 
 	//post-process collected patches:
 	postProcessScan(*my_report);
 
-	if (modified > 0) {
-		my_report->status = SCAN_SUSPICIOUS; //the highest priority for modified
-	} else if (errors > 0) {
-		my_report->status = SCAN_ERROR;
-	} else {
-		my_report->status = last_res;
-	}
+	my_report->status = last_res;
 	return my_report; // last result
 }
 
@@ -260,3 +322,4 @@ bool CodeScanner::postProcessScan(IN OUT CodeScanReport &report)
 	report.patchesList.checkForHookedExports(local_mapper);
 	return true;
 }
+
