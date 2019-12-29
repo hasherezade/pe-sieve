@@ -54,14 +54,22 @@ public:
 	virtual CodeScanReport* scanRemote();
 
 private:
+	typedef enum section_status {
+		SECTION_SCAN_ERR = -1,
+		SECTION_NOT_MODIFIED = 0,
+		SECTION_PATCHED = 1,
+		SECTION_UNPACKED = 2
+	} t_section_status;
+
 	size_t collectExecutableSections(RemoteModuleData &remoteModData, std::map<size_t, PeSection*> &sections);
 
 	void freeExecutableSections(std::map<size_t, PeSection*> &sections);
 
 	bool postProcessScan(IN OUT CodeScanReport &report);
 	
-	t_scan_status scanUsingBase(IN ULONGLONG load_base, IN std::map<size_t, PeSection*> &remote_code, OUT PatchList &patchesList);
-	t_scan_status scanSection(PeSection &originalSec, PeSection &remoteSec, OUT PatchList &patchesList);
+	t_scan_status scanUsingBase(IN ULONGLONG load_base, IN std::map<size_t, PeSection*> &remote_code, OUT std::set<DWORD> &unpackedSections, OUT PatchList &patchesList);
+
+	t_section_status scanSection(PeSection &originalSec, PeSection &remoteSec, OUT PatchList &patchesList);
 
 	bool clearIAT(PeSection &originalSec, PeSection &remoteSec);
 
