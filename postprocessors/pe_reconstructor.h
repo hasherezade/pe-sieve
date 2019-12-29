@@ -55,9 +55,6 @@ protected:
 	bool fixSectionsVirtualSize(HANDLE processHandle);
 	bool fixSectionsCharacteristics(HANDLE processHandle);
 
-	bool fixDotNetEntryPoint();
-	bool isDotNet();
-
 	size_t shiftPeHeader();
 
 	const PeArtefacts origArtefacts;
