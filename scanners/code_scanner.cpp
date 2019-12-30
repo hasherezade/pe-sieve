@@ -222,7 +222,7 @@ size_t CodeScanner::collectExecutableSections(RemoteModuleData &_remoteModData, 
 void CodeScanner::freeExecutableSections(std::map<size_t, PeSection*> &sections)
 {
 	std::map<size_t, PeSection*>::iterator itr;
-	for (itr = sections.begin(); itr != sections.end(); itr++) {
+	for (itr = sections.begin(); itr != sections.end(); ++itr) {
 		PeSection *sec = itr->second;
 		delete sec;
 	}
@@ -243,7 +243,7 @@ t_scan_status CodeScanner::scanUsingBase(IN ULONGLONG load_base, IN std::map<siz
 	std::map<size_t, PeSection*>::iterator itr;
 	t_section_status sec_status = CodeScanner::SECTION_SCAN_ERR;
 
-	for (itr = remote_code.begin(); itr != remote_code.end(); itr++) {
+	for (itr = remote_code.begin(); itr != remote_code.end(); ++itr) {
 		size_t sec_indx = itr->first;
 		PeSection *remoteSec = itr->second;
 
