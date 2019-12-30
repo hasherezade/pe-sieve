@@ -11,7 +11,9 @@ class CodeScanReport : public ModuleScanReport
 {
 public:
 	CodeScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
-		: ModuleScanReport(processHandle, _module, _moduleSize) {}
+		: ModuleScanReport(processHandle, _module, _moduleSize), relocBase(0)
+	{
+	}
 
 	const virtual void fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
@@ -38,9 +40,15 @@ public:
 		OUT_PADDED(outs, level, "}");
 		return true;
 	}
-	
+
+	virtual ULONGLONG getRelocBase()
+	{
+		return this->relocBase;
+	}
+
 	size_t generateTags(std::string reportPath);
 
+	ULONGLONG relocBase;
 	std::set<DWORD> unpackedSections;
 	PatchList patchesList;
 };

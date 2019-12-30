@@ -292,7 +292,7 @@ CodeScanReport* CodeScanner::scanRemote()
 	ULONGLONG load_base = (ULONGLONG)moduleData.moduleHandle;
 	ULONGLONG hdr_base = remoteModData.getHdrImageBase();
 
-	ULONGLONG correct_base = load_base;
+	my_report->relocBase = load_base;
 	last_res = scanUsingBase(load_base, remote_code, my_report->unpackedSections, my_report->patchesList);
 	
 	if (load_base != hdr_base && my_report->patchesList.size() > 0) {
@@ -302,12 +302,12 @@ CodeScanReport* CodeScanner::scanRemote()
 		PatchList list2;
 		t_scan_status scan_res2 = scanUsingBase(hdr_base, remote_code, my_report->unpackedSections, list2);
 		if (list2.size() < my_report->patchesList.size()) {
-			correct_base = hdr_base;
+			my_report->relocBase = hdr_base;
 			my_report->patchesList = list2;
 			last_res = scan_res2;
 		}
 #ifdef _DEBUG
-		std::cout << "Using patches list for the base: " << correct_base << " list size: " << my_report->patchesList.size() << "\n";
+		std::cout << "Using patches list for the base: " << my_report->relocBase << " list size: " << my_report->patchesList.size() << "\n";
 #endif
 	}
 

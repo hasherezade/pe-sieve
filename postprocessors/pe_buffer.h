@@ -5,7 +5,7 @@
 class PeBuffer {
 public:
 	PeBuffer()
-		: vBuf(nullptr), vBufSize(0), moduleBase(0)
+		: vBuf(nullptr), vBufSize(0), moduleBase(0), relocBase(0)
 	{
 	}
 
@@ -56,6 +56,16 @@ public:
 		return moduleBase;
 	}
 
+	ULONGLONG getRelocBase()
+	{
+		return relocBase;
+	}
+
+	void setRelocBase(ULONGLONG reloc_base)
+	{
+		relocBase = reloc_base;
+	}
+
 protected:
 	bool allocBuffer(const size_t pe_vsize)
 	{
@@ -74,11 +84,13 @@ protected:
 		vBuf = nullptr;
 		vBufSize = 0;
 		moduleBase = 0;
+		relocBase = 0;
 	}
 
 	BYTE * vBuf;
 	size_t vBufSize;
 	ULONGLONG moduleBase;
+	ULONGLONG relocBase;
 
 	friend class ImpReconstructor;
 	friend class PeReconstructor;
