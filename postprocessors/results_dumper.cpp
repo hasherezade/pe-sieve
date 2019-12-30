@@ -176,7 +176,6 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 
 	PeBuffer module_buf;
 	bool is_corrupt_pe = false;
-
 	ArtefactScanReport* artefactReport = dynamic_cast<ArtefactScanReport*>(mod);
 	if (artefactReport) {
 		payload_ext = get_payload_ext(*artefactReport);
@@ -215,6 +214,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 		ImpReconstructor impRec(module_buf);
 		bool is_imp_rec = impRec.rebuildImportTable(exportsMap, imprec_mode);
 		
+		module_buf.setRelocBase(mod->getRelocBase());
 		is_module_dumped = module_buf.dumpPeToFile(dumpFileName, curr_dump_mode, exportsMap);
 		if (!is_module_dumped) {
 			is_module_dumped = module_buf.dumpToFile(dumpFileName);

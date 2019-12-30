@@ -71,6 +71,11 @@ public:
 
 	virtual size_t generateTags(std::string reportPath) { return 0; }
 
+	virtual ULONGLONG getRelocBase()
+	{
+		return (ULONGLONG) this->module;
+	}
+
 	HMODULE module;
 	size_t moduleSize;
 	DWORD pid;

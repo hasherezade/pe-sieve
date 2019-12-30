@@ -17,6 +17,22 @@ public:
 		{
 		}
 
+		Patch(const Patch& other)
+		{
+			id = other.id;
+			startRva = other.startRva;
+			endRva = other.endRva;
+			moduleBase = other.moduleBase;
+
+			isHook = other.isHook;
+			hookTargetVA = other.hookTargetVA;
+			hooked_func = other.hooked_func;
+
+			hookTargetModule = other.hookTargetModule;
+			isTargetSuspicious = other.isTargetSuspicious;
+			hookTargetModName = other.hookTargetModName;
+		}
+
 		void setEnd(DWORD end_rva)
 		{
 			endRva = end_rva;
@@ -67,6 +83,18 @@ public:
 	friend class PatchList;
 	friend class PatchAnalyzer;
 	};
+
+	PatchList & operator=(const PatchList &other)
+	{
+		deletePatches();
+		std::vector<Patch*>::const_iterator itr;
+		for (itr = other.patches.begin(); itr != other.patches.end(); itr++) {
+			Patch* next = *itr;
+			Patch* nextCopy = new Patch(*next);
+			patches.push_back(nextCopy);
+		}
+		return *this;
+	}
 
 	//constructor:
 	PatchList() {}
