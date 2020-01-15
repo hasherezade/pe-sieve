@@ -20,7 +20,6 @@ Uses library:
 https://github.com/hasherezade/libpeconv.git
 
 
-
 Clone:
 -
 Use recursive clone to get the repo together with the submodule:
@@ -36,7 +35,7 @@ Latest builds*:
 
 Read more:
 -
-Wiki: https://github.com/hasherezade/pe-sieve/wiki
+📖 Wiki: https://github.com/hasherezade/pe-sieve/wiki
 <hr/>
 
 logo by [Baran Pirinçal](https://github.com/baranpirincal)
