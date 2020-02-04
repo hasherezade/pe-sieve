@@ -225,7 +225,9 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 		ModuleScanReport *mappingScanReport = this->scanForMappingMismatch(modData, pReport);
 
 		if (!modData.loadOriginal()) {
-			std::cout << "[!][" << args.pid <<  "] Suspicious: could not read the module file!" << std::endl;
+			if (!args.quiet) {
+				std::cout << "[!][" << args.pid << "] Suspicious: could not read the module file!" << std::endl;
+			}
 			//make a report that finding original module was not possible
 			pReport.appendReport(new UnreachableModuleReport(processHandle, hMods[counter], 0, modData.szModName));
 			continue;
