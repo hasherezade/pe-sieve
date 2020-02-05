@@ -38,7 +38,7 @@ void check_access_denied(DWORD processID)
 	hProcess = NULL;
 }
 
-HANDLE open_process(DWORD processID)
+HANDLE open_process(DWORD processID, bool quiet)
 {
 	HANDLE hProcess = OpenProcess(
 		PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
@@ -59,30 +59,36 @@ HANDLE open_process(DWORD processID)
 				return hProcess;
 			}
 		}
-		std::cerr << "[-][" << processID << "] Could not open the process Error: " << last_err << std::endl;
-		//print more info:
-		check_access_denied(processID);
+		if(!quiet) {
+			std::cerr << "[-][" << processID << "] Could not open the process Error: " << last_err << std::endl;
+			//print more info:
+			check_access_denied(processID);
+		}
 
 		SetLastError(ERROR_ACCESS_DENIED);
 		throw std::runtime_error("Could not open the process");
 		return nullptr;
 	}
 	if (last_err == ERROR_INVALID_PARAMETER) {
-		std::cerr << "-> Is this process still running?" << std::endl;
+		if(!quiet) {
+			std::cerr << "-> Is this process still running?" << std::endl;
+		}
 		SetLastError(ERROR_INVALID_PARAMETER);
 		throw std::runtime_error("Could not open the process");
 	}
 	return hProcess;
 }
 
-bool is_scaner_compatibile(HANDLE hProcess)
+bool is_scaner_compatibile(HANDLE hProcess, bool quiet)
 {
 	BOOL isCurrWow64 = FALSE;
 	is_process_wow64(GetCurrentProcess(), &isCurrWow64);
 	BOOL isRemoteWow64 = FALSE;
 	is_process_wow64(hProcess, &isRemoteWow64);
 	if (isCurrWow64 && !isRemoteWow64) {
-		std::cerr << "-> Try to use the 64bit version of the scanner." << std::endl;
+		if(!quiet) {
+			std::cerr << "-> Try to use the 64bit version of the scanner." << std::endl;
+		}
 		return false;
 	}
 	return true;
@@ -96,7 +102,7 @@ size_t dump_output(ProcessScanReport *process_report, HANDLE hProcess, const pes
 	}
 	ResultsDumper dumper(args.output_dir, args.quiet);
 
-	if (dumper.dumpJsonReport(*process_report, REPORT_SUSPICIOUS_AND_ERRORS)) {
+	if (dumper.dumpJsonReport(*process_report, REPORT_SUSPICIOUS_AND_ERRORS) && !args.quiet) {
 		std::cout << "[+] Report dumped to: " << dumper.getOutputDir() << std::endl;
 	}
 	size_t dumped_modules = 0;
@@ -106,7 +112,7 @@ size_t dump_output(ProcessScanReport *process_report, HANDLE hProcess, const pes
 			dump_mode = pesieve::t_dump_mode(args.dump_mode);
 		}
 		dumped_modules = dumper.dumpDetectedModules(hProcess, *process_report, dump_mode, args.imprec_mode);
-		if (dumped_modules) {
+		if (dumped_modules && !args.quiet) {
 			std::cout << "[+] Dumped modified to: " << dumper.getOutputDir() << std::endl;
 		}
 	}
@@ -118,9 +124,11 @@ size_t dump_output(ProcessScanReport *process_report, HANDLE hProcess, const pes
 			std::string file_name = peconv::get_file_name(original_path);
 			std::string dump_file = dumper.makeOutPath(file_name + ".dmp");
 			if (make_minidump(process_report->getPid(), dump_file)) {
-				std::cout << "[+] Minidump saved to: " << dump_file << std::endl;
+				if(!args.quiet) {
+					std::cout << "[+] Minidump saved to: " << dump_file << std::endl;
+				}
 			}
-			else {
+			else if(!args.quiet){
 				std::cout << "[-] Creating minidump failed! " << std::endl;
 			}
 		}
@@ -133,8 +141,8 @@ ProcessScanReport* scan_process(const t_params args)
 	HANDLE hProcess = nullptr;
 	ProcessScanReport *process_report = nullptr;
 	try {
-		hProcess = open_process(args.pid);
-		if (!is_scaner_compatibile(hProcess)) {
+		hProcess = open_process(args.pid, args.quiet);
+		if (!is_scaner_compatibile(hProcess, args.quiet)) {
 			SetLastError(ERROR_INVALID_PARAMETER);
 			throw std::runtime_error("Scanner mismatch. Try to use the 64bit version of the scanner.");
 		}
@@ -142,7 +150,9 @@ ProcessScanReport* scan_process(const t_params args)
 		process_report = scanner.scanRemote();
 
 	} catch (std::exception &e) {
-		std::cerr << "[ERROR] " << e.what() << std::endl;
+		if(!args.quiet) {
+			std::cerr << "[ERROR] " << e.what() << std::endl;
+		}
 		return nullptr;
 		
 	}
