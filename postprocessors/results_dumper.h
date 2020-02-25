@@ -12,6 +12,7 @@ public:
 		: baseDir(_baseDir), quiet(_quiet)
 	{
 	}
+
 	// dump all modules detected as suspicious during the process scan
 	size_t dumpDetectedModules(HANDLE hProcess, ProcessScanReport &process_report, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
 
