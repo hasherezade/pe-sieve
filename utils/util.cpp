@@ -1,5 +1,7 @@
 #include "util.h"
 
+#include <strsafe.h>
+
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
@@ -177,4 +179,61 @@ bool create_dir_recursively(const std::string& in_path)
 		}
 	} while (pos != std::string::npos);
 	return true;
+}
+
+bool is_in_list(const char *searched_str, const char *str_list)
+{
+	const char * list_entry = nullptr;
+	bool result = false;
+
+	if (!searched_str || !searched_str[0]) {
+		return false;
+	}
+
+	for (list_entry = str_list; list_entry && list_entry[0]; list_entry = list_entry + strlen(list_entry) + 1)
+	{
+		if (!_stricmp(list_entry, searched_str))
+		{
+			result = true;
+			break;
+		}
+	}
+	return result;
+}
+
+size_t delim_list_to_multi_sz(IN const char *delim_list_str, IN const char delimiter, OUT char *buffer, OUT size_t buffer_max_chars)
+{
+	size_t str_count = 0;
+	const char * separator;
+	char * buffer_end = buffer + buffer_max_chars - 2;
+
+	// Clear the array
+	memset(buffer, 0, buffer_max_chars);
+
+	// Parse the string
+	while (delim_list_str && delim_list_str[0])
+	{
+		// Get the next separator
+		separator = strchr(delim_list_str, delimiter);
+		if (separator == NULL)
+		{
+			StringCchCopy(buffer, (buffer_end - buffer), delim_list_str);
+			str_count++;
+			break;
+		}
+
+		// Put the part to the string
+		if (separator > delim_list_str)
+		{
+			StringCchCopyNEx(buffer, (buffer_end - buffer), delim_list_str, (separator - delim_list_str), &buffer, NULL, 0);
+			str_count++;
+			buffer++;
+		}
+
+		// Skip comma and spaces
+		while (separator[0] == delimiter || separator[0] == ' ')
+			separator++;
+		delim_list_str = separator;
+	}
+	return str_count;
 }

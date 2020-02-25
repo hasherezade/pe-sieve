@@ -2,7 +2,6 @@
 // author: hasherezade (hasherezade@gmail.com)
 
 #include <Windows.h>
-#include <strsafe.h>
 #include <Psapi.h>
 #include <sstream>
 #include <fstream>
@@ -39,6 +38,8 @@
 #define PARAM_VERSION "version"
 #define PARAM_VERSION2 "ver"
 
+#define PARAM_LIST_SEPARATOR ';'
+
 using namespace pesieve;
 
 void print_in_color(int color, const std::string &text)
@@ -55,7 +56,6 @@ void print_param_in_color(int color, const std::string &text)
 {
 	print_in_color(color, PARAM_SWITCH1 + text);
 }
-
 
 void print_help()
 {
@@ -82,7 +82,8 @@ void print_help()
 	}
 #endif
 	print_param_in_color(param_color, PARAM_MODULES_IGNORE);
-	std::cout << ": Plain name of a module that will be excluded from scan.\n\t  Multiple modules can be entered, separated by a comma.\n\t  Example1: /mignore kernel32.dll\n\t  Example2: /mignore kernel32.dll,user32.dll\n";
+	std::cout << " <module_name>\n\t: Do not scan module/s with given name/s (separated by '"<< PARAM_LIST_SEPARATOR << "').\n"
+		"\t  Example: kernel32.dll" << PARAM_LIST_SEPARATOR << "user32.dll\n";
 
 	print_in_color(separator_color, "\n---dump options---\n");
 	print_param_in_color(param_color, PARAM_IMP_REC);
@@ -200,40 +201,6 @@ bool is_param(const char *str)
 	return false;
 }
 
-// Converts a comma-separated module list ("kernel32.dll,user32.dll,ntdll.dll") into multi-SZ string
-static void parseModuleList(char * buffer, size_t max_chars, const char * module_list_asciiz)
-{
-	const char * separator;
-	char * buffer_end = buffer + max_chars - 2;
-
-	// Clear the array
-	memset(buffer, 0, max_chars);
-
-	// Parse the string
-	while (module_list_asciiz && module_list_asciiz[0])
-	{
-		// Get the next separator
-		separator = strchr(module_list_asciiz, ',');
-		if (separator == NULL)
-		{
-			StringCchCopy(buffer, (buffer_end - buffer), module_list_asciiz);
-			break;
-		}
-
-		// Put the part to the string
-		if (separator > module_list_asciiz)
-		{
-			StringCchCopyNEx(buffer, (buffer_end - buffer), module_list_asciiz, (separator - module_list_asciiz), &buffer, NULL, 0);
-			buffer++;
-		}
-
-		// Skip comma and spaces
-		while (separator[0] == ',' || separator[0] == ' ')
-			separator++;
-		module_list_asciiz = separator;
-	}
-}
-
 int main(int argc, char *argv[])
 {
 	if (argc < 2) {
@@ -284,7 +251,7 @@ int main(int argc, char *argv[])
 			i++;
 		}
 		else if (!strcmp(param, PARAM_MODULES_IGNORE) && (i + 1) < argc) {
-			parseModuleList(args.modules_ignored, _countof(args.modules_ignored), argv[i + 1]);
+			delim_list_to_multi_sz(argv[i + 1], ';', args.modules_ignored, _countof(args.modules_ignored));
 			i++;
 		}
 		else if (!strcmp(param, PARAM_PID) && (i + 1) < argc) {
