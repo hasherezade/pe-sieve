@@ -39,6 +39,8 @@
 #define PARAM_VERSION "version"
 #define PARAM_VERSION2 "ver"
 
+#define PARAM_LIST_SEPARATOR ','
+
 using namespace pesieve;
 
 void print_in_color(int color, const std::string &text)
@@ -82,8 +84,8 @@ void print_help()
 	}
 #endif
 	print_param_in_color(param_color, PARAM_MODULES_IGNORE);
-	std::cout << " <module_name>\n\t: Do not scan module/s with given name/s (separated by ',').\n"
-		"\t  Example: kernel32.dll,user32.dll\n";
+	std::cout << " <module_name>\n\t: Do not scan module/s with given name/s (separated by '"<< PARAM_LIST_SEPARATOR << "').\n"
+		"\t  Example: kernel32.dll" << PARAM_LIST_SEPARATOR << "user32.dll\n";
 
 	print_in_color(separator_color, "\n---dump options---\n");
 	print_param_in_color(param_color, PARAM_IMP_REC);
@@ -214,7 +216,7 @@ static void parseModuleList(char * buffer, size_t max_chars, const char * module
 	while (module_list_asciiz && module_list_asciiz[0])
 	{
 		// Get the next separator
-		separator = strchr(module_list_asciiz, ',');
+		separator = strchr(module_list_asciiz, PARAM_LIST_SEPARATOR);
 		if (separator == NULL)
 		{
 			StringCchCopy(buffer, (buffer_end - buffer), module_list_asciiz);
@@ -229,7 +231,7 @@ static void parseModuleList(char * buffer, size_t max_chars, const char * module
 		}
 
 		// Skip comma and spaces
-		while (separator[0] == ',' || separator[0] == ' ')
+		while (separator[0] == PARAM_LIST_SEPARATOR || separator[0] == ' ')
 			separator++;
 		module_list_asciiz = separator;
 	}
