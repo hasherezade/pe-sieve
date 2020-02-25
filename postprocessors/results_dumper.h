@@ -14,7 +14,7 @@ public:
 	}
 
 	// dump all modules detected as suspicious during the process scan
-	size_t dumpDetectedModules(HANDLE hProcess, ProcessScanReport &process_report, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode, const std::vector<std::string> & modules_ignored);
+	size_t dumpDetectedModules(HANDLE hProcess, ProcessScanReport &process_report, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
 
 	// dump JSON report from the process scan
 	bool dumpJsonReport(ProcessScanReport &process_report, t_report_filter filter);
