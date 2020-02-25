@@ -5,6 +5,8 @@
 
 #include <pshpack4.h> // ensure 4 byte packing of the structures
 
+#define MAX_MODULE_BUF_LEN 1024
+
 namespace pesieve {
 	typedef enum {
 		OUT_FULL = 0,
@@ -42,6 +44,7 @@ namespace pesieve {
 		t_dump_mode dump_mode;
 		bool json_output;
 		char output_dir[MAX_PATH + 1];
+		char modules_ignored[MAX_MODULE_BUF_LEN]; // multi-sz list of modules that will not be scanned
 	} t_params;
 
 	typedef struct {

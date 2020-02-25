@@ -2,6 +2,7 @@
 // author: hasherezade (hasherezade@gmail.com)
 
 #include <Windows.h>
+#include <strsafe.h>
 #include <Psapi.h>
 #include <sstream>
 #include <fstream>
@@ -22,6 +23,7 @@
 #define PARAM_SHELLCODE "shellc"
 #define PARAM_DATA "data"
 #define PARAM_MODULES_FILTER "mfilter"
+#define PARAM_MODULES_IGNORE "mignore"
 //dump options:
 #define PARAM_IMP_REC "imp"
 #define PARAM_DUMP_MODE "dmode"
@@ -70,7 +72,7 @@ void print_help()
 	print_param_in_color(param_color, PARAM_SHELLCODE);
 	std::cout << "\t: Detect shellcode implants. (By default it detects PE only).\n";
 	print_param_in_color(param_color, PARAM_DATA);
-	std::cout << "\t: If DEP is disabled scan also non-executable memory\n\t(which potentially can be executed).\n";
+	std::cout << "\t: If DEP is disabled scan also non-executable memory\n\t  (which potentially can be executed).\n";
 #ifdef _WIN64
 	print_param_in_color(param_color, PARAM_MODULES_FILTER);
 	std::cout << " <*mfilter_id>\n\t: Filter the scanned modules.\n";
@@ -79,6 +81,8 @@ void print_help()
 		std::cout << "\t" << i << " - " << translate_modules_filter(i) << "\n";
 	}
 #endif
+	print_param_in_color(param_color, PARAM_MODULES_IGNORE);
+	std::cout << ": Plain name of a module that will be excluded from scan.\n\t  Multiple modules can be entered, separated by a comma.\n\t  Example1: /mignore kernel32.dll\n\t  Example2: /mignore kernel32.dll,user32.dll\n";
 
 	print_in_color(separator_color, "\n---dump options---\n");
 	print_param_in_color(param_color, PARAM_IMP_REC);
@@ -114,7 +118,7 @@ void print_help()
 
 	print_param_in_color(param_color, PARAM_MINIDUMP);
 	std::cout << ": Create a minidump of the full suspicious process.\n";
-	
+
 	print_param_in_color(param_color, PARAM_DIR);
 	std::cout << " <output_dir>\n\t: Set a root directory for the output (default: current directory).\n";
 	print_in_color(hdr_color, "\nInfo: \n");
@@ -196,6 +200,40 @@ bool is_param(const char *str)
 	return false;
 }
 
+// Converts a comma-separated module list ("kernel32.dll,user32.dll,ntdll.dll") into multi-SZ string
+static void parseModuleList(char * buffer, size_t max_chars, const char * module_list_asciiz)
+{
+	const char * separator;
+	char * buffer_end = buffer + max_chars - 2;
+
+	// Clear the array
+	memset(buffer, 0, max_chars);
+
+	// Parse the string
+	while (module_list_asciiz && module_list_asciiz[0])
+	{
+		// Get the next separator
+		separator = strchr(module_list_asciiz, ',');
+		if (separator == NULL)
+		{
+			StringCchCopy(buffer, (buffer_end - buffer), module_list_asciiz);
+			break;
+		}
+
+		// Put the part to the string
+		if (separator > module_list_asciiz)
+		{
+			StringCchCopyNEx(buffer, (buffer_end - buffer), module_list_asciiz, (separator - module_list_asciiz), &buffer, NULL, 0);
+			buffer++;
+		}
+
+		// Skip comma and spaces
+		while (separator[0] == ',' || separator[0] == ' ')
+			separator++;
+		module_list_asciiz = separator;
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	if (argc < 2) {
@@ -237,12 +275,16 @@ int main(int argc, char *argv[])
 		else if (!strcmp(param, PARAM_OUT_FILTER) && (i + 1) < argc) {
 			args.out_filter = static_cast<t_output_filter>(atoi(argv[i + 1]));
 			i++;
-		} 
+		}
 		else if (!strcmp(param, PARAM_MODULES_FILTER) && (i + 1) < argc) {
 			args.modules_filter = atoi(argv[i + 1]);
 			if (args.modules_filter > LIST_MODULES_ALL) {
 				args.modules_filter = LIST_MODULES_ALL;
 			}
+			i++;
+		}
+		else if (!strcmp(param, PARAM_MODULES_IGNORE) && (i + 1) < argc) {
+			parseModuleList(args.modules_ignored, _countof(args.modules_ignored), argv[i + 1]);
 			i++;
 		}
 		else if (!strcmp(param, PARAM_PID) && (i + 1) < argc) {
