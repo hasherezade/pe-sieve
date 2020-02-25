@@ -82,7 +82,8 @@ void print_help()
 	}
 #endif
 	print_param_in_color(param_color, PARAM_MODULES_IGNORE);
-	std::cout << ": Plain name of a module that will be excluded from scan.\n\t  Multiple modules can be entered, separated by a comma.\n\t  Example1: /mignore kernel32.dll\n\t  Example2: /mignore kernel32.dll,user32.dll\n";
+	std::cout << " <module_name>\n\t: Do not scan module/s with given name/s (separated by ',').\n"
+		"\t  Example: kernel32.dll,user32.dll\n";
 
 	print_in_color(separator_color, "\n---dump options---\n");
 	print_param_in_color(param_color, PARAM_IMP_REC);
