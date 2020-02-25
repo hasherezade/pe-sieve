@@ -57,7 +57,6 @@ void print_param_in_color(int color, const std::string &text)
 	print_in_color(color, PARAM_SWITCH1 + text);
 }
 
-
 void print_help()
 {
 	const int hdr_color = HEADER_COLOR;

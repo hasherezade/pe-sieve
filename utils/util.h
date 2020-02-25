@@ -36,21 +36,6 @@ bool dir_exists(const char* path);
 
 bool create_dir_recursively(const std::string& path);
 
-template <typename XCHAR>
-const XCHAR * get_plain_name(const XCHAR * szFilePath)
-{
-	const XCHAR * plain_name = szFilePath;
-
-	while (szFilePath[0] != 0)
-	{
-		if (szFilePath[0] == '\\' || szFilePath[0] == '/')
-			plain_name = szFilePath + 1;
-		szFilePath++;
-	}
-
-	return plain_name;
-}
-
 // Checks if the given cstring is in the multi-SZ list
 bool is_in_list(const char *searched_string, const char *strings_list);
 
