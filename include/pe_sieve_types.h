@@ -41,6 +41,7 @@ namespace pesieve {
 		bool minidump; // make minidump of full process
 		t_dump_mode dump_mode;
 		bool json_output;
+		std::vector<std::string> modules_ignored;
 		char output_dir[MAX_PATH + 1];
 	} t_params;
 

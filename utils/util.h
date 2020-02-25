@@ -35,3 +35,18 @@ std::string get_system_drive();
 bool dir_exists(const char* path);
 
 bool create_dir_recursively(const std::string& path);
+
+template <typename XCHAR>
+const XCHAR * get_plain_name(const XCHAR * szFileName)
+{
+	const XCHAR * plain_name = szFileName;
+
+	while (szFileName[0] != 0)
+	{
+		if (szFileName[0] == '\\' || szFileName[0] == '/')
+			plain_name = szFileName + 1;
+		szFileName++;
+	}
+
+	return plain_name;
+}

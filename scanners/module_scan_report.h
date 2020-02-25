@@ -59,6 +59,12 @@ public:
 			OUT_PADDED(outs, level, "\"module_file\" : ");
 			outs << "\"" << escape_path_separators(moduleFile) << "\"" << ",\n";
 		}
+
+		if(dumpFileName.length()) {
+			OUT_PADDED(outs, level, "\"dump_file_name\" : ");
+			outs << "\"" << escape_path_separators(dumpFileName) << "\"" << ",\n";
+		}
+
 		OUT_PADDED(outs, level, "\"status\" : ");
 		outs << std::dec << status;
 		if (isDotNetModule) {
@@ -81,6 +87,7 @@ public:
 	DWORD pid;
 	bool isDotNetModule;
 	std::string moduleFile;
+	std::string dumpFileName;   // Name of the file where the module was dumped to
 	t_scan_status status;
 };
 

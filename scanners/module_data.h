@@ -5,6 +5,7 @@
 #include <map>
 
 #include <peconv.h>
+#include "..\utils\util.h"
 
 class ModuleData {
 
@@ -30,6 +31,26 @@ public:
 	~ModuleData()
 	{
 		peconv::free_pe_buffer(original_module, original_size);
+	}
+
+	bool isInList(const std::vector<std::string> & module_list)
+	{
+		bool result = false;
+
+		if (szModName[0])
+		{
+			const char * plainName = get_plain_name(szModName);
+
+			for (auto & name : module_list)
+			{
+				if (!_stricmp(plainName, name.c_str())) {
+					result = true;
+					break;
+				}
+			}
+		}
+
+		return result;
 	}
 
 	bool is64bit()
