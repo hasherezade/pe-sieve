@@ -2,6 +2,7 @@
 // author: hasherezade (hasherezade@gmail.com)
 
 #include <Windows.h>
+#include <strsafe.h>
 #include <Psapi.h>
 #include <sstream>
 #include <fstream>
@@ -199,13 +200,14 @@ bool is_param(const char *str)
 	return false;
 }
 
-// Converts a comma-separated module list ("kernel32.dll,user32.dll,ntdll.dll") into a vector of strings
-static size_t parseModuleList(std::vector<std::string> & module_list, const char * module_list_asciiz)
+// Converts a comma-separated module list ("kernel32.dll,user32.dll,ntdll.dll") into multi-SZ string
+static void parseModuleList(char * buffer, size_t max_chars, const char * module_list_asciiz)
 {
 	const char * separator;
+	char * buffer_end = buffer + max_chars - 2;
 
-	// Clear the module list, whatever it contains
-	module_list.clear();
+	// Clear the array
+	memset(buffer, 0, max_chars);
 
 	// Parse the string
 	while (module_list_asciiz && module_list_asciiz[0])
@@ -214,17 +216,15 @@ static size_t parseModuleList(std::vector<std::string> & module_list, const char
 		separator = strchr(module_list_asciiz, ',');
 		if (separator == NULL)
 		{
-			module_list.push_back(module_list_asciiz);
+			StringCchCopy(buffer, (buffer_end - buffer), module_list_asciiz);
 			break;
 		}
 
 		// Put the part to the string
 		if (separator > module_list_asciiz)
 		{
-			std::string single_module;
-
-			single_module.assign(module_list_asciiz, (separator - module_list_asciiz));
-			module_list.push_back(single_module);
+			StringCchCopyNEx(buffer, (buffer_end - buffer), module_list_asciiz, (separator - module_list_asciiz), &buffer, NULL, 0);
+			buffer++;
 		}
 
 		// Skip comma and spaces
@@ -232,8 +232,6 @@ static size_t parseModuleList(std::vector<std::string> & module_list, const char
 			separator++;
 		module_list_asciiz = separator;
 	}
-
-	return module_list.size();
 }
 
 int main(int argc, char *argv[])
@@ -286,7 +284,7 @@ int main(int argc, char *argv[])
 			i++;
 		}
 		else if (!strcmp(param, PARAM_MODULES_IGNORE) && (i + 1) < argc) {
-			parseModuleList(args.modules_ignored, argv[i + 1]);
+			parseModuleList(args.modules_ignored, _countof(args.modules_ignored), argv[i + 1]);
 			i++;
 		}
 		else if (!strcmp(param, PARAM_PID) && (i + 1) < argc) {

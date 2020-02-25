@@ -33,17 +33,18 @@ public:
 		peconv::free_pe_buffer(original_module, original_size);
 	}
 
-	bool isInList(const std::vector<std::string> & module_list)
+	bool isInList(const char * module_list)
 	{
+		const char * module_entry;
+		const char * plainName = get_plain_name(szModName);
 		bool result = false;
 
-		if (szModName[0])
+		if (plainName[0])
 		{
-			const char * plainName = get_plain_name(szModName);
-
-			for (auto & name : module_list)
+			for(module_entry = module_list; module_entry[0] != 0; module_entry = module_entry + strlen(module_entry) + 1)
 			{
-				if (!_stricmp(plainName, name.c_str())) {
+				if (!_stricmp(module_entry, plainName))
+				{
 					result = true;
 					break;
 				}
