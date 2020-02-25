@@ -223,8 +223,10 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 		ModuleData modData(processHandle, hMods[counter]);
 
 		// Don't scan modules that are in the ignore list
-		if (modData.isInList(args.modules_ignored))
+		const char * plainName = get_plain_name(modData.szModName);
+		if (is_in_list(plainName, args.modules_ignored)) {
 			continue;
+		}
 
 		ModuleScanReport *mappingScanReport = this->scanForMappingMismatch(modData, pReport);
 

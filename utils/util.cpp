@@ -178,3 +178,23 @@ bool create_dir_recursively(const std::string& in_path)
 	} while (pos != std::string::npos);
 	return true;
 }
+
+bool is_in_list(const char *searched_str, const char *str_list)
+{
+	const char * list_entry = nullptr;
+	bool result = false;
+
+	if (!searched_str || !searched_str[0]) {
+		return false;
+	}
+
+	for (list_entry = str_list; list_entry && list_entry[0]; list_entry = list_entry + strlen(list_entry) + 1)
+	{
+		if (!_stricmp(list_entry, searched_str))
+		{
+			result = true;
+			break;
+		}
+	}
+	return result;
+}
