@@ -2,7 +2,6 @@
 // author: hasherezade (hasherezade@gmail.com)
 
 #include <Windows.h>
-#include <strsafe.h>
 #include <Psapi.h>
 #include <sstream>
 #include <fstream>
@@ -203,40 +202,6 @@ bool is_param(const char *str)
 	return false;
 }
 
-// Converts a comma-separated module list ("kernel32.dll,user32.dll,ntdll.dll") into multi-SZ string
-static void parseModuleList(char * buffer, size_t max_chars, const char * module_list_asciiz)
-{
-	const char * separator;
-	char * buffer_end = buffer + max_chars - 2;
-
-	// Clear the array
-	memset(buffer, 0, max_chars);
-
-	// Parse the string
-	while (module_list_asciiz && module_list_asciiz[0])
-	{
-		// Get the next separator
-		separator = strchr(module_list_asciiz, PARAM_LIST_SEPARATOR);
-		if (separator == NULL)
-		{
-			StringCchCopy(buffer, (buffer_end - buffer), module_list_asciiz);
-			break;
-		}
-
-		// Put the part to the string
-		if (separator > module_list_asciiz)
-		{
-			StringCchCopyNEx(buffer, (buffer_end - buffer), module_list_asciiz, (separator - module_list_asciiz), &buffer, NULL, 0);
-			buffer++;
-		}
-
-		// Skip comma and spaces
-		while (separator[0] == PARAM_LIST_SEPARATOR || separator[0] == ' ')
-			separator++;
-		module_list_asciiz = separator;
-	}
-}
-
 int main(int argc, char *argv[])
 {
 	if (argc < 2) {
@@ -287,7 +252,7 @@ int main(int argc, char *argv[])
 			i++;
 		}
 		else if (!strcmp(param, PARAM_MODULES_IGNORE) && (i + 1) < argc) {
-			parseModuleList(args.modules_ignored, _countof(args.modules_ignored), argv[i + 1]);
+			delim_list_to_multi_sz(argv[i + 1], ';', args.modules_ignored, _countof(args.modules_ignored));
 			i++;
 		}
 		else if (!strcmp(param, PARAM_PID) && (i + 1) < argc) {

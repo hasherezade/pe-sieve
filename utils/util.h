@@ -51,4 +51,8 @@ const XCHAR * get_plain_name(const XCHAR * szFilePath)
 	return plain_name;
 }
 
+// Checks if the given cstring is in the multi-SZ list
 bool is_in_list(const char *searched_string, const char *strings_list);
+
+// Converts a delimiter-separated list (i.e. "kernel32.dll,user32.dll,ntdll.dll") into multi-SZ string. Returns the count of the strings.
+size_t delim_list_to_multi_sz(IN const char* delim_list_str, IN const char delimiter, OUT char* buffer, OUT size_t buffer_max_chars);
