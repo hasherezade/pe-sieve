@@ -59,7 +59,6 @@ public:
 			OUT_PADDED(outs, level, "\"module_file\" : ");
 			outs << "\"" << escape_path_separators(moduleFile) << "\"" << ",\n";
 		}
-
 		OUT_PADDED(outs, level, "\"status\" : ");
 		outs << std::dec << status;
 		if (isDotNetModule) {
