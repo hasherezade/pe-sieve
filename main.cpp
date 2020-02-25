@@ -39,7 +39,7 @@
 #define PARAM_VERSION "version"
 #define PARAM_VERSION2 "ver"
 
-#define PARAM_LIST_SEPARATOR ','
+#define PARAM_LIST_SEPARATOR ';'
 
 using namespace pesieve;
 
