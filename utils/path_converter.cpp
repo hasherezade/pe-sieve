@@ -5,6 +5,9 @@
 #include "ntddk.h"
 #pragma comment(lib, "Ntdll.lib")
 
+#include <shlwapi.h>
+#pragma comment (lib, "shlwapi.lib")
+
 #include <iostream>
 #include <string>
 #include <locale>
@@ -97,6 +100,40 @@ std::string nt_retrieve_file_path(HANDLE hFile)
 	return my_string;
 }
 
+
+bool is_relative(const char *path, size_t path_len)
+{
+	if (path_len < 2) {
+		return true;
+	}
+	// i.e. "c:\"
+	if (path[1] == ':') {
+		return false;
+	}
+	// i.e. "\\path1\" or "\\?\UNC\"
+	if (path[0] == '\\' && path[1] == '\\') {
+		return false;
+	}
+	return true;
+}
+
+bool is_disk_relative(const char *path, size_t path_len)
+{
+	if (path_len < 2) {
+		return true;
+	}
+	//check format:
+	if ((path[0] >= 'a' && path[0] <= 'z')
+		|| (path[0] >= 'A' && path[0] <= 'Z'))
+	{
+		if (path[1] == ':') {
+			// format i.e: C:\...
+			return true;
+		}
+	}
+	return false;
+}
+
 std::string convert_to_win32_path(const std::string &path)
 {
 	std::string stripped_path = strip_prefix(path, LONG_PATH_PREFIX);
@@ -104,13 +141,8 @@ std::string convert_to_win32_path(const std::string &path)
 		return "";
 	}
 	//check format:
-	if ((stripped_path[0] >= 'a' && stripped_path[0] <= 'z')
-		|| (stripped_path[0] >= 'A' && stripped_path[0] <= 'Z'))
-	{
-		if (stripped_path[1] == ':') {
-			// format i.e: C:\...
-			return stripped_path;
-		}
+	if (is_disk_relative(stripped_path.c_str(), stripped_path.length())) {
+		return stripped_path;
 	}
 	stripped_path = strip_prefix(stripped_path, GLOBALROOT_NAME);
 	const char *szModName = stripped_path.c_str();
@@ -181,14 +213,28 @@ std::string device_path_to_win32_path(const std::string &full_path)
 	return path;
 }
 
+std::string relative_to_absolute_path(std::string path)
+{
+	if (is_relative(path.c_str(), path.length())) {
+		char current_dir[MAX_PATH] = { 0 };
+		GetCurrentDirectoryA(MAX_PATH, current_dir);
+		path = std::string(current_dir) + "\\" + path;
+	}
+	char out_path[MAX_PATH] = { 0 };
+	PathCanonicalizeA(out_path, path.c_str());
+	return std::string(out_path);
+}
+
 std::string expand_path(std::string basic_path)
 {
+	std::string abs_path = relative_to_absolute_path(basic_path);
+
 	char filename[MAX_PATH] = { 0 };
-	if (GetLongPathNameA(basic_path.c_str(), filename, MAX_PATH) == 0) {
-		size_t len = basic_path.length();
+	if (GetLongPathNameA(abs_path.c_str(), filename, MAX_PATH) == 0) {
+		size_t len = abs_path.length();
 		if (len > MAX_PATH) len = MAX_PATH;
 		//if could not retrieve, process what you have:
-		memcpy(filename, basic_path.c_str(), len);
+		memcpy(filename, abs_path.c_str(), len);
 	}
 	return strip_prefix(filename, LONG_PATH_PREFIX);
 }
