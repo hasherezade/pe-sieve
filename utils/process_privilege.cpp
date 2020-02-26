@@ -71,7 +71,7 @@ bool set_debug_privilege(DWORD process_id)
 		if (GetLastError() == ERROR_NO_TOKEN) {
 			if (!ImpersonateSelf(SecurityImpersonation)) return false;
 			if(!OpenThreadToken(GetCurrentThread(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, FALSE, &hToken)){
-				std::cerr << "Error: cannor open the token" << std::endl;
+				std::cerr << "Error: cannot open the token" << std::endl;
 				return false;
 			}
 		}
@@ -80,8 +80,6 @@ bool set_debug_privilege(DWORD process_id)
 	// enable SeDebugPrivilege
 	if (set_privilege(hToken, SE_DEBUG_NAME, TRUE)) {
 		is_ok = true;
-	} else {
-		std::cerr << "Could not set debug privilege" << std::endl;
 	}
 	// close token handle
 	CloseHandle(hToken);

@@ -31,7 +31,6 @@ void check_access_denied(DWORD processID)
 			std::cerr << "-> Access denied. Could not access the system process." << std::endl;
 			break;
 		default:
-			std::cerr << "-> Access denied. Try to run the scanner as Administrator." << std::endl;
 			break;
 	}
 	CloseHandle(hProcess);
@@ -58,6 +57,9 @@ HANDLE open_process(DWORD processID, bool quiet)
 			if (hProcess != nullptr) {
 				return hProcess;
 			}
+		}
+		else {
+			if (!quiet) std::cerr << "[-][" << processID << "] Could not set debug privilege" << std::endl;
 		}
 		if(!quiet) {
 			std::cerr << "[-][" << processID << "] Could not open the process Error: " << last_err << std::endl;
