@@ -11,6 +11,7 @@
 #include "utils/process_util.h"
 #include "utils/process_privilege.h"
 #include "utils/process_minidump.h"
+#include "utils/path_converter.h"
 #include "postprocessors/results_dumper.h"
 
 using namespace pesieve;
@@ -102,7 +103,7 @@ size_t dump_output(ProcessScanReport *process_report, HANDLE hProcess, const pes
 	if (args.out_filter == OUT_NO_DIR) {
 		return 0;
 	}
-	ResultsDumper dumper(args.output_dir, args.quiet);
+	ResultsDumper dumper(expand_path(args.output_dir), args.quiet);
 
 	if (dumper.dumpJsonReport(*process_report, REPORT_SUSPICIOUS_AND_ERRORS) && !args.quiet) {
 		std::cout << "[+] Report dumped to: " << dumper.getOutputDir() << std::endl;

@@ -225,10 +225,21 @@ std::string relative_to_absolute_path(std::string path)
 	return std::string(out_path);
 }
 
+std::string replace_char(std::string &str, char ch1, char ch2) {
+	for (size_t i = 0; i < str.length(); ++i) {
+		if (str[i] == ch1)
+			str[i] = ch2;
+	}
+	return str;
+}
+
 std::string expand_path(std::string basic_path)
 {
-	std::string abs_path = relative_to_absolute_path(basic_path);
+	// normalize path sepators: use '/' not '\'
+	replace_char(basic_path, '/', '\\');
 
+	std::string abs_path = relative_to_absolute_path(basic_path);
+	
 	char filename[MAX_PATH] = { 0 };
 	if (GetLongPathNameA(abs_path.c_str(), filename, MAX_PATH) == 0) {
 		size_t len = abs_path.length();
