@@ -18,7 +18,7 @@ BOOL set_privilege(
 	TOKEN_PRIVILEGES tpPrevious;
 	DWORD cbPrevious=sizeof(TOKEN_PRIVILEGES);
 
-	if (!LookupPrivilegeValue(nullptr, Privilege, &luid)) {
+	if (!LookupPrivilegeValueA(nullptr, Privilege, &luid)) {
 		return FALSE;
 	}
 	// get current privilege
@@ -64,7 +64,7 @@ BOOL set_privilege(
 	return TRUE;
 }
 
-bool set_debug_privilege(DWORD process_id)
+bool set_debug_privilege()
 {
 	HANDLE hToken;
 	if (!OpenThreadToken(GetCurrentThread(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, FALSE, &hToken)) {

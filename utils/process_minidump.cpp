@@ -47,7 +47,7 @@ bool make_minidump(DWORD pid, std::string out_file)
 	if (procHndl == NULL) {
 		DWORD last_err = GetLastError();
 		if (last_err == ERROR_ACCESS_DENIED) {
-			if (set_debug_privilege(pid)) {
+			if (set_debug_privilege()) {
 				procHndl = OpenProcess(PROCESS_ALL_ACCESS, 0, pid);
 			}
 		}

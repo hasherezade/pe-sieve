@@ -10,7 +10,7 @@ typedef enum {
 	INTEGRITY_SYSTEM //3
 } process_integrity_t;
 
-bool set_debug_privilege(DWORD process_id);
+bool set_debug_privilege();
 
 process_integrity_t get_integrity_level(HANDLE hProcess);
 

@@ -48,7 +48,7 @@ HANDLE open_process(DWORD processID, bool quiet)
 	}
 	DWORD last_err = GetLastError();
 	if (last_err == ERROR_ACCESS_DENIED) {
-		if (set_debug_privilege(processID)) {
+		if (set_debug_privilege()) {
 			//try again to open
 			hProcess = OpenProcess(
 				PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
