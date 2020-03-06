@@ -38,8 +38,6 @@
 #define PARAM_VERSION "version"
 #define PARAM_VERSION2 "ver"
 
-#define PARAM_LIST_SEPARATOR ';'
-
 using namespace pesieve;
 
 void print_in_color(int color, const std::string &text)
@@ -201,6 +199,16 @@ bool is_param(const char *str)
 	return false;
 }
 
+size_t copyToCStr(char *buf, size_t buf_max, const std::string &value)
+{
+	size_t len = value.length() + 1;
+	if (len > buf_max) len = buf_max;
+
+	memcpy(buf, value.c_str(), buf_max);
+	buf[len] = '\0';
+	return len;
+}
+
 int main(int argc, char *argv[])
 {
 	if (argc < 2) {
@@ -251,7 +259,7 @@ int main(int argc, char *argv[])
 			i++;
 		}
 		else if (!strcmp(param, PARAM_MODULES_IGNORE) && (i + 1) < argc) {
-			delim_list_to_multi_sz(argv[i + 1], ';', args.modules_ignored, _countof(args.modules_ignored));
+			copyToCStr(args.modules_ignored, MAX_MODULE_BUF_LEN, argv[i + 1]);
 			i++;
 		}
 		else if (!strcmp(param, PARAM_PID) && (i + 1) < argc) {
