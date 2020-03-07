@@ -92,6 +92,11 @@ public:
 		module_reports.push_back(report);
 	}
 
+	size_t countTotal() const
+	{
+		return module_reports.size();
+	}
+
 	size_t countDumped() const
 	{
 		size_t dumped = 0;
@@ -122,6 +127,8 @@ public:
 		OUT_PADDED(stream, level, "{\n");
 		//stream << " {\n";
 		OUT_PADDED(stream, level + 1, "\"total\" : ");
+		stream << std::dec << countTotal() << ",\n";
+		OUT_PADDED(stream, level + 1, "\"dumped\" : ");
 		stream << std::dec << countDumped() << ",\n";
 		OUT_PADDED(stream, level, "},\n"); // scanned
 		stream << list_dumped_modules(level);
