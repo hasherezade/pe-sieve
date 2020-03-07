@@ -124,6 +124,9 @@ bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, t_report_f
 
 bool ResultsDumper::dumpJsonReport(ProcessDumpReport &process_report)
 {
+	if (!process_report.countDumped()) {
+		return false;
+	}
 	std::stringstream stream;
 	size_t level = 1;
 	process_report.toJSON(stream, level);
