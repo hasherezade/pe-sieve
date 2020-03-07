@@ -28,8 +28,17 @@ public:
 	std::string makeOutPath(std::string fname, const std::string& defaultExtension = "");
 
 protected:
-
-	ModuleDumpReport* dumpModule(HANDLE processHandle, ModuleScanReport* mod, const peconv::ExportsMapper *exportsMap, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
+	/**
+	\param dumpReport: ProcessDumpReport to which reports from the current dump will be appended
+	*/
+	bool dumpModule(
+		IN HANDLE processHandle, 
+		IN ModuleScanReport* mod,
+		IN const peconv::ExportsMapper *exportsMap,
+		IN const pesieve::t_dump_mode dump_mode,
+		IN const pesieve::t_imprec_mode imprec_mode,
+		OUT ProcessDumpReport &dumpReport
+	);
 
 	/**
 	\param modBaseAddr : base address where this module was mapped
