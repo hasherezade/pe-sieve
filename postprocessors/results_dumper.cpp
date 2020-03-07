@@ -29,14 +29,38 @@ std::string get_dump_mode_name(peconv::t_pe_dump_mode dump_mode)
 {
 	switch (dump_mode) {
 	case peconv::PE_DUMP_VIRTUAL:
-		return "Virtual";
+		return "VIRTUAL";
 	case peconv::PE_DUMP_UNMAP:
-		return "Unmapped";
+		return "UNMAPPED";
 	case peconv::PE_DUMP_REALIGN:
-		return "Realigned";
+		return "REALIGNED";
 	}
 	return "";
 }
+
+std::string get_imprec_res_name(const ImpReconstructor::t_imprec_res &res)
+{
+	switch (res) {
+	case ImpReconstructor::IMP_NOT_FOUND:
+		return "IMP_NOT_FOUND";
+	case ImpReconstructor::IMP_RECOVERY_ERROR:
+		return "IMP_RECOVERY_ERROR";
+	case ImpReconstructor::IMP_RECOVERY_NOT_APLICABLE:
+		return "IMP_RECOVERY_NOT_APLICABLE";
+	case ImpReconstructor::IMP_RECOVERY_SKIPPED:
+		return "";
+	case ImpReconstructor::IMP_ALREADY_OK:
+		return "IMP_ALREADY_OK";
+	case ImpReconstructor::IMP_DIR_FIXED:
+		return "IMP_DIR_FIXED";
+	case ImpReconstructor::IMP_FIXED:
+		return "IMP_FIXED";
+	case ImpReconstructor::IMP_RECREATED:
+		return "IMP_RECREATED";
+	}
+	return "Undefined";
+}
+
 
 peconv::t_pe_dump_mode convert_to_peconv_dump_mode(const pesieve::t_dump_mode dump_mode)
 {
@@ -240,10 +264,13 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 	modDumpReport->dumpFileName = makeModuleDumpPath(module_buf.getModuleBase(), module_name, payload_ext);
 	modDumpReport->is_corrupt_pe = is_corrupt_pe;
 	modDumpReport->is_shellcode = !module_buf.isValidPe();
+
 	if (module_buf.isFilled()) {
+		// Try to fix imports:
 		ImpReconstructor impRec(module_buf);
-		modDumpReport->is_imp_rec = impRec.rebuildImportTable(exportsMap, imprec_mode);
-		
+		ImpReconstructor::t_imprec_res imprec_res = impRec.rebuildImportTable(exportsMap, imprec_mode);
+
+		modDumpReport->impRecMode = get_imprec_res_name(imprec_res);
 		module_buf.setRelocBase(mod->getRelocBase());
 		modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode, exportsMap);
 
@@ -252,8 +279,8 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 			curr_dump_mode = peconv::PE_DUMP_VIRTUAL;
 		}
 		modDumpReport->mode_info = get_dump_mode_name(curr_dump_mode);
-
-		if (!modDumpReport->is_imp_rec || save_imp_report) {
+		bool iat_not_rebuilt = (imprec_res == ImpReconstructor::IMP_RECOVERY_ERROR) || (imprec_res = ImpReconstructor::IMP_RECOVERY_NOT_APLICABLE);
+		if (iat_not_rebuilt || save_imp_report) {
 			std::string imports_file = modDumpReport->dumpFileName + ".imports.txt";
 			if (impRec.printFoundIATs(imports_file)) {
 				modDumpReport->impListFileName = imports_file;
