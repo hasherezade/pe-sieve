@@ -49,7 +49,34 @@ std::string list_modules(const ProcessScanReport &report, t_report_filter filter
 	return stream.str();
 }
 
-std::string report_to_string(const ProcessScanReport &process_report)
+std::string list_dumped_modules(const ProcessDumpReport &report, t_report_filter filter)
+{
+	std::stringstream stream;
+	//summary:
+	size_t level = 1;
+	OUT_PADDED(stream, level, "\"dumps\" : [\n");
+	bool is_first = true;
+	std::vector<ModuleDumpReport*>::const_iterator itr;
+	for (itr = report.module_reports.begin(); itr != report.module_reports.end(); ++itr) {
+		ModuleDumpReport *mod = *itr;
+		if (mod->isDumped) {
+			if (!is_first) {
+				stream << ",\n";
+			}
+			OUT_PADDED(stream, level + 1, "{\n");
+			mod->toJSON(stream, level + 2);
+			stream << "\n";
+			OUT_PADDED(stream, level + 1, "}");
+			is_first = false;
+		}
+	}
+	stream << "\n";
+	OUT_PADDED(stream, level, "]\n");
+	return stream.str();
+}
+
+
+std::string scan_report_to_string(const ProcessScanReport &process_report)
 {
 	const t_report report = process_report.generateSummary();
 	std::stringstream stream;
@@ -75,7 +102,7 @@ std::string report_to_string(const ProcessScanReport &process_report)
 	return stream.str();
 }
 
-std::string report_to_json(const ProcessScanReport &process_report, t_report_filter filter)
+std::string scan_report_to_json(const ProcessScanReport &process_report, t_report_filter filter)
 {
 	const t_report report = process_report.generateSummary();
 	std::stringstream stream;
@@ -116,6 +143,28 @@ std::string report_to_json(const ProcessScanReport &process_report, t_report_fil
 	stream << std::dec << report.errors << "\n";
 	OUT_PADDED(stream, level, "},\n"); // scanned
 	stream << list_modules(process_report, filter);
+	stream << "}\n";
+	return stream.str();
+}
+
+std::string dump_report_to_json(const ProcessDumpReport &process_report, t_report_filter filter)
+{
+	std::stringstream stream;
+	//summary:
+	size_t level = 1;
+
+	stream << "{\n";
+	OUT_PADDED(stream, level, "\"pid\" : ");
+	stream << std::dec << process_report.getPid() << ",\n";
+
+
+	OUT_PADDED(stream, level, "\"dumped\" : \n");
+	OUT_PADDED(stream, level, "{\n");
+	//stream << " {\n";
+	OUT_PADDED(stream, level + 1, "\"total\" : ");
+	stream << std::dec << process_report.countDumped() << ",\n";
+	OUT_PADDED(stream, level, "},\n"); // scanned
+	stream << list_dumped_modules(process_report, filter);
 	stream << "}\n";
 	return stream.str();
 }

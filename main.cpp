@@ -151,13 +151,13 @@ ________________________________________________________________________\n";
 	print_help();
 }
 
-void print_report(const ProcessScanReport& report, const t_params args)
+void print_scan_report(const ProcessScanReport& report, const t_params args)
 {
 	std::string report_str;
 	if (args.json_output) {
-		report_str = report_to_json(report, REPORT_SUSPICIOUS_AND_ERRORS);
+		report_str = scan_report_to_json(report, REPORT_SUSPICIOUS_AND_ERRORS);
 	} else {
-		report_str = report_to_string(report);
+		report_str = scan_report_to_string(report);
 	}
 	//summary:
 	const t_report summary = report.generateSummary();
@@ -165,6 +165,13 @@ void print_report(const ProcessScanReport& report, const t_params args)
 	if (!args.json_output) {
 		std::cout << "---" << std::endl;
 	}
+}
+
+void print_dump_report(const ProcessDumpReport& report, const t_params args)
+{
+	std::string report_str;
+	report_str = dump_report_to_json(report, REPORT_SUSPICIOUS_AND_ERRORS);
+	std::cout << report_str;
 }
 
 bool set_output_dir(t_params &args, const char *new_dir)
@@ -319,9 +326,10 @@ int main(int argc, char *argv[])
 		std::cout << "Output filter: " << translate_out_filter(args.out_filter) << std::endl;
 		std::cout << "Dump mode: " << translate_dump_mode(args.dump_mode) << std::endl;
 	}
-	ProcessScanReport* report = scan_process(args);
+	PeSieveReport* report = scan_and_dump(args);
 	if (report != nullptr) {
-		print_report(*report, args);
+		print_scan_report(*report->scan_report, args);
+		print_dump_report(*report->dump_report, args);
 		delete report;
 		report = nullptr;
 	}

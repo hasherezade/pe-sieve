@@ -100,7 +100,7 @@ bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, t_report_f
 	if (!has_any_shown_type(summary, filter)) {
 		return false;
 	}
-	std::string report_all = report_to_json(process_report, filter);
+	std::string report_all = scan_report_to_json(process_report, filter);
 	if (report_all.length() == 0) {
 		return false;
 	}
@@ -122,15 +122,15 @@ bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, t_report_f
 	return false;
 }
 
-size_t ResultsDumper::dumpDetectedModules(HANDLE processHandle, 
+ProcessDumpReport* ResultsDumper::dumpDetectedModules(HANDLE processHandle,
 	ProcessScanReport &process_report, 
 	const pesieve::t_dump_mode dump_mode, 
 	const t_imprec_mode imprec_mode)
 {
 	if (processHandle == nullptr) {
-		return 0;
+		return nullptr;
 	}
-
+	ProcessDumpReport *dumpReport = new ProcessDumpReport(process_report.getPid());
 	this->dumpDir = ResultsDumper::makeDirName(process_report.getPid());
 
 	size_t dumped = 0;
@@ -144,28 +144,30 @@ size_t ResultsDumper::dumpDetectedModules(HANDLE processHandle,
 		if (mod->status != SCAN_SUSPICIOUS) {
 			continue;
 		}
-
-		if (dumpModule(processHandle,
+		ModuleDumpReport *modReport = dumpModule(processHandle,
 			mod,
 			process_report.exportsMap,
 			dump_mode,
-			imprec_mode)
-			)
-		{
-			dumped++;
+			imprec_mode
+		);
+
+		if (dumpReport) {
+			dumpReport->appendReport(modReport);
 		}
 	}
-	return dumped;
+	return dumpReport;
 }
 
-bool ResultsDumper::dumpModule(HANDLE processHandle,
+ModuleDumpReport*  ResultsDumper::dumpModule(HANDLE processHandle,
 	ModuleScanReport* mod,
 	const peconv::ExportsMapper *exportsMap,
 	const pesieve::t_dump_mode dump_mode,
 	const t_imprec_mode imprec_mode
 )
 {
-	if (!mod) return false;
+	if (!mod) return nullptr;
+
+	ModuleDumpReport *modDumpReport = new ModuleDumpReport((ULONGLONG)mod->module);
 
 	bool save_imp_report = true;
 
@@ -175,7 +177,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 	std::string payload_ext = "";
 
 	PeBuffer module_buf;
-	bool is_corrupt_pe = false;
+	modDumpReport->is_corrupt_pe = false;
 	ArtefactScanReport* artefactReport = dynamic_cast<ArtefactScanReport*>(mod);
 	if (artefactReport) {
 		payload_ext = get_payload_ext(*artefactReport);
@@ -187,14 +189,14 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 			ULONGLONG found_pe_base = artefactReport->artefacts.peImageBase();
 			PeReconstructor peRec(artefactReport->artefacts, module_buf);
 			if (!peRec.reconstruct(processHandle)) {
-				is_corrupt_pe = true;
+				modDumpReport->is_corrupt_pe = true;
 				payload_ext = "corrupt_" + payload_ext;
 				std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG)mod->module << " failed." << std::endl;
 			}
 		}
 	}
 	// if it is not an artefact report, or reconstructing by artefacts failed, read it from the memory:
-	if (!artefactReport || is_corrupt_pe) {
+	if (!artefactReport || modDumpReport->is_corrupt_pe) {
 		size_t img_size = mod->moduleSize;
 		if (img_size == 0) {
 			//some of the reports may not have moduleSize filled
@@ -207,7 +209,7 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 		payload_ext = module_buf.isValidPe() ? "dll" : "shc";
 	}
 	const std::string module_name = get_module_file_name(processHandle, *mod);
-	std::string dumpFileName = makeModuleDumpPath(module_buf.getModuleBase(), module_name, payload_ext);
+	modDumpReport->dumpFileName = makeModuleDumpPath(module_buf.getModuleBase(), module_name, payload_ext);
 	bool is_module_dumped = false;
 
 	if (module_buf.isFilled()) {
@@ -215,13 +217,13 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 		bool is_imp_rec = impRec.rebuildImportTable(exportsMap, imprec_mode);
 		
 		module_buf.setRelocBase(mod->getRelocBase());
-		is_module_dumped = module_buf.dumpPeToFile(dumpFileName, curr_dump_mode, exportsMap);
+		is_module_dumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode, exportsMap);
 		if (!is_module_dumped) {
-			is_module_dumped = module_buf.dumpToFile(dumpFileName);
+			is_module_dumped = module_buf.dumpToFile(modDumpReport->dumpFileName);
 			curr_dump_mode = peconv::PE_DUMP_VIRTUAL;
 		}
 		if (!is_imp_rec || save_imp_report) {
-			impRec.printFoundIATs(dumpFileName + ".imports.txt");
+			impRec.printFoundIATs(modDumpReport->dumpFileName + ".imports.txt");
 		}
 	}
 
@@ -231,22 +233,24 @@ bool ResultsDumper::dumpModule(HANDLE processHandle,
 			payload_ext = "shc";
 		}
 		module_buf.readRemote(processHandle, (ULONGLONG)mod->module, mod->moduleSize);
-		dumpFileName = makeModuleDumpPath(module_buf.getModuleBase(), module_name, payload_ext);
-		is_module_dumped = module_buf.dumpToFile(dumpFileName);
+		modDumpReport->dumpFileName = makeModuleDumpPath(module_buf.getModuleBase(), module_name, payload_ext);
+		is_module_dumped = module_buf.dumpToFile(modDumpReport->dumpFileName);
 		curr_dump_mode = peconv::PE_DUMP_VIRTUAL;
 	}
 	if (is_module_dumped) {
-		mod->generateTags(dumpFileName + ".tag");
+		mod->generateTags(modDumpReport->dumpFileName + ".tag");
 		if (!this->quiet) {
 			std::string mode_info = get_dump_mode_name(curr_dump_mode);
 			if (mode_info.length() > 0) mode_info = " as " + mode_info;
-			std::cout << "[*] Dumped module to: " + dumpFileName + mode_info << "\n";
+			std::cout << "[*] Dumped module to: " + modDumpReport->dumpFileName + mode_info << "\n";
+			modDumpReport->isDumped = true;
 		}
 	}
 	else {
 		std::cerr << "[-] Failed dumping module!" << std::endl;
+		modDumpReport->isDumped = false;
 	}
-	return is_module_dumped;
+	return modDumpReport;
 }
 
 void ResultsDumper::makeAndJoinDirectories(std::stringstream& stream)
