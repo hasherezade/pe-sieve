@@ -31,15 +31,15 @@ public:
 		outs << "\"" << std::hex << moduleSize << "\"" << ",\n";
 		if (dumpFileName.length()) {
 			OUT_PADDED(outs, level, "\"dump_file\" : ");
-			outs << "\"" << escape_path_separators(dumpFileName) << "\"" << ",\n";
+			outs << "\"" << peconv::get_file_name(dumpFileName) << "\"" << ",\n";
 		}
 		if (tagsFileName.length()) {
 			OUT_PADDED(outs, level, "\"tags_file\" : ");
-			outs << "\"" << escape_path_separators(tagsFileName) << "\"" << ",\n";
+			outs << "\"" << peconv::get_file_name(tagsFileName) << "\"" << ",\n";
 		}
 		if (impListFileName.length()) {
 			OUT_PADDED(outs, level, "\"imports_file\" : ");
-			outs << "\"" << escape_path_separators(impListFileName) << "\"" << ",\n";
+			outs << "\"" << peconv::get_file_name(impListFileName) << "\"" << ",\n";
 		}
 		if (mode_info.length()) {
 			OUT_PADDED(outs, level, "\"dump_mode\" : ");
