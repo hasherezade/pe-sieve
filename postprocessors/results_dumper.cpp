@@ -239,7 +239,9 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 			if (!peRec.reconstruct(processHandle)) {
 				is_corrupt_pe = true;
 				payload_ext = "corrupt_" + payload_ext;
-				std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG)mod->module << " failed." << std::endl;
+				if (!this->quiet) {
+					std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG)mod->module << " failed." << std::endl;
+				}
 			}
 		}
 	}
