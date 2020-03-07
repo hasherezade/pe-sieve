@@ -117,7 +117,8 @@ ProcessDumpReport* dump_output(ProcessScanReport &process_report, const pesieve:
 			dump_mode = pesieve::t_dump_mode(args.dump_mode);
 		}
 		dumpReport = dumper.dumpDetectedModules(hProcess, process_report, dump_mode, args.imprec_mode);
-		if (!dumpReport && dumpReport->countDumped()) {
+		if (dumpReport && dumpReport->countDumped()) {
+			dumpReport->outputDir = dumper.getOutputDir();
 			dumped_modules = dumpReport->countDumped();
 		}
 		if (!args.quiet && dumped_modules) {

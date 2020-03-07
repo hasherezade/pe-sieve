@@ -157,6 +157,8 @@ std::string dump_report_to_json(const ProcessDumpReport &process_report, t_repor
 	OUT_PADDED(stream, level, "\"pid\" : ");
 	stream << std::dec << process_report.getPid() << ",\n";
 
+	OUT_PADDED(stream, level, "\"output_dir\" : \"");
+	stream << escape_path_separators(process_report.outputDir) << "\",\n";
 
 	OUT_PADDED(stream, level, "\"dumped\" : \n");
 	OUT_PADDED(stream, level, "{\n");

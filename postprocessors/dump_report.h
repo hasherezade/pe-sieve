@@ -30,6 +30,10 @@ public:
 			OUT_PADDED(outs, level, "\"dump_file\" : ");
 			outs << "\"" << escape_path_separators(dumpFileName) << "\"" << ",\n";
 		}
+		if (mode_info.length()) {
+			OUT_PADDED(outs, level, "\"dump_mode\" : ");
+			outs << "\"" << mode_info << "\"" << ",\n";
+		}
 		OUT_PADDED(outs, level, "\"status\" : ");
 		outs << std::dec << this->isDumped;
 		return true;
@@ -40,7 +44,7 @@ public:
 	bool dump_shellcode;
 
 	bool isDumped;
-
+	std::string mode_info;
 	std::string dumpFileName;
 };
 
@@ -77,7 +81,7 @@ public:
 
 	DWORD getPid() const { return pid; }
 
-	//std::string mainImagePath;
+	std::string outputDir;
 	std::vector<ModuleDumpReport*> module_reports; //TODO: make it protected
 	//peconv::ExportsMapper *exportsMap;
 

@@ -239,11 +239,12 @@ ModuleDumpReport*  ResultsDumper::dumpModule(HANDLE processHandle,
 	}
 	if (is_module_dumped) {
 		mod->generateTags(modDumpReport->dumpFileName + ".tag");
+		modDumpReport->isDumped = true;
+		modDumpReport->mode_info = get_dump_mode_name(curr_dump_mode);
 		if (!this->quiet) {
 			std::string mode_info = get_dump_mode_name(curr_dump_mode);
 			if (mode_info.length() > 0) mode_info = " as " + mode_info;
 			std::cout << "[*] Dumped module to: " + modDumpReport->dumpFileName + mode_info << "\n";
-			modDumpReport->isDumped = true;
 		}
 	}
 	else {
