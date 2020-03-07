@@ -46,7 +46,7 @@ public:
 			outs << "\"" << mode_info << "\"" << ",\n";
 		}
 		if (impRecMode.length()) {
-			OUT_PADDED(outs, level, "\"imp_rec_mode\" : ");
+			OUT_PADDED(outs, level, "\"imp_rec_result\" : ");
 			outs << "\"" << impRecMode << "\"" << ",\n";
 		}
 		OUT_PADDED(outs, level, "\"is_shellcode\" : ");
