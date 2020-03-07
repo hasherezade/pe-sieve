@@ -20,5 +20,3 @@ bool is_shown_type(t_scan_status status, t_report_filter filter);
 std::string scan_report_to_string(const ProcessScanReport &report);
 
 std::string scan_report_to_json(const ProcessScanReport &report, t_report_filter filter);
-
-std::string dump_report_to_json(const ProcessDumpReport &process_report, t_report_filter filter);

@@ -105,13 +105,63 @@ public:
 		return dumped;
 	}
 
+	const virtual bool toJSON(std::stringstream &stream, size_t level)
+	{
+		stream << "{\n";
+		OUT_PADDED(stream, level, "\"pid\" : ");
+		stream << std::dec << getPid() << ",\n";
+
+		OUT_PADDED(stream, level, "\"output_dir\" : \"");
+		stream << escape_path_separators(outputDir) << "\",\n";
+		if (minidumpPath.length()) {
+			OUT_PADDED(stream, level, "\"minidump_path\" : \"");
+			stream << escape_path_separators(this->minidumpPath) << "\",\n";
+		}
+
+		OUT_PADDED(stream, level, "\"dumped\" : \n");
+		OUT_PADDED(stream, level, "{\n");
+		//stream << " {\n";
+		OUT_PADDED(stream, level + 1, "\"total\" : ");
+		stream << std::dec << countDumped() << ",\n";
+		OUT_PADDED(stream, level, "},\n"); // scanned
+		stream << list_dumped_modules(level);
+		stream << "}\n";
+
+		return true;
+	}
+
 	DWORD getPid() const { return pid; }
 
 	std::string outputDir;
-	std::vector<ModuleDumpReport*> module_reports; //TODO: make it protected
-	//peconv::ExportsMapper *exportsMap;
+	std::string minidumpPath;
 
 protected:
+
+	std::string list_dumped_modules(size_t level)
+	{
+		std::stringstream stream;
+		//summary:
+		OUT_PADDED(stream, level, "\"dumps\" : [\n");
+		bool is_first = true;
+		std::vector<ModuleDumpReport*>::const_iterator itr;
+		for (itr = module_reports.begin(); itr != module_reports.end(); ++itr) {
+			ModuleDumpReport *mod = *itr;
+			if (mod->isDumped) {
+				if (!is_first) {
+					stream << ",\n";
+				}
+				OUT_PADDED(stream, level + 1, "{\n");
+				mod->toJSON(stream, level + 2);
+				stream << "\n";
+				OUT_PADDED(stream, level + 1, "}");
+				is_first = false;
+			}
+		}
+		stream << "\n";
+		OUT_PADDED(stream, level, "]\n");
+		return stream.str();
+	}
+
 	void deleteModuleReports()
 	{
 		std::vector<ModuleDumpReport*>::iterator itr = module_reports.begin();
@@ -123,6 +173,7 @@ protected:
 	}
 
 	DWORD pid;
+	std::vector<ModuleDumpReport*> module_reports;
 
 	friend class ResultsDumper;
 };

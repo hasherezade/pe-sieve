@@ -20,6 +20,8 @@ public:
 	// dump JSON report from the process scan
 	bool dumpJsonReport(ProcessScanReport &process_report, t_report_filter filter);
 
+	bool dumpJsonReport(ProcessDumpReport &process_report);
+
 	std::string getOutputDir()
 	{
 		return this->dumpDir;

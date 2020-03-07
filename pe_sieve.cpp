@@ -118,7 +118,6 @@ ProcessDumpReport* dump_output(ProcessScanReport &process_report, const pesieve:
 		}
 		dumpReport = dumper.dumpDetectedModules(hProcess, process_report, dump_mode, args.imprec_mode);
 		if (dumpReport && dumpReport->countDumped()) {
-			dumpReport->outputDir = dumper.getOutputDir();
 			dumped_modules = dumpReport->countDumped();
 		}
 		if (!args.quiet && dumped_modules) {
@@ -133,6 +132,10 @@ ProcessDumpReport* dump_output(ProcessScanReport &process_report, const pesieve:
 			std::string file_name = peconv::get_file_name(original_path);
 			std::string dump_file = dumper.makeOutPath(file_name + ".dmp");
 			if (make_minidump(process_report.getPid(), dump_file)) {
+				if (!dumpReport) {
+					dumpReport = new ProcessDumpReport(process_report.getPid());
+				}
+				dumpReport->minidumpPath = dump_file;
 				if(!args.quiet) {
 					std::cout << "[+] Minidump saved to: " << dump_file << std::endl;
 				}
@@ -140,6 +143,12 @@ ProcessDumpReport* dump_output(ProcessScanReport &process_report, const pesieve:
 			else if(!args.quiet){
 				std::cout << "[-] Creating minidump failed! " << std::endl;
 			}
+		}
+	}
+	if (dumpReport) {
+		dumpReport->outputDir = dumper.getOutputDir();
+		if (dumper.dumpJsonReport(*dumpReport) && !args.quiet) {
+			std::cout << "[+] Report dumped to: " << dumper.getOutputDir() << std::endl;
 		}
 	}
 	return dumpReport;

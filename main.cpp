@@ -167,13 +167,6 @@ void print_scan_report(const ProcessScanReport& report, const t_params args)
 	}
 }
 
-void print_dump_report(const ProcessDumpReport& report, const t_params args)
-{
-	std::string report_str;
-	report_str = dump_report_to_json(report, REPORT_SUSPICIOUS_AND_ERRORS);
-	std::cout << report_str;
-}
-
 bool set_output_dir(t_params &args, const char *new_dir)
 {
 	if (!new_dir) return false;
@@ -329,7 +322,6 @@ int main(int argc, char *argv[])
 	PeSieveReport* report = scan_and_dump(args);
 	if (report != nullptr) {
 		print_scan_report(*report->scan_report, args);
-		print_dump_report(*report->dump_report, args);
 		delete report;
 		report = nullptr;
 	}

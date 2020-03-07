@@ -109,7 +109,33 @@ bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, t_report_f
 	this->dumpDir = ResultsDumper::makeDirName(process_report.getPid());
 
 	std::ofstream json_report;
-	std::string report_path = makeOutPath("report.json");
+	std::string report_path = makeOutPath("scan_report.json");
+	json_report.open(report_path);
+	if (json_report.is_open() == false) {
+		return false;
+	}
+	json_report << report_all;
+	if (json_report.is_open()) {
+		json_report.close();
+		return true;
+	}
+	return false;
+}
+
+bool ResultsDumper::dumpJsonReport(ProcessDumpReport &process_report)
+{
+	std::stringstream stream;
+	size_t level = 1;
+	process_report.toJSON(stream, level);
+	std::string report_all = stream.str();
+	if (report_all.length() == 0) {
+		return false;
+	}
+	//ensure that the directory is created:
+	this->dumpDir = ResultsDumper::makeDirName(process_report.getPid());
+
+	std::ofstream json_report;
+	std::string report_path = makeOutPath("dump_report.json");
 	json_report.open(report_path);
 	if (json_report.is_open() == false) {
 		return false;
