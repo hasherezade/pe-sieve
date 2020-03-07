@@ -124,7 +124,7 @@ bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, t_report_f
 
 bool ResultsDumper::dumpJsonReport(ProcessDumpReport &process_report)
 {
-	if (!process_report.countTotal()) {
+	if (!process_report.isFilled()) {
 		return false;
 	}
 	std::stringstream stream;

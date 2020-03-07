@@ -97,6 +97,13 @@ public:
 		return module_reports.size();
 	}
 
+	bool isFilled() const
+	{
+		if (countTotal()) return true;
+		if (this->minidumpPath.length()) return true;
+		return false;
+	}
+
 	size_t countDumped() const
 	{
 		size_t dumped = 0;
@@ -158,13 +165,16 @@ protected:
 					stream << ",\n";
 				}
 				OUT_PADDED(stream, level + 1, "{\n");
-				mod->toJSON(stream, level + 2);
-				stream << "\n";
+				if (mod->toJSON(stream, level + 2)) {
+					stream << "\n";
+				}
 				OUT_PADDED(stream, level + 1, "}");
 				is_first = false;
 			}
 		}
-		stream << "\n";
+		if (module_reports.size()) {
+			stream << "\n";
+		}
 		OUT_PADDED(stream, level, "]\n");
 		return stream.str();
 	}

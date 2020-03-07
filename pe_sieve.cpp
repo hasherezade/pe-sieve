@@ -127,7 +127,9 @@ ProcessDumpReport* dump_output(ProcessScanReport &process_report, const pesieve:
 	if (args.minidump) {
 		pesieve::t_report report = process_report.generateSummary();
 		if (report.suspicious > 0) {
-			std::cout << "[*] Creating minidump..." << std::endl;
+			if (!args.quiet) {
+				std::cout << "[*] Creating minidump..." << std::endl;
+			}
 			std::string original_path = process_report.mainImagePath;
 			std::string file_name = peconv::get_file_name(original_path);
 			std::string dump_file = dumper.makeOutPath(file_name + ".dmp");
@@ -137,7 +139,7 @@ ProcessDumpReport* dump_output(ProcessScanReport &process_report, const pesieve:
 				}
 				dumpReport->minidumpPath = dump_file;
 				if(!args.quiet) {
-					std::cout << "[+] Minidump saved to: " << dump_file << std::endl;
+					std::cout << "[+] Minidump saved to: " << dumpReport->minidumpPath << std::endl;
 				}
 			}
 			else if(!args.quiet){
@@ -206,9 +208,6 @@ ProcessScanReport* scan_process(const t_params args, HANDLE hProcess)
 		return nullptr;
 		
 	}
-	/*if (process_report) {
-		dump_output(*process_report, hProcess, args);
-	}*/
 	if (autoopened) {
 		CloseHandle(hProcess);
 	}
