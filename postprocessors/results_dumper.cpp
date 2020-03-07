@@ -210,9 +210,10 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 
 	modDumpReport->dumpFileName = makeModuleDumpPath(module_buf.getModuleBase(), module_name, payload_ext);
 	modDumpReport->is_corrupt_pe = is_corrupt_pe;
+	modDumpReport->is_shellcode = !module_buf.isValidPe();
 	if (module_buf.isFilled()) {
 		ImpReconstructor impRec(module_buf);
-		bool is_imp_rec = impRec.rebuildImportTable(exportsMap, imprec_mode);
+		modDumpReport->is_imp_rec = impRec.rebuildImportTable(exportsMap, imprec_mode);
 		
 		module_buf.setRelocBase(mod->getRelocBase());
 		modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode, exportsMap);
@@ -223,8 +224,11 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 		}
 		modDumpReport->mode_info = get_dump_mode_name(curr_dump_mode);
 
-		if (!is_imp_rec || save_imp_report) {
-			impRec.printFoundIATs(modDumpReport->dumpFileName + ".imports.txt");
+		if (!modDumpReport->is_imp_rec || save_imp_report) {
+			std::string imports_file = modDumpReport->dumpFileName + ".imports.txt";
+			if (impRec.printFoundIATs(imports_file)) {
+				modDumpReport->impListFileName = imports_file;
+			}
 		}
 	}
 
@@ -238,16 +242,18 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 		modDumpReport = new ModuleDumpReport(module_buf.getModuleBase(), module_buf.getBufferSize());
 		dumpReport.appendReport(modDumpReport);
 
+		modDumpReport->is_shellcode = dump_shellcode;
 		modDumpReport->dumpFileName = makeModuleDumpPath(module_buf.getModuleBase(), module_name, payload_ext);
 		modDumpReport->isDumped = module_buf.dumpToFile(modDumpReport->dumpFileName);
 		curr_dump_mode = peconv::PE_DUMP_VIRTUAL;
 		modDumpReport->mode_info = get_dump_mode_name(curr_dump_mode);
 	}
 	if (modDumpReport->isDumped) {
-		mod->generateTags(modDumpReport->dumpFileName + ".tag");
+		std::string tags_file = modDumpReport->dumpFileName + ".tag";
+		if (mod->generateTags(tags_file)) {
+			modDumpReport->tagsFileName = tags_file;
+		}
 		is_dumped = true;
-		//modDumpReport->moduleSize = module_buf.getBufferSize();
-		//modDumpReport->mode_info = get_dump_mode_name(curr_dump_mode);
 		if (!this->quiet) {
 			std::string mode_info = modDumpReport->mode_info;
 			if (mode_info.length() > 0) mode_info = " as " + mode_info;

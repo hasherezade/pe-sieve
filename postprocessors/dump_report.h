@@ -18,7 +18,7 @@ public:
 	ModuleDumpReport(ULONGLONG module_start, size_t module_size)
 		: moduleStart(module_start), moduleSize(module_size), isDumped(false),
 		is_corrupt_pe(false), 
-		dump_shellcode(false)
+		is_shellcode(false), is_imp_rec(false)
 	{
 	}
 
@@ -32,10 +32,29 @@ public:
 			OUT_PADDED(outs, level, "\"dump_file\" : ");
 			outs << "\"" << escape_path_separators(dumpFileName) << "\"" << ",\n";
 		}
+		if (tagsFileName.length()) {
+			OUT_PADDED(outs, level, "\"tags_file\" : ");
+			outs << "\"" << escape_path_separators(tagsFileName) << "\"" << ",\n";
+		}
+		if (tagsFileName.length()) {
+			OUT_PADDED(outs, level, "\"imports_file\" : ");
+			outs << "\"" << escape_path_separators(impListFileName) << "\"" << ",\n";
+		}
+		if (is_imp_rec) {
+			OUT_PADDED(outs, level, "\"is_imp_rec\" : ");
+			outs << std::dec << is_imp_rec << ",\n";
+		}
 		if (mode_info.length()) {
 			OUT_PADDED(outs, level, "\"dump_mode\" : ");
 			outs << "\"" << mode_info << "\"" << ",\n";
 		}
+		OUT_PADDED(outs, level, "\"is_shellcode\" : ");
+		outs <<  std::dec << is_shellcode  << ",\n";
+		if (is_corrupt_pe) {
+			OUT_PADDED(outs, level, "\"is_corrupt_pe\" : ");
+			outs << std::dec << is_corrupt_pe << ",\n";
+		}
+
 		OUT_PADDED(outs, level, "\"status\" : ");
 		outs << std::dec << this->isDumped;
 		return true;
@@ -44,11 +63,13 @@ public:
 	ULONGLONG moduleStart;
 	size_t moduleSize;
 	bool is_corrupt_pe;
-	bool dump_shellcode;
-
+	bool is_shellcode;
+	bool is_imp_rec;
 	bool isDumped;
 	std::string mode_info;
 	std::string dumpFileName;
+	std::string tagsFileName;
+	std::string impListFileName;
 };
 
 class ProcessDumpReport

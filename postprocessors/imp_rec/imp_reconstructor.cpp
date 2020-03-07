@@ -91,15 +91,15 @@ bool ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* export
 	return imp_recovered;
 }
 
-void ImpReconstructor::printFoundIATs(std::string reportPath)
+bool ImpReconstructor::printFoundIATs(std::string reportPath)
 {
 	if (!foundIATs.size()) {
-		return;
+		return false;
 	}
 	std::ofstream report;
 	report.open(reportPath);
 	if (report.is_open() == false) {
-		return;
+		return false;
 	}
 
 	std::map<DWORD, IATBlock*>::iterator itr;
@@ -107,6 +107,7 @@ void ImpReconstructor::printFoundIATs(std::string reportPath)
 		report << itr->second->toString();
 	}
 	report.close();
+	return true;
 }
 
 bool ImpReconstructor::isDefaultImportValid(IN const peconv::ExportsMapper* exportsMap)

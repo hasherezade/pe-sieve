@@ -174,7 +174,7 @@ public:
 	}
 
 	bool rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode);
-	void printFoundIATs(std::string reportPath);
+	bool printFoundIATs(std::string reportPath);
 
 private:
 
