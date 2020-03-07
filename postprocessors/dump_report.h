@@ -36,7 +36,7 @@ public:
 			OUT_PADDED(outs, level, "\"tags_file\" : ");
 			outs << "\"" << escape_path_separators(tagsFileName) << "\"" << ",\n";
 		}
-		if (tagsFileName.length()) {
+		if (impListFileName.length()) {
 			OUT_PADDED(outs, level, "\"imports_file\" : ");
 			outs << "\"" << escape_path_separators(impListFileName) << "\"" << ",\n";
 		}
