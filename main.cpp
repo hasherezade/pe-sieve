@@ -151,13 +151,13 @@ ________________________________________________________________________\n";
 	print_help();
 }
 
-void print_report(const ProcessScanReport& report, const t_params args)
+void print_scan_report(const ProcessScanReport& report, const t_params args)
 {
 	std::string report_str;
 	if (args.json_output) {
-		report_str = report_to_json(report, REPORT_SUSPICIOUS_AND_ERRORS);
+		report_str = scan_report_to_json(report, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS);
 	} else {
-		report_str = report_to_string(report);
+		report_str = scan_report_to_string(report);
 	}
 	//summary:
 	const t_report summary = report.generateSummary();
@@ -319,9 +319,9 @@ int main(int argc, char *argv[])
 		std::cout << "Output filter: " << translate_out_filter(args.out_filter) << std::endl;
 		std::cout << "Dump mode: " << translate_dump_mode(args.dump_mode) << std::endl;
 	}
-	ProcessScanReport* report = scan_process(args);
+	PeSieveReport* report = scan_and_dump(args);
 	if (report != nullptr) {
-		print_report(*report, args);
+		print_scan_report(*report->scan_report, args);
 		delete report;
 		report = nullptr;
 	}

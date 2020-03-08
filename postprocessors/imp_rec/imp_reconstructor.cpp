@@ -33,73 +33,65 @@ BYTE* ImportTableBuffer::getDllSpaceAt(const DWORD rva, size_t required_size)
 
 //---
 
-bool ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode)
+ImpReconstructor::t_imprec_res ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode)
 {
 	if (!exportsMap) {
-		return false;
+		return IMP_RECOVERY_SKIPPED;
 	}
 	if (!collectIATs(exportsMap)) {
-		return false;
-	}
-	if (!peBuffer.isValidPe()) {
-		// this is possibly a shellcode, stop after collecting the IATs
-		return false;
+		return IMP_NOT_FOUND;
 	}
 
+	if (!peBuffer.isValidPe()) {
+		// this is possibly a shellcode, stop after collecting the IATs
+		return IMP_RECOVERY_NOT_APLICABLE;
+	}
 	if (!peconv::is_pe_raw_eq_virtual(peBuffer.vBuf, peBuffer.vBufSize)
 		&& peconv::is_pe_raw(peBuffer.vBuf, peBuffer.vBufSize))
 	{
-		std::cout << "[-] ImportTable NOT recovered: the PE is in a raw format!\n";
-		return false;
+		// Do not proceed, the PE is in a raw format
+		return IMP_RECOVERY_NOT_APLICABLE;
 	}
 
-	bool imp_recovered = false;
 	if (imprec_mode == PE_IMPREC_UNERASE || imprec_mode == PE_IMPREC_AUTO) {
-		std::cout << "[*] Trying to find ImportTable for module: " << std::hex << (ULONGLONG)peBuffer.moduleBase << "\n";
-		bool is_valid = this->isDefaultImportValid(exportsMap);
-		if (is_valid) {
-			std::cout << "[+] Valid Import Table already set.\n";
-			return is_valid;
+
+		if (this->isDefaultImportValid(exportsMap)) {
+			// Valid Import Table already set
+			return ImpReconstructor::IMP_ALREADY_OK;
 		}
-		imp_recovered = findImportTable(exportsMap);
-		if (imp_recovered) {
-			std::cout << "[+] ImportTable found.\n";
-			return imp_recovered;
-		}
-		else {
-			std::cout << "[-] ImportTable NOT found.\n";
+		if (findImportTable(exportsMap)) {
+			// ImportTable found and set:
+			return ImpReconstructor::IMP_DIR_FIXED;
 		}
 	}
 
+	t_imprec_res res = IMP_RECOVERY_ERROR;
+
+	// Try to rebuild ImportTable for module
 	if (imprec_mode == PE_IMPREC_REBUILD || imprec_mode == PE_IMPREC_AUTO) {
-		std::cout << "[*] Trying to rebuild ImportTable for module: " << std::hex << (ULONGLONG)peBuffer.moduleBase << "\n";
+
 		if (findIATsCoverage(exportsMap)) {
-			
 			ImportTableBuffer *impBuf = constructImportTable();
 			if (impBuf) {
-				imp_recovered = appendImportTable(*impBuf);
+				if (appendImportTable(*impBuf)) {
+					res = IMP_RECREATED;
+				}
 			}
-			delete impBuf; impBuf = nullptr;
-			if (imp_recovered) {
-				std::cout << "[+] ImportTable rebuilt.\n";
-			}
-		}
-		if (!imp_recovered) {
-			std::cout << "[-] ImportTable NOT rebuilt.\n";
+			delete impBuf;
 		}
 	}
-	return imp_recovered;
+	return res;
 }
 
-void ImpReconstructor::printFoundIATs(std::string reportPath)
+bool ImpReconstructor::printFoundIATs(std::string reportPath)
 {
 	if (!foundIATs.size()) {
-		return;
+		return false;
 	}
 	std::ofstream report;
 	report.open(reportPath);
 	if (report.is_open() == false) {
-		return;
+		return false;
 	}
 
 	std::map<DWORD, IATBlock*>::iterator itr;
@@ -107,6 +99,7 @@ void ImpReconstructor::printFoundIATs(std::string reportPath)
 		report << itr->second->toString();
 	}
 	report.close();
+	return true;
 }
 
 bool ImpReconstructor::isDefaultImportValid(IN const peconv::ExportsMapper* exportsMap)

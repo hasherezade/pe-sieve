@@ -3,6 +3,7 @@
 #include <Windows.h>
 
 #include "report_formatter.h"
+#include "dump_report.h"
 
 class ResultsDumper
 {
@@ -14,10 +15,12 @@ public:
 	}
 	
 	// dump all modules detected as suspicious during the process scan
-	size_t dumpDetectedModules(HANDLE hProcess, ProcessScanReport &process_report, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
+	ProcessDumpReport* dumpDetectedModules(HANDLE hProcess, ProcessScanReport &process_report, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
 
 	// dump JSON report from the process scan
-	bool dumpJsonReport(ProcessScanReport &process_report, t_report_filter filter);
+	bool dumpJsonReport(ProcessScanReport &process_report, ProcessScanReport::t_report_filter filter);
+
+	bool dumpJsonReport(ProcessDumpReport &process_report);
 
 	std::string getOutputDir()
 	{
@@ -27,8 +30,21 @@ public:
 	std::string makeOutPath(std::string fname, const std::string& defaultExtension = "");
 
 protected:
-
-	bool dumpModule(HANDLE processHandle, ModuleScanReport* mod, const peconv::ExportsMapper *exportsMap, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
+	/**
+	\param processHandle : handle of the target process (from which the artefacts will be dumped)
+	\param modReport : ModuleScanReport defining artefacts to be dumped
+	\param exportsMap : mapping of all the exported APIs available within the process (for imports reconstruction)
+	\param imprec_mode : mode in which imports reconstruction will be attempted
+	\param dumpReport : ProcessDumpReport to which reports from the current dump will be appended
+	*/
+	bool dumpModule(
+		IN HANDLE processHandle, 
+		IN ModuleScanReport* modReport,
+		IN const peconv::ExportsMapper *exportsMap,
+		IN const pesieve::t_dump_mode dump_mode,
+		IN const pesieve::t_imprec_mode imprec_mode,
+		OUT ProcessDumpReport &dumpReport
+	);
 
 	/**
 	\param modBaseAddr : base address where this module was mapped

@@ -173,8 +173,19 @@ public:
 		deleteFoundIATs();
 	}
 
-	bool rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode);
-	void printFoundIATs(std::string reportPath);
+	typedef enum imprec_res {
+		IMP_NOT_FOUND = -3,
+		IMP_RECOVERY_ERROR = -2,
+		IMP_RECOVERY_NOT_APLICABLE = -1,
+		IMP_RECOVERY_SKIPPED = 0,
+		IMP_ALREADY_OK = 1,
+		IMP_DIR_FIXED = 2,
+		IMP_FIXED = 3,
+		IMP_RECREATED = 4
+	} t_imprec_res;
+	t_imprec_res rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode);
+
+	bool printFoundIATs(std::string reportPath);
 
 private:
 

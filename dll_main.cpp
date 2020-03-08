@@ -11,14 +11,14 @@
 
 pesieve::t_report __stdcall PESieve_scan(pesieve::t_params args)
 {
-	const ProcessScanReport* report = scan_process(args);
+	const PeSieveReport* report = scan_and_dump(args);
 	if (report == nullptr) {
 		pesieve::t_report nullrep = { 0 };
 		nullrep.pid = args.pid;
 		nullrep.errors = 1;
 		return nullrep;
 	}
-	pesieve::t_report summary = report->generateSummary();
+	pesieve::t_report summary = report->scan_report->generateSummary();
 	delete report;
 	return summary;
 }
