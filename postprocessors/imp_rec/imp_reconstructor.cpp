@@ -44,13 +44,13 @@ ImpReconstructor::t_imprec_res ImpReconstructor::rebuildImportTable(const IN pec
 
 	if (!peBuffer.isValidPe()) {
 		// this is possibly a shellcode, stop after collecting the IATs
-		return IMP_RECOVERY_NOT_APLICABLE;
+		return IMP_RECOVERY_NOT_APPLICABLE;
 	}
 	if (!peconv::is_pe_raw_eq_virtual(peBuffer.vBuf, peBuffer.vBufSize)
 		&& peconv::is_pe_raw(peBuffer.vBuf, peBuffer.vBufSize))
 	{
 		// Do not proceed, the PE is in a raw format
-		return IMP_RECOVERY_NOT_APLICABLE;
+		return IMP_RECOVERY_NOT_APPLICABLE;
 	}
 
 	if (imprec_mode == PE_IMPREC_UNERASE || imprec_mode == PE_IMPREC_AUTO) {

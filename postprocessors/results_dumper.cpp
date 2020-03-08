@@ -45,8 +45,8 @@ std::string get_imprec_res_name(const ImpReconstructor::t_imprec_res &res)
 		return "IMP_NOT_FOUND";
 	case ImpReconstructor::IMP_RECOVERY_ERROR:
 		return "IMP_RECOVERY_ERROR";
-	case ImpReconstructor::IMP_RECOVERY_NOT_APLICABLE:
-		return "IMP_RECOVERY_NOT_APLICABLE";
+	case ImpReconstructor::IMP_RECOVERY_NOT_APPLICABLE:
+		return "IMP_RECOVERY_NOT_APPLICABLE";
 	case ImpReconstructor::IMP_RECOVERY_SKIPPED:
 		return "";
 	case ImpReconstructor::IMP_ALREADY_OK:
@@ -268,7 +268,7 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 			curr_dump_mode = peconv::PE_DUMP_VIRTUAL;
 		}
 		modDumpReport->mode_info = get_dump_mode_name(curr_dump_mode);
-		bool iat_not_rebuilt = (imprec_res == ImpReconstructor::IMP_RECOVERY_ERROR) || (imprec_res = ImpReconstructor::IMP_RECOVERY_NOT_APLICABLE);
+		bool iat_not_rebuilt = (imprec_res == ImpReconstructor::IMP_RECOVERY_ERROR) || (imprec_res = ImpReconstructor::IMP_RECOVERY_NOT_APPLICABLE);
 		if (iat_not_rebuilt || save_imp_report) {
 			std::string imports_file = modDumpReport->dumpFileName + ".imports.txt";
 			if (impRec.printFoundIATs(imports_file)) {
