@@ -82,7 +82,7 @@ HANDLE open_process(DWORD processID, bool quiet)
 	return hProcess;
 }
 
-bool is_scaner_compatibile(HANDLE hProcess, bool quiet)
+bool is_scaner_compatibile(IN HANDLE hProcess, bool quiet)
 {
 	BOOL isCurrWow64 = FALSE;
 	is_process_wow64(GetCurrentProcess(), &isCurrWow64);
@@ -97,7 +97,7 @@ bool is_scaner_compatibile(HANDLE hProcess, bool quiet)
 	return true;
 }
 
-ProcessDumpReport* dump_output(ProcessScanReport &process_report, const pesieve::t_params args, HANDLE hProcess)
+ProcessDumpReport* pesieve::dump_output(IN ProcessScanReport &process_report, IN const pesieve::t_params args, IN HANDLE hProcess)
 {
 	if (!hProcess) return nullptr;
 	if (args.out_filter == OUT_NO_DIR) {
@@ -156,9 +156,9 @@ ProcessDumpReport* dump_output(ProcessScanReport &process_report, const pesieve:
 	return dumpReport;
 }
 
-PeSieveReport* scan_and_dump(const pesieve::t_params args)
+pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 {
-	PeSieveReport *report = new PeSieveReport();
+	ReportEx *report = new ReportEx();
 	HANDLE hProcess = nullptr;
 
 	try {
@@ -185,7 +185,7 @@ PeSieveReport* scan_and_dump(const pesieve::t_params args)
 	return report;
 }
 
-ProcessScanReport* scan_process(const t_params args, HANDLE hProcess)
+ProcessScanReport* pesieve::scan_process(IN const t_params args, IN OPTIONAL HANDLE hProcess)
 {
 	bool autoopened = false;
 	ProcessScanReport *process_report = nullptr;
@@ -214,8 +214,7 @@ ProcessScanReport* scan_process(const t_params args, HANDLE hProcess)
 	return process_report;
 }
 
-
-std::string info()
+std::string pesieve::info()
 {
 	std::stringstream stream;
 	stream << "Version:  " << PESIEVE_VERSION;

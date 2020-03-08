@@ -11,7 +11,7 @@
 
 pesieve::t_report __stdcall PESieve_scan(pesieve::t_params args)
 {
-	const PeSieveReport* report = scan_and_dump(args);
+	const pesieve::ReportEx* report = pesieve::scan_and_dump(args);
 	if (report == nullptr) {
 		pesieve::t_report nullrep = { 0 };
 		nullrep.pid = args.pid;
@@ -25,7 +25,7 @@ pesieve::t_report __stdcall PESieve_scan(pesieve::t_params args)
 
 void __stdcall PESieve_help(void)
 {
-	std::string my_info = info();
+	std::string my_info = pesieve::info();
 
 	std::cout << my_info;
 	MessageBox(NULL, my_info.c_str(), LIB_NAME, MB_ICONINFORMATION);
@@ -33,7 +33,7 @@ void __stdcall PESieve_help(void)
 
 DWORD __stdcall PESieve_version(void)
 {
-	return PESIEVE_VERSION_ID;
+	return pesieve::PESIEVE_VERSION_ID;
 }
 
 BOOL WINAPI DllMain (HANDLE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)

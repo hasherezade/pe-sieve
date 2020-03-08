@@ -317,7 +317,7 @@ int main(int argc, char *argv[])
 		std::cout << "Output filter: " << translate_out_filter(args.out_filter) << std::endl;
 		std::cout << "Dump mode: " << translate_dump_mode(args.dump_mode) << std::endl;
 	}
-	PeSieveReport* report = scan_and_dump(args);
+	pesieve::ReportEx* report = pesieve::scan_and_dump(args);
 	if (report != nullptr) {
 		print_scan_report(*report->scan_report, args);
 		delete report;
