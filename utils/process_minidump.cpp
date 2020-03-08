@@ -2,7 +2,7 @@
 #include "process_privilege.h"
 #include <dbghelp.h>
 
-BOOL (*_MiniDumpWriteDump)(
+BOOL (WINAPI *_MiniDumpWriteDump)(
 	HANDLE                            hProcess,
 	DWORD                             ProcessId,
 	HANDLE                            hFile,
@@ -23,7 +23,7 @@ bool load_MiniDumpWriteDump()
 	FARPROC proc = GetProcAddress(lib, "MiniDumpWriteDump");
 	if (!proc) return false;
 
-	_MiniDumpWriteDump = (BOOL(*)(
+	_MiniDumpWriteDump = (BOOL(WINAPI *)(
 		HANDLE,
 		DWORD,
 		HANDLE,
@@ -55,7 +55,6 @@ bool make_minidump(DWORD pid, std::string out_file)
 	if (procHndl == NULL) {
 		return false;
 	}
-
 	HANDLE outFile = CreateFileA(out_file.c_str(), GENERIC_ALL, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (outFile == INVALID_HANDLE_VALUE) {
 		CloseHandle(procHndl);
