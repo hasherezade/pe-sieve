@@ -10,7 +10,8 @@
 #include <peconv.h>
 #include "pe_sieve_types.h"
 
-#include "../utils/util.h"
+#include "../utils/path_util.h"
+#include "../utils/format_util.h"
 
 typedef enum module_scan_status {
 	SCAN_ERROR = -1,

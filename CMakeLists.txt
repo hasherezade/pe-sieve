@@ -81,10 +81,11 @@ set (postprocessors_srcs
 )
 
 set (utils_srcs
+	utils/format_util.cpp
 	utils/process_util.cpp
 	utils/process_privilege.cpp
 	utils/process_minidump.cpp
-	utils/util.cpp
+	utils/path_util.cpp
 	utils/path_converter.cpp
 	utils/workingset_enum.cpp
 	utils/modules_enum.cpp
@@ -92,7 +93,8 @@ set (utils_srcs
 )
 
 set (utils_hdrs
-	utils/util.h
+	utils/format_util.h
+	utils/path_util.h
 	utils/path_converter.h
 	utils/process_util.h
 	utils/process_privilege.h

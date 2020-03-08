@@ -5,7 +5,7 @@
 #include <map>
 
 #include <peconv.h>
-#include "..\utils\util.h"
+#include "../utils/format_util.h"
 
 class ModuleData {
 

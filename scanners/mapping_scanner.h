@@ -4,7 +4,7 @@
 #include <Windows.h>
 
 #include "module_scanner.h"
-#include "../utils/util.h"
+#include "../utils/path_util.h"
 
 class MappingScanReport : public ModuleScanReport
 {

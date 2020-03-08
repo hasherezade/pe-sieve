@@ -7,7 +7,7 @@
 #include <Windows.h>
 #include "scanners/scanner.h"
 
-#include "utils/util.h"
+#include "utils/format_util.h"
 #include "utils/process_util.h"
 #include "utils/process_privilege.h"
 #include "utils/process_minidump.h"

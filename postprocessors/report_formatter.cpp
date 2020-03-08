@@ -2,8 +2,6 @@
 #include <string>
 #include <sstream>
 
-#include "../utils/util.h"
-
 using namespace pesieve;
 
 std::string scan_report_to_string(const ProcessScanReport &process_report)

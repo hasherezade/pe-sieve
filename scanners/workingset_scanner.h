@@ -9,7 +9,7 @@
 #include "mempage_data.h"
 #include "scan_report.h"
 
-#include "../utils/util.h"
+#include "../utils/format_util.h"
 
 class WorkingSetScanReport : public ModuleScanReport
 {

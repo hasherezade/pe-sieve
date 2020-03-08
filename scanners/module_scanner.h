@@ -8,7 +8,7 @@
 #include "module_scan_report.h"
 #include "module_data.h"
 
-#include "../utils/util.h"
+#include "../utils/format_util.h"
 
 class ModuleScanner {
 public:

@@ -5,6 +5,8 @@
 #include "workingset_scanner.h"
 #include "mapping_scanner.h"
 
+#include "../utils/format_util.h"
+
 using namespace pesieve;
 
 bool is_shown_type(t_scan_status status, ProcessScanReport::t_report_filter filter)

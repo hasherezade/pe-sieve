@@ -13,7 +13,7 @@
 #include <locale>
 #include <codecvt>
 
-#include "util.h"
+#include "path_util.h"
 
 #define LONG_PATH_PREFIX "\\\\?\\"
 #define GLOBALROOT_NAME "GLOBALROOT"
