@@ -155,7 +155,7 @@ void print_scan_report(const ProcessScanReport& report, const t_params args)
 {
 	std::string report_str;
 	if (args.json_output) {
-		report_str = scan_report_to_json(report, REPORT_SUSPICIOUS_AND_ERRORS);
+		report_str = scan_report_to_json(report, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS);
 	} else {
 		report_str = scan_report_to_string(report);
 	}

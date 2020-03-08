@@ -7,6 +7,37 @@
 
 using namespace pesieve;
 
+bool is_shown_type(t_scan_status status, ProcessScanReport::t_report_filter filter)
+{
+	if (filter == ProcessScanReport::REPORT_ALL) {
+		return true;
+	}
+	if (filter & ProcessScanReport::REPORT_ERRORS) {
+		if (status == SCAN_ERROR) return true;
+	}
+	if (filter & ProcessScanReport::REPORT_SUSPICIOUS) {
+		if (status == SCAN_SUSPICIOUS) return true;
+	}
+	if (filter & ProcessScanReport::REPORT_NOT_SUSPICIOUS) {
+		if (status == SCAN_NOT_SUSPICIOUS) return true;
+	}
+	return false;
+}
+
+bool has_any_shown_type(t_report summary, ProcessScanReport::t_report_filter filter)
+{
+	t_scan_status aggregated_status = summary.suspicious > 0 ? SCAN_SUSPICIOUS : SCAN_NOT_SUSPICIOUS;
+	if (is_shown_type(aggregated_status, filter)) {
+		return true;
+	}
+	aggregated_status = summary.errors > 0 ? SCAN_ERROR : SCAN_NOT_SUSPICIOUS;
+	if (is_shown_type(aggregated_status, filter)) {
+		return true;
+	}
+	return false;
+}
+//----
+
 bool ProcessScanReport::appendToModulesList(ModuleScanReport *report)
 {
 	if (report->moduleSize == 0) {
@@ -111,7 +142,6 @@ pesieve::t_report ProcessScanReport::generateSummary() const
 		}
 		
 	}
-
 	summary.replaced = countHdrsReplaced();
 	summary.hooked = countSuspiciousPerType(REPORT_CODE_SCAN);
 	summary.implanted = countSuspiciousPerType(REPORT_MEMPAGE_SCAN);
@@ -119,5 +149,78 @@ pesieve::t_report ProcessScanReport::generateSummary() const
 	summary.detached = countSuspiciousPerType(REPORT_UNREACHABLE_SCAN);
 	
 	return summary;
+}
+
+std::string ProcessScanReport::list_modules(size_t level, const ProcessScanReport::t_report_filter &filter) const
+{
+	std::stringstream stream;
+	//summary:
+	OUT_PADDED(stream, level, "\"scans\" : [\n");
+	bool is_first = true;
+	std::vector<ModuleScanReport*>::const_iterator itr;
+	for (itr = this->module_reports.begin(); itr != this->module_reports.end(); ++itr) {
+		ModuleScanReport *mod = *itr;
+		if (is_shown_type(mod->status, filter)) {
+			if (!is_first) {
+				stream << ",\n";
+			}
+			OUT_PADDED(stream, level + 1, "{\n");
+			mod->toJSON(stream, level + 2);
+			stream << "\n";
+			OUT_PADDED(stream, level + 1, "}");
+			is_first = false;
+		}
+	}
+	if (module_reports.size()) {
+		stream << "\n";
+	}
+	OUT_PADDED(stream, level, "]\n");
+	return stream.str();
+}
+
+const bool ProcessScanReport::toJSON(std::stringstream &stream, size_t level, const ProcessScanReport::t_report_filter &filter) const
+{
+	const t_report report = this->generateSummary();
+	if (!has_any_shown_type(report, filter)) {
+		return false;
+	}
+	//summary:
+	size_t other = report.suspicious - (report.hooked + report.replaced + report.detached + report.implanted + report.hdr_mod);
+	stream << "{\n";
+	OUT_PADDED(stream, level, "\"pid\" : ");
+	stream << std::dec << report.pid << ",\n";
+	OUT_PADDED(stream, level, "\"main_image_path\" : \"");
+	stream << escape_path_separators(this->mainImagePath) << "\",\n";
+	OUT_PADDED(stream, level, "\"scanned\" : \n");
+	OUT_PADDED(stream, level, "{\n");
+	//stream << " {\n";
+	OUT_PADDED(stream, level + 1, "\"total\" : ");
+	stream << std::dec << report.scanned << ",\n";
+	OUT_PADDED(stream, level + 1, "\"skipped\" : ");
+	stream << std::dec << report.skipped << ",\n";
+	OUT_PADDED(stream, level + 1, "\"modified\" : \n");
+	OUT_PADDED(stream, level + 1, "{\n");
+	//stream << "  {\n";
+	OUT_PADDED(stream, level + 2, "\"total\" : ");
+	stream << std::dec << report.suspicious << ",\n";
+	OUT_PADDED(stream, level + 2, "\"hooked\" : ");
+	stream << std::dec << report.hooked << ",\n";
+	OUT_PADDED(stream, level + 2, "\"replaced\" : ");
+	stream << std::dec << report.replaced << ",\n";
+	OUT_PADDED(stream, level + 2, "\"hdr_modified\" : ");
+	stream << std::dec << report.hdr_mod << ",\n";
+	OUT_PADDED(stream, level + 2, "\"detached\" : ");
+	stream << std::dec << report.detached << ",\n";
+	OUT_PADDED(stream, level + 2, "\"implanted\" : ");
+	stream << std::dec << report.implanted << ",\n";
+	OUT_PADDED(stream, level + 2, "\"other\" : ");
+	stream << std::dec << other << "\n";
+	OUT_PADDED(stream, level + 1, "},\n"); // modified
+	OUT_PADDED(stream, level + 1, "\"errors\" : ");
+	stream << std::dec << report.errors << "\n";
+	OUT_PADDED(stream, level, "},\n"); // scanned
+	stream << list_modules(level, filter);
+	stream << "}\n";
+	return true;
 }
 

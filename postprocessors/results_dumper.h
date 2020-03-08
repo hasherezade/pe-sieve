@@ -18,7 +18,7 @@ public:
 	ProcessDumpReport* dumpDetectedModules(HANDLE hProcess, ProcessScanReport &process_report, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
 
 	// dump JSON report from the process scan
-	bool dumpJsonReport(ProcessScanReport &process_report, t_report_filter filter);
+	bool dumpJsonReport(ProcessScanReport &process_report, ProcessScanReport::t_report_filter filter);
 
 	bool dumpJsonReport(ProcessDumpReport &process_report);
 
@@ -31,11 +31,15 @@ public:
 
 protected:
 	/**
-	\param dumpReport: ProcessDumpReport to which reports from the current dump will be appended
+	\param processHandle : handle of the target process (from which the artefacts will be dumped)
+	\param modReport : ModuleScanReport defining artefacts to be dumped
+	\param exportsMap : mapping of all the exported APIs available within the process (for imports reconstruction)
+	\param imprec_mode : mode in which imports reconstruction will be attempted
+	\param dumpReport : ProcessDumpReport to which reports from the current dump will be appended
 	*/
 	bool dumpModule(
 		IN HANDLE processHandle, 
-		IN ModuleScanReport* mod,
+		IN ModuleScanReport* modReport,
 		IN const peconv::ExportsMapper *exportsMap,
 		IN const pesieve::t_dump_mode dump_mode,
 		IN const pesieve::t_imprec_mode imprec_mode,

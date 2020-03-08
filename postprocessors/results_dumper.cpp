@@ -61,7 +61,6 @@ std::string get_imprec_res_name(const ImpReconstructor::t_imprec_res &res)
 	return "Undefined";
 }
 
-
 peconv::t_pe_dump_mode convert_to_peconv_dump_mode(const pesieve::t_dump_mode dump_mode)
 {
 	switch (dump_mode) {
@@ -78,19 +77,6 @@ peconv::t_pe_dump_mode convert_to_peconv_dump_mode(const pesieve::t_dump_mode du
 		return peconv::PE_DUMP_REALIGN;
 	}
 	return peconv::PE_DUMP_AUTO;
-}
-
-bool has_any_shown_type(t_report summary, t_report_filter filter)
-{
-	t_scan_status aggregated_status = summary.suspicious > 0 ? SCAN_SUSPICIOUS : SCAN_NOT_SUSPICIOUS;
-	if (is_shown_type(aggregated_status, filter)) {
-		return true;
-	}
-	aggregated_status = summary.errors > 0 ? SCAN_ERROR : SCAN_NOT_SUSPICIOUS;
-	if (is_shown_type(aggregated_status, filter)) {
-		return true;
-	}
-	return false;
 }
 
 bool make_dump_dir(const std::string& directory)
@@ -118,17 +104,18 @@ std::string get_module_file_name(HANDLE processHandle, const ModuleScanReport& m
 }
 //---
 
-bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, t_report_filter filter)
+bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, ProcessScanReport::t_report_filter filter)
 {
-	t_report summary = process_report.generateSummary();
-	if (!has_any_shown_type(summary, filter)) {
+	std::stringstream stream;
+	size_t level = 1;
+
+	if (!process_report.toJSON(stream, level, filter)) {
 		return false;
 	}
-	std::string report_all = scan_report_to_json(process_report, filter);
+	std::string report_all = stream.str();
 	if (report_all.length() == 0) {
 		return false;
 	}
-
 	//ensure that the directory is created:
 	this->dumpDir = ResultsDumper::makeDirName(process_report.getPid());
 
