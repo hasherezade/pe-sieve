@@ -8,8 +8,6 @@
 
 #include "utils/process_privilege.h"
 
-#include "utils/util.h"
-
 #include "pe_sieve.h"
 #include "params_info/pe_sieve_params_info.h"
 
