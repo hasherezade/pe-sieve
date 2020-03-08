@@ -2,7 +2,7 @@
 #include "process_privilege.h"
 #include <dbghelp.h>
 
-BOOL (WINAPI *_MiniDumpWriteDump)(
+BOOL (CALLBACK *_MiniDumpWriteDump)(
 	HANDLE                            hProcess,
 	DWORD                             ProcessId,
 	HANDLE                            hFile,
@@ -23,7 +23,7 @@ bool load_MiniDumpWriteDump()
 	FARPROC proc = GetProcAddress(lib, "MiniDumpWriteDump");
 	if (!proc) return false;
 
-	_MiniDumpWriteDump = (BOOL(WINAPI *)(
+	_MiniDumpWriteDump = (BOOL(CALLBACK *)(
 		HANDLE,
 		DWORD,
 		HANDLE,
