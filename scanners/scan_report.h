@@ -24,7 +24,7 @@ public:
 		REPORT_UNREACHABLE_SCAN,
 		REPORT_SKIPPED_SCAN,
 		REPORT_TYPES_COUNT
-	} report_type_t;
+	} t_report_type;
 
 	typedef enum {
 		REPORT_ERRORS = 1,
@@ -96,7 +96,7 @@ protected:
 	}
 
 	void appendToType(ModuleScanReport *report);
-	size_t countSuspiciousPerType(report_type_t type) const;
+	size_t countSuspiciousPerType(t_report_type type) const;
 	size_t countHdrsReplaced() const;
 
 	bool appendToModulesList(ModuleScanReport *report);

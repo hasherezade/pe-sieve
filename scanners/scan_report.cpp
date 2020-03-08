@@ -89,7 +89,7 @@ void ProcessScanReport::appendToType(ModuleScanReport *report)
 	}
 }
 
-size_t ProcessScanReport::countSuspiciousPerType(report_type_t type) const
+size_t ProcessScanReport::countSuspiciousPerType(t_report_type type) const
 {
 	if (type >= REPORT_TYPES_COUNT) {
 		return 0; //invalid type
@@ -108,7 +108,7 @@ size_t ProcessScanReport::countSuspiciousPerType(report_type_t type) const
 size_t ProcessScanReport::countHdrsReplaced() const
 {
 	size_t replaced = 0;
-	const report_type_t type = report_type_t::REPORT_HEADERS_SCAN;
+	const t_report_type type = t_report_type::REPORT_HEADERS_SCAN;
 
 	std::set<ModuleScanReport*>::iterator itr;
 	for (itr = this->reportsByType[type].begin(); itr != this->reportsByType[type].end(); ++itr) {
