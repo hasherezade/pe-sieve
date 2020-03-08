@@ -9,8 +9,8 @@
 #include "postprocessors/dump_report.h"
 #include "postprocessors/report_formatter.h"
 
-static char PESIEVE_VERSION[] = "0.2.4.1";
-static DWORD PESIEVE_VERSION_ID = 0x00020401; // 00 02 04 01
+static char PESIEVE_VERSION[] = "0.2.4.2";
+static DWORD PESIEVE_VERSION_ID = 0x00020402; // 00 02 04 02
 static char PESIEVE_URL[] = "https://github.com/hasherezade/pe-sieve";
 
 class PeSieveReport {
