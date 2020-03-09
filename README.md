@@ -9,6 +9,8 @@
 
 [FAQ - Frequently Asked Questions](https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ)
 
+📖 Wiki: https://github.com/hasherezade/pe-sieve/wiki
+
 <b>PE-sieve</b> is a tool that helps to detect malware running on the system, as well as to collect the potentially malicious material for further analysis. Recognizes and dumps variety of implants within the scanned process: replaced/injected PEs, shellcodes, hooks, and other in-memory patches.<br/>
 Detects inline hooks, Process Hollowing, Process Doppelgänging, Reflective DLL Injection, etc.
 
@@ -33,9 +35,6 @@ Latest builds*:
 + [32-bit](https://goo.gl/PnM3U2)
 + [64-bit](https://goo.gl/scP1Hi)
 
-Read more:
--
-📖 Wiki: https://github.com/hasherezade/pe-sieve/wiki
 <hr/>
 
 logo by [Baran Pirinçal](https://github.com/baranpirincal)
