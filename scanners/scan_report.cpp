@@ -52,9 +52,9 @@ bool ProcessScanReport::appendToModulesList(ModuleScanReport *report)
 		mod = new LoadedModule(report->pid, module_start, report->moduleSize);
 		modulesInfo.appendModule(mod);
 	}
-	if (mod->is_suspicious == false) {
+	if (!mod->isSuspicious()) {
 		//update the status
-		mod->is_suspicious = (report->status == SCAN_SUSPICIOUS);
+		mod->setSuspicious(report->status == SCAN_SUSPICIOUS);
 	}
 	return true;
 }

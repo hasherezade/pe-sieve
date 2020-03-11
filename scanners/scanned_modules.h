@@ -24,9 +24,20 @@ struct LoadedModule {
 		return this->start < other.start;
 	}
 
-	ULONGLONG start;
-	ULONGLONG end;
-	DWORD process_id;
+	void setSuspicious(bool _is_suspicious) {
+		this->is_suspicious = _is_suspicious;
+	}
+
+	bool isSuspicious() const
+	{
+		return this->is_suspicious;
+	}
+	
+	const ULONGLONG start;
+	const ULONGLONG end;
+	const DWORD process_id;
+
+private:
 	bool is_suspicious;
 };
 
@@ -47,6 +58,8 @@ struct ProcessModules {
 	LoadedModule* getModuleContaining(ULONGLONG address) const;
 	LoadedModule* getModuleAt(ULONGLONG address) const;
 
+	const DWORD process_id;
+
+private:
 	std::map<ULONGLONG, LoadedModule*> modulesMap;
-	DWORD process_id;
 };

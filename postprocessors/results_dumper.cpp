@@ -135,7 +135,7 @@ bool saveNotRecovered(IN std::string fileName, IN peconv::ImpsNotCovered notCove
 			if (modExp) {
 				size_t offset = addr - modExp->start;
 				report << delim << std::hex << modExp->start << "+" << offset;
-				report << delim << modExp->is_suspicious;
+				report << delim << modExp->isSuspicious();
 			}
 		}
 		report << std::endl;
