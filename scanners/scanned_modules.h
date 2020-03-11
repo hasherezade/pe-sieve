@@ -44,8 +44,8 @@ struct ProcessModules {
 	bool appendModule(LoadedModule* module);
 	void deleteAll();
 
-	LoadedModule* getModuleContaining(ULONGLONG address);
-	LoadedModule* getModuleAt(ULONGLONG address);
+	LoadedModule* getModuleContaining(ULONGLONG address) const;
+	LoadedModule* getModuleAt(ULONGLONG address) const;
 
 	std::map<ULONGLONG, LoadedModule*> modulesMap;
 	DWORD process_id;
