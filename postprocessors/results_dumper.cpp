@@ -104,6 +104,46 @@ std::string get_module_file_name(HANDLE processHandle, const ModuleScanReport& m
 }
 //---
 
+bool saveNotRecovered(IN std::string fileName, IN peconv::ImpsNotCovered notCovered, IN const ProcessModules &modulesInfo, IN const peconv::ExportsMapper *exportsMap)
+{
+	const char delim = ';';
+
+	if (notCovered.addresses.size() == 0) {
+		return false;
+	}
+	std::ofstream report;
+	report.open(fileName);
+	if (report.is_open() == false) {
+		return false;
+	}
+	std::set<ULONGLONG>::iterator itr;
+	for (itr = notCovered.addresses.begin(); itr != notCovered.addresses.end(); itr++)
+	{
+		const ULONGLONG addr = *itr;
+		report << std::hex << addr;
+		if (exportsMap) {
+			report << delim;
+			const peconv::ExportedFunc* func = exportsMap->find_export_by_va(addr);
+			if (!func) {
+				report << "(unknown)";
+			}
+			else {
+				report << func->toString();
+			}
+
+			LoadedModule *modExp = modulesInfo.getModuleContaining(addr);
+			if (modExp) {
+				size_t offset = addr - modExp->start;
+				report << delim << std::hex << modExp->start << "+" << offset;
+				report << delim << modExp->isSuspicious();
+			}
+		}
+		report << std::endl;
+	}
+	report.close();
+	return true;
+}
+
 bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, ProcessScanReport::t_report_filter filter)
 {
 	std::stringstream stream;
@@ -183,6 +223,7 @@ ProcessDumpReport* ResultsDumper::dumpDetectedModules(HANDLE processHandle,
 			continue;
 		}
 		dumpModule(processHandle,
+			process_report.modulesInfo,
 			mod,
 			process_report.exportsMap,
 			dump_mode,
@@ -194,6 +235,7 @@ ProcessDumpReport* ResultsDumper::dumpDetectedModules(HANDLE processHandle,
 }
 
 bool ResultsDumper::dumpModule(IN HANDLE processHandle,
+	IN const ProcessModules &modulesInfo,
 	IN ModuleScanReport* mod,
 	IN const peconv::ExportsMapper *exportsMap,
 	IN const pesieve::t_dump_mode dump_mode,
@@ -254,6 +296,8 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 	modDumpReport->is_corrupt_pe = is_corrupt_pe;
 	modDumpReport->is_shellcode = !module_buf.isValidPe();
 
+	peconv::ImpsNotCovered notCovered;
+
 	if (module_buf.isFilled()) {
 		// Try to fix imports:
 		ImpReconstructor impRec(module_buf);
@@ -261,7 +305,7 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 
 		modDumpReport->impRecMode = get_imprec_res_name(imprec_res);
 		module_buf.setRelocBase(mod->getRelocBase());
-		modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode, exportsMap);
+		modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode, exportsMap, &notCovered);
 
 		if (!modDumpReport->isDumped) {
 			modDumpReport->isDumped = module_buf.dumpToFile(modDumpReport->dumpFileName);
@@ -274,6 +318,10 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 			if (impRec.printFoundIATs(imports_file)) {
 				modDumpReport->impListFileName = imports_file;
 			}
+		}
+		std::string imports_not_rec_file = modDumpReport->dumpFileName + ".not_fixed_imports.txt";
+		if (saveNotRecovered(imports_not_rec_file, notCovered, modulesInfo, exportsMap)) {
+			modDumpReport->notRecoveredFileName = imports_not_rec_file;
 		}
 	}
 

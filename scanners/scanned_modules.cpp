@@ -26,11 +26,11 @@ void ProcessModules::deleteAll()
 	this->modulesMap.clear();
 }
 
-LoadedModule* ProcessModules::getModuleContaining(ULONGLONG address)
+LoadedModule* ProcessModules::getModuleContaining(ULONGLONG address) const
 {
-	std::map<ULONGLONG, LoadedModule*>::iterator start_itr = modulesMap.begin();
-	std::map<ULONGLONG, LoadedModule*>::iterator stop_itr = modulesMap.upper_bound(address);
-	std::map<ULONGLONG, LoadedModule*>::iterator itr = start_itr;
+	std::map<ULONGLONG, LoadedModule*>::const_iterator start_itr = modulesMap.begin();
+	std::map<ULONGLONG, LoadedModule*>::const_iterator stop_itr = modulesMap.upper_bound(address);
+	std::map<ULONGLONG, LoadedModule*>::const_iterator itr = start_itr;
 	for (; itr != stop_itr; ++itr ) {
 		LoadedModule *module = itr->second;
 
@@ -44,9 +44,9 @@ LoadedModule* ProcessModules::getModuleContaining(ULONGLONG address)
 	return nullptr;
 }
 
-LoadedModule* ProcessModules::getModuleAt(ULONGLONG address)
+LoadedModule* ProcessModules::getModuleAt(ULONGLONG address) const
 {
-	std::map<ULONGLONG, LoadedModule*>::iterator itr = modulesMap.find(address);
+	std::map<ULONGLONG, LoadedModule*>::const_iterator itr = modulesMap.find(address);
 	if (itr != modulesMap.end()) {
 		return itr->second;
 	}

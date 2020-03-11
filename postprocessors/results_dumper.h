@@ -32,6 +32,7 @@ public:
 protected:
 	/**
 	\param processHandle : handle of the target process (from which the artefacts will be dumped)
+	\param modulesInfo : list the scanned modules, with their statuses
 	\param modReport : ModuleScanReport defining artefacts to be dumped
 	\param exportsMap : mapping of all the exported APIs available within the process (for imports reconstruction)
 	\param imprec_mode : mode in which imports reconstruction will be attempted
@@ -39,6 +40,7 @@ protected:
 	*/
 	bool dumpModule(
 		IN HANDLE processHandle, 
+		IN const ProcessModules &modulesInfo,
 		IN ModuleScanReport* modReport,
 		IN const peconv::ExportsMapper *exportsMap,
 		IN const pesieve::t_dump_mode dump_mode,
