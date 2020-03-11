@@ -35,6 +35,8 @@ public:
 	std::string dumpFileName;
 	std::string tagsFileName;
 	std::string impListFileName;
+	std::string notRecoveredFileName;
+	std::set<ULONGLONG> impsNotRecovered;
 };
 
 class ProcessDumpReport

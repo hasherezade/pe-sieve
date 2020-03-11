@@ -29,6 +29,12 @@ const bool ModuleDumpReport::toJSON(std::stringstream &outs, size_t level)
 	if (impRecMode.length()) {
 		OUT_PADDED(outs, level, "\"imp_rec_result\" : ");
 		outs << "\"" << impRecMode << "\"" << ",\n";
+		if (impsNotRecovered.size()) {
+			OUT_PADDED(outs, level, "\"imp_not_recovered_file\" : ");
+			outs << "\"" << peconv::get_file_name(notRecoveredFileName) << "\"" << ",\n";
+			OUT_PADDED(outs, level, "\"imp_not_recovered_count\" : ");
+			outs << "\"" << std::hex << impsNotRecovered.size() << "\"" << ",\n";
+		}
 	}
 	OUT_PADDED(outs, level, "\"is_shellcode\" : ");
 	outs << std::dec << is_shellcode << ",\n";

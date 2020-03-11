@@ -72,12 +72,22 @@ bool PeBuffer::resizeLastSection(size_t new_img_size)
 	return true;
 }
 
-bool PeBuffer::dumpPeToFile(IN std::string dumpFileName, IN OUT peconv::t_pe_dump_mode &dumpMode, IN OPTIONAL const peconv::ExportsMapper* exportsMap)
+bool PeBuffer::dumpPeToFile(
+	IN std::string dumpFileName,
+	IN OUT peconv::t_pe_dump_mode &dumpMode,
+	IN OPTIONAL const peconv::ExportsMapper* exportsMap,
+	OUT std::set<ULONGLONG> &notRecoveredFunctions
+)
 {
 	if (!vBuf || !isValidPe()) return false;
 #ifdef _DEBUG
 	std::cout << "Dumping using relocBase: " << std::hex << relocBase << "\n";
 #endif
+	if (exportsMap != nullptr) {
+		if (!peconv::fix_imports(this->vBuf, this->vBufSize, *exportsMap, notRecoveredFunctions)) {
+			std::cerr << "[-] Unable to fix imports!" << std::endl;
+		}
+	}
 	if (dumpMode == peconv::PE_DUMP_AUTO) {
 		bool is_raw_alignment_valid = peconv::is_valid_sectons_alignment(vBuf, vBufSize, true);
 		bool is_virtual_alignment_valid = peconv::is_valid_sectons_alignment(vBuf, vBufSize, false);
@@ -88,7 +98,7 @@ bool PeBuffer::dumpPeToFile(IN std::string dumpFileName, IN OUT peconv::t_pe_dum
 		if (!is_raw_alignment_valid && is_virtual_alignment_valid) {
 			//in case if raw alignment is invalid and virtual valid, try to dump using Virtual Alignment first
 			dumpMode = peconv::PE_DUMP_REALIGN;
-			bool is_dumped = peconv::dump_pe(dumpFileName.c_str(), this->vBuf, this->vBufSize, this->relocBase, dumpMode, exportsMap);
+			bool is_dumped = peconv::dump_pe(dumpFileName.c_str(), this->vBuf, this->vBufSize, this->relocBase, dumpMode);
 			if (is_dumped) {
 				return is_dumped;
 			}
@@ -96,7 +106,7 @@ bool PeBuffer::dumpPeToFile(IN std::string dumpFileName, IN OUT peconv::t_pe_dum
 		}
 	}
 	// save the read module into a file
-	return peconv::dump_pe(dumpFileName.c_str(), this->vBuf, this->vBufSize, this->relocBase, dumpMode, exportsMap);
+	return peconv::dump_pe(dumpFileName.c_str(), this->vBuf, this->vBufSize, this->relocBase, dumpMode);
 }
 
 bool PeBuffer::dumpToFile(IN std::string dumpFileName)

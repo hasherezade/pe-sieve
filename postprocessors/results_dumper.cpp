@@ -104,6 +104,38 @@ std::string get_module_file_name(HANDLE processHandle, const ModuleScanReport& m
 }
 //---
 
+bool saveNotRecovered(IN std::string fileName, IN OUT ModuleDumpReport &modDumpReport, IN const peconv::ExportsMapper *exportsMap)
+{
+	if (modDumpReport.impsNotRecovered.size() == 0) {
+		return false;
+	}
+	std::ofstream report;
+	report.open(fileName);
+	if (report.is_open() == false) {
+		return false;
+	}
+	std::set<ULONGLONG>::iterator itr;
+	for (itr = modDumpReport.impsNotRecovered.begin(); itr != modDumpReport.impsNotRecovered.end(); itr++)
+	{
+		const ULONGLONG addr = *itr;
+		report << std::hex << addr;
+		if (exportsMap) {
+			report << " : ";
+			const peconv::ExportedFunc* func = exportsMap->find_export_by_va(addr);
+			if (!func) {
+				report << "(unknown)";
+			}
+			else {
+				report << func->toString();
+			}
+		}
+		report << std::endl;
+	}
+	report.close();
+	modDumpReport.notRecoveredFileName = fileName;
+	return true;
+}
+
 bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, ProcessScanReport::t_report_filter filter)
 {
 	std::stringstream stream;
@@ -261,7 +293,7 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 
 		modDumpReport->impRecMode = get_imprec_res_name(imprec_res);
 		module_buf.setRelocBase(mod->getRelocBase());
-		modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode, exportsMap);
+		modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode, exportsMap, modDumpReport->impsNotRecovered);
 
 		if (!modDumpReport->isDumped) {
 			modDumpReport->isDumped = module_buf.dumpToFile(modDumpReport->dumpFileName);
@@ -275,6 +307,7 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 				modDumpReport->impListFileName = imports_file;
 			}
 		}
+		saveNotRecovered(modDumpReport->dumpFileName + ".not_fixed_imports.txt", *modDumpReport, exportsMap);
 	}
 
 	if (!modDumpReport->isDumped || dump_shellcode)
