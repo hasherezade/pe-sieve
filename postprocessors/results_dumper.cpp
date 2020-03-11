@@ -104,8 +104,10 @@ std::string get_module_file_name(HANDLE processHandle, const ModuleScanReport& m
 }
 //---
 
-bool saveNotRecovered(IN std::string fileName, IN peconv::ImpsNotCovered notCovered, IN const peconv::ExportsMapper *exportsMap)
+bool saveNotRecovered(IN std::string fileName, IN peconv::ImpsNotCovered notCovered, IN const ProcessModules &modulesInfo, IN const peconv::ExportsMapper *exportsMap)
 {
+	const char delim = ';';
+
 	if (notCovered.addresses.size() == 0) {
 		return false;
 	}
@@ -120,13 +122,20 @@ bool saveNotRecovered(IN std::string fileName, IN peconv::ImpsNotCovered notCove
 		const ULONGLONG addr = *itr;
 		report << std::hex << addr;
 		if (exportsMap) {
-			report << " : ";
+			report << delim;
 			const peconv::ExportedFunc* func = exportsMap->find_export_by_va(addr);
 			if (!func) {
 				report << "(unknown)";
 			}
 			else {
 				report << func->toString();
+			}
+
+			LoadedModule *modExp = modulesInfo.getModuleContaining(addr);
+			if (modExp) {
+				size_t offset = addr - modExp->start;
+				report << delim << std::hex << modExp->start << "+" << offset;
+				report << delim << modExp->is_suspicious;
 			}
 		}
 		report << std::endl;
@@ -214,6 +223,7 @@ ProcessDumpReport* ResultsDumper::dumpDetectedModules(HANDLE processHandle,
 			continue;
 		}
 		dumpModule(processHandle,
+			process_report.modulesInfo,
 			mod,
 			process_report.exportsMap,
 			dump_mode,
@@ -225,6 +235,7 @@ ProcessDumpReport* ResultsDumper::dumpDetectedModules(HANDLE processHandle,
 }
 
 bool ResultsDumper::dumpModule(IN HANDLE processHandle,
+	IN const ProcessModules &modulesInfo,
 	IN ModuleScanReport* mod,
 	IN const peconv::ExportsMapper *exportsMap,
 	IN const pesieve::t_dump_mode dump_mode,
@@ -309,7 +320,7 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 			}
 		}
 		std::string imports_not_rec_file = modDumpReport->dumpFileName + ".not_fixed_imports.txt";
-		if (saveNotRecovered(imports_not_rec_file, notCovered, exportsMap)) {
+		if (saveNotRecovered(imports_not_rec_file, notCovered, modulesInfo, exportsMap)) {
 			modDumpReport->notRecoveredFileName = imports_not_rec_file;
 		}
 	}

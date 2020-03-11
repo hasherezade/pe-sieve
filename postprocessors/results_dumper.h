@@ -39,6 +39,7 @@ protected:
 	*/
 	bool dumpModule(
 		IN HANDLE processHandle, 
+		IN const ProcessModules &modulesInfo,
 		IN ModuleScanReport* modReport,
 		IN const peconv::ExportsMapper *exportsMap,
 		IN const pesieve::t_dump_mode dump_mode,
