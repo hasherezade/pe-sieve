@@ -76,7 +76,7 @@ bool PeBuffer::dumpPeToFile(
 	IN std::string dumpFileName,
 	IN OUT peconv::t_pe_dump_mode &dumpMode,
 	IN OPTIONAL const peconv::ExportsMapper* exportsMap,
-	OUT std::set<ULONGLONG> &notRecoveredFunctions
+	OUT peconv::ImpsNotCovered *notCovered
 )
 {
 	if (!vBuf || !isValidPe()) return false;
@@ -84,7 +84,7 @@ bool PeBuffer::dumpPeToFile(
 	std::cout << "Dumping using relocBase: " << std::hex << relocBase << "\n";
 #endif
 	if (exportsMap != nullptr) {
-		if (!peconv::fix_imports(this->vBuf, this->vBufSize, *exportsMap, notRecoveredFunctions)) {
+		if (!peconv::fix_imports(this->vBuf, this->vBufSize, *exportsMap, notCovered)) {
 			std::cerr << "[-] Unable to fix imports!" << std::endl;
 		}
 	}

@@ -50,7 +50,7 @@ public:
 	bool dumpPeToFile(IN std::string dumpFileName, 
 		IN OUT peconv::t_pe_dump_mode &dumpMode, 
 		IN OPTIONAL const peconv::ExportsMapper* exportsMap, 
-		OUT std::set<ULONGLONG> &notRecoveredFunctions
+		OUT peconv::ImpsNotCovered *notCovered
 	);
 
 	bool dumpToFile(IN std::string dumpFileName);

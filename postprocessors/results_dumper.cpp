@@ -104,9 +104,9 @@ std::string get_module_file_name(HANDLE processHandle, const ModuleScanReport& m
 }
 //---
 
-bool saveNotRecovered(IN std::string fileName, IN OUT ModuleDumpReport &modDumpReport, IN const peconv::ExportsMapper *exportsMap)
+bool saveNotRecovered(IN std::string fileName, IN peconv::ImpsNotCovered notCovered, IN const peconv::ExportsMapper *exportsMap)
 {
-	if (modDumpReport.impsNotRecovered.size() == 0) {
+	if (notCovered.addresses.size() == 0) {
 		return false;
 	}
 	std::ofstream report;
@@ -115,7 +115,7 @@ bool saveNotRecovered(IN std::string fileName, IN OUT ModuleDumpReport &modDumpR
 		return false;
 	}
 	std::set<ULONGLONG>::iterator itr;
-	for (itr = modDumpReport.impsNotRecovered.begin(); itr != modDumpReport.impsNotRecovered.end(); itr++)
+	for (itr = notCovered.addresses.begin(); itr != notCovered.addresses.end(); itr++)
 	{
 		const ULONGLONG addr = *itr;
 		report << std::hex << addr;
@@ -132,7 +132,6 @@ bool saveNotRecovered(IN std::string fileName, IN OUT ModuleDumpReport &modDumpR
 		report << std::endl;
 	}
 	report.close();
-	modDumpReport.notRecoveredFileName = fileName;
 	return true;
 }
 
@@ -286,6 +285,8 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 	modDumpReport->is_corrupt_pe = is_corrupt_pe;
 	modDumpReport->is_shellcode = !module_buf.isValidPe();
 
+	peconv::ImpsNotCovered notCovered;
+
 	if (module_buf.isFilled()) {
 		// Try to fix imports:
 		ImpReconstructor impRec(module_buf);
@@ -293,7 +294,7 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 
 		modDumpReport->impRecMode = get_imprec_res_name(imprec_res);
 		module_buf.setRelocBase(mod->getRelocBase());
-		modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode, exportsMap, modDumpReport->impsNotRecovered);
+		modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode, exportsMap, &notCovered);
 
 		if (!modDumpReport->isDumped) {
 			modDumpReport->isDumped = module_buf.dumpToFile(modDumpReport->dumpFileName);
@@ -307,7 +308,10 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 				modDumpReport->impListFileName = imports_file;
 			}
 		}
-		saveNotRecovered(modDumpReport->dumpFileName + ".not_fixed_imports.txt", *modDumpReport, exportsMap);
+		std::string imports_not_rec_file = modDumpReport->dumpFileName + ".not_fixed_imports.txt";
+		if (saveNotRecovered(imports_not_rec_file, notCovered, exportsMap)) {
+			modDumpReport->notRecoveredFileName = imports_not_rec_file;
+		}
 	}
 
 	if (!modDumpReport->isDumped || dump_shellcode)
