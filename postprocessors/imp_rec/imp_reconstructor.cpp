@@ -115,10 +115,6 @@ bool ImpReconstructor::isDefaultImportValid(IN const peconv::ExportsMapper* expo
 	if (!imp_dir) return false;
 
 	DWORD iat_offset = iat_dir->VirtualAddress;
-	if (imp_dir->VirtualAddress == 0 && iat_offset != 0) {
-		// Virtual Address was probably erased
-		return false;
-	}
 	IATBlock* iat_block = find_iat_block(is64bit, vBuf, vBufSize, exportsMap, iat_offset);
 	if (!iat_block) {
 		return false;
@@ -136,20 +132,8 @@ bool ImpReconstructor::isDefaultImportValid(IN const peconv::ExportsMapper* expo
 		start_offset
 	);
 	DWORD imp_table_offset = DWORD((ULONG_PTR)import_table - (ULONG_PTR)vBuf);
-	if (imp_dir->VirtualAddress == 0 && imp_table_offset != 0) {
-		// Virtual Address was probably erased
-		return false;
-	}
 	if (imp_dir->VirtualAddress == imp_table_offset) {
-		//simple case: perfect fit
 		return true;
-	}
-	if (imp_dir->VirtualAddress < imp_table_offset && imp_dir->Size > table_size) {
-		// probably the found table is incomplete
-		if (imp_table_offset >= imp_dir->VirtualAddress && imp_table_offset < (imp_dir->VirtualAddress + imp_dir->Size)) {
-			// the found import table is a subset of the original table: the original one is correct
-			return true;
-		}
 	}
 	return false;
 }
