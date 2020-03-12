@@ -40,7 +40,9 @@ build_script:
 after_build:
   - mkdir %artifactName%
   - cp -r %APPVEYOR_BUILD_FOLDER%/%APPVEYOR_REPO_COMMIT%/* %artifactName%
-  
+  - if [%CONFIGURATION%]==[Debug] (
+    cp -r %CONFIGURATION%/* %artifactName% )
+
 artifacts:
   - path: build\%artifactName%
     
