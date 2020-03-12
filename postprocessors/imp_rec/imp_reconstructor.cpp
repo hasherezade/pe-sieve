@@ -106,7 +106,7 @@ bool ImpReconstructor::isDefaultImportValid(IN const peconv::ExportsMapper* expo
 {
 	BYTE *vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;
-	if (!vBuf) return false;
+	if (!vBuf || !vBufSize) return false;
 
 	IMAGE_DATA_DIRECTORY *iat_dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
 	if (!iat_dir) return false;
@@ -114,13 +114,28 @@ bool ImpReconstructor::isDefaultImportValid(IN const peconv::ExportsMapper* expo
 	IMAGE_DATA_DIRECTORY *imp_dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IMPORT, true);
 	if (!imp_dir) return false;
 
+	if (imp_dir->VirtualAddress == 0 && imp_dir->Size == 0 
+		&& iat_dir->VirtualAddress == 0 && iat_dir->Size == 0)
+	{
+		// the PE has no Import Table, and no artefacts indicating that it was erased. Probably legit no-import PE.
+		return false;
+	}
+
+	if (iat_dir->VirtualAddress != 0 && imp_dir->VirtualAddress == 0) {
+		// the PE has IAT, but no Import Table. Import Table Address was probably erased.
+		return false;
+	}
+
+	// verify if the Import Table that is currently set is fine:
+
 	DWORD iat_offset = iat_dir->VirtualAddress;
 	IATBlock* iat_block = find_iat_block(is64bit, vBuf, vBufSize, exportsMap, iat_offset);
 	if (!iat_block) {
+		//could not find any IAT Block at this IAT offset. The IAT offset may be incorrect.
 		return false;
 	}
 	const size_t start_offset = peconv::get_hdrs_size(vBuf);
-	bool is64bit = peconv::is64bit(vBuf);
+	const bool is64bit = peconv::is64bit(vBuf);
 	size_t table_size = 0;
 	IMAGE_IMPORT_DESCRIPTOR *import_table = find_import_table(
 		is64bit,
@@ -131,6 +146,11 @@ bool ImpReconstructor::isDefaultImportValid(IN const peconv::ExportsMapper* expo
 		table_size,
 		start_offset
 	);
+	if (!import_table) {
+		// could not find Import Table for this IAT offset
+		return false;
+	}
+	// Import Table found and it fits the address that was already set
 	DWORD imp_table_offset = DWORD((ULONG_PTR)import_table - (ULONG_PTR)vBuf);
 	if (imp_dir->VirtualAddress == imp_table_offset) {
 		return true;
