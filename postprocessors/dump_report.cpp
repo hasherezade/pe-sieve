@@ -67,7 +67,7 @@ const bool ProcessDumpReport::toJSON(std::stringstream &stream, size_t level)
 	OUT_PADDED(stream, level + 1, "\"total\" : ");
 	stream << std::dec << countTotal() << ",\n";
 	OUT_PADDED(stream, level + 1, "\"dumped\" : ");
-	stream << std::dec << countDumped() << ",\n";
+	stream << std::dec << countDumped() << "\n";
 	OUT_PADDED(stream, level, "},\n"); // scanned
 	stream << list_dumped_modules(level);
 	stream << "}\n";
