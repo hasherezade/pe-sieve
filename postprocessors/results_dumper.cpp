@@ -104,7 +104,7 @@ std::string get_module_file_name(HANDLE processHandle, const ModuleScanReport& m
 }
 //---
 
-bool saveNotRecovered(IN std::string fileName, IN peconv::ImpsNotCovered notCovered, IN const ProcessModules &modulesInfo, IN const peconv::ExportsMapper *exportsMap)
+bool saveNotRecovered(IN std::string fileName, IN HANDLE hProcess, IN peconv::ImpsNotCovered notCovered, IN const ProcessModules &modulesInfo, IN const peconv::ExportsMapper *exportsMap)
 {
 	const char delim = ';';
 
@@ -123,18 +123,28 @@ bool saveNotRecovered(IN std::string fileName, IN peconv::ImpsNotCovered notCove
 		report << std::hex << addr;
 		if (exportsMap) {
 			report << delim;
+
+			LoadedModule *modExp = modulesInfo.getModuleContaining(addr);
+			ULONGLONG module_start = (modExp) ? modExp->start : peconv::fetch_alloc_base(hProcess, (BYTE*)addr);
+
 			const peconv::ExportedFunc* func = exportsMap->find_export_by_va(addr);
 			if (!func) {
-				report << "(unknown)";
+				char moduleName[MAX_PATH] = { 0 };
+				if (GetModuleBaseNameA(hProcess, (HMODULE)module_start, moduleName, sizeof(moduleName))) {
+					report << peconv::get_dll_shortname(moduleName)<< ".(unknown_func)";
+				}
+				else {
+					report << "(unknown)";
+				}
 			}
 			else {
 				report << func->toString();
 			}
 
-			LoadedModule *modExp = modulesInfo.getModuleContaining(addr);
+			size_t offset = addr - module_start;
+			report << delim << std::hex << module_start << "+" << offset;
+
 			if (modExp) {
-				size_t offset = addr - modExp->start;
-				report << delim << std::hex << modExp->start << "+" << offset;
 				report << delim << modExp->isSuspicious();
 			}
 		}
@@ -320,7 +330,7 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 			}
 		}
 		std::string imports_not_rec_file = modDumpReport->dumpFileName + ".not_fixed_imports.txt";
-		if (saveNotRecovered(imports_not_rec_file, notCovered, modulesInfo, exportsMap)) {
+		if (saveNotRecovered(imports_not_rec_file, processHandle, notCovered, modulesInfo, exportsMap)) {
 			modDumpReport->notRecoveredFileName = imports_not_rec_file;
 		}
 	}
