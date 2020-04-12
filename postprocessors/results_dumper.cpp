@@ -104,7 +104,12 @@ std::string get_module_file_name(HANDLE processHandle, const ModuleScanReport& m
 }
 //---
 
-bool saveNotRecovered(IN std::string fileName, IN HANDLE hProcess, IN peconv::ImpsNotCovered notCovered, IN const ProcessModules &modulesInfo, IN const peconv::ExportsMapper *exportsMap)
+bool saveNotRecovered(IN std::string fileName,
+	IN HANDLE hProcess,
+	IN const std::map<ULONGLONG, peconv::ExportedFunc> storedFunc,
+	IN peconv::ImpsNotCovered notCovered,
+	IN const ProcessModules &modulesInfo,
+	IN const peconv::ExportsMapper *exportsMap)
 {
 	const char delim = ';';
 
@@ -116,14 +121,22 @@ bool saveNotRecovered(IN std::string fileName, IN HANDLE hProcess, IN peconv::Im
 	if (report.is_open() == false) {
 		return false;
 	}
+
 	std::set<ULONGLONG>::iterator itr;
 	for (itr = notCovered.addresses.begin(); itr != notCovered.addresses.end(); itr++)
 	{
 		const ULONGLONG addr = *itr;
 		report << std::hex << addr;
-		if (exportsMap) {
-			report << delim;
+		std::map<ULONGLONG, peconv::ExportedFunc>::const_iterator found = storedFunc.find(addr);
+		if (found != storedFunc.end()) {
+			const peconv::ExportedFunc &func = found->second;
+			report << delim << func.toString() << "->";
+		}
+		else {
+			report << delim << "(unknown)" << "->";
+		}
 
+		if (exportsMap) {
 			LoadedModule *modExp = modulesInfo.getModuleContaining(addr);
 			ULONGLONG module_start = (modExp) ? modExp->start : peconv::fetch_alloc_base(hProcess, (BYTE*)addr);
 
@@ -306,6 +319,9 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 	modDumpReport->is_corrupt_pe = is_corrupt_pe;
 	modDumpReport->is_shellcode = !module_buf.isValidPe();
 
+	std::map<ULONGLONG, peconv::ExportedFunc> stored_func;
+	module_buf.listAllImports(stored_func);
+
 	peconv::ImpsNotCovered notCovered;
 
 	if (module_buf.isFilled()) {
@@ -330,7 +346,7 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 			}
 		}
 		std::string imports_not_rec_file = modDumpReport->dumpFileName + ".not_fixed_imports.txt";
-		if (saveNotRecovered(imports_not_rec_file, processHandle, notCovered, modulesInfo, exportsMap)) {
+		if (saveNotRecovered(imports_not_rec_file, processHandle, stored_func, notCovered, modulesInfo, exportsMap)) {
 			modDumpReport->notRecoveredFileName = imports_not_rec_file;
 		}
 	}
