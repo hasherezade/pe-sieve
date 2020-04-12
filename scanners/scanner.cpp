@@ -132,10 +132,12 @@ ProcessScanReport* ProcessScanner::scanRemote()
 			modulesScanned = false;
 			errorsStr << "No modules found!";
 		}
-		scanned = scanModulesIATs(*pReport);
-		if (scanned == 0) {
-			modulesScanned = false;
-			errorsStr << "No modules found!";
+		if (args.iat) {
+			scanned = scanModulesIATs(*pReport);
+			if (scanned == 0) {
+				modulesScanned = false;
+				errorsStr << "No modules found!";
+			}
 		}
 	} catch (std::exception &e) {
 		modulesScanned = false;
@@ -238,7 +240,7 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 	if (modules_count == 0) {
 		return 0;
 	}
-	if (!pReport.exportsMap ) {//args.imprec_mode != PE_IMPREC_NONE) {
+	if (args.imprec_mode != PE_IMPREC_NONE || args.iat) {
 		pReport.exportsMap = new peconv::ExportsMapper();
 	}
 
@@ -304,13 +306,13 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 
 size_t ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //throws exceptions
 {
+	if (!pReport.exportsMap) {
+		return 0; // this feature cannot work without Exports Map
+	}
 	HMODULE hMods[1024];
 	const size_t modules_count = enum_modules(this->processHandle, hMods, sizeof(hMods), args.modules_filter);
 	if (modules_count == 0) {
 		return 0;
-	}
-	if (!pReport.exportsMap) {
-		return 0; // this feature cannot work without Exports Map
 	}
 
 	size_t counter = 0;
