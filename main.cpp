@@ -65,8 +65,8 @@ void print_help()
 	print_in_color(hdr_color, "\nOptional: \n");
 
 	print_in_color(separator_color, "\n---scan options---\n");
-    print_param_in_color(param_color, PARAM_IAT);
-    std::cout << "\t: Detect IAT hooking.\n";
+	print_param_in_color(param_color, PARAM_IAT);
+	std::cout << "\t: Detect IAT hooking.\n";
 	print_param_in_color(param_color, PARAM_SHELLCODE);
 	std::cout << "\t: Detect shellcode implants. (By default it detects PE only).\n";
 	print_param_in_color(param_color, PARAM_DATA);
