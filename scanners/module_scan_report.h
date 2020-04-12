@@ -157,16 +157,17 @@ public:
 
 	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
-		OUT_PADDED(outs, level, "\"iat_hooked\" : ");
+		OUT_PADDED(outs, level, "\"iat_scan\" : ");
 		outs << "{\n";
 		ModuleScanReport::toJSON(outs, level + 1);
 		outs << ",\n";
-		OUT_PADDED(outs, level + 1, "\"hooked\" : ");
+		OUT_PADDED(outs, level + 1, "\"hooks\" : ");
 		outs << std::dec << hookedCount;
 		outs << "\n";
 		OUT_PADDED(outs, level, "}");
 		return true;
 	}
 
+	peconv::ImpsNotCovered notCovered;
 	size_t hookedCount;
 };

@@ -81,6 +81,7 @@ t_scan_status ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& 
 		IATHookedReport *report = new IATHookedReport(processHandle, remoteModData.modBaseAddr, remoteModData.getModuleSize(), modData.szModName);
 		report->status = status;
 		report->hookedCount = not_covered.addresses.size();
+		report->notCovered = not_covered;
 		pReport->appendReport(report);
 	}
 	return status;

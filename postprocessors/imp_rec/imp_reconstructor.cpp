@@ -35,7 +35,7 @@ BYTE* ImportTableBuffer::getDllSpaceAt(const DWORD rva, size_t required_size)
 
 ImpReconstructor::t_imprec_res ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode)
 {
-	if (!exportsMap) {
+	if (!exportsMap || imprec_mode == pesieve::PE_IMPREC_NONE) {
 		return IMP_RECOVERY_SKIPPED;
 	}
 	if (!collectIATs(exportsMap)) {

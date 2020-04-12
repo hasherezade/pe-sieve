@@ -22,14 +22,18 @@ const bool ModuleDumpReport::toJSON(std::stringstream &outs, size_t level)
 		OUT_PADDED(outs, level, "\"imports_file\" : ");
 		outs << "\"" << peconv::get_file_name(impListFileName) << "\"" << ",\n";
 	}
-    if (impRecMode.length()) {
-        OUT_PADDED(outs, level, "\"imp_rec_result\" : ");
-        outs << "\"" << impRecMode << "\"" << ",\n";
-        if (notRecoveredFileName.length()) {
-            OUT_PADDED(outs, level, "\"imp_not_recovered_file\" : ");
-            outs << "\"" << peconv::get_file_name(notRecoveredFileName) << "\"" << ",\n";
-        }
-    }
+	if (impRecMode.length()) {
+		OUT_PADDED(outs, level, "\"imp_rec_result\" : ");
+		outs << "\"" << impRecMode << "\"" << ",\n";
+		if (notRecoveredFileName.length()) {
+			OUT_PADDED(outs, level, "\"imp_not_recovered_file\" : ");
+			outs << "\"" << peconv::get_file_name(notRecoveredFileName) << "\"" << ",\n";
+		}
+	}
+	if (this->iatHooksFileName.length()) {
+		OUT_PADDED(outs, level, "\"iat_hooks_file\" : ");
+		outs << "\"" << peconv::get_file_name(iatHooksFileName) << "\"" << ",\n";
+	}
 	if (mode_info.length()) {
 		OUT_PADDED(outs, level, "\"dump_mode\" : ");
 		outs << "\"" << mode_info << "\"" << ",\n";

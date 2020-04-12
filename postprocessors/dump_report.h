@@ -36,6 +36,7 @@ public:
 	std::string tagsFileName;
 	std::string impListFileName;
 	std::string notRecoveredFileName;
+	std::string iatHooksFileName;
 };
 
 class ProcessDumpReport
