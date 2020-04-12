@@ -25,9 +25,11 @@ public:
 
 	static t_scan_status scanForHollows(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report);
 	static t_scan_status scanForHooks(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report);
+	static t_scan_status scanForIATHooks(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report);
 
 protected:
 	size_t scanModules(ProcessScanReport &pReport); //throws exceptions
+	size_t scanModulesIATs(ProcessScanReport &pReport); //throws exceptions
 	size_t scanWorkingSet(ProcessScanReport &pReport);  //throws exceptions
 
 	ModuleScanReport* scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report);

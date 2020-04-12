@@ -106,8 +106,8 @@ std::string get_module_file_name(HANDLE processHandle, const ModuleScanReport& m
 
 bool saveNotRecovered(IN std::string fileName,
 	IN HANDLE hProcess,
-	IN const std::map<ULONGLONG, peconv::ExportedFunc> storedFunc,
-	IN peconv::ImpsNotCovered notCovered,
+	IN const std::map<ULONGLONG, peconv::ExportedFunc> &storedFunc,
+	IN peconv::ImpsNotCovered &notCovered,
 	IN const ProcessModules &modulesInfo,
 	IN const peconv::ExportsMapper *exportsMap)
 {
@@ -325,13 +325,20 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 	peconv::ImpsNotCovered notCovered;
 
 	if (module_buf.isFilled()) {
+
 		// Try to fix imports:
 		ImpReconstructor impRec(module_buf);
 		ImpReconstructor::t_imprec_res imprec_res = impRec.rebuildImportTable(exportsMap, imprec_mode);
-
 		modDumpReport->impRecMode = get_imprec_res_name(imprec_res);
+
 		module_buf.setRelocBase(mod->getRelocBase());
-		modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode, exportsMap, &notCovered);
+		if (imprec_mode == pesieve::PE_IMPREC_NONE) {
+			modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode);
+		}
+		else {
+			modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode, exportsMap, &notCovered);
+		}
+		
 
 		if (!modDumpReport->isDumped) {
 			modDumpReport->isDumped = module_buf.dumpToFile(modDumpReport->dumpFileName);
@@ -366,6 +373,14 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 		modDumpReport->isDumped = module_buf.dumpToFile(modDumpReport->dumpFileName);
 		curr_dump_mode = peconv::PE_DUMP_VIRTUAL;
 		modDumpReport->mode_info = get_dump_mode_name(curr_dump_mode);
+	}
+
+	IATHookedReport* iatHooksReport = dynamic_cast<IATHookedReport*>(mod);
+	if (iatHooksReport) {
+		std::string imports_not_rec_file = modDumpReport->dumpFileName + ".iat_hooks.txt";
+		if (saveNotRecovered(imports_not_rec_file, processHandle, stored_func, iatHooksReport->notCovered, modulesInfo, exportsMap)) {
+			modDumpReport->iatHooksFileName = imports_not_rec_file;
+		}
 	}
 	if (modDumpReport->isDumped) {
 		std::string tags_file = modDumpReport->dumpFileName + ".tag";

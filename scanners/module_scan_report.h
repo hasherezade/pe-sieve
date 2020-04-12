@@ -144,3 +144,30 @@ public:
 		return true;
 	}
 };
+
+class IATHookedReport : public ModuleScanReport
+{
+public:
+	IATHookedReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, std::string _moduleFile)
+		: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_SUSPICIOUS)
+	{
+		moduleFile = _moduleFile;
+		hookedCount = 0;
+	}
+
+	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
+	{
+		OUT_PADDED(outs, level, "\"iat_scan\" : ");
+		outs << "{\n";
+		ModuleScanReport::toJSON(outs, level + 1);
+		outs << ",\n";
+		OUT_PADDED(outs, level + 1, "\"hooks\" : ");
+		outs << std::dec << hookedCount;
+		outs << "\n";
+		OUT_PADDED(outs, level, "}");
+		return true;
+	}
+
+	peconv::ImpsNotCovered notCovered;
+	size_t hookedCount;
+};

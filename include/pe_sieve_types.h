@@ -40,6 +40,7 @@ namespace pesieve {
 		t_output_filter out_filter;
 		bool no_hooks; // don't scan for hooks
 		bool shellcode; // detect shellcode implants
+		bool iat; // detect IAT hooking
 		bool data; //scan non-executable pages if DEP for the process is disabled
 		bool minidump; // make minidump of full process
 		t_dump_mode dump_mode;

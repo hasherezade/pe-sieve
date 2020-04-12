@@ -153,12 +153,36 @@ std::string RemoteModuleData::getMappedName(HANDLE processHandle, LPVOID modBase
 
 bool RemoteModuleData::init()
 {
-	this->is_ready = false;
+	this->isHdrReady = false;
 	if (!loadHeader()) {
 		return false;
 	}
-	this->is_ready = true;
+	this->isHdrReady = true;
+
+	if (this->isFullImg) {
+		if (!loadFullImage()) {
+			return false;
+		}
+	}
 	return true;
+}
+
+bool RemoteModuleData::loadFullImage()
+{
+	if (this->isFullImageLoaded()) {
+		return true;
+	}
+	size_t mod_size = this->getModuleSize();
+	this->imgBuffer = peconv::alloc_pe_buffer(mod_size, PAGE_READWRITE);
+	if (!imgBuffer) {
+		return false;
+	}
+	this->imgBufferSize = peconv::read_remote_pe(this->processHandle, (PBYTE)this->modBaseAddr, mod_size, this->imgBuffer, mod_size);
+	if (this->imgBufferSize == mod_size) {
+		return true;
+	}
+	this->freeFullImage();
+	return false;
 }
 
 bool RemoteModuleData::loadHeader()

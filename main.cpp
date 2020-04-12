@@ -19,6 +19,7 @@
 #define PARAM_PID "pid"
 #define PARAM_SHELLCODE "shellc"
 #define PARAM_DATA "data"
+#define PARAM_IAT "iat"
 #define PARAM_MODULES_FILTER "mfilter"
 #define PARAM_MODULES_IGNORE "mignore"
 //dump options:
@@ -64,7 +65,8 @@ void print_help()
 	print_in_color(hdr_color, "\nOptional: \n");
 
 	print_in_color(separator_color, "\n---scan options---\n");
-
+    print_param_in_color(param_color, PARAM_IAT);
+    std::cout << "\t: Detect IAT hooking.\n";
 	print_param_in_color(param_color, PARAM_SHELLCODE);
 	std::cout << "\t: Detect shellcode implants. (By default it detects PE only).\n";
 	print_param_in_color(param_color, PARAM_DATA);
@@ -279,6 +281,9 @@ int main(int argc, char *argv[])
 		}
 		else if (!strcmp(param, PARAM_SHELLCODE)) {
 			args.shellcode = true;
+		}
+		else if (!strcmp(param, PARAM_IAT)) {
+			args.iat = true;
 		}
 		else if (!strcmp(param, PARAM_DATA)) {
 			args.data = true;

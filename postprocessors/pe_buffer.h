@@ -49,8 +49,8 @@ public:
 	// Dumps the PE into a file with a given name.
 	bool dumpPeToFile(IN std::string dumpFileName, 
 		IN OUT peconv::t_pe_dump_mode &dumpMode, 
-		IN OPTIONAL const peconv::ExportsMapper* exportsMap, 
-		OUT peconv::ImpsNotCovered *notCovered
+		IN OPTIONAL const peconv::ExportsMapper* exportsMap = NULL, 
+		OUT OPTIONAL peconv::ImpsNotCovered *notCovered = NULL
 	);
 
 	bool dumpToFile(IN std::string dumpFileName);

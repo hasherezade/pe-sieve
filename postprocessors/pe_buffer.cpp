@@ -125,7 +125,7 @@ bool PeBuffer::dumpPeToFile(
 	IN std::string dumpFileName,
 	IN OUT peconv::t_pe_dump_mode &dumpMode,
 	IN OPTIONAL const peconv::ExportsMapper* exportsMap,
-	OUT peconv::ImpsNotCovered *notCovered
+	OUT OPTIONAL peconv::ImpsNotCovered *notCovered
 )
 {
 	if (!vBuf || !isValidPe()) return false;
