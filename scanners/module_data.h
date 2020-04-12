@@ -103,33 +103,42 @@ public:
 	static std::string getModuleName(HANDLE _processHandle, HMODULE _modBaseAddr);
 	static std::string getMappedName(HANDLE _processHandle, LPVOID _modBaseAddr);
 
-	RemoteModuleData(HANDLE _processHandle, HMODULE _modBaseAddr)
-		: processHandle(_processHandle), modBaseAddr(_modBaseAddr)
+	RemoteModuleData(HANDLE _processHandle, HMODULE _modBaseAddr, bool full_image = false)
+		: processHandle(_processHandle), modBaseAddr(_modBaseAddr),
+		isFullImg(full_image), imgBuffer(nullptr), imgBufferSize(0)
 	{
-		is_ready = false;
+		isHdrReady = false;
 		memset(headerBuffer, 0, peconv::MAX_HEADER_SIZE);
 		init();
 	}
 
-	virtual ~RemoteModuleData() {}
+	virtual ~RemoteModuleData()
+	{
+		freeFullImage();
+	}
 
 	bool isSectionExecutable(size_t section_number);
 	bool hasExecutableSection();
 	bool isInitialized()
 	{
-		if (!is_ready) init();
-		return is_ready;
+		if (!isHdrReady && !init()) {
+			return false;
+		}
+		if (isFullImg && !this->isFullImageLoaded()) {
+			return false;
+		}
+		return true;
 	}
 
 	size_t getModuleSize()
 	{
-		if (!is_ready) return 0;
+		if (!isHdrReady) return 0;
 		return peconv::get_image_size((const BYTE*) headerBuffer);
 	}
 
 	ULONGLONG getHdrImageBase()
 	{
-		if (!is_ready) return 0;
+		if (!isHdrReady) return 0;
 		return peconv::get_image_base((const BYTE*)headerBuffer);
 	}
 
@@ -138,17 +147,34 @@ public:
 		return peconv::MAX_HEADER_SIZE;
 	}
 
+	bool loadFullImage();
+	bool isFullImageLoaded() { return (imgBuffer != nullptr) && (imgBufferSize != 0); }
+
 	BYTE headerBuffer[peconv::MAX_HEADER_SIZE];
 
 protected:
 	bool init();
 	bool loadHeader();
+
+	void freeFullImage()
+	{
+		peconv::free_pe_buffer(imgBuffer);
+		imgBuffer = nullptr;
+		imgBufferSize = 0;
+	}
+
 	ULONGLONG getRemoteSectionVa(const size_t section_num);
 
 	HANDLE processHandle;
 	HMODULE modBaseAddr;
 
-	bool is_ready;
+	BYTE *imgBuffer;
+	size_t imgBufferSize;
+
+private:
+	bool isHdrReady;
+	bool isFullImg; //read full PE to the buffer
 
 	friend class PeSection;
+	friend class ProcessScanner;
 };
