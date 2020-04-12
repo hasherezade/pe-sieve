@@ -106,8 +106,8 @@ std::string get_module_file_name(HANDLE processHandle, const ModuleScanReport& m
 
 bool saveNotRecovered(IN std::string fileName,
 	IN HANDLE hProcess,
-	IN const std::map<ULONGLONG, peconv::ExportedFunc> storedFunc,
-	IN peconv::ImpsNotCovered notCovered,
+	IN const std::map<ULONGLONG, peconv::ExportedFunc> &storedFunc,
+	IN peconv::ImpsNotCovered &notCovered,
 	IN const ProcessModules &modulesInfo,
 	IN const peconv::ExportsMapper *exportsMap)
 {
