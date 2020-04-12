@@ -79,6 +79,10 @@ void ProcessScanReport::appendToType(ModuleScanReport *report)
 		this->reportsByType[REPORT_CODE_SCAN].insert(report);
 		return;
 	}
+	if (dynamic_cast<IATScanReport*>(report)) {
+		this->reportsByType[REPORT_IAT_SCAN].insert(report);
+		return;
+	}
 	if (dynamic_cast<UnreachableModuleReport*>(report)) {
 		this->reportsByType[REPORT_UNREACHABLE_SCAN].insert(report);
 		return;
@@ -142,10 +146,10 @@ pesieve::t_report ProcessScanReport::generateSummary() const
 		if (ModuleScanReport::get_scan_status(report) == SCAN_ERROR) {
 			summary.errors++;
 		}
-		
 	}
 	summary.replaced = countHdrsReplaced();
-	summary.hooked = countSuspiciousPerType(REPORT_CODE_SCAN);
+	summary.patched = countSuspiciousPerType(REPORT_CODE_SCAN);
+	summary.iat_hooked = countSuspiciousPerType(REPORT_IAT_SCAN);
 	summary.implanted = countSuspiciousPerType(REPORT_MEMPAGE_SCAN);
 	summary.hdr_mod = countSuspiciousPerType(REPORT_HEADERS_SCAN) - summary.replaced;
 	summary.detached = countSuspiciousPerType(REPORT_UNREACHABLE_SCAN);
@@ -187,7 +191,7 @@ const bool ProcessScanReport::toJSON(std::stringstream &stream, size_t level, co
 		return false;
 	}
 	//summary:
-	size_t other = report.suspicious - (report.hooked + report.replaced + report.detached + report.implanted + report.hdr_mod);
+	size_t other = report.suspicious - (report.patched + report.replaced + report.detached + report.implanted + report.hdr_mod);
 	stream << "{\n";
 	OUT_PADDED(stream, level, "\"pid\" : ");
 	stream << std::dec << report.pid << ",\n";
@@ -205,8 +209,10 @@ const bool ProcessScanReport::toJSON(std::stringstream &stream, size_t level, co
 	//stream << "  {\n";
 	OUT_PADDED(stream, level + 2, "\"total\" : ");
 	stream << std::dec << report.suspicious << ",\n";
-	OUT_PADDED(stream, level + 2, "\"hooked\" : ");
-	stream << std::dec << report.hooked << ",\n";
+	OUT_PADDED(stream, level + 2, "\"patched\" : ");
+	stream << std::dec << report.patched << ",\n";
+	OUT_PADDED(stream, level + 2, "\"iat_hooked\" : ");
+	stream << std::dec << report.iat_hooked << ",\n";
 	OUT_PADDED(stream, level + 2, "\"replaced\" : ");
 	stream << std::dec << report.replaced << ",\n";
 	OUT_PADDED(stream, level + 2, "\"hdr_modified\" : ");

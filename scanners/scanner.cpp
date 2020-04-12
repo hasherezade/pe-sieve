@@ -78,7 +78,7 @@ t_scan_status ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& 
 		status = SCAN_SUSPICIOUS;
 	}
 	if (pReport) {
-		IATHookedReport *report = new IATHookedReport(processHandle, remoteModData.modBaseAddr, remoteModData.getModuleSize(), modData.szModName);
+		IATScanReport *report = new IATScanReport(processHandle, remoteModData.modBaseAddr, remoteModData.getModuleSize(), modData.szModName);
 		report->status = status;
 		report->hookedCount = not_covered.addresses.size();
 		report->notCovered = not_covered;

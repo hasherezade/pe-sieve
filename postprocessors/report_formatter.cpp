@@ -9,14 +9,14 @@ std::string scan_report_to_string(const ProcessScanReport &process_report)
 	const t_report report = process_report.generateSummary();
 	std::stringstream stream;
 	//summary:
-	size_t other = report.suspicious - (report.hooked + report.replaced + report.detached + report.implanted + report.hdr_mod);
+	size_t other = report.suspicious - (report.patched + report.replaced + report.detached + report.implanted + report.hdr_mod);
 	stream << "PID:    " << std::dec << report.pid << "\n";
 	stream << "---" << std::endl;
 	stream << "SUMMARY: \n" << std::endl;
 	stream << "Total scanned:    " << std::dec << report.scanned << "\n";
 	stream << "Skipped:          " << std::dec << report.skipped << "\n";
 	stream << "-\n";
-	stream << "Hooked:           " << std::dec << report.hooked << "\n";
+	stream << "Hooked:           " << std::dec << report.patched << "\n";
 	stream << "Replaced:         " << std::dec << report.replaced << "\n";
 	stream << "HdrsModified:     " << std::dec << report.hdr_mod << "\n";
 	stream << "Detached:         " << std::dec << report.detached << "\n";

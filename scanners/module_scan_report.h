@@ -145,10 +145,10 @@ public:
 	}
 };
 
-class IATHookedReport : public ModuleScanReport
+class IATScanReport : public ModuleScanReport
 {
 public:
-	IATHookedReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, std::string _moduleFile)
+	IATScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, std::string _moduleFile)
 		: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_SUSPICIOUS)
 	{
 		moduleFile = _moduleFile;

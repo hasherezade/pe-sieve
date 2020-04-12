@@ -375,7 +375,7 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 		modDumpReport->mode_info = get_dump_mode_name(curr_dump_mode);
 	}
 
-	IATHookedReport* iatHooksReport = dynamic_cast<IATHookedReport*>(mod);
+	IATScanReport* iatHooksReport = dynamic_cast<IATScanReport*>(mod);
 	if (iatHooksReport) {
 		std::string imports_not_rec_file = modDumpReport->dumpFileName + ".iat_hooks.txt";
 		if (saveNotRecovered(imports_not_rec_file, processHandle, stored_func, iatHooksReport->notCovered, modulesInfo, exportsMap)) {
