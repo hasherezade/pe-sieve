@@ -9,6 +9,7 @@
 #include "../utils/workingset_enum.h"
 #include "pe_reconstructor.h"
 #include "imp_rec/imp_reconstructor.h"
+#include "../scanners/iat_scanner.h"
 
 #define DIR_SEPARATOR "\\"
 

@@ -21,6 +21,7 @@ set (scanners_srcs
 	scanners/code_scanner.cpp
 	scanners/workingset_scanner.cpp
 	scanners/artefact_scanner.cpp
+	scanners/iat_scanner.cpp
 	scanners/scanner.cpp
 	scanners/module_data.cpp
 	scanners/mempage_data.cpp
@@ -38,6 +39,7 @@ set (scanners_hdrs
 	scanners/module_scanner.h
 	scanners/workingset_scanner.h
 	scanners/artefact_scanner.h
+	scanners/iat_scanner.h
 	scanners/scanner.h
 	scanners/module_scan_report.h
 	scanners/scan_report.h

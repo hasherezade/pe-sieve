@@ -12,6 +12,7 @@
 
 #include "headers_scanner.h"
 #include "code_scanner.h"
+#include "iat_scanner.h"
 #include "workingset_scanner.h"
 #include "mapping_scanner.h"
 #include "hook_targets_resolver.h"
@@ -64,27 +65,27 @@ t_scan_status ProcessScanner::scanForHollows(HANDLE processHandle, ModuleData& m
 	return is_suspicious;
 }
 
-t_scan_status ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* pReport)
+t_scan_status ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report)
 {
-	if (!pReport->exportsMap) {
+	const peconv::ExportsMapper *expMap = process_report->exportsMap;
+	if (!expMap) {
 		return SCAN_ERROR;
 	}
 
-	peconv::ImpsNotCovered not_covered; 
-	peconv::fix_imports(remoteModData.imgBuffer, remoteModData.imgBufferSize, *(pReport->exportsMap), &not_covered);
+	IATScanner scanner(processHandle, modData, remoteModData, *expMap);
 
-	t_scan_status status = SCAN_NOT_SUSPICIOUS;
-	if (not_covered.addresses.size() > 0) {
-		status = SCAN_SUSPICIOUS;
+	IATScanReport *scan_report = scanner.scanRemote();
+	if (!scan_report) {
+		return SCAN_ERROR;
 	}
-	if (pReport) {
-		IATScanReport *report = new IATScanReport(processHandle, remoteModData.modBaseAddr, remoteModData.getModuleSize(), modData.szModName);
-		report->status = status;
-		report->hookedCount = not_covered.addresses.size();
-		report->notCovered = not_covered;
-		pReport->appendReport(report);
+	t_scan_status scan_res = ModuleScanReport::get_scan_status(scan_report);
+	if (process_report) {
+		process_report->appendReport(scan_report);
 	}
-	return status;
+	else {
+		delete scan_report; scan_report = nullptr;
+	}
+	return scan_res;
 }
 
 t_scan_status ProcessScanner::scanForHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report)
