@@ -313,14 +313,15 @@ int main(int argc, char *argv[])
 			return 0;
 		}
 	}
-	//if didn't received PID by explicit parameter, try to parse the first param of the app
-	if (args.pid == 0) {
-		if (info_req) {
+	// do not start scan if the info was requested:
+	if (info_req) {
 #ifdef _DEBUG
-			system("pause");
+		system("pause");
 #endif
-			return 0; // info requested, pid not given. finish.
-		}
+		return 0; // info requested, pid not given. finish.
+	}
+	// if didn't received PID by explicit parameter, try to parse the first param of the app
+	if (args.pid == 0) {
 		if (argc >= 2 && is_number(argv[1])) args.pid = get_number(argv[1]);
 		if (args.pid == 0) {
 			print_help();
