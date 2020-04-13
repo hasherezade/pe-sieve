@@ -63,6 +63,19 @@ std::string translate_modules_filter(DWORD m_filter)
 	return "undefined";
 }
 
+std::string translate_iat_scan_mode(const pesieve::t_iat_scan_mode mode)
+{
+	switch (mode) {
+	case pesieve::PE_IATS_NONE:
+		return "none: do scan for IAT Hooks (default)";
+	case pesieve::PE_IATS_FILTERED:
+		return "filtered: scan for IAT Hooks, filter out system hooks";
+	case pesieve::PE_IATS_UNFILTERED:
+		return "unfiltered: scan for IAT Hooks, report all";
+	}
+	return "undefined";
+}
+
 pesieve::t_imprec_mode normalize_imprec_mode(size_t mode_id)
 {
 	if (mode_id > pesieve::PE_IMPREC_MODES_COUNT) {

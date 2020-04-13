@@ -158,10 +158,14 @@ IATScanReport* IATScanner::scanRemote()
 	if (not_covered.count()) {
 		listAllImports(report->storedFunc);
 	}
-	filterResults(not_covered, *report);
-	report->hookedCount = report->notCovered.count();
+	if (this->filterSystemHooks) {
+		filterResults(not_covered, *report);
+	}
+	else {
+		report->notCovered = not_covered;
+	}
 	report->status = status;
-	if (report->hookedCount == 0) {
+	if (report->countHooked() == 0) {
 		report->status = SCAN_NOT_SUSPICIOUS;
 	}
 	return report;

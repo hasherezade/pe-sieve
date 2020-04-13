@@ -32,6 +32,13 @@ namespace pesieve {
 		PE_DUMP_MODES_COUNT
 	} t_dump_mode;
 
+	typedef enum {
+		PE_IATS_NONE = 0,// do not scan IAT
+		PE_IATS_FILTERED, // scan IAT, filter out system hooks
+		PE_IATS_UNFILTERED, // scan IAT, unfiltered
+		PE_IATS_MODES_COUNT
+	} t_iat_scan_mode;
+
 	typedef struct {
 		DWORD pid;
 		DWORD modules_filter;
@@ -40,7 +47,7 @@ namespace pesieve {
 		t_output_filter out_filter;
 		bool no_hooks; // don't scan for hooks
 		bool shellcode; // detect shellcode implants
-		bool iat; // detect IAT hooking
+		t_iat_scan_mode iat; // detect IAT hooking
 		bool data; //scan non-executable pages if DEP for the process is disabled
 		bool minidump; // make minidump of full process
 		t_dump_mode dump_mode;

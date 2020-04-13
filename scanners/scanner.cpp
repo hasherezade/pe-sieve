@@ -65,14 +65,14 @@ t_scan_status ProcessScanner::scanForHollows(HANDLE processHandle, ModuleData& m
 	return is_suspicious;
 }
 
-t_scan_status ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report)
+t_scan_status ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report, bool filter)
 {
 	const peconv::ExportsMapper *expMap = process_report->exportsMap;
 	if (!expMap) {
 		return SCAN_ERROR;
 	}
 
-	IATScanner scanner(processHandle, modData, remoteModData, *expMap, process_report->modulesInfo);
+	IATScanner scanner(processHandle, modData, remoteModData, *expMap, process_report->modulesInfo, filter);
 
 	IATScanReport *scan_report = scanner.scanRemote();
 	if (!scan_report) {
@@ -242,7 +242,7 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 	if (modules_count == 0) {
 		return 0;
 	}
-	if (args.imprec_mode != PE_IMPREC_NONE || args.iat) {
+	if (args.imprec_mode != PE_IMPREC_NONE || args.iat != pesieve::PE_IATS_NONE) {
 		pReport.exportsMap = new peconv::ExportsMapper();
 	}
 
@@ -341,8 +341,9 @@ size_t ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //throws exce
 			pReport.appendReport(new MalformedHeaderReport(processHandle, hMods[counter], 0, modData.szModName));
 			continue;
 		}
-		
-		t_scan_status is_iat_patched = scanForIATHooks(processHandle, modData, remoteModData, &pReport);
+
+		bool filterSysHooks = (this->args.iat == pesieve::PE_IATS_FILTERED) ? true : false;
+		t_scan_status is_iat_patched = scanForIATHooks(processHandle, modData, remoteModData, &pReport, filterSysHooks);
 		if (is_iat_patched == SCAN_ERROR) {
 			continue;
 		}

@@ -20,7 +20,6 @@ public:
 		: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_SUSPICIOUS)
 	{
 		moduleFile = _moduleFile;
-		hookedCount = 0;
 	}
 
 	const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
@@ -30,17 +29,19 @@ public:
 		ModuleScanReport::toJSON(outs, level + 1);
 		outs << ",\n";
 		OUT_PADDED(outs, level + 1, "\"hooks\" : ");
-		outs << std::dec << hookedCount;
+		outs << std::dec << countHooked();
 		outs << "\n";
 		OUT_PADDED(outs, level, "}");
 		return true;
 	}
 	
 	bool generateList(IN const std::string &fileName, IN HANDLE hProcess, IN const ProcessModules &modulesInfo, IN const peconv::ExportsMapper *exportsMap);
+	
+	size_t countHooked() { return notCovered.count(); }
 
 	std::map<ULONGLONG, peconv::ExportedFunc> storedFunc;
 	peconv::ImpsNotCovered notCovered;
-	size_t hookedCount;
+
 };
 
 //---
@@ -48,9 +49,10 @@ public:
 class IATScanner : public ModuleScanner {
 public:
 
-	IATScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData, const peconv::ExportsMapper &_exportsMap, IN const ProcessModules &_modulesInfo)
+	IATScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData, const peconv::ExportsMapper &_exportsMap, IN const ProcessModules &_modulesInfo, bool _filterSystemHooks)
 		: ModuleScanner(hProc, moduleData, remoteModData),
-		exportsMap(_exportsMap), modulesInfo(_modulesInfo)
+		exportsMap(_exportsMap), modulesInfo(_modulesInfo),
+		filterSystemHooks(_filterSystemHooks)
 	{
 	}
 
@@ -62,5 +64,7 @@ private:
 
 	const peconv::ExportsMapper &exportsMap;
 	const ProcessModules &modulesInfo;
+
+	bool filterSystemHooks;
 };
 
