@@ -67,7 +67,7 @@ std::string translate_iat_scan_mode(const pesieve::t_iat_scan_mode mode)
 {
 	switch (mode) {
 	case pesieve::PE_IATS_NONE:
-		return "none: do scan for IAT Hooks (default)";
+		return "none: do not scan for IAT Hooks (default)";
 	case pesieve::PE_IATS_FILTERED:
 		return "filtered: scan for IAT Hooks, filter out system hooks";
 	case pesieve::PE_IATS_UNFILTERED:
