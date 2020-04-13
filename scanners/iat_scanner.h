@@ -48,8 +48,11 @@ public:
 class IATScanner : public ModuleScanner {
 public:
 
-	IATScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData, const peconv::ExportsMapper &_exportsMap)
-		: ModuleScanner(hProc, moduleData, remoteModData), exportsMap(_exportsMap) { }
+	IATScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData, const peconv::ExportsMapper &_exportsMap, IN const ProcessModules &_modulesInfo)
+		: ModuleScanner(hProc, moduleData, remoteModData),
+		exportsMap(_exportsMap), modulesInfo(_modulesInfo)
+	{
+	}
 
 	virtual IATScanReport* scanRemote();
 
@@ -58,5 +61,6 @@ private:
 	void listAllImports(std::map<ULONGLONG, peconv::ExportedFunc> &_storedFunc);
 
 	const peconv::ExportsMapper &exportsMap;
+	const ProcessModules &modulesInfo;
 };
 

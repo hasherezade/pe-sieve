@@ -175,8 +175,15 @@ bool IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATScanReport
 		const ULONGLONG thunk = itr->first;
 		const ULONGLONG addr = itr->second;
 
-		ULONGLONG module_start = peconv::fetch_alloc_base(this->processHandle, (BYTE*)addr);
+		LoadedModule *modExp = modulesInfo.getModuleContaining(addr);
+		ULONGLONG module_start = (modExp) ? modExp->start : peconv::fetch_alloc_base(this->processHandle, (BYTE*)addr);
 		if (module_start == 0) continue;
+
+		if (modExp && modExp->isSuspicious()) {
+			// insert hooks leading to suspicious modules:
+			report.notCovered.insert(thunk, addr);
+			continue;
+		}
 
 		// fetch system paths
 		char sysWow64Path[MAX_PATH] = { 0 };
@@ -203,6 +210,7 @@ bool IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATScanReport
 #endif
 				continue;
 			}
+			// insert hooks leading to non-system modules:
 			report.notCovered.insert(thunk, addr);
 		}
 	}

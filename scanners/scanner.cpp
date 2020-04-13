@@ -72,7 +72,7 @@ t_scan_status ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& 
 		return SCAN_ERROR;
 	}
 
-	IATScanner scanner(processHandle, modData, remoteModData, *expMap);
+	IATScanner scanner(processHandle, modData, remoteModData, *expMap, process_report->modulesInfo);
 
 	IATScanReport *scan_report = scanner.scanRemote();
 	if (!scan_report) {
