@@ -28,7 +28,7 @@ protected:
 	template <typename T_FIELD, typename T_IMAGE_THUNK_DATA>
 	bool processThunks_tpl(LPSTR lib_name, T_IMAGE_THUNK_DATA* desc, T_FIELD* call_via, T_FIELD ordinal_flag)
 	{
-		ULONGLONG call_resolved = (*call_via);
+		ULONGLONG call_via_rva = ((ULONG_PTR)call_via - (ULONG_PTR)this->modulePtr);
 		T_FIELD raw_ordinal = 0;
 		bool is_by_ord = (desc->u1.Ordinal & ordinal_flag) != 0;
 		if (is_by_ord) {
@@ -36,13 +36,13 @@ protected:
 #ifdef _DEBUG
 			std::cout << "raw ordinal: " << std::hex << raw_ordinal << std::endl;
 #endif
-			this->storedFunc[call_resolved] = peconv::ExportedFunc(peconv::get_dll_shortname(lib_name), raw_ordinal);
+			this->storedFunc[call_via_rva] = peconv::ExportedFunc(peconv::get_dll_shortname(lib_name), raw_ordinal);
 		}
 		else {
 			PIMAGE_IMPORT_BY_NAME by_name = (PIMAGE_IMPORT_BY_NAME)((ULONGLONG)modulePtr + desc->u1.AddressOfData);
 			LPSTR func_name = reinterpret_cast<LPSTR>(by_name->Name);
 			raw_ordinal = by_name->Hint;
-			this->storedFunc[call_resolved] = peconv::ExportedFunc(peconv::get_dll_shortname(lib_name), func_name, raw_ordinal);
+			this->storedFunc[call_via_rva] = peconv::ExportedFunc(peconv::get_dll_shortname(lib_name), func_name, raw_ordinal);
 		}
 		return true;
 	}
@@ -61,7 +61,7 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 {
 	const char delim = ';';
 
-	if (notCovered.addresses.size() == 0) {
+	if (notCovered.count() == 0) {
 		return false;
 	}
 	std::ofstream report;
@@ -70,15 +70,16 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 		return false;
 	}
 
-	std::set<ULONGLONG>::iterator itr;
-	for (itr = notCovered.addresses.begin(); itr != notCovered.addresses.end(); itr++)
+	std::map<ULONGLONG,ULONGLONG>::iterator itr;
+	for (itr = notCovered.thunkToAddr.begin(); itr != notCovered.thunkToAddr.end(); itr++)
 	{
-		const ULONGLONG addr = *itr;
-		report << std::hex << addr;
+		const ULONGLONG thunk = itr->first;
+		const ULONGLONG addr = itr->second;
+		report << std::hex << thunk;
 
 		if (storedFunc) {
 			report << delim;
-			std::map<ULONGLONG, peconv::ExportedFunc>::const_iterator found = storedFunc->find(addr);
+			std::map<ULONGLONG, peconv::ExportedFunc>::const_iterator found = storedFunc->find(thunk);
 			if (found != storedFunc->end()) {
 				const peconv::ExportedFunc &func = found->second;
 				report << func.toString() << "->";
@@ -145,7 +146,7 @@ IATScanReport* IATScanner::scanRemote()
 	peconv::fix_imports(vBuf, vBufSize, exportsMap, &not_covered);
 
 	t_scan_status status = SCAN_NOT_SUSPICIOUS;
-	if (not_covered.addresses.size() > 0) {
+	if (not_covered.count() > 0) {
 		status = SCAN_SUSPICIOUS;
 	}
 
@@ -154,12 +155,12 @@ IATScanReport* IATScanner::scanRemote()
 		return nullptr;
 	}
 
-	if (not_covered.addresses.size()) {
+	if (not_covered.count()) {
 		listAllImports(report->storedFunc);
 	}
 
 	report->status = status;
-	report->hookedCount = not_covered.addresses.size();
+	report->hookedCount = not_covered.count();
 	report->notCovered = not_covered;
 	return report;
 }
