@@ -70,8 +70,6 @@ public:
 		relocBase = reloc_base;
 	}
 
-	void listAllImports(std::map<ULONGLONG, peconv::ExportedFunc> &_storedFunc);
-
 protected:
 	bool allocBuffer(const size_t pe_vsize)
 	{

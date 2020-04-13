@@ -12,6 +12,7 @@
 
 #include "headers_scanner.h"
 #include "code_scanner.h"
+#include "iat_scanner.h"
 #include "workingset_scanner.h"
 #include "mapping_scanner.h"
 #include "hook_targets_resolver.h"
@@ -64,27 +65,27 @@ t_scan_status ProcessScanner::scanForHollows(HANDLE processHandle, ModuleData& m
 	return is_suspicious;
 }
 
-t_scan_status ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* pReport)
+t_scan_status ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report, bool filter)
 {
-	if (!pReport->exportsMap) {
+	const peconv::ExportsMapper *expMap = process_report->exportsMap;
+	if (!expMap) {
 		return SCAN_ERROR;
 	}
 
-	peconv::ImpsNotCovered not_covered; 
-	peconv::fix_imports(remoteModData.imgBuffer, remoteModData.imgBufferSize, *(pReport->exportsMap), &not_covered);
+	IATScanner scanner(processHandle, modData, remoteModData, *expMap, process_report->modulesInfo, filter);
 
-	t_scan_status status = SCAN_NOT_SUSPICIOUS;
-	if (not_covered.addresses.size() > 0) {
-		status = SCAN_SUSPICIOUS;
+	IATScanReport *scan_report = scanner.scanRemote();
+	if (!scan_report) {
+		return SCAN_ERROR;
 	}
-	if (pReport) {
-		IATScanReport *report = new IATScanReport(processHandle, remoteModData.modBaseAddr, remoteModData.getModuleSize(), modData.szModName);
-		report->status = status;
-		report->hookedCount = not_covered.addresses.size();
-		report->notCovered = not_covered;
-		pReport->appendReport(report);
+	t_scan_status scan_res = ModuleScanReport::get_scan_status(scan_report);
+	if (process_report) {
+		process_report->appendReport(scan_report);
 	}
-	return status;
+	else {
+		delete scan_report; scan_report = nullptr;
+	}
+	return scan_res;
 }
 
 t_scan_status ProcessScanner::scanForHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report)
@@ -241,7 +242,7 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 	if (modules_count == 0) {
 		return 0;
 	}
-	if (args.imprec_mode != PE_IMPREC_NONE || args.iat) {
+	if (args.imprec_mode != PE_IMPREC_NONE || args.iat != pesieve::PE_IATS_NONE) {
 		pReport.exportsMap = new peconv::ExportsMapper();
 	}
 
@@ -340,8 +341,9 @@ size_t ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //throws exce
 			pReport.appendReport(new MalformedHeaderReport(processHandle, hMods[counter], 0, modData.szModName));
 			continue;
 		}
-		
-		t_scan_status is_iat_patched = scanForIATHooks(processHandle, modData, remoteModData, &pReport);
+
+		bool filterSysHooks = (this->args.iat == pesieve::PE_IATS_FILTERED) ? true : false;
+		t_scan_status is_iat_patched = scanForIATHooks(processHandle, modData, remoteModData, &pReport, filterSysHooks);
 		if (is_iat_patched == SCAN_ERROR) {
 			continue;
 		}

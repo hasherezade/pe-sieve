@@ -176,5 +176,5 @@ private:
 	bool isFullImg; //read full PE to the buffer
 
 	friend class PeSection;
-	friend class ProcessScanner;
+	friend class IATScanner;
 };

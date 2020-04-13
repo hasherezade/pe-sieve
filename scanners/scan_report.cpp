@@ -2,6 +2,7 @@
 
 #include "headers_scanner.h"
 #include "code_scanner.h"
+#include "iat_scanner.h"
 #include "workingset_scanner.h"
 #include "mapping_scanner.h"
 

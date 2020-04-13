@@ -66,7 +66,12 @@ void print_help()
 
 	print_in_color(separator_color, "\n---scan options---\n");
 	print_param_in_color(param_color, PARAM_IAT);
-	std::cout << "\t: Detect IAT hooks.\n";
+	std::cout << " <*scan_mode>\n\t: Scan for IAT hooks.\n";
+	std::cout << "*scan_mode:\n";
+	for (size_t i = 0; i < pesieve::PE_IATS_MODES_COUNT; i++) {
+		std::cout << "\t" << i << " - " << translate_iat_scan_mode((pesieve::t_iat_scan_mode) i) << "\n";
+	}
+
 	print_param_in_color(param_color, PARAM_SHELLCODE);
 	std::cout << "\t: Detect shellcode implants. (By default it detects PE only).\n";
 	print_param_in_color(param_color, PARAM_DATA);
@@ -283,7 +288,14 @@ int main(int argc, char *argv[])
 			args.shellcode = true;
 		}
 		else if (!strcmp(param, PARAM_IAT)) {
-			args.iat = true;
+			args.iat = pesieve::PE_IATS_FILTERED;
+			if ((i + 1) < argc) {
+				char* mode_num = argv[i + 1];
+				if (isdigit(mode_num[0])) {
+					args.iat = (t_iat_scan_mode)atoi(mode_num);
+					++i;
+				}
+			}
 		}
 		else if (!strcmp(param, PARAM_DATA)) {
 			args.data = true;
