@@ -221,9 +221,9 @@ bool IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATScanReport
 #endif
 				continue;
 			}
-			// insert hooks leading to non-system modules:
-			report.notCovered.insert(thunk, addr);
 		}
+		// insert hooks leading to non-system modules:
+		report.notCovered.insert(thunk, addr);
 	}
 	return true;
 }
