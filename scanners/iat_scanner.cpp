@@ -75,37 +75,41 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 	{
 		const ULONGLONG thunk = itr->first;
 		const ULONGLONG addr = itr->second;
-		report << std::hex << thunk;
+		report << std::hex << thunk << delim;
 
 		if (storedFunc) {
-			report << delim;
 			std::map<ULONGLONG, peconv::ExportedFunc>::const_iterator found = storedFunc->find(thunk);
 			if (found != storedFunc->end()) {
 				const peconv::ExportedFunc &func = found->second;
-				report << func.toString() << "->";
+				report << func.toString();
 			}
 			else {
-				report << "(unknown)" << "->";
+				report << "(unknown)";
 			}
+			report << "->";
 		}
 
 		if (exportsMap) {
-			report << delim;
 			LoadedModule *modExp = modulesInfo.getModuleContaining(addr);
 			ULONGLONG module_start = (modExp) ? modExp->start : peconv::fetch_alloc_base(hProcess, (BYTE*)addr);
 
 			const peconv::ExportedFunc* func = exportsMap->find_export_by_va(addr);
-			if (!func) {
-				char moduleName[MAX_PATH] = { 0 };
-				if (GetModuleBaseNameA(hProcess, (HMODULE)module_start, moduleName, sizeof(moduleName))) {
-					report << peconv::get_dll_shortname(moduleName) << ".(unknown_func)";
-				}
-				else {
-					report << "(unknown)";
-				}
+			if (func) {
+				report << func->toString();
 			}
 			else {
-				report << func->toString();
+				if (module_start == 0) {
+					report << "(invalid)";
+				}
+				else {
+					char moduleName[MAX_PATH] = { 0 };
+					if (GetModuleBaseNameA(hProcess, (HMODULE)module_start, moduleName, sizeof(moduleName))) {
+						report << peconv::get_dll_shortname(moduleName) << ".(unknown_func)";
+					}
+					else {
+						report << "(unknown)";
+					}
+				}
 			}
 
 			size_t offset = addr - module_start;
@@ -181,8 +185,11 @@ bool IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATScanReport
 
 		LoadedModule *modExp = modulesInfo.getModuleContaining(addr);
 		ULONGLONG module_start = (modExp) ? modExp->start : peconv::fetch_alloc_base(this->processHandle, (BYTE*)addr);
-		if (module_start == 0) continue;
-
+		if (module_start == 0) {
+			// invalid address of the hook
+			report.notCovered.insert(thunk, addr);
+			continue;
+		}
 		if (modExp && modExp->isSuspicious()) {
 			// insert hooks leading to suspicious modules:
 			report.notCovered.insert(thunk, addr);
