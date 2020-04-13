@@ -158,11 +158,55 @@ IATScanReport* IATScanner::scanRemote()
 	if (not_covered.count()) {
 		listAllImports(report->storedFunc);
 	}
-
+	filterResults(not_covered, *report);
+	report->hookedCount = report->notCovered.count();
 	report->status = status;
-	report->hookedCount = not_covered.count();
-	report->notCovered = not_covered;
+	if (report->hookedCount == 0) {
+		report->status = SCAN_NOT_SUSPICIOUS;
+	}
 	return report;
+}
+
+bool IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATScanReport &report)
+{
+	std::map<ULONGLONG, ULONGLONG>::iterator itr;
+	for (itr = notCovered.thunkToAddr.begin(); itr != notCovered.thunkToAddr.end(); itr++)
+	{
+		const ULONGLONG thunk = itr->first;
+		const ULONGLONG addr = itr->second;
+
+		ULONGLONG module_start = peconv::fetch_alloc_base(this->processHandle, (BYTE*)addr);
+		if (module_start == 0) continue;
+
+		// fetch system paths
+		char sysWow64Path[MAX_PATH] = { 0 };
+		ExpandEnvironmentStringsA("%SystemRoot%\\SysWoW64", sysWow64Path, MAX_PATH);
+		std::string sysWow64Path_str = sysWow64Path;
+		std::transform(sysWow64Path_str.begin(), sysWow64Path_str.end(), sysWow64Path_str.begin(), tolower);
+
+		char system32Path[MAX_PATH] = { 0 };
+		ExpandEnvironmentStringsA("%SystemRoot%\\system32", system32Path, MAX_PATH);
+		std::string system32Path_str = system32Path;
+		std::transform(system32Path_str.begin(), system32Path_str.end(), system32Path_str.begin(), tolower);
+
+		// filter out hooks leading to system DLLs
+		char moduleName[MAX_PATH] = { 0 };
+		if (GetModuleFileNameExA(this->processHandle, (HMODULE)module_start, moduleName, sizeof(moduleName))) {
+			std::string dirName = peconv::get_directory_name(moduleName);
+			std::transform(dirName.begin(), dirName.end(), dirName.begin(), tolower);
+#ifdef _DEBUG
+			std::cout << dirName << "\n";
+#endif
+			if (dirName == system32Path_str || dirName == sysWow64Path_str) {
+#ifdef _DEBUG
+				std::cout << "Skipped: " << dirName << "\n";
+#endif
+				continue;
+			}
+			report.notCovered.insert(thunk, addr);
+		}
+	}
+	return true;
 }
 
 void IATScanner::listAllImports(std::map<ULONGLONG, peconv::ExportedFunc> &_storedFunc)
