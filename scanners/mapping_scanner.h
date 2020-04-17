@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <Windows.h>
+#include <windows.h>
 
 #include "module_scanner.h"
 #include "../utils/path_util.h"

@@ -21,7 +21,7 @@
 #include <locale>
 #include <codecvt>
 
-#include <Psapi.h>
+#include <psapi.h>
 #pragma comment(lib,"psapi.lib")
 
 using namespace pesieve;

@@ -1,7 +1,7 @@
 #include "results_dumper.h"
 
-#include <Windows.h>
-#include <Psapi.h>
+#include <windows.h>
+#include <psapi.h>
 
 #include <fstream>
 

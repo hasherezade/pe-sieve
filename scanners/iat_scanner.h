@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Windows.h>
+#include <windows.h>
 
 #include "module_scanner.h"
 #include "scanned_modules.h"

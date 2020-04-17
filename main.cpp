@@ -1,8 +1,8 @@
 // Scans for modified modules within the process of a given PID
 // author: hasherezade (hasherezade@gmail.com)
 
-#include <Windows.h>
-#include <Psapi.h>
+#include <windows.h>
+#include <psapi.h>
 #include <sstream>
 #include <fstream>
 

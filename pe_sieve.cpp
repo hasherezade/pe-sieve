@@ -4,7 +4,7 @@
 #include "pe_sieve.h"
 #include <peconv.h>
 
-#include <Windows.h>
+#include <windows.h>
 #include "scanners/scanner.h"
 
 #include "utils/format_util.h"
