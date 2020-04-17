@@ -6,6 +6,14 @@ include_directories (
   include
 )
 
+add_compile_options(
+	-fpermissive
+)
+
+add_compile_definitions(
+	_WIN32_WINNT=1536 # 0x600 aka Windows Vista required
+)
+
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 
 # modules:
@@ -168,11 +176,12 @@ if(PESIEVE_AS_DLL)
 		include/pe_sieve_api.h
 	)
 	add_library ( ${PROJECT_NAME} SHARED ${dll_hdrs} ${srcs} dll_main.cpp main.def)
+	set_source_files_properties(main.def PROPERTIES HEADER_FILE_ONLY TRUE)
 else()
 	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} main.cpp )
 endif()
 
-target_link_libraries ( ${PROJECT_NAME} ${PECONV_LIB} "psapi.lib" "ntdll.lib")
+target_link_libraries ( ${PROJECT_NAME} ${PECONV_LIB} "psapi.lib" "ntdll.lib" "shlwapi")
 
 # dependencies
 add_dependencies(${PROJECT_NAME} libpeconv)
