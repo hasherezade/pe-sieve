@@ -2,17 +2,19 @@ cmake_minimum_required (VERSION 2.8)
 project (pe-sieve)
 
 option(PESIEVE_AS_DLL "Build PE-sieve as a DLL" OFF)
+option(PESIEVE_AS_STATIC_LIB "Build PE-Sieve as a static library" OFF)
+
 include_directories (
   include
 )
 
 if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
-    add_compile_options(
-        -fpermissive
-    )
-    add_compile_definitions(
-        _WIN32_WINNT=1536 # 0x600 aka Windows Vista required
-    )
+	add_compile_options(
+		-fpermissive
+	)
+	add_compile_definitions(
+		_WIN32_WINNT=1536 # 0x600 aka Windows Vista required
+	)
 endif()
 
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
@@ -165,26 +167,43 @@ SOURCE_GROUP("Header Files\\postprocessors" FILES ${postprocessors_hdrs} )
 SOURCE_GROUP("Source Files\\postprocessors\\imp_rec" FILES ${imprec_srcs} )
 SOURCE_GROUP("Header Files\\postprocessors\\imp_rec" FILES ${imprec_hdrs} )
 
-# libs
-add_subdirectory (libpeconv/libpeconv)
-set ( PECONV_LIB $<TARGET_FILE:libpeconv> CACHE FILE "PEConvLib library path" )
+include(GNUInstallDirs)
+set (library_export_hdrs
+	include/pe_sieve_types.h
+	include/pe_sieve_version.h
+	include/pe_sieve_api.h
+)
+if(PESIEVE_AS_STATIC_LIB)
+	set(LIBRARY_TYPE STATIC)
+	# Install libpeconv as well since with static libraries a user has to link against both
+	set(PECONV_LIB_INSTALL ON CACHE INTERNAL "")
+elseif(PESIEVE_AS_DLL)
+	set(LIBRARY_TYPE SHARED)
+endif()
 
-# Choose to build the DLL or EXE
-
-if(PESIEVE_AS_DLL)
-	set (dll_hdrs
-		${hdrs}
-		include/pe_sieve_api.h
+# Choose to build the library or EXE
+if(PESIEVE_AS_STATIC_LIB OR PESIEVE_AS_DLL)
+	add_library ( ${PROJECT_NAME} ${LIBRARY_TYPE} ${library_export_hdrs} ${hdrs} ${srcs} dll_main.cpp main.def)
+	set_source_files_properties(main.def PROPERTIES HEADER_FILE_ONLY TRUE)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC PESIEVE_${LIBRARY_TYPE}_LIB)
+	INSTALL(FILES ${library_export_hdrs}
+		DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 	)
-	add_library ( ${PROJECT_NAME} SHARED ${dll_hdrs} ${srcs} dll_main.cpp main.def)
 	set_source_files_properties(main.def PROPERTIES HEADER_FILE_ONLY TRUE)
 else()
 	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} main.cpp )
 endif()
 
+install(TARGETS ${PROJECT_NAME}
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+# libs
+add_subdirectory (libpeconv/libpeconv)
+set ( PECONV_LIB $<TARGET_FILE:libpeconv> CACHE FILE "PEConvLib library path" )
+
 target_link_libraries ( ${PROJECT_NAME} ${PECONV_LIB} "psapi.lib" "ntdll.lib" "shlwapi")
 
 # dependencies
 add_dependencies(${PROJECT_NAME} libpeconv)
-
-INSTALL( TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX} COMPONENT ${PROJECT_NAME} )
