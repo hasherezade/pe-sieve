@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include <windows.h>
 
 #include <pshpack4.h> // ensure 4 byte packing of the structures
@@ -8,7 +7,13 @@
 #define MAX_MODULE_BUF_LEN 1024
 #define PARAM_LIST_SEPARATOR ';'
 
+#ifndef __cplusplus
+typedef char bool;
+#endif
+
+#ifdef __cplusplus
 namespace pesieve {
+#endif
 	typedef enum {
 		OUT_FULL = 0,
 		OUT_NO_DUMPS,
@@ -69,6 +74,8 @@ namespace pesieve {
 		DWORD skipped; // some of the modules must be skipped (i.e. dotNET managed code have different characteristics and this scan does not apply)
 		DWORD errors; // errors prevented the scan
 	} t_report;
+#ifdef __cplusplus
 };
+#endif
 
 #include <poppack.h> //back to the previous structure packing
