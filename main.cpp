@@ -209,7 +209,7 @@ size_t copyToCStr(char *buf, size_t buf_max, const std::string &value)
 	size_t len = value.length() + 1;
 	if (len > buf_max) len = buf_max;
 
-	memcpy(buf, value.c_str(), buf_max);
+	memcpy(buf, value.c_str(), len);
 	buf[len] = '\0';
 	return len;
 }
