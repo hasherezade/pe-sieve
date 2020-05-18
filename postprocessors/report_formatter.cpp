@@ -37,7 +37,7 @@ std::string scan_report_to_json(const ProcessScanReport &process_report, Process
 	size_t level = 1;
 
 	if (!process_report.toJSON(stream, level, filter)) {
-		return false;
+		return "";
 	}
 	std::string report_all = stream.str();
 	if (report_all.length() == 0) {
