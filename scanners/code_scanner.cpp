@@ -98,7 +98,7 @@ bool CodeScanner::clearExports(PeSection &originalSec, PeSection &remoteSec)
 	if (originalSec.isContained(iat_rva, iat_size))
 	{
 #ifdef _DEBUG
-		std::cout << "Exports are  is in Code section!" << std::endl;
+		std::cout << "Exports are in the Code section!" << std::endl;
 #endif
 		DWORD offset = iat_rva - originalSec.rva;
 		IMAGE_EXPORT_DIRECTORY *exports = (IMAGE_EXPORT_DIRECTORY*) ((ULONGLONG)originalSec.loadedSection + offset);
