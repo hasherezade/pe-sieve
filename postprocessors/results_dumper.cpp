@@ -105,11 +105,14 @@ std::string get_module_file_name(HANDLE processHandle, const ModuleScanReport& m
 }
 //---
 
-bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, ProcessScanReport::t_report_filter filter)
+bool ResultsDumper::dumpJsonReport(ProcessScanReport &process_report, const ProcessScanReport::t_report_filter &filter)
 {
 	std::stringstream stream;
 	size_t level = 1;
 
+	if (!process_report.hasAnyShownType(filter)) {
+		return false;
+	}
 	if (!process_report.toJSON(stream, level, filter)) {
 		return false;
 	}

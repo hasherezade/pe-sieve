@@ -101,6 +101,7 @@ protected:
 	size_t countHdrsReplaced() const;
 
 	bool appendToModulesList(ModuleScanReport *report);
+	bool hasAnyShownType(const ProcessScanReport::t_report_filter &filter);
 
 	DWORD pid;
 	size_t errorsCount;

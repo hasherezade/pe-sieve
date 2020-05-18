@@ -27,8 +27,9 @@ bool is_shown_type(t_scan_status status, ProcessScanReport::t_report_filter filt
 	return false;
 }
 
-bool has_any_shown_type(t_report summary, ProcessScanReport::t_report_filter filter)
+bool ProcessScanReport::hasAnyShownType(const ProcessScanReport::t_report_filter &filter)
 {
+	t_report summary = this->generateSummary();
 	t_scan_status aggregated_status = summary.suspicious > 0 ? SCAN_SUSPICIOUS : SCAN_NOT_SUSPICIOUS;
 	if (is_shown_type(aggregated_status, filter)) {
 		return true;
@@ -188,9 +189,6 @@ std::string ProcessScanReport::list_modules(size_t level, const ProcessScanRepor
 const bool ProcessScanReport::toJSON(std::stringstream &stream, size_t level, const ProcessScanReport::t_report_filter &filter) const
 {
 	const t_report report = this->generateSummary();
-	if (!has_any_shown_type(report, filter)) {
-		return false;
-	}
 	//summary:
 	size_t other = report.suspicious - (report.patched + report.replaced + report.detached + report.implanted + report.hdr_mod);
 	stream << "{\n";
