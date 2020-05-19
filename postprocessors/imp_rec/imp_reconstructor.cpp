@@ -295,7 +295,7 @@ ImportTableBuffer* ImpReconstructor::constructImportTable()
 {
 	BYTE *vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;
-	if (!vBuf) return false;
+	if (!vBuf) return nullptr;
 
 	size_t ready_blocks = 0;
 	std::map<DWORD, IATBlock*>::iterator itr;

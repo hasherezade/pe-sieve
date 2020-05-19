@@ -4,7 +4,7 @@
 #include "../utils/path_converter.h"
 #include "../utils/process_util.h"
 
-#include <Psapi.h>
+#include <psapi.h>
 #pragma comment(lib,"psapi.lib")
 
 //---

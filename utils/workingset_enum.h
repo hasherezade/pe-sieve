@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Windows.h>
+#include <windows.h>
 #include <set>
 
 #define PAGE_SIZE 0x1000

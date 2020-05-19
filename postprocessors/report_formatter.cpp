@@ -41,7 +41,7 @@ std::string scan_report_to_json(const ProcessScanReport &process_report, Process
 	}
 	std::string report_all = stream.str();
 	if (report_all.length() == 0) {
-		return false;
+		return "";
 	}
 	return report_all;
 }

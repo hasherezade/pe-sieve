@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <Windows.h>
+#include <windows.h>
 
 #include <pshpack4.h> // ensure 4 byte packing of the structures
 

@@ -1,6 +1,6 @@
 #include "path_converter.h"
 
-#include <Windows.h>
+#include <windows.h>
 
 #include "ntddk.h"
 #pragma comment(lib, "Ntdll.lib")

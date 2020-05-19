@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Windows.h>
+#include <windows.h>
 #include "pe_sieve_types.h"
 
 #ifdef PESIEVE_EXPORTS

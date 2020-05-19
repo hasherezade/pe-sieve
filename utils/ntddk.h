@@ -4,7 +4,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include <Windows.h>
+#include <windows.h>
 
 #ifdef _NTDDK_
 #error This header cannot be compiled together with NTDDK
