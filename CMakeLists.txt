@@ -6,13 +6,14 @@ include_directories (
   include
 )
 
-add_compile_options(
-	-fpermissive
-)
-
-add_compile_definitions(
-	_WIN32_WINNT=1536 # 0x600 aka Windows Vista required
-)
+if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+    add_compile_options(
+        -fpermissive
+    )
+    add_compile_definitions(
+        _WIN32_WINNT=1536 # 0x600 aka Windows Vista required
+    )
+endif()
 
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 
