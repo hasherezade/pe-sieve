@@ -3,6 +3,7 @@ project (pe-sieve)
 
 option(PESIEVE_AS_DLL "Build PE-sieve as a DLL" OFF)
 option(PESIEVE_AS_STATIC_LIB "Build PE-Sieve as a static library" OFF)
+option(LINK_STATICALLY "Link PE-Sieve with static versions of linked libraries" OFF)
 
 include_directories (
   include
@@ -14,6 +15,12 @@ if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
 	)
 	add_compile_definitions(
 		_WIN32_WINNT=1536 # 0x600 aka Windows Vista required
+	)
+endif()
+
+if(LINK_STATICALLY)
+	add_link_options(
+		-static
 	)
 endif()
 
