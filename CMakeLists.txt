@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.12.4)
 project (pe-sieve)
 
 option(PESIEVE_AS_DLL "Build PE-sieve as a DLL" OFF)
@@ -6,22 +6,28 @@ option(PESIEVE_AS_STATIC_LIB "Build PE-Sieve as a static library" OFF)
 option(LINK_STATICALLY "Link PE-Sieve with static versions of linked libraries" OFF)
 
 include_directories (
-  include
+	include
 )
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 
-if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+	option(LINK_STATICALLY "Link PE-Sieve with static versions of linked libraries" ON)
+
 	add_compile_options(
 		-fpermissive
 	)
+
 	add_compile_definitions(
 		_WIN32_WINNT=1536 # 0x600 aka Windows Vista required
 	)
-endif()
 
-if(LINK_STATICALLY)
-	add_link_options(
-		-static
-	)
+	if(LINK_STATICALLY)
+		add_link_options(
+			-static
+			-static-libgcc
+			-static-libstdc++
+		)
+	endif()
+
 endif()
 
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
