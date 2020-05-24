@@ -3,15 +3,28 @@ project (pe-sieve)
 
 option(PESIEVE_AS_DLL "Build PE-sieve as a DLL" OFF)
 include_directories (
-  include
+	include
 )
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(
-        -fpermissive
-    )
-    add_compile_definitions(
-        _WIN32_WINNT=1536 # 0x600 aka Windows Vista required
-    )
+
+	option(LINK_STATICALLY "Link PE-Sieve with static versions of linked libraries" ON)
+
+	add_compile_options(
+		-fpermissive
+	)
+
+	add_compile_definitions(
+		_WIN32_WINNT=1536 # 0x600 aka Windows Vista required
+	)
+
+	if(LINK_STATICALLY)
+		add_link_options(
+			-static
+			-static-libgcc
+			-static-libstdc++
+		)
+	endif()
+
 endif()
 
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
