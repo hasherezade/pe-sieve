@@ -9,7 +9,7 @@
 
 #define LIB_NAME "PE-sieve"
 
-pesieve::t_report __stdcall PESieve_scan(pesieve::t_params args)
+pesieve::t_report PESIEVE_API PESieve_scan(pesieve::t_params args)
 {
 	const pesieve::ReportEx* report = pesieve::scan_and_dump(args);
 	if (report == nullptr) {
@@ -23,7 +23,7 @@ pesieve::t_report __stdcall PESieve_scan(pesieve::t_params args)
 	return summary;
 }
 
-void __stdcall PESieve_help(void)
+void PESIEVE_API PESieve_help(void)
 {
 	std::string my_info = pesieve::info();
 
@@ -31,7 +31,7 @@ void __stdcall PESieve_help(void)
 	MessageBox(NULL, my_info.c_str(), LIB_NAME, MB_ICONINFORMATION);
 }
 
-DWORD __stdcall PESieve_version(void)
+DWORD PESIEVE_API PESieve_version(void)
 {
 	return pesieve::PESIEVE_VERSION_ID;
 }
