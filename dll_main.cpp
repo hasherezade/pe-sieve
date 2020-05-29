@@ -9,7 +9,7 @@
 
 #define LIB_NAME "PE-sieve"
 
-pesieve::t_report PESIEVE_API PESieve_scan(pesieve::t_params args)
+PEsieve_report PESIEVE_API PESieve_scan(PEsieve_params args)
 {
 	const pesieve::ReportEx* report = pesieve::scan_and_dump(args);
 	if (report == nullptr) {

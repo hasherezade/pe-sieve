@@ -16,19 +16,19 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 void PESIEVE_API PESieve_help(void);
 DWORD PESIEVE_API PESieve_version(void);
 
 #ifdef __cplusplus
-#define report_type pesieve::t_report
-#define params_type pesieve::t_params
+typedef pesieve::t_report PEsieve_report;
+typedef pesieve::t_params PEsieve_params;
 #else
-#define report_type t_report
-#define params_type t_params
+typedef t_report report_type;
+typedef t_params params_type;
 #endif
-report_type PESIEVE_API PESieve_scan(params_type args);
-#undef report_type
-#undef params_type
+
+PEsieve_report PESIEVE_API PESieve_scan(PEsieve_params args);
 
 #ifdef __cplusplus
 };
