@@ -18,7 +18,7 @@ public:
 	ProcessDumpReport* dumpDetectedModules(HANDLE hProcess, ProcessScanReport &process_report, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
 
 	// dump JSON report from the process scan
-	bool dumpJsonReport(ProcessScanReport &process_report, const ProcessScanReport::t_report_filter &filter);
+	bool dumpJsonReport(ProcessScanReport &process_report, const ProcessScanReport::t_report_filter &filter, const pesieve::t_output_filter &ofilter);
 
 	bool dumpJsonReport(ProcessDumpReport &process_report);
 
