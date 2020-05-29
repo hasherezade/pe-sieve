@@ -199,7 +199,19 @@ endif()
 
 # Choose to build the library or EXE
 if(PESIEVE_AS_STATIC_LIB OR PESIEVE_AS_DLL)
-	add_library ( ${PROJECT_NAME} ${LIBRARY_TYPE} ${library_export_hdrs} ${hdrs} ${srcs} dll_main.cpp main.def)
+	set (lib_srcs
+		pe_sieve_api.cpp
+		${srcs}
+	)
+	if (PESIEVE_AS_DLL)
+		set (lib_srcs
+			dll_main.cpp
+			main.def
+			${lib_srcs}
+		)
+	endif()
+
+	add_library ( ${PROJECT_NAME} ${LIBRARY_TYPE} ${library_export_hdrs} ${hdrs} ${lib_srcs} )
 	set_source_files_properties(main.def PROPERTIES HEADER_FILE_ONLY TRUE)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PESIEVE_${LIBRARY_TYPE}_LIB)
 	INSTALL(FILES ${library_export_hdrs}
@@ -222,6 +234,7 @@ endif()
 install(TARGETS ${PROJECT_NAME}
 	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX} COMPONENT ${PROJECT_NAME}
 )
+
 
 # libs
 add_subdirectory (libpeconv/libpeconv)
