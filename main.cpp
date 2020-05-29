@@ -38,6 +38,7 @@
 #define PARAM_VERSION2 "ver"
 
 using namespace pesieve;
+using namespace pesieve::util;
 
 void print_in_color(int color, const std::string &text)
 {
