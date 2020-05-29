@@ -3,7 +3,6 @@ project (pe-sieve)
 
 option(PESIEVE_AS_DLL "Build PE-sieve as a DLL" OFF)
 option(PESIEVE_AS_STATIC_LIB "Build PE-Sieve as a static library" OFF)
-option(LINK_STATICALLY "Link PE-Sieve with static versions of linked libraries" OFF)
 
 include_directories (
 	include
