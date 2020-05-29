@@ -193,6 +193,10 @@ elseif(PESIEVE_AS_DLL)
 	set(LIBRARY_TYPE SHARED)
 endif()
 
+if (PESIEVE_AS_DLL AND PESIEVE_AS_STATIC_LIB)
+	message(FATAL_ERROR "Choose either PESIEVE_AS_STATIC_LIB or PESIEVE_AS_DLL (or none of them, to build as an EXE)")
+endif()
+
 # Choose to build the library or EXE
 if(PESIEVE_AS_STATIC_LIB OR PESIEVE_AS_DLL)
 	add_library ( ${PROJECT_NAME} ${LIBRARY_TYPE} ${library_export_hdrs} ${hdrs} ${srcs} dll_main.cpp main.def)
