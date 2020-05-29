@@ -19,9 +19,9 @@ public:
 		OUT_PADDED(outs, level, "\"module\" : ");
 		outs << "\"" << std::hex << (ULONGLONG)module << "\"" << ",\n";
 
-		OUT_PADDED(outs, level, "\"module_file\" : \"" << escape_path_separators(this->moduleFile) << "\"");
+		OUT_PADDED(outs, level, "\"module_file\" : \"" << pesieve::util::escape_path_separators(this->moduleFile) << "\"");
 		outs << ",\n";
-		OUT_PADDED(outs, level, "\"mapped_file\" : \"" << escape_path_separators(this->mappedFile) << "\"");
+		OUT_PADDED(outs, level, "\"mapped_file\" : \"" << pesieve::util::escape_path_separators(this->mappedFile) << "\"");
 
 		outs << ",\n";
 		OUT_PADDED(outs, level, "\"status\" : ");

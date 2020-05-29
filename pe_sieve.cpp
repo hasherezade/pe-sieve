@@ -15,6 +15,7 @@
 #include "postprocessors/results_dumper.h"
 
 using namespace pesieve;
+using namespace pesieve::util;
 
 void check_access_denied(DWORD processID)
 {

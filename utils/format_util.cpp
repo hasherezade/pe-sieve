@@ -6,27 +6,34 @@
 #include <iomanip>
 #include <algorithm>
 
-bool is_hex(const char *buf, size_t len)
-{
-	for (size_t i = 0; i < len; i++) {
-		if (buf[i] >= '0' && buf[i] <= '9') continue;
-		if (buf[i] >= 'A' && buf[i] <= 'F') continue;
-		if (buf[i] >= 'a' && buf[i] <= 'f') continue;
-		return false;
-	}
-	return true;
-}
+namespace pesieve {
+	namespace util {
 
-bool is_dec(const char *buf, size_t len)
-{
-	for (size_t i = 0; i < len; i++) {
-		if (buf[i] >= '0' && buf[i] <= '9') continue;
-		return false;
-	}
-	return true;
-}
+		bool is_hex(const char *buf, size_t len)
+		{
+			for (size_t i = 0; i < len; i++) {
+				if (buf[i] >= '0' && buf[i] <= '9') continue;
+				if (buf[i] >= 'A' && buf[i] <= 'F') continue;
+				if (buf[i] >= 'a' && buf[i] <= 'f') continue;
+				return false;
+			}
+			return true;
+		}
 
-long get_number(const char *my_buf)
+		bool is_dec(const char *buf, size_t len)
+		{
+			for (size_t i = 0; i < len; i++) {
+				if (buf[i] >= '0' && buf[i] <= '9') continue;
+				return false;
+			}
+			return true;
+		}
+
+	};
+};
+
+
+long pesieve::util::get_number(const char *my_buf)
 {
 	const char hex_pattern[] = "0x";
 	size_t hex_pattern_len = strlen(hex_pattern);
@@ -50,7 +57,7 @@ long get_number(const char *my_buf)
 	return out;
 }
 
-bool is_number(const char* my_buf)
+bool pesieve::util::is_number(const char* my_buf)
 {
 	const char hex_pattern[] = "0x";
 	size_t hex_pattern_len = strlen(hex_pattern);
@@ -69,13 +76,13 @@ bool is_number(const char* my_buf)
 	return true;
 }
 
-std::string to_lowercase(std::string str)
+std::string pesieve::util::to_lowercase(std::string str)
 {
 	std::transform(str.begin(), str.end(), str.begin(), tolower);
 	return str;
 }
 
-bool is_in_list(const char *searched_str, const char *str_list)
+bool pesieve::util::is_in_list(const char *searched_str, const char *str_list)
 {
 	const char * list_entry = nullptr;
 	bool result = false;
@@ -95,7 +102,7 @@ bool is_in_list(const char *searched_str, const char *str_list)
 	return result;
 }
 
-size_t delim_list_to_multi_sz(IN const char *delim_list_str, IN const char delimiter, OUT char *buffer, IN const size_t buffer_max_chars)
+size_t pesieve::util::delim_list_to_multi_sz(IN const char *delim_list_str, IN const char delimiter, OUT char *buffer, IN const size_t buffer_max_chars)
 {
 	size_t str_count = 0;
 	const char * separator;

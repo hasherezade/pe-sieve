@@ -85,7 +85,7 @@ bool ModuleData::switchToWow64Path()
 		return false;
 	}
 	if (isWow64) {
-		if (convert_to_wow64_path(szModName)) return true;
+		if (pesieve::util::convert_to_wow64_path(szModName)) return true;
 	}
 	return false;
 }
@@ -129,8 +129,8 @@ std::string RemoteModuleData::getModuleName(HANDLE processHandle, HMODULE modBas
 	if (!GetModuleFileNameExA(processHandle, modBaseAddr, filename, MAX_PATH)) {
 		return "";
 	}
-	std::string basic_filename = convert_to_win32_path(filename);
-	std::string expanded = expand_path(basic_filename);
+	std::string basic_filename = pesieve::util::convert_to_win32_path(filename);
+	std::string expanded = pesieve::util::expand_path(basic_filename);
 	if (expanded.length() == 0) {
 		return filename;
 	}
@@ -143,8 +143,8 @@ std::string RemoteModuleData::getMappedName(HANDLE processHandle, LPVOID modBase
 	if (!GetMappedFileNameA(processHandle, modBaseAddr, filename, MAX_PATH) != 0) {
 		return "";
 	}
-	std::string basic_filename = device_path_to_win32_path(filename);
-	std::string expanded = expand_path(basic_filename);
+	std::string basic_filename = pesieve::util::device_path_to_win32_path(filename);
+	std::string expanded = pesieve::util::expand_path(basic_filename);
 	if (expanded.length() == 0) {
 		return filename;
 	}

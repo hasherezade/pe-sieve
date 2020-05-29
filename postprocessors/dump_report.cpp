@@ -1,8 +1,8 @@
 #include "dump_report.h"
 
-//using namespace pesieve;
-
 #include "../utils/format_util.h"
+
+using namespace pesieve::util;
 
 const bool ModuleDumpReport::toJSON(std::stringstream &outs, size_t level)
 {

@@ -2,7 +2,7 @@
 
 #include "format_util.h"
 
-char* get_subpath_ptr(char *modulePath, char* searchedPath)
+char* pesieve::util::get_subpath_ptr(char *modulePath, char* searchedPath)
 {
 	if (modulePath == nullptr || searchedPath == nullptr) {
 		return nullptr;
@@ -24,7 +24,7 @@ char* get_subpath_ptr(char *modulePath, char* searchedPath)
 	return nullptr;
 }
 
-std::string escape_path_separators(std::string path)
+std::string pesieve::util::escape_path_separators(std::string path)
 {
 	size_t pos = std::string::npos;
 	size_t prev = 0;
@@ -43,7 +43,7 @@ std::string escape_path_separators(std::string path)
 	return path;
 }
 
-std::string get_system_drive()
+std::string pesieve::util::get_system_drive()
 {
 	char buf[MAX_PATH];
 	GetWindowsDirectory(buf, MAX_PATH);
@@ -60,7 +60,7 @@ std::string get_full_path(const char* szPath)
 	return out_buf;
 }
 
-bool dir_exists(const char* szPath)
+bool pesieve::util::dir_exists(const char* szPath)
 {
 	DWORD dwAttrib = GetFileAttributes(szPath);
 
@@ -68,7 +68,7 @@ bool dir_exists(const char* szPath)
 		(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
 }
 
-bool create_dir_recursively(const std::string& in_path)
+bool pesieve::util::create_dir_recursively(const std::string& in_path)
 {
 	std::string path = get_full_path(in_path.c_str());
 	if (path.length() == 0) path = in_path;
@@ -89,7 +89,7 @@ bool create_dir_recursively(const std::string& in_path)
 	return true;
 }
 
-std::string strip_prefix(std::string path, std::string prefix)
+std::string pesieve::util::strip_prefix(std::string path, std::string prefix)
 {
 	const size_t prefix_len = prefix.length();
 	if (prefix_len == 0) {

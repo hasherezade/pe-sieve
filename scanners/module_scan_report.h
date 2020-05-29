@@ -58,7 +58,7 @@ public:
 		outs << "\"" << std::hex << (ULONGLONG) module << "\"" << ",\n";
 		if (moduleFile.length()) {
 			OUT_PADDED(outs, level, "\"module_file\" : ");
-			outs << "\"" << escape_path_separators(moduleFile) << "\"" << ",\n";
+			outs << "\"" << pesieve::util::escape_path_separators(moduleFile) << "\"" << ",\n";
 		}
 		OUT_PADDED(outs, level, "\"status\" : ");
 		outs << std::dec << status;

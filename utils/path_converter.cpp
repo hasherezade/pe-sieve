@@ -21,19 +21,178 @@
 char g_System32Path[MAX_PATH] = { 0 }; //= "C:\\Windows\\system32";
 char g_Syswow64Path[MAX_PATH] = { 0 }; //= "C:\\Windows\\SysWOW64";
 
-void init_syspaths()
-{
-	if (!g_System32Path[0]) {
-		memset(g_System32Path, 0, MAX_PATH);
-		ExpandEnvironmentStringsA("%SystemRoot%\\system32", g_System32Path, MAX_PATH);
-	}
-	if (!g_Syswow64Path[0]) {
-		memset(g_Syswow64Path, 0, MAX_PATH);
-		ExpandEnvironmentStringsA("%SystemRoot%\\SysWoW64", g_Syswow64Path, MAX_PATH);
-	}
-}
+namespace pesieve {
+	namespace util {
 
-bool convert_to_wow64_path(char *szModName)
+		void init_syspaths()
+		{
+			if (!g_System32Path[0]) {
+				memset(g_System32Path, 0, MAX_PATH);
+				ExpandEnvironmentStringsA("%SystemRoot%\\system32", g_System32Path, MAX_PATH);
+			}
+			if (!g_Syswow64Path[0]) {
+				memset(g_Syswow64Path, 0, MAX_PATH);
+				ExpandEnvironmentStringsA("%SystemRoot%\\SysWoW64", g_Syswow64Path, MAX_PATH);
+			}
+		}
+
+		HANDLE nt_create_file(PCWSTR filePath)
+		{
+			HANDLE hFile;
+			OBJECT_ATTRIBUTES objAttribs = { 0 };
+
+			UNICODE_STRING unicodeString;
+			RtlInitUnicodeString(&unicodeString, filePath);
+
+			InitializeObjectAttributes(&objAttribs, &unicodeString, OBJ_CASE_INSENSITIVE, NULL, NULL);
+
+			const int allocSize = 2048;
+			LARGE_INTEGER largeInteger;
+			largeInteger.QuadPart = allocSize;
+
+			IO_STATUS_BLOCK ioStatusBlock = { 0 };
+			NTSTATUS status = NtCreateFile(&hFile,
+				STANDARD_RIGHTS_READ,
+				&objAttribs,
+				&ioStatusBlock,
+				&largeInteger,
+				FILE_ATTRIBUTE_NORMAL,
+				FILE_SHARE_READ,
+				FILE_OPEN,
+				FILE_NON_DIRECTORY_FILE,
+				NULL,
+				NULL
+			);
+			if (status != STATUS_SUCCESS) {
+				std::wcerr << "Cannot open file: " << filePath << ". Error: " << std::hex << status << std::endl;
+				return nullptr;
+			}
+			return hFile;
+		}
+
+		std::string nt_retrieve_file_path(HANDLE hFile)
+		{
+			IO_STATUS_BLOCK status_block = { 0 };
+
+			struct MY_FILE_NAME_INFORMATION {
+				ULONG FileNameLength;
+				WCHAR FileName[MAX_PATH];
+			} name_info;
+
+			memset(&name_info, 0, sizeof(MY_FILE_NAME_INFORMATION));
+
+			NTSTATUS status = ZwQueryInformationFile(hFile, &status_block, &name_info, sizeof(MY_FILE_NAME_INFORMATION), FileNameInformation);
+			if (status != STATUS_SUCCESS) {
+				return "";
+			}
+			std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+			std::string my_string = converter.to_bytes(name_info.FileName);
+
+			my_string = get_system_drive() + my_string;
+			return my_string;
+		}
+
+		bool is_relative(const char *path, size_t path_len)
+		{
+			if (path_len < 2) {
+				return true;
+			}
+			// i.e. "c:\"
+			if (path[1] == ':') {
+				return false;
+			}
+			// i.e. "\\path1\" or "\\?\UNC\"
+			if (path[0] == '\\' && path[1] == '\\') {
+				return false;
+			}
+			return true;
+		}
+
+		bool is_disk_relative(const char *path, size_t path_len)
+		{
+			if (path_len < 2) {
+				return true;
+			}
+			//check format:
+			if ((path[0] >= 'a' && path[0] <= 'z')
+				|| (path[0] >= 'A' && path[0] <= 'Z'))
+			{
+				if (path[1] == ':') {
+					// format i.e: C:\...
+					return true;
+				}
+			}
+			return false;
+		}
+
+		std::string remap_to_drive_letter(std::string full_path)
+		{
+			size_t full_path_size = full_path.length();
+			if (full_path_size == 0) {
+				return full_path;
+			}
+
+			DWORD drives_bitmask = GetLogicalDrives();
+			//std::cout << "Drives: " << std::hex << drives_bitmask << std::endl;
+
+			for (DWORD i = 0; i < 32; i += 1, drives_bitmask >>= 1) {
+				if ((drives_bitmask & 1) == 1) {
+					char letter[] = "?:";
+					letter[0] = 'A' + (char)i;
+					//std::cout << "Drive: " << letter << std::endl;
+					char out_path[MAX_PATH] = { 0 };
+					if (!QueryDosDeviceA(letter, out_path, MAX_PATH)) {
+						return full_path;
+					}
+					//QueryDosDeviceA returns all possible mappings pointing to this drive letter, divided by a delimiter: ";"
+					//sometimes one device letter is mapped to several paths
+					// i.e. "\Device\VBoxMiniRdr\;E:\vboxsrv\vm_shared"
+					const char delim[] = ";";
+					char *next_token = nullptr;
+
+					char * pch = strtok_s(out_path, delim, &next_token);
+					while (pch != nullptr) {
+						// check if the current path starts from any of the mapped paths
+						std::size_t found = full_path.find(pch);
+						if (found != std::string::npos && found == 0) {
+							size_t dir_len = strlen(pch);
+							//if so, cut out the mappining path/device path and replace it with a drive letter
+							std::string str2 = full_path.substr(dir_len, full_path_size);
+							if (str2[0] != '//' && str2[0] != '\\') {
+								str2 = "\\" + str2;
+							}
+							return letter + str2;
+						}
+						pch = strtok_s(nullptr, delim, &next_token);
+					}
+				}
+			}
+			return full_path;
+		}
+
+		std::string relative_to_absolute_path(std::string path)
+		{
+			if (is_relative(path.c_str(), path.length())) {
+				char current_dir[MAX_PATH] = { 0 };
+				GetCurrentDirectoryA(MAX_PATH, current_dir);
+				path = std::string(current_dir) + "\\" + path;
+			}
+			char out_path[MAX_PATH] = { 0 };
+			PathCanonicalizeA(out_path, path.c_str());
+			return std::string(out_path);
+		}
+
+		std::string replace_char(std::string &str, char ch1, char ch2) {
+			for (size_t i = 0; i < str.length(); ++i) {
+				if (str[i] == ch1)
+					str[i] = ch2;
+			}
+			return str;
+		}
+	};
+};
+
+bool pesieve::util::convert_to_wow64_path(char *szModName)
 {
 	init_syspaths();
 	if (!get_subpath_ptr(szModName, g_System32Path)) {
@@ -44,97 +203,7 @@ bool convert_to_wow64_path(char *szModName)
 	return true;
 }
 
-HANDLE nt_create_file(PCWSTR filePath)
-{
-	HANDLE hFile;
-	OBJECT_ATTRIBUTES objAttribs = { 0 };
-
-	UNICODE_STRING unicodeString;
-	RtlInitUnicodeString(&unicodeString, filePath);
-
-	InitializeObjectAttributes(&objAttribs, &unicodeString, OBJ_CASE_INSENSITIVE, NULL, NULL);
-
-	const int allocSize = 2048;
-	LARGE_INTEGER largeInteger;
-	largeInteger.QuadPart = allocSize;
-
-	IO_STATUS_BLOCK ioStatusBlock = { 0 };
-	NTSTATUS status = NtCreateFile(&hFile, 
-		STANDARD_RIGHTS_READ,
-		&objAttribs, 
-		&ioStatusBlock, 
-		&largeInteger,
-		FILE_ATTRIBUTE_NORMAL,
-		FILE_SHARE_READ,
-		FILE_OPEN,
-		FILE_NON_DIRECTORY_FILE,
-		NULL,
-		NULL
-	);
-	if (status != STATUS_SUCCESS) {
-		std::wcerr << "Cannot open file: " << filePath << ". Error: " << std::hex << status << std::endl;
-		return nullptr;
-	}
-	return hFile;
-}
-
-std::string nt_retrieve_file_path(HANDLE hFile)
-{
-	IO_STATUS_BLOCK status_block = { 0 };
-
-	struct MY_FILE_NAME_INFORMATION {
-		ULONG FileNameLength;
-		WCHAR FileName[MAX_PATH];
-	} name_info;
-
-	memset(&name_info, 0, sizeof(MY_FILE_NAME_INFORMATION));
-
-	NTSTATUS status = ZwQueryInformationFile(hFile, &status_block, &name_info, sizeof(MY_FILE_NAME_INFORMATION), FileNameInformation);
-	if (status != STATUS_SUCCESS) {
-		return "";
-	}
-	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-	std::string my_string = converter.to_bytes(name_info.FileName);
-
-	my_string = get_system_drive() + my_string;
-	return my_string;
-}
-
-
-bool is_relative(const char *path, size_t path_len)
-{
-	if (path_len < 2) {
-		return true;
-	}
-	// i.e. "c:\"
-	if (path[1] == ':') {
-		return false;
-	}
-	// i.e. "\\path1\" or "\\?\UNC\"
-	if (path[0] == '\\' && path[1] == '\\') {
-		return false;
-	}
-	return true;
-}
-
-bool is_disk_relative(const char *path, size_t path_len)
-{
-	if (path_len < 2) {
-		return true;
-	}
-	//check format:
-	if ((path[0] >= 'a' && path[0] <= 'z')
-		|| (path[0] >= 'A' && path[0] <= 'Z'))
-	{
-		if (path[1] == ':') {
-			// format i.e: C:\...
-			return true;
-		}
-	}
-	return false;
-}
-
-std::string convert_to_win32_path(const std::string &path)
+std::string pesieve::util::convert_to_win32_path(const std::string &path)
 {
 	std::string stripped_path = strip_prefix(path, LONG_PATH_PREFIX);
 	if (stripped_path.length() < 3) {
@@ -156,52 +225,7 @@ std::string convert_to_win32_path(const std::string &path)
 	return my_path;
 }
 
-std::string remap_to_drive_letter(std::string full_path)
-{
-	size_t full_path_size = full_path.length();
-	if (full_path_size == 0) {
-		return full_path;
-	}
-
-	DWORD drives_bitmask = GetLogicalDrives();
-	//std::cout << "Drives: " << std::hex << drives_bitmask << std::endl;
-
-	for (DWORD i = 0; i < 32; i += 1, drives_bitmask >>= 1) {
-		if ((drives_bitmask & 1) == 1) {
-			char letter[] = "?:";
-			letter[0] = 'A' + (char)i;
-			//std::cout << "Drive: " << letter << std::endl;
-			char out_path[MAX_PATH] = { 0 };
-			if (!QueryDosDeviceA(letter, out_path, MAX_PATH)) {
-				return full_path;
-			}
-			//QueryDosDeviceA returns all possible mappings pointing to this drive letter, divided by a delimiter: ";"
-			//sometimes one device letter is mapped to several paths
-			// i.e. "\Device\VBoxMiniRdr\;E:\vboxsrv\vm_shared"
-			const char delim[] = ";";
-			char *next_token = nullptr;
-
-			char * pch = strtok_s(out_path, delim, &next_token);
-			while (pch != nullptr) {
-				// check if the current path starts from any of the mapped paths
-				std::size_t found = full_path.find(pch);
-				if (found != std::string::npos && found == 0) {
-					size_t dir_len = strlen(pch);
-					//if so, cut out the mappining path/device path and replace it with a drive letter
-					std::string str2 = full_path.substr(dir_len, full_path_size);
-					if (str2[0] != '//' && str2[0] != '\\') {
-						str2 = "\\" + str2;
-					}
-					return letter + str2;
-				}
-				pch = strtok_s(nullptr, delim, &next_token);
-			}
-		}
-	}
-	return full_path;
-}
-
-std::string device_path_to_win32_path(const std::string &full_path)
+std::string pesieve::util::device_path_to_win32_path(const std::string &full_path)
 {
 	std::string path = full_path;
 	//sometimes mapping can be recursive, so resolve it till the root
@@ -213,27 +237,7 @@ std::string device_path_to_win32_path(const std::string &full_path)
 	return path;
 }
 
-std::string relative_to_absolute_path(std::string path)
-{
-	if (is_relative(path.c_str(), path.length())) {
-		char current_dir[MAX_PATH] = { 0 };
-		GetCurrentDirectoryA(MAX_PATH, current_dir);
-		path = std::string(current_dir) + "\\" + path;
-	}
-	char out_path[MAX_PATH] = { 0 };
-	PathCanonicalizeA(out_path, path.c_str());
-	return std::string(out_path);
-}
-
-std::string replace_char(std::string &str, char ch1, char ch2) {
-	for (size_t i = 0; i < str.length(); ++i) {
-		if (str[i] == ch1)
-			str[i] = ch2;
-	}
-	return str;
-}
-
-std::string expand_path(std::string basic_path)
+std::string pesieve::util::expand_path(std::string basic_path)
 {
 	// normalize path sepators: use '/' not '\'
 	replace_char(basic_path, '/', '\\');

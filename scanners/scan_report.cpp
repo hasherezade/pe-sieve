@@ -9,6 +9,7 @@
 #include "../utils/format_util.h"
 
 using namespace pesieve;
+using namespace pesieve::util;
 
 bool is_shown_type(t_scan_status status, ProcessScanReport::t_report_filter filter)
 {

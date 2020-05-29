@@ -14,6 +14,8 @@
 #define DIR_SEPARATOR "\\"
 
 using namespace pesieve;
+using namespace pesieve::util;
+
 //---
 std::string get_payload_ext(const ArtefactScanReport& artefactRepot)
 {
