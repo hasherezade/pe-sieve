@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 3.12.4)
 project (pe-sieve)
 
 option(PESIEVE_AS_DLL "Build PE-sieve as a DLL" OFF)
+option(PESIEVE_AS_LIB "Build PE-sieve as a LIB" OFF)
 include_directories (
 	include
 )
@@ -181,7 +182,11 @@ SOURCE_GROUP("Header Files\\postprocessors\\imp_rec" FILES ${imprec_hdrs} )
 add_subdirectory (libpeconv/libpeconv)
 set ( PECONV_LIB $<TARGET_FILE:libpeconv> CACHE FILE "PEConvLib library path" )
 
-# Choose to build the DLL or EXE
+# Choose to build the DLL, LIB or EXE
+
+if (PESIEVE_AS_DLL AND PESIEVE_AS_LIB)
+	message(FATAL_ERROR "PESIEVE_AS_DLL AND PESIEVE_AS_LIB shouldn't be check both")
+endif()
 
 if(PESIEVE_AS_DLL)
 	set (dll_hdrs
@@ -189,6 +194,14 @@ if(PESIEVE_AS_DLL)
 		include/pe_sieve_api.h
 	)
 	add_library ( ${PROJECT_NAME} SHARED ${dll_hdrs} ${srcs} dll_main.cpp main.def)
+	set_source_files_properties(main.def PROPERTIES HEADER_FILE_ONLY TRUE)
+elseif(PESIEVE_AS_LIB)
+	set (lib_hdrs
+		${hdrs}
+		include/pe_sieve_api.h
+	)
+	add_compile_definitions(PESIEVE_LIB)
+	add_library ( ${PROJECT_NAME} STATIC ${lib_hdrs} ${srcs} pe_sieve_api.cpp main.def)
 	set_source_files_properties(main.def PROPERTIES HEADER_FILE_ONLY TRUE)
 else()
 	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} main.cpp )
