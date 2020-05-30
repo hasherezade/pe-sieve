@@ -24,8 +24,8 @@ DWORD PESIEVE_API PESieve_version(void);
 typedef pesieve::t_report PEsieve_report;
 typedef pesieve::t_params PEsieve_params;
 #else
-typedef t_report report_type;
-typedef t_params params_type;
+typedef t_report PEsieve_report;
+typedef t_params PEsieve_params;
 #endif
 
 PEsieve_report PESIEVE_API PESieve_scan(PEsieve_params args);
