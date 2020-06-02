@@ -2,37 +2,43 @@
 
 #include <iostream>
 
-const ULONGLONG MAX_32BIT = 0x7FFFFFFFF;
-const ULONGLONG MAX_64BIT = 0x7FFFFFFFFFFF;
-bool get_next_region(HANDLE processHandle, ULONGLONG start_va, ULONGLONG max_va, MEMORY_BASIC_INFORMATION &page_info)
-{
-	for (; start_va < max_va; start_va += PAGE_SIZE) {
-		//std::cout << "Checking: " << std::hex << start_va << " vs " << std::hex << max_va << std::endl;
-		SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID) start_va, &page_info, sizeof(page_info));
-		if (out != sizeof(page_info)) {
-			const DWORD error = GetLastError();
-			if (error == ERROR_INVALID_PARAMETER) {
-				//nothing more to read
-				break;
-			}
-			if (error == ERROR_ACCESS_DENIED) {
-				std::cerr << "[WARNING] Cannot query the memory region. Error:" << std::dec << error << std::endl;
-				break;
-			}
-			std::cerr << "[WARNING] Cannot query the memory region. Error:" << std::dec << error << std::endl;
-			continue;
-		}
-		if (page_info.RegionSize == 0) {
-			continue;
-		}
-		return true;
-	}
-	return false;
-}
+namespace pesieve {
+	namespace util {
 
-size_t enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &region_bases)
-{
+		const ULONGLONG MAX_32BIT = 0x7FFFFFFFF;
+		const ULONGLONG MAX_64BIT = 0x7FFFFFFFFFFF;
 
+		bool get_next_region(HANDLE processHandle, ULONGLONG start_va, ULONGLONG max_va, MEMORY_BASIC_INFORMATION &page_info)
+		{
+			for (; start_va < max_va; start_va += PAGE_SIZE) {
+				//std::cout << "Checking: " << std::hex << start_va << " vs " << std::hex << max_va << std::endl;
+				SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID)start_va, &page_info, sizeof(page_info));
+				if (out != sizeof(page_info)) {
+					const DWORD error = GetLastError();
+					if (error == ERROR_INVALID_PARAMETER) {
+						//nothing more to read
+						break;
+					}
+					if (error == ERROR_ACCESS_DENIED) {
+						std::cerr << "[WARNING] Cannot query the memory region. Error:" << std::dec << error << std::endl;
+						break;
+					}
+					std::cerr << "[WARNING] Cannot query the memory region. Error:" << std::dec << error << std::endl;
+					continue;
+				}
+				if (page_info.RegionSize == 0) {
+					continue;
+				}
+				return true;
+			}
+			return false;
+		}
+
+	};
+};
+
+size_t pesieve::util::enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &region_bases)
+{
 #ifdef _WIN64
 	ULONGLONG max_addr = MAX_64BIT;
 #else

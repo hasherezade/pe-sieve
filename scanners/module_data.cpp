@@ -7,6 +7,8 @@
 #include <psapi.h>
 #pragma comment(lib,"psapi.lib")
 
+using namespace pesieve::util;
+
 //---
 bool ModuleData::loadModuleName()
 {
