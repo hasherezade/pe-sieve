@@ -5,6 +5,8 @@
 
 #include <peconv.h>
 
+using namespace pesieve::util;
+
 size_t calc_offset(MemPageData &memPage, LPVOID field)
 {
 	if (!field) return INVALID_OFFSET;

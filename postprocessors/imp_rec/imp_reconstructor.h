@@ -164,7 +164,7 @@ public:
 			this->is64bit = peconv::is64bit(peBuffer.vBuf);
 		}
 		else {
-			this->is64bit = is_64bit_code(peBuffer.vBuf, peBuffer.vBufSize);
+			this->is64bit = pesieve::util::is_64bit_code(peBuffer.vBuf, peBuffer.vBufSize);
 		}
 	}
 

@@ -4,7 +4,7 @@
 	#include <iostream>
 #endif
 
-BYTE* find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size, size_t max_iter)
+BYTE* pesieve::util::find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size, size_t max_iter)
 {
 	for (size_t i = 0; (i + pattern_size) < buf_size; i++) {
 		if (max_iter != 0 && i > max_iter) break;
@@ -15,7 +15,7 @@ BYTE* find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_buf, size_t patt
 	return nullptr;
 }
 
-bool is_32bit_code(BYTE *loadedData, size_t loadedSize)
+bool pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 {
 	BYTE prolog32_pattern[] = {
 		0x55, // PUSH EBP
@@ -45,7 +45,7 @@ bool is_32bit_code(BYTE *loadedData, size_t loadedSize)
 	return pattern_found;
 }
 
-bool is_64bit_code(BYTE *loadedData, size_t loadedSize)
+bool pesieve::util::is_64bit_code(BYTE *loadedData, size_t loadedSize)
 {
 	BYTE prolog64_pattern[] = {
 		0x40, 0x53, // PUSH RBX
@@ -72,7 +72,7 @@ bool is_64bit_code(BYTE *loadedData, size_t loadedSize)
 	return pattern_found;
 }
 
-bool is_code(BYTE *loadedData, size_t loadedSize)
+bool pesieve::util::is_code(BYTE *loadedData, size_t loadedSize)
 {
 	if (is_32bit_code(loadedData, loadedSize)) {
 		return true;

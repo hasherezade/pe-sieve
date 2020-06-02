@@ -3,7 +3,7 @@
 #include <psapi.h>
 #pragma comment(lib,"psapi.lib")
 
-size_t enum_modules(IN HANDLE hProcess, IN OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters) //throws exceptions
+size_t pesieve::util::enum_modules(IN HANDLE hProcess, IN OUT HMODULE hMods[], IN const DWORD hModsMax, IN DWORD filters) //throws exceptions
 {
 	if (hProcess == nullptr) return 0;
 

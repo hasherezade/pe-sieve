@@ -7,6 +7,8 @@
 #include "../utils/workingset_enum.h"
 #include "../utils/artefacts_util.h"
 
+using namespace pesieve::util;
+
 bool WorkingSetScanner::isCode(MemPageData &memPageData)
 {
 	if (!memPage.load()) {

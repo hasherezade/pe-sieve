@@ -5,7 +5,6 @@
 #include <iomanip>
 
 namespace pesieve {
-
 	namespace util{
 
 		char* get_subpath_ptr(char *modulePath, char* searchedPath);

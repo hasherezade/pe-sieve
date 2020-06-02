@@ -7,6 +7,8 @@
 //---
 #include <iostream>
 
+using namespace pesieve::util;
+
 size_t CodeScanReport::generateTags(std::string reportPath)
 {
 	if (patchesList.size() == 0) {
