@@ -3,68 +3,108 @@
 
 #include <iostream>
 
-/*
-based on: https://support.microsoft.com/en-us/help/131065/how-to-obtain-a-handle-to-any-process-with-sedebugprivilege
-*/
+namespace pesieve {
+	namespace util {
 
-BOOL set_privilege(
-	HANDLE hToken,          // token handle
-	LPCTSTR Privilege,      // Privilege to enable/disable
-	BOOL bEnablePrivilege   // TRUE to enable.  FALSE to disable
-	)
-{
-	TOKEN_PRIVILEGES tp;
-	LUID luid;
-	TOKEN_PRIVILEGES tpPrevious;
-	DWORD cbPrevious=sizeof(TOKEN_PRIVILEGES);
+		inline HMODULE get_or_load_module(char* name)
+		{
+			HMODULE hndl = GetModuleHandleA(name);
+			if (!hndl) {
+				hndl = LoadLibraryA(name);
+			}
+			return hndl;
+		}
 
-	if (!LookupPrivilegeValueA(nullptr, Privilege, &luid)) {
-		return FALSE;
-	}
-	// get current privilege
-	tp.PrivilegeCount = 1;
-	tp.Privileges[0].Luid = luid;
-	tp.Privileges[0].Attributes = 0;
+		/*
+		based on: https://support.microsoft.com/en-us/help/131065/how-to-obtain-a-handle-to-any-process-with-sedebugprivilege
+		*/
+		BOOL set_privilege(
+			HANDLE hToken,          // token handle
+			LPCTSTR Privilege,      // Privilege to enable/disable
+			BOOL bEnablePrivilege   // TRUE to enable.  FALSE to disable
+		)
+		{
+			TOKEN_PRIVILEGES tp;
+			LUID luid;
+			TOKEN_PRIVILEGES tpPrevious;
+			DWORD cbPrevious = sizeof(TOKEN_PRIVILEGES);
 
-	AdjustTokenPrivileges(
-		hToken,
-		FALSE,
-		&tp,
-		sizeof(TOKEN_PRIVILEGES),
-		&tpPrevious,
-		&cbPrevious
-	);
+			if (!LookupPrivilegeValueA(nullptr, Privilege, &luid)) {
+				return FALSE;
+			}
+			// get current privilege
+			tp.PrivilegeCount = 1;
+			tp.Privileges[0].Luid = luid;
+			tp.Privileges[0].Attributes = 0;
 
-	if (GetLastError() != ERROR_SUCCESS) {
-		return FALSE;
-	}
-	// set privilege based on previous setting
-	tpPrevious.PrivilegeCount = 1;
-	tpPrevious.Privileges[0].Luid = luid;
+			AdjustTokenPrivileges(
+				hToken,
+				FALSE,
+				&tp,
+				sizeof(TOKEN_PRIVILEGES),
+				&tpPrevious,
+				&cbPrevious
+			);
 
-	if(bEnablePrivilege) {
-		tpPrevious.Privileges[0].Attributes |= (SE_PRIVILEGE_ENABLED);
-	}
-	else {
-		tpPrevious.Privileges[0].Attributes ^= (SE_PRIVILEGE_ENABLED & tpPrevious.Privileges[0].Attributes);
-	}
+			if (GetLastError() != ERROR_SUCCESS) {
+				return FALSE;
+			}
+			// set privilege based on previous setting
+			tpPrevious.PrivilegeCount = 1;
+			tpPrevious.Privileges[0].Luid = luid;
 
-	AdjustTokenPrivileges(
-		hToken,
-		FALSE,
-		&tpPrevious,
-		cbPrevious,
-		NULL,
-		NULL
-	);
+			if (bEnablePrivilege) {
+				tpPrevious.Privileges[0].Attributes |= (SE_PRIVILEGE_ENABLED);
+			}
+			else {
+				tpPrevious.Privileges[0].Attributes ^= (SE_PRIVILEGE_ENABLED & tpPrevious.Privileges[0].Attributes);
+			}
 
-	if (GetLastError() != ERROR_SUCCESS) {
-		return FALSE;
-	}
-	return TRUE;
-}
+			AdjustTokenPrivileges(
+				hToken,
+				FALSE,
+				&tpPrevious,
+				cbPrevious,
+				NULL,
+				NULL
+			);
 
-bool set_debug_privilege()
+			if (GetLastError() != ERROR_SUCCESS) {
+				return FALSE;
+			}
+			return TRUE;
+		}
+
+		BOOL _get_process_DEP_policy(HANDLE processHandle, DWORD &flags, BOOL &is_permanent)
+		{
+			//load the function GetProcessDEPPolicy dynamically, to provide backward compatibility with systems that don't have it
+			HMODULE kernelLib = get_or_load_module("kernel32.dll");
+			if (!kernelLib) return FALSE;
+
+			FARPROC procPtr = GetProcAddress(kernelLib, "GetProcessDEPPolicy");
+			if (!procPtr) return FALSE;
+
+			BOOL(WINAPI *_GetProcessDEPPolicy)(HANDLE, LPDWORD, PBOOL) = (BOOL(WINAPI *)(HANDLE, LPDWORD, PBOOL))procPtr;
+			return _GetProcessDEPPolicy(processHandle, &flags, &is_permanent);
+		}
+
+		DEP_SYSTEM_POLICY_TYPE _get_system_DEP_policy()
+		{
+			//load the function GetSystemDEPPolicy dynamically, to provide backward compatibility with systems that don't have it
+			HMODULE kernelLib = get_or_load_module("kernel32.dll");
+			if (!kernelLib) return DEPPolicyAlwaysOff;
+
+			FARPROC procPtr = GetProcAddress(kernelLib, "GetSystemDEPPolicy");
+			if (!procPtr) return DEPPolicyAlwaysOff; //in old systems where this function does not exist, DEP is Off
+
+			DEP_SYSTEM_POLICY_TYPE(WINAPI *_GetSystemDEPPolicy)(VOID) = (DEP_SYSTEM_POLICY_TYPE(WINAPI *)(VOID))procPtr;
+			return _GetSystemDEPPolicy();
+		}
+
+	};
+};
+
+bool pesieve::util::set_debug_privilege()
 {
 	HANDLE hToken;
 	if (!OpenThreadToken(GetCurrentThread(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, FALSE, &hToken)) {
@@ -86,7 +126,7 @@ bool set_debug_privilege()
 	return is_ok;
 }
 
-process_integrity_t translate_integrity_level(TOKEN_MANDATORY_LABEL *pTIL)
+pesieve::util::process_integrity_t translate_integrity_level(TOKEN_MANDATORY_LABEL *pTIL)
 {
 	DWORD dwIntegrityLevel = *GetSidSubAuthority(pTIL->Label.Sid,
 		(DWORD)(UCHAR)(*GetSidSubAuthorityCount(pTIL->Label.Sid) - 1));
@@ -94,29 +134,29 @@ process_integrity_t translate_integrity_level(TOKEN_MANDATORY_LABEL *pTIL)
 	if (dwIntegrityLevel == SECURITY_MANDATORY_LOW_RID)
 	{
 		// Low Integrity
-		return INTEGRITY_LOW;
+		return pesieve::util::INTEGRITY_LOW;
 	}
 	if (dwIntegrityLevel >= SECURITY_MANDATORY_MEDIUM_RID &&
 		dwIntegrityLevel < SECURITY_MANDATORY_HIGH_RID)
 	{
 		// Medium Integrity
-		return INTEGRITY_MEDIUM;
+		return pesieve::util::INTEGRITY_MEDIUM;
 	}
 	if (dwIntegrityLevel >= SECURITY_MANDATORY_HIGH_RID &&
 		dwIntegrityLevel < SECURITY_MANDATORY_SYSTEM_RID)
 	{
 		// High Integrity
-		return INTEGRITY_HIGH;
+		return pesieve::util::INTEGRITY_HIGH;
 	}
 	if (dwIntegrityLevel >= SECURITY_MANDATORY_SYSTEM_RID)
 	{
 		// System Integrity
-		return INTEGRITY_SYSTEM;
+		return pesieve::util::INTEGRITY_SYSTEM;
 	}
-	return INTEGRITY_UNKNOWN;
+	return pesieve::util::INTEGRITY_UNKNOWN;
 }
 
-process_integrity_t get_integrity_level(HANDLE hProcess)
+pesieve::util::process_integrity_t pesieve::util::get_integrity_level(HANDLE hProcess)
 {
 	if (!hProcess) {
 		return INTEGRITY_UNKNOWN;
@@ -167,33 +207,7 @@ process_integrity_t get_integrity_level(HANDLE hProcess)
 	return level;
 }
 
-BOOL _get_process_DEP_policy(HANDLE processHandle, DWORD &flags, BOOL &is_permanent)
-{
-	//load the function GetProcessDEPPolicy dynamically, to provide backward compatibility with systems that don't have it
-	HMODULE kernelLib = LoadLibraryA("kernel32.dll");
-	if (!kernelLib) return FALSE;
-
-	FARPROC procPtr = GetProcAddress(kernelLib, "GetProcessDEPPolicy");
-	if (!procPtr) return FALSE;
-
-	BOOL (WINAPI *_GetProcessDEPPolicy)(HANDLE, LPDWORD, PBOOL) = (BOOL(WINAPI *)(HANDLE, LPDWORD, PBOOL))procPtr;
-	return _GetProcessDEPPolicy(processHandle, &flags, &is_permanent);
-}
-
-DEP_SYSTEM_POLICY_TYPE _get_system_DEP_policy()
-{
-	//load the function GetSystemDEPPolicy dynamically, to provide backward compatibility with systems that don't have it
-	HMODULE kernelLib = LoadLibraryA("kernel32.dll");
-	if (!kernelLib) return DEPPolicyAlwaysOff;
-
-	FARPROC procPtr = GetProcAddress(kernelLib, "GetSystemDEPPolicy");
-	if (!procPtr) return DEPPolicyAlwaysOff; //in old systems where this function does not exist, DEP is Off
-
-	DEP_SYSTEM_POLICY_TYPE(WINAPI *_GetSystemDEPPolicy)(VOID) = (DEP_SYSTEM_POLICY_TYPE(WINAPI *)(VOID))procPtr;
-	return _GetSystemDEPPolicy();
-}
-
-bool is_DEP_enabled(HANDLE processHandle)
+bool pesieve::util::is_DEP_enabled(HANDLE processHandle)
 {
 	DEP_SYSTEM_POLICY_TYPE global_dep = _get_system_DEP_policy();
 	if (global_dep == DEPPolicyAlwaysOff) {
