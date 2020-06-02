@@ -24,8 +24,10 @@ namespace pesieve {
 			if (!lib) return false;
 
 			FARPROC proc = GetProcAddress(lib, "MiniDumpWriteDump");
-			if (!proc) return false;
-
+			if (!proc) {
+				FreeLibrary(lib);
+				return false;
+			}
 			_MiniDumpWriteDump = (BOOL(CALLBACK *)(
 				HANDLE,
 				DWORD,
@@ -44,6 +46,7 @@ namespace pesieve {
 
 	};
 };
+
 
 bool pesieve::util::make_minidump(DWORD pid, std::string out_file)
 {
