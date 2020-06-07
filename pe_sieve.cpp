@@ -45,24 +45,11 @@ HANDLE open_process(DWORD processID, bool quiet)
 		PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
 		FALSE, processID
 	);
-	if (hProcess != nullptr) {
+	if (hProcess) {
 		return hProcess;
 	}
 	DWORD last_err = GetLastError();
 	if (last_err == ERROR_ACCESS_DENIED) {
-		if (set_debug_privilege()) {
-			//try again to open
-			hProcess = OpenProcess(
-				PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
-				FALSE, processID
-			);
-			if (hProcess != nullptr) {
-				return hProcess;
-			}
-		}
-		else {
-			if (!quiet) std::cerr << "[-][" << processID << "] Could not set debug privilege" << std::endl;
-		}
 		if(!quiet) {
 			std::cerr << "[-][" << processID << "] Could not open the process Error: " << last_err << std::endl;
 			//print more info:
@@ -188,6 +175,10 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 
 ProcessScanReport* pesieve::scan_process(IN const t_params args, IN OPTIONAL HANDLE hProcess)
 {
+	if (!set_debug_privilege()) {
+		if (!args.quiet) std::cerr << "[-] Could not set debug privilege" << std::endl;
+	}
+
 	bool autoopened = false;
 	ProcessScanReport *process_report = nullptr;
 	try {
