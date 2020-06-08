@@ -14,6 +14,10 @@
 #define RTL_CLONE_PROCESS_FLAGS_NO_SYNCHRONIZE 0x00000004 // don't update synchronization objects
 #endif
 
+#ifndef HPSS
+#define HPSS HANDLE
+#endif
+
 namespace pesieve {
 	namespace util {
 
@@ -22,24 +26,63 @@ namespace pesieve {
 			HANDLE UniqueThread;
 		} T_CLIENT_ID;
 
-		typedef struct T_RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION
+		typedef struct
 		{
 			HANDLE ReflectionProcessHandle;
 			HANDLE ReflectionThreadHandle;
 			T_CLIENT_ID ReflectionClientId;
-		};
+		} T_RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION;
 
 		// Win >= 7
 		NTSTATUS (NTAPI *_RtlCreateProcessReflection) (
-				HANDLE ProcessHandle,
-				ULONG Flags,
-				PVOID StartRoutine,
-				PVOID StartContext,
-				HANDLE EventHandle,
-				T_RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION* ReflectionInformation
+			HANDLE ProcessHandle,
+			ULONG Flags,
+			PVOID StartRoutine,
+			PVOID StartContext,
+			HANDLE EventHandle,
+			T_RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION* ReflectionInformation
 		) = NULL;
 
 		// Win >= 8.1
+
+		typedef enum
+		{
+			PSS_CAPTURE_NONE = 0x00000000,
+			PSS_CAPTURE_VA_CLONE = 0x00000001,
+			PSS_CAPTURE_RESERVED_00000002 = 0x00000002,
+			PSS_CAPTURE_HANDLES = 0x00000004,
+			PSS_CAPTURE_HANDLE_NAME_INFORMATION = 0x00000008,
+			PSS_CAPTURE_HANDLE_BASIC_INFORMATION = 0x00000010,
+			PSS_CAPTURE_HANDLE_TYPE_SPECIFIC_INFORMATION = 0x00000020,
+			PSS_CAPTURE_HANDLE_TRACE = 0x00000040,
+			PSS_CAPTURE_THREADS = 0x00000080,
+			PSS_CAPTURE_THREAD_CONTEXT = 0x00000100,
+			PSS_CAPTURE_THREAD_CONTEXT_EXTENDED = 0x00000200,
+			PSS_CAPTURE_RESERVED_00000400 = 0x00000400,
+			PSS_CAPTURE_VA_SPACE = 0x00000800,
+			PSS_CAPTURE_VA_SPACE_SECTION_INFORMATION = 0x00001000,
+			PSS_CAPTURE_IPT_TRACE = 0x00002000,
+
+			PSS_CREATE_BREAKAWAY_OPTIONAL = 0x04000000,
+			PSS_CREATE_BREAKAWAY = 0x08000000,
+			PSS_CREATE_FORCE_BREAKAWAY = 0x10000000,
+			PSS_CREATE_USE_VM_ALLOCATIONS = 0x20000000,
+			PSS_CREATE_MEASURE_PERFORMANCE = 0x40000000,
+			PSS_CREATE_RELEASE_SECTION = 0x80000000
+		} PSS_CAPTURE_FLAGS;
+
+		typedef enum
+		{
+			PSS_QUERY_PROCESS_INFORMATION = 0,
+			PSS_QUERY_VA_CLONE_INFORMATION = 1,
+			PSS_QUERY_AUXILIARY_PAGES_INFORMATION = 2,
+			PSS_QUERY_VA_SPACE_INFORMATION = 3,
+			PSS_QUERY_HANDLE_INFORMATION = 4,
+			PSS_QUERY_THREAD_INFORMATION = 5,
+			PSS_QUERY_HANDLE_TRACE_INFORMATION = 6,
+			PSS_QUERY_PERFORMANCE_COUNTERS = 7
+		} PSS_QUERY_INFORMATION_CLASS;
+
 		DWORD (__stdcall *_PssCaptureSnapshot)( //from Kernel32.dll
 			HANDLE            ProcessHandle,
 			PSS_CAPTURE_FLAGS CaptureFlags,
@@ -115,7 +158,7 @@ namespace pesieve {
 					PVOID,
 					HANDLE,
 					T_RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION*
-					)) proc;
+				)) proc;
 
 			}
 			if (_RtlCreateProcessReflection == NULL) return false;
@@ -147,7 +190,7 @@ namespace pesieve {
 			if (!load_PssCaptureFreeSnapshot()) {
 				return NULL;
 			}
-			PSS_CAPTURE_FLAGS capture_flags = (PSS_CAPTURE_FLAGS)PSS_CAPTURE_VA_CLONE
+			pesieve::util::PSS_CAPTURE_FLAGS capture_flags = (pesieve::util::PSS_CAPTURE_FLAGS) (PSS_CAPTURE_VA_CLONE
 				| PSS_CAPTURE_HANDLES
 				| PSS_CAPTURE_HANDLE_NAME_INFORMATION
 				| PSS_CAPTURE_HANDLE_BASIC_INFORMATION
@@ -161,7 +204,7 @@ namespace pesieve {
 				| PSS_CREATE_BREAKAWAY
 				| PSS_CREATE_BREAKAWAY_OPTIONAL
 				| PSS_CREATE_USE_VM_ALLOCATIONS
-				| PSS_CREATE_RELEASE_SECTION;
+				| PSS_CREATE_RELEASE_SECTION);
 
 			DWORD thread_ctx_flags = CONTEXT_ALL;
 			HPSS snapShot = { 0 };
@@ -175,10 +218,10 @@ namespace pesieve {
 			return snapShot;
 		}
 
-		bool release_process_snapshot(HANDLE procHndl, HANDLE snapshot)
+		bool release_process_snapshot(HANDLE procHndl, HPSS snapshot)
 		{
 			if (procHndl && snapshot) {
-				BOOL is_ok = _PssFreeSnapshot(procHndl, (HPSS)snapshot);
+				BOOL is_ok = _PssFreeSnapshot(procHndl, snapshot);
 #ifdef _DEBUG
 				std::cout << "Released process snapshot\n";
 #endif
@@ -195,11 +238,11 @@ namespace pesieve {
 				return NULL;
 			}
 			HANDLE clone = info.VaCloneHandle;
-			DWORD clone_pid = GetProcessId(clone);
 #ifdef _DEBUG
+			DWORD clone_pid = GetProcessId(clone);
 			std::cout << "Clone PID = " << std::dec << clone_pid << "\n";
 #endif
-			return info.VaCloneHandle;
+			return clone;
 		}
 
 	};
@@ -207,28 +250,31 @@ namespace pesieve {
 
 bool pesieve::util::can_make_process_reflection()
 {
-#ifdef USE_RTL_PROCESS_REFLECTION
-	if (load_RtlCreateProcessReflection()) {
-		return true;
-	}
-#else
+#ifndef USE_RTL_PROCESS_REFLECTION
 	if (load_PssCaptureFreeSnapshot()) {
 		return true;
 	}
 #endif
+	if (load_RtlCreateProcessReflection()) {
+		return true;
+	}
 	return false;
 }
 
 HANDLE pesieve::util::make_process_reflection(HANDLE orig_hndl)
 {
 	HANDLE clone = NULL;
-#ifdef USE_RTL_PROCESS_REFLECTION
-	clone = make_process_reflection1(orig_hndl);
-#else
+
+#ifndef USE_RTL_PROCESS_REFLECTION
 	HPSS snapshot = make_process_snapshot(orig_hndl);
 	clone = make_process_reflection2(snapshot);
 	release_process_snapshot(orig_hndl, snapshot);
+	if (clone) {
+		return clone;
+	}
 #endif
+
+	clone = make_process_reflection1(orig_hndl);
 	return clone;
 }
 
