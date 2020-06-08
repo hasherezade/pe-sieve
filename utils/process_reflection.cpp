@@ -310,15 +310,19 @@ HANDLE pesieve::util::make_process_reflection(HANDLE orig_hndl)
 {
 	HANDLE clone = NULL;
 #ifdef USE_PROCESS_SNAPSHOT
-	HPSS snapshot = make_process_snapshot(orig_hndl);
-	clone = make_process_reflection2(snapshot);
-	release_process_snapshot(orig_hndl, snapshot);
-	if (clone) {
-		return clone;
+	if (load_PssCaptureFreeSnapshot()) {
+		HPSS snapshot = make_process_snapshot(orig_hndl);
+		clone = make_process_reflection2(snapshot);
+		release_process_snapshot(orig_hndl, snapshot);
+		if (clone) {
+			return clone;
+		}
 	}
 #endif
 #ifdef USE_RTL_PROCESS_REFLECTION
-	clone = make_process_reflection1(orig_hndl);
+	if (load_RtlCreateProcessReflection()) {
+		clone = make_process_reflection1(orig_hndl);
+	}
 #endif
 	return clone;
 }
