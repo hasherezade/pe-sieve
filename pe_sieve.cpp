@@ -13,6 +13,7 @@
 #include "utils/process_minidump.h"
 #include "utils/path_converter.h"
 #include "postprocessors/results_dumper.h"
+#include "utils/process_reflection.h"
 
 using namespace pesieve;
 using namespace pesieve::util;
@@ -39,10 +40,15 @@ void check_access_denied(DWORD processID)
 	hProcess = NULL;
 }
 
-HANDLE open_process(DWORD processID, bool quiet)
+HANDLE open_process(DWORD processID, bool reflection, bool quiet)
 {
+	const DWORD basic_access = PROCESS_VM_READ | PROCESS_QUERY_INFORMATION;
+	DWORD access = basic_access;
+	if (reflection) {
+		access |= pesieve::util::reflection_access;
+	}
 	HANDLE hProcess = OpenProcess(
-		PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
+		access,
 		FALSE, processID
 	);
 	if (hProcess) {
@@ -150,14 +156,30 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 	HANDLE hProcess = nullptr;
 
 	try {
-		hProcess = open_process(args.pid, args.quiet);
+		hProcess = open_process(args.pid, args.make_reflection, args.quiet);
 		if (!is_scaner_compatibile(hProcess, args.quiet)) {
 			SetLastError(ERROR_INVALID_PARAMETER);
 			throw std::runtime_error("Scanner mismatch. Try to use the 64bit version of the scanner.");
 		}
-		ProcessScanner scanner(hProcess, args);
-		report->scan_report = scanner.scanRemote();
 
+		HANDLE _pHndl = hProcess;
+		HANDLE cloned_proc = NULL;
+		if (args.make_reflection) {
+			cloned_proc = make_process_reflection(hProcess);
+			if (cloned_proc) {
+				if (!args.quiet) std::cout << "Using process reflection!\n";
+				_pHndl = cloned_proc;
+			}
+		}
+		if (!cloned_proc) {
+			if (!args.quiet) std::cout << "Using raw process!\n";
+		}
+
+		ProcessScanner scanner(_pHndl, args);
+		report->scan_report = scanner.scanRemote();
+		if (cloned_proc) {
+			release_process_reflection(&cloned_proc);
+		}
 	}
 	catch (std::exception &e) {
 		if (!args.quiet) {
@@ -183,7 +205,7 @@ ProcessScanReport* pesieve::scan_process(IN const t_params args, IN OPTIONAL HAN
 	ProcessScanReport *process_report = nullptr;
 	try {
 		if (!hProcess) {
-			hProcess = open_process(args.pid, args.quiet);
+			hProcess = open_process(args.pid, args.make_reflection, args.quiet);
 			autoopened = true;
 		}
 		if (!is_scaner_compatibile(hProcess, args.quiet)) {

@@ -57,6 +57,7 @@ namespace pesieve {
 		bool minidump; // make minidump of full process
 		t_dump_mode dump_mode;
 		bool json_output;
+		bool make_reflection;
 		char output_dir[MAX_PATH + 1];
 		char modules_ignored[MAX_MODULE_BUF_LEN]; // a list of modules that will not be scanned, separated by PARAM_LIST_SEPARATOR
 	} t_params;

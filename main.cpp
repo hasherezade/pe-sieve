@@ -10,6 +10,7 @@
 
 #include "pe_sieve.h"
 #include "params_info/pe_sieve_params_info.h"
+#include "utils/process_reflection.h"
 
 #include "color_scheme.h"
 
@@ -22,6 +23,8 @@
 #define PARAM_IAT "iat"
 #define PARAM_MODULES_FILTER "mfilter"
 #define PARAM_MODULES_IGNORE "mignore"
+#define PARAM_REFLECTION "refl"
+
 //dump options:
 #define PARAM_IMP_REC "imp"
 #define PARAM_DUMP_MODE "dmode"
@@ -88,6 +91,11 @@ void print_help()
 	print_param_in_color(param_color, PARAM_MODULES_IGNORE);
 	std::cout << " <module_name>\n\t: Do not scan module/s with given name/s (separated by '"<< PARAM_LIST_SEPARATOR << "').\n"
 		"\t  Example: kernel32.dll" << PARAM_LIST_SEPARATOR << "user32.dll\n";
+	
+	if (pesieve::util::can_make_process_reflection()) {
+		print_param_in_color(param_color, PARAM_REFLECTION);
+		std::cout << "\t: Make a process reflection before scan.\n";
+	}
 
 	print_in_color(separator_color, "\n---dump options---\n");
 	print_param_in_color(param_color, PARAM_IMP_REC);
@@ -287,6 +295,9 @@ int main(int argc, char *argv[])
 		}
 		else if (!strcmp(param, PARAM_SHELLCODE)) {
 			args.shellcode = true;
+		}
+		else if (!strcmp(param, PARAM_REFLECTION)) {
+			args.make_reflection = true;
 		}
 		else if (!strcmp(param, PARAM_IAT)) {
 			args.iat = pesieve::PE_IATS_FILTERED;

@@ -115,6 +115,7 @@ set (utils_srcs
 	utils/workingset_enum.cpp
 	utils/modules_enum.cpp
 	utils/artefacts_util.cpp
+	utils/process_reflection.cpp
 )
 
 set (utils_hdrs
@@ -127,6 +128,7 @@ set (utils_hdrs
 	utils/workingset_enum.h
 	utils/modules_enum.h
 	utils/artefacts_util.h
+	utils/process_reflection.h
 )
 
 set (params_info_hdrs
