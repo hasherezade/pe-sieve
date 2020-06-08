@@ -2,6 +2,8 @@
 
 #include <Windows.h>
 
+//#define USE_RTL_PROCESS_REFLECTION
+
 namespace pesieve {
 	namespace util {
 

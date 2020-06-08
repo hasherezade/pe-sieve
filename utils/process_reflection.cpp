@@ -1,27 +1,43 @@
 #include "process_reflection.h"
 #include <processsnapshot.h>
 #include <iostream>
-//#define USE_RTL_PROCESS_REFLECTION
+
+#ifndef RTL_CLONE_PROCESS_FLAGS_CREATE_SUSPENDED
+#define RTL_CLONE_PROCESS_FLAGS_CREATE_SUSPENDED 0x00000001
+#endif
+
+#ifndef RTL_CLONE_PROCESS_FLAGS_INHERIT_HANDLES
+#define RTL_CLONE_PROCESS_FLAGS_INHERIT_HANDLES 0x00000002
+#endif
+
+#ifndef RTL_CLONE_PROCESS_FLAGS_NO_SYNCHRONIZE
+#define RTL_CLONE_PROCESS_FLAGS_NO_SYNCHRONIZE 0x00000004 // don't update synchronization objects
+#endif
 
 namespace pesieve {
 	namespace util {
 
-		typedef struct _RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION
+		typedef struct  {
+			HANDLE UniqueProcess;
+			HANDLE UniqueThread;
+		} T_CLIENT_ID;
+
+		typedef struct T_RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION
 		{
 			HANDLE ReflectionProcessHandle;
 			HANDLE ReflectionThreadHandle;
-			DWORD ReflectionClientId;
-		} RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION, *PRTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION;
+			T_CLIENT_ID ReflectionClientId;
+		};
 
 		// Win >= 7
-		NTSTATUS (*NTAPI _RtlCreateProcessReflection)( //from ntdll.dll
-			IN HANDLE ProcessHandle,
-			IN ULONG Flags,
-			IN OPTIONAL PVOID StartRoutine,
-			IN OPTIONAL PVOID StartContext,
-			IN OPTIONAL HANDLE EventHandle,
-			OUT OPTIONAL PRTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION ReflectionInformation
-			) = NULL;
+		NTSTATUS (NTAPI *_RtlCreateProcessReflection) (
+				HANDLE ProcessHandle,
+				ULONG Flags,
+				PVOID StartRoutine,
+				PVOID StartContext,
+				HANDLE EventHandle,
+				T_RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION* ReflectionInformation
+		) = NULL;
 
 		// Win >= 8.1
 		DWORD (__stdcall *_PssCaptureSnapshot)( //from Kernel32.dll
@@ -92,14 +108,15 @@ namespace pesieve {
 				FARPROC proc = GetProcAddress(lib, "RtlCreateProcessReflection");
 				if (!proc) return false;
 
-				_RtlCreateProcessReflection = (NTSTATUS(*NTAPI)(
-					IN HANDLE,
-					IN ULONG,
-					IN OPTIONAL PVOID,
-					IN OPTIONAL PVOID,
-					IN OPTIONAL HANDLE,
-					OUT OPTIONAL PRTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION
+				_RtlCreateProcessReflection = (NTSTATUS(NTAPI *) (
+					HANDLE,
+					ULONG,
+					PVOID,
+					PVOID,
+					HANDLE,
+					T_RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION*
 					)) proc;
+
 			}
 			if (_RtlCreateProcessReflection == NULL) return false;
 			return true;
@@ -110,13 +127,18 @@ namespace pesieve {
 			if (!load_RtlCreateProcessReflection()) {
 				return NULL;
 			}
-			RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION info = { 0 };
-			if (_RtlCreateProcessReflection(orig_hndl, 2, 0, 0, 0, &info) == S_OK) {
+			T_RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION info = { 0 };
+			NTSTATUS ret = _RtlCreateProcessReflection(orig_hndl, RTL_CLONE_PROCESS_FLAGS_INHERIT_HANDLES, 0, 0, NULL, &info);
+			if (ret == S_OK) {
+				if (info.ReflectionProcessHandle == NULL || info.ReflectionProcessHandle == INVALID_HANDLE_VALUE) {
+					return NULL;
+				}
 #ifdef _DEBUG
-				std::cout << "Created reflection, PID = " << std::dec << info.ReflectionClientId << "\n";
+				std::cout << "Created reflection, PID = " << std::dec << (DWORD)info.ReflectionClientId.UniqueProcess << "\n";
 #endif
 				return info.ReflectionProcessHandle;
 			}
+			//RtlCloneUserProcess
 			return NULL;
 		}
 
@@ -212,18 +234,19 @@ HANDLE pesieve::util::make_process_reflection(HANDLE orig_hndl)
 
 bool pesieve::util::release_process_reflection(HANDLE* procHndl)
 {
-	if (procHndl && *procHndl) {
-#ifdef _DEBUG
-		DWORD clone_pid = GetProcessId(*procHndl);
-		std::cout << "Releasing Clone, PID = " << std::dec << clone_pid << "\n";
-#endif
-		BOOL is_ok = TerminateProcess(*procHndl, 0);
-		CloseHandle(*procHndl);
-		*procHndl = NULL;
-#ifdef _DEBUG
-		std::cout << "Released process reflection\n";
-#endif
-		return is_ok;
+	if (procHndl == NULL || *procHndl == NULL) {
+		return false;
 	}
-	return false;
+#ifdef _DEBUG
+	DWORD clone_pid = GetProcessId(*procHndl);
+	std::cout << "Releasing Clone, PID = " << std::dec << clone_pid << "\n";
+#endif
+	BOOL is_ok = TerminateProcess(*procHndl, 0);
+	CloseHandle(*procHndl);
+	*procHndl = NULL;
+
+#ifdef _DEBUG
+	std::cout << "Released process reflection\n";
+#endif
+	return (bool)is_ok;
 }
