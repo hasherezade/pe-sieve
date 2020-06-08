@@ -165,23 +165,66 @@ namespace pesieve {
 			return true;
 		}
 
+		typedef struct {
+			HANDLE orig_hndl;
+			HANDLE returned_hndl;
+			DWORD returned_pid;
+			bool is_ok;
+		} t_refl_args;
+
+		DWORD WINAPI refl_creator(LPVOID lpParam)
+		{
+			t_refl_args *args = static_cast<t_refl_args*>(lpParam);
+			if (!args) {
+				return !S_OK;
+			}
+			args->is_ok = false;
+
+			T_RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION info = { 0 };
+			NTSTATUS ret = _RtlCreateProcessReflection(args->orig_hndl, RTL_CLONE_PROCESS_FLAGS_INHERIT_HANDLES, NULL, NULL, NULL, &info);
+			if (ret == S_OK) {
+				args->is_ok = true;
+				args->returned_hndl = info.ReflectionProcessHandle;
+				args->returned_pid = (DWORD)info.ReflectionClientId.UniqueProcess;
+			}
+			return ret;
+		}
+
 		HANDLE make_process_reflection1(HANDLE orig_hndl)
 		{
+			const DWORD max_wait = 1000;
 			if (!load_RtlCreateProcessReflection()) {
 				return NULL;
 			}
-			T_RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION info = { 0 };
-			NTSTATUS ret = _RtlCreateProcessReflection(orig_hndl, RTL_CLONE_PROCESS_FLAGS_INHERIT_HANDLES, 0, 0, NULL, &info);
-			if (ret == S_OK) {
-				if (info.ReflectionProcessHandle == NULL || info.ReflectionProcessHandle == INVALID_HANDLE_VALUE) {
+
+			t_refl_args args = { 0 };
+			args.orig_hndl = orig_hndl;
+
+			HANDLE hThead = CreateThread(
+				NULL,                   // default security attributes
+				0,                      // use default stack size  
+				refl_creator,       // thread function name
+				&args,          // argument to thread function 
+				0,                      // use default creation flags 
+				0);   // returns the thread identifier 
+
+			DWORD wait_result = WaitForSingleObject(hThead, max_wait);
+			if (wait_result == WAIT_TIMEOUT) {
+				std::cerr << "[!] [" << GetProcessId(orig_hndl) << "] Cannot create reflection: timeout passed!\n";
+				TerminateThread(hThead, 0);
+				CloseHandle(hThead);
+				return NULL;
+			}
+			CloseHandle(hThead);
+			if (args.is_ok) {
+				if (args.returned_hndl == NULL || args.returned_hndl == INVALID_HANDLE_VALUE) {
 					return NULL;
 				}
 #ifdef _DEBUG
-				std::cout << "Created reflection, PID = " << std::dec << (DWORD)info.ReflectionClientId.UniqueProcess << "\n";
+				std::cout << "Created reflection, PID = " << std::dec << args.returned_pid << "\n";
 #endif
-				return info.ReflectionProcessHandle;
+				return args.returned_hndl;
 			}
-			//RtlCloneUserProcess
 			return NULL;
 		}
 
@@ -250,9 +293,11 @@ namespace pesieve {
 
 bool pesieve::util::can_make_process_reflection()
 {
+#ifdef USE_PROCESS_SNAPSHOT
 	if (load_PssCaptureFreeSnapshot()) {
 		return true;
 	}
+#endif
 #ifdef USE_RTL_PROCESS_REFLECTION
 	if (load_RtlCreateProcessReflection()) {
 		return true;
@@ -264,14 +309,14 @@ bool pesieve::util::can_make_process_reflection()
 HANDLE pesieve::util::make_process_reflection(HANDLE orig_hndl)
 {
 	HANDLE clone = NULL;
-
+#ifdef USE_PROCESS_SNAPSHOT
 	HPSS snapshot = make_process_snapshot(orig_hndl);
 	clone = make_process_reflection2(snapshot);
 	release_process_snapshot(orig_hndl, snapshot);
 	if (clone) {
 		return clone;
 	}
-
+#endif
 #ifdef USE_RTL_PROCESS_REFLECTION
 	clone = make_process_reflection1(orig_hndl);
 #endif
