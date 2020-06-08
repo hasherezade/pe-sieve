@@ -250,14 +250,14 @@ namespace pesieve {
 
 bool pesieve::util::can_make_process_reflection()
 {
-#ifndef USE_RTL_PROCESS_REFLECTION
 	if (load_PssCaptureFreeSnapshot()) {
 		return true;
 	}
-#endif
+#ifdef USE_RTL_PROCESS_REFLECTION
 	if (load_RtlCreateProcessReflection()) {
 		return true;
 	}
+#endif
 	return false;
 }
 
@@ -265,16 +265,16 @@ HANDLE pesieve::util::make_process_reflection(HANDLE orig_hndl)
 {
 	HANDLE clone = NULL;
 
-#ifndef USE_RTL_PROCESS_REFLECTION
 	HPSS snapshot = make_process_snapshot(orig_hndl);
 	clone = make_process_reflection2(snapshot);
 	release_process_snapshot(orig_hndl, snapshot);
 	if (clone) {
 		return clone;
 	}
-#endif
 
+#ifdef USE_RTL_PROCESS_REFLECTION
 	clone = make_process_reflection1(orig_hndl);
+#endif
 	return clone;
 }
 
