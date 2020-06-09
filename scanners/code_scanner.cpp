@@ -180,22 +180,46 @@ CodeScanner::t_section_status CodeScanner::scanSection(PeSection &originalSec, P
 #endif
 	//check if the code of the loaded module is same as the code of the module on the disk:
 	int res = memcmp(remoteSec.loadedSection, originalSec.loadedSection, smaller_size);
-	if (res == 0) {
-		return CodeScanner::SECTION_NOT_MODIFIED; //not modified
-	}
+
 	if ((originalSec.rawSize == 0 || peconv::is_padding(originalSec.loadedSection, smaller_size, 0))
 		&& !peconv::is_padding(remoteSec.loadedSection, smaller_size, 0))
 	{
 		return CodeScanner::SECTION_UNPACKED; // modified
 	}
-	collectPatches(originalSec.rva, originalSec.loadedSection, remoteSec.loadedSection, smaller_size, patchesList);
-	return CodeScanner::SECTION_PATCHED; // modified
+
+	size_t patches = 0;
+	if (res != 0) {
+		patches = collectPatches(originalSec.rva, originalSec.loadedSection, remoteSec.loadedSection, smaller_size, patchesList);
+	}
+
+	if (res == 0 && (remoteSec.loadedSize > originalSec.loadedSize)) {
+		size_t diff = remoteSec.loadedSize - originalSec.loadedSize;
+		BYTE *null_buf = new BYTE[diff];
+		if (null_buf) {
+			memset(null_buf, 0, diff);
+			BYTE *diff_bgn = remoteSec.loadedSection + originalSec.loadedSize;
+			res = memcmp(diff_bgn, null_buf, diff);
+			if (res) {
+				PatchList::Patch* currPatch = new PatchList::Patch(moduleData.moduleHandle, patchesList.size(), (DWORD)remoteSec.rva + originalSec.loadedSize);
+				currPatch->setEnd((DWORD)remoteSec.rva + diff);
+				patchesList.insert(currPatch);
+			}
+		}
+		delete[]null_buf;
+	}
+	if (res == 0) {
+		return CodeScanner::SECTION_NOT_MODIFIED; //not modified
+	}
+	if (patches) {
+		return CodeScanner::SECTION_PATCHED; // modified
+	}
+	return CodeScanner::SECTION_UNPACKED; // modified
 }
 
 size_t CodeScanner::collectExecutableSections(RemoteModuleData &_remoteModData, std::map<size_t, PeSection*> &sections)
 {
 	size_t initial_size = sections.size();
-	size_t sec_count = peconv::get_sections_count(_remoteModData.headerBuffer, _remoteModData.getHeaderSize());
+	const size_t sec_count = peconv::get_sections_count(_remoteModData.headerBuffer, _remoteModData.getHeaderSize());
 	for (size_t i = 0; i < sec_count; i++) {
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(_remoteModData.headerBuffer, _remoteModData.getHeaderSize(), i);
 		if (section_hdr == nullptr) continue;
@@ -216,6 +240,14 @@ size_t CodeScanner::collectExecutableSections(RemoteModuleData &_remoteModData, 
 			|| is_code(remoteSec->loadedSection, remoteSec->loadedSize))
 		{
 			sections[i] = remoteSec;
+		}
+	}
+	//corner case: PEs without sections
+	if (sec_count == 0) {
+		DWORD image_size = peconv::get_image_size(_remoteModData.headerBuffer);
+		PeSection *remoteSec = new PeSection(_remoteModData, 0);
+		if (remoteSec->isInitialized()) {
+			sections[0] = remoteSec;
 		}
 	}
 	return sections.size() - initial_size;
@@ -239,7 +271,6 @@ t_scan_status CodeScanner::scanUsingBase(IN ULONGLONG load_base, IN std::map<siz
 	if (!moduleData.relocateToBase(load_base)) {
 		return SCAN_ERROR;
 	}
-
 	size_t errors = 0;
 	size_t modified = 0;
 	std::map<size_t, PeSection*>::iterator itr;
@@ -290,7 +321,6 @@ CodeScanReport* CodeScanner::scanRemote()
 		my_report->status = last_res;
 		return my_report;
 	}
-
 	ULONGLONG load_base = (ULONGLONG)moduleData.moduleHandle;
 	ULONGLONG hdr_base = remoteModData.getHdrImageBase();
 

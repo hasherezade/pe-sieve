@@ -48,7 +48,36 @@ public:
 protected:
 
 	bool loadRemote(RemoteModuleData& remoteModData, size_t section_number)
-		{
+	{
+		//corner case: if no sections in PE
+		DWORD sec_num = peconv::get_sections_count(remoteModData.headerBuffer, remoteModData.getHeaderSize());
+		if (sec_num == 0 && section_number == 0) {
+#ifdef _DEBUG
+			std::cout << "PE with no sections! Loading remote\n";
+#endif
+			DWORD region_size = peconv::fetch_region_size(remoteModData.processHandle, (PBYTE)remoteModData.modBaseAddr);
+#ifdef _DEBUG
+			std::cout << "Region Size: " << std::hex << region_size << "\n";
+#endif
+			peconv::UNALIGNED_BUF buf = peconv::alloc_unaligned(region_size);
+			if (!buf) {
+#ifdef _DEBUG
+				std::cout << "Could not alloc: " << std::hex << region_size << "\n";
+#endif
+				return false;
+			}
+			size_t read_size = peconv::read_remote_memory(remoteModData.processHandle, (PBYTE)remoteModData.modBaseAddr, buf, region_size);
+			if (!read_size) {
+				peconv::free_unaligned(buf);
+				return false;
+			}
+			this->loadedSection = buf;
+			this->loadedSize = read_size;
+			this->rawSize = 0; // TODO: unknown?
+			this->rva = 0;
+			return true;
+		}
+		//normal case: if PE has sections
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(remoteModData.headerBuffer, peconv::MAX_HEADER_SIZE, section_number);
 		if ((!section_hdr) || section_hdr->Misc.VirtualSize == 0) {
 			return false;
@@ -66,6 +95,29 @@ protected:
 
 	bool loadOriginal(ModuleData& modData, size_t section_number)
 	{
+		//corner case: if no sections in PE
+		DWORD sec_num = peconv::get_sections_count(modData.original_module, modData.original_size);
+		if (sec_num == 0 && section_number == 0) {
+#ifdef _DEBUG
+			std::cout << "PE with no sections! Loading local\n";
+#endif
+			peconv::UNALIGNED_BUF buf = peconv::alloc_unaligned(modData.original_size);
+			if (!buf) {
+#ifdef _DEBUG
+				std::cout << "Could not alloc: " << std::hex << modData.original_size << "\n";
+#endif
+				return false;
+			}
+#ifdef _DEBUG
+			std::cout << "Copied local: " << std::hex << modData.original_size << "\n";
+#endif
+			this->rva = 0;
+			memcpy(buf, modData.original_module, modData.original_size);
+			loadedSection = buf;
+			loadedSize = modData.original_size;
+			return true;
+		}
+
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(modData.original_module, modData.original_size, section_number);
 		if (section_hdr == nullptr) {
 			return false;
