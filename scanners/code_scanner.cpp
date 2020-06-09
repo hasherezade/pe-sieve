@@ -194,18 +194,12 @@ CodeScanner::t_section_status CodeScanner::scanSection(PeSection &originalSec, P
 
 	if (res == 0 && (remoteSec.loadedSize > originalSec.loadedSize)) {
 		size_t diff = remoteSec.loadedSize - originalSec.loadedSize;
-		BYTE *null_buf = new BYTE[diff];
-		if (null_buf) {
-			memset(null_buf, 0, diff);
-			BYTE *diff_bgn = remoteSec.loadedSection + originalSec.loadedSize;
-			res = memcmp(diff_bgn, null_buf, diff);
-			if (res) {
-				PatchList::Patch* currPatch = new PatchList::Patch(moduleData.moduleHandle, patchesList.size(), (DWORD)remoteSec.rva + originalSec.loadedSize);
-				currPatch->setEnd((DWORD)remoteSec.rva + diff);
-				patchesList.insert(currPatch);
-			}
+		BYTE *diff_bgn = remoteSec.loadedSection + originalSec.loadedSize;
+		if (!peconv::is_padding(diff_bgn, diff, 0)) {
+			PatchList::Patch* currPatch = new PatchList::Patch(moduleData.moduleHandle, patchesList.size(), (DWORD)remoteSec.rva + originalSec.loadedSize);
+			currPatch->setEnd((DWORD)remoteSec.rva + diff);
+			patchesList.insert(currPatch);
 		}
-		delete[]null_buf;
 	}
 	if (res == 0) {
 		return CodeScanner::SECTION_NOT_MODIFIED; //not modified
