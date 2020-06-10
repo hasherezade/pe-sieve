@@ -98,7 +98,7 @@ public:
 	virtual WorkingSetScanReport* scanRemote();
 
 protected:
-	bool scanDisconnectedImg();
+	bool scanImg();
 
 	bool isExecutable(MemPageData &memPageData);
 	bool isPotentiallyExecutable(MemPageData &memPageData);
