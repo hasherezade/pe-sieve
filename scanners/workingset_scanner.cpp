@@ -85,7 +85,7 @@ WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPage
 	return my_report;
 }
 
-bool WorkingSetScanner::scanDisconnectedImg()
+bool WorkingSetScanner::scanImg()
 {
 	bool show_info = (!args.quiet);
 #ifdef _DEBUG
@@ -94,7 +94,7 @@ bool WorkingSetScanner::scanDisconnectedImg()
 	const HMODULE module_start = (HMODULE)memPage.alloc_base;
 
 	if (this->processReport->hasModuleContaining((ULONGLONG)module_start)) {
-		if (this->processReport->hasModuleContaining(memPage.region_start)) {
+		if (this->processReport->hasModuleContaining(memPage.region_start) && this->processReport->hasModuleContaining(memPage.region_end - 1)) {
 #ifdef _DEBUG
 			std::cout << "[*] This area was already scanned: " << std::hex << memPage.region_start << std::endl;
 #endif
@@ -155,9 +155,11 @@ bool WorkingSetScanner::scanDisconnectedImg()
 WorkingSetScanReport* WorkingSetScanner::scanRemote()
 {
 	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
+#ifdef _DEBUG
+		std::cout << "[!] Could not fill: " << std::hex << memPage.start_va << " to: " << memPage.region_end << "\n";
+#endif
 		return nullptr;
 	}
-
 	// is the page executable?
 	bool is_any_exec = isExecutable(memPage);
 	if (!is_any_exec) {
@@ -171,19 +173,16 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 	}
 
 	if (memPage.mapping_type == MEM_IMAGE) {
-
+		const bool scan_image = true;
 		const bool is_peb_module = memPage.loadModuleName();
 		const bool is_mapped_name = memPage.loadMappedName();
-		if (is_peb_module && is_mapped_name) {
-			//probably legit: it was scanned during the modules scan
-			return nullptr;
-		}
-		if (!is_peb_module) {
+
+		if (scan_image) {
 #ifdef _DEBUG
 			std::cout << "[!] Detected a disconnected MEM_IMG: " << memPage.region_start << std::endl;
 #endif
-			if (scanDisconnectedImg()) {
-				return nullptr; //scanned as a disconnected PE module
+			if (scanImg()) {
+				return nullptr; // already scanned as a PE module
 			}
 			//scanning as disconnected module failed, continue scanning as an implant
 #ifdef _DEBUG

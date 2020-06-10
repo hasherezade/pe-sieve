@@ -18,15 +18,13 @@ public:
 	const virtual void fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 	{
 		ModuleScanReport::toJSON(outs, level);
-		outs << ",\n";
 		if (patchesList.size() > 0) {
+			outs << ",\n";
 			OUT_PADDED(outs, level, "\"patches\" : ");
 			outs << std::dec << patchesList.size();
-			if (unpackedSections.size() > 0) {
-				outs << ",\n";
-			}
 		}
 		if (unpackedSections.size() > 0) {
+			outs << ",\n";
 			OUT_PADDED(outs, level, "\"unpacked_code_sections\" : ");
 			outs << std::dec << unpackedSections.size();
 		}
