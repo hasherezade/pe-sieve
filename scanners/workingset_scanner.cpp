@@ -94,7 +94,8 @@ bool WorkingSetScanner::scanImg()
 	const HMODULE module_start = (HMODULE)memPage.alloc_base;
 
 	if (this->processReport->hasModuleContaining((ULONGLONG)module_start)) {
-		if (this->processReport->hasModuleContaining(memPage.region_start) && this->processReport->hasModuleContaining(memPage.region_end - 1)) {
+		const size_t region_size = (memPage.region_end) ? (memPage.region_end - memPage.region_start) : 0;
+		if (this->processReport->hasModuleContaining(memPage.region_start, region_size)) {
 #ifdef _DEBUG
 			std::cout << "[*] This area was already scanned: " << std::hex << memPage.region_start << std::endl;
 #endif

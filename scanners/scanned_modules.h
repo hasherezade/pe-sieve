@@ -55,7 +55,7 @@ struct ProcessModules {
 	bool appendModule(LoadedModule* module);
 	void deleteAll();
 
-	LoadedModule* getModuleContaining(ULONGLONG address) const;
+	LoadedModule* getModuleContaining(ULONGLONG address, size_t size = 0) const;
 	LoadedModule* getModuleAt(ULONGLONG address) const;
 
 	const DWORD process_id;

@@ -58,9 +58,9 @@ public:
 		appendToModulesList(report);
 	}
 
-	bool hasModuleContaining(ULONGLONG page_addr)
+	bool hasModuleContaining(ULONGLONG page_addr, size_t size = 0)
 	{
-		if (modulesInfo.getModuleContaining(page_addr) == nullptr) {
+		if (modulesInfo.getModuleContaining(page_addr, size) == nullptr) {
 			return false;
 		}
 		return true;
