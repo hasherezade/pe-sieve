@@ -68,7 +68,7 @@ WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPage
 	bool detected_as_pe = false;
 	//shellcode found! now examine it with more details:
 	if (!this->processReport->hasModuleContaining((ULONGLONG)memPage.start_va)) {
-		ArtefactScanner artefactScanner(this->processHandle, memPage);
+		ArtefactScanner artefactScanner(this->processHandle, memPage, this->processReport);
 		WorkingSetScanReport *my_report1 = artefactScanner.scanRemote();
 		if (my_report1) {
 			//pe artefacts found

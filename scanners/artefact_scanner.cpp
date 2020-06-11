@@ -805,6 +805,11 @@ PeArtefacts* ArtefactScanner::findInPrevPages(ULONGLONG addr_start, ULONGLONG ad
 		if (next_addr < addr_start) {
 			break;
 		}
+		const size_t area_size = addr_stop - next_addr;
+		if (this->processReport->hasModuleContaining((ULONGLONG)next_addr, area_size)) {
+			//std::cout << "Aready scanned: " << std::hex << next_addr << " size: " << area_size << "\n";
+			break;
+		}
 		this->prevMemPage = new MemPageData(this->processHandle, next_addr, addr_stop);
 		peArt = findArtefacts(*prevMemPage, 0);
 		if (peArt) {
@@ -841,8 +846,7 @@ ArtefactScanReport* ArtefactScanner::scanRemote()
 	this->artPagePtr = &memPage;
 
 	PeArtefacts *peArt = findArtefacts(memPage, 0);
-	
-	if (!peArt  && (region_start > memPage.alloc_base)) {
+	if (!peArt && (region_start > memPage.alloc_base)) {
 		peArt = findInPrevPages(memPage.alloc_base, memPage.region_start);
 		if (prevMemPage) {
 			this->artPagePtr = prevMemPage;
