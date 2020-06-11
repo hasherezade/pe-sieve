@@ -65,31 +65,22 @@ WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPage
 		// shellcode patterns not found
 		return nullptr;
 	}
-	bool detected_as_pe = false;
 	//shellcode found! now examine it with more details:
-	if (!this->processReport->hasModuleContaining((ULONGLONG)memPage.start_va)) {
-		ArtefactScanner artefactScanner(this->processHandle, memPage, this->processReport);
-		WorkingSetScanReport *my_report1 = artefactScanner.scanRemote();
-		if (my_report1) {
-			//pe artefacts found
-			return my_report1;
-		}
-		if (!this->args.shellcode) {
-			// not a PE file, and we are not interested in shellcode, so just finish it here
-			return nullptr;
-		}
+	ArtefactScanner artefactScanner(this->processHandle, memPage, this->processReport);
+	WorkingSetScanReport *my_report1 = artefactScanner.scanRemote();
+	if (my_report1) {
+		//pe artefacts found
+		return my_report1;
 	}
-	else {
-		detected_as_pe = true;
-#ifdef _DEBUG
-		std::cout << std::hex << (ULONGLONG)memPage.start_va << ": Scanning for artefacts skipped, this module was already detectes as PE\n";
-#endif
+	if (!this->args.shellcode) {
+		// not a PE file, and we are not interested in shellcode, so just finish it here
+		return nullptr;
 	}
 	//report about shellcode:
 	ULONGLONG region_start = memPage.region_start;
 	const size_t region_size = size_t (memPage.region_end - region_start);
 	WorkingSetScanReport *my_report = new WorkingSetScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
-	my_report->has_pe = detected_as_pe;
+	my_report->has_pe = false;
 	my_report->has_shellcode = true;
 	return my_report;
 }
