@@ -65,22 +65,31 @@ WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPage
 		// shellcode patterns not found
 		return nullptr;
 	}
+	bool detected_as_pe = false;
 	//shellcode found! now examine it with more details:
-	ArtefactScanner artefactScanner(this->processHandle, memPage);
-	WorkingSetScanReport *my_report = artefactScanner.scanRemote();
-	if (my_report) {
-		//pe artefacts found
-		return my_report;
+	if (!this->processReport->hasModuleContaining((ULONGLONG)memPage.start_va)) {
+		ArtefactScanner artefactScanner(this->processHandle, memPage);
+		WorkingSetScanReport *my_report1 = artefactScanner.scanRemote();
+		if (my_report1) {
+			//pe artefacts found
+			return my_report1;
+		}
+		if (!this->args.shellcode) {
+			// not a PE file, and we are not interested in shellcode, so just finish it here
+			return nullptr;
+		}
 	}
-	if (!this->args.shellcode) {
-		// not a PE file, and we are not interested in shellcode, so just finish it here
-		return nullptr;
+	else {
+		detected_as_pe = true;
+#ifdef _DEBUG
+		std::cout << std::hex << (ULONGLONG)memPage.start_va << ": Scanning for artefacts skipped, this module was already detectes as PE\n";
+#endif
 	}
 	//report about shellcode:
 	ULONGLONG region_start = memPage.region_start;
 	const size_t region_size = size_t (memPage.region_end - region_start);
-	my_report = new WorkingSetScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
-	my_report->has_pe = false;
+	WorkingSetScanReport *my_report = new WorkingSetScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
+	my_report->has_pe = detected_as_pe;
 	my_report->has_shellcode = true;
 	return my_report;
 }
@@ -97,11 +106,14 @@ bool WorkingSetScanner::scanImg()
 		const size_t region_size = (memPage.region_end) ? (memPage.region_end - memPage.region_start) : 0;
 		if (this->processReport->hasModuleContaining(memPage.region_start, region_size)) {
 #ifdef _DEBUG
-			std::cout << "[*] This area was already scanned: " << std::hex << memPage.region_start << std::endl;
+			std::cout << "[*] This area was already scanned: " << std::hex << memPage.region_start << " size: " << region_size << std::endl;
 #endif
 			// already scanned
 			return true;
 		}
+#ifdef _DEBUG
+		std::cout << "[*] Part of the area was not scanned yet: " << std::hex << memPage.region_start << " size: " << region_size << std::endl;
+#endif
 		//it may be a shellcode after the loaded PE
 		return false;
 	}
