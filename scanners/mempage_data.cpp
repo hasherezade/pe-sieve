@@ -107,8 +107,12 @@ bool MemPageData::isRealMapping()
 
 bool MemPageData::_loadRemote()
 {
-	peconv::free_pe_buffer(this->loadedData, this->loadedSize);
+	_freeRemote();
 	size_t region_size = size_t(this->region_end - this->start_va);
+	if (stop_va && ( stop_va >= start_va  && stop_va < this->region_end)) {
+		region_size = size_t(this->stop_va - this->start_va);
+	}
+	
 	if (region_size == 0) {
 		return false;
 	}
@@ -116,10 +120,9 @@ bool MemPageData::_loadRemote()
 	if (loadedData == nullptr) {
 		return false;
 	}
-
+	this->loadedSize = region_size;
 	bool is_guarded = (protection & PAGE_GUARD) != 0;
 
-	this->loadedSize = region_size;
 	size_t size_read = peconv::read_remote_memory(this->processHandle, (BYTE*)this->start_va, loadedData, loadedSize);
 	if ((size_read == 0) && is_guarded) {
 #ifdef _DEBUG

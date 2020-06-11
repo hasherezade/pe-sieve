@@ -805,7 +805,7 @@ PeArtefacts* ArtefactScanner::findInPrevPages(ULONGLONG addr_start, ULONGLONG ad
 		if (next_addr < addr_start) {
 			break;
 		}
-		this->prevMemPage = new MemPageData(this->processHandle, next_addr);
+		this->prevMemPage = new MemPageData(this->processHandle, next_addr, addr_stop);
 		peArt = findArtefacts(*prevMemPage, 0);
 		if (peArt) {
 			break;
@@ -841,6 +841,7 @@ ArtefactScanReport* ArtefactScanner::scanRemote()
 	this->artPagePtr = &memPage;
 
 	PeArtefacts *peArt = findArtefacts(memPage, 0);
+	
 	if (!peArt  && (region_start > memPage.alloc_base)) {
 		peArt = findInPrevPages(memPage.alloc_base, memPage.region_start);
 		if (prevMemPage) {
