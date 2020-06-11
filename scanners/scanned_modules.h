@@ -10,7 +10,7 @@
 struct LoadedModule {
 
 	LoadedModule(DWORD _pid, ULONGLONG _start, size_t _moduleSize)
-		: process_id(_pid), start(_start), end(_start + _moduleSize),
+		: process_id(_pid), start(_start), moduleSize(_moduleSize),
 		is_suspicious(false)
 	{
 	}
@@ -33,11 +33,31 @@ struct LoadedModule {
 		return this->is_suspicious;
 	}
 	
+	ULONGLONG getEnd()
+	{
+		return moduleSize + start;
+	}
+
+	bool resize(size_t newSize)
+	{
+		if (moduleSize < newSize) {
+			//std::cout << "Resizing module from: " << std::hex << moduleSize << " to: " << newSize << "\n";
+			moduleSize = newSize;
+			return true;
+		}
+		return false;
+	}
+
+	size_t getSize()
+	{
+		return moduleSize;
+	}
+
 	const ULONGLONG start;
-	const ULONGLONG end;
 	const DWORD process_id;
 
 private:
+	size_t moduleSize;
 	bool is_suspicious;
 };
 

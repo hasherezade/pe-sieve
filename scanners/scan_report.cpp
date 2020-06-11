@@ -53,7 +53,14 @@ bool ProcessScanReport::appendToModulesList(ModuleScanReport *report)
 	if (mod == nullptr) {
 		//create new only if it was not found
 		mod = new LoadedModule(report->pid, module_start, report->moduleSize);
-		modulesInfo.appendModule(mod);
+		if (!modulesInfo.appendModule(mod)) {
+			delete mod; //delete the module as it was not appended
+			return false;
+		}
+	}
+	size_t old_size = mod->getSize();
+	if (old_size < report->moduleSize) {
+		mod->resize(report->moduleSize);
 	}
 	if (!mod->isSuspicious()) {
 		//update the status

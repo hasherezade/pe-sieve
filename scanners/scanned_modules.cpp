@@ -10,6 +10,7 @@ bool ProcessModules::appendModule(LoadedModule* lModule)
 	}
 	ULONGLONG start_addr = lModule->start;
 	if (this->modulesMap.find(start_addr) != this->modulesMap.end()) {
+		//already exist
 		return false;
 	}
 	modulesMap[start_addr] = lModule;
@@ -36,7 +37,7 @@ LoadedModule* ProcessModules::getModuleContaining(ULONGLONG address, size_t size
 
 	for (; itr != stop_itr; ++itr ) {
 		LoadedModule *module = itr->second;
-		if (address >= module->start && end_addr < module->end) {
+		if (address >= module->start && end_addr < module->getEnd()) {
 #ifdef _DEBUG
 			std::cout << "Addr: " << std::hex << address << " found in: " << module->start << " - " << module->end << std::endl;
 #endif
