@@ -51,8 +51,20 @@ HANDLE open_process(DWORD processID, bool reflection, bool quiet)
 		access,
 		FALSE, processID
 	);
+	// success, return the handle:
 	if (hProcess) {
 		return hProcess;
+	}
+	if (access != basic_access) {
+		// if failed, try to open with basic rights
+		hProcess = OpenProcess(
+			basic_access,
+			FALSE, processID
+		);
+		// success, return the handle:
+		if (hProcess) {
+			return hProcess;
+		}
 	}
 	DWORD last_err = GetLastError();
 	if (last_err == ERROR_ACCESS_DENIED) {
@@ -161,7 +173,6 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 			SetLastError(ERROR_INVALID_PARAMETER);
 			throw std::runtime_error("Scanner mismatch. Try to use the 64bit version of the scanner.");
 		}
-
 		HANDLE _pHndl = hProcess;
 		HANDLE cloned_proc = NULL;
 		if (args.make_reflection) {
@@ -174,7 +185,6 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 		if (!cloned_proc) {
 			if (!args.quiet) std::cout << "Using raw process!\n";
 		}
-
 		ProcessScanner scanner(_pHndl, args);
 		report->scan_report = scanner.scanRemote();
 		if (cloned_proc) {

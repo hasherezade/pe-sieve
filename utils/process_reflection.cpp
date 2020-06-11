@@ -308,6 +308,9 @@ bool pesieve::util::can_make_process_reflection()
 
 HANDLE pesieve::util::make_process_reflection(HANDLE orig_hndl)
 {
+	if (orig_hndl == NULL) {
+		return NULL;
+	}
 	HANDLE clone = NULL;
 #ifdef USE_PROCESS_SNAPSHOT
 	if (load_PssCaptureFreeSnapshot()) {
