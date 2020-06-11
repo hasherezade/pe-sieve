@@ -1,4 +1,5 @@
 #include "artefacts_util.h"
+#include <peconv.h>
 
 #ifdef _DEBUG
 	#include <iostream>
@@ -74,6 +75,9 @@ bool pesieve::util::is_64bit_code(BYTE *loadedData, size_t loadedSize)
 
 bool pesieve::util::is_code(BYTE *loadedData, size_t loadedSize)
 {
+	if (peconv::is_padding(loadedData, loadedSize, 0)) {
+		return false;
+	}
 	if (is_32bit_code(loadedData, loadedSize)) {
 		return true;
 	}
