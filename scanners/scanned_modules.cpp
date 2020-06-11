@@ -27,6 +27,26 @@ void ProcessModules::deleteAll()
 	this->modulesMap.clear();
 }
 
+size_t ProcessModules::getScannedSize(ULONGLONG address) const
+{
+	std::map<ULONGLONG, LoadedModule*>::const_iterator start_itr = modulesMap.begin();
+	std::map<ULONGLONG, LoadedModule*>::const_iterator stop_itr = modulesMap.upper_bound(address);
+	std::map<ULONGLONG, LoadedModule*>::const_iterator itr = start_itr;
+
+	size_t max_size = 0;
+
+	for (; itr != stop_itr; ++itr) {
+		LoadedModule *module = itr->second;
+		if (address >= module->start && address < module->getEnd()) {
+			ULONGLONG diff = module->getEnd() - address;
+			if (diff > max_size) {
+				max_size = diff;
+			}
+		}
+	}
+	return max_size;
+}
+
 LoadedModule* ProcessModules::getModuleContaining(ULONGLONG address, size_t size) const
 {
 	std::map<ULONGLONG, LoadedModule*>::const_iterator start_itr = modulesMap.begin();

@@ -33,7 +33,7 @@ struct LoadedModule {
 		return this->is_suspicious;
 	}
 	
-	ULONGLONG getEnd()
+	ULONGLONG getEnd() const
 	{
 		return moduleSize + start;
 	}
@@ -75,6 +75,7 @@ struct ProcessModules {
 	bool appendModule(LoadedModule* module);
 	void deleteAll();
 
+	size_t getScannedSize(ULONGLONG start_address) const;
 	LoadedModule* getModuleContaining(ULONGLONG address, size_t size = 0) const;
 	LoadedModule* getModuleAt(ULONGLONG address) const;
 

@@ -58,6 +58,11 @@ public:
 		appendToModulesList(report);
 	}
 
+	size_t getScannedSize(ULONGLONG address) const
+	{
+		return modulesInfo.getScannedSize(address);
+	}
+
 	bool hasModuleContaining(ULONGLONG page_addr, size_t size = 0)
 	{
 		if (modulesInfo.getModuleContaining(page_addr, size) == nullptr) {

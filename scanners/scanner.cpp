@@ -192,10 +192,20 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 	//now scan all the nodes:
 	std::set<ULONGLONG>::iterator set_itr;
 	for (set_itr = region_bases.begin(); set_itr != region_bases.end(); ++set_itr) {
-		ULONGLONG region_base = *set_itr;
+		const ULONGLONG region_base = *set_itr;
 
 		MemPageData memPage(this->processHandle, region_base);
-		//if it was already scanned, it means the module was on the list of loaded modules
+		const size_t scanned_size = pReport.getScannedSize(region_base);
+		const size_t region_size = (memPage.region_end > region_base) ? (memPage.region_end - region_base) : 0;
+		if (scanned_size && region_size == scanned_size) {
+			continue;
+		}
+		if (scanned_size && region_size > scanned_size) {
+			//if (!args.quiet) 
+				std::cout << std::hex << memPage.region_start << ": Part of this region was already scanned: " << scanned_size << " vs: " << region_size << "\n";
+			region_bases.insert(memPage.region_start + scanned_size);
+			continue;
+		}
 		memPage.is_listed_module = pReport.hasModule(region_base);
 		memPage.is_dep_enabled = this->isDEP;
 
@@ -215,11 +225,6 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 		}
 
 		pReport.appendReport(my_report);
-		/*if (ModuleScanReport::get_scan_status(my_report) == SCAN_SUSPICIOUS) {
-			if (my_report->is_manually_loaded) {
-				pReport.summary.implanted++;
-			}
-		}*/
 	}
 #ifdef _DEBUG
 	DWORD total_time = GetTickCount() - start_tick;
