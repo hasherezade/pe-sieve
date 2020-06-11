@@ -59,7 +59,7 @@ LoadedModule* ProcessModules::getModuleContaining(ULONGLONG address, size_t size
 		LoadedModule *module = itr->second;
 		if (address >= module->start && end_addr < module->getEnd()) {
 #ifdef _DEBUG
-			std::cout << "Addr: " << std::hex << address << " found in: " << module->start << " - " << module->end << std::endl;
+			std::cout << "Addr: " << std::hex << address << " found in: " << module->start << " - " << module->getEnd() << std::endl;
 #endif
 			return module;
 		}
