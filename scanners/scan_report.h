@@ -35,6 +35,8 @@ public:
 		REPORT_ALL = REPORT_ERRORS | REPORT_NOT_SUSPICIOUS | REPORT_SUSPICIOUS
 	} t_report_filter;
 
+	static t_report_type getReportType(ModuleScanReport *report);
+
 	ProcessScanReport(DWORD _pid)
 		: pid(_pid), exportsMap(nullptr), errorsCount(0), modulesInfo(pid)
 	{

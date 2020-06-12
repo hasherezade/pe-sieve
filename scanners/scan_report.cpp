@@ -45,7 +45,7 @@ bool ProcessScanReport::hasAnyShownType(const ProcessScanReport::t_report_filter
 
 bool ProcessScanReport::appendToModulesList(ModuleScanReport *report)
 {
-	if (report->moduleSize == 0) {
+	if (!report || report->moduleSize == 0) {
 		return false; //skip
 	}
 	ULONGLONG module_start = (ULONGLONG)report->module;
@@ -69,38 +69,33 @@ bool ProcessScanReport::appendToModulesList(ModuleScanReport *report)
 	return true;
 }
 
-void ProcessScanReport::appendToType(ModuleScanReport *report)
+ProcessScanReport::t_report_type ProcessScanReport::getReportType(ModuleScanReport *report)
 {
-	if (report == nullptr) return;
-
+	if (!report) {
+		return ProcessScanReport::REPORT_TYPES_COUNT;
+	}
 	if (dynamic_cast<HeadersScanReport*>(report)) {
-		this->reportsByType[REPORT_HEADERS_SCAN].insert(report);
-		return;
+		return ProcessScanReport::REPORT_HEADERS_SCAN;
 	}
 	if (dynamic_cast<WorkingSetScanReport*>(report)) {
-		this->reportsByType[REPORT_MEMPAGE_SCAN].insert(report);
-		return;
+		return ProcessScanReport::REPORT_MEMPAGE_SCAN;
 	}
 	if (dynamic_cast<MappingScanReport*>(report)) {
-		this->reportsByType[REPORT_MAPPING_SCAN].insert(report);
-		return;
+		return ProcessScanReport::REPORT_MAPPING_SCAN;
 	}
 	if (dynamic_cast<CodeScanReport*>(report)) {
-		this->reportsByType[REPORT_CODE_SCAN].insert(report);
-		return;
+		return ProcessScanReport::REPORT_CODE_SCAN;
 	}
 	if (dynamic_cast<IATScanReport*>(report)) {
-		this->reportsByType[REPORT_IAT_SCAN].insert(report);
-		return;
+		return ProcessScanReport::REPORT_IAT_SCAN;
 	}
 	if (dynamic_cast<UnreachableModuleReport*>(report)) {
-		this->reportsByType[REPORT_UNREACHABLE_SCAN].insert(report);
-		return;
+		return ProcessScanReport::REPORT_UNREACHABLE_SCAN;
 	}
 	if (dynamic_cast<SkippedModuleReport*>(report)) {
-		this->reportsByType[REPORT_SKIPPED_SCAN].insert(report);
-		return;
+		return ProcessScanReport::REPORT_SKIPPED_SCAN;
 	}
+	return ProcessScanReport::REPORT_TYPES_COUNT;
 }
 
 size_t ProcessScanReport::countSuspiciousPerType(t_report_type type) const
@@ -117,6 +112,18 @@ size_t ProcessScanReport::countSuspiciousPerType(t_report_type type) const
 		}
 	}
 	return suspicious;
+}
+
+void ProcessScanReport::appendToType(ModuleScanReport *report)
+{
+	if (report == nullptr) return;
+
+	t_report_type type = ProcessScanReport::getReportType(report);
+	if (type >= REPORT_TYPES_COUNT) {
+		return;
+	}
+
+	this->reportsByType[type].insert(report);
 }
 
 size_t ProcessScanReport::countHdrsReplaced() const
