@@ -99,6 +99,7 @@ public:
 
 protected:
 	bool scanImg();
+	bool isScannedAsModule(MemPageData &memPageData);
 
 	bool isExecutable(MemPageData &memPageData);
 	bool isPotentiallyExecutable(MemPageData &memPageData);
