@@ -12,7 +12,7 @@ HeadersScanReport* HeadersScanner::scanRemote()
 		return nullptr;
 	}
 
-	HeadersScanReport *my_report = new HeadersScanReport(this->processHandle, moduleData.moduleHandle, moduleData.original_size);
+	HeadersScanReport *my_report = new HeadersScanReport(this->processHandle, moduleData.moduleHandle, remoteModData.getModuleSize());
 
 	BYTE hdr_buffer1[peconv::MAX_HEADER_SIZE] = { 0 };
 	memcpy(hdr_buffer1, remoteModData.headerBuffer, peconv::MAX_HEADER_SIZE);
