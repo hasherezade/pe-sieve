@@ -159,6 +159,15 @@ size_t CodeScanner::collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE pat
 	return patchesList.size();
 }
 
+inline BYTE* first_different(const BYTE *buf_ptr, size_t bif_size, const BYTE padding)
+{
+	for (size_t i = 0; i < bif_size; i++) {
+		if (buf_ptr[i] != padding) {
+			return (BYTE*)(buf_ptr + i);
+		}
+	}
+	return nullptr;
+}
 
 CodeScanner::t_section_status CodeScanner::scanSection(PeSection &originalSec, PeSection &remoteSec, OUT PatchList &patchesList)
 {
@@ -187,25 +196,29 @@ CodeScanner::t_section_status CodeScanner::scanSection(PeSection &originalSec, P
 		return CodeScanner::SECTION_UNPACKED; // modified
 	}
 
-	size_t patches = 0;
 	if (res != 0) {
-		patches = collectPatches(originalSec.rva, originalSec.loadedSection, remoteSec.loadedSection, smaller_size, patchesList);
+		collectPatches(originalSec.rva, originalSec.loadedSection, remoteSec.loadedSection, smaller_size, patchesList);
 	}
 
-	if (res == 0 && (remoteSec.loadedSize > originalSec.loadedSize)) {
-		size_t diff = remoteSec.loadedSize - originalSec.loadedSize;
-		BYTE *diff_bgn = remoteSec.loadedSection + originalSec.loadedSize;
-		if (!peconv::is_padding(diff_bgn, diff, 0)) {
-			PatchList::Patch* currPatch = new PatchList::Patch(moduleData.moduleHandle, patchesList.size(), (DWORD)remoteSec.rva + originalSec.loadedSize);
+	if (remoteSec.loadedSize > originalSec.loadedSize) {
+		
+		const size_t diff = remoteSec.loadedSize - originalSec.loadedSize;
+		const BYTE *diff_bgn = remoteSec.loadedSection + originalSec.loadedSize;
+		
+		BYTE *not_padding = first_different(diff_bgn, diff, 0);
+		if (not_padding) {
+			const size_t found_offset = not_padding - remoteSec.loadedSection;
+			const DWORD found_rva = remoteSec.rva + found_offset;
+			PatchList::Patch* currPatch = new PatchList::Patch(moduleData.moduleHandle, patchesList.size(), found_rva);
 			currPatch->setEnd((DWORD)remoteSec.rva + diff);
 			patchesList.insert(currPatch);
 		}
 	}
+	if (patchesList.size()) {
+		return CodeScanner::SECTION_PATCHED; // modified
+	}
 	if (res == 0) {
 		return CodeScanner::SECTION_NOT_MODIFIED; //not modified
-	}
-	if (patches) {
-		return CodeScanner::SECTION_PATCHED; // modified
 	}
 	return CodeScanner::SECTION_UNPACKED; // modified
 }
@@ -238,7 +251,6 @@ size_t CodeScanner::collectExecutableSections(RemoteModuleData &_remoteModData, 
 	}
 	//corner case: PEs without sections
 	if (sec_count == 0) {
-		DWORD image_size = peconv::get_image_size(_remoteModData.headerBuffer);
 		PeSection *remoteSec = new PeSection(_remoteModData, 0);
 		if (remoteSec->isInitialized()) {
 			sections[0] = remoteSec;
@@ -305,7 +317,7 @@ CodeScanReport* CodeScanner::scanRemote()
 		std::cerr << "[-] Failed to read the module header" << std::endl;
 		return nullptr;
 	}
-	CodeScanReport *my_report = new CodeScanReport(this->processHandle, moduleData.moduleHandle, moduleData.original_size);
+	CodeScanReport *my_report = new CodeScanReport(this->processHandle, moduleData.moduleHandle, remoteModData.getModuleSize());
 	my_report->isDotNetModule = moduleData.isDotNet();
 	
 	t_scan_status last_res = SCAN_NOT_SUSPICIOUS;
