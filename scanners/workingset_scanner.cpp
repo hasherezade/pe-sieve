@@ -110,8 +110,6 @@ bool WorkingSetScanner::scanImg()
 		return false;
 	}
 
-	//const bool is_peb_module = memPage.loadModuleName();
-	//const bool is_mapped_name = memPage.loadMappedName();
 	const HMODULE module_start = (HMODULE)memPage.alloc_base;
 	
 	if (show_info) {
@@ -177,6 +175,8 @@ WorkingSetScanReport* WorkingSetScanner::scanRemote()
 	}
 
 	if (memPage.mapping_type == MEM_IMAGE) {
+		memPage.loadModuleName();
+		memPage.loadMappedName();
 		if (!isScannedAsModule(memPage)) {
 			scanImg();
 		}
