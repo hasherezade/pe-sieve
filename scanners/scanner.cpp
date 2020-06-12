@@ -195,17 +195,7 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 		const ULONGLONG region_base = *set_itr;
 
 		MemPageData memPage(this->processHandle, region_base);
-		const size_t scanned_size = pReport.getScannedSize(region_base);
-		const size_t region_size = (memPage.region_end > region_base) ? (memPage.region_end - region_base) : 0;
-		if (scanned_size && region_size == scanned_size) {
-			continue;
-		}
-		if (scanned_size && region_size > scanned_size) {
-			//if (!args.quiet) 
-				std::cout << std::hex << memPage.region_start << ": Part of this region was already scanned: " << scanned_size << " vs: " << region_size << "\n";
-			region_bases.insert(memPage.region_start + scanned_size);
-			continue;
-		}
+
 		memPage.is_listed_module = pReport.hasModule(region_base);
 		memPage.is_dep_enabled = this->isDEP;
 
