@@ -344,7 +344,7 @@ size_t ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //throws exce
 		}
 
 		//load data about the remote module
-		RemoteModuleData remoteModData(processHandle, hMods[counter], true);
+		RemoteModuleData remoteModData(processHandle, hMods[counter]);
 		if (remoteModData.isInitialized() == false) {
 			//make a report that initializing remote module was not possible
 			pReport.appendReport(new MalformedHeaderReport(processHandle, hMods[counter], 0, modData.szModName));

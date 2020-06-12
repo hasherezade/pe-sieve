@@ -159,12 +159,6 @@ bool RemoteModuleData::init()
 		return false;
 	}
 	this->isHdrReady = true;
-
-	if (this->isFullImg) {
-		if (!loadFullImage()) {
-			return false;
-		}
-	}
 	return true;
 }
 

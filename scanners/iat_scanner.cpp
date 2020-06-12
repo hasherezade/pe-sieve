@@ -135,9 +135,34 @@ bool IATScanReport::generateList(IN const std::string &fileName, IN HANDLE hProc
 		exportsMap);
 }
 
+bool IATScanner::hasImportTable(RemoteModuleData &remoteModData)
+{
+	if (!remoteModData.isInitialized()) {
+		return false;
+	}
+	IMAGE_DATA_DIRECTORY *dir = peconv::get_directory_entry((BYTE*)remoteModData.headerBuffer, IMAGE_DIRECTORY_ENTRY_IMPORT);
+	if (!dir) {
+		return false;
+	}
+	if (dir->VirtualAddress > remoteModData.getHdrImageSize()) {
+		std::cerr << "[-] Import Table out of scope" << std::endl;
+		return false;
+	}
+	return true;
+}
+
 IATScanReport* IATScanner::scanRemote()
 {
-	if (!remoteModData.isInitialized() || !remoteModData.isFullImageLoaded()) {
+	if (!remoteModData.isInitialized()) {
+		std::cerr << "[-] Failed to initialize remote module header" << std::endl;
+		return nullptr;
+	}
+	if (!hasImportTable(remoteModData)) {
+		IATScanReport *report = new IATScanReport(processHandle, remoteModData.modBaseAddr, remoteModData.getModuleSize(), moduleData.szModName);
+		report->status = SCAN_NOT_SUSPICIOUS;
+		return report;
+	}
+	if (!remoteModData.loadFullImage()) {
 		std::cerr << "[-] Failed to initialize remote module" << std::endl;
 		return nullptr;
 	}

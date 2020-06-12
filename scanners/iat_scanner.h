@@ -59,6 +59,7 @@ public:
 	virtual IATScanReport* scanRemote();
 
 private:
+	bool hasImportTable(RemoteModuleData &remoteModData);
 	bool filterResults(peconv::ImpsNotCovered &not_covered, IATScanReport &report);
 	void listAllImports(std::map<ULONGLONG, peconv::ExportedFunc> &_storedFunc);
 
