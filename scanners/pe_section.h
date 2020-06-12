@@ -55,18 +55,15 @@ protected:
 #ifdef _DEBUG
 			std::cout << "PE with no sections! Loading remote\n";
 #endif
-			DWORD region_size = peconv::fetch_region_size(remoteModData.processHandle, (PBYTE)remoteModData.modBaseAddr);
-#ifdef _DEBUG
-			std::cout << "Region Size: " << std::hex << region_size << "\n";
-#endif
-			peconv::UNALIGNED_BUF buf = peconv::alloc_unaligned(region_size);
+			size_t image_size = remoteModData.getHdrImageSize();
+			peconv::UNALIGNED_BUF buf = peconv::alloc_unaligned(image_size);
 			if (!buf) {
 #ifdef _DEBUG
-				std::cout << "Could not alloc: " << std::hex << region_size << "\n";
+				std::cout << "Could not alloc: " << std::hex << image_size << "\n";
 #endif
 				return false;
 			}
-			size_t read_size = peconv::read_remote_memory(remoteModData.processHandle, (PBYTE)remoteModData.modBaseAddr, buf, region_size);
+			size_t read_size = peconv::read_remote_pe(remoteModData.processHandle, (PBYTE)remoteModData.modBaseAddr, image_size, buf, image_size);
 			if (!read_size) {
 				peconv::free_unaligned(buf);
 				return false;

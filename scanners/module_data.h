@@ -130,7 +130,7 @@ public:
 		return true;
 	}
 
-	size_t getModuleSize()
+	size_t getHdrImageSize()
 	{
 		if (!isHdrReady) return 0;
 		return peconv::get_image_size((const BYTE*) headerBuffer);
@@ -140,6 +140,14 @@ public:
 	{
 		if (!isHdrReady) return 0;
 		return peconv::get_image_base((const BYTE*)headerBuffer);
+	}
+	
+	size_t getModuleSize()
+	{
+		if (imgBufferSize) {
+			return imgBufferSize;
+		}
+		return getHdrImageSize();
 	}
 
 	size_t getHeaderSize()
