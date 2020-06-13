@@ -17,7 +17,7 @@ public:
 
 	ModuleDumpReport(ULONGLONG module_start, size_t module_size)
 		: moduleStart(module_start), moduleSize(module_size),
-		isDumped(false),
+		isDumped(false), isReportDumped(false),
 		is_corrupt_pe(false), 
 		is_shellcode(false)
 	{
@@ -30,6 +30,7 @@ public:
 	bool is_corrupt_pe;
 	bool is_shellcode;
 	std::string impRecMode;
+	bool isReportDumped;
 	bool isDumped;
 	std::string mode_info;
 	std::string dumpFileName;

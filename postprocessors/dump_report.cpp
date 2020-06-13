@@ -88,7 +88,7 @@ std::string ProcessDumpReport::list_dumped_modules(size_t level)
 	std::vector<ModuleDumpReport*>::const_iterator itr;
 	for (itr = module_reports.begin(); itr != module_reports.end(); ++itr) {
 		ModuleDumpReport *mod = *itr;
-		if (mod->isDumped) {
+		if (mod->isDumped || mod->isReportDumped) {
 			if (!is_first) {
 				stream << ",\n";
 			}

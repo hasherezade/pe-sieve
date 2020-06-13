@@ -314,20 +314,7 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 		curr_dump_mode = peconv::PE_DUMP_VIRTUAL;
 		modDumpReport->mode_info = get_dump_mode_name(curr_dump_mode);
 	}
-
-	IATScanReport* iatHooksReport = dynamic_cast<IATScanReport*>(mod);
-	if (iatHooksReport) {
-		std::string imports_not_rec_file = modDumpReport->dumpFileName + ".iat_hooks.txt";
-		
-		if (iatHooksReport->generateList(imports_not_rec_file, processHandle, modulesInfo, exportsMap)) {
-			modDumpReport->iatHooksFileName = imports_not_rec_file;
-		}
-	}
 	if (modDumpReport->isDumped) {
-		std::string tags_file = modDumpReport->dumpFileName + ".tag";
-		if (mod->generateTags(tags_file)) {
-			modDumpReport->tagsFileName = tags_file;
-		}
 		is_dumped = true;
 		if (!this->quiet) {
 			std::string mode_info = modDumpReport->mode_info;
@@ -338,6 +325,22 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 	else {
 		std::cerr << "[-] Failed dumping module!" << std::endl;
 		is_dumped = false;
+	}
+
+	std::string tags_file = modDumpReport->dumpFileName + ".tag";
+	if (mod->generateTags(tags_file)) {
+		modDumpReport->tagsFileName = tags_file;
+		modDumpReport->isReportDumped = true;
+	}
+
+	IATScanReport* iatHooksReport = dynamic_cast<IATScanReport*>(mod);
+	if (iatHooksReport) {
+		std::string imports_not_rec_file = modDumpReport->dumpFileName + ".iat_hooks.txt";
+
+		if (iatHooksReport->generateList(imports_not_rec_file, processHandle, modulesInfo, exportsMap)) {
+			modDumpReport->iatHooksFileName = imports_not_rec_file;
+			modDumpReport->isReportDumped = true;
+		}
 	}
 	return is_dumped;
 }
