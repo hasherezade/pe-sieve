@@ -197,7 +197,7 @@ size_t ArtefactScanner::calcImgSize(HANDLE processHandle, HMODULE modBaseAddr, B
 
 	if (total_size > 0) {
 #ifdef _DEBUG
-		std::cout << "Image: " << std::hex << pe_image_base << " Size:" << std::hex << total_size << " max_addr: " << max_addr << std::endl;
+		std::cout << "Image: " << std::hex << (ULONGLONG)modBaseAddr << " Size:" << std::hex << total_size << " max_addr: " << max_addr << std::endl;
 #endif
 		return total_size;
 	}
