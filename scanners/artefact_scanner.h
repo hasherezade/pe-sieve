@@ -147,6 +147,9 @@ public:
 
 class ArtefactScanner {
 public:
+
+	static size_t calcImgSize(HANDLE processHandle, HMODULE modBaseAddr, BYTE* headerBuffer, size_t headerBufferSize, IMAGE_SECTION_HEADER *hdr_ptr = NULL);
+
 	ArtefactScanner(HANDLE _procHndl, MemPageData &_memPageData, ProcessScanReport* _process_report)
 		: processHandle(_procHndl), processReport(_process_report), is64bit(false),
 		memPage(_memPageData), prevMemPage(nullptr), artPagePtr(nullptr)

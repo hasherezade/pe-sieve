@@ -150,28 +150,26 @@ ULONGLONG ArtefactScanner::calcPeBase(MemPageData &memPage, LPVOID sec_hdr)
 	return memPage.region_start + (full_pages * PAGE_SIZE);
 }
 
-//calculate image size basing on the sizes of sections
-size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr, ULONGLONG pe_image_base)
+size_t ArtefactScanner::calcImgSize(HANDLE processHandle, HMODULE modBaseAddr, BYTE* headerBuffer, size_t headerBufferSize, IMAGE_SECTION_HEADER *hdr_ptr)
 {
-	if (!hdr_ptr) return 0;
-
+	if (!hdr_ptr) {
+		hdr_ptr = peconv::get_section_hdr(headerBuffer, headerBufferSize, 0);
+		if (!hdr_ptr) return peconv::fetch_region_size(processHandle, (PBYTE)modBaseAddr);
+	}
 	DWORD max_addr = 0;
-	IMAGE_SECTION_HEADER* curr_sec = hdr_ptr;
 	DWORD sec_rva = 0;
 	size_t max_sec_size = 0;
 	size_t last_sec_size = 0;
 
-	size_t first_area_size = peconv::fetch_region_size(this->processHandle, (PBYTE)pe_image_base);
+	size_t first_area_size = peconv::fetch_region_size(processHandle, (PBYTE)modBaseAddr);
 	if (first_area_size == 0) {
 		return 0;
 	}
-
-	const ULONGLONG main_base = peconv::fetch_alloc_base(this->processHandle, (PBYTE)pe_image_base);
-
+	const ULONGLONG main_base = peconv::fetch_alloc_base(processHandle, (PBYTE)modBaseAddr);
 	for (IMAGE_SECTION_HEADER* curr_sec = hdr_ptr; ; curr_sec++)
 	{
 		//we don't know the number of sections, so we should validate each one
-		if (!is_valid_section(memPage.getLoadedData(), memPage.getLoadedSize(), (BYTE*)curr_sec, 0)) {
+		if (!is_valid_section(headerBuffer, headerBufferSize, (BYTE*)curr_sec, 0)) {
 			break;
 		}
 		if (curr_sec->Misc.VirtualSize == 0) {
@@ -179,12 +177,12 @@ size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER
 		}
 		sec_rva = curr_sec->VirtualAddress;
 		DWORD next_max_addr = (sec_rva > max_addr) ? sec_rva : max_addr;
-		ULONGLONG last_sec_va = pe_image_base + next_max_addr;
-		size_t next_last_sec_size = peconv::fetch_region_size(this->processHandle, (PBYTE)last_sec_va);
+		ULONGLONG last_sec_va = (ULONGLONG)modBaseAddr + next_max_addr;
+		size_t next_last_sec_size = peconv::fetch_region_size(processHandle, (PBYTE)last_sec_va);
 		if (next_last_sec_size == 0) {
 			break; //the section was invalid, skip it
 		}
-		ULONGLONG region_base = peconv::fetch_alloc_base(this->processHandle, (PBYTE)last_sec_va);
+		ULONGLONG region_base = peconv::fetch_alloc_base(processHandle, (PBYTE)last_sec_va);
 		if (region_base != main_base) {
 			//it can happen if the PE is in a RAW format instead of Virtual
 #ifdef _DEBUG
@@ -204,6 +202,12 @@ size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER
 		return total_size;
 	}
 	return first_area_size;
+}
+
+//calculate image size basing on the sizes of sections
+size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr, ULONGLONG pe_image_base)
+{
+	return ArtefactScanner::calcImgSize(this->processHandle, (HMODULE)pe_image_base, memPage.getLoadedData(), memPage.getLoadedSize(), hdr_ptr);
 }
 
 IMAGE_SECTION_HEADER* get_first_section(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEADER *hdr_ptr)
