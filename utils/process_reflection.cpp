@@ -1,5 +1,4 @@
 #include "process_reflection.h"
-#include <processsnapshot.h>
 #include <iostream>
 
 #ifndef RTL_CLONE_PROCESS_FLAGS_CREATE_SUSPENDED
@@ -20,6 +19,10 @@
 
 namespace pesieve {
 	namespace util {
+
+		typedef struct {
+			HANDLE VaCloneHandle;
+		} PSS_VA_CLONE_INFORMATION;
 
 		typedef struct  {
 			HANDLE UniqueProcess;
