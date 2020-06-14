@@ -26,14 +26,28 @@ size_t PeBuffer::calcRemoteImgSize(HANDLE processHandle, ULONGLONG modBaseAddr)
 bool PeBuffer::readRemote(HANDLE process_hndl, ULONGLONG module_base, size_t pe_vsize)
 {
 	if (pe_vsize == 0) {
-		pe_vsize = calcRemoteImgSize(process_hndl, module_base);
-		std::cout << "[!] Image size at: " << std::hex << module_base << " undetermined, using calculated size: " << pe_vsize << std::endl;
+		// if not size supplied, try with the size fetched from the header
+		pe_vsize = peconv::get_remote_image_size(process_hndl, (BYTE*)module_base);
+	}
+	if (_readRemote(process_hndl, module_base, pe_vsize)) {
+		return true; //success
+	}
+	// try with the calculated size
+	pe_vsize = calcRemoteImgSize(process_hndl, module_base);
+	std::cout << "[!] Image size at: " << std::hex << module_base << " undetermined, using calculated size: " << pe_vsize << std::endl;
+	return _readRemote(process_hndl, module_base, pe_vsize);
+}
+
+bool PeBuffer::_readRemote(HANDLE process_hndl, ULONGLONG module_base, size_t pe_vsize)
+{
+	if (pe_vsize == 0) {
+		return false;
 	}
 	if (!allocBuffer(pe_vsize)) {
 		return false;
 	}
 	size_t read_size = peconv::read_remote_area(process_hndl, (BYTE*)module_base, vBuf, pe_vsize);
-	if (read_size == 0) {
+	if (read_size != pe_vsize) {
 		std::cout << "[!] Failed reading Image at: " << std::hex << module_base << " img size: " << pe_vsize << std::endl;
 		freeBuffer();
 		return false;

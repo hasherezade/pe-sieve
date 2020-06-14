@@ -99,7 +99,6 @@ protected:
 class RemoteModuleData
 {
 public:
-
 	static std::string getModuleName(HANDLE _processHandle, HMODULE _modBaseAddr);
 	static std::string getMappedName(HANDLE _processHandle, LPVOID _modBaseAddr);
 
@@ -160,6 +159,9 @@ public:
 protected:
 	bool init();
 	bool loadHeader();
+	size_t calcImgSize();
+
+	bool _loadFullImage(size_t v_size);
 
 	void freeFullImage()
 	{

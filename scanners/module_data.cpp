@@ -3,6 +3,7 @@
 #include "../utils/format_util.h"
 #include "../utils/path_converter.h"
 #include "../utils/process_util.h"
+#include "artefact_scanner.h"
 
 #include <psapi.h>
 #pragma comment(lib,"psapi.lib")
@@ -162,22 +163,32 @@ bool RemoteModuleData::init()
 	return true;
 }
 
-bool RemoteModuleData::loadFullImage()
+bool RemoteModuleData::_loadFullImage(size_t mod_size)
 {
 	if (this->isFullImageLoaded()) {
 		return true;
 	}
-	size_t mod_size = this->getHdrImageSize();
 	this->imgBuffer = peconv::alloc_pe_buffer(mod_size, PAGE_READWRITE);
-	if (!imgBuffer) {
-		return false;
-	}
 	this->imgBufferSize = peconv::read_remote_pe(this->processHandle, (PBYTE)this->modBaseAddr, mod_size, this->imgBuffer, mod_size);
 	if (this->imgBufferSize == mod_size) {
 		return true;
 	}
 	this->freeFullImage();
 	return false;
+}
+
+bool RemoteModuleData::loadFullImage()
+{
+	if (this->isFullImageLoaded()) {
+		return true;
+	}
+	size_t mod_size = this->getHdrImageSize();
+	if (_loadFullImage(mod_size)) {
+		return true;
+	}
+	//try again with calculated size:
+	mod_size = calcImgSize();
+	return _loadFullImage(mod_size);
 }
 
 bool RemoteModuleData::loadHeader()
@@ -252,4 +263,12 @@ bool RemoteModuleData::hasExecutableSection()
 		}
 	}
 	return false;
+}
+
+//calculate image size basing on the sizes of sections
+size_t RemoteModuleData::calcImgSize()
+{
+	if (!isHdrReady) return 0;
+
+	return ArtefactScanner::calcImgSize(this->processHandle, this->modBaseAddr, this->headerBuffer, peconv::MAX_HEADER_SIZE);
 }

@@ -71,6 +71,8 @@ public:
 	}
 
 protected:
+	bool _readRemote(HANDLE process_hndl, ULONGLONG module_base, size_t pe_vsize);
+
 	size_t calcRemoteImgSize(HANDLE process_hndl, ULONGLONG module_base);
 
 	bool allocBuffer(const size_t pe_vsize)
