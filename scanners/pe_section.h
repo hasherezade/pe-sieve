@@ -9,15 +9,15 @@ class PeSection
 {
 public:
 	PeSection(RemoteModuleData& remoteModData, size_t section_number)
-		: loadedSection(nullptr), loadedSize(0), rva(0)
+		: loadedSection(nullptr), loadedSize(0), rva(0), rawSize(0)
 	{
-		is_ready = loadRemote(remoteModData, section_number);
+		loadRemote(remoteModData, section_number);
 	}
 
 	PeSection(ModuleData& modData, size_t section_number)
-		: loadedSection(nullptr), loadedSize(0)
+		: loadedSection(nullptr), loadedSize(0), rva(0), rawSize(0)
 	{
-		is_ready = loadOriginal(modData, section_number);
+		loadOriginal(modData, section_number);
 	}
 
 	~PeSection()
@@ -27,7 +27,7 @@ public:
 
 	bool isInitialized() 
 	{
-		return is_ready;
+		return (loadedSection && loadedSize > 0) ? true : false;
 	}
 
 	bool isContained(ULONGLONG field_start, size_t field_size)
@@ -46,33 +46,14 @@ public:
 	DWORD rva;
 
 protected:
-
 	bool loadRemote(RemoteModuleData& remoteModData, size_t section_number)
 	{
+		unload(); //ensure that buffers are empty
+
 		//corner case: if no sections in PE
 		DWORD sec_num = peconv::get_sections_count(remoteModData.headerBuffer, remoteModData.getHeaderSize());
 		if (sec_num == 0 && section_number == 0) {
-#ifdef _DEBUG
-			std::cout << "PE with no sections! Loading remote\n";
-#endif
-			size_t image_size = remoteModData.getHdrImageSize();
-			peconv::UNALIGNED_BUF buf = peconv::alloc_unaligned(image_size);
-			if (!buf) {
-#ifdef _DEBUG
-				std::cout << "Could not alloc: " << std::hex << image_size << "\n";
-#endif
-				return false;
-			}
-			size_t read_size = peconv::read_remote_pe(remoteModData.processHandle, (PBYTE)remoteModData.modBaseAddr, image_size, buf, image_size);
-			if (!read_size) {
-				peconv::free_unaligned(buf);
-				return false;
-			}
-			this->loadedSection = buf;
-			this->loadedSize = read_size;
-			this->rawSize = 0; // TODO: unknown?
-			this->rva = 0;
-			return true;
+			return loadRemoteImageAsSection(remoteModData);
 		}
 		//normal case: if PE has sections
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(remoteModData.headerBuffer, peconv::MAX_HEADER_SIZE, section_number);
@@ -92,29 +73,13 @@ protected:
 
 	bool loadOriginal(ModuleData& modData, size_t section_number)
 	{
+		unload(); //ensure that buffers are empty
+
 		//corner case: if no sections in PE
 		DWORD sec_num = peconv::get_sections_count(modData.original_module, modData.original_size);
 		if (sec_num == 0 && section_number == 0) {
-#ifdef _DEBUG
-			std::cout << "PE with no sections! Loading local\n";
-#endif
-			peconv::UNALIGNED_BUF buf = peconv::alloc_unaligned(modData.original_size);
-			if (!buf) {
-#ifdef _DEBUG
-				std::cout << "Could not alloc: " << std::hex << modData.original_size << "\n";
-#endif
-				return false;
-			}
-#ifdef _DEBUG
-			std::cout << "Copied local: " << std::hex << modData.original_size << "\n";
-#endif
-			this->rva = 0;
-			memcpy(buf, modData.original_module, modData.original_size);
-			loadedSection = buf;
-			loadedSize = modData.original_size;
-			return true;
+			return loadOriginalImageAsSection(modData);
 		}
-
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(modData.original_module, modData.original_size, section_number);
 		if (section_hdr == nullptr) {
 			return false;
@@ -144,6 +109,62 @@ protected:
 		loadedSection = nullptr;
 		loadedSize = 0;
 	}
-	
-	bool is_ready;
+
+private:
+	bool loadOriginalImageAsSection(ModuleData& modData)
+	{
+#ifdef _DEBUG
+		std::cout << "PE with no sections! Loading original image as section\n";
+#endif
+		if (!modData.isInitialized()) {
+			return false;
+		}
+		peconv::UNALIGNED_BUF buf = peconv::alloc_unaligned(modData.original_size);
+		if (!buf) {
+#ifdef _DEBUG
+			std::cout << "Could not alloc: " << std::hex << modData.original_size << "\n";
+#endif
+			return false;
+		}
+		memcpy(buf, modData.original_module, modData.original_size);
+		loadedSection = buf;
+		loadedSize = modData.original_size;
+		rawSize = modData.original_size;
+		rva = 0;
+		#ifdef _DEBUG
+			 std::cout << "Copied local: " << std::hex << modData.original_size << "\n";
+		#endif
+		return true;
+	}
+
+	bool _loadRemoteImageAsSection(RemoteModuleData& remoteModData, size_t image_size)
+	{
+		peconv::UNALIGNED_BUF buf = peconv::alloc_unaligned(image_size);
+		if (!buf) {
+			return false;
+		}
+		size_t read_size = peconv::read_remote_pe(remoteModData.processHandle, (PBYTE)remoteModData.modBaseAddr, image_size, buf, image_size);
+		if (read_size != image_size) {
+			//std::cout << "Read size: " << std::hex << read_size << " vs " << image_size << "\n";
+			peconv::free_unaligned(buf);
+			return false;
+		}
+		this->loadedSection = buf;
+		this->loadedSize = read_size;
+		this->rawSize = 0; // TODO: unknown?
+		this->rva = 0;
+		return true;
+	}
+
+	bool loadRemoteImageAsSection(RemoteModuleData& remoteModData)
+	{
+#ifdef _DEBUG
+		std::cout << "PE with no sections! Loading remote image as section\n";
+#endif
+		if (_loadRemoteImageAsSection(remoteModData, remoteModData.getModuleSize())) {
+			return true;
+		}
+		// if failed, try again with calculated size
+		return _loadRemoteImageAsSection(remoteModData, remoteModData.calcImgSize());
+	}
 };
