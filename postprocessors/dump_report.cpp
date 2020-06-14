@@ -4,7 +4,7 @@
 
 using namespace pesieve::util;
 
-const bool ModuleDumpReport::toJSON(std::stringstream &outs, size_t level)
+const bool pesieve::ModuleDumpReport::toJSON(std::stringstream &outs, size_t level)
 {
 	OUT_PADDED(outs, level, "\"module\" : ");
 	outs << "\"" << std::hex << moduleStart << "\"" << ",\n";
@@ -52,7 +52,7 @@ const bool ModuleDumpReport::toJSON(std::stringstream &outs, size_t level)
 
 // ProcessDumpReport
 
-const bool ProcessDumpReport::toJSON(std::stringstream &stream, size_t level)
+const bool pesieve::ProcessDumpReport::toJSON(std::stringstream &stream, size_t level)
 {
 	stream << "{\n";
 	OUT_PADDED(stream, level, "\"pid\" : ");
@@ -79,7 +79,7 @@ const bool ProcessDumpReport::toJSON(std::stringstream &stream, size_t level)
 	return true;
 }
 
-std::string ProcessDumpReport::list_dumped_modules(size_t level)
+std::string pesieve::ProcessDumpReport::list_dumped_modules(size_t level)
 {
 	std::stringstream stream;
 	//summary:

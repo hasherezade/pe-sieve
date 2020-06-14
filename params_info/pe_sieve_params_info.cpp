@@ -5,7 +5,7 @@
 
 using namespace pesieve;
 
-std::string translate_dump_mode(const DWORD dump_mode)
+std::string pesieve::translate_dump_mode(const DWORD dump_mode)
 {
 	switch (dump_mode) {
 	case pesieve::PE_DUMP_AUTO:
@@ -20,7 +20,7 @@ std::string translate_dump_mode(const DWORD dump_mode)
 	return "undefined";
 }
 
-std::string translate_out_filter(const pesieve::t_output_filter o_filter)
+std::string pesieve::translate_out_filter(const pesieve::t_output_filter o_filter)
 {
 	switch (o_filter) {
 	case pesieve::OUT_FULL:
@@ -33,7 +33,7 @@ std::string translate_out_filter(const pesieve::t_output_filter o_filter)
 	return "undefined";
 }
 
-std::string translate_imprec_mode(const pesieve::t_imprec_mode imprec_mode)
+std::string pesieve::translate_imprec_mode(const pesieve::t_imprec_mode imprec_mode)
 {
 	switch (imprec_mode) {
 	case pesieve::PE_IMPREC_NONE:
@@ -48,7 +48,7 @@ std::string translate_imprec_mode(const pesieve::t_imprec_mode imprec_mode)
 	return "undefined";
 }
 
-std::string translate_modules_filter(DWORD m_filter)
+std::string pesieve::translate_modules_filter(DWORD m_filter)
 {
 	switch (m_filter) {
 	case LIST_MODULES_DEFAULT:
@@ -63,7 +63,7 @@ std::string translate_modules_filter(DWORD m_filter)
 	return "undefined";
 }
 
-std::string translate_iat_scan_mode(const pesieve::t_iat_scan_mode mode)
+std::string pesieve::translate_iat_scan_mode(const pesieve::t_iat_scan_mode mode)
 {
 	switch (mode) {
 	case pesieve::PE_IATS_NONE:
@@ -76,7 +76,7 @@ std::string translate_iat_scan_mode(const pesieve::t_iat_scan_mode mode)
 	return "undefined";
 }
 
-pesieve::t_imprec_mode normalize_imprec_mode(size_t mode_id)
+pesieve::t_imprec_mode pesieve::normalize_imprec_mode(size_t mode_id)
 {
 	if (mode_id > pesieve::PE_IMPREC_MODES_COUNT) {
 		return pesieve::PE_IMPREC_NONE;
@@ -84,7 +84,7 @@ pesieve::t_imprec_mode normalize_imprec_mode(size_t mode_id)
 	return (t_imprec_mode)mode_id;
 }
 
-pesieve::t_dump_mode normalize_dump_mode(size_t mode_id)
+pesieve::t_dump_mode pesieve::normalize_dump_mode(size_t mode_id)
 {
 	if (mode_id > pesieve::PE_DUMP_MODES_COUNT) {
 		return pesieve::PE_DUMP_AUTO;

@@ -3,41 +3,45 @@
 #include "module_data.h"
 #include "patch_list.h"
 
-class PatchAnalyzer
-{
-public:
-	typedef enum {
-		OP_SHORTJMP = 0xEB,
-		OP_JMP = 0xE9,
-		OP_CALL_DWORD = 0xE8,
-		OP_PUSH_DWORD = 0x68
-	} t_hook_opcode;
+namespace pesieve {
 
-	PatchAnalyzer(ModuleData &_moduleData,DWORD _sectionRVA, PBYTE patched_code, size_t code_size)
-		: moduleData(_moduleData), sectionRVA(_sectionRVA), patchedCode(patched_code), codeSize(code_size)
+	class PatchAnalyzer
 	{
-		isModule64bit = moduleData.is64bit();
-	}
+	public:
+		typedef enum {
+			OP_SHORTJMP = 0xEB,
+			OP_JMP = 0xE9,
+			OP_CALL_DWORD = 0xE8,
+			OP_PUSH_DWORD = 0x68
+		} t_hook_opcode;
 
-	size_t analyze(PatchList::Patch &patch);
+		PatchAnalyzer(ModuleData &_moduleData, DWORD _sectionRVA, PBYTE patched_code, size_t code_size)
+			: moduleData(_moduleData), sectionRVA(_sectionRVA), patchedCode(patched_code), codeSize(code_size)
+		{
+			isModule64bit = moduleData.is64bit();
+		}
 
-protected:
-	size_t parseShortJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
-	size_t parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
-	size_t parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr,bool is_long);
-	size_t parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr);
+		size_t analyze(PatchList::Patch &patch);
 
-	template <typename DELTA_T>
-	ULONGLONG getJmpDestAddr(ULONGLONG currVA, int instrLen, DELTA_T lVal);
+	protected:
+		size_t parseShortJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
+		size_t parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
+		size_t parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, bool is_long);
+		size_t parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr);
 
-	bool is64Modifier(BYTE op);
-	bool isLongModifier(BYTE op);
+		template <typename DELTA_T>
+		ULONGLONG getJmpDestAddr(ULONGLONG currVA, int instrLen, DELTA_T lVal);
 
-	bool isModule64bit;
+		bool is64Modifier(BYTE op);
+		bool isLongModifier(BYTE op);
 
-	ModuleData &moduleData;
-	DWORD sectionRVA;
-	PBYTE patchedCode;
-	size_t codeSize;
-};
+		bool isModule64bit;
+
+		ModuleData &moduleData;
+		DWORD sectionRVA;
+		PBYTE patchedCode;
+		size_t codeSize;
+	};
+
+}; //namespace pesieve
 

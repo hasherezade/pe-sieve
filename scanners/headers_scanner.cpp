@@ -1,7 +1,9 @@
 #include "headers_scanner.h"
 #include <peconv.h>
 
-HeadersScanReport* HeadersScanner::scanRemote()
+using namespace pesieve;
+
+HeadersScanReport* pesieve::HeadersScanner::scanRemote()
 {
 	if (!moduleData.isInitialized() && !moduleData.loadOriginal()) {
 		std::cerr << "[-] Module not initialized" << std::endl;
@@ -78,7 +80,7 @@ HeadersScanReport* HeadersScanner::scanRemote()
 	return my_report;
 }
 
-bool HeadersScanner::zeroUnusedFields(PBYTE hdr_buffer, size_t hdrs_size)
+bool pesieve::HeadersScanner::zeroUnusedFields(PBYTE hdr_buffer, size_t hdrs_size)
 {
 	size_t section_num = peconv::get_sections_count(hdr_buffer, hdrs_size);
 	bool is_modified = false;
@@ -94,7 +96,7 @@ bool HeadersScanner::zeroUnusedFields(PBYTE hdr_buffer, size_t hdrs_size)
 	return is_modified;
 }
 
-bool HeadersScanner::isDosHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size)
+bool pesieve::HeadersScanner::isDosHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size)
 {
 	if (hdrs_size < sizeof(IMAGE_DOS_HEADER)) { //should never happen
 		return false;
@@ -112,7 +114,7 @@ bool HeadersScanner::isDosHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_b
 	return false;
 }
 
-bool HeadersScanner::isSecHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size)
+bool pesieve::HeadersScanner::isSecHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size)
 {
 	size_t section_num1 = peconv::get_sections_count(hdr_buffer1, hdrs_size);
 	size_t section_num2 = peconv::get_sections_count(hdr_buffer2, hdrs_size);
@@ -143,7 +145,7 @@ bool HeadersScanner::isSecHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_b
 	return false;
 }
 
-bool HeadersScanner::isFileHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size)
+bool pesieve::HeadersScanner::isFileHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size)
 {
 	const IMAGE_FILE_HEADER *file_hdr1 = peconv::get_file_hdr(hdr_buffer1, hdrs_size);
 	const IMAGE_FILE_HEADER *file_hdr2 = peconv::get_file_hdr(hdr_buffer2, hdrs_size);
@@ -157,7 +159,7 @@ bool HeadersScanner::isFileHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_
 	return true;
 }
 
-bool HeadersScanner::isNtHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size)
+bool pesieve::HeadersScanner::isNtHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size)
 {
 	const bool is64 = peconv::is64bit(hdr_buffer1);
 	if (peconv::is64bit(hdr_buffer2) != is64) {

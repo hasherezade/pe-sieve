@@ -7,9 +7,10 @@
 #include "../utils/workingset_enum.h"
 #include "../utils/artefacts_util.h"
 
+using namespace pesieve;
 using namespace pesieve::util;
 
-bool WorkingSetScanner::isCode(MemPageData &memPageData)
+bool pesieve::WorkingSetScanner::isCode(MemPageData &memPageData)
 {
 	if (!memPage.load()) {
 		return false;
@@ -17,7 +18,7 @@ bool WorkingSetScanner::isCode(MemPageData &memPageData)
 	return is_code(memPageData.getLoadedData(), memPageData.getLoadedSize());
 }
 
-bool WorkingSetScanner::isExecutable(MemPageData &memPageData)
+bool pesieve::WorkingSetScanner::isExecutable(MemPageData &memPageData)
 {
 	bool is_any_exec = false;
 	if (memPage.mapping_type == MEM_IMAGE)
@@ -45,7 +46,7 @@ bool WorkingSetScanner::isExecutable(MemPageData &memPageData)
 	return is_any_exec;
 }
 
-bool WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageData)
+bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageData)
 {
 	bool is_any_exec = false;
 	if (!memPage.is_dep_enabled) {
@@ -56,7 +57,7 @@ bool WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageData)
 	return is_any_exec;
 }
 
-WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPageData)
+WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData &memPageData)
 {
 	if (!memPage.load()) {
 		return nullptr;
@@ -87,7 +88,7 @@ WorkingSetScanReport* WorkingSetScanner::scanExecutableArea(MemPageData &memPage
 	return my_report;
 }
 
-bool WorkingSetScanner::isScannedAsModule(MemPageData &memPage)
+bool pesieve::WorkingSetScanner::isScannedAsModule(MemPageData &memPage)
 {
 	if (memPage.mapping_type != MEM_IMAGE) {
 		return false;
@@ -98,7 +99,7 @@ bool WorkingSetScanner::isScannedAsModule(MemPageData &memPage)
 	return false;
 }
 
-bool WorkingSetScanner::scanImg()
+bool pesieve::WorkingSetScanner::scanImg()
 {
 	bool show_info = (!args.quiet);
 #ifdef _DEBUG
@@ -154,7 +155,7 @@ bool WorkingSetScanner::scanImg()
 	return true;
 }
 
-WorkingSetScanReport* WorkingSetScanner::scanRemote()
+WorkingSetScanReport* pesieve::WorkingSetScanner::scanRemote()
 {
 	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
 #ifdef _DEBUG

@@ -4,15 +4,18 @@
 
 #include <fstream>
 
-inline bool shift_artefacts(PeArtefacts& artefacts, size_t shift_size)
-{
-	artefacts.ntFileHdrsOffset += shift_size;
-	artefacts.secHdrsOffset += shift_size;
-	return true;
-}
+namespace pesieve {
+	inline bool shift_artefacts(PeArtefacts& artefacts, size_t shift_size)
+	{
+		artefacts.ntFileHdrsOffset += shift_size;
+		artefacts.secHdrsOffset += shift_size;
+		return true;
+	}
+}; //namespace pesieve
+
 
 //WARNING: this function shifts also offsets saved in the artefacts
-size_t PeReconstructor::shiftPeHeader()
+size_t pesieve::PeReconstructor::shiftPeHeader()
 {
 	BYTE *vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;
@@ -69,7 +72,7 @@ size_t PeReconstructor::shiftPeHeader()
 	return shift_size;
 }
 
-bool PeReconstructor::reconstruct(IN HANDLE processHandle)
+bool pesieve::PeReconstructor::reconstruct(IN HANDLE processHandle)
 {
 	this->artefacts = origArtefacts;
 
@@ -97,7 +100,7 @@ bool PeReconstructor::reconstruct(IN HANDLE processHandle)
 	return peBuffer.isValidPe();
 }
 
-bool PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
+bool pesieve::PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 {
 	BYTE *vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;
@@ -158,7 +161,7 @@ bool PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 	return true;
 }
 
-bool PeReconstructor::fixSectionsCharacteristics(HANDLE processHandle)
+bool pesieve::PeReconstructor::fixSectionsCharacteristics(HANDLE processHandle)
 {
 	BYTE *vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;
@@ -195,7 +198,7 @@ bool PeReconstructor::fixSectionsCharacteristics(HANDLE processHandle)
 	return true;
 }
 
-bool PeReconstructor::reconstructFileHdr()
+bool pesieve::PeReconstructor::reconstructFileHdr()
 {
 	BYTE *vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;
@@ -240,7 +243,7 @@ bool PeReconstructor::reconstructFileHdr()
 	return true;
 }
 
-bool PeReconstructor::reconstructPeHdr()
+bool pesieve::PeReconstructor::reconstructPeHdr()
 {
 	BYTE *vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;

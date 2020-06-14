@@ -2,9 +2,10 @@
 
 #include "../utils/path_converter.h"
 
+using namespace pesieve;
 using namespace pesieve::util;
 
-MappingScanReport* MappingScanner::scanRemote()
+MappingScanReport* pesieve::MappingScanner::scanRemote()
 {
 	MappingScanReport *my_report = new MappingScanReport(this->processHandle, moduleData.moduleHandle, moduleData.original_size);
 

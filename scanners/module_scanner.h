@@ -10,18 +10,22 @@
 
 #include "../utils/format_util.h"
 
-class ModuleScanner {
-public:
-	ModuleScanner(HANDLE _procHndl, ModuleData &_moduleData, RemoteModuleData &_remoteModData)
-		: processHandle(_procHndl), moduleData(_moduleData), remoteModData(_remoteModData)
-	{
-	}
-	virtual ~ModuleScanner() {}
+namespace pesieve {
 
-	virtual ModuleScanReport* scanRemote() = 0;
+	class ModuleScanner {
+	public:
+		ModuleScanner(HANDLE _procHndl, ModuleData &_moduleData, RemoteModuleData &_remoteModData)
+			: processHandle(_procHndl), moduleData(_moduleData), remoteModData(_remoteModData)
+		{
+		}
+		virtual ~ModuleScanner() {}
 
-protected:
-	HANDLE processHandle;
-	ModuleData &moduleData;
-	RemoteModuleData &remoteModData;
-};
+		virtual ModuleScanReport* scanRemote() = 0;
+
+	protected:
+		HANDLE processHandle;
+		ModuleData &moduleData;
+		RemoteModuleData &remoteModData;
+	};
+
+}; //namespace pesieve

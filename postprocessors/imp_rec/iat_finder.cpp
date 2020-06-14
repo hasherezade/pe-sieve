@@ -1,6 +1,6 @@
 #include "iat_finder.h"
 
-IATBlock* find_iat_block(
+pesieve::IATBlock* pesieve::find_iat_block(
 	IN bool is64bit,
 	IN BYTE* vBuf,
 	IN size_t vBufSize,

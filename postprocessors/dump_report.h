@@ -11,103 +11,108 @@
 #include "../utils/path_util.h"
 #include "../utils/path_converter.h"
 
-class ModuleDumpReport
-{
-public:
+namespace pesieve {
 
-	ModuleDumpReport(ULONGLONG module_start, size_t module_size)
-		: moduleStart(module_start), moduleSize(module_size),
-		isDumped(false), isReportDumped(false),
-		is_corrupt_pe(false), 
-		is_shellcode(false)
+	class ModuleDumpReport
 	{
-	}
+	public:
 
-	const virtual bool toJSON(std::stringstream &outs, size_t level);
+		ModuleDumpReport(ULONGLONG module_start, size_t module_size)
+			: moduleStart(module_start), moduleSize(module_size),
+			isDumped(false), isReportDumped(false),
+			is_corrupt_pe(false),
+			is_shellcode(false)
+		{
+		}
 
-	ULONGLONG moduleStart;
-	size_t moduleSize;
-	bool is_corrupt_pe;
-	bool is_shellcode;
-	std::string impRecMode;
-	bool isReportDumped;
-	bool isDumped;
-	std::string mode_info;
-	std::string dumpFileName;
-	std::string tagsFileName;
-	std::string impListFileName;
-	std::string notRecoveredFileName;
-	std::string iatHooksFileName;
-};
+		const virtual bool toJSON(std::stringstream &outs, size_t level);
 
-class ProcessDumpReport
-{
-public:
+		ULONGLONG moduleStart;
+		size_t moduleSize;
+		bool is_corrupt_pe;
+		bool is_shellcode;
+		std::string impRecMode;
+		bool isReportDumped;
+		bool isDumped;
+		std::string mode_info;
+		std::string dumpFileName;
+		std::string tagsFileName;
+		std::string impListFileName;
+		std::string notRecoveredFileName;
+		std::string iatHooksFileName;
+	};
 
-	ProcessDumpReport(DWORD _pid)
-		: pid(_pid)
+	class ProcessDumpReport
 	{
-	}
+	public:
 
-	~ProcessDumpReport()
-	{
-		deleteModuleReports();
-	}
+		ProcessDumpReport(DWORD _pid)
+			: pid(_pid)
+		{
+		}
 
-	void appendReport(ModuleDumpReport *report)
-	{
-		if (!report) return;
-		module_reports.push_back(report);
-	}
+		~ProcessDumpReport()
+		{
+			deleteModuleReports();
+		}
 
-	size_t countTotal() const
-	{
-		return module_reports.size();
-	}
+		void appendReport(ModuleDumpReport *report)
+		{
+			if (!report) return;
+			module_reports.push_back(report);
+		}
 
-	bool isFilled() const
-	{
-		if (countTotal()) return true;
-		if (this->minidumpPath.length()) return true;
-		return false;
-	}
+		size_t countTotal() const
+		{
+			return module_reports.size();
+		}
 
-	size_t countDumped() const
-	{
-		size_t dumped = 0;
-		std::vector<ModuleDumpReport*>::const_iterator itr = module_reports.begin();
-		for (; itr != module_reports.end(); itr++) {
-			ModuleDumpReport* module = *itr;
-			if (module->isDumped) {
-				dumped++;
+		bool isFilled() const
+		{
+			if (countTotal()) return true;
+			if (this->minidumpPath.length()) return true;
+			return false;
+		}
+
+		size_t countDumped() const
+		{
+			size_t dumped = 0;
+			std::vector<ModuleDumpReport*>::const_iterator itr = module_reports.begin();
+			for (; itr != module_reports.end(); itr++) {
+				ModuleDumpReport* module = *itr;
+				if (module->isDumped) {
+					dumped++;
+				}
 			}
+			return dumped;
 		}
-		return dumped;
-	}
 
-	const virtual bool toJSON(std::stringstream &stream, size_t level);
+		const virtual bool toJSON(std::stringstream &stream, size_t level);
 
-	DWORD getPid() const { return pid; }
+		DWORD getPid() const { return pid; }
 
-	std::string outputDir;
-	std::string minidumpPath;
+		std::string outputDir;
+		std::string minidumpPath;
 
-protected:
+	protected:
 
-	std::string list_dumped_modules(size_t level);
+		std::string list_dumped_modules(size_t level);
 
-	void deleteModuleReports()
-	{
-		std::vector<ModuleDumpReport*>::iterator itr = module_reports.begin();
-		for (; itr != module_reports.end(); itr++) {
-			ModuleDumpReport* module = *itr;
-			delete module;
+		void deleteModuleReports()
+		{
+			std::vector<ModuleDumpReport*>::iterator itr = module_reports.begin();
+			for (; itr != module_reports.end(); itr++) {
+				ModuleDumpReport* module = *itr;
+				delete module;
+			}
+			module_reports.clear();
 		}
-		module_reports.clear();
-	}
 
-	DWORD pid;
-	std::vector<ModuleDumpReport*> module_reports;
+		DWORD pid;
+		std::vector<ModuleDumpReport*> module_reports;
 
-	friend class ResultsDumper;
+		friend class ResultsDumper;
+	};
+
 };
+

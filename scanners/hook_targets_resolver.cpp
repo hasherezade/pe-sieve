@@ -3,7 +3,9 @@
 #include "scan_report.h"
 #include "code_scanner.h"
 
-bool HookTargetResolver::resolveTarget(PatchList::Patch* currPatch)
+using namespace pesieve;
+
+bool pesieve::HookTargetResolver::resolveTarget(PatchList::Patch* currPatch)
 {
 	if (!currPatch) return false;
 	ULONGLONG searchedAddr = currPatch->getHookTargetVA();
@@ -32,7 +34,7 @@ bool HookTargetResolver::resolveTarget(PatchList::Patch* currPatch)
 	return false;
 }
 
-size_t HookTargetResolver::resolveAllHooks(const std::set<ModuleScanReport*> &code_reports)
+size_t pesieve::HookTargetResolver::resolveAllHooks(const std::set<ModuleScanReport*> &code_reports)
 {
 	size_t resolved = 0;
 	std::set<ModuleScanReport*>::iterator cItr;
@@ -55,7 +57,7 @@ size_t HookTargetResolver::resolveAllHooks(const std::set<ModuleScanReport*> &co
 	return resolved;
 }
 
-size_t HookTargetResolver::mapScannedModules(ProcessScanReport& process_report, HANDLE hProcess)
+size_t pesieve::HookTargetResolver::mapScannedModules(ProcessScanReport& process_report, HANDLE hProcess)
 {
 	std::vector<ModuleScanReport*>::iterator modItr;
 	for (modItr = process_report.module_reports.begin(); modItr != process_report.module_reports.end(); ++modItr) {

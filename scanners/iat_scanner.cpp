@@ -4,53 +4,59 @@
 
 #include <fstream>
 
-class ImportInfoCallback : public peconv::ImportThunksCallback
-{
-public:
-	ImportInfoCallback(BYTE* _modulePtr, size_t _moduleSize, std::map<ULONGLONG, peconv::ExportedFunc> &_storedFunc)
-		: ImportThunksCallback(_modulePtr, _moduleSize), storedFunc(_storedFunc)
-	{
-	}
+using namespace pesieve;
 
-	virtual bool processThunks(LPSTR lib_name, ULONG_PTR origFirstThunkPtr, ULONG_PTR firstThunkPtr)
+namespace pesieve {
+
+	class ImportInfoCallback : public peconv::ImportThunksCallback
 	{
-		if (this->is64b) {
-			IMAGE_THUNK_DATA64* desc = reinterpret_cast<IMAGE_THUNK_DATA64*>(origFirstThunkPtr);
-			ULONGLONG* call_via = reinterpret_cast<ULONGLONG*>(firstThunkPtr);
-			return processThunks_tpl<ULONGLONG, IMAGE_THUNK_DATA64>(lib_name, desc, call_via, IMAGE_ORDINAL_FLAG64);
+	public:
+		ImportInfoCallback(BYTE* _modulePtr, size_t _moduleSize, std::map<ULONGLONG, peconv::ExportedFunc> &_storedFunc)
+			: ImportThunksCallback(_modulePtr, _moduleSize), storedFunc(_storedFunc)
+		{
 		}
-		IMAGE_THUNK_DATA32* desc = reinterpret_cast<IMAGE_THUNK_DATA32*>(origFirstThunkPtr);
-		DWORD* call_via = reinterpret_cast<DWORD*>(firstThunkPtr);
-		return processThunks_tpl<DWORD, IMAGE_THUNK_DATA32>(lib_name, desc, call_via, IMAGE_ORDINAL_FLAG32);
-	}
 
-protected:
-	template <typename T_FIELD, typename T_IMAGE_THUNK_DATA>
-	bool processThunks_tpl(LPSTR lib_name, T_IMAGE_THUNK_DATA* desc, T_FIELD* call_via, T_FIELD ordinal_flag)
-	{
-		ULONGLONG call_via_rva = ((ULONG_PTR)call_via - (ULONG_PTR)this->modulePtr);
-		T_FIELD raw_ordinal = 0;
-		bool is_by_ord = (desc->u1.Ordinal & ordinal_flag) != 0;
-		if (is_by_ord) {
-			raw_ordinal = desc->u1.Ordinal & (~ordinal_flag);
+		virtual bool processThunks(LPSTR lib_name, ULONG_PTR origFirstThunkPtr, ULONG_PTR firstThunkPtr)
+		{
+			if (this->is64b) {
+				IMAGE_THUNK_DATA64* desc = reinterpret_cast<IMAGE_THUNK_DATA64*>(origFirstThunkPtr);
+				ULONGLONG* call_via = reinterpret_cast<ULONGLONG*>(firstThunkPtr);
+				return processThunks_tpl<ULONGLONG, IMAGE_THUNK_DATA64>(lib_name, desc, call_via, IMAGE_ORDINAL_FLAG64);
+			}
+			IMAGE_THUNK_DATA32* desc = reinterpret_cast<IMAGE_THUNK_DATA32*>(origFirstThunkPtr);
+			DWORD* call_via = reinterpret_cast<DWORD*>(firstThunkPtr);
+			return processThunks_tpl<DWORD, IMAGE_THUNK_DATA32>(lib_name, desc, call_via, IMAGE_ORDINAL_FLAG32);
+		}
+
+	protected:
+		template <typename T_FIELD, typename T_IMAGE_THUNK_DATA>
+		bool processThunks_tpl(LPSTR lib_name, T_IMAGE_THUNK_DATA* desc, T_FIELD* call_via, T_FIELD ordinal_flag)
+		{
+			ULONGLONG call_via_rva = ((ULONG_PTR)call_via - (ULONG_PTR)this->modulePtr);
+			T_FIELD raw_ordinal = 0;
+			bool is_by_ord = (desc->u1.Ordinal & ordinal_flag) != 0;
+			if (is_by_ord) {
+				raw_ordinal = desc->u1.Ordinal & (~ordinal_flag);
 #ifdef _DEBUG
-			std::cout << "raw ordinal: " << std::hex << raw_ordinal << std::endl;
+				std::cout << "raw ordinal: " << std::hex << raw_ordinal << std::endl;
 #endif
-			this->storedFunc[call_via_rva] = peconv::ExportedFunc(peconv::get_dll_shortname(lib_name), raw_ordinal);
+				this->storedFunc[call_via_rva] = peconv::ExportedFunc(peconv::get_dll_shortname(lib_name), raw_ordinal);
+			}
+			else {
+				PIMAGE_IMPORT_BY_NAME by_name = (PIMAGE_IMPORT_BY_NAME)((ULONGLONG)modulePtr + desc->u1.AddressOfData);
+				LPSTR func_name = reinterpret_cast<LPSTR>(by_name->Name);
+				raw_ordinal = by_name->Hint;
+				this->storedFunc[call_via_rva] = peconv::ExportedFunc(peconv::get_dll_shortname(lib_name), func_name, raw_ordinal);
+			}
+			return true;
 		}
-		else {
-			PIMAGE_IMPORT_BY_NAME by_name = (PIMAGE_IMPORT_BY_NAME)((ULONGLONG)modulePtr + desc->u1.AddressOfData);
-			LPSTR func_name = reinterpret_cast<LPSTR>(by_name->Name);
-			raw_ordinal = by_name->Hint;
-			this->storedFunc[call_via_rva] = peconv::ExportedFunc(peconv::get_dll_shortname(lib_name), func_name, raw_ordinal);
-		}
-		return true;
-	}
 
-	//fields:
-	std::map<ULONGLONG, peconv::ExportedFunc> &storedFunc;
-};
-///----
+		//fields:
+		std::map<ULONGLONG, peconv::ExportedFunc> &storedFunc;
+	};
+	///----
+}; //namespace pesieve
+
 
 bool IATScanReport::saveNotRecovered(IN std::string fileName,
 	IN HANDLE hProcess,
@@ -135,7 +141,7 @@ bool IATScanReport::generateList(IN const std::string &fileName, IN HANDLE hProc
 		exportsMap);
 }
 
-bool IATScanner::hasImportTable(RemoteModuleData &remoteModData)
+bool pesieve::IATScanner::hasImportTable(RemoteModuleData &remoteModData)
 {
 	if (!remoteModData.isInitialized()) {
 		return false;
@@ -151,7 +157,7 @@ bool IATScanner::hasImportTable(RemoteModuleData &remoteModData)
 	return true;
 }
 
-IATScanReport* IATScanner::scanRemote()
+IATScanReport* pesieve::IATScanner::scanRemote()
 {
 	if (!remoteModData.isInitialized()) {
 		std::cerr << "[-] Failed to initialize remote module header" << std::endl;
@@ -200,7 +206,7 @@ IATScanReport* IATScanner::scanRemote()
 	return report;
 }
 
-bool IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATScanReport &report)
+bool pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATScanReport &report)
 {
 	std::map<ULONGLONG, ULONGLONG>::iterator itr;
 	for (itr = notCovered.thunkToAddr.begin(); itr != notCovered.thunkToAddr.end(); itr++)
@@ -253,7 +259,7 @@ bool IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATScanReport
 	return true;
 }
 
-void IATScanner::listAllImports(std::map<ULONGLONG, peconv::ExportedFunc> &_storedFunc)
+void pesieve::IATScanner::listAllImports(std::map<ULONGLONG, peconv::ExportedFunc> &_storedFunc)
 {
 	BYTE *vBuf = remoteModData.imgBuffer; 
 	size_t vBufSize = remoteModData.imgBufferSize;
@@ -263,3 +269,4 @@ void IATScanner::listAllImports(std::map<ULONGLONG, peconv::ExportedFunc> &_stor
 	ImportInfoCallback callback(vBuf, vBufSize, _storedFunc);
 	peconv::process_import_table(vBuf, vBufSize, &callback);
 }
+

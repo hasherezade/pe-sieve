@@ -7,40 +7,43 @@
 #include "scan_report.h"
 #include "module_data.h"
 
-class ProcessScanner {
-public:
-	ProcessScanner(HANDLE procHndl, pesieve::t_params _args)
-		: args(_args), isDEP(false)
-	{
-		this->processHandle = procHndl;
-		ZeroMemory(ignoredModules, _countof(ignoredModules));
-		pesieve::util::delim_list_to_multi_sz(args.modules_ignored, PARAM_LIST_SEPARATOR, ignoredModules, _countof(ignoredModules));
-	}
+namespace pesieve {
 
-	~ProcessScanner()
-	{
-	}
+	class ProcessScanner {
+	public:
+		ProcessScanner(HANDLE procHndl, pesieve::t_params _args)
+			: args(_args), isDEP(false)
+		{
+			this->processHandle = procHndl;
+			ZeroMemory(ignoredModules, _countof(ignoredModules));
+			pesieve::util::delim_list_to_multi_sz(args.modules_ignored, PARAM_LIST_SEPARATOR, ignoredModules, _countof(ignoredModules));
+		}
 
-	ProcessScanReport* scanRemote(); //throws exceptions
+		~ProcessScanner()
+		{
+		}
 
-	static t_scan_status scanForHollows(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report);
-	static t_scan_status scanForHooks(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report);
-	static t_scan_status scanForIATHooks(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report, bool filter);
+		ProcessScanReport* scanRemote(); //throws exceptions
 
-protected:
-	size_t scanModules(ProcessScanReport &pReport); //throws exceptions
-	size_t scanModulesIATs(ProcessScanReport &pReport); //throws exceptions
-	size_t scanWorkingSet(ProcessScanReport &pReport);  //throws exceptions
+		static t_scan_status scanForHollows(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report);
+		static t_scan_status scanForHooks(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report);
+		static t_scan_status scanForIATHooks(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report, bool filter);
 
-	ModuleScanReport* scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report);
+	protected:
+		size_t scanModules(ProcessScanReport &pReport); //throws exceptions
+		size_t scanModulesIATs(ProcessScanReport &pReport); //throws exceptions
+		size_t scanWorkingSet(ProcessScanReport &pReport);  //throws exceptions
 
-	bool resolveHooksTargets(ProcessScanReport& process_report);
+		ModuleScanReport* scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report);
 
-	HANDLE processHandle;
-	bool isDEP;
-	size_t hModsMax;
-	pesieve::t_params args;
+		bool resolveHooksTargets(ProcessScanReport& process_report);
 
-	char ignoredModules[MAX_MODULE_BUF_LEN];
-};
+		HANDLE processHandle;
+		bool isDEP;
+		size_t hModsMax;
+		pesieve::t_params args;
 
+		char ignoredModules[MAX_MODULE_BUF_LEN];
+	};
+
+}; //namespace pesieve

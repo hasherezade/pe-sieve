@@ -5,62 +5,101 @@
 
 #include <peconv.h>
 
+using namespace pesieve;
 using namespace pesieve::util;
 
-size_t calc_offset(MemPageData &memPage, LPVOID field)
-{
-	if (!field) return INVALID_OFFSET;
+namespace pesieve {
+	namespace util {
 
-	BYTE* loadedData = memPage.getLoadedData();
-	size_t loadedSize = memPage.getLoadedSize();
-	if (!peconv::validate_ptr(loadedData, loadedSize, field, sizeof(BYTE))) {
-		return INVALID_OFFSET;
-	}
-	return size_t((ULONG_PTR)field - (ULONG_PTR)loadedData);
-}
+		size_t calc_offset(MemPageData &memPage, LPVOID field)
+		{
+			if (!field) return INVALID_OFFSET;
 
-size_t calc_sec_hdrs_offset(MemPageData &memPage, IMAGE_FILE_HEADER* nt_file_hdr)
-{
-	size_t opt_hdr_size = nt_file_hdr->SizeOfOptionalHeader;
-	if (opt_hdr_size == 0) {
-		//try casual values
-		bool is64bit = (nt_file_hdr->Machine == IMAGE_FILE_MACHINE_AMD64) ? true : false;
-		opt_hdr_size = is64bit ? sizeof(IMAGE_OPTIONAL_HEADER64) : sizeof(IMAGE_OPTIONAL_HEADER32);
-	}
-	const size_t headers_size = opt_hdr_size + sizeof(IMAGE_FILE_HEADER);
-	size_t nt_offset = calc_offset(memPage, nt_file_hdr);
-	size_t sec_hdr_offset = headers_size + nt_offset;
-	return sec_hdr_offset;
-}
+			BYTE* loadedData = memPage.getLoadedData();
+			size_t loadedSize = memPage.getLoadedSize();
+			if (!peconv::validate_ptr(loadedData, loadedSize, field, sizeof(BYTE))) {
+				return INVALID_OFFSET;
+			}
+			return size_t((ULONG_PTR)field - (ULONG_PTR)loadedData);
+		}
 
-size_t calc_nt_hdr_offset(MemPageData &memPage, IMAGE_SECTION_HEADER* first_sec, bool is64bit = true)
-{
-	size_t sec_hdr_offset = calc_offset(memPage, first_sec);
-	if (sec_hdr_offset == INVALID_OFFSET) {
-		return INVALID_OFFSET;
-	}
-	size_t opt_hdr_size = is64bit ? sizeof(IMAGE_OPTIONAL_HEADER64) : sizeof(IMAGE_OPTIONAL_HEADER32);
-	const size_t headers_size = opt_hdr_size + sizeof(IMAGE_FILE_HEADER);
-	size_t nt_offset = sec_hdr_offset - headers_size;
-	return nt_offset;
-}
+		size_t calc_sec_hdrs_offset(MemPageData &memPage, IMAGE_FILE_HEADER* nt_file_hdr)
+		{
+			size_t opt_hdr_size = nt_file_hdr->SizeOfOptionalHeader;
+			if (opt_hdr_size == 0) {
+				//try casual values
+				bool is64bit = (nt_file_hdr->Machine == IMAGE_FILE_MACHINE_AMD64) ? true : false;
+				opt_hdr_size = is64bit ? sizeof(IMAGE_OPTIONAL_HEADER64) : sizeof(IMAGE_OPTIONAL_HEADER32);
+			}
+			const size_t headers_size = opt_hdr_size + sizeof(IMAGE_FILE_HEADER);
+			size_t nt_offset = calc_offset(memPage, nt_file_hdr);
+			size_t sec_hdr_offset = headers_size + nt_offset;
+			return sec_hdr_offset;
+		}
 
-bool validate_hdrs_alignment(MemPageData &memPage, IMAGE_FILE_HEADER *nt_file_hdr, IMAGE_SECTION_HEADER* _sec_hdr)
-{
-	if (!_sec_hdr) return false;
-	if (!nt_file_hdr) return false;
+		size_t calc_nt_hdr_offset(MemPageData &memPage, IMAGE_SECTION_HEADER* first_sec, bool is64bit = true)
+		{
+			size_t sec_hdr_offset = calc_offset(memPage, first_sec);
+			if (sec_hdr_offset == INVALID_OFFSET) {
+				return INVALID_OFFSET;
+			}
+			size_t opt_hdr_size = is64bit ? sizeof(IMAGE_OPTIONAL_HEADER64) : sizeof(IMAGE_OPTIONAL_HEADER32);
+			const size_t headers_size = opt_hdr_size + sizeof(IMAGE_FILE_HEADER);
+			size_t nt_offset = sec_hdr_offset - headers_size;
+			return nt_offset;
+		}
 
-	size_t sec_offset_hdrs = calc_sec_hdrs_offset(memPage, nt_file_hdr);
-	size_t sec_offset = calc_offset(memPage, _sec_hdr);
-	if (sec_offset_hdrs != sec_offset) {
-		std::cout << std::hex << "sec_offset_hdrs: " << sec_offset_hdrs << " vs: " << sec_offset << "\n";
+		bool validate_hdrs_alignment(MemPageData &memPage, IMAGE_FILE_HEADER *nt_file_hdr, IMAGE_SECTION_HEADER* _sec_hdr)
+		{
+			if (!_sec_hdr) return false;
+			if (!nt_file_hdr) return false;
 
-		return false;
-	}
-	return true;
-}
+			size_t sec_offset_hdrs = calc_sec_hdrs_offset(memPage, nt_file_hdr);
+			size_t sec_offset = calc_offset(memPage, _sec_hdr);
+			if (sec_offset_hdrs != sec_offset) {
+				std::cout << std::hex << "sec_offset_hdrs: " << sec_offset_hdrs << " vs: " << sec_offset << "\n";
 
-bool is_valid_section(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD charact)
+				return false;
+			}
+			return true;
+		}
+
+		size_t count_section_hdrs(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEADER *hdr_ptr)
+		{
+			if (!loadedData || !hdr_ptr) {
+				return 0;
+			}
+			size_t counter = 0;
+			IMAGE_SECTION_HEADER* curr_sec = hdr_ptr;
+			do {
+				if (!is_valid_section(loadedData, loadedSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
+					break;
+				}
+				curr_sec++;
+				counter++;
+			} while (true);
+
+			return counter;
+		}
+
+		IMAGE_SECTION_HEADER* get_first_section(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEADER *hdr_ptr)
+		{
+			IMAGE_SECTION_HEADER* prev_sec = hdr_ptr;
+			do {
+				if (!is_valid_section(loadedData, loadedSize, (BYTE*)prev_sec, IMAGE_SCN_MEM_READ)) {
+					break;
+				}
+				hdr_ptr = prev_sec;
+				prev_sec--;
+			} while (true);
+
+			return hdr_ptr;
+		}
+
+	}; //namespace util
+}; // namespace pesieve
+
+bool pesieve::is_valid_section(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD charact)
 {
 	PIMAGE_SECTION_HEADER hdr_candidate = (PIMAGE_SECTION_HEADER) hdr_ptr;
 	if (!peconv::validate_ptr(loadedData, loadedSize, hdr_candidate, sizeof(IMAGE_SECTION_HEADER))) {
@@ -83,26 +122,7 @@ bool is_valid_section(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD 
 	return true;
 }
 
-
-size_t count_section_hdrs(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEADER *hdr_ptr)
-{
-	if (!loadedData || !hdr_ptr) {
-		return 0;
-	}
-	size_t counter = 0;
-	IMAGE_SECTION_HEADER* curr_sec = hdr_ptr;
-	do {
-		if (!is_valid_section(loadedData, loadedSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
-			break;
-		}
-		curr_sec++;
-		counter++;
-	} while (true);
-
-	return counter;
-}
-
-ULONGLONG ArtefactScanner::_findMZoffset(MemPageData &memPage, LPVOID sec_hdr)
+ULONGLONG pesieve::ArtefactScanner::_findMZoffset(MemPageData &memPage, LPVOID sec_hdr)
 {
 	size_t hdrs_offset = calc_offset(memPage, sec_hdr);
 	if (hdrs_offset == INVALID_OFFSET) {
@@ -124,7 +144,7 @@ ULONGLONG ArtefactScanner::_findMZoffset(MemPageData &memPage, LPVOID sec_hdr)
 	return INVALID_OFFSET;
 }
 
-ULONGLONG ArtefactScanner::calcPeBase(MemPageData &memPage, LPVOID sec_hdr)
+ULONGLONG pesieve::ArtefactScanner::calcPeBase(MemPageData &memPage, LPVOID sec_hdr)
 {
 	ULONGLONG found_mz = _findMZoffset(memPage, sec_hdr);
 	if (found_mz != INVALID_OFFSET) {
@@ -150,7 +170,7 @@ ULONGLONG ArtefactScanner::calcPeBase(MemPageData &memPage, LPVOID sec_hdr)
 	return memPage.region_start + (full_pages * PAGE_SIZE);
 }
 
-size_t ArtefactScanner::calcImgSize(HANDLE processHandle, HMODULE modBaseAddr, BYTE* headerBuffer, size_t headerBufferSize, IMAGE_SECTION_HEADER *hdr_ptr)
+size_t pesieve::ArtefactScanner::calcImgSize(HANDLE processHandle, HMODULE modBaseAddr, BYTE* headerBuffer, size_t headerBufferSize, IMAGE_SECTION_HEADER *hdr_ptr)
 {
 	if (!hdr_ptr) {
 		hdr_ptr = peconv::get_section_hdr(headerBuffer, headerBufferSize, 0);
@@ -205,26 +225,12 @@ size_t ArtefactScanner::calcImgSize(HANDLE processHandle, HMODULE modBaseAddr, B
 }
 
 //calculate image size basing on the sizes of sections
-size_t ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr, ULONGLONG pe_image_base)
+size_t pesieve::ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTION_HEADER *hdr_ptr, ULONGLONG pe_image_base)
 {
 	return ArtefactScanner::calcImgSize(this->processHandle, (HMODULE)pe_image_base, memPage.getLoadedData(), memPage.getLoadedSize(), hdr_ptr);
 }
 
-IMAGE_SECTION_HEADER* get_first_section(BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEADER *hdr_ptr)
-{
-	IMAGE_SECTION_HEADER* prev_sec = hdr_ptr;
-	do {
-		if (!is_valid_section(loadedData, loadedSize, (BYTE*) prev_sec, IMAGE_SCN_MEM_READ)) {
-			break;
-		}
-		hdr_ptr = prev_sec;
-		prev_sec--;
-	} while (true);
-
-	return hdr_ptr;
-}
-
-IMAGE_DOS_HEADER* ArtefactScanner::findDosHdrByPatterns(MemPageData &memPage, const size_t start_offset, size_t hdrs_offset)
+IMAGE_DOS_HEADER* pesieve::ArtefactScanner::findDosHdrByPatterns(MemPageData &memPage, const size_t start_offset, size_t hdrs_offset)
 {
 	BYTE *search_ptr = memPage.getLoadedData() + start_offset;
 	BYTE *max_search = search_ptr + hdrs_offset;
@@ -241,7 +247,7 @@ IMAGE_DOS_HEADER* ArtefactScanner::findDosHdrByPatterns(MemPageData &memPage, co
 	return nullptr;
 }
 
-IMAGE_DOS_HEADER* ArtefactScanner::_findDosHdrByPatterns(BYTE *search_ptr, const size_t max_search_size)
+IMAGE_DOS_HEADER* pesieve::ArtefactScanner::_findDosHdrByPatterns(BYTE *search_ptr, const size_t max_search_size)
 {
 	if (!memPage.load()) {
 		return nullptr;
@@ -285,7 +291,7 @@ IMAGE_DOS_HEADER* ArtefactScanner::_findDosHdrByPatterns(BYTE *search_ptr, const
 	return nullptr;
 }
 
-bool ArtefactScanner::_validateSecRegions(MemPageData &memPage, LPVOID sec_hdr, size_t sec_count, ULONGLONG pe_image_base, bool is_virtual)
+bool pesieve::ArtefactScanner::_validateSecRegions(MemPageData &memPage, LPVOID sec_hdr, size_t sec_count, ULONGLONG pe_image_base, bool is_virtual)
 {
 	if (!sec_hdr || !sec_count) {
 		return false;
@@ -324,7 +330,7 @@ bool ArtefactScanner::_validateSecRegions(MemPageData &memPage, LPVOID sec_hdr, 
 	return true;
 }
 
-bool ArtefactScanner::_validateSecRegions(MemPageData &memPage, LPVOID sec_hdr, size_t sec_count)
+bool pesieve::ArtefactScanner::_validateSecRegions(MemPageData &memPage, LPVOID sec_hdr, size_t sec_count)
 {
 	if (!memPage.getLoadedData() || !sec_hdr) {
 		return 0;
@@ -362,7 +368,7 @@ bool ArtefactScanner::_validateSecRegions(MemPageData &memPage, LPVOID sec_hdr, 
 	return is_ok;
 }
 
-BYTE* ArtefactScanner::_findSecByPatterns(BYTE *search_ptr, const size_t max_search_size)
+BYTE* pesieve::ArtefactScanner::_findSecByPatterns(BYTE *search_ptr, const size_t max_search_size)
 {
 	if (!memPage.load()) {
 		return nullptr;
@@ -416,7 +422,7 @@ BYTE* ArtefactScanner::_findSecByPatterns(BYTE *search_ptr, const size_t max_sea
 	return nullptr;
 }
 
-IMAGE_SECTION_HEADER* ArtefactScanner::findSecByPatterns(MemPageData &memPage, const size_t max_search_size, const size_t search_offset)
+IMAGE_SECTION_HEADER* pesieve::ArtefactScanner::findSecByPatterns(MemPageData &memPage, const size_t max_search_size, const size_t search_offset)
 {
 	BYTE *search_ptr = search_offset + memPage.getLoadedData();
 	if (!memPage.validatePtr(search_ptr, max_search_size)) {
@@ -440,7 +446,7 @@ IMAGE_SECTION_HEADER* ArtefactScanner::findSecByPatterns(MemPageData &memPage, c
 	return (IMAGE_SECTION_HEADER*)first_sec;
 }
 
-bool is_valid_file_hdr(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD charact)
+bool pesieve::is_valid_file_hdr(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD charact)
 {
 	IMAGE_FILE_HEADER* hdr_candidate = (IMAGE_FILE_HEADER*)hdr_ptr;
 	if (!peconv::validate_ptr(loadedData, loadedSize, hdr_candidate, sizeof(IMAGE_FILE_HEADER))) {
@@ -483,7 +489,7 @@ bool is_valid_file_hdr(BYTE *loadedData, size_t loadedSize, BYTE *hdr_ptr, DWORD
 	return true;
 }
 
-IMAGE_FILE_HEADER* ArtefactScanner::findNtFileHdr(MemPageData &memPage, const size_t start_offset, size_t stop_offset)
+IMAGE_FILE_HEADER* pesieve::ArtefactScanner::findNtFileHdr(MemPageData &memPage, const size_t start_offset, size_t stop_offset)
 {
 	BYTE* const loadedData  = memPage.getLoadedData();
 	size_t const loadedSize = memPage.getLoadedSize();
@@ -546,7 +552,7 @@ IMAGE_FILE_HEADER* ArtefactScanner::findNtFileHdr(MemPageData &memPage, const si
 }
 
 
-IMAGE_DOS_HEADER* ArtefactScanner::findMzPeHeader(MemPageData &memPage, const size_t search_offset)
+IMAGE_DOS_HEADER* pesieve::ArtefactScanner::findMzPeHeader(MemPageData &memPage, const size_t search_offset)
 {
 	if (!memPage.load()) {
 		return nullptr;
@@ -579,7 +585,7 @@ IMAGE_DOS_HEADER* ArtefactScanner::findMzPeHeader(MemPageData &memPage, const si
 	return nullptr;
 }
 
-bool ArtefactScanner::findMzPe(ArtefactScanner::ArtefactsMapping &aMap, const size_t search_offset)
+bool pesieve::ArtefactScanner::findMzPe(ArtefactScanner::ArtefactsMapping &aMap, const size_t search_offset)
 {
 	IMAGE_DOS_HEADER* dos_hdr = findMzPeHeader(aMap.memPage, search_offset);
 	if (!dos_hdr) {
@@ -594,7 +600,7 @@ bool ArtefactScanner::findMzPe(ArtefactScanner::ArtefactsMapping &aMap, const si
 	return true;
 }
 
-bool ArtefactScanner::setMzPe(ArtefactsMapping &aMap, IMAGE_DOS_HEADER* _dos_hdr)
+bool pesieve::ArtefactScanner::setMzPe(ArtefactsMapping &aMap, IMAGE_DOS_HEADER* _dos_hdr)
 {
 	if (!_dos_hdr) return false;
 
@@ -612,7 +618,7 @@ bool ArtefactScanner::setMzPe(ArtefactsMapping &aMap, IMAGE_DOS_HEADER* _dos_hdr
 	return true;
 }
 
-bool ArtefactScanner::setSecHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_SECTION_HEADER* _sec_hdr)
+bool pesieve::ArtefactScanner::setSecHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_SECTION_HEADER* _sec_hdr)
 {
 	if (_sec_hdr == nullptr) return false;
 	const size_t sec_hdr_offset = calc_offset(aMap.memPage, _sec_hdr);
@@ -649,7 +655,7 @@ bool ArtefactScanner::setSecHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_S
 	return true;
 }
 
-bool ArtefactScanner::setNtFileHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_FILE_HEADER* _nt_hdr)
+bool pesieve::ArtefactScanner::setNtFileHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_FILE_HEADER* _nt_hdr)
 {
 	if (_nt_hdr == nullptr) return false;
 
@@ -677,7 +683,7 @@ bool ArtefactScanner::setNtFileHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAG
 	return true;
 }
 
-PeArtefacts* ArtefactScanner::generateArtefacts(ArtefactScanner::ArtefactsMapping &aMap)
+PeArtefacts* pesieve::ArtefactScanner::generateArtefacts(ArtefactScanner::ArtefactsMapping &aMap)
 {
 	MemPageData &memPage = aMap.memPage;
 	BYTE* loadedData = aMap.memPage.getLoadedData();
@@ -711,7 +717,7 @@ PeArtefacts* ArtefactScanner::generateArtefacts(ArtefactScanner::ArtefactsMappin
 	return peArt;
 }
 
-PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_offset)
+PeArtefacts* pesieve::ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_offset)
 {
 	if (!memPage.load()) {
 		return nullptr;
@@ -800,7 +806,7 @@ PeArtefacts* ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_o
 	return generateArtefacts(bestMapping);
 }
 
-PeArtefacts* ArtefactScanner::findInPrevPages(ULONGLONG addr_start, ULONGLONG addr_stop)
+PeArtefacts* pesieve::ArtefactScanner::findInPrevPages(ULONGLONG addr_start, ULONGLONG addr_stop)
 {
 	deletePrevPage();
 	PeArtefacts* peArt = nullptr;
@@ -826,7 +832,7 @@ PeArtefacts* ArtefactScanner::findInPrevPages(ULONGLONG addr_start, ULONGLONG ad
 	return peArt;
 }
 
-bool ArtefactScanner::hasShellcode(HMODULE region_start, size_t region_size, PeArtefacts &peArt)
+bool pesieve::ArtefactScanner::hasShellcode(HMODULE region_start, size_t region_size, PeArtefacts &peArt)
 {
 	bool is_shellcode = false;
 	if (peArt.peBaseOffset > 0) {
@@ -841,7 +847,7 @@ bool ArtefactScanner::hasShellcode(HMODULE region_start, size_t region_size, PeA
 	return is_shellcode;
 }
 
-ArtefactScanReport* ArtefactScanner::scanRemote()
+ArtefactScanReport* pesieve::ArtefactScanner::scanRemote()
 {
 	deletePrevPage();
 

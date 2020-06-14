@@ -3,7 +3,9 @@
 #include <string>
 #include <iostream>
 
-bool ProcessModules::appendModule(LoadedModule* lModule)
+using namespace pesieve;
+
+bool pesieve::ProcessModules::appendModule(LoadedModule* lModule)
 {
 	if (lModule == nullptr) {
 		return false;
@@ -17,7 +19,7 @@ bool ProcessModules::appendModule(LoadedModule* lModule)
 	return true;
 }
 
-void ProcessModules::deleteAll()
+void pesieve::ProcessModules::deleteAll()
 {
 	std::map<ULONGLONG, LoadedModule*>::iterator itr = modulesMap.begin();
 	for (; itr != modulesMap.end(); ++itr ) {
@@ -27,7 +29,7 @@ void ProcessModules::deleteAll()
 	this->modulesMap.clear();
 }
 
-size_t ProcessModules::getScannedSize(ULONGLONG address) const
+size_t pesieve::ProcessModules::getScannedSize(ULONGLONG address) const
 {
 	std::map<ULONGLONG, LoadedModule*>::const_iterator start_itr = modulesMap.begin();
 	std::map<ULONGLONG, LoadedModule*>::const_iterator stop_itr = modulesMap.upper_bound(address);
@@ -47,7 +49,7 @@ size_t ProcessModules::getScannedSize(ULONGLONG address) const
 	return max_size;
 }
 
-LoadedModule* ProcessModules::getModuleContaining(ULONGLONG address, size_t size) const
+LoadedModule* pesieve::ProcessModules::getModuleContaining(ULONGLONG address, size_t size) const
 {
 	std::map<ULONGLONG, LoadedModule*>::const_iterator start_itr = modulesMap.begin();
 	std::map<ULONGLONG, LoadedModule*>::const_iterator stop_itr = modulesMap.upper_bound(address);
@@ -67,7 +69,7 @@ LoadedModule* ProcessModules::getModuleContaining(ULONGLONG address, size_t size
 	return nullptr;
 }
 
-LoadedModule* ProcessModules::getModuleAt(ULONGLONG address) const
+LoadedModule* pesieve::ProcessModules::getModuleAt(ULONGLONG address) const
 {
 	std::map<ULONGLONG, LoadedModule*>::const_iterator itr = modulesMap.find(address);
 	if (itr != modulesMap.end()) {

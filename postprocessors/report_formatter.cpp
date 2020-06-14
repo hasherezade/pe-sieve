@@ -4,7 +4,7 @@
 
 using namespace pesieve;
 
-std::string scan_report_to_string(const ProcessScanReport &process_report)
+std::string pesieve::scan_report_to_string(const ProcessScanReport &process_report)
 {
 	const t_report report = process_report.generateSummary();
 	std::stringstream stream;
@@ -30,7 +30,7 @@ std::string scan_report_to_string(const ProcessScanReport &process_report)
 	return stream.str();
 }
 
-std::string scan_report_to_json(const ProcessScanReport &process_report, ProcessScanReport::t_report_filter filter)
+std::string pesieve::scan_report_to_json(const ProcessScanReport &process_report, ProcessScanReport::t_report_filter filter)
 {
 	//summary:
 	std::stringstream stream;

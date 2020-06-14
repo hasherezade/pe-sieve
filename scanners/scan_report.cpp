@@ -11,24 +11,28 @@
 using namespace pesieve;
 using namespace pesieve::util;
 
-bool is_shown_type(t_scan_status status, ProcessScanReport::t_report_filter filter)
-{
-	if (filter == ProcessScanReport::REPORT_ALL) {
-		return true;
-	}
-	if (filter & ProcessScanReport::REPORT_ERRORS) {
-		if (status == SCAN_ERROR) return true;
-	}
-	if (filter & ProcessScanReport::REPORT_SUSPICIOUS) {
-		if (status == SCAN_SUSPICIOUS) return true;
-	}
-	if (filter & ProcessScanReport::REPORT_NOT_SUSPICIOUS) {
-		if (status == SCAN_NOT_SUSPICIOUS) return true;
-	}
-	return false;
-}
+namespace pesieve {
 
-bool ProcessScanReport::hasAnyShownType(const ProcessScanReport::t_report_filter &filter)
+	bool is_shown_type(t_scan_status status, ProcessScanReport::t_report_filter filter)
+	{
+		if (filter == ProcessScanReport::REPORT_ALL) {
+			return true;
+		}
+		if (filter & ProcessScanReport::REPORT_ERRORS) {
+			if (status == SCAN_ERROR) return true;
+		}
+		if (filter & ProcessScanReport::REPORT_SUSPICIOUS) {
+			if (status == SCAN_SUSPICIOUS) return true;
+		}
+		if (filter & ProcessScanReport::REPORT_NOT_SUSPICIOUS) {
+			if (status == SCAN_NOT_SUSPICIOUS) return true;
+		}
+		return false;
+	}
+
+}; //namespace pesieve
+
+bool pesieve::ProcessScanReport::hasAnyShownType(const pesieve::ProcessScanReport::t_report_filter &filter)
 {
 	t_report summary = this->generateSummary();
 	t_scan_status aggregated_status = summary.suspicious > 0 ? SCAN_SUSPICIOUS : SCAN_NOT_SUSPICIOUS;
@@ -43,7 +47,7 @@ bool ProcessScanReport::hasAnyShownType(const ProcessScanReport::t_report_filter
 }
 //----
 
-bool ProcessScanReport::appendToModulesList(ModuleScanReport *report)
+bool pesieve::ProcessScanReport::appendToModulesList(ModuleScanReport *report)
 {
 	if (!report || report->moduleSize == 0) {
 		return false; //skip
@@ -69,36 +73,36 @@ bool ProcessScanReport::appendToModulesList(ModuleScanReport *report)
 	return true;
 }
 
-ProcessScanReport::t_report_type ProcessScanReport::getReportType(ModuleScanReport *report)
+pesieve::ProcessScanReport::t_report_type pesieve::ProcessScanReport::getReportType(ModuleScanReport *report)
 {
 	if (!report) {
-		return ProcessScanReport::REPORT_TYPES_COUNT;
+		return pesieve::ProcessScanReport::REPORT_TYPES_COUNT;
 	}
 	if (dynamic_cast<HeadersScanReport*>(report)) {
-		return ProcessScanReport::REPORT_HEADERS_SCAN;
+		return pesieve::ProcessScanReport::REPORT_HEADERS_SCAN;
 	}
 	if (dynamic_cast<WorkingSetScanReport*>(report)) {
-		return ProcessScanReport::REPORT_MEMPAGE_SCAN;
+		return pesieve::ProcessScanReport::REPORT_MEMPAGE_SCAN;
 	}
 	if (dynamic_cast<MappingScanReport*>(report)) {
-		return ProcessScanReport::REPORT_MAPPING_SCAN;
+		return pesieve::ProcessScanReport::REPORT_MAPPING_SCAN;
 	}
 	if (dynamic_cast<CodeScanReport*>(report)) {
-		return ProcessScanReport::REPORT_CODE_SCAN;
+		return pesieve::ProcessScanReport::REPORT_CODE_SCAN;
 	}
 	if (dynamic_cast<IATScanReport*>(report)) {
-		return ProcessScanReport::REPORT_IAT_SCAN;
+		return pesieve::ProcessScanReport::REPORT_IAT_SCAN;
 	}
 	if (dynamic_cast<UnreachableModuleReport*>(report)) {
-		return ProcessScanReport::REPORT_UNREACHABLE_SCAN;
+		return pesieve::ProcessScanReport::REPORT_UNREACHABLE_SCAN;
 	}
 	if (dynamic_cast<SkippedModuleReport*>(report)) {
-		return ProcessScanReport::REPORT_SKIPPED_SCAN;
+		return pesieve::ProcessScanReport::REPORT_SKIPPED_SCAN;
 	}
-	return ProcessScanReport::REPORT_TYPES_COUNT;
+	return pesieve::ProcessScanReport::REPORT_TYPES_COUNT;
 }
 
-size_t ProcessScanReport::countSuspiciousPerType(t_report_type type) const
+size_t pesieve::ProcessScanReport::countSuspiciousPerType(t_report_type type) const
 {
 	if (type >= REPORT_TYPES_COUNT) {
 		return 0; //invalid type
@@ -114,11 +118,11 @@ size_t ProcessScanReport::countSuspiciousPerType(t_report_type type) const
 	return suspicious;
 }
 
-void ProcessScanReport::appendToType(ModuleScanReport *report)
+void pesieve::ProcessScanReport::appendToType(ModuleScanReport *report)
 {
 	if (report == nullptr) return;
 
-	t_report_type type = ProcessScanReport::getReportType(report);
+	t_report_type type = pesieve::ProcessScanReport::getReportType(report);
 	if (type >= REPORT_TYPES_COUNT) {
 		return;
 	}
@@ -126,7 +130,7 @@ void ProcessScanReport::appendToType(ModuleScanReport *report)
 	this->reportsByType[type].insert(report);
 }
 
-size_t ProcessScanReport::countHdrsReplaced() const
+size_t pesieve::ProcessScanReport::countHdrsReplaced() const
 {
 	size_t replaced = 0;
 	const t_report_type type = t_report_type::REPORT_HEADERS_SCAN;
@@ -146,7 +150,7 @@ size_t ProcessScanReport::countHdrsReplaced() const
 	return replaced;
 }
 
-pesieve::t_report ProcessScanReport::generateSummary() const
+pesieve::t_report pesieve::ProcessScanReport::generateSummary() const
 {
 	t_report summary = { 0 };
 	summary.pid = this->pid;
@@ -174,7 +178,7 @@ pesieve::t_report ProcessScanReport::generateSummary() const
 	return summary;
 }
 
-std::string ProcessScanReport::list_modules(size_t level, const ProcessScanReport::t_report_filter &filter) const
+std::string pesieve::ProcessScanReport::list_modules(size_t level, const pesieve::ProcessScanReport::t_report_filter &filter) const
 {
 	std::stringstream stream;
 	//summary:
@@ -201,7 +205,7 @@ std::string ProcessScanReport::list_modules(size_t level, const ProcessScanRepor
 	return stream.str();
 }
 
-const bool ProcessScanReport::toJSON(std::stringstream &stream, size_t level, const ProcessScanReport::t_report_filter &filter) const
+const bool pesieve::ProcessScanReport::toJSON(std::stringstream &stream, size_t level, const pesieve::ProcessScanReport::t_report_filter &filter) const
 {
 	const t_report report = this->generateSummary();
 	//summary:

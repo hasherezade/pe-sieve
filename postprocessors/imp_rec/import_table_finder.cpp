@@ -1,6 +1,6 @@
 #include "import_table_finder.h"
 
-IMAGE_IMPORT_DESCRIPTOR* find_import_table(
+IMAGE_IMPORT_DESCRIPTOR* pesieve::find_import_table(
 	IN bool is64bit,
 	IN BYTE* vBuf,
 	IN size_t vBufSize,
@@ -12,7 +12,7 @@ IMAGE_IMPORT_DESCRIPTOR* find_import_table(
 {
 	IMAGE_IMPORT_DESCRIPTOR* import_table = nullptr;
 	if (is64bit) {
-		import_table = find_import_table<ULONGLONG>(
+		import_table = find_import_table_tpl<ULONGLONG>(
 			vBuf,
 			vBufSize,
 			exportsMap,
@@ -22,7 +22,7 @@ IMAGE_IMPORT_DESCRIPTOR* find_import_table(
 			);
 	}
 	else {
-		import_table = find_import_table<DWORD>(
+		import_table = find_import_table_tpl<DWORD>(
 			vBuf,
 			vBufSize,
 			exportsMap,

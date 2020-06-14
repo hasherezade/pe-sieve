@@ -18,15 +18,16 @@
 using namespace pesieve;
 using namespace pesieve::util;
 
-void check_access_denied(DWORD processID)
-{
-	HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, processID);
-	if (!hProcess) {
-		std::cerr << "-> Access denied. Try to run the scanner as Administrator." << std::endl;
-		return;
-	}
-	process_integrity_t level = get_integrity_level(hProcess);
-	switch (level) {
+namespace pesieve {
+	void check_access_denied(DWORD processID)
+	{
+		HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, processID);
+		if (!hProcess) {
+			std::cerr << "-> Access denied. Try to run the scanner as Administrator." << std::endl;
+			return;
+		}
+		process_integrity_t level = get_integrity_level(hProcess);
+		switch (level) {
 		case INTEGRITY_UNKNOWN:
 			std::cerr << "-> Access denied. Could not query the process token." << std::endl;
 			break;
@@ -35,75 +36,76 @@ void check_access_denied(DWORD processID)
 			break;
 		default:
 			break;
+		}
+		CloseHandle(hProcess);
+		hProcess = NULL;
 	}
-	CloseHandle(hProcess);
-	hProcess = NULL;
-}
 
-HANDLE open_process(DWORD processID, bool reflection, bool quiet)
-{
-	const DWORD basic_access = PROCESS_VM_READ | PROCESS_QUERY_INFORMATION;
-	DWORD access = basic_access;
-	if (reflection) {
-		access |= pesieve::util::reflection_access;
-	}
-	HANDLE hProcess = OpenProcess(
-		access,
-		FALSE, processID
-	);
-	// success, return the handle:
-	if (hProcess) {
-		return hProcess;
-	}
-	if (access != basic_access) {
-		// if failed, try to open with basic rights
-		hProcess = OpenProcess(
-			basic_access,
+	HANDLE open_process(DWORD processID, bool reflection, bool quiet)
+	{
+		const DWORD basic_access = PROCESS_VM_READ | PROCESS_QUERY_INFORMATION;
+		DWORD access = basic_access;
+		if (reflection) {
+			access |= pesieve::util::reflection_access;
+		}
+		HANDLE hProcess = OpenProcess(
+			access,
 			FALSE, processID
 		);
 		// success, return the handle:
 		if (hProcess) {
 			return hProcess;
 		}
-	}
-	DWORD last_err = GetLastError();
-	if (last_err == ERROR_ACCESS_DENIED) {
-		if(!quiet) {
-			std::cerr << "[-][" << processID << "] Could not open the process Error: " << last_err << std::endl;
-			//print more info:
-			check_access_denied(processID);
+		if (access != basic_access) {
+			// if failed, try to open with basic rights
+			hProcess = OpenProcess(
+				basic_access,
+				FALSE, processID
+			);
+			// success, return the handle:
+			if (hProcess) {
+				return hProcess;
+			}
 		}
+		DWORD last_err = GetLastError();
+		if (last_err == ERROR_ACCESS_DENIED) {
+			if (!quiet) {
+				std::cerr << "[-][" << processID << "] Could not open the process Error: " << last_err << std::endl;
+				//print more info:
+				check_access_denied(processID);
+			}
 
-		SetLastError(ERROR_ACCESS_DENIED);
-		throw std::runtime_error("Could not open the process");
-		return nullptr;
-	}
-	if (last_err == ERROR_INVALID_PARAMETER) {
-		if(!quiet) {
-			std::cerr << "-> Is this process still running?" << std::endl;
+			SetLastError(ERROR_ACCESS_DENIED);
+			throw std::runtime_error("Could not open the process");
+			return nullptr;
 		}
-		SetLastError(ERROR_INVALID_PARAMETER);
-		throw std::runtime_error("Could not open the process");
-	}
-	return hProcess;
-}
-
-bool is_scaner_compatibile(IN HANDLE hProcess, bool quiet)
-{
-	BOOL isCurrWow64 = FALSE;
-	is_process_wow64(GetCurrentProcess(), &isCurrWow64);
-	BOOL isRemoteWow64 = FALSE;
-	is_process_wow64(hProcess, &isRemoteWow64);
-	if (isCurrWow64 && !isRemoteWow64) {
-		if(!quiet) {
-			std::cerr << "-> Try to use the 64bit version of the scanner." << std::endl;
+		if (last_err == ERROR_INVALID_PARAMETER) {
+			if (!quiet) {
+				std::cerr << "-> Is this process still running?" << std::endl;
+			}
+			SetLastError(ERROR_INVALID_PARAMETER);
+			throw std::runtime_error("Could not open the process");
 		}
-		return false;
+		return hProcess;
 	}
-	return true;
-}
 
-ProcessDumpReport* pesieve::dump_output(IN ProcessScanReport &process_report, IN const pesieve::t_params args, IN HANDLE hProcess)
+	bool is_scaner_compatibile(IN HANDLE hProcess, bool quiet)
+	{
+		BOOL isCurrWow64 = FALSE;
+		is_process_wow64(GetCurrentProcess(), &isCurrWow64);
+		BOOL isRemoteWow64 = FALSE;
+		is_process_wow64(hProcess, &isRemoteWow64);
+		if (isCurrWow64 && !isRemoteWow64) {
+			if (!quiet) {
+				std::cerr << "-> Try to use the 64bit version of the scanner." << std::endl;
+			}
+			return false;
+		}
+		return true;
+	}
+};
+
+pesieve::ProcessDumpReport* pesieve::dump_output(IN ProcessScanReport &process_report, IN const pesieve::t_params args, IN HANDLE hProcess)
 {
 	if (!hProcess) return nullptr;
 	if (args.out_filter == OUT_NO_DIR) {
@@ -205,7 +207,7 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 	return report;
 }
 
-ProcessScanReport* pesieve::scan_process(IN const t_params args, IN OPTIONAL HANDLE hProcess)
+pesieve::ProcessScanReport* pesieve::scan_process(IN const t_params args, IN OPTIONAL HANDLE hProcess)
 {
 	if (!set_debug_privilege()) {
 		if (!args.quiet) std::cerr << "[-] Could not set debug privilege" << std::endl;
@@ -253,4 +255,3 @@ std::string pesieve::info()
 	stream << "URL: " << PESIEVE_URL << "\n";
 	return stream.str();
 }
-

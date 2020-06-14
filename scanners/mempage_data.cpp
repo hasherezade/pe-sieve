@@ -1,7 +1,9 @@
 #include "mempage_data.h"
 #include "module_data.h"
 
-bool MemPageData::fillInfo()
+using namespace pesieve;
+
+bool pesieve::MemPageData::fillInfo()
 {
 	MEMORY_BASIC_INFORMATION page_info = { 0 };
 	SIZE_T out = VirtualQueryEx(this->processHandle, (LPCVOID) start_va, &page_info, sizeof(page_info));
@@ -24,7 +26,7 @@ bool MemPageData::fillInfo()
 	return true;
 }
 
-bool MemPageData::loadModuleName()
+bool pesieve::MemPageData::loadModuleName()
 {
 	const HMODULE mod_base = (HMODULE)this->alloc_base;
 	std::string module_name = RemoteModuleData::getModuleName(processHandle, mod_base);
@@ -38,7 +40,7 @@ bool MemPageData::loadModuleName()
 	return true;
 }
 
-bool MemPageData::loadMappedName()
+bool pesieve::MemPageData::loadMappedName()
 {
 	if (!isInfoFilled() && !fillInfo()) {
 		return false;
@@ -54,7 +56,7 @@ bool MemPageData::loadMappedName()
 	return true;
 }
 
-bool MemPageData::isRealMapping()
+bool pesieve::MemPageData::isRealMapping()
 {
 	if (this->loadedData == nullptr && !fillInfo()) {
 #ifdef _DEBUG
@@ -105,7 +107,7 @@ bool MemPageData::isRealMapping()
 	return is_same;
 }
 
-bool MemPageData::_loadRemote()
+bool pesieve::MemPageData::_loadRemote()
 {
 	_freeRemote();
 	size_t region_size = size_t(this->region_end - this->start_va);

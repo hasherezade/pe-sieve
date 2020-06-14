@@ -3,7 +3,7 @@
 #include <iostream>
 #include "../scanners/artefact_scanner.h"
 
-size_t PeBuffer::calcRemoteImgSize(HANDLE processHandle, ULONGLONG modBaseAddr)
+size_t pesieve::PeBuffer::calcRemoteImgSize(HANDLE processHandle, ULONGLONG modBaseAddr)
 {
 	const size_t hdr_buffer_size = PAGE_SIZE;
 	BYTE hdr_buffer[hdr_buffer_size] = { 0 };
@@ -23,7 +23,7 @@ size_t PeBuffer::calcRemoteImgSize(HANDLE processHandle, ULONGLONG modBaseAddr)
 	return pe_vsize;
 }
 
-bool PeBuffer::readRemote(HANDLE process_hndl, ULONGLONG module_base, size_t pe_vsize)
+bool pesieve::PeBuffer::readRemote(HANDLE process_hndl, ULONGLONG module_base, size_t pe_vsize)
 {
 	if (pe_vsize == 0) {
 		// if not size supplied, try with the size fetched from the header
@@ -38,7 +38,7 @@ bool PeBuffer::readRemote(HANDLE process_hndl, ULONGLONG module_base, size_t pe_
 	return _readRemote(process_hndl, module_base, pe_vsize);
 }
 
-bool PeBuffer::_readRemote(HANDLE process_hndl, ULONGLONG module_base, size_t pe_vsize)
+bool  pesieve::PeBuffer::_readRemote(HANDLE process_hndl, ULONGLONG module_base, size_t pe_vsize)
 {
 	if (pe_vsize == 0) {
 		return false;
@@ -57,7 +57,7 @@ bool PeBuffer::_readRemote(HANDLE process_hndl, ULONGLONG module_base, size_t pe
 	return true;
 }
 
-bool PeBuffer::resizeBuffer(size_t new_size)
+bool pesieve::PeBuffer::resizeBuffer(size_t new_size)
 {
 	if (!vBuf) return false;
 
@@ -78,7 +78,7 @@ bool PeBuffer::resizeBuffer(size_t new_size)
 	return true;
 }
 
-bool PeBuffer::resizeLastSection(size_t new_img_size)
+bool  pesieve::PeBuffer::resizeLastSection(size_t new_img_size)
 {
 	if (!vBuf) return false;
 
@@ -108,7 +108,7 @@ bool PeBuffer::resizeLastSection(size_t new_img_size)
 	return true;
 }
 
-bool PeBuffer::dumpPeToFile(
+bool pesieve::PeBuffer::dumpPeToFile(
 	IN std::string dumpFileName,
 	IN OUT peconv::t_pe_dump_mode &dumpMode,
 	IN OPTIONAL const peconv::ExportsMapper* exportsMap,
@@ -145,7 +145,7 @@ bool PeBuffer::dumpPeToFile(
 	return peconv::dump_pe(dumpFileName.c_str(), this->vBuf, this->vBufSize, this->relocBase, dumpMode);
 }
 
-bool PeBuffer::dumpToFile(IN std::string dumpFileName)
+bool pesieve::PeBuffer::dumpToFile(IN std::string dumpFileName)
 {
 	if (!vBuf) return false;
 	return peconv::dump_to_file(dumpFileName.c_str(), vBuf, vBufSize);

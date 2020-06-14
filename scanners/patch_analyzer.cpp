@@ -1,14 +1,16 @@
 #include "patch_analyzer.h"
 //---
+using namespace pesieve;
+
 template <typename DELTA_T>
-ULONGLONG PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, int instrLen, DELTA_T lVal)
+ULONGLONG pesieve::PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, int instrLen, DELTA_T lVal)
 {
 	int delta = instrLen + int(lVal);
 	ULONGLONG addr = currVA + delta;
 	return addr;
 }
 
-size_t PatchAnalyzer::parseShortJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
+size_t pesieve::PatchAnalyzer::parseShortJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
 {
 	const size_t instr_size = 2;
 
@@ -19,7 +21,7 @@ size_t PatchAnalyzer::parseShortJmp(PatchList::Patch &patch, PBYTE patch_ptr, UL
 	return instr_size;
 }
 
-size_t PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
+size_t pesieve::PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
 {
 	const size_t instr_size = 5;
 
@@ -30,7 +32,7 @@ size_t PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLO
 	return instr_size;
 }
 
-size_t PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, bool is_long)
+size_t pesieve::PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, bool is_long)
 {
 	size_t mov_instr_len = is_long ? 9 : 5;
 	PBYTE jmp_ptr = patch_ptr + mov_instr_len; // next instruction
@@ -89,7 +91,7 @@ size_t PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, bool
 	return patch_size;
 }
 
-size_t PatchAnalyzer::parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr)
+size_t pesieve::PatchAnalyzer::parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr)
 {
 	size_t instr_size = 5;
 	PBYTE ret_ptr = patch_ptr + instr_size; // next instruction
@@ -102,7 +104,7 @@ size_t PatchAnalyzer::parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr)
 	return instr_size;
 }
 
-bool PatchAnalyzer::is64Modifier(BYTE op)
+bool pesieve::PatchAnalyzer::is64Modifier(BYTE op)
 {
 	if (!isModule64bit) return false;
 	if (op >= 0x40 && op <= 0x4F) { // modifier
@@ -111,7 +113,7 @@ bool PatchAnalyzer::is64Modifier(BYTE op)
 	return false;
 }
 
-bool PatchAnalyzer::isLongModifier(BYTE op)
+bool pesieve::PatchAnalyzer::isLongModifier(BYTE op)
 {
 	if (!isModule64bit) return false;
 	if (op >= 0x48 && op <= 0x4F) { // modifier
@@ -120,7 +122,7 @@ bool PatchAnalyzer::isLongModifier(BYTE op)
 	return false;
 }
 
-size_t PatchAnalyzer::analyze(PatchList::Patch &patch)
+size_t pesieve::PatchAnalyzer::analyze(PatchList::Patch &patch)
 {
 	ULONGLONG patch_va = moduleData.rvaToVa(patch.startRva);
 	size_t patch_offset = patch.startRva - sectionRVA;

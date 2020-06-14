@@ -1,26 +1,28 @@
 #include "iat_block.h"
 #include <peconv.h>
 
-size_t get_longest_func_name(std::map<ULONGLONG, std::set<peconv::ExportedFunc>> &addrToFunc)
-{
-	size_t max_len = 0;
-	std::map<ULONGLONG, std::set<peconv::ExportedFunc>>::iterator itr;
-	for (itr = addrToFunc.begin(); itr != addrToFunc.end(); ++itr) {
-		std::set<peconv::ExportedFunc> &expSet = itr->second;
-		const peconv::ExportedFunc& exp = *(expSet.begin());
-		if (exp.isByOrdinal) {
-			continue;
+namespace pesieve {
+	size_t get_longest_func_name(std::map<ULONGLONG, std::set<peconv::ExportedFunc>> &addrToFunc)
+	{
+		size_t max_len = 0;
+		std::map<ULONGLONG, std::set<peconv::ExportedFunc>>::iterator itr;
+		for (itr = addrToFunc.begin(); itr != addrToFunc.end(); ++itr) {
+			std::set<peconv::ExportedFunc> &expSet = itr->second;
+			const peconv::ExportedFunc& exp = *(expSet.begin());
+			if (exp.isByOrdinal) {
+				continue;
+			}
+			if (exp.funcName.length() > max_len) {
+				max_len = exp.funcName.length();
+			}
 		}
-		if (exp.funcName.length() > max_len) {
-			max_len = exp.funcName.length();
-		}
+		return max_len;
 	}
-	return max_len;
-}
+};
 
 //---
 
-bool IATThunksSeries::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
+bool pesieve::IATThunksSeries::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 {
 	delete cov; //delete previous
 	cov = new peconv::ImportedDllCoverage(funcAddresses, *exportsMap);
@@ -34,7 +36,7 @@ bool IATThunksSeries::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 	return this->covered;
 }
 
-bool IATThunksSeries::fillNamesSpace(const BYTE* buf_start, size_t buf_size, DWORD bufRVA, bool is64b)
+bool pesieve::IATThunksSeries::fillNamesSpace(const BYTE* buf_start, size_t buf_size, DWORD bufRVA, bool is64b)
 {
 	if (!buf_start || !this->cov) return false;
 
@@ -48,7 +50,7 @@ bool IATThunksSeries::fillNamesSpace(const BYTE* buf_start, size_t buf_size, DWO
 	const size_t thunks_count = this->cov->addrToFunc.size();
 	const size_t thunks_area_size = (thunks_count * field_size) + field_size;
 
-	DWORD names_rva = bufRVA + thunks_area_size;
+	size_t names_rva = bufRVA + thunks_area_size;
 
 	//fill thunks:
 	BYTE *buf = const_cast<BYTE*>(buf_start);
@@ -73,7 +75,7 @@ bool IATThunksSeries::fillNamesSpace(const BYTE* buf_start, size_t buf_size, DWO
 	return true;
 }
 
-size_t IATThunksSeries::sizeOfNamesSpace(bool is64b)
+size_t pesieve::IATThunksSeries::sizeOfNamesSpace(bool is64b)
 {
 	if (!cov) return 0;
 
@@ -96,14 +98,14 @@ size_t IATThunksSeries::sizeOfNamesSpace(bool is64b)
 	return space_size;
 }
 
-std::string IATThunksSeries::getDllName()
+std::string pesieve::IATThunksSeries::getDllName()
 {
 	return this->dllFullName;
 }
 
 //---
 
-bool IATBlock::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
+bool pesieve::IATBlock::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 {
 	if (!exportsMap) return false;
 
@@ -146,7 +148,7 @@ bool IATBlock::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 	return isCoverageComplete;
 }
 
-IATThunksSeriesSet IATBlock::splitSeries(IN IATThunksSeries* series, IN const peconv::ExportsMapper &exportsMap)
+pesieve::IATThunksSeriesSet pesieve::IATBlock::splitSeries(IN IATThunksSeries* series, IN const peconv::ExportsMapper &exportsMap)
 {
 	IATThunksSeriesSet splitted;
 	if (!series) return splitted;
@@ -184,7 +186,7 @@ IATThunksSeriesSet IATBlock::splitSeries(IN IATThunksSeries* series, IN const pe
 	return splitted;
 }
 
-size_t IATBlock::maxDllLen()
+size_t pesieve::IATBlock::maxDllLen()
 {
 	size_t max_size = 0;
 	IATThunksSeriesSet::iterator itr;
@@ -196,13 +198,13 @@ size_t IATBlock::maxDllLen()
 	return max_size;
 }
 
-size_t IATBlock::sizeOfDllsSpace()
+size_t pesieve::IATBlock::sizeOfDllsSpace()
 {
 	const size_t max_len = maxDllLen();
 	return max_len * (thunkSeries.size() + 1);
 }
 
-std::string IATBlock::toString()
+std::string pesieve::IATBlock::toString()
 {
 	std::stringstream stream;
 	stream << "---\nIAT at: " << std::hex << iatOffset << ", size: " << iatSize << ", thunks: " << countThunks() << ", is_terminated: " << isTerminated << "\n";

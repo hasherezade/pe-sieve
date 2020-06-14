@@ -27,7 +27,7 @@
 using namespace pesieve;
 using namespace pesieve::util;
 
-t_scan_status ProcessScanner::scanForHollows(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report)
+t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report)
 {
 	BOOL isWow64 = FALSE;
 #ifdef _WIN64
@@ -66,7 +66,7 @@ t_scan_status ProcessScanner::scanForHollows(HANDLE processHandle, ModuleData& m
 	return is_suspicious;
 }
 
-t_scan_status ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report, bool filter)
+t_scan_status pesieve::ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report, bool filter)
 {
 	const peconv::ExportsMapper *expMap = process_report->exportsMap;
 	if (!expMap) {
@@ -89,7 +89,7 @@ t_scan_status ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& 
 	return scan_res;
 }
 
-t_scan_status ProcessScanner::scanForHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report)
+t_scan_status pesieve::ProcessScanner::scanForHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report)
 {
 	CodeScanner hooks(processHandle, modData, remoteModData);
 
@@ -108,7 +108,7 @@ t_scan_status ProcessScanner::scanForHooks(HANDLE processHandle, ModuleData& mod
 	return is_hooked;
 }
 
-bool ProcessScanner::resolveHooksTargets(ProcessScanReport& process_report)
+bool pesieve::ProcessScanner::resolveHooksTargets(ProcessScanReport& process_report)
 {
 	HookTargetResolver hookResolver(process_report, this->processHandle);
 	const std::set<ModuleScanReport*> &code_reports = process_report.reportsByType[ProcessScanReport::REPORT_CODE_SCAN];
@@ -116,7 +116,7 @@ bool ProcessScanner::resolveHooksTargets(ProcessScanReport& process_report)
 	return (resolved_count > 0);
 }
 
-ProcessScanReport* ProcessScanner::scanRemote()
+ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 {
 	this->isDEP = is_DEP_enabled(this->processHandle);
 	ProcessScanReport *pReport = new ProcessScanReport(this->args.pid);
@@ -168,7 +168,7 @@ ProcessScanReport* ProcessScanner::scanRemote()
 	return pReport;
 }
 
-size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws exceptions
+size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws exceptions
 {
 	PSAPI_WORKING_SET_INFORMATION wsi_1 = { 0 };
 	BOOL result = QueryWorkingSet(this->processHandle, (LPVOID)&wsi_1, sizeof(PSAPI_WORKING_SET_INFORMATION));
@@ -224,7 +224,7 @@ size_t ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws excep
 	return counter;
 }
 
-ModuleScanReport* ProcessScanner::scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report)
+ModuleScanReport* pesieve::ProcessScanner::scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report)
 {
 	MappingScanner mappingScanner(processHandle, modData);
 
@@ -234,7 +234,7 @@ ModuleScanReport* ProcessScanner::scanForMappingMismatch(ModuleData& modData, Pr
 	return scan_report;
 }
 
-size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws exceptions
+size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws exceptions
 {
 	HMODULE hMods[1024];
 	const size_t modules_count = enum_modules(this->processHandle, hMods, sizeof(hMods), args.modules_filter);
@@ -309,7 +309,7 @@ size_t ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws excepti
 	return counter;
 }
 
-size_t ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //throws exceptions
+size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //throws exceptions
 {
 	if (!pReport.exportsMap) {
 		return 0; // this feature cannot work without Exports Map

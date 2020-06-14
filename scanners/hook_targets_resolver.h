@@ -3,26 +3,32 @@
 #include "scan_report.h"
 #include "code_scanner.h"
 
-struct ScannedModuleInfo {
-	ULONGLONG moduleAddr;
-	size_t moduleSize;
-	bool isSuspicious;
-	std::string moduleName;
-};
+namespace pesieve {
 
-class HookTargetResolver
-{
-public:
-	HookTargetResolver(ProcessScanReport& process_report, HANDLE processHandle)
+	struct ScannedModuleInfo {
+		ULONGLONG moduleAddr;
+		size_t moduleSize;
+		bool isSuspicious;
+		std::string moduleName;
+	};
+
+	class HookTargetResolver
 	{
-		mapScannedModules(process_report, processHandle);
-	}
+	public:
+		HookTargetResolver(ProcessScanReport& process_report, HANDLE processHandle)
+		{
+			mapScannedModules(process_report, processHandle);
+		}
 
-	size_t resolveAllHooks(const std::set<ModuleScanReport*> &code_reports);
-	bool resolveTarget(PatchList::Patch* currPatch);
+		size_t resolveAllHooks(const std::set<ModuleScanReport*> &code_reports);
+		bool resolveTarget(PatchList::Patch* currPatch);
 
-protected:
-	size_t mapScannedModules(ProcessScanReport& process_report, HANDLE processHandle);
+	protected:
+		size_t mapScannedModules(ProcessScanReport& process_report, HANDLE processHandle);
 
-	std::map<ULONGLONG, ScannedModuleInfo> modulesMap;
-};
+		std::map<ULONGLONG, ScannedModuleInfo> modulesMap;
+	};
+
+}; //namespace pesieve
+
+
