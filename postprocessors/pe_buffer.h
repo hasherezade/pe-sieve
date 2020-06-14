@@ -71,6 +71,8 @@ public:
 	}
 
 protected:
+	size_t calcRemoteImgSize(HANDLE process_hndl, ULONGLONG module_base);
+
 	bool allocBuffer(const size_t pe_vsize)
 	{
 		freeBuffer();

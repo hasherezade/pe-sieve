@@ -242,12 +242,7 @@ bool ResultsDumper::dumpModule(IN HANDLE processHandle,
 	}
 	// if it is not an artefact report, or reconstructing by artefacts failed, read it from the memory:
 	if (!artefactReport || is_corrupt_pe) {
-		size_t img_size = mod->moduleSize;
-		if (img_size == 0) {
-			//some of the reports may not have moduleSize filled
-			img_size = peconv::get_remote_image_size(processHandle, (BYTE*)mod->module);
-		}
-		module_buf.readRemote(processHandle, (ULONGLONG)mod->module, img_size);
+		module_buf.readRemote(processHandle, (ULONGLONG)mod->module, mod->moduleSize);
 	}
 	//if no extension selected yet, do it now:
 	if (payload_ext.length() == 0) {
