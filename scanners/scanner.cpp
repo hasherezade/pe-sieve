@@ -180,9 +180,7 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 	std::cout << "Number of entries: " << std::dec << wsi_1.NumberOfEntries << std::endl;
 #endif
 
-#ifdef _DEBUG
 	DWORD start_tick = GetTickCount();
-#endif
 	std::set<ULONGLONG> region_bases;
 	size_t pages_count = enum_workingset(processHandle, region_bases);
 	if (!args.quiet) {
@@ -216,11 +214,10 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 
 		pReport.appendReport(my_report);
 	}
-#ifdef _DEBUG
-	DWORD total_time = GetTickCount() - start_tick;
-	std::cout << "Workingset scan time: " << std::dec << total_time << std::endl;
-#endif
-
+	if (!args.quiet) {
+		DWORD total_time = GetTickCount() - start_tick;
+		std::cout << "[*] Workingset scanned in " << std::dec << total_time << " ms" << std::endl;
+	}
 	return counter;
 }
 
