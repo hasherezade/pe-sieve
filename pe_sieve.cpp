@@ -166,6 +166,9 @@ pesieve::ProcessDumpReport* pesieve::dump_output(IN ProcessScanReport &process_r
 
 pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 {
+	if (!set_debug_privilege()) {
+		if (!args.quiet) std::cerr << "[-] Could not set debug privilege" << std::endl;
+	}
 	ReportEx *report = new ReportEx();
 	HANDLE hProcess = nullptr;
 
