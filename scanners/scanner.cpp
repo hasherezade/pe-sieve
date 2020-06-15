@@ -248,19 +248,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 
 		//load module from file:
 		ModuleData modData(processHandle, hMods[counter]);
-
-		// Don't scan modules that are in the ignore list
-		std::string plainName = peconv::get_file_name(modData.szModName);
-		if (is_in_list(plainName.c_str(), this->ignoredModules)) {
-			// ...but add such modules to the exports lookup:
-			if (pReport.exportsMap && modData.loadOriginal()) {
-				pReport.exportsMap->add_to_lookup(modData.szModName, (HMODULE)modData.original_module, (ULONGLONG)modData.moduleHandle);
-			}
-			continue;
-		}
-
 		ModuleScanReport *mappingScanReport = this->scanForMappingMismatch(modData, pReport);
-
 		if (!modData.loadOriginal()) {
 			if (!args.quiet) {
 				std::cout << "[!][" << args.pid << "] Suspicious: could not read the module file!" << std::endl;
@@ -269,10 +257,23 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 			pReport.appendReport(new UnreachableModuleReport(processHandle, hMods[counter], 0, modData.szModName));
 			continue;
 		}
+
+		// Don't scan modules that are in the ignore list
+		std::string plainName = peconv::get_file_name(modData.szModName);
+		if (is_in_list(plainName.c_str(), this->ignoredModules)) {
+			// ...but add such modules to the exports lookup:
+			if (pReport.exportsMap && modData.loadOriginal()) {
+				pReport.exportsMap->add_to_lookup(modData.szModName, (HMODULE)modData.original_module, (ULONGLONG)modData.moduleHandle);
+			}
+			if (!args.quiet) {
+				std::cout << "[*] Skipping ignored: " << std::hex << (ULONGLONG)modData.moduleHandle << " : " << modData.szModName << std::endl;
+			}
+			pReport.appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
+			continue;
+		}
 		if (!args.quiet) {
 			std::cout << "[*] Scanning: " << modData.szModName << std::endl;
 		}
-
 		if (modData.isDotNet()) {
 #ifdef _DEBUG
 			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
