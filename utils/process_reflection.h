@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Windows.h>
+#include <windows.h>
 
 #define USE_PROCESS_SNAPSHOT
 #define USE_RTL_PROCESS_REFLECTION
