@@ -213,7 +213,7 @@ pesieve::CodeScanner::t_section_status pesieve::CodeScanner::scanSection(PeSecti
 			const size_t found_offset = not_padding - remoteSec.loadedSection;
 			const DWORD found_rva = remoteSec.rva + found_offset;
 			PatchList::Patch* currPatch = new PatchList::Patch(moduleData.moduleHandle, patchesList.size(), found_rva);
-			currPatch->setEnd((DWORD)remoteSec.rva + diff);
+			currPatch->setEnd((DWORD)remoteSec.rva + remoteSec.loadedSize);
 			patchesList.insert(currPatch);
 		}
 	}
