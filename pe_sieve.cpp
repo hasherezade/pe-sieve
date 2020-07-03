@@ -74,7 +74,7 @@ namespace pesieve {
 		}
 
 		// check process compatibility
-		if (hProcess && !is_scanner_compatible(hProcess)) {
+		if (hProcess && !is_scanner_compatible(hProcess) && !quiet) {
 			util::print_in_color(WARNING_COLOR, "[!] Scanner mismatch! Try to use the 64bit version of the scanner!\n", true);
 		}
 
