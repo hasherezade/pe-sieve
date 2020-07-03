@@ -106,30 +106,6 @@ namespace pesieve {
 		return hProcess;
 	}
 
-	ProcessScanReport* make_scan(IN HANDLE hProcess, IN const pesieve::t_params &args)
-	{
-		if (!hProcess) return nullptr;
-
-		HANDLE _pHndl = hProcess;
-		HANDLE cloned_proc = NULL;
-		if (args.make_reflection) {
-			cloned_proc = make_process_reflection(hProcess);
-			if (cloned_proc) {
-				if (!args.quiet) std::cout << "Using process reflection!\n";
-				_pHndl = cloned_proc;
-			}
-		}
-		if (!cloned_proc) {
-			if (!args.quiet) std::cout << "Using raw process!\n";
-		}
-		ProcessScanner scanner(_pHndl, args);
-		ProcessScanReport *report = scanner.scanRemote();
-		if (cloned_proc) {
-			release_process_reflection(&cloned_proc);
-		}
-		return report;
-	}
-
 	pesieve::ProcessDumpReport* make_dump(IN HANDLE hProcess, IN const pesieve::t_params &args, IN ProcessScanReport &process_report)
 	{
 		if (!hProcess) {
@@ -190,17 +166,45 @@ namespace pesieve {
 
 }; //namespace pesieve
 
+
 pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 {
+	ReportEx *report = new ReportEx();
+
+	HANDLE orig_proc = nullptr; // original process handle
+	HANDLE cloned_proc = nullptr; // process reflection handle
+
 	if (!set_debug_privilege()) {
 		if (!args.quiet) std::cerr << "[-] Could not set debug privilege" << std::endl;
 	}
 
-	ReportEx *report = new ReportEx();
-	HANDLE hProcess = nullptr;
 	try {
-		hProcess = open_process(args.pid, args.make_reflection, args.quiet);
-		report->scan_report = make_scan(hProcess, args);
+		orig_proc = open_process(args.pid, args.make_reflection, args.quiet);
+		HANDLE target_proc = orig_proc;
+
+		if (args.make_reflection) {
+			cloned_proc = make_process_reflection(orig_proc);
+			if (cloned_proc) {
+				target_proc = cloned_proc;
+			}
+		}
+
+		if (!args.quiet) {
+			if (cloned_proc) {
+				std::cout << "Using process reflection!\n";
+			}
+			else {
+				std::cout << "Using raw process!\n";
+			}
+		}
+
+		ProcessScanner scanner(target_proc, args);
+		report->scan_report = scanner.scanRemote();
+
+		// dump process (if dumping is selected)
+		if (report->scan_report && args.out_filter != OUT_NO_DIR) {
+			report->dump_report = make_dump(target_proc, args, *report->scan_report);
+		}
 	}
 	catch (std::exception &e) {
 		if (!args.quiet) {
@@ -208,10 +212,10 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 		}
 		return nullptr;
 	}
-	if (report->scan_report && args.out_filter != OUT_NO_DIR) {
-		report->dump_report = make_dump(hProcess, args, *report->scan_report);
+	if (cloned_proc) {
+		release_process_reflection(&cloned_proc);
 	}
-	CloseHandle(hProcess);
+	CloseHandle(orig_proc);
 	return report;
 }
 
