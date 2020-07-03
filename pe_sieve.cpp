@@ -89,7 +89,7 @@ namespace pesieve {
 		return hProcess;
 	}
 
-	bool is_scaner_compatibile(IN HANDLE hProcess, bool quiet)
+	bool is_scanner_compatible(IN HANDLE hProcess, bool quiet)
 	{
 		BOOL isCurrWow64 = FALSE;
 		is_process_wow64(GetCurrentProcess(), &isCurrWow64);
@@ -174,7 +174,7 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 
 	try {
 		hProcess = open_process(args.pid, args.make_reflection, args.quiet);
-		if (!is_scaner_compatibile(hProcess, args.quiet)) {
+		if (!is_scanner_compatible(hProcess, args.quiet)) {
 			SetLastError(ERROR_INVALID_PARAMETER);
 			throw std::runtime_error("Scanner mismatch. Try to use the 64bit version of the scanner.");
 		}
@@ -223,7 +223,7 @@ pesieve::ProcessScanReport* pesieve::scan_process(IN const t_params args, IN OPT
 			hProcess = open_process(args.pid, args.make_reflection, args.quiet);
 			autoopened = true;
 		}
-		if (!is_scaner_compatibile(hProcess, args.quiet)) {
+		if (!is_scanner_compatible(hProcess, args.quiet)) {
 			SetLastError(ERROR_INVALID_PARAMETER);
 			throw std::runtime_error("Scanner mismatch. Try to use the 64bit version of the scanner.");
 		}
