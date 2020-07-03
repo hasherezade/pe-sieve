@@ -39,7 +39,7 @@ namespace pesieve {
 		static t_report_type getReportType(ModuleScanReport *report);
 
 		ProcessScanReport(DWORD _pid)
-			: pid(_pid), exportsMap(nullptr), errorsCount(0), modulesInfo(pid)
+			: pid(_pid), exportsMap(nullptr), errorsCount(0), modulesInfo(pid), isManaged(false)
 		{
 		}
 
@@ -112,6 +112,7 @@ namespace pesieve {
 		bool hasAnyShownType(const ProcessScanReport::t_report_filter &filter);
 
 		DWORD pid;
+		bool isManaged;
 		size_t errorsCount;
 
 		ProcessModules modulesInfo;

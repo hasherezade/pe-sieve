@@ -275,6 +275,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 			std::cout << "[*] Scanning: " << modData.szModName << std::endl;
 		}
 		if (modData.isDotNet()) {
+			pReport.isManaged = true;
 #ifdef _DEBUG
 			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
 #endif
