@@ -1,7 +1,10 @@
 #pragma once
 
-#define WARNING_COLOR 0x0c
-#define HILIGHTED_COLOR 0x0f
+namespace pesieve {
 
-#define HEADER_COLOR 14
-#define SEPARATOR_COLOR 6
+	const WORD ERROR_COLOR = 0x0c;
+	const WORD WARNING_COLOR = 0x0c;
+	const WORD HILIGHTED_COLOR = 0x0f;
+	const WORD HEADER_COLOR = 14;
+	const WORD SEPARATOR_COLOR = 6;
+};

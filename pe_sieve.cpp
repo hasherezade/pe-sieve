@@ -14,6 +14,8 @@
 #include "utils/path_converter.h"
 #include "postprocessors/results_dumper.h"
 #include "utils/process_reflection.h"
+#include "utils/console_color.h"
+#include "color_scheme.h"
 
 using namespace pesieve;
 using namespace pesieve::util;
@@ -73,7 +75,7 @@ namespace pesieve {
 
 		// check process compatibility
 		if (hProcess && !is_scanner_compatible(hProcess)) {
-			std::cerr << "[!] Scanner mismatch! Try to use the 64bit version of the scanner!" << std::endl;
+			util::print_in_color(WARNING_COLOR, "[!] Scanner mismatch! Try to use the 64bit version of the scanner!\n", true);
 		}
 
 		// opening succeeded, return the handle:
@@ -202,7 +204,7 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 	}
 	catch (std::exception &e) {
 		if (!args.quiet) {
-			std::cerr << "[ERROR] " << e.what() << std::endl;
+			util::print_in_color(ERROR_COLOR, std::string("[ERROR] ") + e.what() + "\n", true);
 		}
 		return nullptr;
 	}

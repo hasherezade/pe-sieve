@@ -116,6 +116,7 @@ set (utils_srcs
 	utils/modules_enum.cpp
 	utils/artefacts_util.cpp
 	utils/process_reflection.cpp
+	utils/console_color.cpp
 )
 
 set (utils_hdrs
@@ -129,6 +130,7 @@ set (utils_hdrs
 	utils/modules_enum.h
 	utils/artefacts_util.h
 	utils/process_reflection.h
+	utils/console_color.h
 )
 
 set (params_info_hdrs

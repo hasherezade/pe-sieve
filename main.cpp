@@ -6,12 +6,12 @@
 #include <sstream>
 #include <fstream>
 
-#include "utils/process_privilege.h"
-
 #include "pe_sieve.h"
+
+#include "utils/process_privilege.h"
 #include "params_info/pe_sieve_params_info.h"
 #include "utils/process_reflection.h"
-
+#include "utils/console_color.h"
 #include "color_scheme.h"
 
 #define PARAM_SWITCH1 '/'
@@ -42,16 +42,6 @@
 
 using namespace pesieve;
 using namespace pesieve::util;
-
-void print_in_color(int color, const std::string &text)
-{
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	FlushConsoleInputBuffer(hConsole);
-	SetConsoleTextAttribute(hConsole, color); // back to default color
-	std::cout << text;
-	FlushConsoleInputBuffer(hConsole);
-	SetConsoleTextAttribute(hConsole, 7); // back to default color
-}
 
 void print_param_in_color(int color, const std::string &text)
 {
