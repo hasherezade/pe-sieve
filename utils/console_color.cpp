@@ -4,7 +4,7 @@
 namespace pesieve {
 	namespace util {
 
-		bool GetColor(int descriptor, WORD &color) {
+		bool get_current_color(int descriptor, WORD &color) {
 			CONSOLE_SCREEN_BUFFER_INFO info;
 			if (!GetConsoleScreenBufferInfo(GetStdHandle(descriptor), &info))
 				return false;
@@ -21,7 +21,7 @@ void pesieve::util::print_in_color(int color, const std::string &text, bool is_e
 	std::ostream &stream = is_error ? std::cerr : std::cout;
 
 	WORD old_color = 7; //default
-	GetColor(descriptor, old_color);
+	get_current_color(descriptor, old_color);
 
 	HANDLE hConsole = GetStdHandle(descriptor);
 	FlushConsoleInputBuffer(hConsole);
