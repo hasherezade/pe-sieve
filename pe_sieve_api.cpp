@@ -5,7 +5,7 @@
 #include "pe_sieve.h"
 
 #define PESIEVE_EXPORTS
-#include "pe_sieve_api.h"
+#include <pe_sieve_api.h>
 
 #define LIB_NAME "PE-sieve"
 
