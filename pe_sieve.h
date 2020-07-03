@@ -32,7 +32,4 @@ namespace pesieve {
 	std::string info();
 
 	ReportEx* scan_and_dump(IN const pesieve::t_params args);
-
-	ProcessScanReport* scan_process(IN const pesieve::t_params args, IN OPTIONAL HANDLE hProcess = NULL);
-	ProcessDumpReport* dump_output(IN ProcessScanReport &process_report, IN const pesieve::t_params args, IN HANDLE hProcess);
 };
