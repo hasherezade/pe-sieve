@@ -116,6 +116,40 @@ bool pesieve::ProcessScanner::resolveHooksTargets(ProcessScanReport& process_rep
 	return (resolved_count > 0);
 }
 
+bool pesieve::ProcessScanner::filterDotNetReport(ProcessScanReport& process_report)
+{
+	if (!process_report.isManaged || this->args.dotnet_policy == pesieve::PE_DNET_AUTO) {
+		return false; // no filtering needed
+	}
+	bool is_set = false;
+	if (this->args.dotnet_policy & pesieve::PE_DNET_SKIP_HOOKS) {
+		// set hook modules as not suspicious
+		const std::set<ModuleScanReport*> &code_reports = process_report.reportsByType[ProcessScanReport::REPORT_CODE_SCAN];
+		std::set<ModuleScanReport*>::iterator itr;
+		for (itr = code_reports.begin(); itr != code_reports.end(); ++itr) {
+			ModuleScanReport* report = *itr;
+			if (report->status == t_scan_status::SCAN_SUSPICIOUS) {
+				report->status = t_scan_status::SCAN_NOT_SUSPICIOUS;
+				is_set = true;
+			}
+		}
+	}
+	if (this->args.dotnet_policy & pesieve::PE_DNET_SKIP_SHC) {
+		// set shellcodes as not suspicious
+		const std::set<ModuleScanReport*> &code_reports = process_report.reportsByType[ProcessScanReport::REPORT_MEMPAGE_SCAN];
+		std::set<ModuleScanReport*>::iterator itr;
+		for (itr = code_reports.begin(); itr != code_reports.end(); ++itr) {
+			//todo: only shellcodes, not implanted PEs
+			ModuleScanReport* report = *itr;
+			if (report->status == t_scan_status::SCAN_SUSPICIOUS) {
+				report->status = t_scan_status::SCAN_NOT_SUSPICIOUS;
+				is_set = true;
+			}
+		}
+	}
+	return true;
+}
+
 ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 {
 	this->isDEP = is_DEP_enabled(this->processHandle);
@@ -165,6 +199,9 @@ ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 	}
 	//post-process hooks
 	resolveHooksTargets(*pReport);
+
+	//post-process .NET modules
+	filterDotNetReport(*pReport);
 	return pReport;
 }
 

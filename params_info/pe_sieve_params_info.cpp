@@ -48,6 +48,21 @@ std::string pesieve::translate_imprec_mode(const pesieve::t_imprec_mode imprec_m
 	return "undefined";
 }
 
+std::string pesieve::translate_dotnet_policy(const pesieve::t_dotnet_policy &mode)
+{
+	switch (mode) {
+	case pesieve::PE_DNET_AUTO:
+		return "none: treat managed processes same as native";
+	case pesieve::PE_DNET_SKIP_SHC:
+		return "skip shellcodes";
+	case pesieve::PE_DNET_SKIP_HOOKS:
+		return "skip hooked modules";
+	case pesieve::PE_DNET_SKIP_SHC_AND_HOOKS:
+		return "skip shellcodes and hooked modules";
+	}
+	return "undefined";
+}
+
 std::string pesieve::translate_modules_filter(DWORD m_filter)
 {
 	switch (m_filter) {

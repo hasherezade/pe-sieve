@@ -37,6 +37,7 @@ namespace pesieve {
 		ModuleScanReport* scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report);
 
 		bool resolveHooksTargets(ProcessScanReport& process_report);
+		bool filterDotNetReport(ProcessScanReport& process_report);
 
 		HANDLE processHandle;
 		bool isDEP;

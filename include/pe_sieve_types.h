@@ -44,9 +44,18 @@ namespace pesieve {
 		PE_IATS_MODES_COUNT
 	} t_iat_scan_mode;
 
+	typedef enum {
+		PE_DNET_AUTO = 0,// treat .NET modules the same as native modules
+		PE_DNET_SKIP_SHC = 1, // skip shellcodes in .NET modules
+		PE_DNET_SKIP_HOOKS = 2, // skip hooks in .NET modules
+		PE_DNET_SKIP_SHC_AND_HOOKS = 3,
+		PE_DNET_COUNT
+	} t_dotnet_policy;
+
 	typedef struct {
 		DWORD pid;
 		DWORD modules_filter;
+		t_dotnet_policy dotnet_policy; // policy for scanning .NET modules
 		t_imprec_mode imprec_mode; //import recovery mode
 		bool quiet; // do not print log on the stdout
 		t_output_filter out_filter;
