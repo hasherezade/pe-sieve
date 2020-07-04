@@ -74,7 +74,7 @@ size_t copyToCStr(char *buf, size_t buf_max, const std::string &value)
 
 //TODO: this will be replaced when params will be refactored to use ParamKit
 template<typename PARAM_T>
-bool get_param(int argc, char *argv[], const char *param, int &param_i,
+bool get_int_param(int argc, char *argv[], const char *param, int &param_i,
 	const char *param_id, PARAM_T &out_val, const PARAM_T default_set,
 	bool &info_req, void(*callback)(int))
 {
@@ -94,6 +94,29 @@ bool get_param(int argc, char *argv[], const char *param, int &param_i,
 			info_req = true;
 		}
 		++param_i;
+	}
+	return true;
+}
+
+//TODO: this will be replaced when params will be refactored to use ParamKit
+bool get_list_param(int argc, char *argv[], const char *param, int &param_i,
+	const char *param_id, char* out_buf, const size_t out_buf_max,
+	bool &info_req, void(*callback)(int))
+{
+	if (strcmp(param, param_id) != 0) {
+		return false;
+	}
+	bool fetched = false;
+	if ((param_i + 1) < argc && !is_param(argv[param_i + 1])) {
+		if (argv[param_i + 1][0] != PARAM_HELP2[0]) {
+			copyToCStr(out_buf, out_buf_max, argv[param_i + 1]);
+			fetched = true;
+		}
+		++param_i;
+	}
+	if (!fetched) {
+		callback(ERROR_COLOR);
+		info_req = true;
 	}
 	return true;
 }
@@ -325,7 +348,7 @@ int main(int argc, char *argv[])
 			print_help();
 			info_req = true;
 		}
-		else if (get_param<DWORD>(argc, argv, param, i,
+		else if (get_int_param<DWORD>(argc, argv, param, i,
 			PARAM_PID,
 			args.pid,
 			0,
@@ -334,7 +357,7 @@ int main(int argc, char *argv[])
 		{
 			continue;
 		}
-		else if (get_param(argc, argv, param, i,
+		else if (get_int_param(argc, argv, param, i,
 			PARAM_IMP_REC,
 			args.imprec_mode,
 			pesieve::PE_IMPREC_AUTO,
@@ -343,7 +366,7 @@ int main(int argc, char *argv[])
 		{
 			continue;
 		}
-		else if (get_param(argc, argv, param, i,
+		else if (get_int_param(argc, argv, param, i,
 			PARAM_OUT_FILTER,
 			args.out_filter,
 			pesieve::OUT_FULL,
@@ -352,15 +375,14 @@ int main(int argc, char *argv[])
 		{
 			continue;
 		}
-		else if (!strcmp(param, PARAM_MODULES_IGNORE)) {
-			if ((i + 1) < argc && !is_param(argv[i + 1]) && argv[i + 1][0] != PARAM_HELP2[0]) {
-				copyToCStr(args.modules_ignored, MAX_MODULE_BUF_LEN, argv[i + 1]);
-				++i;
-			}
-			else {
-				print_mignore_param(ERROR_COLOR);
-				info_req = true;
-			}
+		else if (get_list_param(argc, argv, param, i,
+			PARAM_MODULES_IGNORE,
+			args.modules_ignored,
+			MAX_MODULE_BUF_LEN,
+			info_req,
+			print_mignore_param))
+		{
+			continue;
 		}
 		else if (!strcmp(param, PARAM_VERSION) || !strcmp(param, PARAM_VERSION2)) {
 			std::cout << PESIEVE_VERSION << "\n";
@@ -375,7 +397,7 @@ int main(int argc, char *argv[])
 		else if (!strcmp(param, PARAM_MINIDUMP)) {
 			args.minidump = true;
 		}
-		else if (get_param(argc, argv, param, i,
+		else if (get_int_param(argc, argv, param, i,
 			PARAM_SHELLCODE,
 			args.shellcode,
 			true,
@@ -384,7 +406,7 @@ int main(int argc, char *argv[])
 		{
 			continue;
 		}
-		else if (get_param(argc, argv, param, i,
+		else if (get_int_param(argc, argv, param, i,
 			PARAM_REFLECTION,
 			args.make_reflection,
 			true,
@@ -393,7 +415,7 @@ int main(int argc, char *argv[])
 		{
 			continue;
 		}
-		else if (get_param(argc, argv, param, i,
+		else if (get_int_param(argc, argv, param, i,
 			PARAM_IAT,
 			args.iat,
 			pesieve::PE_IATS_FILTERED,
@@ -402,7 +424,7 @@ int main(int argc, char *argv[])
 		{
 			continue;
 		}
-		else if (get_param(argc, argv, param, i,
+		else if (get_int_param(argc, argv, param, i,
 			PARAM_DOTNET_POLICY,
 			args.dotnet_policy,
 			pesieve::PE_DNET_SKIP_SHC,
@@ -414,7 +436,7 @@ int main(int argc, char *argv[])
 		else if (!strcmp(param, PARAM_DATA)) {
 			args.data = true;
 		}
-		else if (get_param(argc, argv, param, i,
+		else if (get_int_param(argc, argv, param, i,
 			PARAM_DUMP_MODE,
 			args.dump_mode,
 			pesieve::PE_DUMP_AUTO,
