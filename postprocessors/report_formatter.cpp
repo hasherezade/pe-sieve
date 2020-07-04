@@ -21,6 +21,10 @@ std::string pesieve::scan_report_to_string(const ProcessScanReport &process_repo
 	stream << "HdrsModified:     " << std::dec << report.hdr_mod << "\n";
 	stream << "Detached:         " << std::dec << report.detached << "\n";
 	stream << "Implanted:        " << std::dec << report.implanted << "\n";
+	if (report.implanted) {
+		stream << "Implanted PE:     " << std::dec << report.implanted_pe << "\n";
+		stream << "Implanted shc:    " << std::dec << report.implanted_shc << "\n";
+	}
 	stream << "Other:            " << std::dec << other << "\n";
 	stream << "-\n";
 	stream << "Total suspicious:   " << std::dec << report.suspicious << "\n";

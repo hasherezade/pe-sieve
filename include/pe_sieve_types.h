@@ -81,7 +81,9 @@ namespace pesieve {
 		DWORD detached; // cannot find the file corresponding to the module in memory
 		DWORD patched; // detected modifications in the code
 		DWORD iat_hooked; // detected IAT hooks
-		DWORD implanted; // the full PE was probably loaded manually
+		DWORD implanted; // all implants: shellcodes + PEs
+		DWORD implanted_pe; // the full PE was probably loaded manually
+		DWORD implanted_shc; //implanted shellcodes
 		DWORD skipped; // some of the modules must be skipped (i.e. dotNET managed code have different characteristics and this scan does not apply)
 		DWORD errors; // errors prevented the scan
 	} t_report;

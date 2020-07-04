@@ -4,6 +4,7 @@
 #include "code_scanner.h"
 #include "iat_scanner.h"
 #include "workingset_scanner.h"
+#include "artefact_scanner.h"
 #include "mapping_scanner.h"
 
 #include "../utils/format_util.h"
@@ -82,6 +83,9 @@ pesieve::ProcessScanReport::t_report_type pesieve::ProcessScanReport::getReportT
 		return pesieve::ProcessScanReport::REPORT_HEADERS_SCAN;
 	}
 	if (dynamic_cast<WorkingSetScanReport*>(report)) {
+		if (dynamic_cast<ArtefactScanReport*>(report)) {
+			return pesieve::ProcessScanReport::REPORT_ARTEFACT_SCAN;
+		}
 		return pesieve::ProcessScanReport::REPORT_MEMPAGE_SCAN;
 	}
 	if (dynamic_cast<MappingScanReport*>(report)) {
@@ -172,7 +176,9 @@ pesieve::t_report pesieve::ProcessScanReport::generateSummary() const
 	summary.replaced = countHdrsReplaced();
 	summary.patched = countSuspiciousPerType(REPORT_CODE_SCAN);
 	summary.iat_hooked = countSuspiciousPerType(REPORT_IAT_SCAN);
-	summary.implanted = countSuspiciousPerType(REPORT_MEMPAGE_SCAN);
+	summary.implanted_shc = countSuspiciousPerType(REPORT_MEMPAGE_SCAN);
+	summary.implanted_pe = countSuspiciousPerType(REPORT_ARTEFACT_SCAN);
+	summary.implanted = summary.implanted_shc + summary.implanted_pe;
 	summary.hdr_mod = countSuspiciousPerType(REPORT_HEADERS_SCAN) - summary.replaced;
 	summary.detached = countSuspiciousPerType(REPORT_UNREACHABLE_SCAN);
 	
@@ -240,8 +246,10 @@ const bool pesieve::ProcessScanReport::toJSON(std::stringstream &stream, size_t 
 	stream << std::dec << report.hdr_mod << ",\n";
 	OUT_PADDED(stream, level + 2, "\"detached\" : ");
 	stream << std::dec << report.detached << ",\n";
-	OUT_PADDED(stream, level + 2, "\"implanted\" : ");
-	stream << std::dec << report.implanted << ",\n";
+	OUT_PADDED(stream, level + 2, "\"implanted_pe\" : ");
+	stream << std::dec << report.implanted_pe << ",\n";
+	OUT_PADDED(stream, level + 2, "\"implanted_shc\" : ");
+	stream << std::dec << report.implanted_shc << ",\n";
 	OUT_PADDED(stream, level + 2, "\"other\" : ");
 	stream << std::dec << other << "\n";
 	OUT_PADDED(stream, level + 1, "},\n"); // modified
