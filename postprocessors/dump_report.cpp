@@ -86,7 +86,7 @@ std::string pesieve::ProcessDumpReport::list_dumped_modules(size_t level)
 	OUT_PADDED(stream, level, "\"dumps\" : [\n");
 	bool is_first = true;
 	std::vector<ModuleDumpReport*>::const_iterator itr;
-	for (itr = module_reports.begin(); itr != module_reports.end(); ++itr) {
+	for (itr = moduleReports.begin(); itr != moduleReports.end(); ++itr) {
 		ModuleDumpReport *mod = *itr;
 		if (mod->isDumped || mod->isReportDumped) {
 			if (!is_first) {
@@ -100,7 +100,7 @@ std::string pesieve::ProcessDumpReport::list_dumped_modules(size_t level)
 			is_first = false;
 		}
 	}
-	if (module_reports.size()) {
+	if (moduleReports.size()) {
 		stream << "\n";
 	}
 	OUT_PADDED(stream, level, "]\n");

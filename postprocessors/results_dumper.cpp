@@ -181,8 +181,8 @@ pesieve::ProcessDumpReport* pesieve::ResultsDumper::dumpDetectedModules(HANDLE p
 	this->dumpDir = pesieve::ResultsDumper::makeDirName(process_report.getPid());
 
 	std::vector<ModuleScanReport*>::iterator itr;
-	for (itr = process_report.module_reports.begin();
-		itr != process_report.module_reports.end();
+	for (itr = process_report.moduleReports.begin();
+		itr != process_report.moduleReports.end();
 		++itr)
 	{
 		ModuleScanReport* mod = *itr;

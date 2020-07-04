@@ -159,8 +159,8 @@ pesieve::t_report pesieve::ProcessScanReport::generateSummary() const
 	summary.skipped = static_cast<DWORD>(this->reportsByType[REPORT_SKIPPED_SCAN].size());
 	summary.scanned = static_cast<DWORD>(this->reportsByType[REPORT_HEADERS_SCAN].size());
 
-	std::vector<ModuleScanReport*>::const_iterator itr = module_reports.begin();
-	for (; itr != module_reports.end(); ++itr) {
+	std::vector<ModuleScanReport*>::const_iterator itr = moduleReports.begin();
+	for (; itr != moduleReports.end(); ++itr) {
 		ModuleScanReport* report = *itr;
 		if (ModuleScanReport::get_scan_status(report) == SCAN_SUSPICIOUS) {
 			summary.suspicious++;
@@ -179,14 +179,14 @@ pesieve::t_report pesieve::ProcessScanReport::generateSummary() const
 	return summary;
 }
 
-std::string pesieve::ProcessScanReport::list_modules(size_t level, const pesieve::ProcessScanReport::t_report_filter &filter) const
+std::string pesieve::ProcessScanReport::listModules(size_t level, const pesieve::ProcessScanReport::t_report_filter &filter) const
 {
 	std::stringstream stream;
 	//summary:
 	OUT_PADDED(stream, level, "\"scans\" : [\n");
 	bool is_first = true;
 	std::vector<ModuleScanReport*>::const_iterator itr;
-	for (itr = this->module_reports.begin(); itr != this->module_reports.end(); ++itr) {
+	for (itr = this->moduleReports.begin(); itr != this->moduleReports.end(); ++itr) {
 		ModuleScanReport *mod = *itr;
 		if (is_shown_type(mod->status, filter)) {
 			if (!is_first) {
@@ -199,7 +199,7 @@ std::string pesieve::ProcessScanReport::list_modules(size_t level, const pesieve
 			is_first = false;
 		}
 	}
-	if (module_reports.size()) {
+	if (moduleReports.size()) {
 		stream << "\n";
 	}
 	OUT_PADDED(stream, level, "]\n");
@@ -248,7 +248,7 @@ const bool pesieve::ProcessScanReport::toJSON(std::stringstream &stream, size_t 
 	OUT_PADDED(stream, level + 1, "\"errors\" : ");
 	stream << std::dec << report.errors << "\n";
 	OUT_PADDED(stream, level, "},\n"); // scanned
-	stream << list_modules(level, filter);
+	stream << listModules(level, filter);
 	stream << "}\n";
 	return true;
 }

@@ -59,12 +59,12 @@ namespace pesieve {
 		void appendReport(ModuleDumpReport *report)
 		{
 			if (!report) return;
-			module_reports.push_back(report);
+			moduleReports.push_back(report);
 		}
 
 		size_t countTotal() const
 		{
-			return module_reports.size();
+			return moduleReports.size();
 		}
 
 		bool isFilled() const
@@ -77,8 +77,8 @@ namespace pesieve {
 		size_t countDumped() const
 		{
 			size_t dumped = 0;
-			std::vector<ModuleDumpReport*>::const_iterator itr = module_reports.begin();
-			for (; itr != module_reports.end(); itr++) {
+			std::vector<ModuleDumpReport*>::const_iterator itr = moduleReports.begin();
+			for (; itr != moduleReports.end(); itr++) {
 				ModuleDumpReport* module = *itr;
 				if (module->isDumped) {
 					dumped++;
@@ -100,16 +100,16 @@ namespace pesieve {
 
 		void deleteModuleReports()
 		{
-			std::vector<ModuleDumpReport*>::iterator itr = module_reports.begin();
-			for (; itr != module_reports.end(); itr++) {
+			std::vector<ModuleDumpReport*>::iterator itr = moduleReports.begin();
+			for (; itr != moduleReports.end(); itr++) {
 				ModuleDumpReport* module = *itr;
 				delete module;
 			}
-			module_reports.clear();
+			moduleReports.clear();
 		}
 
 		DWORD pid;
-		std::vector<ModuleDumpReport*> module_reports;
+		std::vector<ModuleDumpReport*> moduleReports;
 
 		friend class ResultsDumper;
 	};

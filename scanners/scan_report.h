@@ -52,7 +52,7 @@ namespace pesieve {
 		void appendReport(ModuleScanReport *report)
 		{
 			if (report == nullptr) return;
-			module_reports.push_back(report);
+			moduleReports.push_back(report);
 			if (ModuleScanReport::get_scan_status(report) == SCAN_ERROR) {
 				this->errorsCount++;
 			}
@@ -88,20 +88,20 @@ namespace pesieve {
 		DWORD getPid() { return pid; }
 
 		std::string mainImagePath;
-		std::vector<ModuleScanReport*> module_reports; //TODO: make it protected
+		std::vector<ModuleScanReport*> moduleReports; //TODO: make it protected
 		peconv::ExportsMapper *exportsMap;
 
 	protected:
-		std::string list_modules(size_t level, const ProcessScanReport::t_report_filter &filter) const;
+		std::string listModules(size_t level, const ProcessScanReport::t_report_filter &filter) const;
 
 		void deleteModuleReports()
 		{
-			std::vector<ModuleScanReport*>::iterator itr = module_reports.begin();
-			for (; itr != module_reports.end(); itr++) {
+			std::vector<ModuleScanReport*>::iterator itr = moduleReports.begin();
+			for (; itr != moduleReports.end(); itr++) {
 				ModuleScanReport* module = *itr;
 				delete module;
 			}
-			module_reports.clear();
+			moduleReports.clear();
 		}
 
 		void appendToType(ModuleScanReport *report);

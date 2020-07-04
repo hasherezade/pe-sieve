@@ -60,7 +60,7 @@ size_t pesieve::HookTargetResolver::resolveAllHooks(const std::set<ModuleScanRep
 size_t pesieve::HookTargetResolver::mapScannedModules(ProcessScanReport& process_report, HANDLE hProcess)
 {
 	std::vector<ModuleScanReport*>::iterator modItr;
-	for (modItr = process_report.module_reports.begin(); modItr != process_report.module_reports.end(); ++modItr) {
+	for (modItr = process_report.moduleReports.begin(); modItr != process_report.moduleReports.end(); ++modItr) {
 		ModuleScanReport* scanReport = *modItr;
 		ScannedModuleInfo modInfo = { 0 };
 		modInfo.moduleAddr = (ULONGLONG)scanReport->module;
