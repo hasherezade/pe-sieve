@@ -99,7 +99,7 @@ bool get_int_param(int argc, char *argv[], const char *param, int &param_i,
 }
 
 //TODO: this will be replaced when params will be refactored to use ParamKit
-bool get_list_param(int argc, char *argv[], const char *param, int &param_i,
+bool get_cstr_param(int argc, char *argv[], const char *param, int &param_i,
 	const char *param_id, char* out_buf, const size_t out_buf_max,
 	bool &info_req, void(*callback)(int))
 {
@@ -375,7 +375,7 @@ int main(int argc, char *argv[])
 		{
 			continue;
 		}
-		else if (get_list_param(argc, argv, param, i,
+		else if (get_cstr_param(argc, argv, param, i,
 			PARAM_MODULES_IGNORE,
 			args.modules_ignored,
 			MAX_MODULE_BUF_LEN,
