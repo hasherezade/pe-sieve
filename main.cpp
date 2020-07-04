@@ -49,6 +49,91 @@ void print_param_in_color(int color, const std::string &text)
 	print_in_color(color, PARAM_SWITCH1 + text);
 }
 
+void print_dnet_param(int param_color)
+{
+	print_param_in_color(param_color, PARAM_DOTNET_POLICY);
+	std::cout << " <*dotnet_policy>\n\t: Set the policy for scanning managed processes (.NET).\n";;
+	std::cout << "*dotnet_policy:\n";
+	for (size_t i = 0; i < PE_DNET_COUNT; i++) {
+		t_dotnet_policy mode = (t_dotnet_policy)(i);
+		std::cout << "\t" << mode << " - " << translate_dotnet_policy(mode) << "\n";
+	}
+}
+
+void print_imprec_param(int param_color)
+{
+	print_param_in_color(param_color, PARAM_IMP_REC);
+	std::cout << " <*imprec_mode>\n\t: Set in which mode the ImportTable should be recovered.\n";;
+	std::cout << "*imprec_mode:\n";
+	for (size_t i = 0; i < PE_IMPREC_MODES_COUNT; i++) {
+		t_imprec_mode mode = (t_imprec_mode)(i);
+		std::cout << "\t" << mode << " - " << translate_imprec_mode(mode) << "\n";
+	}
+}
+
+void print_out_filter_param(int param_color)
+{
+	print_param_in_color(param_color, PARAM_OUT_FILTER);
+	std::cout << " <*ofilter_id>\n\t: Filter the dumped output.\n";
+	std::cout << "*ofilter_id:\n";
+	for (size_t i = 0; i < OUT_FILTERS_COUNT; i++) {
+		t_output_filter mode = (t_output_filter)(i);
+		std::cout << "\t" << mode << " - " << translate_out_filter(mode) << "\n";
+	}
+}
+
+void print_iat_param(int param_color)
+{
+	print_param_in_color(param_color, PARAM_IAT);
+	std::cout << " <*scan_mode>\n\t: Scan for IAT hooks.\n";
+	std::cout << "*scan_mode:\n";
+	for (size_t i = 0; i < pesieve::PE_IATS_MODES_COUNT; i++) {
+		std::cout << "\t" << i << " - " << translate_iat_scan_mode((pesieve::t_iat_scan_mode) i) << "\n";
+	}
+}
+
+void print_dmode_param(int param_color)
+{
+	print_param_in_color(param_color, PARAM_DUMP_MODE);
+	std::cout << " <*dump_mode>\n\t: Set in which mode the detected PE files should be dumped.\n";
+	std::cout << "*dump_mode:\n";
+	for (DWORD i = 0; i < peconv::PE_DUMP_MODES_COUNT; i++) {
+		peconv::t_pe_dump_mode mode = (peconv::t_pe_dump_mode)(i);
+		std::cout << "\t" << mode << " - " << translate_dump_mode(mode) << "\n";
+	}
+}
+
+void print_shellc_param(int param_color)
+{
+	print_param_in_color(param_color, PARAM_SHELLCODE);
+	std::cout << "\t: Detect shellcode implants. (By default it detects PE only).\n";
+}
+
+void print_module_filter_param(int param_color)
+{
+	print_param_in_color(param_color, PARAM_MODULES_FILTER);
+	std::cout << " <*mfilter_id>\n\t: Filter the scanned modules.\n";
+	std::cout << "*mfilter_id:\n";
+	for (DWORD i = 0; i <= LIST_MODULES_ALL; i++) {
+		std::cout << "\t" << i << " - " << translate_modules_filter(i) << "\n";
+	}
+}
+
+void print_mignore_param(int param_color)
+{
+	print_param_in_color(param_color, PARAM_MODULES_IGNORE);
+	std::cout << " <module_name>\n\t: Do not scan module/s with given name/s (separated by '" << PARAM_LIST_SEPARATOR << "').\n"
+		"\t  Example: kernel32.dll" << PARAM_LIST_SEPARATOR << "user32.dll\n";
+}
+
+void print_refl_param(int param_color)
+{
+	if (pesieve::util::can_make_process_reflection()) {
+		print_param_in_color(param_color, PARAM_REFLECTION);
+		std::cout << "\t: Make a process reflection before scan.\n";
+	}
+}
+
 void print_help()
 {
 	const int hdr_color = HEADER_COLOR;
@@ -60,68 +145,25 @@ void print_help()
 	print_in_color(hdr_color, "\nOptional: \n");
 
 	print_in_color(separator_color, "\n---scan options---\n");
-	print_param_in_color(param_color, PARAM_IAT);
-	std::cout << " <*scan_mode>\n\t: Scan for IAT hooks.\n";
-	std::cout << "*scan_mode:\n";
-	for (size_t i = 0; i < pesieve::PE_IATS_MODES_COUNT; i++) {
-		std::cout << "\t" << i << " - " << translate_iat_scan_mode((pesieve::t_iat_scan_mode) i) << "\n";
-	}
+	print_iat_param(param_color);
+	print_shellc_param(param_color);
 
-	print_param_in_color(param_color, PARAM_SHELLCODE);
-	std::cout << "\t: Detect shellcode implants. (By default it detects PE only).\n";
 	print_param_in_color(param_color, PARAM_DATA);
 	std::cout << "\t: If DEP is disabled scan also non-executable memory\n\t  (which potentially can be executed).\n";
 #ifdef _WIN64
-	print_param_in_color(param_color, PARAM_MODULES_FILTER);
-	std::cout << " <*mfilter_id>\n\t: Filter the scanned modules.\n";
-	std::cout << "*mfilter_id:\n";
-	for (DWORD i = 0; i <= LIST_MODULES_ALL; i++) {
-		std::cout << "\t" << i << " - " << translate_modules_filter(i) << "\n";
-	}
+	print_module_filter_param(param_color);
 #endif
-	print_param_in_color(param_color, PARAM_MODULES_IGNORE);
-	std::cout << " <module_name>\n\t: Do not scan module/s with given name/s (separated by '"<< PARAM_LIST_SEPARATOR << "').\n"
-		"\t  Example: kernel32.dll" << PARAM_LIST_SEPARATOR << "user32.dll\n";
-	
-	if (pesieve::util::can_make_process_reflection()) {
-		print_param_in_color(param_color, PARAM_REFLECTION);
-		std::cout << "\t: Make a process reflection before scan.\n";
-	}
-
-	print_param_in_color(param_color, PARAM_DOTNET_POLICY);
-	std::cout << " <*dotnet_policy>\n\t: Set the policy for scanning managed processes (.NET).\n";;
-	std::cout << "*dotnet_policy:\n";
-	for (size_t i = 0; i < PE_DNET_COUNT; i++) {
-		t_dotnet_policy mode = (t_dotnet_policy)(i);
-		std::cout << "\t" << mode << " - " << translate_dotnet_policy(mode) << "\n";
-	}
+	print_mignore_param(param_color);
+	print_refl_param(param_color);
+	print_dnet_param(param_color);
 
 	print_in_color(separator_color, "\n---dump options---\n");
-	print_param_in_color(param_color, PARAM_IMP_REC);
-	std::cout << " <*imprec_mode>\n\t: Set in which mode the ImportTable should be recovered.\n";;
-	std::cout << "*imprec_mode:\n";
-	for (size_t i = 0; i < PE_IMPREC_MODES_COUNT; i++) {
-		t_imprec_mode mode = (t_imprec_mode)(i);
-		std::cout << "\t" << mode << " - " << translate_imprec_mode(mode) << "\n";
-	}
-
-	print_param_in_color(param_color, PARAM_DUMP_MODE);
-	std::cout << " <*dump_mode>\n\t: Set in which mode the detected PE files should be dumped.\n";
-	std::cout << "*dump_mode:\n";
-	for (DWORD i = 0; i < peconv::PE_DUMP_MODES_COUNT; i++) {
-		peconv::t_pe_dump_mode mode = (peconv::t_pe_dump_mode)(i);
-		std::cout << "\t" << mode << " - " << translate_dump_mode(mode) << "\n";
-	}
+	print_imprec_param(param_color);
+	print_dmode_param(param_color);
 
 	print_in_color(separator_color, "\n---output options---\n");
 
-	print_param_in_color(param_color, PARAM_OUT_FILTER);
-	std::cout << " <*ofilter_id>\n\t: Filter the dumped output.\n";
-	std::cout << "*ofilter_id:\n";
-	for (size_t i = 0; i < OUT_FILTERS_COUNT; i++) {
-		t_output_filter mode = (t_output_filter)(i);
-		std::cout << "\t" << mode << " - " << translate_out_filter(mode) << "\n";
-	}
+	print_out_filter_param(param_color);
 
 	print_param_in_color(param_color, PARAM_QUIET);
 	std::cout << "\t: Print only the summary. Do not log on stdout during the scan.\n";
@@ -256,24 +298,46 @@ int main(int argc, char *argv[])
 				char* mode_num = argv[i + 1];
 				if (isdigit(mode_num[0])) {
 					args.imprec_mode = normalize_imprec_mode(atoi(mode_num));
-					++i;
 				}
+				else {
+					print_imprec_param(ERROR_COLOR);
+					info_req = true;
+				}
+				++i;
 			}
 		}
 		else if (!strcmp(param, PARAM_OUT_FILTER) && (i + 1) < argc) {
-			args.out_filter = static_cast<t_output_filter>(atoi(argv[i + 1]));
-			i++;
-		}
-		else if (!strcmp(param, PARAM_MODULES_FILTER) && (i + 1) < argc) {
-			args.modules_filter = atoi(argv[i + 1]);
-			if (args.modules_filter > LIST_MODULES_ALL) {
-				args.modules_filter = LIST_MODULES_ALL;
+			int mode = atoi(argv[i + 1]);
+			if (isdigit(argv[i + 1][0]) && mode <= LIST_MODULES_ALL) {
+				args.out_filter = static_cast<t_output_filter>(atoi(argv[i + 1]));
 			}
-			i++;
+			else {
+					print_out_filter_param(ERROR_COLOR);
+					info_req = true;
+				}
+				++i;
+			}
+		else if (!strcmp(param, PARAM_MODULES_FILTER) && (i + 1) < argc) {
+			args.modules_filter = LIST_MODULES_ALL;
+			int mode = atoi(argv[i + 1]);
+			if (isdigit(argv[i + 1][0]) && mode <= LIST_MODULES_ALL) {
+				args.modules_filter = mode;
+			}
+			else {
+				print_module_filter_param(ERROR_COLOR);
+				info_req = true;
+			}
+			++i;
 		}
-		else if (!strcmp(param, PARAM_MODULES_IGNORE) && (i + 1) < argc) {
-			copyToCStr(args.modules_ignored, MAX_MODULE_BUF_LEN, argv[i + 1]);
-			i++;
+		else if (!strcmp(param, PARAM_MODULES_IGNORE)) {
+			if ((i + 1) < argc && !is_param(argv[i + 1]) && argv[i + 1][0] != PARAM_HELP2[0]) {
+				copyToCStr(args.modules_ignored, MAX_MODULE_BUF_LEN, argv[i + 1]);
+				++i;
+			}
+			else {
+				print_mignore_param(ERROR_COLOR);
+				info_req = true;
+			}
 		}
 		else if (!strcmp(param, PARAM_PID) && (i + 1) < argc) {
 			args.pid = get_number(argv[i + 1]);
@@ -294,9 +358,31 @@ int main(int argc, char *argv[])
 		}
 		else if (!strcmp(param, PARAM_SHELLCODE)) {
 			args.shellcode = true;
+			if ((i + 1) < argc && !is_param(argv[i + 1])) {
+				char* mode_num = argv[i + 1];
+				if (isdigit(mode_num[0])) {
+					args.shellcode = (atoi(mode_num) != 0) ? true : false;
+				}
+				else {
+					print_shellc_param(ERROR_COLOR);
+					info_req = true;
+				}
+				++i;
+			}
 		}
 		else if (!strcmp(param, PARAM_REFLECTION)) {
 			args.make_reflection = true;
+			if ((i + 1) < argc && !is_param(argv[i + 1])) {
+				char* mode_num = argv[i + 1];
+				if (isdigit(mode_num[0])) {
+					args.shellcode = (atoi(mode_num) != 0) ? true : false;
+				}
+				else {
+					print_refl_param(ERROR_COLOR);
+					info_req = true;
+				}
+				++i;
+			}
 		}
 		else if (!strcmp(param, PARAM_IAT)) {
 			args.iat = pesieve::PE_IATS_FILTERED;
@@ -304,25 +390,40 @@ int main(int argc, char *argv[])
 				char* mode_num = argv[i + 1];
 				if (isdigit(mode_num[0])) {
 					args.iat = (t_iat_scan_mode)atoi(mode_num);
-					++i;
 				}
+				else {
+					print_iat_param(ERROR_COLOR);
+					info_req = true;
+				}
+				++i;
 			}
-		} //PARAM_DOTNET_POLICY
+		}
 		else if (!strcmp(param, PARAM_DOTNET_POLICY)) {
-			args.dotnet_policy = pesieve::PE_DNET_AUTO;
+			args.dotnet_policy = pesieve::PE_DNET_SKIP_SHC;
 			if ((i + 1) < argc) {
 				char* mode_num = argv[i + 1];
 				if (isdigit(mode_num[0])) {
 					args.dotnet_policy = (t_dotnet_policy)atoi(mode_num);
-					++i;
 				}
+				else {
+					print_dnet_param(ERROR_COLOR);
+					info_req = true;
+				}
+				++i;
 			}
 		}
 		else if (!strcmp(param, PARAM_DATA)) {
 			args.data = true;
 		}
 		else if (!strcmp(param, PARAM_DUMP_MODE) && (i + 1) < argc) {
-			args.dump_mode = normalize_dump_mode(atoi(argv[i + 1]));
+			char* mode_num = argv[i + 1];
+			if (isdigit(mode_num[0])) {
+				args.dump_mode = normalize_dump_mode(atoi(mode_num));
+			}
+			else {
+				print_dmode_param(ERROR_COLOR);
+				info_req = true;
+			}
 			++i;
 		} else if (!strcmp(param, PARAM_DIR) && (i + 1) < argc) {
 			set_output_dir(args, argv[i + 1]);
