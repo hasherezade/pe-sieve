@@ -78,6 +78,19 @@ std::string pesieve::translate_modules_filter(DWORD m_filter)
 	return "undefined";
 }
 
+std::string pesieve::translate_data_mode(const pesieve::t_data_scan_mode &mode)
+{
+	switch (mode) {
+	case pesieve::PE_DATA_NO_SCAN:
+		return "none: do not scan non-executable pages"; 
+	case pesieve::PE_DATA_SCAN_NO_DEP:
+		return "if no DEP: scan non-executable if DEP is disabled";
+	case pesieve::PE_DNET_SCAN_ALWAYS:
+		return "always: scan non-executable pages unconditionally";
+	}
+	return "undefined";
+}
+
 std::string pesieve::translate_iat_scan_mode(const pesieve::t_iat_scan_mode mode)
 {
 	switch (mode) {

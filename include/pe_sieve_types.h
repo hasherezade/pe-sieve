@@ -52,6 +52,13 @@ namespace pesieve {
 		PE_DNET_COUNT
 	} t_dotnet_policy;
 
+	typedef enum {
+		PE_DATA_NO_SCAN = 0,// do not scan non-executable pages
+		PE_DATA_SCAN_NO_DEP = 1, // scan data if no DEP
+		PE_DNET_SCAN_ALWAYS = 2, // scan data always
+		PE_DATA_COUNT
+	} t_data_scan_mode;
+
 	typedef struct {
 		DWORD pid;
 		DWORD modules_filter;
@@ -62,7 +69,7 @@ namespace pesieve {
 		bool no_hooks; // don't scan for hooks
 		bool shellcode; // detect shellcode implants
 		t_iat_scan_mode iat; // detect IAT hooking
-		bool data; //scan non-executable pages if DEP for the process is disabled
+		t_data_scan_mode data; //should scan non-executable pages?
 		bool minidump; // make minidump of full process
 		t_dump_mode dump_mode;
 		bool json_output;

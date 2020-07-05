@@ -40,20 +40,29 @@ bool pesieve::WorkingSetScanner::isExecutable(MemPageData &memPageData)
 		|| (memPage.protection & PAGE_EXECUTE_WRITECOPY);
 	if (is_any_exec) return true;
 
-	if (this->args.data) {
-		is_any_exec = isPotentiallyExecutable(memPageData);
-	}
+	is_any_exec = isPotentiallyExecutable(memPageData, this->args.data);
 	return is_any_exec;
 }
 
-bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageData)
+bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageData, const t_data_scan_mode &mode)
 {
-	bool is_any_exec = false;
-	if (!memPage.is_dep_enabled) {
-		//DEP is disabled, check also pages that are readable
-		is_any_exec = (memPage.protection & PAGE_READWRITE)
-			|| (memPage.protection & PAGE_READONLY);
+	if (mode == pesieve::PE_DATA_NO_SCAN) {
+		return false;
 	}
+	if (mode == pesieve::PE_DATA_SCAN_NO_DEP 
+		&& memPage.is_dep_enabled)
+	{
+		return false;
+	}
+	bool is_any_exec = false;
+
+	if (memPage.mapping_type == MEM_IMAGE) {
+		is_any_exec = (memPage.protection & SECTION_MAP_READ);
+
+		if (is_any_exec) return true;
+	}
+	is_any_exec = (memPage.protection & PAGE_READWRITE)
+		|| (memPage.protection & PAGE_READONLY);
 	return is_any_exec;
 }
 

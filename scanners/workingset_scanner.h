@@ -104,7 +104,7 @@ namespace pesieve {
 		bool isScannedAsModule(MemPageData &memPageData);
 
 		bool isExecutable(MemPageData &memPageData);
-		bool isPotentiallyExecutable(MemPageData &memPageData);
+		bool isPotentiallyExecutable(MemPageData &memPageData, const t_data_scan_mode &mode);
 		bool isCode(MemPageData &memPageData);
 		WorkingSetScanReport* scanExecutableArea(MemPageData &memPageData);
 

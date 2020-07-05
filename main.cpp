@@ -206,6 +206,16 @@ void print_refl_param(int param_color)
 	}
 }
 
+void print_data_param(int param_color)
+{
+	print_param_in_color(param_color, PARAM_DATA);
+	std::cout << " <*data_scan_mode>\n\t: Set if non-executable pages should be scanned.\n";
+	std::cout << "*data_scan_mode:\n";
+	for (DWORD i = 0; i <= pesieve::PE_DATA_COUNT; i++) {
+		std::cout << "\t" << i << " - " << translate_data_mode((pesieve::t_data_scan_mode) i) << "\n";
+	}
+}
+
 void print_pid_param(int param_color)
 {
 	print_param_in_color(param_color, PARAM_PID);
@@ -227,8 +237,7 @@ void print_help()
 	print_iat_param(param_color);
 	print_shellc_param(param_color);
 
-	print_param_in_color(param_color, PARAM_DATA);
-	std::cout << "\t: If DEP is disabled scan also non-executable memory\n\t  (which potentially can be executed).\n";
+	print_data_param(param_color);
 #ifdef _WIN64
 	print_module_filter_param(param_color);
 #endif
@@ -433,8 +442,14 @@ int main(int argc, char *argv[])
 		{
 			continue;
 		}
-		else if (!strcmp(param, PARAM_DATA)) {
-			args.data = true;
+		else if (get_int_param(argc, argv, param, i,
+			PARAM_DATA,
+			args.data,
+			pesieve::PE_DATA_SCAN_NO_DEP,
+			info_req,
+			print_data_param))
+		{
+			continue;
 		}
 		else if (get_int_param(argc, argv, param, i,
 			PARAM_DUMP_MODE,
