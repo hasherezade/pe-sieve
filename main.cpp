@@ -211,7 +211,7 @@ void print_data_param(int param_color)
 	print_param_in_color(param_color, PARAM_DATA);
 	std::cout << " <*data_scan_mode>\n\t: Set if non-executable pages should be scanned.\n";
 	std::cout << "*data_scan_mode:\n";
-	for (DWORD i = 0; i <= pesieve::PE_DATA_COUNT; i++) {
+	for (DWORD i = 0; i < pesieve::PE_DATA_COUNT; i++) {
 		std::cout << "\t" << i << " - " << translate_data_mode((pesieve::t_data_scan_mode) i) << "\n";
 	}
 }
