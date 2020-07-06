@@ -639,7 +639,7 @@ bool pesieve::ArtefactScanner::setSecHdr(ArtefactScanner::ArtefactsMapping &aMap
 	//if NT headers not found, search before sections header:
 	if (!aMap.nt_file_hdr) {
 		// try to find NT header relative to the sections header:
-		size_t suggested_nt_offset = calc_nt_hdr_offset(aMap.memPage, _sec_hdr, this->is64bit);
+		size_t suggested_nt_offset = calc_nt_hdr_offset(aMap.memPage, _sec_hdr, this->isProcess64bit);
 		if (suggested_nt_offset != INVALID_OFFSET && (sec_hdr_offset >= suggested_nt_offset)) {
 			aMap.nt_file_hdr = findNtFileHdr(aMap.memPage, suggested_nt_offset, sec_hdr_offset);
 		}
@@ -713,6 +713,16 @@ PeArtefacts* pesieve::ArtefactScanner::generateArtefacts(ArtefactScanner::Artefa
 	if (aMap.nt_file_hdr) {
 		peArt->isDll = ((aMap.nt_file_hdr->Characteristics & IMAGE_FILE_DLL) != 0);
 	}
+
+	if (aMap.nt_file_hdr && aMap.nt_file_hdr->Machine == IMAGE_FILE_MACHINE_I386) {
+		aMap.is64bit = false;
+	}
+	else if (aMap.nt_file_hdr && aMap.nt_file_hdr->Machine == IMAGE_FILE_MACHINE_AMD64) {
+		aMap.is64bit = true;
+	}
+	else {
+		aMap.is64bit = this->isProcess64bit;
+	}
 	peArt->is64bit = aMap.is64bit;
 	return peArt;
 }
@@ -723,13 +733,13 @@ PeArtefacts* pesieve::ArtefactScanner::findArtefacts(MemPageData &memPage, size_
 		return nullptr;
 	}
 
-	ArtefactsMapping bestMapping(memPage, this->is64bit);
+	ArtefactsMapping bestMapping(memPage, this->isProcess64bit);
 
 	for (size_t min_offset = start_offset; min_offset < memPage.getLoadedSize(); min_offset++)
 	{
 		//std::cout << "Searching DOS header, min_offset: " << std::hex << min_offset << std::endl;
 
-		ArtefactsMapping aMap(memPage, this->is64bit);
+		ArtefactsMapping aMap(memPage, this->isProcess64bit);
 		//try to find the DOS header
 		if (findMzPe(aMap, min_offset)) {
 			const size_t dos_offset = calc_offset(memPage, aMap.dos_hdr);
