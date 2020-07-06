@@ -71,11 +71,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 	if (!memPage.load()) {
 		return nullptr;
 	}
-	if (!isCode(memPage)) {
-		// shellcode patterns not found
-		return nullptr;
-	}
-	//shellcode found! now examine it with more details:
+	// check for PE artifacts (regardless if it has shellcode patterns):
 	if (!isScannedAsModule(memPage)) {
 		ArtefactScanner artefactScanner(this->processHandle, memPage, this->processReport);
 		WorkingSetScanReport *my_report1 = artefactScanner.scanRemote();
@@ -86,6 +82,10 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 	}
 	if (!this->args.shellcode) {
 		// not a PE file, and we are not interested in shellcode, so just finish it here
+		return nullptr;
+	}
+	if (!isCode(memPage)) {
+		// shellcode patterns not found
 		return nullptr;
 	}
 	//report about shellcode:
