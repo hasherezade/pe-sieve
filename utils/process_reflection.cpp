@@ -269,7 +269,7 @@ namespace pesieve {
 			if (procHndl && snapshot) {
 				BOOL is_ok = _PssFreeSnapshot(procHndl, snapshot);
 #ifdef _DEBUG
-				std::cout << "Released process snapshot\n";
+				if (is_ok) std::cout << "Released process snapshot\n";
 #endif
 				return is_ok;
 			}
