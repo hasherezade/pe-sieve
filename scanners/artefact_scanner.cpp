@@ -439,10 +439,14 @@ IMAGE_SECTION_HEADER* pesieve::ArtefactScanner::findSecByPatterns(MemPageData &m
 	ULONGLONG diff = (ULONGLONG)first_sec - (ULONGLONG)memPage.getLoadedData();
 	size_t count = count_section_hdrs(memPage.getLoadedData(), memPage.getLoadedSize(), first_sec);
 	if (!_validateSecRegions(memPage, first_sec, count)) {
+#ifdef _DEBUG
 		std::cout << "[!] section header: " << std::hex << (ULONGLONG)memPage.region_start << " hdr at: " << diff << " : validation failed!\n";
+#endif
 		return nullptr;
 	}
+#ifdef _DEBUG
 	std::cout << "[+] section header: " << std::hex << (ULONGLONG)memPage.region_start << " hdr at: " << diff << " : validation OK!\n";
+#endif
 	return (IMAGE_SECTION_HEADER*)first_sec;
 }
 
