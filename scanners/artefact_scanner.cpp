@@ -128,6 +128,7 @@ ULONGLONG pesieve::ArtefactScanner::_findMZoffset(MemPageData &memPage, LPVOID s
 	if (hdrs_offset == INVALID_OFFSET) {
 		return INVALID_OFFSET;
 	}
+	
 	const BYTE mz_sig[] = "MZ\x90";
 
 	BYTE *min_search = memPage.getLoadedData();
@@ -135,7 +136,9 @@ ULONGLONG pesieve::ArtefactScanner::_findMZoffset(MemPageData &memPage, LPVOID s
 	size_t space = PAGE_SIZE;
 	//std::cout << "Searching the MZ header starting from: " << std::hex << hdrs_offset << "\n";
 	for (BYTE *search_ptr = start_ptr; search_ptr >= min_search && space > 0; search_ptr--, space--) {
-		if (search_ptr[0] == mz_sig[0] && search_ptr[1] == mz_sig[1] && search_ptr[2] == mz_sig[2]) {
+		if ((search_ptr[0] == mz_sig[0] && search_ptr[1] == mz_sig[1] )
+			&& (search_ptr[2] == mz_sig[2] || search_ptr[2] == 0))
+		{
 			//std::cout << "MZ header found!\n";
 			return calc_offset(memPage, search_ptr);
 		}
