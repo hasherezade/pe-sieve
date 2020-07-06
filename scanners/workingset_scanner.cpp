@@ -49,8 +49,16 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageDat
 	if (mode == pesieve::PE_DATA_NO_SCAN) {
 		return false;
 	}
+
+	const bool is_managed = (this->processReport) ? this->processReport->isManagedProcess() : false;
+
 	if (mode == pesieve::PE_DATA_SCAN_NO_DEP 
-		&& memPage.is_dep_enabled)
+		&& memPage.is_dep_enabled && !is_managed)
+	{
+		return false;
+	}
+	if (mode == pesieve::PE_DATA_SCAN_DOTNET
+		&& !is_managed)
 	{
 		return false;
 	}

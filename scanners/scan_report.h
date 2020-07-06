@@ -87,6 +87,7 @@ namespace pesieve {
 
 		pesieve::t_report generateSummary() const;
 		DWORD getPid() { return pid; }
+		bool isManagedProcess() { return this->isManaged; }
 
 		std::string mainImagePath;
 		std::vector<ModuleScanReport*> moduleReports; //TODO: make it protected

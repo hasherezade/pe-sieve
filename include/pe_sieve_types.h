@@ -54,8 +54,9 @@ namespace pesieve {
 
 	typedef enum {
 		PE_DATA_NO_SCAN = 0,// do not scan non-executable pages
-		PE_DATA_SCAN_NO_DEP = 1, // scan data if no DEP
-		PE_DNET_SCAN_ALWAYS = 2, // scan data always
+		PE_DATA_SCAN_DOTNET, // scan data in .NET applications
+		PE_DATA_SCAN_NO_DEP, // scan data if no DEP or in .NET applications
+		PE_DNET_SCAN_ALWAYS, // scan data in .NET applications, or in all if DEP disabled
 		PE_DATA_COUNT
 	} t_data_scan_mode;
 
