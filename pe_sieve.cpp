@@ -207,10 +207,12 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 		}
 	}
 	catch (std::exception &e) {
+		delete report;
+		report = nullptr;
+
 		if (!args.quiet) {
 			util::print_in_color(ERROR_COLOR, std::string("[ERROR] ") + e.what() + "\n", true);
 		}
-		return nullptr;
 	}
 	if (cloned_proc) {
 		release_process_reflection(&cloned_proc);
