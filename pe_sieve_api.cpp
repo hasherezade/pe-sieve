@@ -15,7 +15,7 @@ PEsieve_report PESIEVE_API_FUNC PESieve_scan(const PEsieve_params args)
 	if (report == nullptr) {
 		pesieve::t_report nullrep = { 0 };
 		nullrep.pid = args.pid;
-		nullrep.errors = 1;
+		nullrep.errors = pesieve::ERROR_SCAN_FAILURE;
 		return nullrep;
 	}
 	pesieve::t_report summary = report->scan_report->generateSummary();
