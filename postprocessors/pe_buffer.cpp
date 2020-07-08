@@ -141,7 +141,7 @@ bool pesieve::PeBuffer::dumpPeToFile(
 			dumpMode = peconv::PE_DUMP_AUTO; //revert and try again
 		}
 	}
-	// save the read module into a file
+	// dump PE in a given dump mode:
 	return peconv::dump_pe(dumpFileName.c_str(), this->vBuf, this->vBufSize, this->relocBase, dumpMode);
 }
 
