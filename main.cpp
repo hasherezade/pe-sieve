@@ -392,6 +392,15 @@ int main(int argc, char *argv[])
 		{
 			continue;
 		}
+		else if (get_int_param<DWORD>(argc, argv, param, i,
+			PARAM_MODULES_FILTER,
+			args.modules_filter,
+			LIST_MODULES_ALL,
+			info_req,
+			print_module_filter_param))
+		{
+			continue;
+		}
 		else if (get_cstr_param(argc, argv, param, i,
 			PARAM_MODULES_IGNORE,
 			args.modules_ignored,
