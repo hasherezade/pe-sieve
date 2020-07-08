@@ -158,6 +158,7 @@ pesieve::t_report pesieve::ProcessScanReport::generateSummary() const
 {
 	t_report summary = { 0 };
 	summary.pid = this->pid;
+	summary.is_64bit = this->is64bit;
 	summary.is_managed = this->isManaged;
 	summary.errors = static_cast<DWORD>(this->errorsCount);
 	summary.skipped = static_cast<DWORD>(this->reportsByType[REPORT_SKIPPED_SCAN].size());
@@ -220,6 +221,8 @@ const bool pesieve::ProcessScanReport::toJSON(std::stringstream &stream, size_t 
 	stream << "{\n";
 	OUT_PADDED(stream, level, "\"pid\" : ");
 	stream << std::dec << report.pid << ",\n";
+	OUT_PADDED(stream, level, "\"bitness\" : ");
+	stream << std::dec << ((report.is_64bit) ? 64 : 32) << ",\n";
 	OUT_PADDED(stream, level, "\"is_managed\" : ");
 	stream << std::dec << report.is_managed << ",\n";
 	OUT_PADDED(stream, level, "\"main_image_path\" : \"");

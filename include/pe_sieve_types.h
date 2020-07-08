@@ -82,6 +82,7 @@ namespace pesieve {
 	typedef struct {
 		DWORD pid; // pid of the process that was scanned
 		bool is_managed; // is process managed (.NET)
+		bool is_64bit;
 		DWORD scanned; // number of all scanned modules
 		DWORD suspicious;// general summary of suspicious
 		DWORD replaced; // PE file replaced in memory (probably hollowed)

@@ -156,12 +156,7 @@ namespace pesieve {
 			: processHandle(_procHndl), processReport(_process_report), isProcess64bit(false),
 			memPage(_memPageData), prevMemPage(nullptr), artPagePtr(nullptr)
 		{
-#ifdef _WIN64 //is the scanner 64 bit?
-			BOOL isWow64 = FALSE;
-			if (pesieve::util::is_process_wow64(_procHndl, &isWow64)) {
-				isProcess64bit = !isWow64;
-			}
-#endif
+			isProcess64bit = pesieve::util::is_process_64bit(this->processHandle);
 		}
 
 		virtual ~ArtefactScanner()

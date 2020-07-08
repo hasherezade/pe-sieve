@@ -39,6 +39,32 @@ BOOL pesieve::util::is_process_wow64(IN HANDLE processHandle, OUT BOOL* isProcWo
 	return g_IsWow64Process(processHandle, isProcWow64);
 }
 
+bool pesieve::util::is_process_64bit(IN HANDLE process)
+{
+	BOOL isScanner32bit = TRUE;
+#ifdef _WIN64 //is the scanner 64 bit?
+	isScanner32bit = FALSE;
+#endif
+	BOOL isScannerWow64 = FALSE;
+	pesieve::util::is_process_wow64(GetCurrentProcess(), &isScannerWow64);
+
+	BOOL isSystem64bit = !isScanner32bit || (isScanner32bit && isScannerWow64);
+	if (!isSystem64bit) {
+		//the system is not 64 bit, so for sure the app is 32 bit
+		return false; 
+	}
+
+	BOOL isProcessWow = FALSE;
+	pesieve::util::is_process_wow64(process, &isProcessWow);
+
+	if (isProcessWow) {
+		// the system is 64 bit, and the process runs as Wow64, so it is 32 bit
+		return false;
+	}
+	// the system is 64 bit, and the process runs NOT as Wow64, so it is 64 bit
+	return true;
+}
+
 BOOL pesieve::util::wow64_disable_fs_redirection(OUT PVOID* OldValue)
 {
 	if (!g_Wow64DisableWow64FsRedirection) {
