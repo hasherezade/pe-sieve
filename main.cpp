@@ -67,6 +67,7 @@ size_t copyToCStr(char *buf, size_t buf_max, const std::string &value)
 	size_t len = value.length() + 1;
 	if (len > buf_max) len = buf_max;
 
+	memset(buf, 0, buf_max);
 	memcpy(buf, value.c_str(), len);
 	buf[len] = '\0';
 	return len;
@@ -222,6 +223,30 @@ void print_pid_param(int param_color)
 	std::cout << " <target_pid>\n\t: Set the PID of the target process.\n\t(decimal, or hexadecimal with '0x' prefix)\n";
 }
 
+void print_json_param(int param_color)
+{
+	print_param_in_color(param_color, PARAM_JSON);
+	std::cout << "\t: Print the JSON report as the summary.\n";
+}
+
+void print_quiet_param(int param_color)
+{
+	print_param_in_color(param_color, PARAM_QUIET);
+	std::cout << "\t: Print only the summary. Do not log on stdout during the scan.\n";
+}
+
+void print_minidump_param(int param_color)
+{
+	print_param_in_color(param_color, PARAM_MINIDUMP);
+	std::cout << ": Create a minidump of the full suspicious process.\n";
+}
+
+void print_output_dir_param(int param_color)
+{
+	print_param_in_color(param_color, PARAM_DIR);
+	std::cout << " <output_dir>\n\t: Set a root directory for the output (default: current directory).\n";
+}
+
 void print_help()
 {
 	const int hdr_color = HEADER_COLOR;
@@ -253,16 +278,12 @@ void print_help()
 
 	print_out_filter_param(param_color);
 
-	print_param_in_color(param_color, PARAM_QUIET);
-	std::cout << "\t: Print only the summary. Do not log on stdout during the scan.\n";
-	print_param_in_color(param_color, PARAM_JSON);
-	std::cout << "\t: Print the JSON report as the summary.\n";
+	print_quiet_param(param_color);
+	print_json_param(param_color);
 
-	print_param_in_color(param_color, PARAM_MINIDUMP);
-	std::cout << ": Create a minidump of the full suspicious process.\n";
+	print_minidump_param(param_color);
+	print_output_dir_param(param_color);
 
-	print_param_in_color(param_color, PARAM_DIR);
-	std::cout << " <output_dir>\n\t: Set a root directory for the output (default: current directory).\n";
 	print_in_color(hdr_color, "\nInfo: \n");
 	print_param_in_color(param_color, PARAM_HELP);
 	std::cout << "    : Print this help.\n";
@@ -308,19 +329,6 @@ void print_scan_report(const ProcessScanReport& report, const t_params args)
 	if (!args.json_output) {
 		std::cout << "---" << std::endl;
 	}
-}
-
-bool set_output_dir(t_params &args, const char *new_dir)
-{
-	if (!new_dir) return false;
-
-	size_t new_len = strlen(new_dir);
-	size_t buffer_len = sizeof(args.output_dir);
-	if (new_len > buffer_len) return false;
-
-	memset(args.output_dir, 0, buffer_len);
-	memcpy(args.output_dir, new_dir, new_len);
-	return true;
 }
 
 void print_unknown_param(const char *param)
@@ -387,7 +395,7 @@ int main(int argc, char *argv[])
 		else if (get_cstr_param(argc, argv, param, i,
 			PARAM_MODULES_IGNORE,
 			args.modules_ignored,
-			MAX_MODULE_BUF_LEN,
+			_countof(args.modules_ignored),
 			info_req,
 			print_mignore_param))
 		{
@@ -397,14 +405,32 @@ int main(int argc, char *argv[])
 			std::cout << PESIEVE_VERSION << "\n";
 			info_req = true;
 		}
-		else if (!strcmp(param, PARAM_QUIET)) {
-			args.quiet = true;
+		else if (get_int_param(argc, argv, param, i,
+			PARAM_QUIET,
+			args.quiet,
+			true,
+			info_req,
+			print_quiet_param))
+		{
+			continue;
 		}
-		else if (!strcmp(param, PARAM_JSON)) {
-			args.json_output = true;
+		else if (get_int_param(argc, argv, param, i,
+			PARAM_JSON,
+			args.json_output,
+			true,
+			info_req,
+			print_json_param))
+		{
+			continue;
 		}
-		else if (!strcmp(param, PARAM_MINIDUMP)) {
-			args.minidump = true;
+		else if (get_int_param(argc, argv, param, i,
+			PARAM_MINIDUMP,
+			args.minidump,
+			true,
+			info_req,
+			print_minidump_param))
+		{
+			continue;
 		}
 		else if (get_int_param(argc, argv, param, i,
 			PARAM_SHELLCODE,
@@ -461,10 +487,16 @@ int main(int argc, char *argv[])
 			args.dump_mode = normalize_dump_mode(args.dump_mode);
 			continue;
 		}
-		else if (!strcmp(param, PARAM_DIR) && (i + 1) < argc) {
-			set_output_dir(args, argv[i + 1]);
-			++i;
-		} else {
+		else if (get_cstr_param(argc, argv, param, i,
+			PARAM_DIR,
+			args.output_dir,
+			_countof(args.output_dir),
+			info_req,
+			print_output_dir_param))
+		{
+			continue;
+		}
+		else {
 			print_unknown_param(argv[i]);
 			print_in_color(HILIGHTED_COLOR, "Available parameters:\n\n");
 			print_help();
