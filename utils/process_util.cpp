@@ -48,7 +48,7 @@ bool pesieve::util::is_process_64bit(IN HANDLE process)
 	BOOL isScannerWow64 = FALSE;
 	pesieve::util::is_process_wow64(GetCurrentProcess(), &isScannerWow64);
 
-	BOOL isSystem64bit = !isScanner32bit || (isScanner32bit && isScannerWow64);
+	const BOOL isSystem64bit = !isScanner32bit || isScannerWow64;
 	if (!isSystem64bit) {
 		//the system is not 64 bit, so for sure the app is 32 bit
 		return false; 
