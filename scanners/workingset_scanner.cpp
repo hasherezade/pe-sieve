@@ -118,10 +118,7 @@ bool pesieve::WorkingSetScanner::isScannedAsModule(MemPageData &memPage)
 
 bool pesieve::WorkingSetScanner::scanImg()
 {
-	bool show_info = (!args.quiet);
-#ifdef _DEBUG
-	show_info = true;
-#endif
+	const bool show_info = (!args.quiet);
 
 	if (!memPage.loadMappedName()) {
 		//cannot retrieve the mapped name
@@ -181,7 +178,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanRemote()
 		return nullptr;
 	}
 	// is the page executable?
-	bool is_any_exec = isExecutable(memPage);
+	const bool is_any_exec = isExecutable(memPage);
 	if (!is_any_exec) {
 		// probably not interesting
 		return nullptr;
@@ -204,14 +201,10 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanRemote()
 			return nullptr;
 		}
 	}
-
-	WorkingSetScanReport* my_report = nullptr;
-	if (is_any_exec) {
 #ifdef _DEBUG
-		std::cout << std::hex << memPage.start_va << ": Scanning executable area" << std::endl;
+	std::cout << std::hex << memPage.start_va << ": Scanning executable area" << std::endl;
 #endif
-		my_report = this->scanExecutableArea(memPage);
-	}
+	WorkingSetScanReport* my_report = this->scanExecutableArea(memPage);
 	if (!my_report) {
 		return nullptr;
 	}

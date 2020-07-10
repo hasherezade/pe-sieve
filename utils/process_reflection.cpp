@@ -252,7 +252,6 @@ namespace pesieve {
 				| PSS_CREATE_USE_VM_ALLOCATIONS
 				| PSS_CREATE_RELEASE_SECTION);
 
-			DWORD thread_ctx_flags = CONTEXT_ALL;
 			HPSS snapShot = { 0 };
 			DWORD ret = _PssCaptureSnapshot(orig_hndl, capture_flags, 0, &snapShot);
 			if (ret != ERROR_SUCCESS) {
