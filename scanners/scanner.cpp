@@ -66,26 +66,22 @@ t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, Modu
 	return is_suspicious;
 }
 
-t_scan_status pesieve::ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report, bool filter)
+t_scan_status pesieve::ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report, bool filter)
 {
-	const peconv::ExportsMapper *expMap = process_report->exportsMap;
+	const peconv::ExportsMapper *expMap = process_report.exportsMap;
 	if (!expMap) {
 		return SCAN_ERROR;
 	}
 
-	IATScanner scanner(processHandle, modData, remoteModData, *expMap, process_report->modulesInfo, filter);
+	IATScanner scanner(processHandle, modData, remoteModData, *expMap, process_report.modulesInfo, filter);
 
 	IATScanReport *scan_report = scanner.scanRemote();
 	if (!scan_report) {
 		return SCAN_ERROR;
 	}
 	t_scan_status scan_res = ModuleScanReport::get_scan_status(scan_report);
-	if (process_report) {
-		process_report->appendReport(scan_report);
-	}
-	else {
-		delete scan_report; scan_report = nullptr;
-	}
+	scan_report->moduleFile = modData.szModName;
+	process_report.appendReport(scan_report);
 	return scan_res;
 }
 
@@ -381,7 +377,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 		}
 
 		bool filterSysHooks = (this->args.iat == pesieve::PE_IATS_FILTERED) ? true : false;
-		t_scan_status is_iat_patched = scanForIATHooks(processHandle, modData, remoteModData, &pReport, filterSysHooks);
+		t_scan_status is_iat_patched = scanForIATHooks(processHandle, modData, remoteModData, pReport, filterSysHooks);
 		if (is_iat_patched == SCAN_ERROR) {
 			continue;
 		}
