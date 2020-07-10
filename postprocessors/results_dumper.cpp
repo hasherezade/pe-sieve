@@ -212,7 +212,7 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 {
 	if (!mod) return nullptr;
 
-	bool save_imp_report = true;
+	const bool save_imp_report = true;
 	bool is_dumped = false;
 
 	peconv::t_pe_dump_mode curr_dump_mode = convert_to_peconv_dump_mode(dump_mode);
@@ -236,7 +236,7 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 				is_corrupt_pe = true;
 				payload_ext = "corrupt_" + payload_ext;
 				if (!this->quiet) {
-					std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG)mod->module << " failed." << std::endl;
+					std::cout << "[-] Reconstructing PE at: " << std::hex << (ULONGLONG)found_pe_base << " failed." << std::endl;
 				}
 			}
 		}

@@ -437,9 +437,9 @@ IMAGE_SECTION_HEADER* pesieve::ArtefactScanner::findSecByPatterns(MemPageData &m
 	}
 	// is it really the first section?
 	IMAGE_SECTION_HEADER *first_sec = get_first_section(memPage.getLoadedData(), memPage.getLoadedSize(), (IMAGE_SECTION_HEADER*) hdr_ptr);
-	if (!first_sec) return nullptr;
-
-	ULONGLONG diff = (ULONGLONG)first_sec - (ULONGLONG)memPage.getLoadedData();
+	if (!first_sec) {
+		return nullptr;
+	}
 	size_t count = count_section_hdrs(memPage.getLoadedData(), memPage.getLoadedSize(), first_sec);
 	if (!_validateSecRegions(memPage, first_sec, count)) {
 #ifdef _DEBUG
@@ -664,13 +664,12 @@ bool pesieve::ArtefactScanner::setSecHdr(ArtefactScanner::ArtefactsMapping &aMap
 
 bool pesieve::ArtefactScanner::setNtFileHdr(ArtefactScanner::ArtefactsMapping &aMap, IMAGE_FILE_HEADER* _nt_hdr)
 {
-	if (_nt_hdr == nullptr) return false;
+	if (!_nt_hdr) return false;
 
 	aMap.nt_file_hdr = _nt_hdr;
 	
 	MemPageData &memPage = aMap.memPage;
 	BYTE* loadedData = aMap.memPage.getLoadedData();
-	size_t loadedSize = aMap.memPage.getLoadedSize();
 
 	//calculate sections header offset from FileHeader:
 	if (!aMap.sec_hdr) {

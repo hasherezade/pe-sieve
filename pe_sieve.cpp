@@ -118,12 +118,13 @@ namespace pesieve {
 		if (dumper.dumpJsonReport(process_report, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS) && !args.quiet) {
 			std::cout << "[+] Report dumped to: " << dumper.getOutputDir() << std::endl;
 		}
-		size_t dumped_modules = 0;
+		
 		if (args.out_filter != OUT_NO_DUMPS) {
 			pesieve::t_dump_mode dump_mode = pesieve::PE_DUMP_AUTO;
 			if (args.dump_mode < peconv::PE_DUMP_MODES_COUNT) {
 				dump_mode = pesieve::t_dump_mode(args.dump_mode);
 			}
+			size_t dumped_modules = 0;
 			dumpReport = dumper.dumpDetectedModules(hProcess, process_report, dump_mode, args.imprec_mode);
 			if (dumpReport && dumpReport->countDumped()) {
 				dumped_modules = dumpReport->countDumped();

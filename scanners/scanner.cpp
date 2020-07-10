@@ -143,7 +143,7 @@ bool pesieve::ProcessScanner::filterDotNetReport(ProcessScanReport& process_repo
 			}
 		}
 	}
-	return true;
+	return is_set;
 }
 
 ProcessScanReport* pesieve::ProcessScanner::scanRemote()

@@ -235,7 +235,6 @@ bool pesieve::ImpReconstructor::findImportTable(IN const peconv::ExportsMapper* 
 		IATBlock *currIAT = itr->second;
 
 		const DWORD iat_offset = currIAT->iatOffset;
-		const size_t iat_end = iat_offset + currIAT->iatSize;
 #ifdef _DEBUG
 		std::cout << "[*] Searching import table for IAT: " << std::hex << iat_offset << ", size: " << currIAT->iatSize << std::endl;
 #endif

@@ -37,9 +37,7 @@ size_t pesieve::PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_
 	size_t mov_instr_len = is_long ? 9 : 5;
 	PBYTE jmp_ptr = patch_ptr + mov_instr_len; // next instruction
 
-	BYTE modifier0 = 0;
 	if (is64Modifier(*patch_ptr)) {
-		modifier0 = *patch_ptr;
 		patch_ptr++;
 		jmp_ptr++;
 		mov_instr_len++; // add length of modifier
@@ -48,9 +46,7 @@ size_t pesieve::PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_
 	DWORD reg_id0 = patch_ptr[0] - 0xB8;
 
 	// before call/jmp there can be also the modifier...
-	BYTE modifier1 = 0;
 	if (is64Modifier(*jmp_ptr)) {
-		modifier1 = *jmp_ptr;
 		jmp_ptr++;
 		mov_instr_len++; // add length of modifier
 	}
