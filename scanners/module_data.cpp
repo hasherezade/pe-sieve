@@ -193,7 +193,6 @@ bool pesieve::RemoteModuleData::loadFullImage()
 
 bool pesieve::RemoteModuleData::loadHeader()
 {
-	SIZE_T read_size = 0;
 	if (!peconv::read_remote_pe_header(this->processHandle, (PBYTE)this->modBaseAddr, this->headerBuffer, peconv::MAX_HEADER_SIZE)) {
 		return false;
 	}

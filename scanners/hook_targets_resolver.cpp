@@ -23,7 +23,6 @@ bool pesieve::HookTargetResolver::resolveTarget(PatchList::Patch* currPatch)
 		std::cout << "Searching hook in module: " << std::hex << begin << std::endl;
 #endif
 		if (searchedAddr >= begin && searchedAddr < end) {
-			DWORD searchedRVA = DWORD(searchedAddr - begin);
 #ifdef _DEBUG
 			std::cout << "[+] Address found in module: " << std::hex << modInfo.moduleAddr << std::endl;
 #endif

@@ -283,14 +283,13 @@ t_scan_status pesieve::CodeScanner::scanUsingBase(IN ULONGLONG load_base, IN std
 	size_t errors = 0;
 	size_t modified = 0;
 	std::map<size_t, PeSection*>::iterator itr;
-	t_section_status sec_status = pesieve::CodeScanner::SECTION_SCAN_ERR;
 
 	for (itr = remote_code.begin(); itr != remote_code.end(); ++itr) {
 		size_t sec_indx = itr->first;
 		PeSection *remoteSec = itr->second;
 
 		PeSection originalSec(moduleData, sec_indx);
-		sec_status = scanSection(originalSec, *remoteSec, patchesList);
+		t_section_status sec_status = scanSection(originalSec, *remoteSec, patchesList);
 
 		if (sec_status == pesieve::CodeScanner::SECTION_SCAN_ERR) errors++;
 		else if (sec_status != pesieve::CodeScanner::SECTION_NOT_MODIFIED) {
