@@ -209,7 +209,7 @@ IATScanReport* pesieve::IATScanner::scanRemote()
 bool pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATScanReport &report)
 {
 	std::map<ULONGLONG, ULONGLONG>::iterator itr;
-	for (itr = notCovered.thunkToAddr.begin(); itr != notCovered.thunkToAddr.end(); itr++)
+	for (itr = notCovered.thunkToAddr.begin(); itr != notCovered.thunkToAddr.end(); ++itr)
 	{
 		const ULONGLONG thunk = itr->first;
 		const ULONGLONG addr = itr->second;
