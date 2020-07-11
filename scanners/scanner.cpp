@@ -27,7 +27,7 @@
 using namespace pesieve;
 using namespace pesieve::util;
 
-t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report)
+t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
 	BOOL isWow64 = FALSE;
 #ifdef _WIN64
@@ -36,9 +36,7 @@ t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, Modu
 	HeadersScanner hollows(processHandle, modData, remoteModData);
 	HeadersScanReport *scan_report = hollows.scanRemote();
 	if (!scan_report) {
-		if (process_report) {
-			process_report->appendReport(new UnreachableModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
-		}
+		process_report.appendReport(new UnreachableModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
 		return SCAN_ERROR;
 	}
 	
@@ -57,12 +55,7 @@ t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, Modu
 	if (is_suspicious && !scan_report->isHdrReplaced()) {
 		is_suspicious = SCAN_NOT_SUSPICIOUS;
 	}
-	if (process_report) {
-		process_report->appendReport(scan_report);
-	}
-	else {
-		delete scan_report; scan_report = nullptr;
-	}
+	process_report.appendReport(scan_report);
 	return is_suspicious;
 }
 
@@ -85,7 +78,7 @@ t_scan_status pesieve::ProcessScanner::scanForIATHooks(HANDLE processHandle, Mod
 	return scan_res;
 }
 
-t_scan_status pesieve::ProcessScanner::scanForHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport* process_report)
+t_scan_status pesieve::ProcessScanner::scanForHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
 	CodeScanner hooks(processHandle, modData, remoteModData);
 
@@ -95,12 +88,7 @@ t_scan_status pesieve::ProcessScanner::scanForHooks(HANDLE processHandle, Module
 	t_scan_status is_hooked = ModuleScanReport::get_scan_status(scan_report);
 
 	scan_report->moduleFile = modData.szModName;
-	if (process_report) {
-		process_report->appendReport(scan_report);
-	}
-	else {
-		delete scan_report; scan_report = nullptr;
-	}
+	process_report.appendReport(scan_report);
 	return is_hooked;
 }
 
@@ -233,7 +221,7 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 		memPage.is_listed_module = pReport.hasModule(region_base);
 		memPage.is_dep_enabled = this->isDEP;
 
-		WorkingSetScanner memPageScanner(this->processHandle, memPage, this->args, &pReport);
+		WorkingSetScanner memPageScanner(this->processHandle, memPage, this->args, pReport);
 		WorkingSetScanReport *my_report = memPageScanner.scanRemote();
 
 		counter++;
@@ -325,7 +313,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 			pReport.appendReport(new MalformedHeaderReport(processHandle, hMods[counter], 0, modData.szModName));
 			continue;
 		}
-		t_scan_status is_hollowed = scanForHollows(processHandle, modData, remoteModData, &pReport);
+		t_scan_status is_hollowed = scanForHollows(processHandle, modData, remoteModData, pReport);
 		if (is_hollowed == SCAN_ERROR) {
 			continue;
 		}
@@ -338,7 +326,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 		}
 		// if hooks not disabled and process is not hollowed, check for hooks:
 		if (!args.no_hooks && (is_hollowed == SCAN_NOT_SUSPICIOUS)) {
-			scanForHooks(processHandle, modData, remoteModData, &pReport);
+			scanForHooks(processHandle, modData, remoteModData, pReport);
 		}
 	}
 	return counter;

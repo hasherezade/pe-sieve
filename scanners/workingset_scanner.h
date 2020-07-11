@@ -88,7 +88,7 @@ namespace pesieve {
 
 	class WorkingSetScanner {
 	public:
-		WorkingSetScanner(HANDLE _procHndl, MemPageData &_memPageDatal, pesieve::t_params _args, ProcessScanReport* _process_report)
+		WorkingSetScanner(HANDLE _procHndl, MemPageData &_memPageDatal, pesieve::t_params _args, ProcessScanReport& _process_report)
 			: processHandle(_procHndl), memPage(_memPageDatal),
 			args(_args),
 			processReport(_process_report)
@@ -111,7 +111,7 @@ namespace pesieve {
 		HANDLE processHandle;
 		MemPageData &memPage;
 
-		ProcessScanReport* processReport;
+		ProcessScanReport& processReport;
 		pesieve::t_params args;
 	};
 

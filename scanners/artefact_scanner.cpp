@@ -830,7 +830,7 @@ PeArtefacts* pesieve::ArtefactScanner::findInPrevPages(ULONGLONG addr_start, ULO
 			break;
 		}
 		const size_t area_size = addr_stop - next_addr;
-		if (this->processReport->hasModuleContaining((ULONGLONG)next_addr, area_size)) {
+		if (this->processReport.hasModuleContaining((ULONGLONG)next_addr, area_size)) {
 			//std::cout << "Aready scanned: " << std::hex << next_addr << " size: " << area_size << "\n";
 			break;
 		}

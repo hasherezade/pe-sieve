@@ -50,7 +50,7 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageDat
 		return false;
 	}
 
-	const bool is_managed = (this->processReport) ? this->processReport->isManagedProcess() : false;
+	const bool is_managed = this->processReport.isManagedProcess();
 
 	if (mode == pesieve::PE_DATA_SCAN_NO_DEP 
 		&& memPage.is_dep_enabled && !is_managed)
@@ -100,7 +100,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 	ULONGLONG region_start = memPage.region_start;
 	const size_t region_size = size_t (memPage.region_end - region_start);
 	WorkingSetScanReport *my_report = new WorkingSetScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
-	my_report->has_pe = isScannedAsModule(memPage) && this->processReport->hasModule(memPage.region_start);
+	my_report->has_pe = isScannedAsModule(memPage) && this->processReport.hasModule(memPage.region_start);
 	my_report->has_shellcode = true;
 	return my_report;
 }
@@ -110,7 +110,7 @@ bool pesieve::WorkingSetScanner::isScannedAsModule(MemPageData &memPage)
 	if (memPage.mapping_type != MEM_IMAGE) {
 		return false;
 	}
-	if (this->processReport->hasModule((ULONGLONG)memPage.alloc_base)) {
+	if (this->processReport.hasModule((ULONGLONG)memPage.alloc_base)) {
 		return true; // it was already scanned as a PE
 	}
 	return false;
@@ -154,9 +154,7 @@ bool pesieve::WorkingSetScanner::scanImg()
 #ifdef _DEBUG
 			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
 #endif
-			if (processReport) {
-				processReport->appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
-			}
+			processReport.appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
 			return true;
 		}
 		if (!args.no_hooks) {
@@ -196,7 +194,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanRemote()
 			scanImg();
 		}
 		const size_t region_size = (memPage.region_end) ? (memPage.region_end - memPage.region_start) : 0;
-		if (this->processReport->hasModuleContaining(memPage.region_start, region_size)) {
+		if (this->processReport.hasModuleContaining(memPage.region_start, region_size)) {
 			// the area was already scanned
 			return nullptr;
 		}
