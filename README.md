@@ -24,7 +24,7 @@ Clone
 -
 Use **recursive clone** to get the repo together with the submodule:
 
-```
+```console
 git clone --recursive https://github.com/hasherezade/pe-sieve.git
 ```
 
