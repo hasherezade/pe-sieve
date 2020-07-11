@@ -22,10 +22,11 @@ If instead of scanning a particular process you want to scan your **full system*
 
 Clone
 -
-Use recursive clone to get the repo together with the submodule:
-<pre>
+Use **recursive clone** to get the repo together with the submodule:
+
+```
 git clone --recursive https://github.com/hasherezade/pe-sieve.git
-</pre>
+```
 
 Builds
 -
