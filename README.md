@@ -18,18 +18,17 @@ PE-sieve is meant to be a **light-weight engine** dedicated to scan **a single p
 
 If instead of scanning a particular process you want to scan your **full system** with PE-sieve, you can use [HollowsHunter](https://github.com/hasherezade/hollows_hunter). It contains PE-sieve (a DLL version), but offers also some additional features and filters on the top of this base.
 
-Uses library:
-https://github.com/hasherezade/libpeconv.git
+Uses library: [libPEConv](https://github.com/hasherezade/libpeconv.git}
 
 
-Clone:
+Clone
 -
 Use recursive clone to get the repo together with the submodule:
 <pre>
 git clone --recursive https://github.com/hasherezade/pe-sieve.git
 </pre>
 
-Builds:
+Builds
 -
 Download the latest [release](https://github.com/hasherezade/pe-sieve/releases), or [read more](https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ#how-to-get-it).
 
