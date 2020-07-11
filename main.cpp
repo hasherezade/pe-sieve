@@ -324,7 +324,6 @@ void print_scan_report(const ProcessScanReport& report, const t_params args)
 		report_str = scan_report_to_string(report);
 	}
 	//summary:
-	const t_report summary = report.generateSummary();
 	std::cout << report_str;
 	if (!args.json_output) {
 		std::cout << "---" << std::endl;

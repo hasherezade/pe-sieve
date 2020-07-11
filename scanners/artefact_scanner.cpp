@@ -853,7 +853,6 @@ bool pesieve::ArtefactScanner::hasShellcode(HMODULE region_start, size_t region_
 		// the total region is bigger than the PE
 		is_shellcode = true;
 	}
-	size_t pe_region_size = peArt.calculatedImgSize + peArt.peBaseOffset;
 	if (region_size > peArt.calculatedImgSize) {
 		// the total region is bigger than the PE
 		is_shellcode = true;
