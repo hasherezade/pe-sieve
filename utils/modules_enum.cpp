@@ -8,10 +8,11 @@ size_t pesieve::util::enum_modules(IN HANDLE hProcess, IN OUT HMODULE hMods[], I
 	if (hProcess == nullptr) {
 		return 0;
 	}
+	const char err_msg[] = "Could not enumerate modules in the process. ";
 	DWORD cbNeeded;
 #ifdef _WIN64
 	if (!EnumProcessModulesEx(hProcess, hMods, hModsMax, &cbNeeded, filters)) {
-		throw std::runtime_error("Could not enumerate modules in the process.");
+		throw std::runtime_error(err_msg);
 		return 0;
 	}
 #else
@@ -20,7 +21,7 @@ size_t pesieve::util::enum_modules(IN HANDLE hProcess, IN OUT HMODULE hMods[], I
 	but we can use EnumProcessModules for the 32-bit version: it will work the same and prevent the compatibility issues.
 	*/
 	if (!EnumProcessModules(hProcess, hMods, hModsMax, &cbNeeded)) {
-		throw std::runtime_error("Could not enumerate modules in the process.");
+		throw std::runtime_error(err_msg);
 		return 0;
 	}
 #endif
