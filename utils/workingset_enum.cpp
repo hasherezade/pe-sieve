@@ -56,17 +56,22 @@ size_t pesieve::util::enum_workingset(HANDLE processHandle, std::set<ULONGLONG> 
 	ULONGLONG mask = DWORD(-1);
 #endif
 
-	size_t added = 0;
-	ULONGLONG next_va = 0;
+	region_bases.clear();
 
 	MEMORY_BASIC_INFORMATION page_info = { 0 };
+	ULONGLONG next_va = 0;
 	while (get_next_commited_region(processHandle, next_va, page_info))
 	{
 		ULONGLONG base = (ULONGLONG)page_info.BaseAddress & mask;
 		next_va = base + page_info.RegionSize; //end of the region
-
+		if (page_info.State & MEM_FREE) {
+			continue;
+		}
+		if (region_bases.find(base) != region_bases.end()) {
+			// don't let it stuck on adding the same region over and over again
+			break;
+		}
 		region_bases.insert(base);
-		added++;
 	}
-	return added;
+	return region_bases.size();
 }
