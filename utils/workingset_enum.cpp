@@ -20,11 +20,17 @@ namespace pesieve {
 					break;
 				}
 				if (error == ERROR_ACCESS_DENIED) {
-					std::cerr << "[WARNING] Cannot query the memory region. Error:" << std::dec << error << std::endl;
+					std::cerr << "[WARNING] Cannot query the memory region. Error: " << std::dec << error << std::endl;
 					break;
 				}
-				if (out != sizeof(page_info)) {
-					std::cerr << "[WARNING] Cannot query the memory region. Error:" << std::dec << error << std::endl;
+				if (error == ERROR_BAD_LENGTH) {
+					if (sizeof(page_info) != sizeof(MEMORY_BASIC_INFORMATION64)){
+						std::cerr << "[WARNING] Use 64-bit scanner. Error:" << std::dec << error << std::endl;
+					}
+					break;
+				}
+				if (out != sizeof(page_info) || error != ERROR_SUCCESS) {
+					std::cerr << "[WARNING] Cannot query the memory region. Error: " << std::dec << error << std::endl;
 					start_va += PAGE_SIZE;
 					continue;
 				}
@@ -64,9 +70,6 @@ size_t pesieve::util::enum_workingset(HANDLE processHandle, std::set<ULONGLONG> 
 	{
 		ULONGLONG base = (ULONGLONG)page_info.BaseAddress & mask;
 		next_va = base + page_info.RegionSize; //end of the region
-		if (page_info.State & MEM_FREE) {
-			continue;
-		}
 		if (region_bases.find(base) != region_bases.end()) {
 			// don't let it stuck on adding the same region over and over again
 			break;
