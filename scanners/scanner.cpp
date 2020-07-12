@@ -189,7 +189,12 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 {
 	PSAPI_WORKING_SET_INFORMATION wsi_1 = { 0 };
 	BOOL result = QueryWorkingSet(this->processHandle, (LPVOID)&wsi_1, sizeof(PSAPI_WORKING_SET_INFORMATION));
-	if (result == FALSE) {
+	if (result == FALSE && GetLastError() != ERROR_BAD_LENGTH) {
+		/**
+		Allow to proceed on ERROR_BAD_LENGTH.
+		ERROR_BAD_LENGTH may occur if the scanner is 32 bit and running on a 64 bit system.
+		In case of any different error, break.
+		*/
 		throw std::runtime_error("Could not query the working set. ");
 		return 0;
 	}

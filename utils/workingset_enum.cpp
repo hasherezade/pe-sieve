@@ -2,13 +2,19 @@
 
 #include <iostream>
 
+#ifdef _WIN64
+	const ULONGLONG mask = ULONGLONG(-1);
+#else
+	const ULONGLONG mask = DWORD(-1);
+#endif
+
 namespace pesieve {
 	namespace util {
 
 		bool get_next_commited_region(HANDLE processHandle, ULONGLONG start_va, MEMORY_BASIC_INFORMATION &page_info)
 		{
-			while (true) {
-				//std::cout << "Checking: " << std::hex << start_va << " vs " << std::hex << max_va << std::endl;
+			while (start_va < mask) {
+				//std::cout << "Checking: " << std::hex << start_va << std::endl;
 				memset(&page_info, 0, sizeof(MEMORY_BASIC_INFORMATION));
 				SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID)start_va, &page_info, sizeof(page_info));
 				const DWORD error = GetLastError();
@@ -23,15 +29,12 @@ namespace pesieve {
 					std::cerr << "[WARNING] Cannot query the memory region. Error: " << std::dec << error << std::endl;
 					break;
 				}
-				if (error == ERROR_BAD_LENGTH) {
-#ifdef _DEBUG
-					if (sizeof(page_info) != sizeof(MEMORY_BASIC_INFORMATION64)){
-						std::cerr << "[WARNING] Use 64-bit scanner. Error:" << std::dec << error << std::endl;
-					}
-#endif
-					break;
-				}
-				if (out != sizeof(page_info) || error != ERROR_SUCCESS) {
+				/*
+				Allow to proceed on ERROR_BAD_LENGTH, if the filled MEMORY_BASIC_INFORMATION is as expected.
+				(ERROR_BAD_LENGTH may occur if the scanner is 32 bit and running on a 64 bit system.)
+				Otherwise - also on different error - skip.
+				*/
+				if (out != sizeof(page_info) || error != ERROR_BAD_LENGTH) {
 					std::cerr << "[WARNING] Cannot query the memory region. Error: " << std::dec << error << std::endl;
 					start_va += PAGE_SIZE;
 					continue;
@@ -58,12 +61,6 @@ namespace pesieve {
 
 size_t pesieve::util::enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &region_bases)
 {
-#ifdef _WIN64
-	ULONGLONG mask = ULONGLONG(-1);
-#else
-	ULONGLONG mask = DWORD(-1);
-#endif
-
 	region_bases.clear();
 
 	MEMORY_BASIC_INFORMATION page_info = { 0 };
