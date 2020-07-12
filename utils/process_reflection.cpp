@@ -270,7 +270,7 @@ namespace pesieve {
 #ifdef _DEBUG
 				if (is_ok) std::cout << "Released process snapshot\n";
 #endif
-				return is_ok;
+				return is_ok ? true : false;
 			}
 			return false;
 		}
@@ -348,5 +348,5 @@ bool pesieve::util::release_process_reflection(HANDLE* procHndl)
 #ifdef _DEBUG
 	std::cout << "Released process reflection\n";
 #endif
-	return (bool)is_ok;
+	return is_ok ? true : false;
 }
