@@ -72,6 +72,10 @@ size_t pesieve::util::enum_workingset(HANDLE processHandle, std::set<ULONGLONG> 
 	{
 		ULONGLONG base = (ULONGLONG)page_info.BaseAddress & mask;
 		next_va = base + page_info.RegionSize; //end of the region
+		if (region_bases.find(base) != region_bases.end()) {
+			// don't let it stuck on adding the same region over and over again
+			break;
+		}
 		region_bases.insert(base);
 	}
 	return region_bases.size();
