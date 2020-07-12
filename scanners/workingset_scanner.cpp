@@ -65,7 +65,7 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageDat
 	bool is_any_exec = false;
 
 	if (memPage.mapping_type == MEM_IMAGE) {
-		is_any_exec = (memPage.protection & SECTION_MAP_READ);
+		is_any_exec = (memPage.protection & SECTION_MAP_READ) != 0;
 
 		if (is_any_exec) return true;
 	}
