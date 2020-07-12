@@ -148,39 +148,33 @@ ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 	std::stringstream errorsStr;
 
 	// scan modules
-	bool modulesScanned = true;
+	size_t modulesScanned = 0;
+	size_t iatsScanned = 0;
 	try {
-		size_t scanned = scanModules(*pReport);
-		if (scanned == 0) {
-			modulesScanned = false;
-			errorsStr << "No modules found!";
-		}
+		modulesScanned = scanModules(*pReport);
 		if (args.iat) {
-			scanned = scanModulesIATs(*pReport);
-			if (scanned == 0) {
-				modulesScanned = false;
-				errorsStr << "No modules found!";
-			}
+			iatsScanned = scanModulesIATs(*pReport);
 		}
 	} catch (std::exception &e) {
-		modulesScanned = false;
+		modulesScanned = 0;
+		iatsScanned = 0;
 		errorsStr << e.what();
 	}
 
 	// scan working set
-	bool workingsetScanned = true;
+	size_t regionsScanned = 0;
 	try {
 		//dont't scan your own working set
 		if (peconv::get_process_id(this->processHandle) != GetCurrentProcessId()) {
-			scanWorkingSet(*pReport);
+			regionsScanned = scanWorkingSet(*pReport);
 		}
 	} catch (std::exception &e) {
-		workingsetScanned = false;
+		regionsScanned = 0;
 		errorsStr << e.what();
 	}
 
-	// throw error only if both scans has failed:
-	if (!modulesScanned && !workingsetScanned) {
+	// throw error only if none of the scans was successful
+	if (!modulesScanned && !iatsScanned && !regionsScanned) {
 		throw std::runtime_error(errorsStr.str());
 	}
 	//post-process hooks
@@ -195,8 +189,8 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 {
 	PSAPI_WORKING_SET_INFORMATION wsi_1 = { 0 };
 	BOOL result = QueryWorkingSet(this->processHandle, (LPVOID)&wsi_1, sizeof(PSAPI_WORKING_SET_INFORMATION));
-	if (result == FALSE && GetLastError() != ERROR_BAD_LENGTH) {
-		throw std::runtime_error("Could not scan the working set in the process. ");
+	if (result == FALSE) {
+		throw std::runtime_error("Could not query the working set. ");
 		return 0;
 	}
 #ifdef _DEBUG
@@ -212,7 +206,7 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 	size_t counter = 0;
 	//now scan all the nodes:
 	std::set<ULONGLONG>::iterator set_itr;
-	for (set_itr = region_bases.begin(); set_itr != region_bases.end(); ++set_itr) {
+	for (set_itr = region_bases.begin(); set_itr != region_bases.end(); ++set_itr, ++counter) {
 		const ULONGLONG region_base = *set_itr;
 
 		MemPageData memPage(this->processHandle, region_base);
@@ -222,10 +216,9 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 
 		WorkingSetScanner memPageScanner(this->processHandle, memPage, this->args, pReport);
 		WorkingSetScanReport *my_report = memPageScanner.scanRemote();
-
-		counter++;
-		if (my_report == nullptr) continue;
-
+		if (!my_report) {
+			continue;
+		}
 		my_report->is_listed_module = pReport.hasModule((ULONGLONG) my_report->module);
 		// this is a code section inside a PE file that was already detected
 		if (!my_report->has_pe 

@@ -24,9 +24,11 @@ namespace pesieve {
 					break;
 				}
 				if (error == ERROR_BAD_LENGTH) {
+#ifdef _DEBUG
 					if (sizeof(page_info) != sizeof(MEMORY_BASIC_INFORMATION64)){
 						std::cerr << "[WARNING] Use 64-bit scanner. Error:" << std::dec << error << std::endl;
 					}
+#endif
 					break;
 				}
 				if (out != sizeof(page_info) || error != ERROR_SUCCESS) {
@@ -45,7 +47,7 @@ namespace pesieve {
 					start_va += PAGE_SIZE;
 					continue;
 				}
-				//std::cout << "Commited:  " << std::hex << start_va << " RegionSize:" << page_info.RegionSize << std::endl;
+				//std::cout << "Commited:  " << std::hex << start_va << " RegionSize: " << page_info.RegionSize << std::endl;
 				return true;
 			}
 			return false;

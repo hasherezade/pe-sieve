@@ -8,7 +8,7 @@ size_t pesieve::util::enum_modules(IN HANDLE hProcess, IN OUT HMODULE hMods[], I
 	if (hProcess == nullptr) {
 		return 0;
 	}
-	const char err_msg[] = "Could not enumerate modules in the process. ";
+	const char err_msg[] = "Could not enumerate modules. ";
 	DWORD cbNeeded;
 #ifdef _WIN64
 	if (!EnumProcessModulesEx(hProcess, hMods, hModsMax, &cbNeeded, filters)) {
