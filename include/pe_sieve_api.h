@@ -1,7 +1,7 @@
 #pragma once
 
 #include <windows.h>
-#include "pe_sieve_types.h"
+#include <pe_sieve_types.h>
 
 #ifndef PESIEVE_STATIC_LIB
 #ifdef PESIEVE_EXPORTS
