@@ -60,7 +60,7 @@ std::string pesieve::translate_dotnet_policy(const pesieve::t_dotnet_policy &mod
 	case pesieve::PE_DNET_SKIP_HOOKS:
 		return "skip hooked modules";
 	case pesieve::PE_DNET_SKIP_ALL:
-		return "skip all above (mapping, shellcodes, hooks)";
+		return "skip all the above (mapping, shellcodes, hooks)";
 	}
 	return "undefined";
 }
