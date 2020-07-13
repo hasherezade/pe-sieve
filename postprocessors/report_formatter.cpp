@@ -9,7 +9,7 @@ std::string pesieve::scan_report_to_string(const ProcessScanReport &process_repo
 	const t_report report = process_report.generateSummary();
 	std::stringstream stream;
 	//summary:
-	size_t other = report.suspicious - (report.patched + report.replaced + report.detached + report.implanted + report.hdr_mod);
+	size_t other = report.other;
 	stream << "PID:    " << std::dec << report.pid << "\n";
 	stream << "---" << std::endl;
 	stream << "SUMMARY: \n" << std::endl;
@@ -19,6 +19,7 @@ std::string pesieve::scan_report_to_string(const ProcessScanReport &process_repo
 	stream << "Hooked:           " << std::dec << report.patched << "\n";
 	stream << "Replaced:         " << std::dec << report.replaced << "\n";
 	stream << "HdrsModified:     " << std::dec << report.hdr_mod << "\n";
+	stream << "IAT Hooks:        " << std::dec << report.iat_hooked << "\n";
 	stream << "Detached:         " << std::dec << report.detached << "\n";
 	stream << "Implanted:        " << std::dec << report.implanted << "\n";
 	if (report.implanted) {

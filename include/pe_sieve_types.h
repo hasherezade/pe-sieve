@@ -96,6 +96,7 @@ namespace pesieve {
 		DWORD implanted; // all implants: shellcodes + PEs
 		DWORD implanted_pe; // the full PE was probably loaded manually
 		DWORD implanted_shc; //implanted shellcodes
+		DWORD other; // other indicators
 		DWORD skipped; // some of the modules must be skipped (i.e. dotNET managed code have different characteristics and this scan does not apply)
 		DWORD errors; // Count of elements that could not be scanned because of errors. If errors == ERROR_SCAN_FAILURE, no scan was performed.
 	} t_report;
