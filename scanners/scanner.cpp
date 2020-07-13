@@ -120,15 +120,26 @@ bool pesieve::ProcessScanner::filterDotNetReport(ProcessScanReport& process_repo
 		return false; // no filtering needed
 	}
 	bool is_set = false;
-	if (this->args.dotnet_policy & pesieve::PE_DNET_SKIP_HOOKS) {
+	if (this->args.dotnet_policy == pesieve::PE_DNET_SKIP_MAPPING
+		|| this->args.dotnet_policy == pesieve::PE_DNET_SKIP_ALL)
+	{
 		// set hook modules as not suspicious
-		const std::set<ModuleScanReport*> &code_reports = process_report.reportsByType[ProcessScanReport::REPORT_CODE_SCAN];
-		is_set = set_non_suspicious(code_reports);
+		const std::set<ModuleScanReport*> &reports = process_report.reportsByType[ProcessScanReport::REPORT_MAPPING_SCAN];
+		is_set = set_non_suspicious(reports);
 	}
-	if (this->args.dotnet_policy & pesieve::PE_DNET_SKIP_SHC) {
+	if (this->args.dotnet_policy == pesieve::PE_DNET_SKIP_HOOKS
+		|| this->args.dotnet_policy == pesieve::PE_DNET_SKIP_ALL)
+	{
+		// set hook modules as not suspicious
+		const std::set<ModuleScanReport*> &reports = process_report.reportsByType[ProcessScanReport::REPORT_CODE_SCAN];
+		is_set = set_non_suspicious(reports);
+	}
+	if (this->args.dotnet_policy == pesieve::PE_DNET_SKIP_SHC
+		|| this->args.dotnet_policy == pesieve::PE_DNET_SKIP_ALL)
+	{
 		// set shellcodes as not suspicious
-		const std::set<ModuleScanReport*> &code_reports = process_report.reportsByType[ProcessScanReport::REPORT_MEMPAGE_SCAN];
-		is_set = set_non_suspicious(code_reports);
+		const std::set<ModuleScanReport*> &reports = process_report.reportsByType[ProcessScanReport::REPORT_MEMPAGE_SCAN];
+		is_set = set_non_suspicious(reports);
 	}
 	return is_set;
 }

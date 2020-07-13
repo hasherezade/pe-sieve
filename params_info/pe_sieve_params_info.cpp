@@ -53,12 +53,14 @@ std::string pesieve::translate_dotnet_policy(const pesieve::t_dotnet_policy &mod
 	switch (mode) {
 	case pesieve::PE_DNET_AUTO:
 		return "none: treat managed processes same as native";
+	case pesieve::PE_DNET_SKIP_MAPPING:
+		return "skip mapping scan";
 	case pesieve::PE_DNET_SKIP_SHC:
 		return "skip shellcodes";
 	case pesieve::PE_DNET_SKIP_HOOKS:
 		return "skip hooked modules";
-	case pesieve::PE_DNET_SKIP_SHC_AND_HOOKS:
-		return "skip shellcodes and hooked modules";
+	case pesieve::PE_DNET_SKIP_ALL:
+		return "skip all above (mapping, shellcodes, hooks)";
 	}
 	return "undefined";
 }
