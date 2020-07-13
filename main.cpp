@@ -470,7 +470,7 @@ int main(int argc, char *argv[])
 		else if (get_int_param(argc, argv, param, i,
 			PARAM_DOTNET_POLICY,
 			args.dotnet_policy,
-			pesieve::PE_DNET_ALL,
+			pesieve::PE_DNET_SKIP_ALL,
 			info_req,
 			print_dnet_param))
 		{
