@@ -242,7 +242,7 @@ install(TARGETS ${PROJECT_NAME}
 
 # libs
 add_subdirectory (libpeconv/libpeconv)
-set ( PECONV_LIB $<TARGET_FILE:libpeconv> CACHE FILE "PEConvLib library path" )
+set ( PECONV_LIB $<TARGET_FILE:libpeconv> CACHE PATH "PEConvLib library path" )
 
 target_link_libraries ( ${PROJECT_NAME} ${PECONV_LIB} "psapi.lib" "ntdll.lib" "shlwapi")
 
