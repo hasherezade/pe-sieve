@@ -90,7 +90,7 @@ namespace pesieve {
 		DWORD suspicious;// general summary of suspicious
 		DWORD replaced; // PE file replaced in memory (probably hollowed)
 		DWORD hdr_mod; // PE header is modified (but not replaced)
-		DWORD detached; // cannot find the file corresponding to the module in memory
+		DWORD unreachable_file; // cannot read the file corresponding to the module in memory
 		DWORD patched; // detected modifications in the code
 		DWORD iat_hooked; // detected IAT hooks
 		DWORD implanted; // all implants: shellcodes + PEs

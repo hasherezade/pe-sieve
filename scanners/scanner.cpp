@@ -288,6 +288,8 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 		//load module from file:
 		ModuleData modData(processHandle, hMods[counter]);
 		ModuleScanReport *mappingScanReport = this->scanForMappingMismatch(modData, pReport);
+
+		//load the original file to make the comparisons:
 		if (!modData.loadOriginal()) {
 			if (!args.quiet) {
 				std::cout << "[!][" << args.pid << "] Suspicious: could not read the module file!" << std::endl;
