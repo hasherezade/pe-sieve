@@ -47,10 +47,10 @@ namespace pesieve {
 	} t_iat_scan_mode;
 
 	typedef enum {
-		PE_DNET_AUTO = 0,// treat .NET modules the same as native modules
-		PE_DNET_SKIP_MAPPING = 1, //skip mapping scan in .NET modules
-		PE_DNET_SKIP_SHC, // skip shellcodes in .NET modules
-		PE_DNET_SKIP_HOOKS, // skip hooks in .NET modules
+		PE_DNET_NONE = 0,// none: treat managed processes same as native
+		PE_DNET_SKIP_MAPPING = 1, // skip mapping mismatch (in .NET modules only)
+		PE_DNET_SKIP_SHC, // skip shellcodes (in all modules within the managed process)
+		PE_DNET_SKIP_HOOKS, // skip hooked modules (in all modules within the managed process)
 		PE_DNET_SKIP_ALL,
 		PE_DNET_COUNT
 	} t_dotnet_policy;
