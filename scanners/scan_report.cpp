@@ -247,12 +247,12 @@ const bool pesieve::ProcessScanReport::toJSON(std::stringstream &stream, size_t 
 	stream << std::dec << report.replaced << ",\n";
 	OUT_PADDED(stream, level + 2, "\"hdr_modified\" : ");
 	stream << std::dec << report.hdr_mod << ",\n";
-	OUT_PADDED(stream, level + 2, "\"unreachable_file\" : ");
-	stream << std::dec << report.unreachable_file << ",\n";
 	OUT_PADDED(stream, level + 2, "\"implanted_pe\" : ");
 	stream << std::dec << report.implanted_pe << ",\n";
 	OUT_PADDED(stream, level + 2, "\"implanted_shc\" : ");
 	stream << std::dec << report.implanted_shc << ",\n";
+	OUT_PADDED(stream, level + 2, "\"unreachable_file\" : ");
+	stream << std::dec << report.unreachable_file << ",\n";
 	OUT_PADDED(stream, level + 2, "\"other\" : ");
 	stream << std::dec << other << "\n";
 	OUT_PADDED(stream, level + 1, "},\n"); // modified

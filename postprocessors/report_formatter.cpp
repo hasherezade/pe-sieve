@@ -20,12 +20,12 @@ std::string pesieve::scan_report_to_string(const ProcessScanReport &process_repo
 	stream << "Replaced:           " << std::dec << report.replaced << "\n";
 	stream << "Hdrs Modified:      " << std::dec << report.hdr_mod << "\n";
 	stream << "IAT Hooks:          " << std::dec << report.iat_hooked << "\n";
-	stream << "Unreachable files:  " << std::dec << report.unreachable_file << "\n";
 	stream << "Implanted:          " << std::dec << report.implanted << "\n";
 	if (report.implanted) {
 		stream << "Implanted PE:       " << std::dec << report.implanted_pe << "\n";
 		stream << "Implanted shc:      " << std::dec << report.implanted_shc << "\n";
 	}
+	stream << "Unreachable files:  " << std::dec << report.unreachable_file << "\n";
 	stream << "Other:              " << std::dec << other << "\n";
 	stream << "-\n";
 	stream << "Total suspicious:   " << std::dec << report.suspicious << "\n";
