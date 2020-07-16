@@ -58,8 +58,10 @@ namespace pesieve {
 				this->errorsCount++;
 			}
 			appendToType(report);
-			//add to the list of scanned modules:
-			appendToModulesList(report);
+			// if the scan was successful, append the module to the scanned modules:
+			if (ModuleScanReport::get_scan_status(report) != SCAN_ERROR) {
+				appendToModulesList(report);
+			}
 		}
 
 		size_t getScannedSize(ULONGLONG address) const
