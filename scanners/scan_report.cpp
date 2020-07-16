@@ -137,7 +137,7 @@ void pesieve::ProcessScanReport::appendToType(ModuleScanReport *report)
 size_t pesieve::ProcessScanReport::countHdrsReplaced() const
 {
 	size_t replaced = 0;
-	const t_report_type type = t_report_type::REPORT_HEADERS_SCAN;
+	const t_report_type type = REPORT_HEADERS_SCAN;
 
 	std::set<ModuleScanReport*>::iterator itr;
 	for (itr = this->reportsByType[type].begin(); itr != this->reportsByType[type].end(); ++itr) {
@@ -181,8 +181,8 @@ pesieve::t_report pesieve::ProcessScanReport::generateSummary() const
 	summary.implanted_pe = countSuspiciousPerType(REPORT_ARTEFACT_SCAN);
 	summary.implanted = summary.implanted_shc + summary.implanted_pe;
 	summary.hdr_mod = countSuspiciousPerType(REPORT_HEADERS_SCAN) - summary.replaced;
-	summary.unreachable_file = countSuspiciousPerType(REPORT_UNREACHABLE_SCAN);
-	summary.other = summary.suspicious - (summary.patched + summary.replaced + summary.unreachable_file + summary.implanted + summary.hdr_mod + summary.iat_hooked);
+	summary.unreachable_file = countSuspiciousPerType(REPORT_UNREACHABLE_SCAN) + countResultsPerType(REPORT_UNREACHABLE_SCAN, pesieve::SCAN_ERROR);
+	summary.other = summary.suspicious - (summary.patched + summary.replaced + summary.implanted + summary.hdr_mod + summary.iat_hooked);
 	return summary;
 }
 
