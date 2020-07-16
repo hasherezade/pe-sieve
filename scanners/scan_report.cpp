@@ -106,20 +106,20 @@ pesieve::ProcessScanReport::t_report_type pesieve::ProcessScanReport::getReportT
 	return pesieve::ProcessScanReport::REPORT_TYPES_COUNT;
 }
 
-size_t pesieve::ProcessScanReport::countSuspiciousPerType(t_report_type type) const
+size_t pesieve::ProcessScanReport::countResultsPerType(const t_report_type type, const t_scan_status result) const
 {
 	if (type >= REPORT_TYPES_COUNT) {
 		return 0; //invalid type
 	}
-	size_t suspicious = 0;
+	size_t counter = 0;
 	std::set<ModuleScanReport*>::iterator itr;
 	for (itr = this->reportsByType[type].begin(); itr != this->reportsByType[type].end(); ++itr) {
 		ModuleScanReport* report = *itr;
-		if (ModuleScanReport::get_scan_status(report) == SCAN_SUSPICIOUS) {
-			suspicious++;
+		if (ModuleScanReport::get_scan_status(report) == result) {
+			counter++;
 		}
 	}
-	return suspicious;
+	return counter;
 }
 
 void pesieve::ProcessScanReport::appendToType(ModuleScanReport *report)
