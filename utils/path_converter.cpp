@@ -237,8 +237,25 @@ std::string pesieve::util::device_path_to_win32_path(const std::string &full_pat
 	return path;
 }
 
-std::string pesieve::util::expand_path(std::string basic_path)
+bool is_device_path(std::string path)
 {
+	const std::string device_path = "\\Device\\";
+	if (path.length() < device_path.length() || path[0] !='\\') {
+		return false;
+	}
+	if (path.compare(0, device_path.length(), device_path) == 0){
+		return true;
+	}
+	return false;
+}
+
+std::string pesieve::util::expand_path(std::string path)
+{
+	std::string basic_path = pesieve::util::device_path_to_win32_path(path);
+	if (is_device_path(basic_path)) {
+		// Could not normalize it: it is still a device path. Return as is.
+		return path;
+	}
 	// normalize path sepators: use '/' not '\'
 	replace_char(basic_path, '/', '\\');
 

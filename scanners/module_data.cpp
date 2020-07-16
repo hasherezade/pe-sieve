@@ -145,8 +145,7 @@ std::string pesieve::RemoteModuleData::getMappedName(HANDLE processHandle, LPVOI
 	if (!GetMappedFileNameA(processHandle, modBaseAddr, filename, MAX_PATH) != 0) {
 		return "";
 	}
-	std::string basic_filename = pesieve::util::device_path_to_win32_path(filename);
-	std::string expanded = pesieve::util::expand_path(basic_filename);
+	std::string expanded = pesieve::util::expand_path(filename);
 	if (expanded.length() == 0) {
 		return filename;
 	}
