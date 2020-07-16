@@ -10,7 +10,8 @@ std::string pesieve::scan_report_to_string(const ProcessScanReport &process_repo
 	std::stringstream stream;
 	//summary:
 	size_t other = report.other;
-	stream << "PID:                " << std::dec << report.pid << "\n";
+	stream << "---" << std::endl;
+	stream << "PID: " << std::dec << report.pid << "\n";
 	stream << "---" << std::endl;
 	stream << "SUMMARY: \n" << std::endl;
 	stream << "Total scanned:      " << std::dec << report.scanned << "\n";
