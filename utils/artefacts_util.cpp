@@ -87,7 +87,6 @@ bool pesieve::util::is_code(BYTE *loadedData, size_t loadedSize)
 	return false;
 }
 
-
 bool pesieve::util::is_executable(DWORD mapping_type, DWORD protection)
 {
 	bool is_any_exec = false;
