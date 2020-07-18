@@ -3,6 +3,7 @@
 #include "../utils/format_util.h"
 #include "../utils/path_converter.h"
 #include "../utils/process_util.h"
+#include "../utils/artefacts_util.h"
 #include "artefact_scanner.h"
 
 #include <psapi.h>
@@ -232,24 +233,13 @@ bool pesieve::RemoteModuleData::isSectionExecutable(size_t section_number)
 	DWORD protection = page_info.Protect;
 	DWORD initial_protect = page_info.AllocationProtect;
 
-	bool is_any_exec = false;
-	if (page_info.Type == MEM_IMAGE) {
-		is_any_exec = (protection & SECTION_MAP_EXECUTE)
-			|| (protection & SECTION_MAP_EXECUTE_EXPLICIT);
-		if (is_any_exec) {
-			return true;
-		}
-		return false;
+	if (pesieve::util::is_executable(page_info.Type, protection)) {
+		return true;
 	}
-	is_any_exec = (initial_protect & PAGE_EXECUTE_READWRITE)
-		|| (initial_protect & PAGE_EXECUTE_READ)
-		|| (initial_protect & PAGE_EXECUTE)
-		|| (initial_protect & PAGE_EXECUTE_WRITECOPY)
-		|| (protection & PAGE_EXECUTE_READWRITE)
-		|| (protection & PAGE_EXECUTE_READ)
-		|| (protection & PAGE_EXECUTE)
-		|| (protection & PAGE_EXECUTE_WRITECOPY);
-	return is_any_exec;
+	if (pesieve::util::is_executable(page_info.Type, initial_protect)) {
+		return true;
+	}
+	return false;
 }
 
 bool pesieve::RemoteModuleData::hasExecutableSection()

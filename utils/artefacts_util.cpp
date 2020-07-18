@@ -86,3 +86,25 @@ bool pesieve::util::is_code(BYTE *loadedData, size_t loadedSize)
 	}
 	return false;
 }
+
+
+bool pesieve::util::is_executable(DWORD mapping_type, DWORD protection)
+{
+	bool is_any_exec = false;
+
+	if (mapping_type == MEM_IMAGE) {
+		is_any_exec = (protection & SECTION_MAP_EXECUTE)
+			|| (protection & SECTION_MAP_EXECUTE_EXPLICIT);
+
+		if (is_any_exec) {
+			return true;
+		}
+		// if false continue checking, because if the access was changed, MEM_IMAGE can has the same protection as other pages...
+	}
+
+	is_any_exec = (protection & PAGE_EXECUTE_READWRITE)
+		|| (protection & PAGE_EXECUTE_READ)
+		|| (protection & PAGE_EXECUTE)
+		|| (protection & PAGE_EXECUTE_WRITECOPY);
+	if (is_any_exec) return true;
+}
