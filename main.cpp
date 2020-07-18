@@ -85,8 +85,8 @@ bool get_int_param(int argc, char *argv[], const char *param, int &param_i,
 	out_val = default_set;
 	if ((param_i + 1) < argc && !is_param(argv[param_i + 1])) {
 		char* mode_num = argv[param_i + 1];
-		if (isdigit(mode_num[0])) {
-			out_val = (PARAM_T)atoi(mode_num);
+		if (is_number(mode_num)) {
+			out_val = (PARAM_T)get_number(mode_num);
 		}
 		else {
 			if (callback) {
