@@ -49,15 +49,15 @@ bool pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 bool pesieve::util::is_64bit_code(BYTE *loadedData, size_t loadedSize)
 {
 	BYTE prolog64_pattern[] = {
-		0x40, 0x53, // PUSH RBX
+		0x53,            // PUSH RBX
 		0x48, 0x83, 0xEC // SUB RSP, ??
 	};
 	BYTE prolog64_2_pattern[] = {
-		0x55, // PUSH RBP
-		0x48, 0x8b, 0xEC // MOV RBP, RSP
+		0x55,            // PUSH RBP
+		0x48, 0x8B, 0xEC // MOV RBP, RSP
 	};
 	BYTE prolog64_3_pattern[] = {
-		0x40, 0x55, // PUSH RBP
+		0x55,            // PUSH RBP
 		0x48, 0x83, 0xEC // SUB RSP, ??
 	};
 	bool pattern_found = false;
