@@ -113,8 +113,8 @@ inline bool set_non_suspicious(const std::set<ModuleScanReport*> &scan_reports, 
 		if (dnet_modules_only && !report->isDotNetModule) {
 			continue;
 		}
-		if (report->status == t_scan_status::SCAN_SUSPICIOUS) {
-			report->status = t_scan_status::SCAN_NOT_SUSPICIOUS;
+		if (report->status == SCAN_SUSPICIOUS) {
+			report->status = SCAN_NOT_SUSPICIOUS;
 			is_set = true;
 		}
 	}
