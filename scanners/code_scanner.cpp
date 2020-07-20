@@ -246,7 +246,8 @@ size_t pesieve::CodeScanner::collectExecutableSections(RemoteModuleData &_remote
 		if (!remoteSec->isInitialized()) {
 			continue;
 		}
-		if (i == 0 // always scan first section
+		const bool is_entry = _remoteModData.isSectionEntry(i);
+		if (is_entry // always scan section containing Entry Point
 			|| is_code(remoteSec->loadedSection, remoteSec->loadedSize))
 		{
 			sections[i] = remoteSec;
