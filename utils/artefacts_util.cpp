@@ -16,6 +16,13 @@ BYTE* pesieve::util::find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_b
 	return nullptr;
 }
 
+namespace pesieve {
+	typedef struct {
+		BYTE *ptr;
+		size_t size;
+	} t_pattern;
+};
+
 bool pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 {
 	BYTE prolog32_pattern[] = {
@@ -32,15 +39,20 @@ bool pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 		0x60, // PUSHAD
 		0x89, 0xE5 // MOV EBP, ESP
 	};
+
+	t_pattern patterns[] = {
+		{ prolog32_pattern,   sizeof(prolog32_pattern) },
+		{ prolog32_2_pattern, sizeof(prolog32_2_pattern) },
+		{ prolog32_3_pattern, sizeof(prolog32_3_pattern) }
+	};
+
 	bool pattern_found = false;
-	if (find_pattern(loadedData, loadedSize, prolog32_pattern, sizeof(prolog32_pattern))) {
-		pattern_found = true;
-	}
-	else if (find_pattern(loadedData, loadedSize, prolog32_2_pattern, sizeof(prolog32_2_pattern))) {
-		pattern_found = true;
-	}
-	else if (find_pattern(loadedData, loadedSize, prolog32_3_pattern, sizeof(prolog32_3_pattern))) {
-		pattern_found = true;
+	for (size_t i = 0; i < _countof(patterns); i++) {
+		if (find_pattern(loadedData, loadedSize, patterns[i].ptr, patterns[i].size)) {
+			pattern_found = true;
+			//std::cout << "Found 32bit pattern: " << i << "\n";
+			break;
+		}
 	}
 	return pattern_found;
 }
@@ -63,18 +75,21 @@ bool pesieve::util::is_64bit_code(BYTE *loadedData, size_t loadedSize)
 		0x53,            // PUSH RBX
 		0x48, 0x81, 0xEC // SUB RSP, <DWORD>
 	};
+
+	t_pattern patterns[] = {
+		{ prolog64_pattern,   sizeof(prolog64_pattern) },
+		{ prolog64_2_pattern, sizeof(prolog64_2_pattern) },
+		{ prolog64_3_pattern, sizeof(prolog64_3_pattern) },
+		{ prolog64_4_pattern, sizeof(prolog64_4_pattern) }
+	};
+
 	bool pattern_found = false;
-	if (find_pattern(loadedData, loadedSize, prolog64_pattern, sizeof(prolog64_pattern))) {
-		pattern_found = true;
-	}
-	else if (find_pattern(loadedData, loadedSize, prolog64_2_pattern, sizeof(prolog64_2_pattern))) {
-		pattern_found = true;
-	}
-	else if (find_pattern(loadedData, loadedSize, prolog64_3_pattern, sizeof(prolog64_3_pattern))) {
-		pattern_found = true;
-	}
-	else if (find_pattern(loadedData, loadedSize, prolog64_4_pattern, sizeof(prolog64_4_pattern))) {
-		pattern_found = true;
+	for (size_t i = 0; i < _countof(patterns); i++) {
+		if (find_pattern(loadedData, loadedSize, patterns[i].ptr, patterns[i].size)) {
+			pattern_found = true;
+			//std::cout << "Found 64bit pattern: " << i << "\n";
+			break;
+		}
 	}
 	return pattern_found;
 }
