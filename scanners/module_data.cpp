@@ -249,13 +249,9 @@ bool pesieve::RemoteModuleData::isSectionExecutable(const size_t section_number)
 #ifdef _DEBUG
 	std::cout << std::hex << "Sec: " << section_number << " VA: " << start_va << " t: " << page_info.Type << " p: " << page_info.Protect << std::endl;
 #endif
-	DWORD protection = page_info.Protect;
-	DWORD initial_protect = page_info.AllocationProtect;
 
-	if (pesieve::util::is_executable(page_info.Type, protection)) {
-		return true;
-	}
-	if (pesieve::util::is_executable(page_info.Type, initial_protect)) {
+	if (pesieve::util::is_executable(page_info.Type, page_info.Protect)) {
+		//std::cout << std::hex << "p1 Sec: " << section_number << " VA: " << start_va << " t: " << page_info.Type << " p: " << page_info.Protect << std::endl;
 		return true;
 	}
 	return false;

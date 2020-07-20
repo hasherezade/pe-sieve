@@ -232,9 +232,14 @@ size_t pesieve::CodeScanner::collectExecutableSections(RemoteModuleData &_remote
 	const size_t sec_count = peconv::get_sections_count(_remoteModData.headerBuffer, _remoteModData.getHeaderSize());
 	for (size_t i = 0; i < sec_count; i++) {
 		PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(_remoteModData.headerBuffer, _remoteModData.getHeaderSize(), i);
-		if (section_hdr == nullptr) continue;
+		if (section_hdr == nullptr) {
+			continue;
+		}
 
-		if (!(section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
+		const bool is_entry = _remoteModData.isSectionEntry(i);
+
+		if (!is_entry // entry section may be set as non executable, but it will still be executed
+			&& !(section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
 			&& !_remoteModData.isSectionExecutable(i))
 		{
 			//not executable, skip it
@@ -246,7 +251,6 @@ size_t pesieve::CodeScanner::collectExecutableSections(RemoteModuleData &_remote
 		if (!remoteSec->isInitialized()) {
 			continue;
 		}
-		const bool is_entry = _remoteModData.isSectionEntry(i);
 		if (is_entry // always scan section containing Entry Point
 			|| is_code(remoteSec->loadedSection, remoteSec->loadedSize))
 		{
