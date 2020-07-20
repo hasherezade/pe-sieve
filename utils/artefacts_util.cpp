@@ -57,7 +57,7 @@ bool pesieve::util::is_64bit_code(BYTE *loadedData, size_t loadedSize)
 		0x48, 0x8b, 0xEC // MOV RBP, RSP
 	};
 	BYTE prolog64_3_pattern[] = {
-		0x40, 0x55, // PUSH ??
+		0x40, 0x55, // PUSH RBP
 		0x48, 0x83, 0xEC // SUB RSP, ??
 	};
 	bool pattern_found = false;
