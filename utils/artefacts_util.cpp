@@ -32,7 +32,6 @@ bool pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 		0x60, // PUSHAD
 		0x89, 0xE5 // MOV EBP, ESP
 	};
-
 	bool pattern_found = false;
 	if (find_pattern(loadedData, loadedSize, prolog32_pattern, sizeof(prolog32_pattern))) {
 		pattern_found = true;
@@ -49,7 +48,7 @@ bool pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 bool pesieve::util::is_64bit_code(BYTE *loadedData, size_t loadedSize)
 {
 	BYTE prolog64_pattern[] = {
-		0x53,            // PUSH RBX
+		0x40, 0x53,       // PUSH RBX
 		0x48, 0x83, 0xEC // SUB RSP, <BYTE>
 	};
 	BYTE prolog64_2_pattern[] = {
@@ -57,7 +56,7 @@ bool pesieve::util::is_64bit_code(BYTE *loadedData, size_t loadedSize)
 		0x48, 0x8B, 0xEC // MOV RBP, RSP
 	};
 	BYTE prolog64_3_pattern[] = {
-		0x55,            // PUSH RBP
+		0x40, 0x55,      // PUSH RBP
 		0x48, 0x83, 0xEC // SUB RSP, <BYTE>
 	};
 	BYTE prolog64_4_pattern[] = {
