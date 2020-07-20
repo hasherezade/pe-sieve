@@ -20,15 +20,13 @@ bool pesieve::WorkingSetScanner::isCode(MemPageData &memPageData)
 
 bool pesieve::WorkingSetScanner::isExecutable(MemPageData &memPageData)
 {
-	bool is_any_exec = false;
 	if (pesieve::util::is_executable(memPage.mapping_type, memPage.protection)) {
 		return true;
 	}
 	if (pesieve::util::is_executable(memPage.mapping_type, memPage.initial_protect)) {
 		return true;
 	}
-	is_any_exec = isPotentiallyExecutable(memPageData, this->args.data);
-	return is_any_exec;
+	return isPotentiallyExecutable(memPageData, this->args.data);
 }
 
 bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageData, const t_data_scan_mode &mode)
