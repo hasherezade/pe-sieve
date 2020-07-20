@@ -118,7 +118,8 @@ namespace pesieve {
 			freeFullImage();
 		}
 
-		bool isSectionExecutable(size_t section_number);
+		bool isSectionEntry(const size_t section_number);
+		bool isSectionExecutable(const size_t section_number);
 		bool hasExecutableSection();
 		bool isInitialized()
 		{
@@ -155,6 +156,12 @@ namespace pesieve {
 
 		bool loadFullImage();
 		bool isFullImageLoaded() { return (imgBuffer != nullptr) && (imgBufferSize != 0); }
+		ULONGLONG getRemoteSectionVa(const size_t section_num);
+
+		ULONGLONG getModuleBase()
+		{
+			return (ULONGLONG)modBaseAddr;
+		}
 
 		BYTE headerBuffer[peconv::MAX_HEADER_SIZE];
 
@@ -171,8 +178,6 @@ namespace pesieve {
 			imgBuffer = nullptr;
 			imgBufferSize = 0;
 		}
-
-		ULONGLONG getRemoteSectionVa(const size_t section_num);
 
 		HANDLE processHandle;
 		HMODULE modBaseAddr;

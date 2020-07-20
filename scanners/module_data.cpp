@@ -210,7 +210,26 @@ ULONGLONG pesieve::RemoteModuleData::getRemoteSectionVa(const size_t section_num
 	return (ULONGLONG) modBaseAddr + section_hdr->VirtualAddress;
 }
 
-bool pesieve::RemoteModuleData::isSectionExecutable(size_t section_number)
+bool pesieve::RemoteModuleData::isSectionEntry(const size_t section_number)
+{
+	if (!this->isInitialized()) {
+		return false;
+	}
+	const DWORD ep_va = peconv::get_entry_point_rva(this->headerBuffer);
+	if (ep_va == 0) {
+		return false;
+	}
+	PIMAGE_SECTION_HEADER sec_hdr = peconv::get_section_hdr(this->headerBuffer, peconv::MAX_HEADER_SIZE, section_number);
+	if (!sec_hdr) {
+		return false;
+	}
+	if (ep_va >= sec_hdr->VirtualAddress && ep_va < sec_hdr->Misc.VirtualSize) {
+		return true;
+	}
+	return false;
+}
+
+bool pesieve::RemoteModuleData::isSectionExecutable(const size_t section_number)
 {
 	//for special cases when the section is not set executable in headers, but in reality is executable...
 	//get the section header from the module:
