@@ -105,5 +105,6 @@ bool pesieve::util::is_executable(DWORD mapping_type, DWORD protection)
 		|| (protection & PAGE_EXECUTE_READ)
 		|| (protection & PAGE_EXECUTE)
 		|| (protection & PAGE_EXECUTE_WRITECOPY);
-	if (is_any_exec) return true;
+
+	return is_any_exec;
 }
