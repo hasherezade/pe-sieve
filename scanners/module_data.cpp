@@ -45,9 +45,7 @@ bool pesieve::ModuleData::_loadOriginal(bool disableFSredir)
 	PVOID old_val;
 	if (disableFSredir) {
 		isRedirDisabled = wow64_disable_fs_redirection(&old_val);
-#ifdef _DEBUG
-		std::cout << "[+] Loadeding file by disabling FS redirection:" << szModName << "\n";
-#endif
+		// try to load with FS redirection disabled
 	}
 	original_module = peconv::load_pe_module(szModName, original_size, false, false);
 	if (isRedirDisabled) {
