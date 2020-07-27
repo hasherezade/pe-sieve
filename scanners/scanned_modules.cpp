@@ -60,7 +60,9 @@ LoadedModule* pesieve::ProcessModules::getModuleContaining(ULONGLONG address, si
 	for (; itr != stop_itr; ++itr ) {
 		LoadedModule *module = itr->second;
 		if (address >= module->start && end_addr < module->getEnd()) {
-			// Address found in module:
+#ifdef _DEBUG
+			std::cout << "Addr: " << std::hex << address << " found in: " << module->start << " - " << module->getEnd() << std::endl;
+#endif
 			return module;
 		}
 	}

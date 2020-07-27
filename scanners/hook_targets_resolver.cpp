@@ -19,9 +19,13 @@ bool pesieve::HookTargetResolver::resolveTarget(PatchList::Patch* currPatch)
 		ScannedModuleInfo &modInfo = itr1->second;
 		ULONGLONG begin = modInfo.moduleAddr;
 		ULONGLONG end = modInfo.moduleSize + begin;
-		// searching hook in module:
+#ifdef _DEBUG
+		std::cout << "Searching hook in module: " << std::hex << begin << std::endl;
+#endif
 		if (searchedAddr >= begin && searchedAddr < end) {
-			// Address found in module: modInfo.moduleAddr
+#ifdef _DEBUG
+			std::cout << "[+] Address found in module: " << std::hex << modInfo.moduleAddr << std::endl;
+#endif
 			currPatch->setHookTargetInfo(modInfo.moduleAddr, modInfo.isSuspicious, modInfo.moduleName);
 			return true;
 		}
