@@ -34,8 +34,15 @@ namespace pesieve {
 				(ERROR_BAD_LENGTH may occur if the scanner is 32 bit and running on a 64 bit system.)
 				Otherwise - also on different error - skip.
 				*/
-				if (out != sizeof(page_info) || error != ERROR_BAD_LENGTH) {
-					std::cerr << "[WARNING] Cannot query the memory region. Error: " << std::dec << error << std::endl;
+				if (error == ERROR_BAD_LENGTH) {
+					if (out != sizeof(page_info)) {
+						std::cerr << "[WARNING] Cannot query the memory region. Error: " << std::dec << error << std::endl;
+						break;
+					}
+					// if (out == sizeof(page_info) && error == ERROR_BAD_LENGTH), continue normally
+				} else {
+					// on any other error, skip a page:
+					std::cerr << "[WARNING] Skipping a page! Error: " << std::dec << error << std::endl;
 					start_va += PAGE_SIZE;
 					continue;
 				}
