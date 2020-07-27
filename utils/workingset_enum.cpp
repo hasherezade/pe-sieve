@@ -13,11 +13,14 @@ namespace pesieve {
 
 		bool get_next_commited_region(HANDLE processHandle, ULONGLONG start_va, MEMORY_BASIC_INFORMATION &page_info)
 		{
+			const SIZE_T page_info_size = sizeof(MEMORY_BASIC_INFORMATION);
+
 			while (start_va < mask) {
 				//std::cout << "Checking: " << std::hex << start_va << std::endl;
-				memset(&page_info, 0, sizeof(MEMORY_BASIC_INFORMATION));
-				SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID)start_va, &page_info, sizeof(page_info));
-				const DWORD error = GetLastError();
+				memset(&page_info, 0, page_info_size);
+				const SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID)start_va, &page_info, page_info_size);
+				const bool is_read = (out == page_info_size) ? true : false;
+				const DWORD error = is_read ? ERROR_SUCCESS : GetLastError();
 				if (error == ERROR_INVALID_PARAMETER) {
 					//nothing more to read
 #ifdef _DEBUG
@@ -26,22 +29,12 @@ namespace pesieve {
 					break;
 				}
 				if (error == ERROR_ACCESS_DENIED) {
-					std::cerr << "[WARNING] Cannot query the memory region. Error: " << std::dec << error << std::endl;
+					std::cerr << "[ERROR] Cannot query the memory region. " << std::hex << start_va << " Error: " << std::dec << error << std::endl;
 					break;
 				}
-				/*
-				Allow to proceed on ERROR_BAD_LENGTH, if the filled MEMORY_BASIC_INFORMATION is as expected.
-				(ERROR_BAD_LENGTH may occur if the scanner is 32 bit and running on a 64 bit system.)
-				Otherwise - also on different error - skip.
-				*/
-				if (error == ERROR_BAD_LENGTH) {
-					if (out != sizeof(page_info)) {
-						std::cerr << "[WARNING] Cannot query the memory region. Error: " << std::dec << error << std::endl;
-						break;
-					}
-					// if (out == sizeof(page_info) && error == ERROR_BAD_LENGTH), continue normally
-				} else if (error != ERROR_SUCCESS) {
-					std::cerr << "[WARNING] Skipping a page! Error: " << std::dec << error << std::endl;
+				if (!is_read) {
+					// on any other error:
+					std::cerr << "[WARNING] Cannot query the memory region. " << std::hex<< start_va << " Error: " << std::dec << error << ", skipping the page..." << std::endl;
 					start_va += PAGE_SIZE;
 					continue;
 				}
@@ -56,7 +49,7 @@ namespace pesieve {
 					start_va += PAGE_SIZE;
 					continue;
 				}
-				//std::cout << "Commited:  " << std::hex << start_va << " RegionSize: " << page_info.RegionSize << std::endl;
+				//std::cout << "Commited:  " << std::hex << start_va << " RegionSize: " << page_info.RegionSize << " Err: " << std::dec << error << std::endl;
 				return true;
 			}
 			return false;
