@@ -10,5 +10,7 @@
 namespace pesieve {
 	namespace util {
 		size_t enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &region_bases);
+
+		DWORD count_workingset_entries(HANDLE processHandle);
 	};
 };

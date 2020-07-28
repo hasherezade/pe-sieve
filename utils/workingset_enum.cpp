@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#include <psapi.h>
+#pragma comment(lib,"psapi.lib")
+
 #ifdef _WIN64
 	const ULONGLONG mask = ULONGLONG(-1);
 #else
@@ -75,4 +78,29 @@ size_t pesieve::util::enum_workingset(HANDLE processHandle, std::set<ULONGLONG> 
 		region_bases.insert(base);
 	}
 	return region_bases.size();
+}
+
+DWORD pesieve::util::count_workingset_entries(HANDLE processHandle)
+{
+	DWORD number_of_entries = 1;
+	DWORD buffer_size = sizeof(PSAPI_WORKING_SET_INFORMATION) + (number_of_entries * sizeof(PSAPI_WORKING_SET_BLOCK));
+	PSAPI_WORKING_SET_INFORMATION* buffer = reinterpret_cast<PSAPI_WORKING_SET_INFORMATION*>(calloc(1, buffer_size));
+	if (!buffer) {
+		return 0; //this should not happen
+	}
+	DWORD res = QueryWorkingSet(processHandle, buffer, buffer_size);
+	if (res == FALSE && GetLastError() == ERROR_BAD_LENGTH) {
+		// ERROR_BAD_LENGTH is normal: we didn't provide the buffer that could fit all the entries
+		res = TRUE;
+	}
+	number_of_entries = static_cast<DWORD>(buffer->NumberOfEntries);
+	free(buffer); buffer = NULL;
+
+	if (!res) {
+		return 0;
+	}
+#ifdef _DEBUG
+	std::cout << "Number of entries: " << std::dec << number_of_entries << std::endl;
+#endif
+	return number_of_entries;
 }

@@ -21,9 +21,6 @@
 #include <locale>
 #include <codecvt>
 
-#include <psapi.h>
-#pragma comment(lib,"psapi.lib")
-
 using namespace pesieve;
 using namespace pesieve::util;
 
@@ -205,24 +202,13 @@ ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 
 size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws exceptions
 {
-	PSAPI_WORKING_SET_INFORMATION wsi_1 = { 0 };
-	BOOL result = QueryWorkingSet(this->processHandle, (LPVOID)&wsi_1, sizeof(PSAPI_WORKING_SET_INFORMATION));
-	if (result == FALSE && GetLastError() != ERROR_BAD_LENGTH) {
-		/**
-		Allow to proceed on ERROR_BAD_LENGTH.
-		ERROR_BAD_LENGTH may occur if the scanner is 32 bit and running on a 64 bit system.
-		In case of any different error, break.
-		*/
+	if (!util::count_workingset_entries(this->processHandle)) {
 		throw std::runtime_error("Could not query the working set. ");
 		return 0;
 	}
-#ifdef _DEBUG
-	std::cout << "Number of entries: " << std::dec << wsi_1.NumberOfEntries << std::endl;
-#endif
-
 	DWORD start_tick = GetTickCount();
 	std::set<ULONGLONG> region_bases;
-	size_t pages_count = enum_workingset(processHandle, region_bases);
+	size_t pages_count = util::enum_workingset(processHandle, region_bases);
 	if (!args.quiet) {
 		std::cout << "Scanning workingset: " << std::dec << pages_count << " memory regions." << std::endl;
 	}
