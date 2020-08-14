@@ -210,7 +210,7 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 	OUT ProcessDumpReport &dumpReport
 )
 {
-	if (!mod) return nullptr;
+	if (!mod) return false;
 
 	const bool save_imp_report = true;
 	bool is_dumped = false;
