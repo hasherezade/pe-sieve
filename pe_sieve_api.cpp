@@ -31,4 +31,4 @@ void PESIEVE_API_FUNC PESieve_help(void)
 	MessageBox(NULL, my_info.c_str(), LIB_NAME, MB_ICONINFORMATION);
 }
 
-const DWORD PESIEVE_API PESieve_version = pesieve::PESIEVE_VERSION_ID;
+extern const DWORD PESIEVE_API PESieve_version = pesieve::PESIEVE_VERSION_ID;

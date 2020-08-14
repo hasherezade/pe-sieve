@@ -2,7 +2,8 @@
 #include <string>
 #include <iostream>
 
-#include "pe_sieve_api.h"
+#define PESIEVE_EXPORTS
+#include <pe_sieve_api.h>
 
 BOOL WINAPI DllMain (HANDLE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
