@@ -13,7 +13,7 @@
 #define PESIEVE_API
 #endif
 
-#define PESIEVE_API_FUNC PESIEVE_API __stdcall
+#define PESIEVE_API_FUNC PESIEVE_API __cdecl
 
 #ifdef __cplusplus
 extern "C" {
