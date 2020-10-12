@@ -111,7 +111,10 @@ namespace pesieve {
 		if (!hProcess) {
 			return nullptr;
 		}
-
+		if (args.out_filter == OUT_NO_DIR) {
+			// dumping disabled
+			return nullptr;
+		}
 		ProcessDumpReport* dumpReport = nullptr;
 		ResultsDumper dumper(expand_path(args.output_dir), args.quiet);
 
@@ -202,8 +205,8 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 		ProcessScanner scanner(target_proc, args);
 		report->scan_report = scanner.scanRemote();
 
-		// dump process (if dumping is selected)
-		if (report->scan_report && args.out_filter != OUT_NO_DIR) {
+		// dump process
+		if (report->scan_report) {
 			report->dump_report = make_dump(target_proc, args, *report->scan_report);
 		}
 	}
