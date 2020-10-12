@@ -47,16 +47,10 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageDat
 	{
 		return false;
 	}
-	bool is_any_exec = false;
-
-	if (memPage.mapping_type == MEM_IMAGE) {
-		is_any_exec = (memPage.protection & SECTION_MAP_READ) != 0;
-
-		if (is_any_exec) return true;
+	if (pesieve::util::is_readable(memPage.mapping_type, memPage.protection)) {
+		return true;
 	}
-	is_any_exec = (memPage.protection & PAGE_READWRITE)
-		|| (memPage.protection & PAGE_READONLY);
-	return is_any_exec;
+	return false;
 }
 
 WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData &memPageData)

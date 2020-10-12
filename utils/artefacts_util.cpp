@@ -129,3 +129,18 @@ bool pesieve::util::is_executable(DWORD mapping_type, DWORD protection)
 
 	return is_any_exec;
 }
+
+bool pesieve::util::is_readable(DWORD mapping_type, DWORD protection)
+{
+	bool is_read = false;
+
+	if (mapping_type == MEM_IMAGE) {
+		is_read = (protection & SECTION_MAP_READ) != 0;
+
+		if (is_read) return true;
+	}
+
+	is_read = (protection & PAGE_READWRITE)
+		|| (protection & PAGE_READONLY);
+	return is_read;
+}

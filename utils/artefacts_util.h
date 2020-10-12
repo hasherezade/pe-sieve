@@ -16,5 +16,7 @@ namespace pesieve {
 		bool is_code(BYTE *loadedData, size_t loadedSize);
 
 		bool is_executable(DWORD mapping_type, DWORD protection);
+
+		bool is_readable(DWORD mapping_type, DWORD protection);
 	};
 }
