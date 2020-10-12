@@ -221,7 +221,9 @@ bool pesieve::RemoteModuleData::isSectionEntry(const size_t section_number)
 	if (!sec_hdr) {
 		return false;
 	}
-	if (ep_va >= sec_hdr->VirtualAddress && ep_va < sec_hdr->Misc.VirtualSize) {
+	if (ep_va >= sec_hdr->VirtualAddress 
+		&& ep_va < (sec_hdr->VirtualAddress + sec_hdr->Misc.VirtualSize))
+	{
 		return true;
 	}
 	return false;
