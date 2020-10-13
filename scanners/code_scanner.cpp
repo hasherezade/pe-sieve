@@ -240,7 +240,7 @@ size_t pesieve::CodeScanner::collectExecutableSections(RemoteModuleData &_remote
 
 		if (!is_entry // entry section may be set as non executable, but it will still be executed
 			&& !(section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
-			&& !_remoteModData.isSectionExecutable(i))
+			&& !_remoteModData.isSectionExecutable(i, isScanData))
 		{
 			//not executable, skip it
 			continue;

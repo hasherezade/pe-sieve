@@ -119,8 +119,8 @@ namespace pesieve {
 		}
 
 		bool isSectionEntry(const size_t section_number);
-		bool isSectionExecutable(const size_t section_number);
-		bool hasExecutableSection();
+		bool isSectionExecutable(const size_t section_number, bool allow_data);
+		bool hasExecutableSection(bool allow_data);
 		bool isInitialized()
 		{
 			if (!isHdrReady && !init()) {

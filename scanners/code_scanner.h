@@ -57,9 +57,12 @@ namespace pesieve {
 	public:
 
 		CodeScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData)
-			: ModuleScanner(hProc, moduleData, remoteModData) { }
+			: ModuleScanner(hProc, moduleData, remoteModData),
+			isScanData(false) { }
 
 		virtual CodeScanReport* scanRemote();
+
+		void scanData(bool enable) { this->isScanData = enable; }
 
 	private:
 		typedef enum section_status {
@@ -86,6 +89,8 @@ namespace pesieve {
 		bool clearLoadConfig(PeSection &originalSec, PeSection &remoteSec);
 
 		size_t collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList);
+
+		bool isScanData;
 	};
 
 }; //namespace pesieve
