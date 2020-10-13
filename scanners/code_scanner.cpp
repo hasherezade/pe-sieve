@@ -172,10 +172,10 @@ namespace pesieve {
 	}
 };
 
-pesieve::CodeScanner::t_section_status pesieve::CodeScanner::scanSection(PeSection &originalSec, PeSection &remoteSec, OUT PatchList &patchesList)
+CodeScanReport::t_section_status pesieve::CodeScanner::scanSection(PeSection &originalSec, PeSection &remoteSec, OUT PatchList &patchesList)
 {
 	if (!originalSec.isInitialized() || !remoteSec.isInitialized()) {
-		return SECTION_SCAN_ERR;
+		return CodeScanReport::SECTION_SCAN_ERR;
 	}
 	clearIAT(originalSec, remoteSec);
 	clearExports(originalSec, remoteSec);
@@ -196,7 +196,7 @@ pesieve::CodeScanner::t_section_status pesieve::CodeScanner::scanSection(PeSecti
 	if ((originalSec.rawSize == 0 || peconv::is_padding(originalSec.loadedSection, smaller_size, 0))
 		&& !peconv::is_padding(remoteSec.loadedSection, smaller_size, 0))
 	{
-		return pesieve::CodeScanner::SECTION_UNPACKED; // modified
+		return pesieve::CodeScanReport::SECTION_UNPACKED; // modified
 	}
 
 	if (res != 0) {
@@ -218,12 +218,12 @@ pesieve::CodeScanner::t_section_status pesieve::CodeScanner::scanSection(PeSecti
 		}
 	}
 	if (patchesList.size()) {
-		return pesieve::CodeScanner::SECTION_PATCHED; // modified
+		return pesieve::CodeScanReport::SECTION_PATCHED; // modified
 	}
 	if (res == 0) {
-		return pesieve::CodeScanner::SECTION_NOT_MODIFIED; //not modified
+		return pesieve::CodeScanReport::SECTION_NOT_MODIFIED; //not modified
 	}
-	return pesieve::CodeScanner::SECTION_UNPACKED; // modified
+	return pesieve::CodeScanReport::SECTION_UNPACKED; // modified
 }
 
 size_t pesieve::CodeScanner::collectExecutableSections(RemoteModuleData &_remoteModData, std::map<size_t, PeSection*> &sections)
@@ -240,7 +240,7 @@ size_t pesieve::CodeScanner::collectExecutableSections(RemoteModuleData &_remote
 
 		if (!is_entry // entry section may be set as non executable, but it will still be executed
 			&& !(section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
-			&& !_remoteModData.isSectionExecutable(i))
+			&& !_remoteModData.isSectionExecutable(i, isScanData))
 		{
 			//not executable, skip it
 			continue;
@@ -277,7 +277,11 @@ void pesieve::CodeScanner::freeExecutableSections(std::map<size_t, PeSection*> &
 	sections.clear();
 }
 
-t_scan_status pesieve::CodeScanner::scanUsingBase(IN ULONGLONG load_base, IN std::map<size_t, PeSection*> &remote_code, OUT std::set<DWORD> &unpackedSections, OUT PatchList &patchesList)
+t_scan_status pesieve::CodeScanner::scanUsingBase(
+	IN ULONGLONG load_base,
+	IN std::map<size_t, PeSection*> &remote_code,
+	OUT std::map<DWORD, CodeScanReport::t_section_status> &sectionToResult,
+	OUT PatchList &patchesList)
 {
 	t_scan_status last_res = SCAN_NOT_SUSPICIOUS;
 
@@ -294,14 +298,13 @@ t_scan_status pesieve::CodeScanner::scanUsingBase(IN ULONGLONG load_base, IN std
 		PeSection *remoteSec = itr->second;
 
 		PeSection originalSec(moduleData, sec_indx);
-		t_section_status sec_status = scanSection(originalSec, *remoteSec, patchesList);
 
-		if (sec_status == pesieve::CodeScanner::SECTION_SCAN_ERR) errors++;
-		else if (sec_status != pesieve::CodeScanner::SECTION_NOT_MODIFIED) {
+		CodeScanReport::t_section_status sec_status = scanSection(originalSec, *remoteSec, patchesList);
+		sectionToResult[originalSec.rva] = sec_status; //save the status for the section
+
+		if (sec_status == pesieve::CodeScanReport::SECTION_SCAN_ERR) errors++;
+		else if (sec_status != pesieve::CodeScanReport::SECTION_NOT_MODIFIED) {
 			modified++;
-			if (sec_status == pesieve::CodeScanner::SECTION_UNPACKED) {
-				unpackedSections.insert(originalSec.rva);
-			}
 		}
 	}
 
@@ -338,17 +341,19 @@ pesieve::CodeScanReport* pesieve::CodeScanner::scanRemote()
 	ULONGLONG hdr_base = remoteModData.getHdrImageBase();
 
 	my_report->relocBase = load_base;
-	last_res = scanUsingBase(load_base, remote_code, my_report->unpackedSections, my_report->patchesList);
+	last_res = scanUsingBase(load_base, remote_code, my_report->sectionToResult, my_report->patchesList);
 	
 	if (load_base != hdr_base && my_report->patchesList.size() > 0) {
 #ifdef _DEBUG
 		std::cout << "[WARNING] Load Base: " << std::hex << load_base << " is different than the Hdr Base: " << hdr_base << "\n";
 #endif
 		PatchList list2;
-		t_scan_status scan_res2 = scanUsingBase(hdr_base, remote_code, my_report->unpackedSections, list2);
+		std::map<DWORD, CodeScanReport::t_section_status> section_to_result;
+		t_scan_status scan_res2 = scanUsingBase(hdr_base, remote_code, section_to_result, list2);
 		if (list2.size() < my_report->patchesList.size()) {
 			my_report->relocBase = hdr_base;
 			my_report->patchesList = list2;
+			my_report->sectionToResult = section_to_result;
 			last_res = scan_res2;
 		}
 #ifdef _DEBUG
@@ -375,4 +380,3 @@ bool pesieve::CodeScanner::postProcessScan(IN OUT CodeScanReport &report)
 	report.patchesList.checkForHookedExports(local_mapper);
 	return true;
 }
-
