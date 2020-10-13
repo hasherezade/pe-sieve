@@ -89,7 +89,7 @@ std::string pesieve::translate_data_mode(const pesieve::t_data_scan_mode &mode)
 		return ".NET: scan non-executable in .NET applications";
 	case pesieve::PE_DATA_SCAN_NO_DEP:
 		return "if no DEP: scan non-exec if DEP is disabled (or if is .NET)";
-	case pesieve::PE_DNET_SCAN_ALWAYS:
+	case pesieve::PE_DATA_SCAN_ALWAYS:
 		return "always: scan non-executable pages unconditionally";
 	}
 	return "undefined";

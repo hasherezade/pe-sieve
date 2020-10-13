@@ -137,7 +137,7 @@ bool pesieve::WorkingSetScanner::scanImg()
 			return true;
 		}
 		if (!args.no_hooks) {
-			const bool scan_data = (this->args.data == pesieve::PE_DNET_SCAN_ALWAYS)
+			const bool scan_data = (this->args.data == pesieve::PE_DATA_SCAN_ALWAYS)
 				|| (!memPage.is_dep_enabled && (this->args.data == pesieve::PE_DATA_SCAN_NO_DEP));
 			const t_scan_status hooks_stat = ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport, scan_data);
 #ifdef _DEBUG
