@@ -5,6 +5,10 @@
 
 #include "iat_block.h"
 
+#ifndef MASK_TO_DWORD
+#define MASK_TO_DWORD(val) (val & 0xffffffff)
+#endif
+
 namespace pesieve {
 
 	IATBlock* find_iat_block(
