@@ -37,18 +37,18 @@ namespace pesieve {
 			tp.Privileges[0].Luid = luid;
 			tp.Privileges[0].Attributes = 0;
 
-			AdjustTokenPrivileges(
+			if (!AdjustTokenPrivileges(
 				hToken,
 				FALSE,
 				&tp,
 				sizeof(TOKEN_PRIVILEGES),
 				&tpPrevious,
 				&cbPrevious
-			);
-
-			if (GetLastError() != ERROR_SUCCESS) {
+			))
+			{   
 				return FALSE;
 			}
+
 			// set privilege based on previous setting
 			tpPrevious.PrivilegeCount = 1;
 			tpPrevious.Privileges[0].Luid = luid;
@@ -60,18 +60,18 @@ namespace pesieve {
 				tpPrevious.Privileges[0].Attributes ^= (SE_PRIVILEGE_ENABLED & tpPrevious.Privileges[0].Attributes);
 			}
 
-			AdjustTokenPrivileges(
+			if (!AdjustTokenPrivileges(
 				hToken,
 				FALSE,
 				&tpPrevious,
 				cbPrevious,
 				NULL,
 				NULL
-			);
-
-			if (GetLastError() != ERROR_SUCCESS) {
+			))
+			{   
 				return FALSE;
 			}
+
 			return TRUE;
 		}
 
