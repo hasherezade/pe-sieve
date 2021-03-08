@@ -2,10 +2,12 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/crlo8iyvi4bm80yp?svg=true)](https://ci.appveyor.com/project/hasherezade/pe-sieve)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b75fd4d95bd94629879381241e4a7c02)](https://www.codacy.com/manual/hasherezade/pe-sieve?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hasherezade/pe-sieve&amp;utm_campaign=Badge_Grade)
-[![License](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)](https://opensource.org/licenses/BSD-2-Clause)
 [![GitHub release](https://img.shields.io/github/release/hasherezade/pe-sieve.svg)](https://github.com/hasherezade/pe-sieve/releases)
 [![Github All Releases](https://img.shields.io/github/downloads/hasherezade/pe-sieve/total.svg)](https://github.com/hasherezade/pe-sieve/releases)
 [![Github Latest Release](https://img.shields.io/github/downloads/hasherezade/pe-sieve/latest/total.svg)](https://github.com/hasherezade/pe-sieve/releases)
+
+[![License](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)](https://opensource.org/licenses/BSD-2-Clause)
+[![Platform Badge](https://img.shields.io/badge/Windows-0078D6?logo=windows)](https://github.com/hasherezade/libpeconv)
 
 [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?original_referer=https://github.com/hasherezade/pe-sieve&text=%23PEsieve%3A+an+open-source+process+scanner%2C+detecting+and+dumping+malicious+implants:%20https://github.com/hasherezade/pe-sieve)
 
