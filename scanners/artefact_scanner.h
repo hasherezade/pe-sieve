@@ -45,6 +45,9 @@ namespace pesieve {
 
 		ULONGLONG peImageBase()
 		{
+			if (peBaseOffset == INVALID_OFFSET) {
+				return INVALID_OFFSET;
+			}
 			return this->peBaseOffset + this->regionStart;
 		}
 
