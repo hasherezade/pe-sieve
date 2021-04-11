@@ -32,6 +32,16 @@ namespace pesieve {
 	};
 };
 
+bool pesieve::util::is_cstr_equal(char const *a, char const *b, const size_t max_len)
+{
+	for (size_t i = 0; i < max_len; ++i) {
+		if (tolower(a[i]) != tolower(b[i])) {
+			return false;
+		}
+		if (tolower(a[i]) == '\0') break;
+	}
+	return true;
+}
 
 long pesieve::util::get_number(const char *my_buf)
 {
@@ -44,16 +54,20 @@ long pesieve::util::get_number(const char *my_buf)
 	long out = 0;
 	const size_t min_length = 1; //tolerate number with at least 1 character is fine
 	if (len > hex_pattern_len) {
-		if (strncmp(my_buf, hex_pattern, hex_pattern_len) == 0) {
+		if (is_cstr_equal(my_buf, hex_pattern, hex_pattern_len) == 0) {
 			if (!is_hex(my_buf + hex_pattern_len, min_length)) return 0;
 
-			out = std::stoul(my_buf, nullptr, 16);
+			std::stringstream ss;
+			ss << std::hex << my_buf;
+			ss >> out;
 			return out;
 		}
 	}
 	if (!is_dec(my_buf, min_length)) return 0;
 
-	out = std::stoul(my_buf, nullptr, 10);
+	std::stringstream ss;
+	ss << std::dec << my_buf;
+	ss >> out;
 	return out;
 }
 
