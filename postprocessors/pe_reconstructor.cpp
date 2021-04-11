@@ -284,7 +284,7 @@ bool pesieve::PeReconstructor::reconstructPeHdr()
 	if (!is_fixed) {
 		return false;
 	}
-	if (!peconv::get_nt_hdrs(vBuf)) {
+	if (!peconv::get_nt_hdrs(vBuf, vBufSize)) {
 		return false;
 	}
 	return true;
