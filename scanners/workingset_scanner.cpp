@@ -23,9 +23,6 @@ bool pesieve::WorkingSetScanner::isExecutable(MemPageData &memPageData)
 	if (pesieve::util::is_executable(memPage.mapping_type, memPage.protection)) {
 		return true;
 	}
-	if (pesieve::util::is_executable(memPage.mapping_type, memPage.initial_protect)) {
-		return true;
-	}
 	return isPotentiallyExecutable(memPageData, this->args.data);
 }
 
