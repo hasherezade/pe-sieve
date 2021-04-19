@@ -118,12 +118,8 @@ bool pesieve::PatchAnalyzer::isLongModifier(BYTE op)
 	return false;
 }
 
-size_t pesieve::PatchAnalyzer::analyze(PatchList::Patch &patch)
+size_t pesieve::PatchAnalyzer::_analyze(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
 {
-	ULONGLONG patch_va = moduleData.rvaToVa(patch.startRva);
-	size_t patch_offset = patch.startRva - sectionRVA;
-	PBYTE patch_ptr = this->patchedCode + patch_offset;
-
 	BYTE op = patch_ptr[0];
 	if (op == OP_JMP || op == OP_CALL_DWORD) {
 		return parseJmp(patch, patch_ptr, patch_va);
@@ -145,5 +141,25 @@ size_t pesieve::PatchAnalyzer::analyze(PatchList::Patch &patch)
 		return parseMovJmp(patch, patch_ptr, is_long);
 	}
 	return 0;
+}
+
+size_t pesieve::PatchAnalyzer::analyze(PatchList::Patch &patch)
+{
+	ULONGLONG patch_va = moduleData.rvaToVa(patch.startRva);
+	size_t patch_offset = patch.startRva - sectionRVA;
+	BYTE* patch_ptr = this->patchedCode + patch_offset;
+
+	size_t size = _analyze(patch, patch_ptr, patch_va);
+
+	if (size == 0 && patch_offset > 0) {
+		//it may happen that the address of an existing JMP/CALL was replaced
+		//try to parse a byte before the patch...
+		size = _analyze(patch, patch_ptr -1, patch_va - 1);
+		if (size > 0) {
+			// substract the added position:
+			size--;
+		}
+	}
+	return size;
 }
 
