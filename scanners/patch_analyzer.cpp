@@ -13,7 +13,9 @@ ULONGLONG pesieve::PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, int instrLen,
 size_t pesieve::PatchAnalyzer::parseShortJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
 {
 	const size_t instr_size = 2;
-
+	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, instr_size)) {
+		return 0;
+	}
 	BYTE *lval = (BYTE*)((ULONGLONG)patch_ptr + 1);
 	ULONGLONG addr = getJmpDestAddr<BYTE>(patch_va, instr_size, (*lval));
 
@@ -24,7 +26,9 @@ size_t pesieve::PatchAnalyzer::parseShortJmp(PatchList::Patch &patch, PBYTE patc
 size_t pesieve::PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
 {
 	const size_t instr_size = 5;
-
+	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, instr_size)) {
+		return 0;
+	}
 	DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
 	ULONGLONG addr = getJmpDestAddr<DWORD>(patch_va, instr_size, (*lval));
 
@@ -35,8 +39,11 @@ size_t pesieve::PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr
 size_t pesieve::PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, bool is_long)
 {
 	size_t mov_instr_len = is_long ? 9 : 5;
-	PBYTE jmp_ptr = patch_ptr + mov_instr_len; // next instruction
+	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, mov_instr_len + 2)) {
+		return 0;
+	}
 
+	PBYTE jmp_ptr = patch_ptr + mov_instr_len; // next instruction
 	if (is64Modifier(*patch_ptr)) {
 		patch_ptr++;
 		jmp_ptr++;
@@ -49,6 +56,9 @@ size_t pesieve::PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_
 	if (is64Modifier(*jmp_ptr)) {
 		jmp_ptr++;
 		mov_instr_len++; // add length of modifier
+	}
+	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, jmp_ptr, 2)) {
+		return 0;
 	}
 	DWORD reg_id1 = 0;
 	if (jmp_ptr[0] == 0xFF && jmp_ptr[1] >= 0xE0 && jmp_ptr[1] <= 0xEF ) { // jmp reg
@@ -90,6 +100,9 @@ size_t pesieve::PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_
 size_t pesieve::PatchAnalyzer::parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr)
 {
 	size_t instr_size = 5;
+	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, instr_size + 1)) {
+		return 0;
+	}
 	PBYTE ret_ptr = patch_ptr + instr_size; // next instruction
 	if (ret_ptr[0] != 0xC3) {
 		return NULL; // this is not push->ret
@@ -145,9 +158,14 @@ size_t pesieve::PatchAnalyzer::_analyze(PatchList::Patch &patch, PBYTE patch_ptr
 
 size_t pesieve::PatchAnalyzer::analyze(PatchList::Patch &patch)
 {
-	ULONGLONG patch_va = moduleData.rvaToVa(patch.startRva);
-	size_t patch_offset = patch.startRva - sectionRVA;
+	const ULONGLONG patch_va = moduleData.rvaToVa(patch.startRva);
+	const size_t patch_offset = patch.startRva - sectionRVA;
 	BYTE* patch_ptr = this->patchedCode + patch_offset;
+
+	const size_t kMinSize = 3;
+	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, kMinSize)) {
+		return 0;
+	}
 
 	size_t size = _analyze(patch, patch_ptr, patch_va);
 
