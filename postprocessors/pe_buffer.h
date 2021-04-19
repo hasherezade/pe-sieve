@@ -93,11 +93,9 @@ namespace pesieve {
 			peconv::free_aligned(vBuf);
 			vBuf = nullptr;
 			vBufSize = 0;
-			moduleBase = 0;
-			relocBase = 0;
 		}
 
-		BYTE * vBuf;
+		BYTE *vBuf;
 		size_t vBufSize;
 		ULONGLONG moduleBase;
 		ULONGLONG relocBase;

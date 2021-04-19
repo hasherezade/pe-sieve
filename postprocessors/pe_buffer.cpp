@@ -38,7 +38,7 @@ bool pesieve::PeBuffer::readRemote(HANDLE process_hndl, ULONGLONG module_base, s
 	return _readRemote(process_hndl, module_base, pe_vsize);
 }
 
-bool  pesieve::PeBuffer::_readRemote(HANDLE process_hndl, ULONGLONG module_base, size_t pe_vsize)
+bool  pesieve::PeBuffer::_readRemote(HANDLE process_hndl, const ULONGLONG module_base, size_t pe_vsize)
 {
 	if (pe_vsize == 0) {
 		return false;
@@ -46,14 +46,17 @@ bool  pesieve::PeBuffer::_readRemote(HANDLE process_hndl, ULONGLONG module_base,
 	if (!allocBuffer(pe_vsize)) {
 		return false;
 	}
-	size_t read_size = peconv::read_remote_area(process_hndl, (BYTE*)module_base, vBuf, pe_vsize);
+
+	// store the base no matter if reading succeeded or failed
+	this->moduleBase = module_base;
+	this->relocBase = module_base; //by default set the same as module base
+
+	size_t read_size = peconv::read_remote_area(process_hndl, (BYTE*)this->moduleBase, vBuf, pe_vsize);
 	if (read_size != pe_vsize) {
-		std::cout << "[!] Failed reading Image at: " << std::hex << module_base << " img size: " << pe_vsize << std::endl;
+		std::cout << "[!] Failed reading Image at: " << std::hex << this->moduleBase << " img size: " << pe_vsize << std::endl;
 		freeBuffer();
 		return false;
 	}
-	this->moduleBase = module_base;
-	this->relocBase = module_base; //by default set the same as module base
 	return true;
 }
 
@@ -65,14 +68,11 @@ bool pesieve::PeBuffer::resizeBuffer(size_t new_size)
 	if (!new_buf) {
 		return false;
 	}
-	//preserve the module base:
-	ULONGLONG module_base = this->moduleBase;
 
 	size_t smaller_size = (vBufSize < new_size) ? vBufSize : new_size;
 	memcpy(new_buf, this->vBuf, smaller_size);
 	freeBuffer();
 
-	this->moduleBase = module_base;
 	this->vBuf = new_buf;
 	this->vBufSize = new_size;
 	return true;
