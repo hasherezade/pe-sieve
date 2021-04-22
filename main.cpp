@@ -393,7 +393,11 @@ int main(int argc, char *argv[])
 			continue;
 		}
 		const char *param = &argv[i][1];
-		if (!strcmp(param, PARAM_HELP) || !strcmp(param, PARAM_HELP2)) {
+		if (!strcmp(param, PARAM_HELP2)) {
+			banner();
+			return 0;
+		}
+		if (!strcmp(param, PARAM_HELP)) {
 			print_help();
 			info_req = true;
 		}
