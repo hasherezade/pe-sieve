@@ -62,6 +62,31 @@ bool is_param(const char *str)
 	return false;
 }
 
+void print_params_block(std::string block_name, std::map<std::string, void(*)(int)> params_block, const std::string &filter)
+{
+	const int hdr_color = HEADER_COLOR;
+	const int param_color = HILIGHTED_COLOR;
+	const int separator_color = SEPARATOR_COLOR;
+
+	int p_color = param_color;
+	print_in_color(separator_color, "\n---" + block_name + "---\n");
+	std::map<std::string, void(*)(int)>::iterator itr;
+	for (itr = params_block.begin(); itr != params_block.end();itr++) {
+		const std::string &param = itr->first;
+		if (filter.length() > 0) {
+			bool has_keyword = (param.find(filter) != std::string::npos) || (filter.find(param) != std::string::npos);
+			//p_color = (has_keyword) ? param_color : GRAY;
+			if (!has_keyword) continue;
+		}
+		void(*info)(int) = itr->second;
+		if (!info) continue;
+		info(p_color);
+	}
+	if (filter.length() > 0) {
+		std::cout << "\n[...]\n";
+	}
+}
+
 size_t copyToCStr(char *buf, size_t buf_max, const std::string &value)
 {
 	size_t len = value.length() + 1;
@@ -247,7 +272,7 @@ void print_output_dir_param(int param_color)
 	std::cout << " <output_dir>\n\t: Set a root directory for the output (default: current directory).\n";
 }
 
-void print_help()
+void print_help(std::string filter = "")
 {
 	const int hdr_color = HEADER_COLOR;
 	const int param_color = HILIGHTED_COLOR;
@@ -258,31 +283,39 @@ void print_help()
 
 	print_in_color(hdr_color, "\nOptional: \n");
 
-	print_in_color(separator_color, "\n---scan options---\n");
-	print_iat_param(param_color);
-	print_shellc_param(param_color);
+	std::map<std::string, void(*)(int)> scan_params;
+	std::map<std::string, void(*)(int)> scan_exclusions;
+	std::map<std::string, void(*)(int)> scanner_params;
 
-	print_data_param(param_color);
+	scan_params[PARAM_IAT] = print_iat_param;
+	scan_params[PARAM_SHELLCODE] = print_shellc_param;
+	scan_params[PARAM_DATA] = print_data_param;
+
 #ifdef _WIN64
-	print_module_filter_param(param_color);
+	scan_exclusions[PARAM_MODULES_FILTER] = print_module_filter_param;
 #endif
-	print_mignore_param(param_color);
-	print_refl_param(param_color);
-	print_dnet_param(param_color);
 
-	print_in_color(separator_color, "\n---dump options---\n");
-	print_imprec_param(param_color);
-	print_dmode_param(param_color);
+	scan_exclusions[PARAM_MODULES_IGNORE] = print_mignore_param;
+	scan_exclusions[PARAM_DOTNET_POLICY] = print_dnet_param;
 
-	print_in_color(separator_color, "\n---output options---\n");
+	scanner_params[PARAM_REFLECTION] = print_refl_param;
+	scanner_params[PARAM_QUIET] = print_quiet_param;
 
-	print_out_filter_param(param_color);
+	print_params_block("scanner settings", scanner_params, filter);
+	print_params_block("scan exclusions", scan_exclusions, filter);
+	print_params_block("scan options", scan_params, filter);
 
-	print_quiet_param(param_color);
-	print_json_param(param_color);
+	std::map<std::string, void(*)(int)> dump_params;
+	dump_params[PARAM_IMP_REC] = print_imprec_param;
+	dump_params[PARAM_DUMP_MODE] = print_dmode_param;
+	dump_params[PARAM_MINIDUMP] = print_minidump_param;
+	print_params_block("dump options", dump_params, filter);
 
-	print_minidump_param(param_color);
-	print_output_dir_param(param_color);
+	std::map<std::string, void(*)(int)> out_params;
+	out_params[PARAM_OUT_FILTER] = print_out_filter_param;
+	out_params[PARAM_DIR] = print_output_dir_param;
+	out_params[PARAM_JSON] = print_json_param;
+	print_params_block("output options", out_params, filter);
 
 	print_in_color(hdr_color, "\nInfo: \n");
 	print_param_in_color(param_color, PARAM_HELP);
@@ -506,8 +539,8 @@ int main(int argc, char *argv[])
 		}
 		else {
 			print_unknown_param(argv[i]);
-			print_in_color(HILIGHTED_COLOR, "Available parameters:\n\n");
-			print_help();
+			print_in_color(HILIGHTED_COLOR, "Similar parameters:\n\n");
+			print_help(param);
 			return 0;
 		}
 	}
