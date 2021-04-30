@@ -28,11 +28,6 @@ namespace pesieve {
 		const virtual void fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
 		{
 			ModuleScanReport::toJSON(outs, level);
-			if (patchesList.size() > 0) {
-				outs << ",\n";
-				OUT_PADDED(outs, level, "\"patches\" : ");
-				outs << std::dec << patchesList.size();
-			}
 			if (sectionToResult.size() > 0) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"scanned_sections\" : ");
@@ -43,6 +38,11 @@ namespace pesieve {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"unpacked_sections\" : ");
 				outs << std::dec << unpacked;
+			}
+			if (patchesList.size() > 0) {
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"patches\" : ");
+				outs << std::dec << patchesList.size();
 			}
 		}
 
