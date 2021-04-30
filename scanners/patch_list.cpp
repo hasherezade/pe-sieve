@@ -3,6 +3,8 @@
 #include <iostream>
 #include <sstream>
 
+#include "../utils/format_util.h"
+
 std::string  pesieve::PatchList::Patch::getFormattedName()
 {
 	std::stringstream stream;
@@ -36,7 +38,7 @@ std::string  pesieve::PatchList::Patch::getFormattedName()
 	return stream.str();
 }
 
-bool  pesieve::PatchList::Patch::reportPatch(std::ofstream &patch_report, const char delimiter)
+const bool pesieve::PatchList::Patch::toTAG(std::ofstream &patch_report, const char delimiter)
 {
 	if (patch_report.is_open()) {
 		patch_report << std::hex << startRva;
@@ -52,6 +54,23 @@ bool  pesieve::PatchList::Patch::reportPatch(std::ofstream &patch_report, const 
 	return true;
 }
 
+const bool pesieve::PatchList::Patch::toJSON(std::stringstream &outs, size_t level)
+{
+	//OUT_PADDED(outs, level, "\"patch_" << std::dec << id << "\" : {\n");
+	OUT_PADDED(outs, level, "{\n");
+	OUT_PADDED(outs, (level + 1), "\"rva\" : ");
+	outs << "\"" << std::hex << (ULONGLONG)startRva << "\"" << ",\n";
+
+	OUT_PADDED(outs, (level + 1), "\"size\" : ");
+	outs << "\"" << std::hex << (ULONGLONG)(endRva - startRva) << "\"" << ",\n";
+
+	OUT_PADDED(outs, (level + 1), "\"info\" : ");
+	outs << "\"" << getFormattedName() << "\"" << "\n";
+
+	OUT_PADDED(outs, level, "}");
+	return true;
+}
+
 bool  pesieve::PatchList::Patch::resolveHookedExport(peconv::ExportsMapper &expMap)
 {
 	ULONGLONG patch_va = (ULONGLONG) this->moduleBase + this->startRva;
@@ -63,14 +82,36 @@ bool  pesieve::PatchList::Patch::resolveHookedExport(peconv::ExportsMapper &expM
 	return true;
 }
 
-size_t  pesieve::PatchList::reportPatches(std::ofstream &patch_report, const char delimiter)
+const size_t pesieve::PatchList::toTAGs(std::ofstream &patch_report, const char delimiter)
 {
 	std::vector<Patch*>::iterator itr;
 	for (itr = patches.begin(); itr != patches.end(); ++itr) {
 		Patch *patch = *itr;
-		patch->reportPatch(patch_report, delimiter);
+		patch->toTAG(patch_report, delimiter);
 	}
 	return patches.size();
+}
+
+const bool pesieve::PatchList::toJSON(std::stringstream &outs, size_t level)
+{
+	if (patches.size() == 0) {
+		return false;
+	}
+	bool is_first = true;
+	OUT_PADDED(outs, level, "\"patches_list\" : [\n");
+	std::vector<Patch*>::iterator itr;
+	size_t id = 0;
+	for (itr = patches.begin(); itr != patches.end(); ++itr, ++id) {
+		if (!is_first) {
+			outs << ",\n";
+		}
+		Patch *patch = *itr;
+		patch->toJSON(outs, level + 1);
+		is_first = false;
+	}
+	outs << "\n";
+	OUT_PADDED(outs, level, "]");
+	return true;
 }
 
 size_t  pesieve::PatchList::checkForHookedExports(peconv::ExportsMapper &expMap)
@@ -95,4 +136,3 @@ void  pesieve::PatchList::deletePatches()
 	}
 	this->patches.clear();
 }
-

@@ -20,7 +20,7 @@ size_t pesieve::CodeScanReport::generateTags(std::string reportPath)
 	if (patch_report.is_open() == false) {
 		return 0;
 	}
-	size_t patches = patchesList.reportPatches(patch_report, ';');
+	size_t patches = patchesList.toTAGs(patch_report, ';');
 	if (patch_report.is_open()) {
 		patch_report.close();
 	}

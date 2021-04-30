@@ -43,6 +43,9 @@ namespace pesieve {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"patches\" : ");
 				outs << std::dec << patchesList.size();
+
+				outs << ",\n";
+				patchesList.toJSON(outs, level);
 			}
 		}
 

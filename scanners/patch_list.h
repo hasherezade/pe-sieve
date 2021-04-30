@@ -62,7 +62,8 @@ namespace pesieve {
 				return true;
 			}
 
-			bool reportPatch(std::ofstream &patch_report, const char delimiter);
+			const bool toTAG(std::ofstream &patch_report, const char delimiter);
+			const bool toJSON(std::stringstream &outs, size_t level);
 
 		protected:
 			bool resolveHookedExport(peconv::ExportsMapper &expMap);
@@ -116,7 +117,9 @@ namespace pesieve {
 			return patches.size();
 		}
 
-		size_t reportPatches(std::ofstream &patch_report, const char delimiter);
+		const size_t toTAGs(std::ofstream &patch_report, const char delimiter);
+
+		const bool toJSON(std::stringstream &outs, size_t level);
 
 		//checks what are the names of the functions that have been hooked
 		size_t checkForHookedExports(peconv::ExportsMapper &expMap);
