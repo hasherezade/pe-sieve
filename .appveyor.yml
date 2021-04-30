@@ -32,7 +32,7 @@ before_build:
     cmake .. -A x64 )
   - if [%env_arch%]==[x86] (
     cmake .. )
-  - cmake -DCMAKE_INSTALL_PREFIX:PATH=%APPVEYOR_BUILD_FOLDER%/%APPVEYOR_REPO_COMMIT% ..
+  - cmake -DPESIEVE_BUILD_TESTING=ON -DCMAKE_INSTALL_PREFIX:PATH=%APPVEYOR_BUILD_FOLDER%/%APPVEYOR_REPO_COMMIT% ..
   
 build_script:
   - cmake --build . --config %CONFIGURATION% --target install

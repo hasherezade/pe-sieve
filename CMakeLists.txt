@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.12.4)
 project (pe-sieve)
-option(PESIEVE_BUILD_TESTING "Enable testing for PE-sieve" ON)
 
+option(PESIEVE_BUILD_TESTING "Enable testing for PE-sieve" OFF)
 option(PESIEVE_AS_DLL "Build PE-sieve as a DLL" OFF)
 option(PESIEVE_AS_STATIC_LIB "Build PE-Sieve as a static library" OFF)
 
