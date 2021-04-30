@@ -375,13 +375,15 @@ ________________________________________________________________________\n";
 	print_help();
 }
 
-void print_scan_report(const ProcessScanReport& report, const t_params args)
+void print_report(const pesieve::ReportEx& report, const t_params args)
 {
+	if (!report.scan_report) return;
+
 	std::string report_str;
 	if (args.json_output) {
-		report_str = scan_report_to_json(report, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS);
+		report_str = scan_report_to_json(*report.scan_report, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS);
 	} else {
-		report_str = scan_report_to_string(report);
+		report_str = scan_report_to_string(*report.scan_report);
 	}
 	//summary:
 	std::cout << report_str;
@@ -599,7 +601,7 @@ int main(int argc, char *argv[])
 	}
 	pesieve::ReportEx* report = pesieve::scan_and_dump(args);
 	if (report != nullptr) {
-		print_scan_report(*report->scan_report, args);
+		print_report(*report, args);
 		delete report;
 		report = nullptr;
 	}
