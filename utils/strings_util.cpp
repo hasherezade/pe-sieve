@@ -79,3 +79,28 @@ size_t pesieve::util::str_hist_diffrence(const char s1[], const char s2[])
 	}
 	return diffs;
 }
+
+pesieve::util::stringsim_type pesieve::util::is_string_similar(const std::string &param, const std::string &filter)
+{
+	bool sim_found = (param.find(filter) != std::string::npos) || (filter.find(param) != std::string::npos);
+	if (sim_found) return SIM_SUBSTR;
+
+	size_t dist = util::levenshtein_distance(filter.c_str(), param.c_str());
+	if (dist <= (param.length() / 2)) {
+		sim_found = true;
+	}
+	if (dist >= param.length() || dist >= filter.length()) {
+		sim_found = false;
+	}
+	if (sim_found) return SIM_LAV_DIST;
+
+	size_t diff = util::str_hist_diffrence(filter.c_str(), param.c_str());
+	if (diff <= (param.length() / 2) || diff <= (filter.length() / 2)) {
+		sim_found = true;
+	}
+	if (diff >= param.length() || diff >= filter.length()) {
+		sim_found = false;
+	}
+	if (sim_found) return SIM_HIST;
+	return SIM_NONE;
+}

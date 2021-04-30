@@ -62,31 +62,6 @@ bool is_param(const char *str)
 	return false;
 }
 
-bool is_param_similar(const std::string &param, const std::string &filter)
-{
-	bool has_keyword = (param.find(filter) != std::string::npos) || (filter.find(param) != std::string::npos);
-	if (has_keyword) return true;
-
-	size_t dist = util::levenshtein_distance(filter.c_str(), param.c_str());
-	if (dist <= (param.length() / 2) || dist < 3) {
-		has_keyword = true;
-	}
-	if (dist >= param.length() || dist >= filter.length()) {
-		has_keyword = false;
-	}
-	if (has_keyword) return true;
-
-	size_t diff = util::str_hist_diffrence(filter.c_str(), param.c_str());
-	//std::cout << "HD: " << std::dec << diff << "\n";
-	if (diff <= (param.length() / 2) || diff <= (filter.length() / 2)) {
-		has_keyword = true;
-	}
-	if (diff >= param.length() || diff >= filter.length()) {
-		has_keyword = false;
-	}
-	return has_keyword;
-}
-
 size_t print_params_block(std::string block_name, std::map<std::string, void(*)(int)> params_block, const std::string &filter)
 {
 	const int hdr_color = HEADER_COLOR;
@@ -100,8 +75,8 @@ size_t print_params_block(std::string block_name, std::map<std::string, void(*)(
 	for (itr = params_block.begin(); itr != params_block.end();itr++) {
 		const std::string &param = itr->first;
 		if (has_filter) {
-			const bool has_keyword = is_param_similar(param, filter);
-			if (has_keyword) has_any = true;
+			stringsim_type sim_type = is_string_similar(param, filter);
+			if (sim_type != SIM_NONE) has_any = true;
 		}
 		else {
 			has_any = true;
@@ -117,9 +92,9 @@ size_t print_params_block(std::string block_name, std::map<std::string, void(*)(
 	for (itr = params_block.begin(); itr != params_block.end();itr++) {
 		const std::string &param = itr->first;
 		if (filter.length() > 0) {
-			const bool has_keyword = is_param_similar(param, filter);
-			p_color = (has_keyword) ? ERROR_COLOR : param_color;
-			if (!has_keyword) continue;
+			const stringsim_type sim_type = is_string_similar(param, filter);
+			p_color = (sim_type != SIM_NONE) ? ERROR_COLOR : param_color;
+			if (sim_type == SIM_NONE) continue;
 		}
 		void(*info)(int) = itr->second;
 		if (!info) continue;
