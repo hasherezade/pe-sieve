@@ -62,7 +62,7 @@ namespace pesieve {
 			return offset_with_pe_base - peBaseOffset;
 		}
 
-		const virtual bool fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
+		const virtual bool fieldsToJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
 		{
 			OUT_PADDED(outs, level, "\"pe_base_offset\" : ");
 			outs << "\"" << std::hex << peBaseOffset << "\"";
@@ -91,10 +91,10 @@ namespace pesieve {
 			return true;
 		}
 
-		const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
+		const virtual bool toJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
 		{
 			OUT_PADDED(outs, level, "\"pe_artefacts\" : {\n");
-			fieldsToJSON(outs, level + 1);
+			fieldsToJSON(outs, level + 1, jdetails);
 			outs << "\n";
 			OUT_PADDED(outs, level, "}");
 			return true;
@@ -130,17 +130,17 @@ namespace pesieve {
 			}
 		}
 
-		const virtual void fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
+		const virtual void fieldsToJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
 		{
-			WorkingSetScanReport::fieldsToJSON(outs, level);
+			WorkingSetScanReport::fieldsToJSON(outs, level, jdetails);
 			outs << ",\n";
-			artefacts.toJSON(outs, level);
+			artefacts.toJSON(outs, level, jdetails);
 		}
 
-		const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
+		const virtual bool toJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
 		{
 			OUT_PADDED(outs, level, "\"workingset_scan\" : {\n");
-			fieldsToJSON(outs, level + 1);
+			fieldsToJSON(outs, level + 1, jdetails);
 			outs << "\n";
 			OUT_PADDED(outs, level, "}");
 			return true;

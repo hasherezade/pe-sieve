@@ -186,7 +186,7 @@ pesieve::t_report pesieve::ProcessScanReport::generateSummary() const
 	return summary;
 }
 
-std::string pesieve::ProcessScanReport::listModules(size_t level, const pesieve::ProcessScanReport::t_report_filter &filter) const
+std::string pesieve::ProcessScanReport::listModules(size_t level, const pesieve::ProcessScanReport::t_report_filter &filter, const t_json_level &jdetails) const
 {
 	std::stringstream stream;
 	//summary:
@@ -200,7 +200,7 @@ std::string pesieve::ProcessScanReport::listModules(size_t level, const pesieve:
 				stream << ",\n";
 			}
 			OUT_PADDED(stream, level + 1, "{\n");
-			mod->toJSON(stream, level + 2);
+			mod->toJSON(stream, level + 2, jdetails);
 			stream << "\n";
 			OUT_PADDED(stream, level + 1, "}");
 			is_first = false;
@@ -213,7 +213,10 @@ std::string pesieve::ProcessScanReport::listModules(size_t level, const pesieve:
 	return stream.str();
 }
 
-const bool pesieve::ProcessScanReport::toJSON(std::stringstream &stream, size_t level, const pesieve::ProcessScanReport::t_report_filter &filter) const
+const bool pesieve::ProcessScanReport::toJSON(
+	std::stringstream &stream, size_t level, 
+	const pesieve::ProcessScanReport::t_report_filter &filter, 
+	const pesieve::t_json_level &jdetails) const
 {
 	const t_report report = this->generateSummary();
 	//summary:
@@ -259,7 +262,7 @@ const bool pesieve::ProcessScanReport::toJSON(std::stringstream &stream, size_t 
 	OUT_PADDED(stream, level + 1, "\"errors\" : ");
 	stream << std::dec << report.errors << "\n";
 	OUT_PADDED(stream, level, "},\n"); // scanned
-	stream << listModules(level, filter);
+	stream << listModules(level, filter, jdetails);
 	stream << "}\n";
 	return true;
 }

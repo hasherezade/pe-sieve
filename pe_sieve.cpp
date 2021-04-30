@@ -118,7 +118,7 @@ namespace pesieve {
 		ProcessDumpReport* dumpReport = nullptr;
 		ResultsDumper dumper(expand_path(args.output_dir), args.quiet);
 
-		if (dumper.dumpJsonReport(process_report, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS) && !args.quiet) {
+		if (dumper.dumpJsonReport(process_report, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS, args.json_lvl) && !args.quiet) {
 			std::cout << "[+] Report dumped to: " << dumper.getOutputDir() << std::endl;
 		}
 		

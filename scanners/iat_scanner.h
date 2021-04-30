@@ -24,7 +24,7 @@ namespace pesieve {
 			moduleFile = _moduleFile;
 		}
 
-		const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
+		const virtual bool toJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
 		{
 			size_t hooks = countHooked();
 			OUT_PADDED(outs, level, "\"iat_scan\" : ");
@@ -33,7 +33,7 @@ namespace pesieve {
 			outs << ",\n";
 			OUT_PADDED(outs, level + 1, "\"hooks\" : ");
 			outs << std::dec << hooks;
-			if (hooks) {
+			if (jdetails == JSON_DETAILS && hooks) {
 				outs << ",\n";
 				this->hooksToJSON(outs, level + 1);
 			}

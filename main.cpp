@@ -33,6 +33,7 @@
 #define PARAM_OUT_FILTER "ofilter"
 #define PARAM_QUIET "quiet"
 #define PARAM_JSON "json"
+#define PARAM_JSON_LVL "jlvl"
 #define PARAM_DIR "dir"
 #define PARAM_MINIDUMP "minidmp"
 //info:
@@ -274,6 +275,16 @@ void print_json_param(int param_color)
 	std::cout << "\t: Print the JSON report as the summary.\n";
 }
 
+void print_json_level_param(int param_color)
+{
+	print_param_in_color(param_color, PARAM_JSON_LVL);
+	std::cout << " <*json_lvl>\n\t: Level of details of the JSON report.\n";
+	std::cout << "*json_lvl:\n";
+	for (DWORD i = 0; i < pesieve::JSON_LVL_COUNT; i++) {
+		std::cout << "\t" << i << " - " << translate_json_level((pesieve::t_json_level) i) << "\n";
+	}
+}
+
 void print_quiet_param(int param_color)
 {
 	print_param_in_color(param_color, PARAM_QUIET);
@@ -339,6 +350,7 @@ void print_help(std::string filter = "")
 	out_params[PARAM_OUT_FILTER] = print_out_filter_param;
 	out_params[PARAM_DIR] = print_output_dir_param;
 	out_params[PARAM_JSON] = print_json_param;
+	out_params[PARAM_JSON_LVL] = print_json_level_param;
 	cntr += print_params_block("output options", out_params, filter);
 	if (cntr == 0) {
 		print_in_color(INACTIVE_COLOR, "\n[...]\n");
@@ -381,7 +393,7 @@ void print_report(const pesieve::ReportEx& report, const t_params args)
 
 	std::string report_str;
 	if (args.json_output) {
-		report_str = scan_report_to_json(*report.scan_report, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS);
+		report_str = scan_report_to_json(*report.scan_report, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS, args.json_lvl);
 	} else {
 		report_str = scan_report_to_string(*report.scan_report);
 	}
@@ -495,6 +507,16 @@ int main(int argc, char *argv[])
 			info_req,
 			print_json_param))
 		{
+			continue;
+		}
+		else if (get_int_param(argc, argv, param, i,
+			PARAM_JSON_LVL,
+			args.json_lvl,
+			JSON_BASIC,
+			info_req,
+			print_json_level_param))
+		{
+			args.json_lvl = normalize_json_level(args.json_lvl);
 			continue;
 		}
 		else if (get_int_param(argc, argv, param, i,

@@ -85,7 +85,7 @@ namespace pesieve {
 			return true;
 		}
 
-		const virtual bool toJSON(std::stringstream &stream, size_t level, const t_report_filter &filter) const;
+		const virtual bool toJSON(std::stringstream &stream, size_t level, const t_report_filter &filter, const pesieve::t_json_level &jdetails) const;
 
 		pesieve::t_report generateSummary() const;
 		DWORD getPid() { return pid; }
@@ -96,7 +96,7 @@ namespace pesieve {
 		peconv::ExportsMapper *exportsMap;
 
 	protected:
-		std::string listModules(size_t level, const ProcessScanReport::t_report_filter &filter) const;
+		std::string listModules(size_t level, const ProcessScanReport::t_report_filter &filter, const t_json_level &jdetails) const;
 
 		void deleteModuleReports()
 		{

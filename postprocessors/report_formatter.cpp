@@ -36,13 +36,17 @@ std::string pesieve::scan_report_to_string(const ProcessScanReport &process_repo
 	return stream.str();
 }
 
-std::string pesieve::scan_report_to_json(const ProcessScanReport &process_report, ProcessScanReport::t_report_filter filter)
+std::string pesieve::scan_report_to_json(
+	const ProcessScanReport &process_report,
+	ProcessScanReport::t_report_filter filter,
+	const pesieve::t_json_level &jdetails
+)
 {
 	//summary:
 	std::stringstream stream;
 	size_t level = 1;
 
-	if (!process_report.toJSON(stream, level, filter)) {
+	if (!process_report.toJSON(stream, level, filter, jdetails)) {
 		return "";
 	}
 	std::string report_all = stream.str();

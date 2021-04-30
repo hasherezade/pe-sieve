@@ -27,16 +27,16 @@ namespace pesieve {
 			mapping_type = 0;
 		}
 
-		const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
+		const virtual bool toJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
 		{
 			OUT_PADDED(outs, level, "\"workingset_scan\" : {\n");
-			fieldsToJSON(outs, level + 1);
+			fieldsToJSON(outs, level + 1, jdetails);
 			outs << "\n";
 			OUT_PADDED(outs, level, "}");
 			return true;
 		}
 
-		const virtual void fieldsToJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
+		const virtual void fieldsToJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
 		{
 			ModuleScanReport::toJSON(outs, level);
 			outs << ",\n";

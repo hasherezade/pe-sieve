@@ -63,6 +63,12 @@ namespace pesieve {
 		PE_DATA_COUNT
 	} t_data_scan_mode;
 
+	typedef enum {
+		JSON_BASIC = 0,
+		JSON_DETAILS = 1,
+		JSON_LVL_COUNT
+	} t_json_level;
+
 	typedef struct {
 		DWORD pid;
 		DWORD modules_filter;
@@ -78,6 +84,7 @@ namespace pesieve {
 		t_dump_mode dump_mode;
 		bool json_output;
 		bool make_reflection;
+		t_json_level json_lvl;
 		char output_dir[MAX_PATH + 1];
 		char modules_ignored[MAX_MODULE_BUF_LEN]; // a list of modules that will not be scanned, separated by PARAM_LIST_SEPARATOR
 	} t_params;

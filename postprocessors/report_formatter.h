@@ -10,7 +10,7 @@
 namespace pesieve {
 
 	std::string scan_report_to_string(const ProcessScanReport &report);
-	std::string scan_report_to_json(const ProcessScanReport &process_report, ProcessScanReport::t_report_filter filter);
+	std::string scan_report_to_json(const ProcessScanReport &process_report, ProcessScanReport::t_report_filter filter, const pesieve::t_json_level &jdetails);
 
 }; // namespace pesieve
 

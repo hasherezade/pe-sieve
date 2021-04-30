@@ -11,9 +11,11 @@ namespace pesieve {
 	std::string translate_imprec_mode(const pesieve::t_imprec_mode imprec_mode);
 	std::string translate_dotnet_policy(const pesieve::t_dotnet_policy &mode);
 	std::string translate_iat_scan_mode(const pesieve::t_iat_scan_mode mode);
+	std::string translate_json_level(const pesieve::t_json_level &mode);
 
 	pesieve::t_imprec_mode normalize_imprec_mode(size_t mode_id);
 	pesieve::t_dump_mode normalize_dump_mode(size_t mode_id);
+	pesieve::t_json_level normalize_json_level(size_t mode_id);
 };
 
 
