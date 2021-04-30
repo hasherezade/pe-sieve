@@ -43,6 +43,8 @@ after_build:
   - if [%CONFIGURATION%]==[Debug] (
     cp -r %CONFIGURATION%/* %artifactName% )
 
+test_script:
+  - ctest -V
+
 artifacts:
   - path: build\%artifactName%
-    
