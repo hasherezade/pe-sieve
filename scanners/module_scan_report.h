@@ -72,8 +72,6 @@ namespace pesieve {
 			return true;
 		}
 
-		virtual size_t generateTags(std::string reportPath) { return 0; }
-
 		virtual ULONGLONG getRelocBase()
 		{
 			return (ULONGLONG) this->module;
