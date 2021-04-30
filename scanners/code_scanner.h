@@ -44,9 +44,10 @@ namespace pesieve {
 				OUT_PADDED(outs, level, "\"patches\" : ");
 				outs << std::dec << patchesList.size();
 
-				if (jdetails == JSON_DETAILS) {
+				if (jdetails >= JSON_DETAILS) {
 					outs << ",\n";
-					patchesList.toJSON(outs, level, true);
+					const bool is_short = (jdetails < JSON_DETAILS2) ? true : false;
+					patchesList.toJSON(outs, level, is_short);
 				}
 			}
 		}

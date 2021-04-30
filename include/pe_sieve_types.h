@@ -66,6 +66,7 @@ namespace pesieve {
 	typedef enum {
 		JSON_BASIC = 0,
 		JSON_DETAILS = 1,
+		JSON_DETAILS2,
 		JSON_LVL_COUNT
 	} t_json_level;
 

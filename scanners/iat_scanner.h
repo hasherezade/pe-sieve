@@ -33,7 +33,7 @@ namespace pesieve {
 			outs << ",\n";
 			OUT_PADDED(outs, level + 1, "\"hooks\" : ");
 			outs << std::dec << hooks;
-			if (jdetails == JSON_DETAILS && hooks) {
+			if (jdetails >= JSON_DETAILS && hooks) {
 				outs << ",\n";
 				this->hooksToJSON(outs, level + 1);
 			}
