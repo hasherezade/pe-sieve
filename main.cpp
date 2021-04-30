@@ -326,7 +326,9 @@ void print_help(std::string filter = "")
 	print_in_color(hdr_color, "Required: \n");
 	std::map<std::string, void(*)(int)> required_params;
 	required_params[PARAM_PID] = print_pid_param;
-	print_params_block("", required_params, filter);
+	if (!print_params_block("", required_params, filter)) {
+		print_in_color(INACTIVE_COLOR, "\n[...]\n");
+	}
 
 	print_in_color(hdr_color, "\nOptional: \n");
 	size_t cntr = 0;
