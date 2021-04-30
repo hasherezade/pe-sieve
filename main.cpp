@@ -586,7 +586,7 @@ int main(int argc, char *argv[])
 	if (args.pid == 0) {
 		if (argc >= 2 && is_number(argv[1])) args.pid = get_number(argv[1]);
 		if (args.pid == 0) {
-			print_help();
+			print_help(PARAM_PID);
 			return 0;
 		}
 	}
