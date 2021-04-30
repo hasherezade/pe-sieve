@@ -57,6 +57,45 @@ namespace pesieve {
 	///----
 }; //namespace pesieve
 
+const bool IATScanReport::hooksToJSON(std::stringstream &outs, size_t level)
+{
+	if (notCovered.count() == 0) {
+		return false;
+	}
+	bool is_first = true;
+	OUT_PADDED(outs, level, "\"hooks_list\" : [\n");
+
+	std::map<ULONGLONG, ULONGLONG>::iterator itr;
+	for (itr = notCovered.thunkToAddr.begin(); itr != notCovered.thunkToAddr.end(); ++itr) {
+		const ULONGLONG thunk = itr->first;
+		const ULONGLONG addr = itr->second;
+		if (!is_first) {
+			outs << ",\n";
+		}
+		is_first = false;
+		OUT_PADDED(outs, level, "{\n");
+
+		OUT_PADDED(outs, (level + 1), "\"thunk_rva\" : ");
+		outs << "\"" << std::hex << (ULONGLONG)thunk << "\"" << ",\n";
+
+		std::map<ULONGLONG, peconv::ExportedFunc>::const_iterator found = storedFunc.find(thunk);
+		if (found != storedFunc.end()) {
+			const peconv::ExportedFunc &func = found->second;
+
+			OUT_PADDED(outs, (level + 1), "\"func_name\" : ");
+			outs << "\"" << func.toString() << "\"" << ",\n";
+		}
+
+		OUT_PADDED(outs, (level + 1), "\"target\" : ");
+		outs << "\"" << std::hex << (ULONGLONG)addr << "\"";
+
+		outs << "\n";
+		OUT_PADDED(outs, level, "}");
+	}
+	outs << "\n";
+	OUT_PADDED(outs, level, "]");
+	return true;
+}
 
 bool IATScanReport::saveNotRecovered(IN std::string fileName,
 	IN HANDLE hProcess,
