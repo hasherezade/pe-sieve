@@ -7,4 +7,5 @@ namespace pesieve {
 	const WORD HILIGHTED_COLOR = 0x0f;
 	const WORD HEADER_COLOR = 14;
 	const WORD SEPARATOR_COLOR = 6;
+	const WORD INACTIVE_COLOR = 8;
 };

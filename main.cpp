@@ -102,7 +102,7 @@ size_t print_params_block(std::string block_name, std::map<std::string, void(*)(
 		counter++;
 	}
 	if (has_filter) {
-		std::cout << "\n[...]\n";
+		print_in_color(INACTIVE_COLOR, "\n[...]\n");
 	}
 	return counter;
 }
@@ -339,7 +339,7 @@ void print_help(std::string filter = "")
 	out_params[PARAM_JSON] = print_json_param;
 	cntr += print_params_block("output options", out_params, filter);
 	if (cntr == 0) {
-		std::cout << "\n[...]\n";
+		print_in_color(INACTIVE_COLOR, "\n[...]\n");
 	}
 
 	print_in_color(hdr_color, "\nInfo: \n");
