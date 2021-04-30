@@ -54,19 +54,50 @@ const bool pesieve::PatchList::Patch::toTAG(std::ofstream &patch_report, const c
 	return true;
 }
 
-const bool pesieve::PatchList::Patch::toJSON(std::stringstream &outs, size_t level)
+const bool pesieve::PatchList::Patch::toJSON(std::stringstream &outs, size_t level, bool short_info)
 {
-	//OUT_PADDED(outs, level, "\"patch_" << std::dec << id << "\" : {\n");
 	OUT_PADDED(outs, level, "{\n");
+
 	OUT_PADDED(outs, (level + 1), "\"rva\" : ");
 	outs << "\"" << std::hex << (ULONGLONG)startRva << "\"" << ",\n";
 
 	OUT_PADDED(outs, (level + 1), "\"size\" : ");
-	outs << "\"" << std::hex << (ULONGLONG)(endRva - startRva) << "\"" << ",\n";
+	outs << "\"" << std::hex << (ULONGLONG)(endRva - startRva) << "\"";
 
-	OUT_PADDED(outs, (level + 1), "\"info\" : ");
-	outs << "\"" << getFormattedName() << "\"" << "\n";
+	if (short_info) {
+		outs << ",\n";
+		OUT_PADDED(outs, (level + 1), "\"info\" : ");
+		outs << "\"" << getFormattedName() << "\"";
+	}
+	else {
+		outs << ",\n";
 
+		OUT_PADDED(outs, (level + 1), "\"is_hook\" : ");
+		outs << "\"" << std::dec << this->isHook << "\"";
+
+		if (this->hooked_func.length() > 0) {
+			outs << ",\n";
+			OUT_PADDED(outs, (level + 1), "\"func_name\" : ");
+			outs << "\"" << hooked_func << "\"";
+		}
+		if (this->isHook) {
+			outs << ",\n";
+			OUT_PADDED(outs, (level + 1), "\"hook_target\" : {\n");
+			if (hookTargetModName.length() > 0) {
+				OUT_PADDED(outs, (level + 2), "\"module_name\" : ");
+				outs << "\"" << hookTargetModName << "\"" << ",\n";
+			}
+			OUT_PADDED(outs, (level + 2), "\"module\" : ");
+			outs << "\"" << std::hex << (ULONGLONG)hookTargetModule << "\"" << ",\n";
+			OUT_PADDED(outs, (level + 2), "\"rva\" : ");
+			outs << "\"" << std::hex << (ULONGLONG)(hookTargetVA - hookTargetModule) << "\"" << ",\n";
+			OUT_PADDED(outs, (level + 2), "\"status\" : ");
+			outs << "\"" << std::hex << (ULONGLONG)this->isTargetSuspicious << "\"" << "\n";
+			OUT_PADDED(outs, (level + 1), "}");
+		}
+	}
+
+	outs << "\n";
 	OUT_PADDED(outs, level, "}");
 	return true;
 }
@@ -92,7 +123,7 @@ const size_t pesieve::PatchList::toTAGs(std::ofstream &patch_report, const char 
 	return patches.size();
 }
 
-const bool pesieve::PatchList::toJSON(std::stringstream &outs, size_t level)
+const bool pesieve::PatchList::toJSON(std::stringstream &outs, size_t level, bool short_info)
 {
 	if (patches.size() == 0) {
 		return false;
@@ -106,7 +137,7 @@ const bool pesieve::PatchList::toJSON(std::stringstream &outs, size_t level)
 			outs << ",\n";
 		}
 		Patch *patch = *itr;
-		patch->toJSON(outs, level + 1);
+		patch->toJSON(outs, level + 1, short_info);
 		is_first = false;
 	}
 	outs << "\n";
