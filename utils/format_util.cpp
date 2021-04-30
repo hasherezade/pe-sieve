@@ -52,7 +52,7 @@ long pesieve::util::get_number(const char *my_buf)
 	if (len == 0) return 0;
 
 	long out = 0;
-	const size_t min_length = 1; //tolerate number with at least 1 character is fine
+	const size_t min_length = 1; //tolerate number with at least 1 character
 	if (len > hex_pattern_len) {
 		if (is_cstr_equal(my_buf, hex_pattern, hex_pattern_len)) {
 			if (!is_hex(my_buf + hex_pattern_len, min_length)) return 0;
