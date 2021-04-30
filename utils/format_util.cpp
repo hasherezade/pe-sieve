@@ -32,17 +32,6 @@ namespace pesieve {
 	};
 };
 
-bool pesieve::util::is_cstr_equal(char const *a, char const *b, const size_t max_len)
-{
-	for (size_t i = 0; i < max_len; ++i) {
-		if (tolower(a[i]) != tolower(b[i])) {
-			return false;
-		}
-		if (tolower(a[i]) == '\0') break;
-	}
-	return true;
-}
-
 long pesieve::util::get_number(const char *my_buf)
 {
 	const char hex_pattern[] = "0x";
@@ -88,12 +77,6 @@ bool pesieve::util::is_number(const char* my_buf)
 	}
 	if (!is_dec(my_buf, len)) return false;
 	return true;
-}
-
-std::string pesieve::util::to_lowercase(std::string str)
-{
-	std::transform(str.begin(), str.end(), str.begin(), tolower);
-	return str;
 }
 
 bool pesieve::util::is_in_list(const char *searched_str, const char *str_list)
@@ -152,3 +135,4 @@ size_t pesieve::util::delim_list_to_multi_sz(IN const char *delim_list_str, IN c
 	}
 	return str_count;
 }
+

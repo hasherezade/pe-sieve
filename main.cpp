@@ -62,6 +62,31 @@ bool is_param(const char *str)
 	return false;
 }
 
+bool is_param_similar(const std::string &param, const std::string &filter)
+{
+	bool has_keyword = (param.find(filter) != std::string::npos) || (filter.find(param) != std::string::npos);
+	if (has_keyword) return true;
+
+	size_t dist = util::levenshtein_distance(filter.c_str(), param.c_str());
+	if (dist <= (param.length() / 2) || dist < 3) {
+		has_keyword = true;
+	}
+	if (dist >= param.length() || dist >= filter.length()) {
+		has_keyword = false;
+	}
+	if (has_keyword) return true;
+
+	size_t diff = util::str_hist_diffrence(filter.c_str(), param.c_str());
+	//std::cout << "HD: " << std::dec << diff << "\n";
+	if (diff <= (param.length() / 2) || diff <= (filter.length() / 2)) {
+		has_keyword = true;
+	}
+	if (diff >= param.length() || diff >= filter.length()) {
+		has_keyword = false;
+	}
+	return has_keyword;
+}
+
 size_t print_params_block(std::string block_name, std::map<std::string, void(*)(int)> params_block, const std::string &filter)
 {
 	const int hdr_color = HEADER_COLOR;
@@ -75,7 +100,7 @@ size_t print_params_block(std::string block_name, std::map<std::string, void(*)(
 	for (itr = params_block.begin(); itr != params_block.end();itr++) {
 		const std::string &param = itr->first;
 		if (has_filter) {
-			bool has_keyword = (param.find(filter) != std::string::npos) || (filter.find(param) != std::string::npos);
+			const bool has_keyword = is_param_similar(param, filter);
 			if (has_keyword) has_any = true;
 		}
 		else {
@@ -92,7 +117,7 @@ size_t print_params_block(std::string block_name, std::map<std::string, void(*)(
 	for (itr = params_block.begin(); itr != params_block.end();itr++) {
 		const std::string &param = itr->first;
 		if (filter.length() > 0) {
-			bool has_keyword = (param.find(filter) != std::string::npos) || (filter.find(param) != std::string::npos);
+			const bool has_keyword = is_param_similar(param, filter);
 			p_color = (has_keyword) ? ERROR_COLOR : param_color;
 			if (!has_keyword) continue;
 		}
@@ -301,7 +326,7 @@ void print_help(std::string filter = "")
 	print_in_color(hdr_color, "Required: \n");
 	std::map<std::string, void(*)(int)> required_params;
 	required_params[PARAM_PID] = print_pid_param;
-	print_params_block("", required_params, "");
+	print_params_block("", required_params, filter);
 
 	print_in_color(hdr_color, "\nOptional: \n");
 	size_t cntr = 0;
