@@ -62,29 +62,49 @@ bool is_param(const char *str)
 	return false;
 }
 
-void print_params_block(std::string block_name, std::map<std::string, void(*)(int)> params_block, const std::string &filter)
+size_t print_params_block(std::string block_name, std::map<std::string, void(*)(int)> params_block, const std::string &filter)
 {
 	const int hdr_color = HEADER_COLOR;
 	const int param_color = HILIGHTED_COLOR;
 	const int separator_color = SEPARATOR_COLOR;
 
-	int p_color = param_color;
-	print_in_color(separator_color, "\n---" + block_name + "---\n");
+	const bool has_filter = filter.length() > 0 ? true : false;
+	bool has_any = false;
+
 	std::map<std::string, void(*)(int)>::iterator itr;
+	for (itr = params_block.begin(); itr != params_block.end();itr++) {
+		const std::string &param = itr->first;
+		if (has_filter) {
+			bool has_keyword = (param.find(filter) != std::string::npos) || (filter.find(param) != std::string::npos);
+			if (has_keyword) has_any = true;
+		}
+		else {
+			has_any = true;
+		}
+	}
+	if (!has_any) return 0;
+
+	int p_color = param_color;
+	if (block_name.length()) {
+		print_in_color(separator_color, "\n---" + block_name + "---\n");
+	}
+	size_t counter = 0;
 	for (itr = params_block.begin(); itr != params_block.end();itr++) {
 		const std::string &param = itr->first;
 		if (filter.length() > 0) {
 			bool has_keyword = (param.find(filter) != std::string::npos) || (filter.find(param) != std::string::npos);
-			//p_color = (has_keyword) ? param_color : GRAY;
+			p_color = (has_keyword) ? ERROR_COLOR : param_color;
 			if (!has_keyword) continue;
 		}
 		void(*info)(int) = itr->second;
 		if (!info) continue;
 		info(p_color);
+		counter++;
 	}
-	if (filter.length() > 0) {
+	if (has_filter) {
 		std::cout << "\n[...]\n";
 	}
+	return counter;
 }
 
 size_t copyToCStr(char *buf, size_t buf_max, const std::string &value)
@@ -279,10 +299,12 @@ void print_help(std::string filter = "")
 	const int separator_color = SEPARATOR_COLOR;
 
 	print_in_color(hdr_color, "Required: \n");
-	print_pid_param(param_color);
+	std::map<std::string, void(*)(int)> required_params;
+	required_params[PARAM_PID] = print_pid_param;
+	print_params_block("", required_params, "");
 
 	print_in_color(hdr_color, "\nOptional: \n");
-
+	size_t cntr = 0;
 	std::map<std::string, void(*)(int)> scan_params;
 	std::map<std::string, void(*)(int)> scan_exclusions;
 	std::map<std::string, void(*)(int)> scanner_params;
@@ -301,25 +323,28 @@ void print_help(std::string filter = "")
 	scanner_params[PARAM_REFLECTION] = print_refl_param;
 	scanner_params[PARAM_QUIET] = print_quiet_param;
 
-	print_params_block("scanner settings", scanner_params, filter);
-	print_params_block("scan exclusions", scan_exclusions, filter);
-	print_params_block("scan options", scan_params, filter);
+	cntr += print_params_block("scanner settings", scanner_params, filter);
+	cntr += print_params_block("scan exclusions", scan_exclusions, filter);
+	cntr += print_params_block("scan options", scan_params, filter);
 
 	std::map<std::string, void(*)(int)> dump_params;
 	dump_params[PARAM_IMP_REC] = print_imprec_param;
 	dump_params[PARAM_DUMP_MODE] = print_dmode_param;
 	dump_params[PARAM_MINIDUMP] = print_minidump_param;
-	print_params_block("dump options", dump_params, filter);
+	cntr += print_params_block("dump options", dump_params, filter);
 
 	std::map<std::string, void(*)(int)> out_params;
 	out_params[PARAM_OUT_FILTER] = print_out_filter_param;
 	out_params[PARAM_DIR] = print_output_dir_param;
 	out_params[PARAM_JSON] = print_json_param;
-	print_params_block("output options", out_params, filter);
+	cntr += print_params_block("output options", out_params, filter);
+	if (cntr == 0) {
+		std::cout << "\n[...]\n";
+	}
 
 	print_in_color(hdr_color, "\nInfo: \n");
 	print_param_in_color(param_color, PARAM_HELP);
-	std::cout << "    : Print this help.\n";
+	std::cout << "    : Print help.\n";
 	print_param_in_color(param_color, PARAM_VERSION);
 	std::cout << " : Print version number.\n";
 	std::cout << "---" << std::endl;
