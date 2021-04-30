@@ -80,7 +80,7 @@ bool pesieve::util::is_number(const char* my_buf)
 	if (len == 0) return false;
 
 	if (len > hex_pattern_len) {
-		if (strncmp(my_buf, hex_pattern, hex_pattern_len) == 0) {
+		if (is_cstr_equal(my_buf, hex_pattern, hex_pattern_len)) {
 			if (!is_hex(my_buf + hex_pattern_len, len - hex_pattern_len)) return false;
 
 			return true;
