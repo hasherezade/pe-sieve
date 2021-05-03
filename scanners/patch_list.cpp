@@ -62,7 +62,7 @@ const bool pesieve::PatchList::Patch::toJSON(std::stringstream &outs, size_t lev
 	outs << "\"" << std::hex << (ULONGLONG)startRva << "\"" << ",\n";
 
 	OUT_PADDED(outs, (level + 1), "\"size\" : ");
-	outs << "\"" << std::hex << (ULONGLONG)(endRva - startRva) << "\"";
+	outs << std::dec << (ULONGLONG)(endRva - startRva);
 
 	if (short_info) {
 		outs << ",\n";
