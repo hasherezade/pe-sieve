@@ -73,7 +73,7 @@ const bool pesieve::PatchList::Patch::toJSON(std::stringstream &outs, size_t lev
 		outs << ",\n";
 
 		OUT_PADDED(outs, (level + 1), "\"is_hook\" : ");
-		outs << "\"" << std::dec << this->isHook << "\"";
+		outs << std::dec << this->isHook;
 
 		if (this->hooked_func.length() > 0) {
 			outs << ",\n";
@@ -92,7 +92,7 @@ const bool pesieve::PatchList::Patch::toJSON(std::stringstream &outs, size_t lev
 			OUT_PADDED(outs, (level + 2), "\"rva\" : ");
 			outs << "\"" << std::hex << (ULONGLONG)(hookTargetVA - hookTargetModule) << "\"" << ",\n";
 			OUT_PADDED(outs, (level + 2), "\"status\" : ");
-			outs << "\"" << std::hex << (ULONGLONG)this->isTargetSuspicious << "\"" << "\n";
+			outs << std::dec << (ULONGLONG)this->isTargetSuspicious << "\n";
 			OUT_PADDED(outs, (level + 1), "}");
 		}
 	}
