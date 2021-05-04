@@ -1,6 +1,7 @@
 #include "strings_util.h"
 
 #include <algorithm>
+#include <cstring>
 
 std::string pesieve::util::to_lowercase(std::string str)
 {
