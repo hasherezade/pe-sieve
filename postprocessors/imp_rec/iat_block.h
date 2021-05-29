@@ -132,7 +132,7 @@ namespace pesieve {
 		void deleteThunkSeries()
 		{
 			IATThunksSeriesSet::iterator itr;
-			for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); itr++) {
+			for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); ++itr) {
 				delete *itr;
 			}
 			thunkSeries.clear();

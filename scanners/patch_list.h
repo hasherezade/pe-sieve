@@ -91,7 +91,7 @@ namespace pesieve {
 		{
 			deletePatches();
 			std::vector<Patch*>::const_iterator itr;
-			for (itr = other.patches.begin(); itr != other.patches.end(); itr++) {
+			for (itr = other.patches.begin(); itr != other.patches.end(); ++itr) {
 				Patch* next = *itr;
 				Patch* nextCopy = new Patch(*next);
 				patches.push_back(nextCopy);

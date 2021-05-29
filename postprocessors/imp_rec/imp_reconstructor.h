@@ -212,7 +212,7 @@ namespace pesieve {
 		void deleteFoundIATs()
 		{
 			std::map<DWORD, IATBlock*>::iterator itr;
-			for (itr = foundIATs.begin(); itr != foundIATs.end(); itr++) {
+			for (itr = foundIATs.begin(); itr != foundIATs.end(); ++itr) {
 				delete itr->second;
 			}
 			foundIATs.clear();

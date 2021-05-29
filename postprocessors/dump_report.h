@@ -78,7 +78,7 @@ namespace pesieve {
 		{
 			size_t dumped = 0;
 			std::vector<ModuleDumpReport*>::const_iterator itr = moduleReports.begin();
-			for (; itr != moduleReports.end(); itr++) {
+			for (; itr != moduleReports.end(); ++itr) {
 				ModuleDumpReport* module = *itr;
 				if (module->isDumped) {
 					dumped++;
@@ -101,7 +101,7 @@ namespace pesieve {
 		void deleteModuleReports()
 		{
 			std::vector<ModuleDumpReport*>::iterator itr = moduleReports.begin();
-			for (; itr != moduleReports.end(); itr++) {
+			for (; itr != moduleReports.end(); ++itr) {
 				ModuleDumpReport* module = *itr;
 				delete module;
 			}

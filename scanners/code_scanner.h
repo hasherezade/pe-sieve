@@ -70,7 +70,7 @@ namespace pesieve {
 		{
 			size_t counter = 0;
 			std::map<DWORD, t_section_status>::iterator itr;
-			for (itr = sectionToResult.begin(); itr != sectionToResult.end(); itr++) {
+			for (itr = sectionToResult.begin(); itr != sectionToResult.end(); ++itr) {
 				const t_section_status status = itr->second;
 				if (status == SECTION_UNPACKED) {
 					counter++;

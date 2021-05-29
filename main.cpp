@@ -90,7 +90,7 @@ size_t print_params_block(std::string block_name, std::map<std::string, void(*)(
 		print_in_color(separator_color, "\n---" + block_name + "---\n");
 	}
 	size_t counter = 0;
-	for (itr = params_block.begin(); itr != params_block.end();itr++) {
+	for (itr = params_block.begin(); itr != params_block.end(); ++itr) {
 		const std::string &param = itr->first;
 		if (filter.length() > 0) {
 			const stringsim_type sim_type = is_string_similar(param, filter);

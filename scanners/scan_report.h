@@ -101,7 +101,7 @@ namespace pesieve {
 		void deleteModuleReports()
 		{
 			std::vector<ModuleScanReport*>::iterator itr = moduleReports.begin();
-			for (; itr != moduleReports.end(); itr++) {
+			for (; itr != moduleReports.end(); ++itr) {
 				ModuleScanReport* module = *itr;
 				delete module;
 			}
