@@ -251,7 +251,6 @@ ModuleScanReport* pesieve::ProcessScanner::scanForMappingMismatch(ModuleData& mo
 	MappingScanner mappingScanner(processHandle, modData);
 
 	MappingScanReport *scan_report = mappingScanner.scanRemote();
-	t_scan_status is_doppel = ModuleScanReport::get_scan_status(scan_report);
 	process_report.appendReport(scan_report);
 	return scan_report;
 }

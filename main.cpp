@@ -307,7 +307,6 @@ void print_help(const std::string &filter = "")
 {
 	const int hdr_color = HEADER_COLOR;
 	const int param_color = HILIGHTED_COLOR;
-	const int separator_color = SEPARATOR_COLOR;
 
 	print_in_color(hdr_color, "Required: \n");
 	std::map<std::string, void(*)(int)> required_params;
