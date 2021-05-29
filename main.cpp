@@ -73,7 +73,7 @@ size_t print_params_block(std::string block_name, std::map<std::string, void(*)(
 	bool has_any = false;
 
 	std::map<std::string, void(*)(int)>::iterator itr;
-	for (itr = params_block.begin(); itr != params_block.end();itr++) {
+	for (itr = params_block.begin(); itr != params_block.end(); ++itr) {
 		const std::string &param = itr->first;
 		if (has_filter) {
 			stringsim_type sim_type = is_string_similar(param, filter);
@@ -303,7 +303,7 @@ void print_output_dir_param(int param_color)
 	std::cout << " <output_dir>\n\t: Set a root directory for the output (default: current directory).\n";
 }
 
-void print_help(std::string filter = "")
+void print_help(const std::string &filter = "")
 {
 	const int hdr_color = HEADER_COLOR;
 	const int param_color = HILIGHTED_COLOR;
