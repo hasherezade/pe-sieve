@@ -22,6 +22,9 @@ namespace pesieve {
 			bool is_replaced = isHdrReplaced();
 			ModuleScanReport::toJSON(outs, level);
 			outs << ",\n";
+			OUT_PADDED(outs, level, "\"is_connected_to_peb\" : ");
+			outs << isInPEB;
+			outs << ",\n";
 			OUT_PADDED(outs, level, "\"is_pe_replaced\" : ");
 			outs << is_replaced;
 			outs << ",\n";
@@ -39,7 +42,6 @@ namespace pesieve {
 			outs << ",\n";
 			OUT_PADDED(outs, level, "\"sec_hdr_modified\" : ");
 			outs << secHdrModified;
-
 			if (archMismatch) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"arch_mismatch\" : ");
@@ -71,6 +73,7 @@ namespace pesieve {
 		bool secHdrModified;
 		bool archMismatch; // the loaded module is of different architecture than the module read from the corresponding path
 		DWORD is64; // is the remote module 64bit
+		bool isInPEB;
 	};
 
 	class HeadersScanner : public ModuleScanner {

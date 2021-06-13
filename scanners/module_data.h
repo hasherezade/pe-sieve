@@ -12,8 +12,8 @@ namespace pesieve {
 	class ModuleData {
 
 	public:
-		ModuleData(HANDLE _processHandle, HMODULE _module)
-			: processHandle(_processHandle), moduleHandle(_module),
+		ModuleData(HANDLE _processHandle, HMODULE _module, bool _isPEBConnected)
+			: processHandle(_processHandle), moduleHandle(_module), isPEBConnected(_isPEBConnected),
 			is_module_named(false), original_size(0), original_module(nullptr),
 			is_dot_net(false)
 		{
@@ -63,6 +63,11 @@ namespace pesieve {
 			return static_cast<DWORD>(diff);
 		}
 
+		bool isModuleInPEBList()
+		{
+			return isPEBConnected;
+		}
+
 		bool isInitialized()
 		{
 			return original_module != nullptr;
@@ -93,6 +98,7 @@ namespace pesieve {
 		bool loadModuleName();
 		bool isDotNetManagedCode();
 		bool is_dot_net;
+		bool isPEBConnected;
 
 		friend class PeSection;
 	};
