@@ -258,7 +258,7 @@ ModuleScanReport* pesieve::ProcessScanner::scanForMappingMismatch(ModuleData& mo
 size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws exceptions
 {
 	HMODULE hMods[1024];
-	const size_t modules_count = enum_modules(this->processHandle, hMods, sizeof(hMods), args.modules_filter);
+	const size_t modules_count = enum_modules(this->processHandle, hMods, sizeof(hMods), LIST_MODULES_ALL);
 	if (modules_count == 0) {
 		return 0;
 	}
@@ -342,7 +342,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 		return 0; // this feature cannot work without Exports Map
 	}
 	HMODULE hMods[1024];
-	const size_t modules_count = enum_modules(this->processHandle, hMods, sizeof(hMods), args.modules_filter);
+	const size_t modules_count = enum_modules(this->processHandle, hMods, sizeof(hMods), LIST_MODULES_ALL);
 	if (modules_count == 0) {
 		return 0;
 	}

@@ -65,21 +65,6 @@ std::string pesieve::translate_dotnet_policy(const pesieve::t_dotnet_policy &mod
 	return "undefined";
 }
 
-std::string pesieve::translate_modules_filter(DWORD m_filter)
-{
-	switch (m_filter) {
-	case LIST_MODULES_DEFAULT:
-		return "no filter (as the scanner)";
-	case LIST_MODULES_32BIT:
-		return "32bit only";
-	case LIST_MODULES_64BIT:
-		return "64bit only";
-	case LIST_MODULES_ALL:
-		return "all accessible (default)";
-	}
-	return "undefined";
-}
-
 std::string pesieve::translate_data_mode(const pesieve::t_data_scan_mode &mode)
 {
 	switch (mode) {

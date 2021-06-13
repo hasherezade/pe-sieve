@@ -72,7 +72,6 @@ namespace pesieve {
 
 	typedef struct {
 		DWORD pid;
-		DWORD modules_filter;
 		t_dotnet_policy dotnet_policy; // policy for scanning .NET modules
 		t_imprec_mode imprec_mode; //import recovery mode
 		bool quiet; // do not print log on the stdout
