@@ -47,6 +47,7 @@ t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, Modu
 		}
 	}
 	scan_report->moduleFile = modData.szModName;
+	scan_report->isInPEB = modData.isModuleInPEBList();
 
 	t_scan_status is_suspicious = ModuleScanReport::get_scan_status(scan_report);
 	if (is_suspicious && !scan_report->isHdrReplaced()) {
@@ -257,7 +258,7 @@ ModuleScanReport* pesieve::ProcessScanner::scanForMappingMismatch(ModuleData& mo
 
 size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throws exceptions
 {
-	HMODULE hMods[1024];
+	HMODULE hMods[1024] = { 0 };
 	const size_t modules_count = enum_modules(this->processHandle, hMods, sizeof(hMods), LIST_MODULES_ALL);
 	if (modules_count == 0) {
 		return 0;
@@ -271,7 +272,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 		if (processHandle == nullptr) break;
 
 		//load module from file:
-		ModuleData modData(processHandle, hMods[counter]);
+		ModuleData modData(processHandle, hMods[counter], true);
 		ModuleScanReport *mappingScanReport = this->scanForMappingMismatch(modData, pReport);
 
 		//load the original file to make the comparisons:
@@ -352,7 +353,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 		if (processHandle == nullptr) break;
 
 		//load module from file:
-		ModuleData modData(processHandle, hMods[counter]);
+		ModuleData modData(processHandle, hMods[counter], true);
 
 		// Don't scan modules that are in the ignore list
 		std::string plainName = peconv::get_file_name(modData.szModName);
