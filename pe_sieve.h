@@ -6,6 +6,8 @@
 
 #include <pe_sieve_version.h>
 #include <pe_sieve_types.h>
+#include <pe_sieve_return_codes.h>
+
 #include "scanners/scan_report.h"
 #include "postprocessors/dump_report.h"
 #include "postprocessors/report_formatter.h"

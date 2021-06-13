@@ -191,6 +191,7 @@ set (library_export_hdrs
 	include/pe_sieve_types.h
 	include/pe_sieve_version.h
 	include/pe_sieve_api.h
+	include/pe_sieve_return_codes.h
 )
 if(PESIEVE_AS_STATIC_LIB)
 	set(LIBRARY_TYPE STATIC)

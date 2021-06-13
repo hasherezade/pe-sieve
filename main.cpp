@@ -414,7 +414,7 @@ int main(int argc, char *argv[])
 	if (argc < 2) {
 		banner();
 		system("pause");
-		return 0;
+		return PESIEVE_INFO;
 	}
 	//---
 	bool info_req = false;
@@ -595,7 +595,7 @@ int main(int argc, char *argv[])
 			print_unknown_param(argv[i]);
 			print_in_color(HILIGHTED_COLOR, "Similar parameters:\n\n");
 			print_help(param);
-			return 0;
+			return PESIEVE_INFO;
 		}
 	}
 	// do not start scan if the info was requested:
@@ -610,7 +610,7 @@ int main(int argc, char *argv[])
 		if (argc >= 2 && is_number(argv[1])) args.pid = get_number(argv[1]);
 		if (args.pid == 0) {
 			print_help(PARAM_PID);
-			return 0;
+			return PESIEVE_INFO;
 		}
 	}
 	//---
@@ -621,13 +621,19 @@ int main(int argc, char *argv[])
 		std::cout << "Dump mode: " << translate_dump_mode(args.dump_mode) << std::endl;
 	}
 	pesieve::ReportEx* report = pesieve::scan_and_dump(args);
+	t_pesieve_res res = PESIEVE_ERROR;
 	if (report != nullptr) {
 		print_report(*report, args);
+
+		pesieve::t_report summary = report->scan_report->generateSummary();
+		if (summary.scanned > 0) {
+			res = (summary.suspicious > 0) ? PESIEVE_DETECTED : PESIEVE_NOT_DETECTED;
+		}
 		delete report;
 		report = nullptr;
 	}
 #ifdef _DEBUG
 	system("pause");
 #endif
-	return 0;
+	return res;
 }
