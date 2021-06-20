@@ -75,12 +75,17 @@ bool pesieve::util::is_64bit_code(BYTE *loadedData, size_t loadedSize)
 		0x53,            // PUSH RBX
 		0x48, 0x81, 0xEC // SUB RSP, <DWORD>
 	};
+	BYTE prolog64_5_pattern[] = {
+		0x48, 0x83, 0xE4, 0xF0 //AND rsp, FFFFFFFFFFFFFFF0; Align RSP to 16 bytes
+	};
+
 
 	t_pattern patterns[] = {
 		{ prolog64_pattern,   sizeof(prolog64_pattern) },
 		{ prolog64_2_pattern, sizeof(prolog64_2_pattern) },
 		{ prolog64_3_pattern, sizeof(prolog64_3_pattern) },
-		{ prolog64_4_pattern, sizeof(prolog64_4_pattern) }
+		{ prolog64_4_pattern, sizeof(prolog64_4_pattern) },
+		{ prolog64_5_pattern, sizeof(prolog64_5_pattern) }
 	};
 
 	bool pattern_found = false;
