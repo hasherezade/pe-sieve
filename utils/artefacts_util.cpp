@@ -76,7 +76,7 @@ bool pesieve::util::is_64bit_code(BYTE *loadedData, size_t loadedSize)
 		0x48, 0x81, 0xEC // SUB RSP, <DWORD>
 	};
 	BYTE prolog64_5_pattern[] = {
-		0x48, 0x83, 0xE4, 0xF0 //AND rsp, FFFFFFFFFFFFFFF0; Align RSP to 16 bytes
+		0x48, 0x83, 0xE4, 0xF0 // AND rsp, FFFFFFFFFFFFFFF0; Align RSP to 16 bytes
 	};
 
 
