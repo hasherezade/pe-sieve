@@ -179,15 +179,9 @@ size_t pesieve::ArtefactScanner::calcImgSize(HANDLE processHandle, HMODULE modBa
 		hdr_ptr = peconv::get_section_hdr(headerBuffer, headerBufferSize, 0);
 		if (!hdr_ptr) return peconv::fetch_region_size(processHandle, (PBYTE)modBaseAddr);
 	}
-	DWORD max_addr = 0;
-	DWORD sec_rva = 0;
-	size_t max_sec_size = 0;
-	size_t last_sec_size = 0;
 
-	size_t first_area_size = peconv::fetch_region_size(processHandle, (PBYTE)modBaseAddr);
-	if (first_area_size == 0) {
-		return 0;
-	}
+	DWORD max_addr = 0;
+
 	const ULONGLONG main_base = peconv::fetch_alloc_base(processHandle, (PBYTE)modBaseAddr);
 	for (IMAGE_SECTION_HEADER* curr_sec = hdr_ptr; ; curr_sec++)
 	{
@@ -195,36 +189,40 @@ size_t pesieve::ArtefactScanner::calcImgSize(HANDLE processHandle, HMODULE modBa
 		if (!is_valid_section(headerBuffer, headerBufferSize, (BYTE*)curr_sec, 0)) {
 			break;
 		}
-		if (curr_sec->Misc.VirtualSize == 0) {
+		if (curr_sec->Misc.VirtualSize == 0 || curr_sec->VirtualAddress == 0) {
 			continue; //skip empty sections
 		}
-		sec_rva = curr_sec->VirtualAddress;
-		DWORD next_max_addr = (sec_rva > max_addr) ? sec_rva : max_addr;
-		ULONGLONG last_sec_va = (ULONGLONG)modBaseAddr + next_max_addr;
-		size_t next_last_sec_size = peconv::fetch_region_size(processHandle, (PBYTE)last_sec_va);
-		if (next_last_sec_size == 0) {
-			break; //the section was invalid, skip it
+
+		const DWORD sec_rva = curr_sec->VirtualAddress;
+
+		MEMORY_BASIC_INFORMATION page_info = { 0 };
+		if (!peconv::fetch_region_info(processHandle, (PBYTE)((ULONG_PTR)modBaseAddr + sec_rva), page_info)) {
+			break;
 		}
-		ULONGLONG region_base = peconv::fetch_alloc_base(processHandle, (PBYTE)last_sec_va);
-		if (region_base != main_base) {
+		if ((ULONG_PTR)page_info.AllocationBase != main_base) {
 			//it can happen if the PE is in a RAW format instead of Virtual
 #ifdef _DEBUG
-			std::cout << "[!] Mismatch: region_base : " << std::hex << region_base << " while main base: " << main_base << "\n";
+			std::cout << "[!] Mismatch: region_base : " << std::hex << page_info.AllocationBase << " while main base: " << main_base << "\n";
 #endif
 			break; // out of scope
 		}
-		max_addr = next_max_addr;
-		last_sec_size = next_last_sec_size;
+		if (page_info.Type == 0 || page_info.Protect == 0) {
+			break; //invalid type, skip it
+		}
+		if (page_info.Protect == PAGE_NOACCESS) {
+			continue; //skip inaccessible sections
+		}
+		if (sec_rva > max_addr) {
+			max_addr = sec_rva;
+		}
 	}
-	size_t total_size = max_addr + last_sec_size;
 
-	if (total_size > 0) {
+	size_t last_sec_size = peconv::fetch_region_size(processHandle, (PBYTE)((ULONG_PTR)modBaseAddr + max_addr));
+	size_t total_size = max_addr + last_sec_size;
 #ifdef _DEBUG
-		std::cout << "Image: " << std::hex << (ULONGLONG)modBaseAddr << " Size:" << std::hex << total_size << " max_addr: " << max_addr << std::endl;
+	std::cout << "Image: " << std::hex << (ULONGLONG)modBaseAddr << " Size:" << std::hex << total_size << " max_addr: " << max_addr << std::endl;
 #endif
-		return total_size;
-	}
-	return first_area_size;
+	return total_size;
 }
 
 //calculate image size basing on the sizes of sections
