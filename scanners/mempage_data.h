@@ -75,6 +75,7 @@ namespace pesieve {
 		void _freeRemote()
 		{
 			if (!loadedData) {
+				loadedSize = 0;
 				return;
 			}
 			peconv::free_aligned(loadedData, loadedSize);

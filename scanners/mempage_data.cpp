@@ -123,15 +123,8 @@ bool pesieve::MemPageData::_loadRemote()
 		return false;
 	}
 	this->loadedSize = region_size;
-	bool is_guarded = (protection & PAGE_GUARD) != 0;
 
-	size_t size_read = peconv::read_remote_memory(this->processHandle, (BYTE*)this->start_va, loadedData, loadedSize);
-	if ((size_read == 0) && is_guarded) {
-#ifdef _DEBUG
-		std::cout << "Warning: guarded page, trying to read again..." << std::endl;
-#endif
-		size_read = peconv::read_remote_memory(this->processHandle, (BYTE*)this->start_va, loadedData, loadedSize);
-	}
+	const size_t size_read = peconv::read_remote_region(this->processHandle, (BYTE*)this->start_va, loadedData, loadedSize);
 	if (size_read == 0) {
 		_freeRemote();
 #ifdef _DEBUG
