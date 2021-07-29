@@ -209,8 +209,8 @@ size_t pesieve::ArtefactScanner::calcImgSize(HANDLE processHandle, HMODULE modBa
 		if (page_info.Type == 0 || page_info.Protect == 0) {
 			break; //invalid type, skip it
 		}
-		if (page_info.Protect == PAGE_NOACCESS) {
-			continue; //skip inaccessible sections
+		if ((page_info.State & MEM_COMMIT) == 0) {
+			continue; //skip non-commited pages
 		}
 		if (sec_rva > max_addr) {
 			max_addr = sec_rva;
