@@ -244,6 +244,20 @@ IATScanReport* pesieve::IATScanner::scanRemote()
 	}
 	return report;
 }
+///-------
+
+void pesieve::IATScanner::initExcludedPaths()
+{
+	char sysWow64Path[MAX_PATH] = { 0 };
+	ExpandEnvironmentStringsA("%SystemRoot%\\SysWoW64", sysWow64Path, MAX_PATH);
+	this->m_sysWow64Path_str = sysWow64Path;
+	std::transform(m_sysWow64Path_str.begin(), m_sysWow64Path_str.end(), m_sysWow64Path_str.begin(), tolower);
+
+	char system32Path[MAX_PATH] = { 0 };
+	ExpandEnvironmentStringsA("%SystemRoot%\\system32", system32Path, MAX_PATH);
+	this->m_system32Path_str = system32Path;
+	std::transform(m_system32Path_str.begin(), m_system32Path_str.end(), m_system32Path_str.begin(), tolower);
+}
 
 bool pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATScanReport &report)
 {
@@ -265,27 +279,15 @@ bool pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATS
 			report.notCovered.insert(thunk, addr);
 			continue;
 		}
-
-		// fetch system paths
-		char sysWow64Path[MAX_PATH] = { 0 };
-		ExpandEnvironmentStringsA("%SystemRoot%\\SysWoW64", sysWow64Path, MAX_PATH);
-		std::string sysWow64Path_str = sysWow64Path;
-		std::transform(sysWow64Path_str.begin(), sysWow64Path_str.end(), sysWow64Path_str.begin(), tolower);
-
-		char system32Path[MAX_PATH] = { 0 };
-		ExpandEnvironmentStringsA("%SystemRoot%\\system32", system32Path, MAX_PATH);
-		std::string system32Path_str = system32Path;
-		std::transform(system32Path_str.begin(), system32Path_str.end(), system32Path_str.begin(), tolower);
-
 		// filter out hooks leading to system DLLs
 		char moduleName[MAX_PATH] = { 0 };
 		if (GetModuleFileNameExA(this->processHandle, (HMODULE)module_start, moduleName, sizeof(moduleName))) {
 			std::string dirName = peconv::get_directory_name(moduleName);
 			std::transform(dirName.begin(), dirName.end(), dirName.begin(), tolower);
 #ifdef _DEBUG
-			std::cout << dirName << "\n";
+			std::cout << "Module dir name: " << dirName << "\n";
 #endif
-			if (dirName == system32Path_str || dirName == sysWow64Path_str) {
+			if (dirName == m_system32Path_str || dirName == m_sysWow64Path_str) {
 #ifdef _DEBUG
 				std::cout << "Skipped: " << dirName << "\n";
 #endif

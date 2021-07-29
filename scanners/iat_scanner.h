@@ -57,16 +57,26 @@ namespace pesieve {
 	class IATScanner : public ModuleScanner {
 	public:
 
-		IATScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData, const peconv::ExportsMapper &_exportsMap, IN const ProcessModules &_modulesInfo, bool _filterSystemHooks)
+		IATScanner::IATScanner(
+			HANDLE hProc,
+			ModuleData &moduleData,
+			RemoteModuleData &remoteModData,
+			const peconv::ExportsMapper &_exportsMap,
+			IN const ProcessModules &_modulesInfo,
+			bool _filterSystemHooks
+		)
 			: ModuleScanner(hProc, moduleData, remoteModData),
 			exportsMap(_exportsMap), modulesInfo(_modulesInfo),
 			filterSystemHooks(_filterSystemHooks)
 		{
+			initExcludedPaths();
 		}
 
 		virtual IATScanReport* scanRemote();
 
 	private:
+		void initExcludedPaths();
+
 		bool hasImportTable(RemoteModuleData &remoteModData);
 		bool filterResults(peconv::ImpsNotCovered &not_covered, IATScanReport &report);
 		void listAllImports(std::map<ULONGLONG, peconv::ExportedFunc> &_storedFunc);
@@ -75,6 +85,10 @@ namespace pesieve {
 		const ProcessModules &modulesInfo;
 
 		bool filterSystemHooks;
+		
+		//excluded paths:
+		std::string m_sysWow64Path_str;
+		std::string m_system32Path_str;
 	};
 
 }; //namespace pesieve
