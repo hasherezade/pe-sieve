@@ -27,7 +27,7 @@ namespace pesieve {
 
 		static t_scan_status scanForHollows(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report);
 		static t_scan_status scanForHooks(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report, bool scan_data);
-		static t_scan_status scanForIATHooks(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report, bool filter);
+		static t_scan_status scanForIATHooks(HANDLE hProcess, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report, t_iat_scan_mode filter);
 
 	protected:
 		size_t scanModules(ProcessScanReport &pReport); //throws exceptions

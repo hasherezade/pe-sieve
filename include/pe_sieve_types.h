@@ -41,7 +41,8 @@ namespace pesieve {
 
 	typedef enum {
 		PE_IATS_NONE = 0,// do not scan IAT
-		PE_IATS_FILTERED, // scan IAT, filter out system hooks
+		PE_IATS_CLEAN_SYS_FILTERED, // scan IAT, filter hooks if they lead to unpatched system module
+		PE_IATS_ALL_SYS_FILTERED,  // scan IAT, filter hooks if they lead to any system module
 		PE_IATS_UNFILTERED, // scan IAT, unfiltered
 		PE_IATS_MODES_COUNT
 	} t_iat_scan_mode;

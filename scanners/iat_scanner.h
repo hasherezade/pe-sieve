@@ -63,11 +63,11 @@ namespace pesieve {
 			RemoteModuleData &remoteModData,
 			const peconv::ExportsMapper &_exportsMap,
 			IN const ProcessModules &_modulesInfo,
-			bool _filterSystemHooks
+			t_iat_scan_mode _hooksFilter
 		)
 			: ModuleScanner(hProc, moduleData, remoteModData),
 			exportsMap(_exportsMap), modulesInfo(_modulesInfo),
-			filterSystemHooks(_filterSystemHooks)
+			hooksFilter(_hooksFilter)
 		{
 			initExcludedPaths();
 		}
@@ -84,7 +84,7 @@ namespace pesieve {
 		const peconv::ExportsMapper &exportsMap;
 		const ProcessModules &modulesInfo;
 
-		bool filterSystemHooks;
+		t_iat_scan_mode hooksFilter;
 		
 		//excluded paths:
 		std::string m_sysWow64Path_str;

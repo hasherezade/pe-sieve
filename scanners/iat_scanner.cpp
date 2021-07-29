@@ -232,7 +232,7 @@ IATScanReport* pesieve::IATScanner::scanRemote()
 	if (not_covered.count()) {
 		listAllImports(report->storedFunc);
 	}
-	if (this->filterSystemHooks) {
+	if (this->hooksFilter != PE_IATS_UNFILTERED) {
 		filterResults(not_covered, *report);
 	}
 	else {
@@ -274,10 +274,12 @@ bool pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATS
 			report.notCovered.insert(thunk, addr);
 			continue;
 		}
-		if (modExp && modExp->isSuspicious()) {
+		if (this->hooksFilter == PE_IATS_CLEAN_SYS_FILTERED) {
 			// insert hooks leading to suspicious modules:
-			report.notCovered.insert(thunk, addr);
-			continue;
+			if (modExp && modExp->isSuspicious()) {
+				report.notCovered.insert(thunk, addr);
+				continue;
+			}
 		}
 		// filter out hooks leading to system DLLs
 		char moduleName[MAX_PATH] = { 0 };
