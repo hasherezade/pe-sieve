@@ -47,6 +47,9 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageDat
 	if (pesieve::util::is_readable(memPage.mapping_type, memPage.protection)) {
 		return true;
 	}
+	if (this->isReflection && (memPage.protection & PAGE_NOACCESS)) {
+		return true;
+	}
 	return false;
 }
 
