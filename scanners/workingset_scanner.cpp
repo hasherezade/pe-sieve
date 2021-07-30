@@ -44,10 +44,12 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageDat
 	{
 		return false;
 	}
-	if (pesieve::util::is_readable(memPage.mapping_type, memPage.protection)) {
-		return true;
+	if ((mode == pesieve::PE_DATA_SCAN_ALWAYS) || (mode == pesieve::PE_DATA_SCAN_INACCESSIBLE)) {
+		if (pesieve::util::is_readable(memPage.mapping_type, memPage.protection)) {
+			return true;
+		}
 	}
-	if (mode == pesieve::PE_DATA_SCAN_INACCESSIBLE) {
+	if ((mode == pesieve::PE_DATA_SCAN_INACCESSIBLE) || (mode == pesieve::PE_DATA_SCAN_INACCESSIBLE_ONLY)) {
 		if (this->isReflection && (memPage.protection & PAGE_NOACCESS)) {
 			return true;
 		}

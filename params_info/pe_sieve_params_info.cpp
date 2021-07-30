@@ -78,6 +78,8 @@ std::string pesieve::translate_data_mode(const pesieve::t_data_scan_mode &mode)
 		return "always: scan non-executable pages unconditionally";
 	case pesieve::PE_DATA_SCAN_INACCESSIBLE:
 		return "include inaccessible: scan non-executable pages unconditionally;\n\t    in reflection mode (/refl): scan also inaccessible pages";
+	case pesieve::PE_DATA_SCAN_INACCESSIBLE_ONLY:
+		return "scan inaccessible pages, but exclude other non-executable;\n\t    works in reflection mode (/refl) only";
 	}
 	return "undefined";
 }
