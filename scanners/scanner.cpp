@@ -218,8 +218,8 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 	std::set<ULONGLONG>::iterator set_itr;
 	for (set_itr = region_bases.begin(); set_itr != region_bases.end(); ++set_itr, ++counter) {
 		const ULONGLONG region_base = *set_itr;
-
-		MemPageData memPage(this->processHandle, region_base);
+		
+		MemPageData memPage(this->processHandle, this->isReflection, region_base);
 
 		memPage.is_listed_module = pReport.hasModule(region_base);
 		memPage.is_dep_enabled = this->isDEP;

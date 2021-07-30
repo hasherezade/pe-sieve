@@ -170,7 +170,9 @@ bool pesieve::ResultsDumper::dumpJsonReport(ProcessDumpReport &process_report)
 	return false;
 }
 
-pesieve::ProcessDumpReport* pesieve::ResultsDumper::dumpDetectedModules(HANDLE processHandle,
+pesieve::ProcessDumpReport* pesieve::ResultsDumper::dumpDetectedModules(
+	HANDLE processHandle,
+	bool isRefl,
 	ProcessScanReport &process_report, 
 	const pesieve::t_dump_mode dump_mode, 
 	const t_imprec_mode imprec_mode)
@@ -191,6 +193,7 @@ pesieve::ProcessDumpReport* pesieve::ResultsDumper::dumpDetectedModules(HANDLE p
 			continue;
 		}
 		dumpModule(processHandle,
+			isRefl,
 			process_report.modulesInfo,
 			mod,
 			process_report.exportsMap,
@@ -203,6 +206,7 @@ pesieve::ProcessDumpReport* pesieve::ResultsDumper::dumpDetectedModules(HANDLE p
 }
 
 bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
+	IN bool isRefl,
 	IN const ProcessModules &modulesInfo,
 	IN ModuleScanReport* mod,
 	IN const peconv::ExportsMapper *exportsMap,
@@ -221,7 +225,7 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 	bool dump_shellcode = false;
 	std::string payload_ext = "";
 
-	PeBuffer module_buf;
+	PeBuffer module_buf(processHandle, isRefl);
 	bool is_corrupt_pe = false;
 	ArtefactScanReport* artefactReport = dynamic_cast<ArtefactScanReport*>(mod);
 	if (artefactReport) {
@@ -233,7 +237,7 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 		if (artefactReport->has_pe) {
 			ULONGLONG found_pe_base = artefactReport->artefacts.peImageBase();
 			PeReconstructor peRec(artefactReport->artefacts, module_buf);
-			if (!peRec.reconstruct(processHandle)) {
+			if (!peRec.reconstruct()) {
 				is_corrupt_pe = true;
 				payload_ext = "corrupt_" + payload_ext;
 				if (!this->quiet) {
@@ -244,7 +248,7 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 	}
 	// if it is not an artefact report, or reconstructing by artefacts failed, read it from the memory:
 	if (!artefactReport || is_corrupt_pe) {
-		module_buf.readRemote(processHandle, (ULONGLONG)mod->module, mod->moduleSize);
+		module_buf.readRemote((ULONGLONG)mod->module, mod->moduleSize);
 	}
 	//if no extension selected yet, do it now:
 	if (payload_ext.length() == 0) {
@@ -300,7 +304,7 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 		if (dump_shellcode) {
 			payload_ext = "shc";
 		}
-		module_buf.readRemote(processHandle, (ULONGLONG)mod->module, mod->moduleSize);
+		module_buf.readRemote((ULONGLONG)mod->module, mod->moduleSize);
 
 		modDumpReport = new ModuleDumpReport(module_buf.getModuleBase(), module_buf.getBufferSize());
 		dumpReport.appendReport(modDumpReport);

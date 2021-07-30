@@ -106,7 +106,7 @@ namespace pesieve {
 		return hProcess;
 	}
 
-	pesieve::ProcessDumpReport* make_dump(IN HANDLE hProcess, IN const pesieve::t_params &args, IN ProcessScanReport &process_report)
+	pesieve::ProcessDumpReport* make_dump(IN HANDLE hProcess, IN bool isRefl, IN const pesieve::t_params &args, IN ProcessScanReport &process_report)
 	{
 		if (!hProcess) {
 			return nullptr;
@@ -128,7 +128,7 @@ namespace pesieve {
 				dump_mode = pesieve::t_dump_mode(args.dump_mode);
 			}
 			size_t dumped_modules = 0;
-			dumpReport = dumper.dumpDetectedModules(hProcess, process_report, dump_mode, args.imprec_mode);
+			dumpReport = dumper.dumpDetectedModules(hProcess, isRefl, process_report, dump_mode, args.imprec_mode);
 			if (dumpReport && dumpReport->countDumped()) {
 				dumped_modules = dumpReport->countDumped();
 			}
@@ -202,12 +202,13 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 			}
 		}
 
-		ProcessScanner scanner(target_proc, args);
+		const bool is_reflection = (cloned_proc) ? true : false;
+		ProcessScanner scanner(target_proc, is_reflection, args);
 		report->scan_report = scanner.scanRemote();
 
 		// dump process
 		if (report->scan_report) {
-			report->dump_report = make_dump(target_proc, args, *report->scan_report);
+			report->dump_report = make_dump(target_proc, is_reflection, args, *report->scan_report);
 		}
 	}
 	catch (std::exception &e) {

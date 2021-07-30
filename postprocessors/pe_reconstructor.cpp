@@ -72,12 +72,12 @@ size_t pesieve::PeReconstructor::shiftPeHeader()
 	return shift_size;
 }
 
-bool pesieve::PeReconstructor::reconstruct(IN HANDLE processHandle)
+bool pesieve::PeReconstructor::reconstruct()
 {
 	this->artefacts = origArtefacts;
 
 	ULONGLONG moduleBase = artefacts.regionStart + artefacts.peBaseOffset;
-	if (!peBuffer.readRemote(processHandle, moduleBase, artefacts.calculatedImgSize)) {
+	if (!peBuffer.readRemote(moduleBase, artefacts.calculatedImgSize)) {
 		return false;
 	}
 	size_t shift_size = shiftPeHeader();
@@ -93,7 +93,7 @@ bool pesieve::PeReconstructor::reconstruct(IN HANDLE processHandle)
 	}
 	//do not modify section headers if the PE is in raw format, or no unmapping requested
 	if (!peconv::is_pe_raw(peBuffer.vBuf, peBuffer.vBufSize)) {
-		if (!fixSectionsVirtualSize(processHandle) || !fixSectionsCharacteristics(processHandle)) {
+		if (!fixSectionsVirtualSize(peBuffer.processHndl) || !fixSectionsCharacteristics(peBuffer.processHndl)) {
 			return false;
 		}
 	}

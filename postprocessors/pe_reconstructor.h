@@ -49,7 +49,7 @@ namespace pesieve {
 		{
 		}
 
-		bool reconstruct(IN HANDLE processHandle);
+		bool reconstruct();
 
 	protected:
 		bool reconstructFileHdr();

@@ -11,8 +11,8 @@ namespace pesieve {
 
 	class ProcessScanner {
 	public:
-		ProcessScanner(HANDLE procHndl, pesieve::t_params _args)
-			: args(_args), isDEP(false)
+		ProcessScanner(HANDLE procHndl, bool is_reflection, pesieve::t_params _args)
+			: args(_args), isDEP(false), isReflection(is_reflection)
 		{
 			this->processHandle = procHndl;
 			ZeroMemory(ignoredModules, _countof(ignoredModules));
@@ -41,6 +41,7 @@ namespace pesieve {
 
 		HANDLE processHandle;
 		bool isDEP;
+		bool isReflection;
 		size_t hModsMax;
 		pesieve::t_params args;
 

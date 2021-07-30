@@ -6,8 +6,9 @@ namespace pesieve {
 
 	class PeBuffer {
 	public:
-		PeBuffer()
-			: vBuf(nullptr), vBufSize(0), moduleBase(0), relocBase(0)
+		PeBuffer(HANDLE _process_hndl, bool _is_refl)
+			: processHndl(_process_hndl), isRefl(_is_refl),
+			vBuf(nullptr), vBufSize(0), moduleBase(0), relocBase(0)
 		{
 		}
 
@@ -37,7 +38,7 @@ namespace pesieve {
 		}
 
 		// Reads content from the remote process into a buffer. Automatically allocates sutiable buffer.
-		bool readRemote(HANDLE process_hndl, ULONGLONG module_base, size_t pe_vsize);
+		bool readRemote(ULONGLONG module_base, size_t pe_vsize);
 
 		// Resizes internal buffer into a new size.
 		// The internal buffer must be non empty.
@@ -73,9 +74,9 @@ namespace pesieve {
 		}
 
 	protected:
-		bool _readRemote(HANDLE process_hndl, ULONGLONG module_base, size_t pe_vsize);
+		bool _readRemote(ULONGLONG module_base, size_t pe_vsize);
 
-		size_t calcRemoteImgSize(HANDLE process_hndl, ULONGLONG module_base);
+		size_t calcRemoteImgSize(ULONGLONG module_base);
 
 		bool allocBuffer(const size_t pe_vsize)
 		{
@@ -95,6 +96,8 @@ namespace pesieve {
 			vBufSize = 0;
 		}
 
+		HANDLE processHndl;
+		bool isRefl;
 		BYTE *vBuf;
 		size_t vBufSize;
 		ULONGLONG moduleBase;

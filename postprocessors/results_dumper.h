@@ -17,7 +17,7 @@ namespace pesieve {
 		}
 
 		// dump all modules detected as suspicious during the process scan
-		ProcessDumpReport* dumpDetectedModules(HANDLE hProcess, ProcessScanReport &process_report, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
+		ProcessDumpReport* dumpDetectedModules(HANDLE hProcess, bool isRefl, ProcessScanReport &process_report, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
 
 		// dump JSON report from the process scan
 		bool dumpJsonReport(ProcessScanReport &process_report, const ProcessScanReport::t_report_filter &filter, const pesieve::t_json_level &jdetails);
@@ -34,6 +34,7 @@ namespace pesieve {
 	protected:
 		/**
 		\param processHandle : handle of the target process (from which the artefacts will be dumped)
+		\param isRefl : a flag indicating if this is a process reflection
 		\param modulesInfo : list the scanned modules, with their statuses
 		\param modReport : ModuleScanReport defining artefacts to be dumped
 		\param exportsMap : mapping of all the exported APIs available within the process (for imports reconstruction)
@@ -42,6 +43,7 @@ namespace pesieve {
 		*/
 		bool dumpModule(
 			IN HANDLE processHandle,
+			IN bool isRefl,
 			IN const ProcessModules &modulesInfo,
 			IN ModuleScanReport* modReport,
 			IN const peconv::ExportsMapper *exportsMap,
