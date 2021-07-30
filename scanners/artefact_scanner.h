@@ -155,8 +155,9 @@ namespace pesieve {
 
 		static size_t calcImgSize(HANDLE processHandle, HMODULE modBaseAddr, BYTE* headerBuffer, size_t headerBufferSize, IMAGE_SECTION_HEADER *hdr_ptr = NULL);
 
-		ArtefactScanner(HANDLE _procHndl, MemPageData &_memPageData, ProcessScanReport& _process_report)
-			: processHandle(_procHndl), processReport(_process_report), isProcess64bit(false),
+		ArtefactScanner(HANDLE _procHndl, bool _isProcRefl, MemPageData &_memPageData, ProcessScanReport& _process_report)
+			: processHandle(_procHndl), isReflection(_isProcRefl),
+			processReport(_process_report), isProcess64bit(false),
 			memPage(_memPageData), prevMemPage(nullptr), artPagePtr(nullptr)
 		{
 			isProcess64bit = pesieve::util::is_process_64bit(this->processHandle);
@@ -265,6 +266,7 @@ namespace pesieve {
 		MemPageData *prevMemPage;
 		MemPageData *artPagePtr; //pointer to the page where the artefacts were found: either to memPage or to prevMemPage
 		bool isProcess64bit;
+		bool isReflection;
 		ProcessScanReport& processReport;
 	};
 

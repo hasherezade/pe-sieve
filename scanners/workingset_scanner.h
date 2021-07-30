@@ -93,6 +93,7 @@ namespace pesieve {
 			args(_args),
 			processReport(_process_report)
 		{
+			isReflection = _memPageDatal.isRefl();
 		}
 
 		virtual ~WorkingSetScanner() {}
@@ -109,6 +110,7 @@ namespace pesieve {
 		WorkingSetScanReport* scanExecutableArea(MemPageData &memPageData);
 
 		HANDLE processHandle;
+		bool isReflection;
 		MemPageData &memPage;
 
 		ProcessScanReport& processReport;

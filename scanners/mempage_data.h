@@ -9,7 +9,7 @@ namespace pesieve {
 	class MemPageData
 	{
 	public:
-		MemPageData(HANDLE _process, bool _is_process_refl, ULONGLONG _start_va, ULONGLONG _stop_va = 0)
+		MemPageData(HANDLE _process, bool _is_process_refl, ULONGLONG _start_va, ULONGLONG _stop_va)
 			: processHandle(_process), start_va(_start_va), stop_va(_stop_va),
 			is_listed_module(false),
 			is_info_filled(false), loadedData(nullptr), loadedSize(0),
@@ -22,7 +22,7 @@ namespace pesieve {
 		{
 			_freeRemote();
 		}
-
+		bool isRefl() { return is_process_refl; }
 		bool fillInfo();
 		bool isInfoFilled() { return is_info_filled; }
 		size_t getLoadedSize() { return loadedSize; }
@@ -88,7 +88,7 @@ namespace pesieve {
 		size_t loadedSize;
 
 		bool is_info_filled;
-		bool is_process_refl;
+		const bool is_process_refl;
 		HANDLE processHandle;
 	};
 

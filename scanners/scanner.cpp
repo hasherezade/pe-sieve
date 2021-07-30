@@ -219,7 +219,7 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 	for (set_itr = region_bases.begin(); set_itr != region_bases.end(); ++set_itr, ++counter) {
 		const ULONGLONG region_base = *set_itr;
 		
-		MemPageData memPage(this->processHandle, this->isReflection, region_base);
+		MemPageData memPage(this->processHandle, this->isReflection, region_base, 0);
 
 		memPage.is_listed_module = pReport.hasModule(region_base);
 		memPage.is_dep_enabled = this->isDEP;
