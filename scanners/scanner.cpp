@@ -329,7 +329,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 		}
 		// if hooks not disabled and process is not hollowed, check for hooks:
 		if (!args.no_hooks && (is_hollowed == SCAN_NOT_SUSPICIOUS)) {
-			const bool scan_data = (this->args.data == pesieve::PE_DATA_SCAN_ALWAYS)
+			const bool scan_data = (this->args.data >= pesieve::PE_DATA_SCAN_ALWAYS)
 				|| (!this->isDEP && (this->args.data == pesieve::PE_DATA_SCAN_NO_DEP));
 			scanForHooks(processHandle, modData, remoteModData, pReport, scan_data);
 		}

@@ -47,8 +47,10 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageDat
 	if (pesieve::util::is_readable(memPage.mapping_type, memPage.protection)) {
 		return true;
 	}
-	if (this->isReflection && (memPage.protection & PAGE_NOACCESS)) {
-		return true;
+	if (mode == pesieve::PE_DATA_SCAN_INACCESSIBLE) {
+		if (this->isReflection && (memPage.protection & PAGE_NOACCESS)) {
+			return true;
+		}
 	}
 	return false;
 }
@@ -137,7 +139,7 @@ bool pesieve::WorkingSetScanner::scanImg()
 			return true;
 		}
 		if (!args.no_hooks) {
-			const bool scan_data = (this->args.data == pesieve::PE_DATA_SCAN_ALWAYS)
+			const bool scan_data = (this->args.data >= pesieve::PE_DATA_SCAN_ALWAYS)
 				|| (!memPage.is_dep_enabled && (this->args.data == pesieve::PE_DATA_SCAN_NO_DEP));
 			const t_scan_status hooks_stat = ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport, scan_data);
 #ifdef _DEBUG

@@ -76,6 +76,8 @@ std::string pesieve::translate_data_mode(const pesieve::t_data_scan_mode &mode)
 		return "if no DEP: scan non-exec if DEP is disabled (or if is .NET)";
 	case pesieve::PE_DATA_SCAN_ALWAYS:
 		return "always: scan non-executable pages unconditionally";
+	case pesieve::PE_DATA_SCAN_INACCESSIBLE:
+		return "include inaccessible: scan non-executable pages unconditionally;\n\t    in reflection mode (/refl): scan also inaccessible pages";
 	}
 	return "undefined";
 }

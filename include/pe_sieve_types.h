@@ -61,6 +61,7 @@ namespace pesieve {
 		PE_DATA_SCAN_DOTNET, // scan data in .NET applications
 		PE_DATA_SCAN_NO_DEP, // scan data if no DEP or in .NET applications
 		PE_DATA_SCAN_ALWAYS, // scan data unconditionally
+		PE_DATA_SCAN_INACCESSIBLE, // scan data unconditionally, and inaccessible pages (if running in reflection mode)
 		PE_DATA_COUNT
 	} t_data_scan_mode;
 
