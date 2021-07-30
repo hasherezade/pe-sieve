@@ -68,6 +68,11 @@ namespace pesieve {
 
 		HANDLE hProcess = OpenProcess(access, FALSE, processID);
 
+		// if failed, try to open with the lower reflection access
+		if (!hProcess && access != basic_access && access != pesieve::util::reflection_access1) {
+			hProcess = OpenProcess(pesieve::util::reflection_access1, FALSE, processID);
+		}
+
 		// if failed, try to open with basic rights
 		if (!hProcess && access != basic_access) {
 			hProcess = OpenProcess( basic_access, FALSE, processID);
