@@ -51,7 +51,7 @@ bool  pesieve::PeBuffer::_readRemote(HANDLE process_hndl, const ULONGLONG module
 	this->moduleBase = module_base;
 	this->relocBase = module_base; //by default set the same as module base
 
-	size_t read_size = peconv::read_remote_area(process_hndl, (BYTE*)this->moduleBase, vBuf, pe_vsize);
+	size_t read_size = peconv::read_remote_area(process_hndl, (BYTE*)this->moduleBase, vBuf, pe_vsize, true);
 	if (read_size != pe_vsize) {
 		std::cout << "[!] Failed reading Image at: " << std::hex << this->moduleBase << " img size: " << pe_vsize << std::endl;
 		freeBuffer();

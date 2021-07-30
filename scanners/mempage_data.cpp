@@ -123,8 +123,7 @@ bool pesieve::MemPageData::_loadRemote()
 		return false;
 	}
 	this->loadedSize = region_size;
-
-	const size_t size_read = peconv::read_remote_region(this->processHandle, (BYTE*)this->start_va, loadedData, loadedSize);
+	const size_t size_read = peconv::read_remote_region(this->processHandle, (BYTE*)this->start_va, loadedData, loadedSize, true);
 	if (size_read == 0) {
 		_freeRemote();
 #ifdef _DEBUG

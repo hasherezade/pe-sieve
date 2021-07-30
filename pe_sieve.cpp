@@ -61,9 +61,9 @@ namespace pesieve {
 	HANDLE open_process(DWORD processID, bool reflection, bool quiet)
 	{
 		const DWORD basic_access = SYNCHRONIZE | PROCESS_VM_READ | PROCESS_QUERY_INFORMATION;
-		DWORD access = basic_access | PROCESS_VM_OPERATION;
+		DWORD access = basic_access;
 		if (reflection) {
-			access |= pesieve::util::reflection_access;
+			access |= pesieve::util::reflection_access | PROCESS_VM_OPERATION;
 		}
 
 		HANDLE hProcess = OpenProcess(access, FALSE, processID);
