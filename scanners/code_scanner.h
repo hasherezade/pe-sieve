@@ -97,7 +97,7 @@ namespace pesieve {
 
 		virtual CodeScanReport* scanRemote();
 
-		void scanData(bool enable) { this->isScanData = enable; }
+		void setScanData(bool enable) { this->isScanData = enable; }
 
 	private:
 
