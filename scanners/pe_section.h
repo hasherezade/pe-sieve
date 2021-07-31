@@ -68,7 +68,7 @@ namespace pesieve {
 			this->rva = section_hdr->VirtualAddress;
 			//get the code section from the module:
 			this->loadedSize = 0;
-			this->loadedSection = peconv::get_remote_pe_section(remoteModData.processHandle, (PBYTE)remoteModData.modBaseAddr, section_number, loadedSize, true);
+			this->loadedSection = peconv::get_remote_pe_section(remoteModData.processHandle, (PBYTE)remoteModData.modBaseAddr, section_number, loadedSize, true, remoteModData.isRefl);
 			if (loadedSection == nullptr) {
 				return false;
 			}
@@ -79,7 +79,7 @@ namespace pesieve {
 		{
 			unload(); //ensure that buffers are empty
 
-					  //corner case: if no sections in PE
+			//corner case: if no sections in PE
 			DWORD sec_num = peconv::get_sections_count(modData.original_module, modData.original_size);
 			if (sec_num == 0 && section_number == 0) {
 				return loadOriginalImageAsSection(modData);

@@ -113,7 +113,7 @@ bool pesieve::WorkingSetScanner::scanImg()
 	if (show_info) {
 		std::cout << "[!] Scanning detached: " << std::hex << module_start << " : " << memPage.mapped_name << std::endl;
 	}
-	RemoteModuleData remoteModData(this->processHandle, module_start);
+	RemoteModuleData remoteModData(this->processHandle, this->isReflection, module_start);
 	if (!remoteModData.isInitialized()) {
 		if (show_info) {
 			std::cout << "[-] Could not read the remote PE at: " << std::hex << module_start << std::endl;
