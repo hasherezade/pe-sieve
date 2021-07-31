@@ -150,13 +150,14 @@ namespace pesieve {
 		size_t initialRegionSize;
 	};
 
-	class ArtefactScanner {
+	//!  A scanner for detection of artefacts related to PE implants in the process workingset.
+	class ArtefactScanner : public ProcessFeatureScanner {
 	public:
 
 		static size_t calcImgSize(HANDLE processHandle, HMODULE modBaseAddr, BYTE* headerBuffer, size_t headerBufferSize, IMAGE_SECTION_HEADER *hdr_ptr = NULL);
 
 		ArtefactScanner(HANDLE _procHndl, bool _isProcRefl, MemPageData &_memPageData, ProcessScanReport& _process_report)
-			: processHandle(_procHndl), isReflection(_isProcRefl),
+			: ProcessFeatureScanner(_procHndl), isReflection(_isProcRefl),
 			processReport(_process_report), isProcess64bit(false),
 			memPage(_memPageData), prevMemPage(nullptr), artPagePtr(nullptr)
 		{
@@ -261,7 +262,6 @@ namespace pesieve {
 		IMAGE_DOS_HEADER* _findDosHdrByPatterns(BYTE *search_ptr, const size_t max_search_size);
 		IMAGE_DOS_HEADER* findDosHdrByPatterns(MemPageData &memPage, const size_t start_offset, size_t stop_offset = INVALID_OFFSET);
 
-		HANDLE processHandle;
 		MemPageData &memPage;
 		MemPageData *prevMemPage;
 		MemPageData *artPagePtr; //pointer to the page where the artefacts were found: either to memPage or to prevMemPage

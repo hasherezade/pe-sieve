@@ -9,6 +9,7 @@
 
 namespace pesieve {
 
+	//! Loads a module from the disk, corresponding to the module in the scanned process' memory.
 	class ModuleData {
 
 	public:
@@ -103,7 +104,7 @@ namespace pesieve {
 		friend class PeSection;
 	};
 
-	// the module loaded within the scanned process
+	//! Buffers the data from the module loaded in the scanned process into the local memory.
 	class RemoteModuleData
 	{
 	public:

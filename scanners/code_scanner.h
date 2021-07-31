@@ -86,6 +86,8 @@ namespace pesieve {
 		PatchList patchesList;
 	};
 
+
+	//!  A scanner for detection of patches in the code.
 	class CodeScanner : public ModuleScanner {
 	public:
 

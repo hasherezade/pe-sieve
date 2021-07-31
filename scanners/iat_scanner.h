@@ -54,6 +54,7 @@ namespace pesieve {
 
 	//---
 
+	//!  A scanner for detection of IAT hooking.
 	class IATScanner : public ModuleScanner {
 	public:
 

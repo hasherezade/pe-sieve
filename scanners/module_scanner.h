@@ -9,21 +9,24 @@
 #include "module_data.h"
 
 #include "../utils/format_util.h"
+#include "process_feature_scanner.h"
 
 namespace pesieve {
 
-	class ModuleScanner {
+	//!  A base class for all the scanners operating on module data.
+	class ModuleScanner : public ProcessFeatureScanner {
 	public:
 		ModuleScanner(HANDLE _procHndl, ModuleData &_moduleData, RemoteModuleData &_remoteModData)
-			: processHandle(_procHndl), moduleData(_moduleData), remoteModData(_remoteModData)
+			: ProcessFeatureScanner(_procHndl),
+			moduleData(_moduleData), remoteModData(_remoteModData)
 		{
 		}
+
 		virtual ~ModuleScanner() {}
 
 		virtual ModuleScanReport* scanRemote() = 0;
 
 	protected:
-		HANDLE processHandle;
 		ModuleData &moduleData;
 		RemoteModuleData &remoteModData;
 	};

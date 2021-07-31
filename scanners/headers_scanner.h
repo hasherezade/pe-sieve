@@ -76,6 +76,8 @@ namespace pesieve {
 		bool isInPEB;
 	};
 
+
+	//!  A scanner for detection of PE header's modifications.
 	class HeadersScanner : public ModuleScanner {
 	public:
 		HeadersScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData)

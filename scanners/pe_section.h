@@ -7,6 +7,7 @@
 
 namespace pesieve {
 
+	//! Buffers the defined PE section belonging to the module loaded in the scanned process into the local memory.
 	class PeSection
 	{
 	public:

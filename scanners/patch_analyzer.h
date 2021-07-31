@@ -5,6 +5,7 @@
 
 namespace pesieve {
 
+	//! A postprocessor of the detected code patches. Detects if the patch is a hook, and if so, tries to indentify the address where it leads to.
 	class PatchAnalyzer
 	{
 	public:

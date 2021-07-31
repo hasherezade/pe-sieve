@@ -57,6 +57,7 @@ set (scanners_srcs
 )
 
 set (scanners_hdrs
+	scanners/process_feature_scanner.h
 	scanners/mapping_scanner.h
 	scanners/headers_scanner.h
 	scanners/code_scanner.h

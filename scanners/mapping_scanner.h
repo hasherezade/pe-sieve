@@ -5,6 +5,7 @@
 
 #include "module_scanner.h"
 #include "../utils/path_util.h"
+#include "process_feature_scanner.h"
 
 namespace pesieve {
 
@@ -43,17 +44,17 @@ namespace pesieve {
 		std::string mappedFile;
 	};
 
-	//is the mapped file name different than the module file name?
-	class MappingScanner {
+
+	//!  A scanner for detection of inconsistencies in mapping. Checks if the mapped file name is different than the module file name.
+	class MappingScanner : public ProcessFeatureScanner {
 	public:
 		MappingScanner(HANDLE hProc, ModuleData &moduleData)
-			: processHandle(hProc), moduleData(moduleData)
+			: ProcessFeatureScanner(hProc), moduleData(moduleData)
 		{
 		}
 
 		virtual MappingScanReport* scanRemote();
 
-		HANDLE processHandle;
 		ModuleData &moduleData;
 	};
 
