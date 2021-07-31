@@ -25,13 +25,33 @@ namespace pesieve {
 		{
 		}
 
+		size_t countSectionsWithStatus(const t_section_status neededStatus)
+		{
+			size_t counter = 0;
+			std::map<DWORD, t_section_status>::iterator itr;
+			for (itr = sectionToResult.begin(); itr != sectionToResult.end(); ++itr) {
+				const t_section_status status = itr->second;
+				if (status == neededStatus) {
+					counter++;
+				}
+			}
+			return counter;
+		}
+
 		const virtual void fieldsToJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
 		{
+			const size_t inaccessibleCount = countInaccessibleSections();
+			const size_t scannedCount = sectionToResult.size() - inaccessibleCount;
 			ModuleScanReport::toJSON(outs, level);
 			if (sectionToResult.size() > 0) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"scanned_sections\" : ");
-				outs << std::dec << sectionToResult.size();
+				outs << std::dec << scannedCount;
+			}
+			if (inaccessibleCount > 0) {
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"inaccessible_sections\" : ");
+				outs << std::dec << inaccessibleCount;
 			}
 			const size_t unpacked = countUnpackedSections();
 			if (unpacked > 0) {
@@ -68,15 +88,12 @@ namespace pesieve {
 
 		size_t countUnpackedSections()
 		{
-			size_t counter = 0;
-			std::map<DWORD, t_section_status>::iterator itr;
-			for (itr = sectionToResult.begin(); itr != sectionToResult.end(); ++itr) {
-				const t_section_status status = itr->second;
-				if (status == SECTION_UNPACKED) {
-					counter++;
-				}
-			}
-			return counter;
+			return countSectionsWithStatus(SECTION_UNPACKED);
+		}
+
+		size_t countInaccessibleSections()
+		{
+			return countSectionsWithStatus(SECTION_SCAN_ERR);
 		}
 
 		size_t generateTags(std::string reportPath);
@@ -93,15 +110,18 @@ namespace pesieve {
 
 		CodeScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData)
 			: ModuleScanner(hProc, moduleData, remoteModData),
-			isScanData(false) { }
+			isScanData(false), isScanInaccessible(false)
+		{
+		}
 
 		virtual CodeScanReport* scanRemote();
 
 		void setScanData(bool enable) { this->isScanData = enable; }
+		void setScanInaccessible(bool enable) { this->isScanInaccessible = enable; }
 
 	private:
 
-		size_t collectExecutableSections(RemoteModuleData &remoteModData, std::map<size_t, PeSection*> &sections);
+		size_t collectExecutableSections(RemoteModuleData &remoteModData, std::map<size_t, PeSection*> &sections, CodeScanReport &my_report);
 
 		void freeExecutableSections(std::map<size_t, PeSection*> &sections);
 
@@ -120,6 +140,7 @@ namespace pesieve {
 		size_t collectPatches(DWORD section_rva, PBYTE orig_code, PBYTE patched_code, size_t code_size, OUT PatchList &patchesList);
 
 		bool isScanData;
+		bool isScanInaccessible;
 	};
 
 }; //namespace pesieve

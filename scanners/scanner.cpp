@@ -76,10 +76,11 @@ t_scan_status pesieve::ProcessScanner::scanForIATHooks(HANDLE processHandle, Mod
 	return scan_res;
 }
 
-t_scan_status pesieve::ProcessScanner::scanForHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report, bool scan_data)
+t_scan_status pesieve::ProcessScanner::scanForHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report, bool scan_data, bool scan_inaccessible)
 {
 	CodeScanner hooks(processHandle, modData, remoteModData);
 	hooks.setScanData(scan_data);
+	hooks.setScanInaccessible(scan_inaccessible);
 	CodeScanReport *scan_report = hooks.scanRemote();
 	if (!scan_report) return SCAN_ERROR;
 
@@ -329,9 +330,13 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 		}
 		// if hooks not disabled and process is not hollowed, check for hooks:
 		if (!args.no_hooks && (is_hollowed == SCAN_NOT_SUSPICIOUS)) {
+			
 			const bool scan_data = ((this->args.data >= pesieve::PE_DATA_SCAN_ALWAYS) && (this->args.data != pesieve::PE_DATA_SCAN_INACCESSIBLE_ONLY))
 				|| (!this->isDEP && (this->args.data == pesieve::PE_DATA_SCAN_NO_DEP));
-			scanForHooks(processHandle, modData, remoteModData, pReport, scan_data);
+			
+			const bool scan_inaccessible = (this->isReflection && (this->args.data >= PE_DATA_SCAN_INACCESSIBLE));
+
+			scanForHooks(processHandle, modData, remoteModData, pReport, scan_data, scan_inaccessible);
 		}
 	}
 	return counter;

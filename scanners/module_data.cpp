@@ -229,7 +229,7 @@ bool pesieve::RemoteModuleData::isSectionEntry(const size_t section_number)
 	return false;
 }
 
-bool pesieve::RemoteModuleData::isSectionExecutable(const size_t section_number, bool allow_data)
+bool pesieve::RemoteModuleData::isSectionExecutable(const size_t section_number, bool allow_data, bool allow_inaccessible)
 {
 	//for special cases when the section is not set executable in headers, but in reality is executable...
 	//get the section header from the module:
@@ -260,14 +260,20 @@ bool pesieve::RemoteModuleData::isSectionExecutable(const size_t section_number,
 			return true;
 		}
 	}
+	if (allow_inaccessible) {
+		if (pesieve::util::is_normal_inaccessible(page_info.State, page_info.Type, page_info.Protect)) {
+			//std::cout << "[" << section_number << "] Inaccessible section found!\n";
+			return true;
+		}
+	}
 	return false;
 }
 
-bool pesieve::RemoteModuleData::hasExecutableSection(bool allow_data)
+bool pesieve::RemoteModuleData::hasExecutableSection(bool allow_data, bool allow_inaccessible)
 {
 	size_t sec_count = peconv::get_sections_count(this->headerBuffer, peconv::MAX_HEADER_SIZE);
 	for (size_t i = 0; i < sec_count ; i++) {
-		if (isSectionExecutable(i, allow_data)) {
+		if (isSectionExecutable(i, allow_data, allow_inaccessible)) {
 			return true;
 		}
 	}

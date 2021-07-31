@@ -226,7 +226,7 @@ CodeScanReport::t_section_status pesieve::CodeScanner::scanSection(PeSection &or
 	return pesieve::CodeScanReport::SECTION_UNPACKED; // modified
 }
 
-size_t pesieve::CodeScanner::collectExecutableSections(RemoteModuleData &_remoteModData, std::map<size_t, PeSection*> &sections)
+size_t pesieve::CodeScanner::collectExecutableSections(RemoteModuleData &_remoteModData, std::map<size_t, PeSection*> &sections, CodeScanReport &my_report)
 {
 	size_t initial_size = sections.size();
 	const size_t sec_count = peconv::get_sections_count(_remoteModData.headerBuffer, _remoteModData.getHeaderSize());
@@ -240,7 +240,7 @@ size_t pesieve::CodeScanner::collectExecutableSections(RemoteModuleData &_remote
 
 		if (!is_entry // entry section may be set as non executable, but it will still be executed
 			&& !(section_hdr->Characteristics & IMAGE_SCN_MEM_EXECUTE)
-			&& !_remoteModData.isSectionExecutable(i, isScanData))
+			&& !_remoteModData.isSectionExecutable(i, this->isScanData, this->isScanInaccessible))
 		{
 			//not executable, skip it
 			continue;
@@ -249,6 +249,7 @@ size_t pesieve::CodeScanner::collectExecutableSections(RemoteModuleData &_remote
 		//get the code section from the remote module:
 		PeSection *remoteSec = new PeSection(_remoteModData, i);
 		if (!remoteSec->isInitialized()) {
+			my_report.sectionToResult[i] = CodeScanReport::SECTION_SCAN_ERR;
 			continue;
 		}
 		if (is_entry // always scan section containing Entry Point
@@ -328,13 +329,18 @@ pesieve::CodeScanReport* pesieve::CodeScanner::scanRemote()
 		return nullptr;
 	}
 	CodeScanReport *my_report = new CodeScanReport(this->processHandle, moduleData.moduleHandle, remoteModData.getModuleSize());
+	if (!my_report) return nullptr; //this should not happen...
+
 	my_report->isDotNetModule = moduleData.isDotNet();
 	
 	t_scan_status last_res = SCAN_NOT_SUSPICIOUS;
 	std::map<size_t, PeSection*> remote_code;
 
-	if (!collectExecutableSections(remoteModData, remote_code)) {
+	if (!collectExecutableSections(remoteModData, remote_code, *my_report)) {
 		my_report->status = last_res;
+		if (my_report->countInaccessibleSections() > 0) {
+			my_report->status = SCAN_ERROR;
+		}
 		return my_report;
 	}
 	ULONGLONG load_base = (ULONGLONG)moduleData.moduleHandle;
