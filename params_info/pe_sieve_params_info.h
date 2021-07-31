@@ -6,7 +6,6 @@
 namespace pesieve {
 	std::string translate_dump_mode(const DWORD dump_mode);
 	std::string translate_out_filter(const pesieve::t_output_filter o_filter);
-	std::string translate_modules_filter(DWORD m_filter);
 	std::string translate_data_mode(const pesieve::t_data_scan_mode &mode);
 	std::string translate_imprec_mode(const pesieve::t_imprec_mode imprec_mode);
 	std::string translate_dotnet_policy(const pesieve::t_dotnet_policy &mode);
