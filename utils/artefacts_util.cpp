@@ -153,3 +153,20 @@ bool pesieve::util::is_readable(DWORD mapping_type, DWORD protection)
 		|| (protection & PAGE_READONLY);
 	return is_read;
 }
+
+bool pesieve::util::is_normal_inaccessible(DWORD state, DWORD mapping_type, DWORD protection)
+{
+	if ((state & MEM_COMMIT) == 0) {
+		//not committed
+		return false;
+	}
+	if (mapping_type != MEM_IMAGE && (mapping_type != MEM_MAPPED) && mapping_type != MEM_PRIVATE) {
+		// invalid mapping type
+		return false;
+	}
+	if (protection & PAGE_NOACCESS) {
+		// inaccessible found
+		return true;
+	}
+	return false;
+}

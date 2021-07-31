@@ -18,5 +18,7 @@ namespace pesieve {
 		bool is_executable(DWORD mapping_type, DWORD protection);
 
 		bool is_readable(DWORD mapping_type, DWORD protection);
+
+		bool is_normal_inaccessible(DWORD state, DWORD mapping_type, DWORD protection);
 	};
 }
