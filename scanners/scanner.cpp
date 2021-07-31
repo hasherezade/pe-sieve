@@ -310,7 +310,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 			continue;
 		}
 		//load data about the remote module
-		RemoteModuleData remoteModData(processHandle, hMods[counter]);
+		RemoteModuleData remoteModData(processHandle, this->isReflection, hMods[counter]);
 		if (remoteModData.isInitialized() == false) {
 			//make a report that initializing remote module was not possible
 			pReport.appendReport(new MalformedHeaderReport(processHandle, hMods[counter], 0, modData.szModName));
@@ -362,7 +362,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 		}
 
 		//load data about the remote module
-		RemoteModuleData remoteModData(processHandle, hMods[counter]);
+		RemoteModuleData remoteModData(processHandle, this->isReflection, hMods[counter]);
 		if (remoteModData.isInitialized() == false) {
 			//make a report that initializing remote module was not possible
 			pReport.appendReport(new MalformedHeaderReport(processHandle, hMods[counter], 0, modData.szModName));
