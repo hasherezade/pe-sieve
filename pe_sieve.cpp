@@ -204,6 +204,9 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 			}
 			else {
 				std::cout << "Using raw process!\n";
+				if (args.data >= PE_DATA_SCAN_INACCESSIBLE) {
+					print_in_color(WARNING_COLOR, "[WARNING] Scanning of inaccessible pages is possible only in reflection mode!\n");
+				}
 			}
 		}
 
