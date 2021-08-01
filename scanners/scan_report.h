@@ -60,7 +60,7 @@ namespace pesieve {
 			appendToType(report);
 			// if the scan was successful, append the module to the scanned modules:
 			if (ModuleScanReport::get_scan_status(report) != SCAN_ERROR) {
-				appendToModulesList(report);
+				modulesInfo.appendToModulesList(report);
 			}
 		}
 
@@ -71,7 +71,7 @@ namespace pesieve {
 
 		bool hasModuleContaining(ULONGLONG page_addr, size_t size = 0)
 		{
-			if (modulesInfo.getModuleContaining(page_addr, size) == nullptr) {
+			if (modulesInfo.findModuleContaining(page_addr, size) == nullptr) {
 				return false;
 			}
 			return true;
@@ -117,7 +117,6 @@ namespace pesieve {
 		}
 
 		size_t countHdrsReplaced() const;
-		bool appendToModulesList(ModuleScanReport *report);
 		bool hasAnyShownType(const ProcessScanReport::t_report_filter &filter);
 
 		DWORD pid;
@@ -125,7 +124,7 @@ namespace pesieve {
 		bool isManaged;
 		size_t errorsCount;
 
-		ProcessModules modulesInfo;
+		ModulesInfo modulesInfo;
 		std::set<ModuleScanReport*> reportsByType[REPORT_TYPES_COUNT];
 
 		friend class ProcessScanner;

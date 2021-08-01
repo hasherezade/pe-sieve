@@ -44,7 +44,7 @@ namespace pesieve {
 		bool dumpModule(
 			IN HANDLE processHandle,
 			IN bool isRefl,
-			IN const ProcessModules &modulesInfo,
+			IN const ModulesInfo &modulesInfo,
 			IN ModuleScanReport* modReport,
 			IN const peconv::ExportsMapper *exportsMap,
 			IN const pesieve::t_dump_mode dump_mode,

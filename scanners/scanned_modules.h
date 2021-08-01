@@ -6,38 +6,58 @@
 #include <string>
 #include <iostream>
 
+#include "module_scan_report.h"
+
 namespace pesieve {
 
-	//!  A class representing a basic info about the scanned module, such as its base offset, size, and the status.
-	struct LoadedModule {
+	//!  Represents a basic info about the scanned module, such as its base offset, size, and the status.
+	class ScannedModule {
 
-		LoadedModule(DWORD _pid, ULONGLONG _start, size_t _moduleSize)
-			: process_id(_pid), start(_start), moduleSize(_moduleSize),
-			is_suspicious(false)
+	public:
+
+		ULONGLONG getStart() const
 		{
+			return start;
 		}
 
-		~LoadedModule()
+		ULONGLONG getEnd() const
 		{
+			return moduleSize + start;
 		}
 
-		bool operator<(LoadedModule other) const
+		size_t getSize()
 		{
-			return this->start < other.start;
-		}
-
-		void setSuspicious(bool _is_suspicious) {
-			this->is_suspicious = _is_suspicious;
+			return moduleSize;
 		}
 
 		bool isSuspicious() const
 		{
 			return this->is_suspicious;
 		}
-
-		ULONGLONG getEnd() const
+		
+		std::string getModName() const
 		{
-			return moduleSize + start;
+			return this->moduleName;
+		}
+
+	protected:
+		ScannedModule(DWORD _pid, ULONGLONG _start, size_t _moduleSize)
+			: process_id(_pid), start(_start), moduleSize(_moduleSize),
+			is_suspicious(false)
+		{
+		}
+
+		~ScannedModule()
+		{
+		}
+
+		bool operator<(ScannedModule other) const
+		{
+			return this->start < other.start;
+		}
+
+		void setSuspicious(bool _is_suspicious) {
+			this->is_suspicious = _is_suspicious;
 		}
 
 		bool resize(size_t newSize)
@@ -50,42 +70,47 @@ namespace pesieve {
 			return false;
 		}
 
-		size_t getSize()
-		{
-			return moduleSize;
-		}
-
 		const ULONGLONG start;
 		const DWORD process_id;
 
 	private:
 		size_t moduleSize;
 		bool is_suspicious;
+		std::string moduleName;
+
+		friend class ModulesInfo;
 	};
 
-	//!  A list of all the process modules that were scanned.
-	struct ProcessModules {
-		ProcessModules(DWORD _pid)
+	//!  A container of all the process modules that were scanned.
+	class ModulesInfo {
+
+	public:
+
+		ModulesInfo(DWORD _pid)
 			: process_id(_pid)
 		{
 		}
 
-		~ProcessModules()
+		~ModulesInfo()
 		{
 			deleteAll();
 		}
 
-		bool appendModule(LoadedModule* module);
+		bool appendToModulesList(ModuleScanReport *report);
+
 		void deleteAll();
+		size_t count() { return modulesMap.size(); }
 
 		size_t getScannedSize(ULONGLONG start_address) const;
-		LoadedModule* getModuleContaining(ULONGLONG address, size_t size = 0) const;
-		LoadedModule* getModuleAt(ULONGLONG address) const;
+		ScannedModule* findModuleContaining(ULONGLONG address, size_t size = 1) const;
+		ScannedModule* getModuleAt(ULONGLONG address) const;
 
-		const DWORD process_id;
+	protected:
+		bool appendModule(ScannedModule* module);
 
 	private:
-		std::map<ULONGLONG, LoadedModule*> modulesMap;
+		std::map<ULONGLONG, ScannedModule*> modulesMap;
+		const DWORD process_id;
 	};
 
 }; //namespace pesieve

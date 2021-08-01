@@ -93,7 +93,7 @@ t_scan_status pesieve::ProcessScanner::scanForHooks(HANDLE processHandle, Module
 
 bool pesieve::ProcessScanner::resolveHooksTargets(ProcessScanReport& process_report)
 {
-	HookTargetResolver hookResolver(process_report, this->processHandle);
+	HookTargetResolver hookResolver(process_report);
 	const std::set<ModuleScanReport*> &code_reports = process_report.reportsByType[ProcessScanReport::REPORT_CODE_SCAN];
 	size_t resolved_count = hookResolver.resolveAllHooks(code_reports);
 	return (resolved_count > 0);
