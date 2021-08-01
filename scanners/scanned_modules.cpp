@@ -50,24 +50,22 @@ bool pesieve::ModulesInfo::appendToModulesList(ModuleScanReport *report)
 	return true;
 }
 
-ScannedModule* pesieve::ModulesInfo::findModuleContaining(ULONGLONG searchedAddr)
+ScannedModule* pesieve::ModulesInfo::findModuleContaining(ULONGLONG address, size_t size) const
 {
-	if (searchedAddr == 0) return nullptr;
-#ifdef _DEBUG
-	std::cout << "Searching hook address: " << std::hex << searchedAddr << std::endl;
-#endif
-	std::map<ULONGLONG, ScannedModule*>::iterator itr1;
-	std::map<ULONGLONG, ScannedModule*>::iterator lastEl = modulesMap.lower_bound(searchedAddr);
-	for (itr1 = modulesMap.begin(); itr1 != lastEl; ++itr1) {
-		ScannedModule* modInfo = itr1->second;
-		if (!modInfo) continue; //this should never happen
+	if (size == 0) size = sizeof(BYTE); //if size not given, assume 1 byte
+	const ULONGLONG field_end = address + size;
 
-		ULONGLONG begin = modInfo->getStart();
-		ULONGLONG end = modInfo->getEnd();
-		// searching hook in module:
-		if (searchedAddr >= begin && searchedAddr < end) {
+	// the first element that is greater than the start address
+	std::map<ULONGLONG, ScannedModule*>::const_iterator firstGreater = modulesMap.upper_bound(address);
+
+	std::map<ULONGLONG, ScannedModule*>::const_iterator itr;
+	for (itr = modulesMap.begin(); itr != firstGreater; ++itr) {
+		ScannedModule *module = itr->second;
+		if (!module) continue; //this should never happen
+
+		if (address >= module->getStart() && field_end <= module->getEnd()) {
 			// Address found in module:
-			return modInfo;
+			return module;
 		}
 	}
 	return nullptr;
@@ -101,24 +99,6 @@ size_t pesieve::ModulesInfo::getScannedSize(ULONGLONG address) const
 		}
 	}
 	return max_size;
-}
-
-ScannedModule* pesieve::ModulesInfo::getModuleContaining(ULONGLONG address, size_t size) const
-{
-	std::map<ULONGLONG, ScannedModule*>::const_iterator start_itr = modulesMap.begin();
-	std::map<ULONGLONG, ScannedModule*>::const_iterator stop_itr = modulesMap.upper_bound(address);
-	std::map<ULONGLONG, ScannedModule*>::const_iterator itr = start_itr;
-	
-	const ULONGLONG end_addr = (size > 0)? address + (size - 1) : address;
-
-	for (; itr != stop_itr; ++itr ) {
-		ScannedModule *module = itr->second;
-		if (address >= module->start && end_addr < module->getEnd()) {
-			// Address found in module:
-			return module;
-		}
-	}
-	return nullptr;
 }
 
 ScannedModule* pesieve::ModulesInfo::getModuleAt(ULONGLONG address) const

@@ -96,15 +96,13 @@ namespace pesieve {
 			deleteAll();
 		}
 
-		ScannedModule* findModuleContaining(ULONGLONG searchedAddr);
-
 		bool appendToModulesList(ModuleScanReport *report);
 
 		void deleteAll();
 		size_t count() { return modulesMap.size(); }
 
 		size_t getScannedSize(ULONGLONG start_address) const;
-		ScannedModule* getModuleContaining(ULONGLONG address, size_t size = 0) const;
+		ScannedModule* findModuleContaining(ULONGLONG address, size_t size = 1) const;
 		ScannedModule* getModuleAt(ULONGLONG address) const;
 
 	protected:
@@ -112,7 +110,7 @@ namespace pesieve {
 
 	private:
 		std::map<ULONGLONG, ScannedModule*> modulesMap;
-		DWORD process_id;
+		const DWORD process_id;
 	};
 
 }; //namespace pesieve

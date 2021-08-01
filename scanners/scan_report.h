@@ -71,7 +71,7 @@ namespace pesieve {
 
 		bool hasModuleContaining(ULONGLONG page_addr, size_t size = 0)
 		{
-			if (modulesInfo.getModuleContaining(page_addr, size) == nullptr) {
+			if (modulesInfo.findModuleContaining(page_addr, size) == nullptr) {
 				return false;
 			}
 			return true;
