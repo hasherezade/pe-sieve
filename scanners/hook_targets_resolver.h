@@ -15,8 +15,8 @@ namespace pesieve {
 	class HookTargetResolver
 	{
 	public:
-		HookTargetResolver(ProcessScanReport& process_report, HANDLE processHandle)
-			: mInfo(processHandle)
+		HookTargetResolver(ProcessScanReport& process_report)
+			: mInfo(process_report.getPid())
 		{
 			mapScannedModules(process_report);
 		}

@@ -91,12 +91,6 @@ namespace pesieve {
 		{
 		}
 
-		ModulesInfo(HANDLE hProcess)
-			: process_id(0)
-		{
-			this->process_id = peconv::get_process_id(hProcess);
-		}
-
 		~ModulesInfo()
 		{
 			deleteAll();
