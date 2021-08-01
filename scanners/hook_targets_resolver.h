@@ -5,13 +5,6 @@
 
 namespace pesieve {
 
-	struct ScannedModuleInfo {
-		ULONGLONG moduleAddr;
-		size_t moduleSize;
-		bool isSuspicious;
-		std::string moduleName;
-	};
-
 	class HookTargetResolver
 	{
 	public:
