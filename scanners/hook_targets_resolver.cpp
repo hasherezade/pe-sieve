@@ -14,6 +14,14 @@ bool pesieve::HookTargetResolver::resolveTarget(PatchList::Patch* currPatch)
 	const ScannedModule* foundMod = mInfo.findModuleContaining(searchedAddr);
 	if (!foundMod) return false;
 
+	if (processReport.exportsMap) {
+		const peconv::ExportedFunc* expFunc = processReport.exportsMap->find_export_by_va(searchedAddr);
+		if (expFunc) {
+			const std::string targetName = foundMod->getModName() + "." + expFunc->nameToString();
+			currPatch->setHookTargetInfo(foundMod->getStart(), foundMod->isSuspicious(), targetName);
+			return true;
+		}
+	}
 	currPatch->setHookTargetInfo(foundMod->getStart(), foundMod->isSuspicious(), foundMod->getModName());
 	return true;
 }
