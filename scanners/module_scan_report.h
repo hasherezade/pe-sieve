@@ -21,7 +21,7 @@ namespace pesieve {
 		SCAN_SUSPICIOUS = 1
 	} t_scan_status;
 
-	//!  A baseclass of all the reports detailing on the output of the performed module's scan.
+	//!  A base class of all the reports detailing on the output of the performed module's scan.
 	class ModuleScanReport
 	{
 	public:
