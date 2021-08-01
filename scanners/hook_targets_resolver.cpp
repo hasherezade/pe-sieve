@@ -11,7 +11,7 @@ bool pesieve::HookTargetResolver::resolveTarget(PatchList::Patch* currPatch)
 	if (!currPatch) return false;
 
 	const ULONGLONG searchedAddr = currPatch->getHookTargetVA();
-	const ScannedModule* foundMod = mInfo.findModuleContaining(searchedAddr);
+	const ScannedModule* foundMod = processReport.getModuleContaining(searchedAddr);
 	if (!foundMod) return false;
 
 	if (processReport.exportsMap) {
@@ -47,14 +47,4 @@ size_t pesieve::HookTargetResolver::resolveAllHooks(const std::set<ModuleScanRep
 		}
 	}
 	return resolved;
-}
-
-size_t pesieve::HookTargetResolver::mapScannedModules(ProcessScanReport& process_report)
-{
-	std::vector<ModuleScanReport*>::iterator modItr;
-	for (modItr = process_report.moduleReports.begin(); modItr != process_report.moduleReports.end(); ++modItr) {
-		ModuleScanReport* scanReport = *modItr;
-		mInfo.appendToModulesList(scanReport);
-	}
-	return mInfo.count();
 }

@@ -69,20 +69,25 @@ namespace pesieve {
 			return modulesInfo.getScannedSize(address);
 		}
 
-		bool hasModuleContaining(ULONGLONG page_addr, size_t size = 0)
+		bool hasModule(ULONGLONG page_addr)
 		{
-			if (modulesInfo.findModuleContaining(page_addr, size) == nullptr) {
+			if (!modulesInfo.getModuleAt(page_addr)) {
 				return false;
 			}
 			return true;
 		}
 
-		bool hasModule(ULONGLONG page_addr)
+		bool hasModuleContaining(ULONGLONG page_addr, size_t size = 0)
 		{
-			if (modulesInfo.getModuleAt(page_addr) == nullptr) {
+			if (!modulesInfo.findModuleContaining(page_addr, size)) {
 				return false;
 			}
 			return true;
+		}
+
+		ScannedModule* getModuleContaining(ULONGLONG field_addr, size_t field_size = 0) const
+		{
+			return modulesInfo.findModuleContaining(field_addr, field_size);
 		}
 
 		const virtual bool toJSON(std::stringstream &stream, size_t level, const t_report_filter &filter, const pesieve::t_json_level &jdetails) const;

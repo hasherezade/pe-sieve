@@ -85,7 +85,6 @@ namespace pesieve {
 	class ModulesInfo {
 
 	public:
-
 		ModulesInfo(DWORD _pid)
 			: process_id(_pid)
 		{
@@ -98,7 +97,6 @@ namespace pesieve {
 
 		bool appendToModulesList(ModuleScanReport *report);
 
-		void deleteAll();
 		size_t count() { return modulesMap.size(); }
 
 		size_t getScannedSize(ULONGLONG start_address) const;
@@ -107,6 +105,7 @@ namespace pesieve {
 
 	protected:
 		bool appendModule(ScannedModule* module);
+		void deleteAll();
 
 	private:
 		std::map<ULONGLONG, ScannedModule*> modulesMap;
