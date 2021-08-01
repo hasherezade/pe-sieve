@@ -136,7 +136,7 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 
 		if (exportsMap) {
 			LoadedModule *modExp = modulesInfo.getModuleContaining(addr);
-			ULONGLONG module_start = (modExp) ? modExp->start : peconv::fetch_alloc_base(hProcess, (BYTE*)addr);
+			ULONGLONG module_start = (modExp) ? modExp->getStart() : peconv::fetch_alloc_base(hProcess, (BYTE*)addr);
 
 			const peconv::ExportedFunc* func = exportsMap->find_export_by_va(addr);
 			if (func) {
@@ -268,7 +268,7 @@ bool pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATS
 		const ULONGLONG addr = itr->second;
 
 		LoadedModule *modExp = modulesInfo.getModuleContaining(addr);
-		ULONGLONG module_start = (modExp) ? modExp->start : peconv::fetch_alloc_base(this->processHandle, (BYTE*)addr);
+		ULONGLONG module_start = (modExp) ? modExp->getStart() : peconv::fetch_alloc_base(this->processHandle, (BYTE*)addr);
 		if (module_start == 0) {
 			// invalid address of the hook
 			report.notCovered.insert(thunk, addr);

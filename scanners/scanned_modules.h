@@ -6,11 +6,36 @@
 #include <string>
 #include <iostream>
 
+#include "module_scan_report.h"
+
 namespace pesieve {
 
-	//!  A class representing a basic info about the scanned module, such as its base offset, size, and the status.
-	struct LoadedModule {
+	//!  Represents a basic info about the scanned module, such as its base offset, size, and the status.
+	class LoadedModule {
 
+	public:
+
+		ULONGLONG getStart() const
+		{
+			return start;
+		}
+
+		ULONGLONG getEnd() const
+		{
+			return moduleSize + start;
+		}
+
+		size_t getSize()
+		{
+			return moduleSize;
+		}
+
+		bool isSuspicious() const
+		{
+			return this->is_suspicious;
+		}
+
+	protected:
 		LoadedModule(DWORD _pid, ULONGLONG _start, size_t _moduleSize)
 			: process_id(_pid), start(_start), moduleSize(_moduleSize),
 			is_suspicious(false)
@@ -30,16 +55,6 @@ namespace pesieve {
 			this->is_suspicious = _is_suspicious;
 		}
 
-		bool isSuspicious() const
-		{
-			return this->is_suspicious;
-		}
-
-		ULONGLONG getEnd() const
-		{
-			return moduleSize + start;
-		}
-
 		bool resize(size_t newSize)
 		{
 			if (moduleSize < newSize) {
@@ -50,21 +65,20 @@ namespace pesieve {
 			return false;
 		}
 
-		size_t getSize()
-		{
-			return moduleSize;
-		}
-
 		const ULONGLONG start;
 		const DWORD process_id;
 
 	private:
 		size_t moduleSize;
 		bool is_suspicious;
+
+		friend class ProcessModules;
 	};
 
-	//!  A list of all the process modules that were scanned.
-	struct ProcessModules {
+	//!  A container of all the process modules that were scanned.
+	class ProcessModules {
+
+	public:
 		ProcessModules(DWORD _pid)
 			: process_id(_pid)
 		{
@@ -75,7 +89,7 @@ namespace pesieve {
 			deleteAll();
 		}
 
-		bool appendModule(LoadedModule* module);
+		bool appendToModulesList(ModuleScanReport *report);
 		void deleteAll();
 
 		size_t getScannedSize(ULONGLONG start_address) const;
@@ -83,6 +97,9 @@ namespace pesieve {
 		LoadedModule* getModuleAt(ULONGLONG address) const;
 
 		const DWORD process_id;
+
+	protected:
+		bool appendModule(LoadedModule* module);
 
 	private:
 		std::map<ULONGLONG, LoadedModule*> modulesMap;

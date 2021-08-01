@@ -60,7 +60,7 @@ namespace pesieve {
 			appendToType(report);
 			// if the scan was successful, append the module to the scanned modules:
 			if (ModuleScanReport::get_scan_status(report) != SCAN_ERROR) {
-				appendToModulesList(report);
+				modulesInfo.appendToModulesList(report);
 			}
 		}
 
@@ -117,7 +117,6 @@ namespace pesieve {
 		}
 
 		size_t countHdrsReplaced() const;
-		bool appendToModulesList(ModuleScanReport *report);
 		bool hasAnyShownType(const ProcessScanReport::t_report_filter &filter);
 
 		DWORD pid;

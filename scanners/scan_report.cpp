@@ -48,32 +48,6 @@ bool pesieve::ProcessScanReport::hasAnyShownType(const pesieve::ProcessScanRepor
 }
 //----
 
-bool pesieve::ProcessScanReport::appendToModulesList(ModuleScanReport *report)
-{
-	if (!report || report->moduleSize == 0) {
-		return false; //skip
-	}
-	ULONGLONG module_start = (ULONGLONG)report->module;
-	LoadedModule* mod = modulesInfo.getModuleAt(module_start);
-	if (mod == nullptr) {
-		//create new only if it was not found
-		mod = new LoadedModule(report->pid, module_start, report->moduleSize);
-		if (!modulesInfo.appendModule(mod)) {
-			delete mod; //delete the module as it was not appended
-			return false;
-		}
-	}
-	size_t old_size = mod->getSize();
-	if (old_size < report->moduleSize) {
-		mod->resize(report->moduleSize);
-	}
-	if (!mod->isSuspicious()) {
-		//update the status
-		mod->setSuspicious(report->status == SCAN_SUSPICIOUS);
-	}
-	return true;
-}
-
 pesieve::ProcessScanReport::t_report_type pesieve::ProcessScanReport::getReportType(ModuleScanReport *report)
 {
 	if (!report) {
