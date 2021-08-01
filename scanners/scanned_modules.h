@@ -8,6 +8,7 @@
 
 namespace pesieve {
 
+	//!  A class representing a basic info about the scanned module, such as its base offset, size, and the status.
 	struct LoadedModule {
 
 		LoadedModule(DWORD _pid, ULONGLONG _start, size_t _moduleSize)
@@ -62,6 +63,7 @@ namespace pesieve {
 		bool is_suspicious;
 	};
 
+	//!  A list of all the process modules that were scanned.
 	struct ProcessModules {
 		ProcessModules(DWORD _pid)
 			: process_id(_pid)
