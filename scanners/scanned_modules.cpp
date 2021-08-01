@@ -52,7 +52,6 @@ bool pesieve::ModulesInfo::appendToModulesList(ModuleScanReport *report)
 
 ScannedModule* pesieve::ModulesInfo::findModuleContaining(ULONGLONG address, size_t size) const
 {
-	if (size == 0) size = sizeof(BYTE); //if size not given, assume 1 byte
 	const ULONGLONG field_end = address + size;
 
 	// the first element that is greater than the start address
