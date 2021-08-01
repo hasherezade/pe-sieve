@@ -19,7 +19,13 @@ std::string  pesieve::PatchList::Patch::getFormattedName()
 		}
 	}
 	if (this->isHook) {
-		stream << "->" << std::hex << hookTargetVA;
+		stream << "->";
+		if (this->isDirect) {
+			stream << std::hex << hookTargetVA;
+		}
+		else {
+			stream << "via:" << std::hex << hookTargetVA;
+		}
 	}
 	if (this->hookTargetModule) {
 		ULONGLONG diff = hookTargetVA - hookTargetModule;

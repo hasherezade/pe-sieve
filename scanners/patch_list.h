@@ -15,7 +15,8 @@ namespace pesieve {
 		public:
 			Patch(HMODULE module_base, size_t patch_id, DWORD start_rva)
 				: moduleBase(module_base), id(patch_id), startRva(start_rva), endRva(start_rva),
-				isHook(false), hookTargetVA(0), hookTargetModule(0), isTargetSuspicious(false)
+				isHook(false), isDirect(true),
+				hookTargetVA(0), hookTargetModule(0), isTargetSuspicious(false)
 			{
 			}
 
@@ -40,9 +41,10 @@ namespace pesieve {
 				endRva = end_rva;
 			}
 
-			void setHookTarget(ULONGLONG target_va)
+			void setHookTarget(ULONGLONG target_va, bool is_direct = true)
 			{
 				hookTargetVA = target_va;
+				isDirect = is_direct;
 				isHook = true;
 			}
 
@@ -76,6 +78,7 @@ namespace pesieve {
 			HMODULE moduleBase;
 
 			bool isHook;
+			bool isDirect;
 			ULONGLONG hookTargetVA;
 			std::string hooked_func;
 

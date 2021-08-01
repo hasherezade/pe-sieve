@@ -36,6 +36,22 @@ size_t pesieve::PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr
 	return instr_size;
 }
 
+size_t pesieve::PatchAnalyzer::parseJmpViaAddr(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
+{
+	const size_t instr_size = 6;
+	ULONGLONG addr = NULL;
+
+	DWORD *lval = (DWORD*)((ULONGLONG)patch_ptr + 2);
+	if (!isModule64bit) { //32bit
+		patch.setHookTarget(*lval, false);
+	}
+	else { //64bit
+		ULONGLONG addr = getJmpDestAddr<DWORD>(patch_va, instr_size, (*lval));
+		patch.setHookTarget(addr, false);
+	}
+	return instr_size;
+}
+
 size_t pesieve::PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, bool is_long)
 {
 	size_t mov_instr_len = is_long ? 9 : 5;
@@ -143,6 +159,10 @@ size_t pesieve::PatchAnalyzer::_analyze(PatchList::Patch &patch, PBYTE patch_ptr
 	if (op == OP_PUSH_DWORD) {
 		return parsePushRet(patch, patch_ptr);
 	}
+	if (op == OP_JMP_VIA_ADDR_B1 && patch_ptr[1] == OP_JMP_VIA_ADDR_B2) {
+		return parseJmpViaAddr(patch, patch_ptr, patch_va);
+	}
+
 	bool is_long = false;
 	if (is64Modifier(op)) { // mov modifier
 		if (isLongModifier(op)) {
@@ -150,6 +170,7 @@ size_t pesieve::PatchAnalyzer::_analyze(PatchList::Patch &patch, PBYTE patch_ptr
 		}
 		op = patch_ptr[1];
 	}
+
 	if (op >= 0xB8 && op <= 0xBF) { // is mov
 		return parseMovJmp(patch, patch_ptr, is_long);
 	}
