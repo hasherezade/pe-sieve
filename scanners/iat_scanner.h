@@ -15,7 +15,7 @@ namespace pesieve {
 			IN HANDLE hProcess,
 			IN const std::map<ULONGLONG, peconv::ExportedFunc> *storedFunc,
 			IN peconv::ImpsNotCovered &notCovered,
-			IN const ProcessModules &modulesInfo,
+			IN const ModulesInfo &modulesInfo,
 			IN const peconv::ExportsMapper *exportsMap);
 
 		IATScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, std::string _moduleFile)
@@ -42,7 +42,7 @@ namespace pesieve {
 			return true;
 		}
 
-		bool generateList(IN const std::string &fileName, IN HANDLE hProcess, IN const ProcessModules &modulesInfo, IN const peconv::ExportsMapper *exportsMap);
+		bool generateList(IN const std::string &fileName, IN HANDLE hProcess, IN const ModulesInfo &modulesInfo, IN const peconv::ExportsMapper *exportsMap);
 
 		const bool hooksToJSON(std::stringstream &outs, size_t level);
 		size_t countHooked() { return notCovered.count(); }
@@ -63,7 +63,7 @@ namespace pesieve {
 			ModuleData &moduleData,
 			RemoteModuleData &remoteModData,
 			const peconv::ExportsMapper &_exportsMap,
-			IN const ProcessModules &_modulesInfo,
+			IN const ModulesInfo &_modulesInfo,
 			t_iat_scan_mode _hooksFilter
 		)
 			: ModuleScanner(hProc, moduleData, remoteModData),
@@ -83,7 +83,7 @@ namespace pesieve {
 		void listAllImports(std::map<ULONGLONG, peconv::ExportedFunc> &_storedFunc);
 
 		const peconv::ExportsMapper &exportsMap;
-		const ProcessModules &modulesInfo;
+		const ModulesInfo &modulesInfo;
 
 		t_iat_scan_mode hooksFilter;
 		

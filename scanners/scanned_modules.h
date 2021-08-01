@@ -11,7 +11,7 @@
 namespace pesieve {
 
 	//!  Represents a basic info about the scanned module, such as its base offset, size, and the status.
-	class LoadedModule {
+	class ScannedModule {
 
 	public:
 
@@ -34,19 +34,24 @@ namespace pesieve {
 		{
 			return this->is_suspicious;
 		}
+		
+		std::string getModName() const
+		{
+			return this->moduleName;
+		}
 
 	protected:
-		LoadedModule(DWORD _pid, ULONGLONG _start, size_t _moduleSize)
+		ScannedModule(DWORD _pid, ULONGLONG _start, size_t _moduleSize)
 			: process_id(_pid), start(_start), moduleSize(_moduleSize),
 			is_suspicious(false)
 		{
 		}
 
-		~LoadedModule()
+		~ScannedModule()
 		{
 		}
 
-		bool operator<(LoadedModule other) const
+		bool operator<(ScannedModule other) const
 		{
 			return this->start < other.start;
 		}
@@ -71,38 +76,49 @@ namespace pesieve {
 	private:
 		size_t moduleSize;
 		bool is_suspicious;
+		std::string moduleName;
 
-		friend class ProcessModules;
+		friend class ModulesInfo;
 	};
 
 	//!  A container of all the process modules that were scanned.
-	class ProcessModules {
+	class ModulesInfo {
 
 	public:
-		ProcessModules(DWORD _pid)
+
+		ModulesInfo(DWORD _pid)
 			: process_id(_pid)
 		{
 		}
 
-		~ProcessModules()
+		ModulesInfo(HANDLE hProcess)
+			: process_id(0)
+		{
+			this->process_id = peconv::get_process_id(hProcess);
+		}
+
+		~ModulesInfo()
 		{
 			deleteAll();
 		}
 
+		ScannedModule* findModuleContaining(ULONGLONG searchedAddr);
+
 		bool appendToModulesList(ModuleScanReport *report);
+
 		void deleteAll();
+		size_t count() { return modulesMap.size(); }
 
 		size_t getScannedSize(ULONGLONG start_address) const;
-		LoadedModule* getModuleContaining(ULONGLONG address, size_t size = 0) const;
-		LoadedModule* getModuleAt(ULONGLONG address) const;
-
-		const DWORD process_id;
+		ScannedModule* getModuleContaining(ULONGLONG address, size_t size = 0) const;
+		ScannedModule* getModuleAt(ULONGLONG address) const;
 
 	protected:
-		bool appendModule(LoadedModule* module);
+		bool appendModule(ScannedModule* module);
 
 	private:
-		std::map<ULONGLONG, LoadedModule*> modulesMap;
+		std::map<ULONGLONG, ScannedModule*> modulesMap;
+		DWORD process_id;
 	};
 
 }; //namespace pesieve

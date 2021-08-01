@@ -124,7 +124,7 @@ namespace pesieve {
 		bool isManaged;
 		size_t errorsCount;
 
-		ProcessModules modulesInfo;
+		ModulesInfo modulesInfo;
 		std::set<ModuleScanReport*> reportsByType[REPORT_TYPES_COUNT];
 
 		friend class ProcessScanner;

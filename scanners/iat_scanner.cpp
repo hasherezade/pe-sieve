@@ -101,7 +101,7 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 	IN HANDLE hProcess,
 	IN const std::map<ULONGLONG, peconv::ExportedFunc> *storedFunc,
 	IN peconv::ImpsNotCovered &notCovered,
-	IN const ProcessModules &modulesInfo,
+	IN const ModulesInfo &modulesInfo,
 	IN const peconv::ExportsMapper *exportsMap)
 {
 	const char delim = ';';
@@ -135,7 +135,7 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 		}
 
 		if (exportsMap) {
-			LoadedModule *modExp = modulesInfo.getModuleContaining(addr);
+			ScannedModule *modExp = modulesInfo.getModuleContaining(addr);
 			ULONGLONG module_start = (modExp) ? modExp->getStart() : peconv::fetch_alloc_base(hProcess, (BYTE*)addr);
 
 			const peconv::ExportedFunc* func = exportsMap->find_export_by_va(addr);
@@ -170,7 +170,7 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 	return true;
 }
 
-bool IATScanReport::generateList(IN const std::string &fileName, IN HANDLE hProcess, IN const ProcessModules &modulesInfo, IN const peconv::ExportsMapper *exportsMap)
+bool IATScanReport::generateList(IN const std::string &fileName, IN HANDLE hProcess, IN const ModulesInfo &modulesInfo, IN const peconv::ExportsMapper *exportsMap)
 {
 	return saveNotRecovered(fileName,
 		hProcess,
@@ -267,7 +267,7 @@ bool pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATS
 		const ULONGLONG thunk = itr->first;
 		const ULONGLONG addr = itr->second;
 
-		LoadedModule *modExp = modulesInfo.getModuleContaining(addr);
+		ScannedModule *modExp = modulesInfo.getModuleContaining(addr);
 		ULONGLONG module_start = (modExp) ? modExp->getStart() : peconv::fetch_alloc_base(this->processHandle, (BYTE*)addr);
 		if (module_start == 0) {
 			// invalid address of the hook
