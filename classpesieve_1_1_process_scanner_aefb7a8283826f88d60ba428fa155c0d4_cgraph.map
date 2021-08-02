@@ -1,5 +1,5 @@
 <map id="pesieve::ProcessScanner::scanRemote" name="pesieve::ProcessScanner::scanRemote">
-<area shape="rect" id="node1" title=" " alt="" coords="5,173,175,215"/>
+<area shape="rect" id="node1" title="The main function of ProcessScanner, deploying the scan. Throws exceptions in case of a failure." alt="" coords="5,173,175,215"/>
 <area shape="rect" id="node2" href="$namespacepesieve_1_1util.html#a79abe45c817b882898d257ae476f8339" title=" " alt="" coords="229,57,375,99"/>
 <area shape="rect" id="node5" href="$namespacepesieve_1_1util.html#a4e03a2c1c527e0f0b4063f8ac12ff22d" title=" " alt="" coords="233,173,371,215"/>
 <area shape="rect" id="node13" href="$namespacepesieve_1_1util.html#a015be6a0937814caf43586043817d922" title=" " alt="" coords="223,304,381,345"/>

@@ -78,6 +78,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>The root scanner, responsible for enumerating all the elements to be scanned within a given process, and performing apropriate scans on them.  
+ <a href="classpesieve_1_1_process_scanner.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="scanner_8h_source.html">scanner.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -87,6 +90,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a03ee14223d5503d0df6aeb7032f39d03"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_process_scanner.html#a03ee14223d5503d0df6aeb7032f39d03">~ProcessScanner</a> ()</td></tr>
 <tr class="separator:a03ee14223d5503d0df6aeb7032f39d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefb7a8283826f88d60ba428fa155c0d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpesieve_1_1_process_scan_report.html">ProcessScanReport</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_process_scanner.html#aefb7a8283826f88d60ba428fa155c0d4">scanRemote</a> ()</td></tr>
+<tr class="memdesc:aefb7a8283826f88d60ba428fa155c0d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The main function of <a class="el" href="classpesieve_1_1_process_scanner.html" title="The root scanner, responsible for enumerating all the elements to be scanned within a given process,...">ProcessScanner</a>, deploying the scan. Throws exceptions in case of a failure.  <a href="classpesieve_1_1_process_scanner.html#aefb7a8283826f88d60ba428fa155c0d4">More...</a><br /></td></tr>
 <tr class="separator:aefb7a8283826f88d60ba428fa155c0d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
@@ -129,8 +133,9 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:ab2f4d3a5f8150f08e3087f751bdaee77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00012">12</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
+<div class="textblock"><p>The root scanner, responsible for enumerating all the elements to be scanned within a given process, and performing apropriate scans on them. </p>
+
+<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00013">13</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a417b205292393e667d95cd7b881159d2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a417b205292393e667d95cd7b881159d2">&#9670;&nbsp;</a></span>ProcessScanner()</h2>
@@ -171,8 +176,16 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>A constructor of <a class="el" href="classpesieve_1_1_process_scanner.html" title="The root scanner, responsible for enumerating all the elements to be scanned within a given process,...">ProcessScanner</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">procHndl</td><td>: a HANDLE to the process to be scanned (must be opened with appropriate access rights) </td></tr>
+    <tr><td class="paramname">is_reflection</td><td>: a flag indicating if the given handle (procHndl) leads to a raw process, or the process reflection </td></tr>
+    <tr><td class="paramname">args</td><td>: the configuration of the scan (defined as <a class="el" href="structt__params.html" title="Input parameters for PE-sieve, defining the configuration.">t_params</a>) </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00014">14</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00022">22</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -208,7 +221,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00022">22</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00030">30</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
 
 </div>
 </div>
@@ -691,13 +704,16 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>The main function of <a class="el" href="classpesieve_1_1_process_scanner.html" title="The root scanner, responsible for enumerating all the elements to be scanned within a given process,...">ProcessScanner</a>, deploying the scan. Throws exceptions in case of a failure. </p>
+<dl class="section return"><dt>Returns</dt><dd>pointer to the generated report of type <a class="el" href="classpesieve_1_1_process_scan_report.html" title="The report aggregating the results of the performed scan.">ProcessScanReport</a> </dd></dl>
+
 <p class="definition">Definition at line <a class="el" href="scanner_8cpp_source.html#l00153">153</a> of file <a class="el" href="scanner_8cpp_source.html">scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_process_scanner_aefb7a8283826f88d60ba428fa155c0d4_cgraph.png" border="0" usemap="#aclasspesieve_1_1_process_scanner_aefb7a8283826f88d60ba428fa155c0d4_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_process_scanner_aefb7a8283826f88d60ba428fa155c0d4_cgraph" id="aclasspesieve_1_1_process_scanner_aefb7a8283826f88d60ba428fa155c0d4_cgraph">
-<area shape="rect" title=" " alt="" coords="5,173,175,215"/>
+<area shape="rect" title="The main function of ProcessScanner, deploying the scan. Throws exceptions in case of a failure." alt="" coords="5,173,175,215"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#a79abe45c817b882898d257ae476f8339" title=" " alt="" coords="229,57,375,99"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#a4e03a2c1c527e0f0b4063f8ac12ff22d" title=" " alt="" coords="233,173,371,215"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#a015be6a0937814caf43586043817d922" title=" " alt="" coords="223,304,381,345"/>
@@ -787,7 +803,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00046">46</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00058">58</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
 
 </div>
 </div>
@@ -811,7 +827,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00045">45</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00057">57</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
 
 </div>
 </div>
@@ -835,7 +851,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00048">48</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00060">60</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
 
 </div>
 </div>
@@ -859,7 +875,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00043">43</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00055">55</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
 
 </div>
 </div>
@@ -883,7 +899,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00044">44</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00056">56</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
 
 </div>
 </div>
@@ -907,7 +923,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00042">42</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scanner_8h_source.html#l00054">54</a> of file <a class="el" href="scanner_8h_source.html">scanner.h</a>.</p>
 
 </div>
 </div>

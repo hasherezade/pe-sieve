@@ -10,7 +10,7 @@
 <area shape="rect" id="node38" href="$namespacepesieve.html#ab1f1c03c718b6eb265187467d8d37cce" title=" " alt="" coords="647,254,802,281"/>
 <area shape="rect" id="node43" href="$namespacepesieve_1_1util.html#a7eca64fd4903e8fe4eebefd19e4a6614" title=" " alt="" coords="903,123,1025,164"/>
 <area shape="rect" id="node45" href="$namespacepesieve_1_1util.html#ac39000bfb52a6dbdacb7a5b68bb21674" title=" " alt="" coords="895,1056,1033,1097"/>
-<area shape="rect" id="node46" href="$classpesieve_1_1_process_scanner.html#aefb7a8283826f88d60ba428fa155c0d4" title=" " alt="" coords="404,793,573,835"/>
+<area shape="rect" id="node46" href="$classpesieve_1_1_process_scanner.html#aefb7a8283826f88d60ba428fa155c0d4" title="The main function of ProcessScanner, deploying the scan. Throws exceptions in case of a failure." alt="" coords="404,793,573,835"/>
 <area shape="rect" id="node7" href="$classpesieve_1_1_process_dump_report.html#acd254aea75b8454bda044b23dcc55d6e" title=" " alt="" coords="628,1460,821,1501"/>
 <area shape="rect" id="node8" href="$classpesieve_1_1_results_dumper.html#ac42eecae9a332ba8d8b52d4f9e1c5e27" title=" " alt="" coords="643,1656,806,1697"/>
 <area shape="rect" id="node11" href="$classpesieve_1_1_results_dumper.html#afa4ee6cbf009cd4e1b6421686bd9ca81" title=" " alt="" coords="643,1753,806,1795"/>
