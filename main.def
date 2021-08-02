@@ -1,4 +1,0 @@
-LIBRARY pe-sieve
-EXPORTS PESieve_help
-EXPORTS PESieve_scan
-EXPORTS PESieve_version

@@ -1,0 +1,7 @@
+<map id="pesieve::ModuleScanner" name="pesieve::ModuleScanner">
+<area shape="rect" id="node1" title="A base class for all the scanners operating on module data." alt="" coords="185,80,347,107"/>
+<area shape="rect" id="node3" href="$classpesieve_1_1_code_scanner.html" title="A scanner for detection of patches in the code." alt="" coords="5,155,156,181"/>
+<area shape="rect" id="node4" href="$classpesieve_1_1_headers_scanner.html" title="A scanner for detection of PE header&#39;s modifications." alt="" coords="181,155,351,181"/>
+<area shape="rect" id="node5" href="$classpesieve_1_1_i_a_t_scanner.html" title="A scanner for detection of IAT hooking." alt="" coords="376,155,519,181"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_process_feature_scanner.html" title="A base class for all the scanners checking appropriate process&#39; features." alt="" coords="159,5,373,32"/>
+</map>

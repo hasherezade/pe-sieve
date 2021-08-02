@@ -1,0 +1,4 @@
+<map id="pesieve::ArtefactScanner" name="pesieve::ArtefactScanner">
+<area shape="rect" id="node1" title="A scanner for detection of artefacts related to PE implants in the process workingset." alt="" coords="29,80,195,107"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_process_feature_scanner.html" title="A base class for all the scanners checking appropriate process&#39; features." alt="" coords="5,5,219,32"/>
+</map>

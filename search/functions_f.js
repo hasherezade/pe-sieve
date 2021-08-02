@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['readremote_1394',['readRemote',['../classpesieve_1_1_pe_buffer.html#a71254fc9de6ef4b51206d98a5211c4ad',1,'pesieve::PeBuffer']]],
+  ['rebuildimporttable_1395',['rebuildImportTable',['../classpesieve_1_1_imp_reconstructor.html#a0bd47882ef4d6ec060058fd7301bd98b',1,'pesieve::ImpReconstructor']]],
+  ['reconstruct_1396',['reconstruct',['../classpesieve_1_1_pe_reconstructor.html#aecc81860235f996140714d2bfe72bc51',1,'pesieve::PeReconstructor']]],
+  ['reconstructfilehdr_1397',['reconstructFileHdr',['../classpesieve_1_1_pe_reconstructor.html#aa0d7088e0c017e177c2c487e48350ec4',1,'pesieve::PeReconstructor']]],
+  ['reconstructpehdr_1398',['reconstructPeHdr',['../classpesieve_1_1_pe_reconstructor.html#a8303cb8e9feccbd0d7c64e0626ab40a9',1,'pesieve::PeReconstructor']]],
+  ['refl_5fcreator_1399',['refl_creator',['../namespacepesieve_1_1util.html#a53ca48eef1d83215af385674555e444b',1,'pesieve::util']]],
+  ['relative_5fto_5fabsolute_5fpath_1400',['relative_to_absolute_path',['../namespacepesieve_1_1util.html#aef45bac1fce06bb27d1c8bdb41d0d84c',1,'pesieve::util']]],
+  ['release_5fprocess_5freflection_1401',['release_process_reflection',['../namespacepesieve_1_1util.html#ac39000bfb52a6dbdacb7a5b68bb21674',1,'pesieve::util']]],
+  ['release_5fprocess_5fsnapshot_1402',['release_process_snapshot',['../namespacepesieve_1_1util.html#a905cd117f8d7e19b984bc395defc3b63',1,'pesieve::util']]],
+  ['reloadwow64_1403',['reloadWow64',['../classpesieve_1_1_module_data.html#a1fab06ced58f5432dae107aed4063a32',1,'pesieve::ModuleData']]],
+  ['relocatetobase_1404',['relocateToBase',['../classpesieve_1_1_module_data.html#a39d37446bca2041d5fb9c0cc64998f15',1,'pesieve::ModuleData']]],
+  ['remap_5fto_5fdrive_5fletter_1405',['remap_to_drive_letter',['../namespacepesieve_1_1util.html#ace72c6bdbbf45a2a63efd91a0df09031',1,'pesieve::util']]],
+  ['remotemoduledata_1406',['RemoteModuleData',['../classpesieve_1_1_remote_module_data.html#accd114f284a3f3b261b54806f60c4991',1,'pesieve::RemoteModuleData']]],
+  ['replace_5fchar_1407',['replace_char',['../namespacepesieve_1_1util.html#a030a7f8a58a027763c9207b0ff815d26',1,'pesieve::util']]],
+  ['reportex_1408',['ReportEx',['../classpesieve_1_1_report_ex.html#a9e842b1e96f07f59f2939361f57c3e4f',1,'pesieve::ReportEx']]],
+  ['resize_1409',['resize',['../classpesieve_1_1_scanned_module.html#ac27ab29a010ac2d3e139f2654c3d0777',1,'pesieve::ScannedModule']]],
+  ['resizebuffer_1410',['resizeBuffer',['../classpesieve_1_1_pe_buffer.html#acb55b77a03b907c954733c0bcedb1999',1,'pesieve::PeBuffer']]],
+  ['resizelastsection_1411',['resizeLastSection',['../classpesieve_1_1_pe_buffer.html#ac4cadead68e44b5be64edaf80880cbef',1,'pesieve::PeBuffer']]],
+  ['resolveallhooks_1412',['resolveAllHooks',['../classpesieve_1_1_hook_target_resolver.html#a24003150d6cff124cb0163b713586113',1,'pesieve::HookTargetResolver']]],
+  ['resolvehookedexport_1413',['resolveHookedExport',['../classpesieve_1_1_patch_list_1_1_patch.html#a6bfc8ab70087b9bb66ba299e96b527d8',1,'pesieve::PatchList::Patch']]],
+  ['resolvehookstargets_1414',['resolveHooksTargets',['../classpesieve_1_1_process_scanner.html#a90626aea47ee92aebaf55cc7cf9f3b06',1,'pesieve::ProcessScanner']]],
+  ['resolvetarget_1415',['resolveTarget',['../classpesieve_1_1_hook_target_resolver.html#ad8a43f686fe377414056e88891f8832b',1,'pesieve::HookTargetResolver']]],
+  ['resultsdumper_1416',['ResultsDumper',['../classpesieve_1_1_results_dumper.html#a84cedbc87af0ee8b72f06fd7c6cb9b5a',1,'pesieve::ResultsDumper']]],
+  ['rvatova_1417',['rvaToVa',['../classpesieve_1_1_module_data.html#a460c5d96a4a3a0d7735e027e2180c7dd',1,'pesieve::ModuleData']]]
+];

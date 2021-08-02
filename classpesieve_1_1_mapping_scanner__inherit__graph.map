@@ -1,0 +1,4 @@
+<map id="pesieve::MappingScanner" name="pesieve::MappingScanner">
+<area shape="rect" id="node1" title="A scanner for detection of inconsistencies in mapping. Checks if the mapped file name is different th..." alt="" coords="27,80,197,107"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_process_feature_scanner.html" title="A base class for all the scanners checking appropriate process&#39; features." alt="" coords="5,5,219,32"/>
+</map>

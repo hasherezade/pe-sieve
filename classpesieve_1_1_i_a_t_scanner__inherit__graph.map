@@ -1,0 +1,5 @@
+<map id="pesieve::IATScanner" name="pesieve::IATScanner">
+<area shape="rect" id="node1" title="A scanner for detection of IAT hooking." alt="" coords="41,155,183,181"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_module_scanner.html" title="A base class for all the scanners operating on module data." alt="" coords="31,80,193,107"/>
+<area shape="rect" id="node3" href="$classpesieve_1_1_process_feature_scanner.html" title="A base class for all the scanners checking appropriate process&#39; features." alt="" coords="5,5,219,32"/>
+</map>

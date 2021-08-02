@@ -1,0 +1,10 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classpesieve_1_1_process_feature_scanner.html" title="A base class for all the scanners checking appropriate process&#39; features." alt="" coords="5,81,219,108"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_artefact_scanner.html" title="A scanner for detection of artefacts related to PE implants in the process workingset." alt="" coords="277,5,444,32"/>
+<area shape="rect" id="node3" href="$classpesieve_1_1_mapping_scanner.html" title="A scanner for detection of inconsistencies in mapping. Checks if the mapped file name is different th..." alt="" coords="275,56,446,83"/>
+<area shape="rect" id="node4" href="$classpesieve_1_1_module_scanner.html" title="A base class for all the scanners operating on module data." alt="" coords="279,107,442,133"/>
+<area shape="rect" id="node8" href="$classpesieve_1_1_working_set_scanner.html" title="A scanner for detection of code implants in the process workingset." alt="" coords="267,157,455,184"/>
+<area shape="rect" id="node5" href="$classpesieve_1_1_code_scanner.html" title="A scanner for detection of patches in the code." alt="" coords="513,56,663,83"/>
+<area shape="rect" id="node6" href="$classpesieve_1_1_headers_scanner.html" title="A scanner for detection of PE header&#39;s modifications." alt="" coords="503,107,673,133"/>
+<area shape="rect" id="node7" href="$classpesieve_1_1_i_a_t_scanner.html" title="A scanner for detection of IAT hooking." alt="" coords="517,157,659,184"/>
+</map>
