@@ -18,7 +18,7 @@ var searchData=
   ['resize_1409',['resize',['../classpesieve_1_1_scanned_module.html#ac27ab29a010ac2d3e139f2654c3d0777',1,'pesieve::ScannedModule']]],
   ['resizebuffer_1410',['resizeBuffer',['../classpesieve_1_1_pe_buffer.html#acb55b77a03b907c954733c0bcedb1999',1,'pesieve::PeBuffer']]],
   ['resizelastsection_1411',['resizeLastSection',['../classpesieve_1_1_pe_buffer.html#ac4cadead68e44b5be64edaf80880cbef',1,'pesieve::PeBuffer']]],
-  ['resolveallhooks_1412',['resolveAllHooks',['../classpesieve_1_1_hook_target_resolver.html#a24003150d6cff124cb0163b713586113',1,'pesieve::HookTargetResolver']]],
+  ['resolveallhooks_1412',['resolveAllHooks',['../classpesieve_1_1_hook_target_resolver.html#a51fc6092d397fbb7c414853d703ed064',1,'pesieve::HookTargetResolver']]],
   ['resolvehookedexport_1413',['resolveHookedExport',['../classpesieve_1_1_patch_list_1_1_patch.html#a6bfc8ab70087b9bb66ba299e96b527d8',1,'pesieve::PatchList::Patch']]],
   ['resolvehookstargets_1414',['resolveHooksTargets',['../classpesieve_1_1_process_scanner.html#a90626aea47ee92aebaf55cc7cf9f3b06',1,'pesieve::ProcessScanner']]],
   ['resolvetarget_1415',['resolveTarget',['../classpesieve_1_1_hook_target_resolver.html#a608ca9968909fbbb18a07af866ea47b1',1,'pesieve::HookTargetResolver']]],
