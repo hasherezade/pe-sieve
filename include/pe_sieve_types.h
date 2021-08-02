@@ -1,7 +1,11 @@
+/**
+* @file
+* @brief   The types used by PE-sieve API.
+*/
+
 #pragma once
 
 #include <windows.h>
-
 #include <pshpack4.h> // ensure 4 byte packing of the structures
 
 #define MAX_MODULE_BUF_LEN 1024

@@ -1,3 +1,8 @@
+/**
+* @file
+* @brief   The API: definitions of the exported elements that are accessible from PE-sieve DLL.
+*/
+
 #pragma once
 
 #include <windows.h>
