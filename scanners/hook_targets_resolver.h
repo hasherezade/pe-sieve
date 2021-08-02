@@ -5,7 +5,7 @@
 
 namespace pesieve {
 
-	//!  Process the list of collected patches, and for those of them that were detected as hooks, it resolves information to which modules do they lead to.
+	//!  Process the list of collected patches (preprocessed by PatchAnalyzer), and for those of them that were detected as hooks, it resolves information to which modules do they lead to.
 	class HookTargetResolver
 	{
 	public:
