@@ -24,14 +24,11 @@
 extern "C" {
 #endif
 
-/**
-PE-sieve version in a DWORD form.
-*/
+
+//! PE-sieve version in a DWORD form.
 extern const DWORD PESIEVE_API PESieve_version;
 
-/**
-Shows a MessageBox with the informations about PE-sieve.
-*/
+//! Shows a MessageBox with the informations about PE-sieve.
 void PESIEVE_API_FUNC PESieve_help(void);
 
 #ifdef __cplusplus
@@ -42,9 +39,7 @@ typedef t_report PEsieve_report;
 typedef t_params PEsieve_params;
 #endif
 
-/**
-Performs a PE-sieve scan with a supplied set of parameters (defined as a structure t_params). Returns a summary of the scan in a variable of type t_report.
-*/
+//! Performs a PE-sieve scan with a supplied set of parameters (defined as a structure t_params). Returns a summary of the scan in a variable of type t_report.
 PEsieve_report PESIEVE_API_FUNC PESieve_scan(const PEsieve_params args);
 
 #ifdef __cplusplus

@@ -33,9 +33,9 @@ namespace pesieve {
 			return peconv::validate_ptr(this->loadedData, this->loadedSize, field_bgn, field_size);
 		}
 
-		ULONGLONG start_va; // VA that was requested. May not be beginning of the region.
-		ULONGLONG stop_va; // maximum VA that will be read
-		DWORD protection;
+		ULONGLONG start_va; ///< VA that was requested. May not be beginning of the region.
+		ULONGLONG stop_va; ///< the VA at which the read will stop
+		DWORD protection; ///< page protection
 		DWORD initial_protect;
 		bool is_private;
 		DWORD mapping_type;
@@ -47,8 +47,8 @@ namespace pesieve {
 		ULONGLONG region_start;
 		ULONGLONG region_end;
 
-		std::string mapped_name; //if the region is mapped from a file
-		std::string module_name; //if the region is on the list of loaded PEs
+		std::string mapped_name; ///< if the region is mapped from a file, stores its file name
+		std::string module_name; ///< if the region is on the list of loaded PEs, stores its module name
 
 		bool load()
 		{

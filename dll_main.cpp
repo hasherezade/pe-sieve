@@ -1,3 +1,8 @@
+/**
+* @file
+* @brief   The main file of PE-sieve built as a DLL
+*/
+
 #include <windows.h>
 #include <string>
 #include <iostream>

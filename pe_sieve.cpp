@@ -1,6 +1,3 @@
-// Scans the process with a given PID
-// author: hasherezade (hasherezade@gmail.com)
-
 #include "pe_sieve.h"
 #include <peconv.h>
 

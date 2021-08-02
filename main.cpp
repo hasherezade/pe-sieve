@@ -1,5 +1,7 @@
-// Scans for modified modules within the process of a given PID
-// author: hasherezade (hasherezade@gmail.com)
+/**
+* @file
+* @brief   The main file of PE-sieve built as an EXE
+*/
 
 #include <windows.h>
 #include <psapi.h>
