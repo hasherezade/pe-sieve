@@ -1,4 +1,4 @@
-<img src="./logo/PE-SIEVE.png" alt="PE-sieve" width=200>
+<img src="https://github.com/hasherezade/pe-sieve/blob/master/logo/PE-SIEVE.png" alt="PE-sieve" width=200>
 
 [![Build status](https://ci.appveyor.com/api/projects/status/crlo8iyvi4bm80yp?svg=true)](https://ci.appveyor.com/project/hasherezade/pe-sieve)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b75fd4d95bd94629879381241e4a7c02)](https://www.codacy.com/manual/hasherezade/pe-sieve?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hasherezade/pe-sieve&amp;utm_campaign=Badge_Grade)

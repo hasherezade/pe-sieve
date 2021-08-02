@@ -51,7 +51,7 @@ PROJECT_BRIEF          = "Scans all running processes. Recognizes and dumps a va
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO           = E:/hollows_hunter/pe-sieve/logo/128X128.png
+PROJECT_LOGO           = ./logo/128X128.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
