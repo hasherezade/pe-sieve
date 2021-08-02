@@ -26,7 +26,7 @@ bool pesieve::HookTargetResolver::resolveTarget(PatchList::Patch* currPatch)
 	return true;
 }
 
-size_t pesieve::HookTargetResolver::resolveAllHooks(const std::set<ModuleScanReport*> &code_reports)
+size_t pesieve::HookTargetResolver::resolveAllHooks(IN OUT std::set<ModuleScanReport*> &code_reports)
 {
 	size_t resolved = 0;
 	std::set<ModuleScanReport*>::iterator cItr;

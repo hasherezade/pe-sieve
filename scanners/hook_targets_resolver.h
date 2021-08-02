@@ -15,7 +15,7 @@ namespace pesieve {
 		}
 
 		//!  Resolves all the hooks collected within the given set of reports
-		size_t resolveAllHooks(const std::set<ModuleScanReport*> &code_reports);
+		size_t resolveAllHooks(IN OUT std::set<ModuleScanReport*> &code_reports);
 
 		//!  Resolves the information about the target of the provided hook, and fills it back into the object.
 		bool resolveTarget(IN OUT PatchList::Patch* currPatch);
