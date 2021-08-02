@@ -53,7 +53,7 @@ var searchData=
   ['resolveallhooks_750',['resolveAllHooks',['../classpesieve_1_1_hook_target_resolver.html#a24003150d6cff124cb0163b713586113',1,'pesieve::HookTargetResolver']]],
   ['resolvehookedexport_751',['resolveHookedExport',['../classpesieve_1_1_patch_list_1_1_patch.html#a6bfc8ab70087b9bb66ba299e96b527d8',1,'pesieve::PatchList::Patch']]],
   ['resolvehookstargets_752',['resolveHooksTargets',['../classpesieve_1_1_process_scanner.html#a90626aea47ee92aebaf55cc7cf9f3b06',1,'pesieve::ProcessScanner']]],
-  ['resolvetarget_753',['resolveTarget',['../classpesieve_1_1_hook_target_resolver.html#ad8a43f686fe377414056e88891f8832b',1,'pesieve::HookTargetResolver']]],
+  ['resolvetarget_753',['resolveTarget',['../classpesieve_1_1_hook_target_resolver.html#a608ca9968909fbbb18a07af866ea47b1',1,'pesieve::HookTargetResolver']]],
   ['resources_2eh_754',['resources.h',['../resources_8h.html',1,'']]],
   ['results_5fdumper_2ecpp_755',['results_dumper.cpp',['../results__dumper_8cpp.html',1,'']]],
   ['results_5fdumper_2eh_756',['results_dumper.h',['../results__dumper_8h.html',1,'']]],

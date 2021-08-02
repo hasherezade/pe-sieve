@@ -21,7 +21,7 @@ var searchData=
   ['resolveallhooks_1412',['resolveAllHooks',['../classpesieve_1_1_hook_target_resolver.html#a24003150d6cff124cb0163b713586113',1,'pesieve::HookTargetResolver']]],
   ['resolvehookedexport_1413',['resolveHookedExport',['../classpesieve_1_1_patch_list_1_1_patch.html#a6bfc8ab70087b9bb66ba299e96b527d8',1,'pesieve::PatchList::Patch']]],
   ['resolvehookstargets_1414',['resolveHooksTargets',['../classpesieve_1_1_process_scanner.html#a90626aea47ee92aebaf55cc7cf9f3b06',1,'pesieve::ProcessScanner']]],
-  ['resolvetarget_1415',['resolveTarget',['../classpesieve_1_1_hook_target_resolver.html#ad8a43f686fe377414056e88891f8832b',1,'pesieve::HookTargetResolver']]],
+  ['resolvetarget_1415',['resolveTarget',['../classpesieve_1_1_hook_target_resolver.html#a608ca9968909fbbb18a07af866ea47b1',1,'pesieve::HookTargetResolver']]],
   ['resultsdumper_1416',['ResultsDumper',['../classpesieve_1_1_results_dumper.html#a84cedbc87af0ee8b72f06fd7c6cb9b5a',1,'pesieve::ResultsDumper']]],
   ['rvatova_1417',['rvaToVa',['../classpesieve_1_1_module_data.html#a460c5d96a4a3a0d7735e027e2180c7dd',1,'pesieve::ModuleData']]]
 ];
