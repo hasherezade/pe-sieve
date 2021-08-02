@@ -110,10 +110,13 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aa47136298a2aecc8cc011162cf7a0571"><td class="memItemLeft" align="right" valign="top">ULONGLONG&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_mem_page_data.html#aa47136298a2aecc8cc011162cf7a0571">start_va</a></td></tr>
+<tr class="memdesc:aa47136298a2aecc8cc011162cf7a0571"><td class="mdescLeft">&#160;</td><td class="mdescRight">VA that was requested. May not be beginning of the region.  <a href="classpesieve_1_1_mem_page_data.html#aa47136298a2aecc8cc011162cf7a0571">More...</a><br /></td></tr>
 <tr class="separator:aa47136298a2aecc8cc011162cf7a0571"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c151bd819b2444eb7e93c92fcd4f8ce"><td class="memItemLeft" align="right" valign="top">ULONGLONG&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_mem_page_data.html#a7c151bd819b2444eb7e93c92fcd4f8ce">stop_va</a></td></tr>
+<tr class="memdesc:a7c151bd819b2444eb7e93c92fcd4f8ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">the VA at which the read will stop  <a href="classpesieve_1_1_mem_page_data.html#a7c151bd819b2444eb7e93c92fcd4f8ce">More...</a><br /></td></tr>
 <tr class="separator:a7c151bd819b2444eb7e93c92fcd4f8ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1615e3c8ce39d75e38128a24748ab6ce"><td class="memItemLeft" align="right" valign="top">DWORD&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_mem_page_data.html#a1615e3c8ce39d75e38128a24748ab6ce">protection</a></td></tr>
+<tr class="memdesc:a1615e3c8ce39d75e38128a24748ab6ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">page protection  <a href="classpesieve_1_1_mem_page_data.html#a1615e3c8ce39d75e38128a24748ab6ce">More...</a><br /></td></tr>
 <tr class="separator:a1615e3c8ce39d75e38128a24748ab6ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b8c273555cf7de042060c3fcc12ebed"><td class="memItemLeft" align="right" valign="top">DWORD&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_mem_page_data.html#a8b8c273555cf7de042060c3fcc12ebed">initial_protect</a></td></tr>
 <tr class="separator:a8b8c273555cf7de042060c3fcc12ebed"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,8 +135,10 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a2c5096bc0354ff2ba1e77b72978b46d0"><td class="memItemLeft" align="right" valign="top">ULONGLONG&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_mem_page_data.html#a2c5096bc0354ff2ba1e77b72978b46d0">region_end</a></td></tr>
 <tr class="separator:a2c5096bc0354ff2ba1e77b72978b46d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f232b1ab12dfac2393b33922600eaf6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_mem_page_data.html#a7f232b1ab12dfac2393b33922600eaf6">mapped_name</a></td></tr>
+<tr class="memdesc:a7f232b1ab12dfac2393b33922600eaf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">if the region is mapped from a file, stores its file name  <a href="classpesieve_1_1_mem_page_data.html#a7f232b1ab12dfac2393b33922600eaf6">More...</a><br /></td></tr>
 <tr class="separator:a7f232b1ab12dfac2393b33922600eaf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af88e7337f4de2d231e94da664fbbdd4f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_mem_page_data.html#af88e7337f4de2d231e94da664fbbdd4f">module_name</a></td></tr>
+<tr class="memdesc:af88e7337f4de2d231e94da664fbbdd4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">if the region is on the list of loaded PEs, stores its module name  <a href="classpesieve_1_1_mem_page_data.html#af88e7337f4de2d231e94da664fbbdd4f">More...</a><br /></td></tr>
 <tr class="separator:af88e7337f4de2d231e94da664fbbdd4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
@@ -801,6 +806,8 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>if the region is mapped from a file, stores its file name </p>
+
 <p class="definition">Definition at line <a class="el" href="mempage__data_8h_source.html#l00050">50</a> of file <a class="el" href="mempage__data_8h_source.html">mempage_data.h</a>.</p>
 
 </div>
@@ -832,6 +839,8 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>if the region is on the list of loaded PEs, stores its module name </p>
 
 <p class="definition">Definition at line <a class="el" href="mempage__data_8h_source.html#l00051">51</a> of file <a class="el" href="mempage__data_8h_source.html">mempage_data.h</a>.</p>
 
@@ -872,6 +881,8 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>page protection </p>
 
 <p class="definition">Definition at line <a class="el" href="mempage__data_8h_source.html#l00038">38</a> of file <a class="el" href="mempage__data_8h_source.html">mempage_data.h</a>.</p>
 
@@ -921,6 +932,8 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>VA that was requested. May not be beginning of the region. </p>
+
 <p class="definition">Definition at line <a class="el" href="mempage__data_8h_source.html#l00036">36</a> of file <a class="el" href="mempage__data_8h_source.html">mempage_data.h</a>.</p>
 
 </div>
@@ -936,6 +949,8 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>the VA at which the read will stop </p>
 
 <p class="definition">Definition at line <a class="el" href="mempage__data_8h_source.html#l00037">37</a> of file <a class="el" href="mempage__data_8h_source.html">mempage_data.h</a>.</p>
 

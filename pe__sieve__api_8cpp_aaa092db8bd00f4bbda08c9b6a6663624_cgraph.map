@@ -1,4 +1,4 @@
 <map id="PESieve_help" name="PESieve_help">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,108,32"/>
-<area shape="rect" id="node2" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title=" " alt="" coords="156,5,251,32"/>
+<area shape="rect" id="node1" title="Shows a MessageBox with the informations about PE&#45;sieve." alt="" coords="5,5,108,32"/>
+<area shape="rect" id="node2" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="156,5,251,32"/>
 </map>

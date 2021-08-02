@@ -67,27 +67,28 @@ $(function() {
 <div class="title">dll_main.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="dll__main_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;windows.h&gt;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="dll__main_8cpp.html#afe01093004e99bce7bb71653685e31a9">    5</a></span>&#160;<span class="preprocessor">#define PESIEVE_EXPORTS</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="pe__sieve__api_8h.html">pe_sieve_api.h</a>&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="dll__main_8cpp.html#a6e0a130e32f5b8205bff7d07ba8ba8f0">    8</a></span>&#160;<a class="code" href="namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c">BOOL</a> WINAPI <a class="code" href="dll__main_8cpp.html#a6e0a130e32f5b8205bff7d07ba8ba8f0">DllMain</a> (HANDLE hinstDLL, <a class="code" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> fdwReason, LPVOID lpvReserved)</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keywordflow">switch</span> (fdwReason)</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <span class="keywordflow">case</span> DLL_PROCESS_ATTACH:</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="keywordflow">case</span> DLL_THREAD_ATTACH:</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <span class="keywordflow">case</span> DLL_THREAD_DETACH:</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <span class="keywordflow">case</span> DLL_PROCESS_DETACH:</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    }</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordflow">return</span> TRUE;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="ttc" id="adll__main_8cpp_html_a6e0a130e32f5b8205bff7d07ba8ba8f0"><div class="ttname"><a href="dll__main_8cpp.html#a6e0a130e32f5b8205bff7d07ba8ba8f0">DllMain</a></div><div class="ttdeci">BOOL WINAPI DllMain(HANDLE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)</div><div class="ttdef"><b>Definition:</b> <a href="dll__main_8cpp_source.html#l00008">dll_main.cpp:8</a></div></div>
+<a href="dll__main_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;windows.h&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="dll__main_8cpp.html#afe01093004e99bce7bb71653685e31a9">   10</a></span>&#160;<span class="preprocessor">#define PESIEVE_EXPORTS</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="pe__sieve__api_8h.html">pe_sieve_api.h</a>&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="dll__main_8cpp.html#a6e0a130e32f5b8205bff7d07ba8ba8f0">   13</a></span>&#160;<a class="code" href="namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c">BOOL</a> WINAPI <a class="code" href="dll__main_8cpp.html#a6e0a130e32f5b8205bff7d07ba8ba8f0">DllMain</a> (HANDLE hinstDLL, <a class="code" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> fdwReason, LPVOID lpvReserved)</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordflow">switch</span> (fdwReason)</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <span class="keywordflow">case</span> DLL_PROCESS_ATTACH:</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keywordflow">case</span> DLL_THREAD_ATTACH:</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keywordflow">case</span> DLL_THREAD_DETACH:</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keywordflow">case</span> DLL_PROCESS_DETACH:</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordflow">return</span> TRUE;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;}</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="ttc" id="adll__main_8cpp_html_a6e0a130e32f5b8205bff7d07ba8ba8f0"><div class="ttname"><a href="dll__main_8cpp.html#a6e0a130e32f5b8205bff7d07ba8ba8f0">DllMain</a></div><div class="ttdeci">BOOL WINAPI DllMain(HANDLE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)</div><div class="ttdef"><b>Definition:</b> <a href="dll__main_8cpp_source.html#l00013">dll_main.cpp:13</a></div></div>
 <div class="ttc" id="anamespacepesieve_1_1util_html_aa85f1f0a0e6bca89adf99decf129714c"><div class="ttname"><a href="namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c">pesieve::util::BOOL</a></div><div class="ttdeci">BOOL(CALLBACK *_MiniDumpWriteDump)(HANDLE hProcess</div></div>
 <div class="ttc" id="anamespacepesieve_1_1util_html_ac533b9c8a18228f62223a0042c40f5ae"><div class="ttname"><a href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">pesieve::util::DWORD</a></div><div class="ttdeci">DWORD(__stdcall *_PssCaptureSnapshot)(HANDLE ProcessHandle</div></div>
 <div class="ttc" id="ape__sieve__api_8h_html"><div class="ttname"><a href="pe__sieve__api_8h.html">pe_sieve_api.h</a></div><div class="ttdoc">The API: definitions of the exported elements that are accessible from PE-sieve DLL.</div></div>
