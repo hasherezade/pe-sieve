@@ -42,10 +42,10 @@ namespace pesieve {
 		std::string iatHooksFileName;
 	};
 
+	//! The report aggregating the results of the performed dumps
 	class ProcessDumpReport
 	{
 	public:
-
 		ProcessDumpReport(DWORD _pid)
 			: pid(_pid)
 		{

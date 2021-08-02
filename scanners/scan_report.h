@@ -14,6 +14,7 @@
 
 namespace pesieve {
 
+	//! The report aggregating the results of the performed scan
 	class ProcessScanReport
 	{
 	public:

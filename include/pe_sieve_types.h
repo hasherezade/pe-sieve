@@ -19,7 +19,8 @@ typedef char bool;
 namespace pesieve {
 #endif
 
-	const DWORD ERROR_SCAN_FAILURE = (-1); /*!< scanning failed */
+	//! the status returned if scanning has failed
+	const DWORD ERROR_SCAN_FAILURE = (-1);
 
 	typedef enum {
 		OUT_FULL = 0, ///< no filter: dump everything (default)
@@ -80,7 +81,7 @@ namespace pesieve {
 
 	//!  Input parameters for PE-sieve, defining the configuration.
 	typedef struct {
-		DWORD pid;
+		DWORD pid;                 ///< the PID of the process to be scanned
 		t_dotnet_policy dotnet_policy; ///< policy for scanning .NET modules
 		t_imprec_mode imprec_mode;  ///< import recovery mode
 		bool quiet;                 ///<do not print log on the stdout

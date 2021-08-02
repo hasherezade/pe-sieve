@@ -33,8 +33,8 @@ namespace pesieve {
 			delete dump_report;
 		}
 
-		ProcessScanReport* scan_report;
-		ProcessDumpReport* dump_report;
+		ProcessScanReport* scan_report; ///< the report aggregating the results of the performed scans
+		ProcessDumpReport* dump_report; ///< the report aggregating the results of the performed dumps
 	};
 
 	//! The string with the basic information about the scanner.
