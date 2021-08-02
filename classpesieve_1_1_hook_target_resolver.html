@@ -76,12 +76,15 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Process the list of collected patches, and for those of them that were detected as hooks, it resolves information to which modules do they lead to.  
+ <a href="classpesieve_1_1_hook_target_resolver.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="hook__targets__resolver_8h_source.html">hook_targets_resolver.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ace6ebd2107ffeb059c0bbd9582bfe272"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_hook_target_resolver.html#ace6ebd2107ffeb059c0bbd9582bfe272">HookTargetResolver</a> (<a class="el" href="classpesieve_1_1_process_scan_report.html">ProcessScanReport</a> &amp;process_report)</td></tr>
-<tr class="separator:ace6ebd2107ffeb059c0bbd9582bfe272"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67f45c79aabc8609ff844bfde436bc4d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_hook_target_resolver.html#a67f45c79aabc8609ff844bfde436bc4d">HookTargetResolver</a> (IN <a class="el" href="classpesieve_1_1_process_scan_report.html">ProcessScanReport</a> &amp;process_report)</td></tr>
+<tr class="separator:a67f45c79aabc8609ff844bfde436bc4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24003150d6cff124cb0163b713586113"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_hook_target_resolver.html#a24003150d6cff124cb0163b713586113">resolveAllHooks</a> (const std::set&lt; <a class="el" href="classpesieve_1_1_module_scan_report.html">ModuleScanReport</a> * &gt; &amp;code_reports)</td></tr>
 <tr class="separator:a24003150d6cff124cb0163b713586113"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8a43f686fe377414056e88891f8832b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_hook_target_resolver.html#ad8a43f686fe377414056e88891f8832b">resolveTarget</a> (<a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> *currPatch)</td></tr>
@@ -93,11 +96,12 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a4fbd84f33e76a06a36ac4cf9202856b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="hook__targets__resolver_8h_source.html#l00008">8</a> of file <a class="el" href="hook__targets__resolver_8h_source.html">hook_targets_resolver.h</a>.</p>
+<div class="textblock"><p>Process the list of collected patches, and for those of them that were detected as hooks, it resolves information to which modules do they lead to. </p>
+
+<p class="definition">Definition at line <a class="el" href="hook__targets__resolver_8h_source.html#l00009">9</a> of file <a class="el" href="hook__targets__resolver_8h_source.html">hook_targets_resolver.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ace6ebd2107ffeb059c0bbd9582bfe272"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace6ebd2107ffeb059c0bbd9582bfe272">&#9670;&nbsp;</a></span>HookTargetResolver()</h2>
+<a id="a67f45c79aabc8609ff844bfde436bc4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67f45c79aabc8609ff844bfde436bc4d">&#9670;&nbsp;</a></span>HookTargetResolver()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -108,7 +112,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">pesieve::HookTargetResolver::HookTargetResolver </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpesieve_1_1_process_scan_report.html">ProcessScanReport</a> &amp;&#160;</td>
+          <td class="paramtype">IN <a class="el" href="classpesieve_1_1_process_scan_report.html">ProcessScanReport</a> &amp;&#160;</td>
           <td class="paramname"><em>process_report</em></td><td>)</td>
           <td></td>
         </tr>
@@ -120,7 +124,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hook__targets__resolver_8h_source.html#l00011">11</a> of file <a class="el" href="hook__targets__resolver_8h_source.html">hook_targets_resolver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hook__targets__resolver_8h_source.html#l00012">12</a> of file <a class="el" href="hook__targets__resolver_8h_source.html">hook_targets_resolver.h</a>.</p>
 
 </div>
 </div>
@@ -199,7 +203,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hook__targets__resolver_8h_source.html#l00020">20</a> of file <a class="el" href="hook__targets__resolver_8h_source.html">hook_targets_resolver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hook__targets__resolver_8h_source.html#l00021">21</a> of file <a class="el" href="hook__targets__resolver_8h_source.html">hook_targets_resolver.h</a>.</p>
 
 </div>
 </div>

@@ -25,7 +25,7 @@ var searchData=
   ['hookstojson_239',['hooksToJSON',['../classpesieve_1_1_i_a_t_scan_report.html#a601ee6e6ef776eb84f367c4836648546',1,'pesieve::IATScanReport']]],
   ['hooktargetmodname_240',['hookTargetModName',['../classpesieve_1_1_patch_list_1_1_patch.html#a539b13c352084f0c62380fd35f388d83',1,'pesieve::PatchList::Patch']]],
   ['hooktargetmodule_241',['hookTargetModule',['../classpesieve_1_1_patch_list_1_1_patch.html#acec7a5d8080e88233a3df43d8baf22b5',1,'pesieve::PatchList::Patch']]],
-  ['hooktargetresolver_242',['HookTargetResolver',['../classpesieve_1_1_hook_target_resolver.html#ace6ebd2107ffeb059c0bbd9582bfe272',1,'pesieve::HookTargetResolver::HookTargetResolver()'],['../classpesieve_1_1_hook_target_resolver.html',1,'pesieve::HookTargetResolver']]],
+  ['hooktargetresolver_242',['HookTargetResolver',['../classpesieve_1_1_hook_target_resolver.html#a67f45c79aabc8609ff844bfde436bc4d',1,'pesieve::HookTargetResolver::HookTargetResolver()'],['../classpesieve_1_1_hook_target_resolver.html',1,'pesieve::HookTargetResolver']]],
   ['hooktargetva_243',['hookTargetVA',['../classpesieve_1_1_patch_list_1_1_patch.html#a88a970b68970e94884d5f4e2efd80359',1,'pesieve::PatchList::Patch']]],
   ['hpss_244',['HPSS',['../process__reflection_8cpp.html#a245cc83fbf7f180ff454a487cae263ea',1,'process_reflection.cpp']]]
 ];
