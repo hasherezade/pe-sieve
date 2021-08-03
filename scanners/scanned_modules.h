@@ -41,8 +41,8 @@ namespace pesieve {
 		}
 
 	protected:
-		ScannedModule(DWORD _pid, ULONGLONG _start, size_t _moduleSize)
-			: process_id(_pid), start(_start), moduleSize(_moduleSize),
+		ScannedModule(ULONGLONG _start, size_t _moduleSize)
+			: start(_start), moduleSize(_moduleSize),
 			is_suspicious(false)
 		{
 		}
@@ -71,7 +71,6 @@ namespace pesieve {
 		}
 
 		const ULONGLONG start;
-		const DWORD process_id;
 
 	private:
 		size_t moduleSize;

@@ -37,7 +37,6 @@ namespace pesieve {
 
 		ModuleScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, t_scan_status _status)
 		{
-			this->pid = peconv::get_process_id(processHandle);
 			this->module = _module;
 			this->moduleSize = _moduleSize;
 			this->status = _status;
@@ -46,7 +45,6 @@ namespace pesieve {
 
 		ModuleScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
 		{
-			this->pid = peconv::get_process_id(processHandle);
 			this->module = _module;
 			this->moduleSize = _moduleSize;
 			this->isDotNetModule = false;
@@ -80,7 +78,6 @@ namespace pesieve {
 
 		HMODULE module;
 		size_t moduleSize;
-		DWORD pid;
 		bool isDotNetModule;
 		std::string moduleFile;
 		t_scan_status status;

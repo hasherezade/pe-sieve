@@ -30,7 +30,7 @@ bool pesieve::ModulesInfo::appendToModulesList(ModuleScanReport *report)
 	ScannedModule* mod = this->getModuleAt(module_start);
 	if (mod == nullptr) {
 		//create new only if it was not found
-		mod = new ScannedModule(report->pid, module_start, report->moduleSize);
+		mod = new ScannedModule(module_start, report->moduleSize);
 		if (!this->appendModule(mod)) {
 			delete mod; //delete the module as it was not appended
 			return false;
