@@ -1,10 +1,10 @@
 <map id="pesieve::ArtefactScanReport::fieldsToJSON" name="pesieve::ArtefactScanReport::fieldsToJSON">
-<area shape="rect" id="node1" title=" " alt="" coords="5,101,192,143"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_working_set_scan_report.html#a8b2eb2f022203f7ff88a7baa2bc3d1c0" title=" " alt="" coords="240,52,448,93"/>
-<area shape="rect" id="node6" href="$classpesieve_1_1_pe_artefacts.html#a6070d6bf92096e5cdff57ffdb871711c" title=" " alt="" coords="273,133,415,175"/>
-<area shape="rect" id="node3" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="754,5,893,47"/>
-<area shape="rect" id="node4" href="$classpesieve_1_1_module_scan_report.html#a4f0bd4c6531f916ceeb3a3bae5d5d4cb" title=" " alt="" coords="509,35,691,76"/>
-<area shape="rect" id="node5" href="$classpesieve_1_1_working_set_scan_report.html#a6fbdc9666d6eb78801d4ecb6e7cd6182" title=" " alt="" coords="496,100,704,141"/>
-<area shape="rect" id="node7" href="$classpesieve_1_1_pe_artefacts.html#a37bf8c440b943d153a3988314770fb46" title=" " alt="" coords="529,165,671,207"/>
-<area shape="rect" id="node8" href="$classpesieve_1_1_pe_artefacts.html#a09908fcbd1202e8c1de8b9a7b5f0eb0d" title=" " alt="" coords="752,165,895,207"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,127,192,168"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_working_set_scan_report.html#a8b2eb2f022203f7ff88a7baa2bc3d1c0" title=" " alt="" coords="240,79,448,120"/>
+<area shape="rect" id="node6" href="$classpesieve_1_1_pe_artefacts.html#a6070d6bf92096e5cdff57ffdb871711c" title=" " alt="" coords="273,159,415,200"/>
+<area shape="rect" id="node3" href="$classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="509,5,691,47"/>
+<area shape="rect" id="node4" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="754,35,893,76"/>
+<area shape="rect" id="node5" href="$classpesieve_1_1_working_set_scan_report.html#a6fbdc9666d6eb78801d4ecb6e7cd6182" title=" " alt="" coords="496,123,704,164"/>
+<area shape="rect" id="node7" href="$classpesieve_1_1_pe_artefacts.html#a37bf8c440b943d153a3988314770fb46" title=" " alt="" coords="529,188,671,229"/>
+<area shape="rect" id="node8" href="$classpesieve_1_1_pe_artefacts.html#a09908fcbd1202e8c1de8b9a7b5f0eb0d" title=" " alt="" coords="752,188,895,229"/>
 </map>

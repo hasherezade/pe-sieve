@@ -11,5 +11,6 @@ var searchData=
   ['_5floadoriginal_8',['_loadOriginal',['../classpesieve_1_1_module_data.html#a573baa3ed4eba4d8143fca8bc4e74c7f',1,'pesieve::ModuleData']]],
   ['_5floadremote_9',['_loadRemote',['../classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2',1,'pesieve::MemPageData']]],
   ['_5freadremote_10',['_readRemote',['../classpesieve_1_1_pe_buffer.html#a62cf4335cc4f61b8e6fc07b40aa55659',1,'pesieve::PeBuffer']]],
-  ['_5fvalidatesecregions_11',['_validateSecRegions',['../classpesieve_1_1_artefact_scanner.html#aa33a04b0c2a6ea781cc0f68f8dff906f',1,'pesieve::ArtefactScanner::_validateSecRegions(MemPageData &amp;memPage, LPVOID sec_hdr, size_t sec_count, ULONGLONG pe_image_base, bool is_virtual)'],['../classpesieve_1_1_artefact_scanner.html#a03c815ce8e0b33ccffe947b0d7e6d4f9',1,'pesieve::ArtefactScanner::_validateSecRegions(MemPageData &amp;memPage, LPVOID sec_hdr, size_t sec_count)']]]
+  ['_5ftojson_11',['_toJSON',['../classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137',1,'pesieve::ModuleScanReport']]],
+  ['_5fvalidatesecregions_12',['_validateSecRegions',['../classpesieve_1_1_artefact_scanner.html#aa33a04b0c2a6ea781cc0f68f8dff906f',1,'pesieve::ArtefactScanner::_validateSecRegions(MemPageData &amp;memPage, LPVOID sec_hdr, size_t sec_count, ULONGLONG pe_image_base, bool is_virtual)'],['../classpesieve_1_1_artefact_scanner.html#a03c815ce8e0b33ccffe947b0d7e6d4f9',1,'pesieve::ArtefactScanner::_validateSecRegions(MemPageData &amp;memPage, LPVOID sec_hdr, size_t sec_count)']]]
 ];
