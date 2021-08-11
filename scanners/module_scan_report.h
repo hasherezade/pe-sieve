@@ -53,7 +53,21 @@ namespace pesieve {
 
 		virtual ~ModuleScanReport() {}
 
-		const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL, const pesieve::t_json_level &jdetails = JSON_BASIC)
+		virtual ULONGLONG getRelocBase()
+		{
+			return (ULONGLONG)this->module;
+		}
+
+		const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL, const pesieve::t_json_level &jdetails = JSON_BASIC) = 0;
+
+		HMODULE module;
+		size_t moduleSize;
+		bool isDotNetModule;
+		std::string moduleFile;
+		t_scan_status status;
+
+	protected:
+		const virtual bool _toJSON(std::stringstream &outs, size_t level = JSON_LEVEL, const pesieve::t_json_level &jdetails = JSON_BASIC)
 		{
 			OUT_PADDED(outs, level, "\"module\" : ");
 			outs << "\"" << std::hex << (ULONGLONG) module << "\"" << ",\n";
@@ -71,16 +85,6 @@ namespace pesieve {
 			return true;
 		}
 
-		virtual ULONGLONG getRelocBase()
-		{
-			return (ULONGLONG) this->module;
-		}
-
-		HMODULE module;
-		size_t moduleSize;
-		bool isDotNetModule;
-		std::string moduleFile;
-		t_scan_status status;
 	};
 
 	class UnreachableModuleReport : public ModuleScanReport
@@ -92,11 +96,11 @@ namespace pesieve {
 			moduleFile = _moduleFile;
 		}
 
-		const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
+		const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL, const pesieve::t_json_level &jdetails = JSON_BASIC)
 		{
 			OUT_PADDED(outs, level, "\"unreachable_scan\" : ");
 			outs << "{\n";
-			ModuleScanReport::toJSON(outs, level + 1);
+			ModuleScanReport::_toJSON(outs, level + 1);
 			outs << "\n";
 			OUT_PADDED(outs, level, "}");
 			return true;
@@ -112,11 +116,11 @@ namespace pesieve {
 			moduleFile = _moduleFile;
 		}
 
-		const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
+		const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL, const pesieve::t_json_level &jdetails = JSON_BASIC)
 		{
 			OUT_PADDED(outs, level, "\"skipped_scan\" : ");
 			outs << "{\n";
-			ModuleScanReport::toJSON(outs, level + 1);
+			ModuleScanReport::_toJSON(outs, level + 1);
 			outs << "\n";
 			OUT_PADDED(outs, level, "}");
 			return true;
@@ -132,11 +136,11 @@ namespace pesieve {
 			moduleFile = _moduleFile;
 		}
 
-		const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL)
+		const virtual bool toJSON(std::stringstream &outs, size_t level = JSON_LEVEL, const pesieve::t_json_level &jdetails = JSON_BASIC)
 		{
 			OUT_PADDED(outs, level, "\"malformed_header\" : ");
 			outs << "{\n";
-			ModuleScanReport::toJSON(outs, level + 1);
+			ModuleScanReport::_toJSON(outs, level + 1);
 			outs << "\n";
 			OUT_PADDED(outs, level, "}");
 			return true;

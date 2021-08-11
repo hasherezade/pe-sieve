@@ -43,7 +43,7 @@ namespace pesieve {
 		{
 			const size_t inaccessibleCount = countInaccessibleSections();
 			const size_t scannedCount = sectionToResult.size() - inaccessibleCount;
-			ModuleScanReport::toJSON(outs, level);
+			ModuleScanReport::_toJSON(outs, level);
 			if (sectionToResult.size() > 0) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"scanned_sections\" : ");

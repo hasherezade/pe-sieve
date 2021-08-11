@@ -40,7 +40,7 @@ namespace pesieve {
 
 		const virtual void fieldsToJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
 		{
-			ModuleScanReport::toJSON(outs, level);
+			ModuleScanReport::_toJSON(outs, level);
 			outs << ",\n";
 			OUT_PADDED(outs, level, "\"has_pe\" : ");
 			outs << std::dec << has_pe;

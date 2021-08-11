@@ -21,7 +21,7 @@ namespace pesieve {
 		const virtual void fieldsToJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
 		{
 			bool is_replaced = isHdrReplaced();
-			ModuleScanReport::toJSON(outs, level);
+			ModuleScanReport::_toJSON(outs, level);
 			outs << ",\n";
 			OUT_PADDED(outs, level, "\"is_connected_to_peb\" : ");
 			outs << isInPEB;

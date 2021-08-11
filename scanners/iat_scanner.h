@@ -30,7 +30,7 @@ namespace pesieve {
 			size_t hooks = countHooked();
 			OUT_PADDED(outs, level, "\"iat_scan\" : ");
 			outs << "{\n";
-			ModuleScanReport::toJSON(outs, level + 1);
+			ModuleScanReport::_toJSON(outs, level + 1);
 			outs << ",\n";
 			OUT_PADDED(outs, level + 1, "\"hooks\" : ");
 			outs << std::dec << hooks;
