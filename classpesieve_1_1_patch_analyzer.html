@@ -108,6 +108,8 @@ Public Member Functions</h2></td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a007d3b67b87c69d6aa377bc51fcbb784"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_patch_analyzer.html#a007d3b67b87c69d6aa377bc51fcbb784">_analyze</a> (<a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;patch, PBYTE patch_ptr, ULONGLONG patch_va)</td></tr>
 <tr class="separator:a007d3b67b87c69d6aa377bc51fcbb784"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1904d926a1218925ec597ae2f60e91ae"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_patch_analyzer.html#a1904d926a1218925ec597ae2f60e91ae">_analyzeRelocated</a> (<a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;patch, BYTE *patch_ptr)</td></tr>
+<tr class="separator:a1904d926a1218925ec597ae2f60e91ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4eb4b54b83e6e11f043a7f08d09635c4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_patch_analyzer.html#a4eb4b54b83e6e11f043a7f08d09635c4">parseJmpViaAddr</a> (<a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;patch, PBYTE patch_ptr, ULONGLONG patch_va)</td></tr>
 <tr class="separator:a4eb4b54b83e6e11f043a7f08d09635c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05f8b2e1acc8b4333d31815214457fe4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_patch_analyzer.html#a05f8b2e1acc8b4333d31815214457fe4">parseShortJmp</a> (<a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;patch, PBYTE patch_ptr, ULONGLONG patch_va)</td></tr>
@@ -138,6 +140,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a6129a18c4f9cd277f6287487b1eabaed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9e470a2c5b4de696cfdabaa8346284e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_patch_analyzer.html#ab9e470a2c5b4de696cfdabaa8346284e">codeSize</a></td></tr>
 <tr class="separator:ab9e470a2c5b4de696cfdabaa8346284e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a449f7bb45cab966c6cad9032275cbb5e"><td class="memItemLeft" align="right" valign="top">std::set&lt; DWORD &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_patch_analyzer.html#a449f7bb45cab966c6cad9032275cbb5e">relocs</a></td></tr>
+<tr class="separator:a449f7bb45cab966c6cad9032275cbb5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >A postprocessor of the detected code patches. Detects if the patch is a hook, and if so, tries to indentify the address where it leads to. </p>
@@ -221,8 +225,10 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_patch_analyzer_a3146fac25cb5fa855eb8823b2fa23746_cgraph.png" border="0" usemap="#aclasspesieve_1_1_patch_analyzer_a3146fac25cb5fa855eb8823b2fa23746_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_patch_analyzer_a3146fac25cb5fa855eb8823b2fa23746_cgraph" id="aclasspesieve_1_1_patch_analyzer_a3146fac25cb5fa855eb8823b2fa23746_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,161,47"/>
-<area shape="rect" href="classpesieve_1_1_module_data.html#a57fffdfd8f7a26fb3bfa9a827451c660" title=" " alt="" coords="209,5,352,47"/>
+<area shape="rect" title=" " alt="" coords="5,35,161,76"/>
+<area shape="rect" href="classpesieve_1_1_module_data.html#a57fffdfd8f7a26fb3bfa9a827451c660" title=" " alt="" coords="404,5,547,47"/>
+<area shape="rect" href="classpesieve_1_1_module_data.html#a561bfce148fdcf705144537fa2739bc2" title=" " alt="" coords="209,64,355,105"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="403,71,548,98"/>
 </map>
 </div>
 
@@ -273,6 +279,54 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a1904d926a1218925ec597ae2f60e91ae" name="a1904d926a1218925ec597ae2f60e91ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1904d926a1218925ec597ae2f60e91ae">&#9670;&nbsp;</a></span>_analyzeRelocated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t pesieve::PatchAnalyzer::_analyzeRelocated </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;&#160;</td>
+          <td class="paramname"><em>patch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BYTE *&#160;</td>
+          <td class="paramname"><em>patch_ptr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8cpp_source.html#l00180">180</a> of file <a class="el" href="patch__analyzer_8cpp_source.html">patch_analyzer.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classpesieve_1_1_patch_analyzer_a1904d926a1218925ec597ae2f60e91ae_cgraph.png" border="0" usemap="#aclasspesieve_1_1_patch_analyzer_a1904d926a1218925ec597ae2f60e91ae_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_patch_analyzer_a1904d926a1218925ec597ae2f60e91ae_cgraph" id="aclasspesieve_1_1_patch_analyzer_a1904d926a1218925ec597ae2f60e91ae_cgraph">
+<area shape="rect" title=" " alt="" coords="5,27,161,69"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="214,5,359,32"/>
+<area shape="rect" href="classpesieve_1_1_patch_list_1_1_patch.html#a06914a3c9b4789ca60fa59f4d3335f5b" title=" " alt="" coords="209,57,364,98"/>
+</map>
+</div>
+
+</div>
+</div>
 <a id="afa5972f3199f9323b65fc74b4c713525" name="afa5972f3199f9323b65fc74b4c713525"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afa5972f3199f9323b65fc74b4c713525">&#9670;&nbsp;</a></span>analyze()</h2>
 
@@ -289,7 +343,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__analyzer_8cpp_source.html#l00180">180</a> of file <a class="el" href="patch__analyzer_8cpp_source.html">patch_analyzer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8cpp_source.html#l00195">195</a> of file <a class="el" href="patch__analyzer_8cpp_source.html">patch_analyzer.cpp</a>.</p>
 
 </div>
 </div>
@@ -679,7 +733,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00049">49</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00051">51</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
 
 </div>
 </div>
@@ -703,7 +757,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00044">44</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00046">46</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
 
 </div>
 </div>
@@ -727,7 +781,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00046">46</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00048">48</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
 
 </div>
 </div>
@@ -751,7 +805,31 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00048">48</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00050">50</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
+
+</div>
+</div>
+<a id="a449f7bb45cab966c6cad9032275cbb5e" name="a449f7bb45cab966c6cad9032275cbb5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a449f7bb45cab966c6cad9032275cbb5e">&#9670;&nbsp;</a></span>relocs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::set&lt;DWORD&gt; pesieve::PatchAnalyzer::relocs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00053">53</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
 
 </div>
 </div>
@@ -775,7 +853,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00047">47</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00049">49</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
 
 </div>
 </div>

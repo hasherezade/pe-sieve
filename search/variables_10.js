@@ -12,10 +12,11 @@ var searchData=
   ['region_5fstart_9',['region_start',['../classpesieve_1_1_mem_page_data.html#ac0d51e421ea1f5489c2538a9475b8a6e',1,'pesieve::MemPageData']]],
   ['regionstart_10',['regionStart',['../classpesieve_1_1_pe_artefacts.html#ace73d07e94c6cbb1367b8734a11e66d7',1,'pesieve::PeArtefacts']]],
   ['relocbase_11',['relocBase',['../classpesieve_1_1_pe_buffer.html#af82f09c9cf7265dd990b5fe299864838',1,'pesieve::PeBuffer::relocBase()'],['../classpesieve_1_1_code_scan_report.html#a00859bb5571d96ddc13130bc23eac9f3',1,'pesieve::CodeScanReport::relocBase()']]],
-  ['remotemoddata_12',['remoteModData',['../classpesieve_1_1_module_scanner.html#a78ff1c135f070ab0d6e0ad3870604f90',1,'pesieve::ModuleScanner']]],
-  ['replaced_13',['replaced',['../structt__report.html#a98873a6d411743beb5f01494395bc293',1,'t_report']]],
-  ['reportsbytype_14',['reportsByType',['../classpesieve_1_1_process_scan_report.html#a85b6e8a39ec43b08a4f534dbd3f0589e',1,'pesieve::ProcessScanReport']]],
-  ['returned_5fhndl_15',['returned_hndl',['../structpesieve_1_1util_1_1t__refl__args.html#a2039cf10734a4e3f07e94e6068122729',1,'pesieve::util::t_refl_args']]],
-  ['returned_5fpid_16',['returned_pid',['../structpesieve_1_1util_1_1t__refl__args.html#a7e95cffd1d650f477bb1d64377f4f6d7',1,'pesieve::util::t_refl_args']]],
-  ['rva_17',['rva',['../classpesieve_1_1_pe_section.html#abb3723c684e695788cedc1654463b409',1,'pesieve::PeSection']]]
+  ['relocs_12',['relocs',['../classpesieve_1_1_patch_analyzer.html#a449f7bb45cab966c6cad9032275cbb5e',1,'pesieve::PatchAnalyzer']]],
+  ['remotemoddata_13',['remoteModData',['../classpesieve_1_1_module_scanner.html#a78ff1c135f070ab0d6e0ad3870604f90',1,'pesieve::ModuleScanner']]],
+  ['replaced_14',['replaced',['../structt__report.html#a98873a6d411743beb5f01494395bc293',1,'t_report']]],
+  ['reportsbytype_15',['reportsByType',['../classpesieve_1_1_process_scan_report.html#a85b6e8a39ec43b08a4f534dbd3f0589e',1,'pesieve::ProcessScanReport']]],
+  ['returned_5fhndl_16',['returned_hndl',['../structpesieve_1_1util_1_1t__refl__args.html#a2039cf10734a4e3f07e94e6068122729',1,'pesieve::util::t_refl_args']]],
+  ['returned_5fpid_17',['returned_pid',['../structpesieve_1_1util_1_1t__refl__args.html#a7e95cffd1d650f477bb1d64377f4f6d7',1,'pesieve::util::t_refl_args']]],
+  ['rva_18',['rva',['../classpesieve_1_1_pe_section.html#abb3723c684e695788cedc1654463b409',1,'pesieve::PeSection']]]
 ];

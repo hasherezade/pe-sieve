@@ -23,5 +23,5 @@ var searchData=
   ['resolvehookstargets_20',['resolveHooksTargets',['../classpesieve_1_1_process_scanner.html#a90626aea47ee92aebaf55cc7cf9f3b06',1,'pesieve::ProcessScanner']]],
   ['resolvetarget_21',['resolveTarget',['../classpesieve_1_1_hook_target_resolver.html#a608ca9968909fbbb18a07af866ea47b1',1,'pesieve::HookTargetResolver']]],
   ['resultsdumper_22',['ResultsDumper',['../classpesieve_1_1_results_dumper.html#a84cedbc87af0ee8b72f06fd7c6cb9b5a',1,'pesieve::ResultsDumper']]],
-  ['rvatova_23',['rvaToVa',['../classpesieve_1_1_module_data.html#a460c5d96a4a3a0d7735e027e2180c7dd',1,'pesieve::ModuleData']]]
+  ['rvatova_23',['rvaToVa',['../classpesieve_1_1_module_data.html#a1227c638b7039f75d3bf31b61fe13bf9',1,'pesieve::ModuleData']]]
 ];

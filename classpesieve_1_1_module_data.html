@@ -96,10 +96,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a57fffdfd8f7a26fb3bfa9a827451c660"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a669207603953e5ce9ca208a9b4b3636b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#a669207603953e5ce9ca208a9b4b3636b">isDotNet</a> ()</td></tr>
 <tr class="separator:a669207603953e5ce9ca208a9b4b3636b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a460c5d96a4a3a0d7735e027e2180c7dd"><td class="memItemLeft" align="right" valign="top">ULONGLONG&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#a460c5d96a4a3a0d7735e027e2180c7dd">rvaToVa</a> (DWORD rva)</td></tr>
-<tr class="separator:a460c5d96a4a3a0d7735e027e2180c7dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe202f162925f11c673b4a8a24fedfdb"><td class="memItemLeft" align="right" valign="top">DWORD&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#abe202f162925f11c673b4a8a24fedfdb">vaToRva</a> (ULONGLONG va)</td></tr>
-<tr class="separator:abe202f162925f11c673b4a8a24fedfdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1227c638b7039f75d3bf31b61fe13bf9"><td class="memItemLeft" align="right" valign="top">ULONGLONG&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#a1227c638b7039f75d3bf31b61fe13bf9">rvaToVa</a> (DWORD rva, ULONGLONG module_base=0)</td></tr>
+<tr class="separator:a1227c638b7039f75d3bf31b61fe13bf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50cd3da410a2dc2ca30ba03addcf5c39"><td class="memItemLeft" align="right" valign="top">DWORD&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#a50cd3da410a2dc2ca30ba03addcf5c39">vaToRva</a> (ULONGLONG va, ULONGLONG module_base=0)</td></tr>
+<tr class="separator:a50cd3da410a2dc2ca30ba03addcf5c39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16a3fa21a9c517e2d69b080fb9544773"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#a16a3fa21a9c517e2d69b080fb9544773">isModuleInPEBList</a> ()</td></tr>
 <tr class="separator:a16a3fa21a9c517e2d69b080fb9544773"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3717faf0b70606705752321f8efe254"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#aa3717faf0b70606705752321f8efe254">isInitialized</a> ()</td></tr>
@@ -114,6 +114,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1fab06ced58f5432dae107aed4063a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39d37446bca2041d5fb9c0cc64998f15"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#a39d37446bca2041d5fb9c0cc64998f15">relocateToBase</a> (ULONGLONG new_base)</td></tr>
 <tr class="separator:a39d37446bca2041d5fb9c0cc64998f15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a561bfce148fdcf705144537fa2739bc2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#a561bfce148fdcf705144537fa2739bc2">loadRelocatedFields</a> (std::set&lt; DWORD &gt; &amp;fields_rvas)</td></tr>
+<tr class="separator:a561bfce148fdcf705144537fa2739bc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -154,7 +156,7 @@ Friends</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Loads a module from the disk, corresponding to the module in the scanned process' memory. </p>
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00013">13</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00014">14</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abc76a800aefda6cd1c79c5fb94d52cb9" name="abc76a800aefda6cd1c79c5fb94d52cb9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abc76a800aefda6cd1c79c5fb94d52cb9">&#9670;&nbsp;</a></span>ModuleData() <span class="overload">[1/2]</span></h2>
@@ -196,7 +198,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00016">16</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00017">17</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -266,7 +268,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00025">25</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00026">26</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -293,7 +295,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00034">34</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00035">35</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -322,7 +324,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00036">36</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00037">37</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -362,7 +364,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00077">77</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00083">83</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -389,7 +391,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00039">39</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00040">40</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -416,7 +418,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00047">47</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00048">48</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -443,7 +445,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00107">107</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00153">153</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
 
 </div>
 </div>
@@ -470,7 +472,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00072">72</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00078">78</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -497,7 +499,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00067">67</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00073">73</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -572,6 +574,36 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a561bfce148fdcf705144537fa2739bc2" name="a561bfce148fdcf705144537fa2739bc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a561bfce148fdcf705144537fa2739bc2">&#9670;&nbsp;</a></span>loadRelocatedFields()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::ModuleData::loadRelocatedFields </td>
+          <td>(</td>
+          <td class="paramtype">std::set&lt; DWORD &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fields_rvas</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00063">63</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classpesieve_1_1_module_data_a561bfce148fdcf705144537fa2739bc2_cgraph.png" border="0" usemap="#aclasspesieve_1_1_module_data_a561bfce148fdcf705144537fa2739bc2_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_module_data_a561bfce148fdcf705144537fa2739bc2_cgraph" id="aclasspesieve_1_1_module_data_a561bfce148fdcf705144537fa2739bc2_cgraph">
+<area shape="rect" title=" " alt="" coords="5,27,151,69"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="199,5,344,32"/>
+<area shape="rect" href="classpesieve_1_1_module_data.html#a57fffdfd8f7a26fb3bfa9a827451c660" title=" " alt="" coords="200,57,343,98"/>
+</map>
+</div>
+
+</div>
+</div>
 <a id="a1fab06ced58f5432dae107aed4063a32" name="a1fab06ced58f5432dae107aed4063a32"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1fab06ced58f5432dae107aed4063a32">&#9670;&nbsp;</a></span>reloadWow64()</h2>
 
@@ -587,7 +619,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00094">94</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00140">140</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
 
 </div>
 </div>
@@ -607,12 +639,12 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00061">61</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00107">107</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a460c5d96a4a3a0d7735e027e2180c7dd" name="a460c5d96a4a3a0d7735e027e2180c7dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a460c5d96a4a3a0d7735e027e2180c7dd">&#9670;&nbsp;</a></span>rvaToVa()</h2>
+<a id="a1227c638b7039f75d3bf31b61fe13bf9" name="a1227c638b7039f75d3bf31b61fe13bf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1227c638b7039f75d3bf31b61fe13bf9">&#9670;&nbsp;</a></span>rvaToVa()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -624,8 +656,18 @@ Here is the call graph for this function:</div>
           <td class="memname">ULONGLONG pesieve::ModuleData::rvaToVa </td>
           <td>(</td>
           <td class="paramtype">DWORD&#160;</td>
-          <td class="paramname"><em>rva</em></td><td>)</td>
+          <td class="paramname"><em>rva</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">ULONGLONG&#160;</td>
+          <td class="paramname"><em>module_base</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -635,7 +677,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00049">49</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00050">50</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -654,7 +696,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00081">81</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00127">127</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -673,8 +715,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="abe202f162925f11c673b4a8a24fedfdb" name="abe202f162925f11c673b4a8a24fedfdb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe202f162925f11c673b4a8a24fedfdb">&#9670;&nbsp;</a></span>vaToRva()</h2>
+<a id="a50cd3da410a2dc2ca30ba03addcf5c39" name="a50cd3da410a2dc2ca30ba03addcf5c39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50cd3da410a2dc2ca30ba03addcf5c39">&#9670;&nbsp;</a></span>vaToRva()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -686,8 +728,18 @@ Here is the call graph for this function:</div>
           <td class="memname">DWORD pesieve::ModuleData::vaToRva </td>
           <td>(</td>
           <td class="paramtype">ULONGLONG&#160;</td>
-          <td class="paramname"><em>va</em></td><td>)</td>
+          <td class="paramname"><em>va</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">ULONGLONG&#160;</td>
+          <td class="paramname"><em>module_base</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -697,12 +749,12 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00054">54</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00058">58</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classpesieve_1_1_module_data_abe202f162925f11c673b4a8a24fedfdb_cgraph.png" border="0" usemap="#aclasspesieve_1_1_module_data_abe202f162925f11c673b4a8a24fedfdb_cgraph" alt=""/></div>
-<map name="aclasspesieve_1_1_module_data_abe202f162925f11c673b4a8a24fedfdb_cgraph" id="aclasspesieve_1_1_module_data_abe202f162925f11c673b4a8a24fedfdb_cgraph">
+<div class="center"><img src="classpesieve_1_1_module_data_a50cd3da410a2dc2ca30ba03addcf5c39_cgraph.png" border="0" usemap="#aclasspesieve_1_1_module_data_a50cd3da410a2dc2ca30ba03addcf5c39_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_module_data_a50cd3da410a2dc2ca30ba03addcf5c39_cgraph" id="aclasspesieve_1_1_module_data_a50cd3da410a2dc2ca30ba03addcf5c39_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,148,47"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="196,13,341,39"/>
 </map>
@@ -731,7 +783,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00104">104</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00111">111</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -756,7 +808,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00101">101</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00108">108</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -772,7 +824,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00092">92</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00099">99</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -796,7 +848,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00102">102</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00109">109</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -812,7 +864,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00090">90</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00097">97</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -828,7 +880,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00094">94</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00101">101</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -844,7 +896,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00095">95</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00102">102</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -860,7 +912,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00089">89</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00096">96</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -876,7 +928,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00091">91</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00098">98</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
