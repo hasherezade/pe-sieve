@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <psapi.h>
 #include <map>
+#include <set>
 
 #include <peconv.h>
 #include "../utils/format_util.h"
@@ -46,14 +47,19 @@ namespace pesieve {
 
 		bool isDotNet() { return this->is_dot_net; }
 
-		ULONGLONG rvaToVa(DWORD rva)
+		ULONGLONG rvaToVa(DWORD rva, ULONGLONG module_base = 0)
 		{
-			return reinterpret_cast<ULONGLONG>(this->moduleHandle) + rva;
+			if (module_base == 0) {
+				module_base = reinterpret_cast<ULONGLONG>(this->moduleHandle);
+			}
+			return module_base + rva;
 		}
 
-		DWORD vaToRva(ULONGLONG va)
+		DWORD vaToRva(ULONGLONG va, ULONGLONG module_base = 0)
 		{
-			ULONGLONG module_base = reinterpret_cast<ULONGLONG>(this->moduleHandle);
+			if (module_base == 0) {
+				module_base = reinterpret_cast<ULONGLONG>(this->moduleHandle);
+			}
 			if (va < module_base) {
 				return 0; // not this module
 			}
@@ -85,6 +91,7 @@ namespace pesieve {
 		bool switchToWow64Path();
 		bool reloadWow64();
 		bool relocateToBase(ULONGLONG new_base);
+		bool loadRelocatedFields(std::set<DWORD>& fields_rvas);
 
 		HANDLE processHandle;
 		HMODULE moduleHandle;

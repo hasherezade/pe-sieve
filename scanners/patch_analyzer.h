@@ -22,6 +22,7 @@ namespace pesieve {
 			: moduleData(_moduleData), sectionRVA(_sectionRVA), patchedCode(patched_code), codeSize(code_size)
 		{
 			isModule64bit = moduleData.is64bit();
+			moduleData.loadRelocatedFields(relocs);
 		}
 
 		size_t analyze(PatchList::Patch &patch);
@@ -47,6 +48,8 @@ namespace pesieve {
 		DWORD sectionRVA;
 		PBYTE patchedCode;
 		size_t codeSize;
+
+		std::set<DWORD> relocs;
 	};
 
 }; //namespace pesieve

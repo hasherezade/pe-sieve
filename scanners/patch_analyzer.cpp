@@ -187,6 +187,9 @@ size_t pesieve::PatchAnalyzer::analyze(PatchList::Patch &patch)
 	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, kMinSize)) {
 		return 0;
 	}
+	if (this->relocs.find(patch.startRva) != this->relocs.end()) {
+		std::cout << "This patch is a relocated field\n";
+	}
 
 	size_t size = _analyze(patch, patch_ptr, patch_va);
 

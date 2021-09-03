@@ -26,11 +26,12 @@ bool pesieve::ModuleData::loadModuleName()
 bool pesieve::ModuleData::loadOriginal()
 {
 	//disable FS redirection by default
-	if (_loadOriginal(true)) {
-		return true;
+	bool is_ok = _loadOriginal(true);
+	if (!is_ok) {
+		//if loading with FS redirection has failed, try without
+		is_ok = _loadOriginal(false);
 	}
-	//if loading with FS redirection has failed, try without
-	return _loadOriginal(false);
+	return is_ok;
 }
 
 bool pesieve::ModuleData::_loadOriginal(bool disableFSredir)
@@ -56,6 +57,52 @@ bool pesieve::ModuleData::_loadOriginal(bool disableFSredir)
 	}
 	this->is_dot_net = isDotNetManagedCode();
 	return true;
+}
+
+
+
+bool pesieve::ModuleData::loadRelocatedFields(std::set<DWORD>& fields_rvas)
+{
+	if (!original_module || !original_size) {
+		return false;
+	}
+	//---
+	class CollectRelocField : public peconv::RelocBlockCallback
+	{
+	public:
+		CollectRelocField(ModuleData &_mod, std::set<DWORD>& _fields)
+			: RelocBlockCallback(_mod.is64bit()), mod(_mod), fields(_fields)
+		{
+		}
+
+		virtual bool processRelocField(ULONG_PTR relocField)
+		{
+			DWORD reloc_rva = mod.vaToRva(relocField, (ULONG_PTR)mod.original_module);
+			//std::cout << "reloc: " << std::hex << reloc_rva << "\n";
+			fields.insert(reloc_rva);
+			return true;
+		}
+
+		std::set<DWORD> &fields;
+		ModuleData &mod;
+	};
+	//---
+	std::cout << "module: " << this->szModName << "\n";
+	if (!peconv::has_valid_relocation_table(original_module, original_size)) {
+		std::cout << "No reloc table\n";
+		return false;
+	}
+	CollectRelocField collector(*this, fields_rvas);
+	if (!peconv::process_relocation_table(original_module, original_size, &collector)) {
+		std::cout << "Could not collect relocations!\n";
+		return false;
+	}
+
+	if (fields_rvas.size()) {
+		std::cout << "relocs: " << fields_rvas.size() << "\n";
+		return true;
+	}
+	return false;
 }
 
 bool pesieve::ModuleData::relocateToBase(ULONGLONG new_base)
