@@ -6,8 +6,8 @@
 namespace pesieve {
 #endif
 
-	const char PESIEVE_VERSION[] = "0.3.0.1";
-	const DWORD PESIEVE_VERSION_ID = 0x00030001; // 00 03 00 01
+	const char PESIEVE_VERSION[] = "0.3.0.2";
+	const DWORD PESIEVE_VERSION_ID = 0x00030002; // 00 03 00 02
 	const char PESIEVE_URL[] = "https://github.com/hasherezade/pe-sieve";
 
 #ifdef __cplusplus
