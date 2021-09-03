@@ -12,13 +12,17 @@ std::string  pesieve::PatchList::Patch::getFormattedName()
 	if (this->hooked_func.length() > 0) {
 		stream << hooked_func;
 	} else {
-		if (this->isHook) {
-			stream << "hook_" << id;
-		} else {
-			stream << "patch_" << id;
+		switch (this->type) {
+		case pesieve::HOOK_INLINE:
+			stream << "hook_"; break;
+		case pesieve::HOOK_ADDR_REPLACEMENT:
+			stream << "addr_replaced_"; break;
+		default:
+			stream << "patch_"; break;
 		}
+		stream << id;
 	}
-	if (this->isHook) {
+	if (this->type != pesieve::HOOK_NONE) {
 		stream << "->";
 		if (this->isDirect) {
 			stream << std::hex << hookTargetVA;
@@ -77,16 +81,16 @@ const bool pesieve::PatchList::Patch::toJSON(std::stringstream &outs, size_t lev
 	}
 	else {
 		outs << ",\n";
-
+		const bool isHook = (this->type != pesieve::HOOK_NONE);
 		OUT_PADDED(outs, (level + 1), "\"is_hook\" : ");
-		outs << std::dec << this->isHook;
+		outs << std::dec << isHook;
 
 		if (this->hooked_func.length() > 0) {
 			outs << ",\n";
 			OUT_PADDED(outs, (level + 1), "\"func_name\" : ");
 			outs << "\"" << hooked_func << "\"";
 		}
-		if (this->isHook) {
+		if (isHook) {
 			outs << ",\n";
 			OUT_PADDED(outs, (level + 1), "\"hook_target\" : {\n");
 			if (hookTargetModName.length() > 0) {

@@ -8,6 +8,13 @@
 
 namespace pesieve {
 
+	typedef enum {
+		HOOK_NONE,
+		HOOK_INLINE,
+		HOOK_ADDR_REPLACEMENT,
+		COUNT_HOOK_TYPES
+	} t_hook_type;
+
 	class PatchList {
 	public:
 		class Patch
@@ -15,7 +22,8 @@ namespace pesieve {
 		public:
 			Patch(HMODULE module_base, size_t patch_id, DWORD start_rva)
 				: moduleBase(module_base), id(patch_id), startRva(start_rva), endRva(start_rva),
-				isHook(false), isDirect(true),
+				type(pesieve::HOOK_NONE),
+				isDirect(true), 
 				hookTargetVA(0), hookTargetModule(0), isTargetSuspicious(false)
 			{
 			}
@@ -27,7 +35,8 @@ namespace pesieve {
 				endRva = other.endRva;
 				moduleBase = other.moduleBase;
 
-				isHook = other.isHook;
+				isDirect = other.isDirect;
+				type = other.type;
 				hookTargetVA = other.hookTargetVA;
 				hooked_func = other.hooked_func;
 
@@ -41,11 +50,11 @@ namespace pesieve {
 				endRva = end_rva;
 			}
 
-			void setHookTarget(ULONGLONG target_va, bool is_direct = true)
+			void setHookTarget(ULONGLONG target_va, bool is_direct = true, t_hook_type hook_type = pesieve::HOOK_INLINE)
 			{
 				hookTargetVA = target_va;
 				isDirect = is_direct;
-				isHook = true;
+				this->type = hook_type;
 			}
 
 			ULONGLONG getHookTargetVA()
@@ -55,7 +64,7 @@ namespace pesieve {
 
 			bool setHookTargetInfo(ULONGLONG targetModuleBase, bool isSuspiocious, std::string targetModuleName)
 			{
-				if (!isHook || targetModuleBase == 0 || targetModuleBase > this->hookTargetVA) {
+				if (type == pesieve::HOOK_NONE || targetModuleBase == 0 || targetModuleBase > this->hookTargetVA) {
 					return false;
 				}
 				this->hookTargetModule = targetModuleBase;
@@ -77,7 +86,7 @@ namespace pesieve {
 			DWORD endRva;
 			HMODULE moduleBase;
 
-			bool isHook;
+			t_hook_type type;
 			bool isDirect;
 			ULONGLONG hookTargetVA;
 			std::string hooked_func;

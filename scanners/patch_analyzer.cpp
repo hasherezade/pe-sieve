@@ -188,7 +188,7 @@ size_t pesieve::PatchAnalyzer::_analyzeRelocated(PatchList::Patch &patch, BYTE* 
 		return 0;
 	}
 	ULONGLONG field = (this->moduleData.is64bit()) ? *((ULONGLONG*)patch_ptr) : *((DWORD*)patch_ptr);
-	patch.setHookTarget(field, true);
+	patch.setHookTarget(field, true, pesieve::HOOK_ADDR_REPLACEMENT);
 	return fieldSize;
 }
 
