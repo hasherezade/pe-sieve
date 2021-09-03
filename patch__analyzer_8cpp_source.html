@@ -255,7 +255,7 @@ $(function() {
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="keywordflow">if</span> (this-&gt;relocs.find(patch.<a class="code hl_variable" href="classpesieve_1_1_patch_list_1_1_patch.html#a7b946d650da353c56690ff150eb4a82c">startRva</a>) == this-&gt;relocs.end()) {</div>
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    }</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="comment">//std::cout &lt;&lt; &quot;This patch is a relocated field\n&quot;;</span></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="comment">// This patch is a relocated field</span></div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> fieldSize = (this-&gt;moduleData.is64bit()) ? <span class="keyword">sizeof</span>(ULONGLONG) : <span class="keyword">sizeof</span>(<a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>);</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="keywordflow">if</span> (!peconv::validate_ptr(this-&gt;patchedCode, this-&gt;codeSize, patch_ptr, fieldSize)) {</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        <span class="keywordflow">return</span> 0;</div>
