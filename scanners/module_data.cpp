@@ -77,7 +77,6 @@ bool pesieve::ModuleData::loadRelocatedFields(std::set<DWORD>& fields_rvas)
 		virtual bool processRelocField(ULONG_PTR relocField)
 		{
 			DWORD reloc_rva = mod.vaToRva(relocField, (ULONG_PTR)mod.original_module);
-			//std::cout << "reloc: " << std::hex << reloc_rva << "\n";
 			fields.insert(reloc_rva);
 			return true;
 		}
@@ -86,19 +85,16 @@ bool pesieve::ModuleData::loadRelocatedFields(std::set<DWORD>& fields_rvas)
 		ModuleData &mod;
 	};
 	//---
-	//std::cout << "module: " << this->szModName << "\n";
 	if (!peconv::has_valid_relocation_table(original_module, original_size)) {
-		//std::cout << "No reloc table\n";
+		// No reloc table
 		return false;
 	}
 	CollectRelocField collector(*this, fields_rvas);
 	if (!peconv::process_relocation_table(original_module, original_size, &collector)) {
-		//std::cout << "Could not collect relocations!\n";
+		// Could not collect relocations
 		return false;
 	}
-
 	if (fields_rvas.size()) {
-		//std::cout << "relocs: " << fields_rvas.size() << "\n";
 		return true;
 	}
 	return false;
