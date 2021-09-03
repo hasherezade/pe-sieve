@@ -35,6 +35,20 @@ BYTE* pesieve::ImportTableBuffer::getDllSpaceAt(const DWORD rva, size_t required
 
 //---
 
+bool pesieve::ImpReconstructor::hasNewImportTables()
+{
+	bool has_new_table = false;
+	std::map<DWORD, IATBlock*>::const_iterator iats_itr;
+	for (iats_itr = foundIATs.cbegin(); iats_itr != foundIATs.cend(); ++iats_itr) {
+		const IATBlock* iblock = iats_itr->second;
+		if (iblock->isTerminated && !iblock->isMain) {
+			has_new_table = true;
+			break;
+		}
+	}
+	return has_new_table;
+}
+
 pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode)
 {
 	if (!exportsMap || imprec_mode == pesieve::PE_IMPREC_NONE) {
@@ -55,7 +69,7 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImport
 		return IMP_RECOVERY_NOT_APPLICABLE;
 	}
 
-	if (imprec_mode == PE_IMPREC_UNERASE || imprec_mode == PE_IMPREC_AUTO) {
+	if (imprec_mode == PE_IMPREC_UNERASE || (imprec_mode == PE_IMPREC_AUTO && !hasNewImportTables())) {
 
 		if (this->isDefaultImportValid(exportsMap)) {
 			// Valid Import Table already set
