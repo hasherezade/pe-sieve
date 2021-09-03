@@ -1,13 +1,16 @@
 var searchData=
 [
-  ['op_5fcall_5fdword_0',['OP_CALL_DWORD',['../classpesieve_1_1_patch_analyzer.html#a9edea5c9889195f81c4a64101e6337acac8cef401ea09e9115585c7f7749a2da1',1,'pesieve::PatchAnalyzer']]],
-  ['op_5fjmp_1',['OP_JMP',['../classpesieve_1_1_patch_analyzer.html#a9edea5c9889195f81c4a64101e6337aca8945329e8795ae0a772ff9d3fd75edb3',1,'pesieve::PatchAnalyzer']]],
-  ['op_5fjmp_5fvia_5faddr_5fb1_2',['OP_JMP_VIA_ADDR_B1',['../classpesieve_1_1_patch_analyzer.html#a9edea5c9889195f81c4a64101e6337aca7c96268b31d70bed12140faedacdb2d9',1,'pesieve::PatchAnalyzer']]],
-  ['op_5fjmp_5fvia_5faddr_5fb2_3',['OP_JMP_VIA_ADDR_B2',['../classpesieve_1_1_patch_analyzer.html#a9edea5c9889195f81c4a64101e6337aca1f56319c67056e3c88b74dfed9ab7213',1,'pesieve::PatchAnalyzer']]],
-  ['op_5fpush_5fdword_4',['OP_PUSH_DWORD',['../classpesieve_1_1_patch_analyzer.html#a9edea5c9889195f81c4a64101e6337aca0b59d861634ef6e95e17dd676a0b7532',1,'pesieve::PatchAnalyzer']]],
-  ['op_5fshortjmp_5',['OP_SHORTJMP',['../classpesieve_1_1_patch_analyzer.html#a9edea5c9889195f81c4a64101e6337aca8f086c54e3a5c672820973fdfb884729',1,'pesieve::PatchAnalyzer']]],
-  ['out_5ffilters_5fcount_6',['OUT_FILTERS_COUNT',['../pe__sieve__types_8h.html#a88871c9404ff586fdb6fe9980cb5874fadadc68f4ec4b1397999f41cf7b766b41',1,'pe_sieve_types.h']]],
-  ['out_5ffull_7',['OUT_FULL',['../pe__sieve__types_8h.html#a88871c9404ff586fdb6fe9980cb5874fa37f86e34002ffe05546210339ba53459',1,'pe_sieve_types.h']]],
-  ['out_5fno_5fdir_8',['OUT_NO_DIR',['../pe__sieve__types_8h.html#a88871c9404ff586fdb6fe9980cb5874fa6fc0adc52a17e4ade8c56624ed4fb893',1,'pe_sieve_types.h']]],
-  ['out_5fno_5fdumps_9',['OUT_NO_DUMPS',['../pe__sieve__types_8h.html#a88871c9404ff586fdb6fe9980cb5874fa3a554b74ffb94e56f205c39856eab208',1,'pe_sieve_types.h']]]
+  ['imp_5falready_5fok_0',['IMP_ALREADY_OK',['../classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18ad8c6c2a23febda50327373a4aa23c8b7',1,'pesieve::ImpReconstructor']]],
+  ['imp_5fdir_5ffixed_1',['IMP_DIR_FIXED',['../classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18afc9614257229d52e5d7d732638d06fe3',1,'pesieve::ImpReconstructor']]],
+  ['imp_5ffixed_2',['IMP_FIXED',['../classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18a42e3e30f4636403d9271e0038719f4f5',1,'pesieve::ImpReconstructor']]],
+  ['imp_5fnot_5ffound_3',['IMP_NOT_FOUND',['../classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18a5b16c13eec87e4ba307546016c5e40be',1,'pesieve::ImpReconstructor']]],
+  ['imp_5frecovery_5ferror_4',['IMP_RECOVERY_ERROR',['../classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18a217055404d833d8acf434367ae5a8a7e',1,'pesieve::ImpReconstructor']]],
+  ['imp_5frecovery_5fnot_5fapplicable_5',['IMP_RECOVERY_NOT_APPLICABLE',['../classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18a75c87ffb239490891b35ce29b071968f',1,'pesieve::ImpReconstructor']]],
+  ['imp_5frecovery_5fskipped_6',['IMP_RECOVERY_SKIPPED',['../classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18a2035f95399aff409a999a7d4de09a293',1,'pesieve::ImpReconstructor']]],
+  ['imp_5frecreated_7',['IMP_RECREATED',['../classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18a749b2c5b23f7fa14dc51ea2f28b599d0',1,'pesieve::ImpReconstructor']]],
+  ['integrity_5fhigh_8',['INTEGRITY_HIGH',['../namespacepesieve_1_1util.html#a06aec04d3d9256eeb727d8c9df34a8e9a75351012023b4a8bfd717346f206c96c',1,'pesieve::util']]],
+  ['integrity_5flow_9',['INTEGRITY_LOW',['../namespacepesieve_1_1util.html#a06aec04d3d9256eeb727d8c9df34a8e9a3496cb9024cd65014a20278acb028b49',1,'pesieve::util']]],
+  ['integrity_5fmedium_10',['INTEGRITY_MEDIUM',['../namespacepesieve_1_1util.html#a06aec04d3d9256eeb727d8c9df34a8e9a2af1fbb47952cea6e357fc8337856097',1,'pesieve::util']]],
+  ['integrity_5fsystem_11',['INTEGRITY_SYSTEM',['../namespacepesieve_1_1util.html#a06aec04d3d9256eeb727d8c9df34a8e9a7be5f4e0e6c465d56f40bb43f298ff25',1,'pesieve::util']]],
+  ['integrity_5funknown_12',['INTEGRITY_UNKNOWN',['../namespacepesieve_1_1util.html#a06aec04d3d9256eeb727d8c9df34a8e9a85c4a58fabca811127f9b4eab7e655ab',1,'pesieve::util']]]
 ];

@@ -43,7 +43,7 @@ var searchData=
   ['set_5fnon_5fsuspicious_40',['set_non_suspicious',['../scanner_8cpp.html#abe4faa4c4347c0bfc6691847fd84a48f',1,'scanner.cpp']]],
   ['set_5fprivilege_41',['set_privilege',['../namespacepesieve_1_1util.html#a56df5353038c000c74a9c1875a989460',1,'pesieve::util']]],
   ['setend_42',['setEnd',['../classpesieve_1_1_patch_list_1_1_patch.html#af34616cf2855636a928dbac68cfae3e0',1,'pesieve::PatchList::Patch']]],
-  ['sethooktarget_43',['setHookTarget',['../classpesieve_1_1_patch_list_1_1_patch.html#a06914a3c9b4789ca60fa59f4d3335f5b',1,'pesieve::PatchList::Patch']]],
+  ['sethooktarget_43',['setHookTarget',['../classpesieve_1_1_patch_list_1_1_patch.html#adf9a2d02e37e69146ebfd20799077542',1,'pesieve::PatchList::Patch']]],
   ['sethooktargetinfo_44',['setHookTargetInfo',['../classpesieve_1_1_patch_list_1_1_patch.html#a7995c01369861207268c6d18f6ed3934',1,'pesieve::PatchList::Patch']]],
   ['setmzpe_45',['setMzPe',['../classpesieve_1_1_artefact_scanner.html#a6a6ecf4776e495b05b1407605280d8b8',1,'pesieve::ArtefactScanner']]],
   ['setntfilehdr_46',['setNtFileHdr',['../classpesieve_1_1_artefact_scanner.html#a732749d6a208c45fad90e07f0c6da609',1,'pesieve::ArtefactScanner']]],
