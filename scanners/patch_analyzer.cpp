@@ -177,6 +177,21 @@ size_t pesieve::PatchAnalyzer::_analyze(PatchList::Patch &patch, PBYTE patch_ptr
 	return 0;
 }
 
+size_t pesieve::PatchAnalyzer::_analyzeRelocated(PatchList::Patch &patch, BYTE* patch_ptr)
+{
+	if (this->relocs.find(patch.startRva) == this->relocs.end()) {
+		return 0;
+	}
+	std::cout << "This patch is a relocated field\n";
+	const size_t fieldSize = (this->moduleData.is64bit()) ? sizeof(ULONGLONG) : sizeof(DWORD);
+	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, fieldSize)) {
+		return 0;
+	}
+	ULONGLONG field = (this->moduleData.is64bit()) ? *((ULONGLONG*)patch_ptr) : *((DWORD*)patch_ptr);
+	patch.setHookTarget(field, true);
+	return fieldSize;
+}
+
 size_t pesieve::PatchAnalyzer::analyze(PatchList::Patch &patch)
 {
 	const ULONGLONG patch_va = moduleData.rvaToVa(patch.startRva);
@@ -187,12 +202,11 @@ size_t pesieve::PatchAnalyzer::analyze(PatchList::Patch &patch)
 	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, kMinSize)) {
 		return 0;
 	}
-	if (this->relocs.find(patch.startRva) != this->relocs.end()) {
-		std::cout << "This patch is a relocated field\n";
+	size_t size = _analyzeRelocated(patch, patch_ptr);
+	if (size) {
+		return size;
 	}
-
-	size_t size = _analyze(patch, patch_ptr, patch_va);
-
+	size = _analyze(patch, patch_ptr, patch_va);
 	if (size == 0 && patch_offset > 0) {
 		//it may happen that the address of an existing JMP/CALL was replaced
 		//try to parse a byte before the patch...

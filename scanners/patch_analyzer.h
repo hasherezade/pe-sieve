@@ -29,6 +29,7 @@ namespace pesieve {
 
 	protected:
 		size_t _analyze(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
+		size_t _analyzeRelocated(PatchList::Patch &patch, BYTE* patch_ptr);
 
 		size_t parseJmpViaAddr(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
 		size_t parseShortJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
