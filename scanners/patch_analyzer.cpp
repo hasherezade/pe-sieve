@@ -182,7 +182,7 @@ size_t pesieve::PatchAnalyzer::_analyzeRelocated(PatchList::Patch &patch, BYTE* 
 	if (this->relocs.find(patch.startRva) == this->relocs.end()) {
 		return 0;
 	}
-	std::cout << "This patch is a relocated field\n";
+	//std::cout << "This patch is a relocated field\n";
 	const size_t fieldSize = (this->moduleData.is64bit()) ? sizeof(ULONGLONG) : sizeof(DWORD);
 	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, fieldSize)) {
 		return 0;
@@ -198,13 +198,13 @@ size_t pesieve::PatchAnalyzer::analyze(PatchList::Patch &patch)
 	const size_t patch_offset = patch.startRva - sectionRVA;
 	BYTE* patch_ptr = this->patchedCode + patch_offset;
 
-	const size_t kMinSize = 3;
-	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, kMinSize)) {
-		return 0;
-	}
 	size_t size = _analyzeRelocated(patch, patch_ptr);
 	if (size) {
 		return size;
+	}
+	const size_t kMinSize = 3;
+	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, kMinSize)) {
+		return 0;
 	}
 	size = _analyze(patch, patch_ptr, patch_va);
 	if (size == 0 && patch_offset > 0) {

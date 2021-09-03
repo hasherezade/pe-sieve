@@ -60,7 +60,6 @@ bool pesieve::ModuleData::_loadOriginal(bool disableFSredir)
 }
 
 
-
 bool pesieve::ModuleData::loadRelocatedFields(std::set<DWORD>& fields_rvas)
 {
 	if (!original_module || !original_size) {
@@ -87,19 +86,19 @@ bool pesieve::ModuleData::loadRelocatedFields(std::set<DWORD>& fields_rvas)
 		ModuleData &mod;
 	};
 	//---
-	std::cout << "module: " << this->szModName << "\n";
+	//std::cout << "module: " << this->szModName << "\n";
 	if (!peconv::has_valid_relocation_table(original_module, original_size)) {
-		std::cout << "No reloc table\n";
+		//std::cout << "No reloc table\n";
 		return false;
 	}
 	CollectRelocField collector(*this, fields_rvas);
 	if (!peconv::process_relocation_table(original_module, original_size, &collector)) {
-		std::cout << "Could not collect relocations!\n";
+		//std::cout << "Could not collect relocations!\n";
 		return false;
 	}
 
 	if (fields_rvas.size()) {
-		std::cout << "relocs: " << fields_rvas.size() << "\n";
+		//std::cout << "relocs: " << fields_rvas.size() << "\n";
 		return true;
 	}
 	return false;
