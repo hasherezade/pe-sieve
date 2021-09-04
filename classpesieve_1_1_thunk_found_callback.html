@@ -75,6 +75,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>a class containig callbacks for functions: find_iat, fill_iat  
+ <a href="classpesieve_1_1_thunk_found_callback.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="iat__finder_8h_source.html">iat_finder.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -82,13 +85,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a73d88c5883e2684ea4fe642085d98617"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_thunk_found_callback.html#a73d88c5883e2684ea4fe642085d98617">ThunkFoundCallback</a> ()</td></tr>
 <tr class="separator:a73d88c5883e2684ea4fe642085d98617"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a471618623bcca031182bed49c36db30e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_thunk_found_callback.html#a471618623bcca031182bed49c36db30e">shouldProcessVA</a> (ULONGLONG va)=0</td></tr>
+<tr class="memdesc:a471618623bcca031182bed49c36db30e"><td class="mdescLeft">&#160;</td><td class="mdescRight">the callback that will be called for each candidate for the imported function VA  <a href="classpesieve_1_1_thunk_found_callback.html#a471618623bcca031182bed49c36db30e">More...</a><br /></td></tr>
 <tr class="separator:a471618623bcca031182bed49c36db30e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4301142df4586549b52c8ede3666eea"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_thunk_found_callback.html#ab4301142df4586549b52c8ede3666eea">shouldAcceptExport</a> (ULONGLONG va, const peconv::ExportedFunc &amp;exp)=0</td></tr>
+<tr class="memdesc:ab4301142df4586549b52c8ede3666eea"><td class="mdescLeft">&#160;</td><td class="mdescRight">the callback that will be called validly resolved import  <a href="classpesieve_1_1_thunk_found_callback.html#ab4301142df4586549b52c8ede3666eea">More...</a><br /></td></tr>
 <tr class="separator:ab4301142df4586549b52c8ede3666eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="iat__finder_8h_source.html#l00014">14</a> of file <a class="el" href="iat__finder_8h_source.html">iat_finder.h</a>.</p>
+<div class="textblock"><p >a class containig callbacks for functions: find_iat, fill_iat </p>
+
+<p class="definition">Definition at line <a class="el" href="iat__finder_8h_source.html#l00015">15</a> of file <a class="el" href="iat__finder_8h_source.html">iat_finder.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a73d88c5883e2684ea4fe642085d98617" name="a73d88c5883e2684ea4fe642085d98617"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a73d88c5883e2684ea4fe642085d98617">&#9670;&nbsp;</a></span>ThunkFoundCallback()</h2>
@@ -113,7 +119,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="iat__finder_8h_source.html#l00017">17</a> of file <a class="el" href="iat__finder_8h_source.html">iat_finder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="iat__finder_8h_source.html#l00018">18</a> of file <a class="el" href="iat__finder_8h_source.html">iat_finder.h</a>.</p>
 
 </div>
 </div>
@@ -152,6 +158,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>the callback that will be called validly resolved import </p>
+
 </div>
 </div>
 <a id="a471618623bcca031182bed49c36db30e" name="a471618623bcca031182bed49c36db30e"></a>
@@ -177,6 +185,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>the callback that will be called for each candidate for the imported function VA </p>
 
 </div>
 </div>
