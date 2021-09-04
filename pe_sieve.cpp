@@ -1,6 +1,5 @@
 #include "pe_sieve.h"
 #include <peconv.h>
-#include <paramkit.h>
 
 #include <windows.h>
 #include "scanners/scanner.h"

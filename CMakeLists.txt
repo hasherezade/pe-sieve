@@ -34,21 +34,26 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 
 # modules:
 set ( M_PARSER "libpeconv/libpeconv" )
-set ( M_PARAMKIT_LIB "paramkit" )
 
 # modules paths:
 set (PECONV_DIR "${PROJECT_SOURCE_DIR}/${M_PARSER}" CACHE PATH "PEConv main path")
-set (PARAMKIT_DIR "${CMAKE_SOURCE_DIR}/${M_PARAMKIT_LIB}/${M_PARAMKIT_LIB}" CACHE PATH "ParamKit main path" )
 
 # modules headers:
 include_directories ( ${PECONV_DIR}/include )
-include_directories ( ${PARAMKIT_DIR}/include )
-
 # libs
 add_subdirectory (libpeconv/libpeconv)
 set ( PECONV_LIB $<TARGET_FILE:libpeconv> CACHE PATH "PEConvLib library path" )
-add_subdirectory ( ${PARAMKIT_DIR} )
-set ( PARAMKIT_LIB $<TARGET_FILE:paramkit> CACHE PATH "ParamKit library path" )
+
+if( NOT PESIEVE_AS_STATIC_LIB AND NOT PESIEVE_AS_DLL)
+	set ( M_PARAMKIT_LIB "paramkit" )
+
+	set (PARAMKIT_DIR "${CMAKE_SOURCE_DIR}/${M_PARAMKIT_LIB}/${M_PARAMKIT_LIB}" CACHE PATH "ParamKit main path" )
+	# modules headers:
+	include_directories ( ${PARAMKIT_DIR}/include )
+	# libs
+	add_subdirectory ( ${PARAMKIT_DIR} )
+	set ( PARAMKIT_LIB $<TARGET_FILE:paramkit> CACHE PATH "ParamKit library path" )
+endif()
 
 set (scanners_srcs
 	scanners/mapping_scanner.cpp
