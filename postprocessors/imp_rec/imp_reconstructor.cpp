@@ -152,7 +152,7 @@ bool pesieve::ImpReconstructor::isDefaultImportValid(IN const peconv::ExportsMap
 	// verify if the Import Table that is currently set is fine:
 
 	DWORD iat_offset = iat_dir->VirtualAddress;
-	IATBlock* iat_block = find_iat_block(is64bit, vBuf, vBufSize, exportsMap, iat_offset);
+	IATBlock* iat_block = this->findIATBlock(exportsMap, iat_offset);
 	if (!iat_block) {
 		//could not find any IAT Block at this IAT offset. The IAT offset may be incorrect.
 		return false;
@@ -181,13 +181,61 @@ bool pesieve::ImpReconstructor::isDefaultImportValid(IN const peconv::ExportsMap
 	return false;
 }
 
+IATBlock* pesieve::ImpReconstructor::findIATBlock(IN const peconv::ExportsMapper* exportsMap, size_t start_offset)
+{
+	if (!exportsMap) return nullptr;
+
+	// filter calls to the own exports
+	class ThunkFilterSelfCallback : public ThunkFoundCallback
+	{
+	public:
+		ThunkFilterSelfCallback(const PeBuffer &_peBuffer)
+			: peBuffer(_peBuffer)
+		{
+			//std::cout << "Module from: " << std::hex << peBuffer.getModuleBase() << " : " <<  (peBuffer.getModuleBase() + peBuffer.getBufferSize()) << "\n";
+		}
+
+		virtual bool shouldProcessVA(ULONGLONG va)
+		{
+			if (va >= peBuffer.getModuleBase() 
+				&& va < (peBuffer.getModuleBase() + peBuffer.getBufferSize())
+			)
+			{
+				// the address is in the current module: this may be a call to module's own function
+				return false;
+			}
+			return true;
+		}
+
+		virtual bool shouldAcceptExport(ULONGLONG va, const peconv::ExportedFunc &exp)
+		{
+			// accept any
+			return true;
+		}
+
+	protected:
+		const PeBuffer &peBuffer;
+	};
+	//---
+	ThunkFilterSelfCallback filter = ThunkFilterSelfCallback(this->peBuffer);
+
+	IATBlock* iat_block = nullptr;
+	if (this->is64bit) {
+		iat_block = find_iat<ULONGLONG>(this->peBuffer.vBuf, this->peBuffer.vBufSize, exportsMap, start_offset, &filter);
+	}
+	else {
+		iat_block = find_iat<DWORD>(this->peBuffer.vBuf, this->peBuffer.vBufSize, exportsMap, start_offset, &filter);
+	}
+	return iat_block;
+}
+
 IATBlock* pesieve::ImpReconstructor::findIAT(IN const peconv::ExportsMapper* exportsMap, size_t start_offset)
 {
 	BYTE *vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;
 	if (!vBuf) return nullptr;
 
-	IATBlock* iat_block = find_iat_block(is64bit, vBuf, vBufSize, exportsMap, start_offset);;
+	IATBlock* iat_block = findIATBlock(exportsMap, start_offset);
 	if (!iat_block) {
 		return nullptr;
 	}

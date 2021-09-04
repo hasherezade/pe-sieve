@@ -189,7 +189,7 @@ namespace pesieve {
 		bool printFoundIATs(std::string reportPath);
 
 	private:
-
+		IATBlock* findIATBlock(IN const peconv::ExportsMapper* exportsMap, size_t start_offset);
 		IATBlock* findIAT(IN const peconv::ExportsMapper* exportsMap, size_t start_offset);
 
 		//!  has more IATs that the main one (dynamically loaded)

@@ -3,7 +3,7 @@
 #include <iostream>
 #include "../scanners/artefact_scanner.h"
 
-size_t pesieve::PeBuffer::calcRemoteImgSize(ULONGLONG modBaseAddr)
+size_t pesieve::PeBuffer::calcRemoteImgSize(ULONGLONG modBaseAddr) const
 {
 	const size_t hdr_buffer_size = PAGE_SIZE;
 	BYTE hdr_buffer[hdr_buffer_size] = { 0 };
