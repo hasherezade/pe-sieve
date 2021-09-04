@@ -11,6 +11,7 @@
 
 namespace pesieve {
 
+	//!  a class containig callbacks for functions: find_iat, fill_iat
 	class ThunkFoundCallback
 	{
 	public:
@@ -18,8 +19,10 @@ namespace pesieve {
 		{
 		}
 
+		//!  the callback that will be called for each candidate for the imported function VA
 		virtual bool shouldProcessVA(ULONGLONG va) = 0;
 
+		//!  the callback that will be called validly resolved import
 		virtual bool shouldAcceptExport(ULONGLONG va, const peconv::ExportedFunc &exp) = 0;
 	};
 	//---

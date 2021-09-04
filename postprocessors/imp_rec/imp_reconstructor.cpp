@@ -5,7 +5,7 @@
 
 #include <fstream>
 
-//!  the minimal function count that the additional Import Table must have to trigger Import Table recreation (if run in autodetect mode)
+//!  the minimal function count that the additional Import Table must have in order to trigger Import Table recreation (if run in autodetect mode)
 #define MIN_FUNC_COUNT 3
 
 using namespace pesieve;
