@@ -189,18 +189,14 @@ IATBlock* pesieve::ImpReconstructor::findIATBlock(IN const peconv::ExportsMapper
 	class ThunkFilterSelfCallback : public ThunkFoundCallback
 	{
 	public:
-		ThunkFilterSelfCallback(const PeBuffer &_peBuffer)
-			: peBuffer(_peBuffer)
+		ThunkFilterSelfCallback(const ULONGLONG mod_start, size_t mod_size)
+			: startAddr(mod_start), endAddr(mod_start + mod_size)
 		{
-			//std::cout << "Module from: " << std::hex << peBuffer.getModuleBase() << " : " <<  (peBuffer.getModuleBase() + peBuffer.getBufferSize()) << "\n";
 		}
 
 		virtual bool shouldProcessVA(ULONGLONG va)
 		{
-			if (va >= peBuffer.getModuleBase() 
-				&& va < (peBuffer.getModuleBase() + peBuffer.getBufferSize())
-			)
-			{
+			if (va >= startAddr && va < endAddr) {
 				// the address is in the current module: this may be a call to module's own function
 				return false;
 			}
@@ -214,10 +210,11 @@ IATBlock* pesieve::ImpReconstructor::findIATBlock(IN const peconv::ExportsMapper
 		}
 
 	protected:
-		const PeBuffer &peBuffer;
+		const ULONGLONG startAddr;
+		const ULONGLONG endAddr;
 	};
 	//---
-	ThunkFilterSelfCallback filter = ThunkFilterSelfCallback(this->peBuffer);
+	ThunkFilterSelfCallback filter = ThunkFilterSelfCallback(peBuffer.moduleBase, peBuffer.getBufferSize());
 
 	IATBlock* iat_block = nullptr;
 	if (this->is64bit) {
