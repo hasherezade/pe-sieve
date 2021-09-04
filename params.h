@@ -39,8 +39,6 @@ public:
 	PEsieveParams(const std::string &version)
 		: Params(version)
 	{
-		std::stringstream ss;
-
 		this->addParam(new IntParam(PARAM_PID, true));
 		this->setInfo(PARAM_PID, "Set the PID of the target process.");//\n\t(decimal, or hexadecimal with '0x' prefix)");
 
@@ -64,11 +62,13 @@ public:
 			}
 		}
 
-		ss << "Do not scan module/s with given name/s (separated by '" << PARAM_LIST_SEPARATOR << "').\n" 
-			<< "\t  Example: kernel32.dll" << PARAM_LIST_SEPARATOR << "user32.dll";
 		this->addParam(new StringParam(PARAM_MODULES_IGNORE, false));
-		this->setInfo(PARAM_MODULES_IGNORE, ss.str());
-		ss.clear();
+		{
+			std::stringstream ss;
+			ss << "Do not scan module/s with given name/s (separated by '" << PARAM_LIST_SEPARATOR << "').\n"
+				<< "\t  Example: kernel32.dll" << PARAM_LIST_SEPARATOR << "user32.dll";
+			this->setInfo(PARAM_MODULES_IGNORE, ss.str());
+		}
 		
 		this->addParam(new BoolParam(PARAM_QUIET, false));
 		this->setInfo(PARAM_QUIET, "Print only the summary. Do not log on stdout during the scan.");
@@ -260,6 +260,27 @@ public:
 		if (mStr) {
 			mStr->copyToCStr(ps.output_dir, sizeof(ps.output_dir));
 		}
-
 	}
+
+	void printBanner()
+	{
+		char logo[] = "\
+.______    _______           _______. __   ___________    ____  _______ \n\
+|   _  \\  |   ____|         /       ||  | |   ____\\   \\  /   / |   ____|\n\
+|  |_)  | |  |__    ______ |   (----`|  | |  |__   \\   \\/   /  |  |__   \n\
+|   ___/  |   __|  |______| \\   \\    |  | |   __|   \\      /   |   __|  \n\
+|  |      |  |____      .----)   |   |  | |  |____   \\    /    |  |____ \n\
+| _|      |_______|     |_______/    |__| |_______|   \\__/     |_______|\n";
+
+		char logo2[] = "\
+  _        _______       _______      __   _______     __       _______ \n";
+		char logo3[] = "\
+________________________________________________________________________\n";
+		paramkit::print_in_color(2, logo);
+		paramkit::print_in_color(4, logo2);
+		paramkit::print_in_color(4, logo3);
+		std::cout << "\n";
+		std::cout << pesieve::info();
+	}
+
 };

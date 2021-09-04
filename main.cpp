@@ -21,27 +21,6 @@
 using namespace pesieve;
 using namespace pesieve::util;
 
-void banner(PEsieveParams &uParams)
-{
-	char logo[] = "\
-.______    _______           _______. __   ___________    ____  _______ \n\
-|   _  \\  |   ____|         /       ||  | |   ____\\   \\  /   / |   ____|\n\
-|  |_)  | |  |__    ______ |   (----`|  | |  |__   \\   \\/   /  |  |__   \n\
-|   ___/  |   __|  |______| \\   \\    |  | |   __|   \\      /   |   __|  \n\
-|  |      |  |____      .----)   |   |  | |  |____   \\    /    |  |____ \n\
-| _|      |_______|     |_______/    |__| |_______|   \\__/     |_______|\n";
-
-	char logo2[] = "\
-  _        _______       _______      __   _______     __       _______ \n";
-	char logo3[] = "\
-________________________________________________________________________\n";
-	paramkit::print_in_color(2, logo);
-	paramkit::print_in_color(4, logo2);
-	paramkit::print_in_color(4, logo3);
-	std::cout << "\n";
-	std::cout << info();
-	uParams.info();
-}
 
 void print_report(const pesieve::ReportEx& report, const t_params args)
 {
@@ -62,14 +41,13 @@ void print_report(const pesieve::ReportEx& report, const t_params args)
 
 int main(int argc, char *argv[])
 {
-
-	//---
 	bool info_req = false;
 	t_params args = { 0 };
 
 	PEsieveParams uParams(PESIEVE_VERSION);
 	if (argc < 2) {
-		banner(uParams);
+		uParams.printBanner();
+		uParams.info();
 		system("pause");
 		return PESIEVE_INFO;
 	}
