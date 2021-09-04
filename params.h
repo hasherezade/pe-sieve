@@ -36,8 +36,8 @@ using namespace pesieve;
 class PEsieveParams : public Params
 {
 public:
-	PEsieveParams()
-		: Params()
+	PEsieveParams(const std::string &version)
+		: Params(version)
 	{
 		std::stringstream ss;
 

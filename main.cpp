@@ -40,7 +40,6 @@ ________________________________________________________________________\n";
 	paramkit::print_in_color(4, logo3);
 	std::cout << "\n";
 	std::cout << info();
-	std::cout <<  "---\n";
 	uParams.info();
 }
 
@@ -68,7 +67,7 @@ int main(int argc, char *argv[])
 	bool info_req = false;
 	t_params args = { 0 };
 
-	PEsieveParams uParams;
+	PEsieveParams uParams(PESIEVE_VERSION);
 	if (argc < 2) {
 		banner(uParams);
 		system("pause");
