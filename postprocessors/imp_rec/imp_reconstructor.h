@@ -193,7 +193,7 @@ namespace pesieve {
 		IATBlock* findIAT(IN const peconv::ExportsMapper* exportsMap, size_t start_offset);
 
 		//!  has more IATs that the main one (dynamically loaded)
-		bool hasNewImportTables();
+		bool hasNewImportTables() const;
 
 		bool findImportTable(IN const peconv::ExportsMapper* exportsMap);
 		size_t collectIATs(IN const peconv::ExportsMapper* exportsMap);

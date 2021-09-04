@@ -110,19 +110,19 @@ namespace pesieve {
 			return true;
 		}
 
-		bool isCovered()
+		bool isCovered() const
 		{
 			return isCoverageComplete;
 		}
 
-		bool isValid()
+		bool isValid() const
 		{
 			//allow for every block with complete coverage
 			return isCovered();
 		}
 
 		//how many functions the IAT has
-		size_t countThunks()
+		size_t countThunks() const
 		{
 			return functions.size();
 		}
@@ -159,8 +159,8 @@ namespace pesieve {
 		bool is64bit;
 		bool isCoverageComplete;
 
-		std::map<ULONGLONG, const peconv::ExportedFunc*> functions; //TODO: this will be deleted or refactored
-		std::map<ULONGLONG, ULONGLONG> addrToFunctionVA; //TODO: this will be deleted or refactored
+		std::map<ULONGLONG, const peconv::ExportedFunc*> functions;
+		std::map<ULONGLONG, ULONGLONG> addrToFunctionVA;
 
 		friend class ImpReconstructor;
 	};

@@ -35,16 +35,20 @@ BYTE* pesieve::ImportTableBuffer::getDllSpaceAt(const DWORD rva, size_t required
 
 //---
 
-bool pesieve::ImpReconstructor::hasNewImportTables()
+bool pesieve::ImpReconstructor::hasNewImportTables() const
 {
 	bool has_new_table = false;
 	std::map<DWORD, IATBlock*>::const_iterator iats_itr;
 	for (iats_itr = foundIATs.cbegin(); iats_itr != foundIATs.cend(); ++iats_itr) {
 		const IATBlock* iblock = iats_itr->second;
-		if (iblock->isTerminated && !iblock->isMain) {
+		if (!iblock->isMain 
+			&& iblock->isTerminated
+			&& iblock->countThunks() > 1)
+		{
 			has_new_table = true;
 			break;
 		}
+
 	}
 	return has_new_table;
 }
