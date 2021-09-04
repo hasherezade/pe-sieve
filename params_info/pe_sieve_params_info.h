@@ -15,6 +15,9 @@ namespace pesieve {
 	pesieve::t_imprec_mode normalize_imprec_mode(size_t mode_id);
 	pesieve::t_dump_mode normalize_dump_mode(size_t mode_id);
 	pesieve::t_json_level normalize_json_level(size_t mode_id);
+
+	std::string dump_mode_to_id(const DWORD dump_mode);
+	std::string imprec_mode_to_id(const pesieve::t_imprec_mode imprec_mode);
 };
 
 

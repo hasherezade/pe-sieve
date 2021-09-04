@@ -37,7 +37,23 @@ set ( M_PARSER "libpeconv/libpeconv" )
 
 # modules paths:
 set (PECONV_DIR "${PROJECT_SOURCE_DIR}/${M_PARSER}" CACHE PATH "PEConv main path")
+
+# modules headers:
 include_directories ( ${PECONV_DIR}/include )
+# libs
+add_subdirectory (libpeconv/libpeconv)
+set ( PECONV_LIB $<TARGET_FILE:libpeconv> CACHE PATH "PEConvLib library path" )
+
+if( NOT PESIEVE_AS_STATIC_LIB AND NOT PESIEVE_AS_DLL)
+	set ( M_PARAMKIT_LIB "paramkit" )
+
+	set (PARAMKIT_DIR "${CMAKE_SOURCE_DIR}/${M_PARAMKIT_LIB}/${M_PARAMKIT_LIB}" CACHE PATH "ParamKit main path" )
+	# modules headers:
+	include_directories ( ${PARAMKIT_DIR}/include )
+	# libs
+	add_subdirectory ( ${PARAMKIT_DIR} )
+	set ( PARAMKIT_LIB $<TARGET_FILE:paramkit> CACHE PATH "ParamKit library path" )
+endif()
 
 set (scanners_srcs
 	scanners/mapping_scanner.cpp
@@ -221,6 +237,7 @@ if(PESIEVE_AS_STATIC_LIB OR PESIEVE_AS_DLL)
 	endif()
 
 	add_library ( ${PROJECT_NAME} ${LIBRARY_TYPE} ${library_export_hdrs} ${hdrs} ${lib_srcs} )
+
 	set_source_files_properties(main.def PROPERTIES HEADER_FILE_ONLY TRUE)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PESIEVE_${LIBRARY_TYPE}_LIB)
 	INSTALL(FILES ${library_export_hdrs}
@@ -228,8 +245,18 @@ if(PESIEVE_AS_STATIC_LIB OR PESIEVE_AS_DLL)
 	)
 	set_source_files_properties(main.def PROPERTIES HEADER_FILE_ONLY TRUE)
 else()
-	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} main.cpp )
+	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} main.cpp params.h )
 endif()
+
+set (used_libs
+	${PECONV_LIB}
+	psapi.lib
+	ntdll.lib
+	shlwapi
+)
+
+# dependencies
+add_dependencies(${PROJECT_NAME} libpeconv )
 
 if(PESIEVE_AS_STATIC_LIB OR PESIEVE_AS_DLL)
 	include(GNUInstallDirs)
@@ -238,6 +265,16 @@ if(PESIEVE_AS_STATIC_LIB OR PESIEVE_AS_DLL)
 		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 	)
+
+	target_link_libraries ( ${PROJECT_NAME} ${used_libs} )
+
+else()
+
+	# add Paramkit only if build as an exe
+	# dependencies
+	add_dependencies(${PROJECT_NAME} paramkit )
+	target_link_libraries ( ${PROJECT_NAME} ${used_libs} ${PARAMKIT_LIB} )
+
 endif()
 
 if (NOT PESIEVE_AS_STATIC_LIB)
@@ -255,11 +292,3 @@ if (NOT PESIEVE_AS_STATIC_LIB)
 	endif()
 endif()
 
-# libs
-add_subdirectory (libpeconv/libpeconv)
-set ( PECONV_LIB $<TARGET_FILE:libpeconv> CACHE PATH "PEConvLib library path" )
-
-target_link_libraries ( ${PROJECT_NAME} ${PECONV_LIB} "psapi.lib" "ntdll.lib" "shlwapi")
-
-# dependencies
-add_dependencies(${PROJECT_NAME} libpeconv)
