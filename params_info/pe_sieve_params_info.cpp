@@ -11,7 +11,7 @@ std::string pesieve::translate_dump_mode(const DWORD dump_mode)
 	case pesieve::PE_DUMP_AUTO:
 		return "autodetect (default)";
 	case pesieve::PE_DUMP_VIRTUAL:
-		return "virtual (as it is in the memory, no unmapping)";
+		return "virtual (as is in the memory, no unmapping)";
 	case pesieve::PE_DUMP_UNMAP:
 		return "unmapped (converted to raw using sections' raw headers)";
 	case pesieve::PE_DUMP_REALIGN:
@@ -58,7 +58,7 @@ std::string pesieve::translate_imprec_mode(const pesieve::t_imprec_mode imprec_m
 	case pesieve::PE_IMPREC_UNERASE:
 		return "unerase the erased parts of the partialy damaged ImportTable";
 	case pesieve::PE_IMPREC_REBUILD:
-		return "build the ImportTable from the scratch, basing on the found IATs";
+		return "build the ImportTable from scratch, basing on the found IATs";
 	}
 	return "undefined";
 }
