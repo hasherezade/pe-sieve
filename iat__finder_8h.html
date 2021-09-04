@@ -69,6 +69,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -81,6 +82,11 @@ $(function() {
 </div>
 <p><a href="iat__finder_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_thunk_found_callback.html">pesieve::ThunkFoundCallback</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacepesieve"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html">pesieve</a></td></tr>
@@ -93,14 +99,12 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa3cbda54d6e6998f0293d2f52a881f98"><td class="memItemLeft" align="right" valign="top">IATBlock *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#aa3cbda54d6e6998f0293d2f52a881f98">pesieve::find_iat_block</a> (IN <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> is64bit, IN BYTE *vBuf, IN size_t vBufSize, IN const peconv::ExportsMapper *exportsMap, IN OPTIONAL size_t search_offset)</td></tr>
-<tr class="separator:aa3cbda54d6e6998f0293d2f52a881f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a9d9de3ac644659628a5eaa09dbf1e7"><td class="memTemplParams" colspan="2">template&lt;typename FIELD_T &gt; </td></tr>
-<tr class="memitem:a3a9d9de3ac644659628a5eaa09dbf1e7"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a3a9d9de3ac644659628a5eaa09dbf1e7">pesieve::fill_iat</a> (BYTE *vBuf, size_t vBufSize, IN const peconv::ExportsMapper *exportsMap, IN OUT IATBlock &amp;iat)</td></tr>
-<tr class="separator:a3a9d9de3ac644659628a5eaa09dbf1e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d6f2a719a95aa7ed29bcf1a5acfd729"><td class="memTemplParams" colspan="2">template&lt;typename FIELD_T &gt; </td></tr>
-<tr class="memitem:a1d6f2a719a95aa7ed29bcf1a5acfd729"><td class="memTemplItemLeft" align="right" valign="top">IATBlock *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a1d6f2a719a95aa7ed29bcf1a5acfd729">pesieve::find_iat</a> (<a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> is64bit, BYTE *vBuf, size_t vBufSize, IN const peconv::ExportsMapper *exportsMap, IN OPTIONAL size_t search_offset=0)</td></tr>
-<tr class="separator:a1d6f2a719a95aa7ed29bcf1a5acfd729"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a913e34d9d79fffb39e16bf153a8d197d"><td class="memTemplParams" colspan="2">template&lt;typename FIELD_T &gt; </td></tr>
+<tr class="memitem:a913e34d9d79fffb39e16bf153a8d197d"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d">pesieve::fill_iat</a> (BYTE *vBuf, size_t vBufSize, IN const peconv::ExportsMapper *exportsMap, IN OUT IATBlock &amp;iat, IN ThunkFoundCallback *callback)</td></tr>
+<tr class="separator:a913e34d9d79fffb39e16bf153a8d197d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af734d35ba5e8cea0aa4a8cab1f51dcd6"><td class="memTemplParams" colspan="2">template&lt;typename FIELD_T &gt; </td></tr>
+<tr class="memitem:af734d35ba5e8cea0aa4a8cab1f51dcd6"><td class="memTemplItemLeft" align="right" valign="top">IATBlock *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#af734d35ba5e8cea0aa4a8cab1f51dcd6">pesieve::find_iat</a> (BYTE *vBuf, size_t vBufSize, IN const peconv::ExportsMapper *exportsMap, IN size_t search_offset, IN ThunkFoundCallback *callback)</td></tr>
+<tr class="separator:af734d35ba5e8cea0aa4a8cab1f51dcd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="aaa26768a6583c35dd045af63f9207edd" name="aaa26768a6583c35dd045af63f9207edd"></a>

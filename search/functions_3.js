@@ -7,7 +7,7 @@ var searchData=
   ['calcimagesize_4',['calcImageSize',['../classpesieve_1_1_artefact_scanner.html#a3053ea39d3cba2a4f55ebe0b19dda71e',1,'pesieve::ArtefactScanner']]],
   ['calcimgsize_5',['calcImgSize',['../classpesieve_1_1_artefact_scanner.html#aeedfc8d641b324dd3eb203313731292f',1,'pesieve::ArtefactScanner::calcImgSize()'],['../classpesieve_1_1_remote_module_data.html#a2566f869e49becd1a75b1e3d11fbff10',1,'pesieve::RemoteModuleData::calcImgSize()']]],
   ['calcpebase_6',['calcPeBase',['../classpesieve_1_1_artefact_scanner.html#a5cdaf77ef7c8a8b0fe53a6348b60429a',1,'pesieve::ArtefactScanner']]],
-  ['calcremoteimgsize_7',['calcRemoteImgSize',['../classpesieve_1_1_pe_buffer.html#ad16dbd01259b0851a1e0e2b7e62971f2',1,'pesieve::PeBuffer']]],
+  ['calcremoteimgsize_7',['calcRemoteImgSize',['../classpesieve_1_1_pe_buffer.html#a1fd37e72b44513e2830cac46a5ff5075',1,'pesieve::PeBuffer']]],
   ['can_5fmake_5fprocess_5freflection_8',['can_make_process_reflection',['../namespacepesieve_1_1util.html#a64ce3f5b7b242c0d602ad4dfc21a8083',1,'pesieve::util']]],
   ['check_5faccess_5fdenied_9',['check_access_denied',['../namespacepesieve.html#a4c7e67a288c6e0581c8848b5649b0223',1,'pesieve']]],
   ['checkforhookedexports_10',['checkForHookedExports',['../classpesieve_1_1_patch_list.html#a05382a8d3308b2b73072ce3f74e51df7',1,'pesieve::PatchList']]],

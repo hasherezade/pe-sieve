@@ -186,6 +186,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1t__pattern.html">t_pattern</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_thunk_found_callback.html">ThunkFoundCallback</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_unreachable_module_report.html">UnreachableModuleReport</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_working_set_scanner.html">WorkingSetScanner</a></td></tr>
@@ -254,14 +256,12 @@ Functions</h2></td></tr>
 <tr class="separator:ad71d3d82e248bd37f2becabe0ca00f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1121a75bcf0c9ec7b3e14849c7c7748f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a1121a75bcf0c9ec7b3e14849c7c7748f">get_longest_func_name</a> (std::map&lt; ULONGLONG, std::set&lt; peconv::ExportedFunc &gt; &gt; &amp;addrToFunc)</td></tr>
 <tr class="separator:a1121a75bcf0c9ec7b3e14849c7c7748f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3cbda54d6e6998f0293d2f52a881f98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpesieve_1_1_i_a_t_block.html">IATBlock</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#aa3cbda54d6e6998f0293d2f52a881f98">find_iat_block</a> (IN <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> is64bit, IN BYTE *vBuf, IN size_t vBufSize, IN const peconv::ExportsMapper *exportsMap, IN OPTIONAL size_t search_offset)</td></tr>
-<tr class="separator:aa3cbda54d6e6998f0293d2f52a881f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a9d9de3ac644659628a5eaa09dbf1e7"><td class="memTemplParams" colspan="2">template&lt;typename FIELD_T &gt; </td></tr>
-<tr class="memitem:a3a9d9de3ac644659628a5eaa09dbf1e7"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a3a9d9de3ac644659628a5eaa09dbf1e7">fill_iat</a> (BYTE *vBuf, size_t vBufSize, IN const peconv::ExportsMapper *exportsMap, IN OUT <a class="el" href="classpesieve_1_1_i_a_t_block.html">IATBlock</a> &amp;iat)</td></tr>
-<tr class="separator:a3a9d9de3ac644659628a5eaa09dbf1e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d6f2a719a95aa7ed29bcf1a5acfd729"><td class="memTemplParams" colspan="2">template&lt;typename FIELD_T &gt; </td></tr>
-<tr class="memitem:a1d6f2a719a95aa7ed29bcf1a5acfd729"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classpesieve_1_1_i_a_t_block.html">IATBlock</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a1d6f2a719a95aa7ed29bcf1a5acfd729">find_iat</a> (<a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> is64bit, BYTE *vBuf, size_t vBufSize, IN const peconv::ExportsMapper *exportsMap, IN OPTIONAL size_t search_offset=0)</td></tr>
-<tr class="separator:a1d6f2a719a95aa7ed29bcf1a5acfd729"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a913e34d9d79fffb39e16bf153a8d197d"><td class="memTemplParams" colspan="2">template&lt;typename FIELD_T &gt; </td></tr>
+<tr class="memitem:a913e34d9d79fffb39e16bf153a8d197d"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d">fill_iat</a> (BYTE *vBuf, size_t vBufSize, IN const peconv::ExportsMapper *exportsMap, IN OUT <a class="el" href="classpesieve_1_1_i_a_t_block.html">IATBlock</a> &amp;iat, IN <a class="el" href="classpesieve_1_1_thunk_found_callback.html">ThunkFoundCallback</a> *callback)</td></tr>
+<tr class="separator:a913e34d9d79fffb39e16bf153a8d197d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af734d35ba5e8cea0aa4a8cab1f51dcd6"><td class="memTemplParams" colspan="2">template&lt;typename FIELD_T &gt; </td></tr>
+<tr class="memitem:af734d35ba5e8cea0aa4a8cab1f51dcd6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classpesieve_1_1_i_a_t_block.html">IATBlock</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#af734d35ba5e8cea0aa4a8cab1f51dcd6">find_iat</a> (BYTE *vBuf, size_t vBufSize, IN const peconv::ExportsMapper *exportsMap, IN size_t search_offset, IN <a class="el" href="classpesieve_1_1_thunk_found_callback.html">ThunkFoundCallback</a> *callback)</td></tr>
+<tr class="separator:af734d35ba5e8cea0aa4a8cab1f51dcd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a284332cf7b83d3878a932657ec99404b"><td class="memItemLeft" align="right" valign="top">BYTE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a284332cf7b83d3878a932657ec99404b">get_buffer_space_at</a> (IN BYTE *buffer, IN const size_t buffer_size, IN const DWORD buffer_rva, IN const DWORD required_rva, IN const size_t required_size)</td></tr>
 <tr class="separator:a284332cf7b83d3878a932657ec99404b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af856350491a23b4fba1aabf0ffb5ecdb"><td class="memTemplParams" colspan="2">template&lt;typename FIELD_T &gt; </td></tr>
@@ -494,8 +494,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a3a9d9de3ac644659628a5eaa09dbf1e7" name="a3a9d9de3ac644659628a5eaa09dbf1e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a9d9de3ac644659628a5eaa09dbf1e7">&#9670;&nbsp;</a></span>fill_iat()</h2>
+<a id="a913e34d9d79fffb39e16bf153a8d197d" name="a913e34d9d79fffb39e16bf153a8d197d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a913e34d9d79fffb39e16bf153a8d197d">&#9670;&nbsp;</a></span>fill_iat()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -524,7 +524,13 @@ template&lt;typename FIELD_T &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">IN OUT <a class="el" href="classpesieve_1_1_i_a_t_block.html">IATBlock</a> &amp;&#160;</td>
-          <td class="paramname"><em>iat</em>&#160;</td>
+          <td class="paramname"><em>iat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IN <a class="el" href="classpesieve_1_1_thunk_found_callback.html">ThunkFoundCallback</a> *&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -534,12 +540,12 @@ template&lt;typename FIELD_T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="iat__finder_8h_source.html#l00023">23</a> of file <a class="el" href="iat__finder_8h_source.html">iat_finder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="iat__finder_8h_source.html#l00028">28</a> of file <a class="el" href="iat__finder_8h_source.html">iat_finder.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="namespacepesieve_a3a9d9de3ac644659628a5eaa09dbf1e7_cgraph.png" border="0" usemap="#anamespacepesieve_a3a9d9de3ac644659628a5eaa09dbf1e7_cgraph" alt=""/></div>
-<map name="anamespacepesieve_a3a9d9de3ac644659628a5eaa09dbf1e7_cgraph" id="anamespacepesieve_a3a9d9de3ac644659628a5eaa09dbf1e7_cgraph">
+<div class="center"><img src="namespacepesieve_a913e34d9d79fffb39e16bf153a8d197d_cgraph.png" border="0" usemap="#anamespacepesieve_a913e34d9d79fffb39e16bf153a8d197d_cgraph" alt=""/></div>
+<map name="anamespacepesieve_a913e34d9d79fffb39e16bf153a8d197d_cgraph" id="anamespacepesieve_a913e34d9d79fffb39e16bf153a8d197d_cgraph">
 <area shape="rect" title=" " alt="" coords="5,35,112,61"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="175,5,320,32"/>
 <area shape="rect" href="classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="160,57,335,98"/>
@@ -592,8 +598,8 @@ template&lt;typename FIELD_T &gt; </div>
 
 </div>
 </div>
-<a id="a1d6f2a719a95aa7ed29bcf1a5acfd729" name="a1d6f2a719a95aa7ed29bcf1a5acfd729"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d6f2a719a95aa7ed29bcf1a5acfd729">&#9670;&nbsp;</a></span>find_iat()</h2>
+<a id="af734d35ba5e8cea0aa4a8cab1f51dcd6" name="af734d35ba5e8cea0aa4a8cab1f51dcd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af734d35ba5e8cea0aa4a8cab1f51dcd6">&#9670;&nbsp;</a></span>find_iat()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -603,12 +609,6 @@ template&lt;typename FIELD_T &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classpesieve_1_1_i_a_t_block.html">IATBlock</a> * pesieve::find_iat </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td>
-          <td class="paramname"><em>is64bit</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">BYTE *&#160;</td>
           <td class="paramname"><em>vBuf</em>, </td>
         </tr>
@@ -627,8 +627,14 @@ template&lt;typename FIELD_T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">IN OPTIONAL size_t&#160;</td>
-          <td class="paramname"><em>search_offset</em> = <code>0</code>&#160;</td>
+          <td class="paramtype">IN size_t&#160;</td>
+          <td class="paramname"><em>search_offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IN <a class="el" href="classpesieve_1_1_thunk_found_callback.html">ThunkFoundCallback</a> *&#160;</td>
+          <td class="paramname"><em>callback</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -638,64 +644,16 @@ template&lt;typename FIELD_T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="iat__finder_8h_source.html#l00074">74</a> of file <a class="el" href="iat__finder_8h_source.html">iat_finder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="iat__finder_8h_source.html#l00091">91</a> of file <a class="el" href="iat__finder_8h_source.html">iat_finder.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="namespacepesieve_a1d6f2a719a95aa7ed29bcf1a5acfd729_cgraph.png" border="0" usemap="#anamespacepesieve_a1d6f2a719a95aa7ed29bcf1a5acfd729_cgraph" alt=""/></div>
-<map name="anamespacepesieve_a1d6f2a719a95aa7ed29bcf1a5acfd729_cgraph" id="anamespacepesieve_a1d6f2a719a95aa7ed29bcf1a5acfd729_cgraph">
+<div class="center"><img src="namespacepesieve_af734d35ba5e8cea0aa4a8cab1f51dcd6_cgraph.png" border="0" usemap="#anamespacepesieve_af734d35ba5e8cea0aa4a8cab1f51dcd6_cgraph" alt=""/></div>
+<map name="anamespacepesieve_af734d35ba5e8cea0aa4a8cab1f51dcd6_cgraph" id="anamespacepesieve_af734d35ba5e8cea0aa4a8cab1f51dcd6_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,120,32"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="168,5,313,32"/>
 </map>
 </div>
-
-</div>
-</div>
-<a id="aa3cbda54d6e6998f0293d2f52a881f98" name="aa3cbda54d6e6998f0293d2f52a881f98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3cbda54d6e6998f0293d2f52a881f98">&#9670;&nbsp;</a></span>find_iat_block()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classpesieve_1_1_i_a_t_block.html">pesieve::IATBlock</a> * pesieve::find_iat_block </td>
-          <td>(</td>
-          <td class="paramtype">IN <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td>
-          <td class="paramname"><em>is64bit</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">IN BYTE *&#160;</td>
-          <td class="paramname"><em>vBuf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">IN size_t&#160;</td>
-          <td class="paramname"><em>vBufSize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">IN const peconv::ExportsMapper *&#160;</td>
-          <td class="paramname"><em>exportsMap</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">IN OPTIONAL size_t&#160;</td>
-          <td class="paramname"><em>search_offset</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="iat__finder_8cpp_source.html#l00003">3</a> of file <a class="el" href="iat__finder_8cpp_source.html">iat_finder.cpp</a>.</p>
 
 </div>
 </div>
