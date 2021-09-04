@@ -232,6 +232,7 @@ if(PESIEVE_AS_STATIC_LIB OR PESIEVE_AS_DLL)
 	endif()
 
 	add_library ( ${PROJECT_NAME} ${LIBRARY_TYPE} ${library_export_hdrs} ${hdrs} ${lib_srcs} )
+
 	set_source_files_properties(main.def PROPERTIES HEADER_FILE_ONLY TRUE)
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PESIEVE_${LIBRARY_TYPE}_LIB)
 	INSTALL(FILES ${library_export_hdrs}
@@ -239,7 +240,7 @@ if(PESIEVE_AS_STATIC_LIB OR PESIEVE_AS_DLL)
 	)
 	set_source_files_properties(main.def PROPERTIES HEADER_FILE_ONLY TRUE)
 else()
-	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} main.cpp )
+	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} main.cpp params.h )
 endif()
 
 set (used_libs
