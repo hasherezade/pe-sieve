@@ -1,3 +1,6 @@
 [submodule "libpeconv"]
 	path = libpeconv
 	url = https://github.com/hasherezade/libpeconv.git
+[submodule "paramkit"]
+	path = paramkit
+	url = https://github.com/hasherezade/paramkit
