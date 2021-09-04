@@ -39,7 +39,7 @@ var searchData=
   ['is_5fvalid_5fsection_36',['is_valid_section',['../namespacepesieve.html#ab6eb75407c454f07ae7910a1d8b7c826',1,'pesieve']]],
   ['iscode_37',['isCode',['../classpesieve_1_1_working_set_scanner.html#ab177feb41699c640fc206729c11439e5',1,'pesieve::WorkingSetScanner']]],
   ['iscontained_38',['isContained',['../classpesieve_1_1_pe_section.html#a98091942ed90ff8157039ff1008cbc25',1,'pesieve::PeSection']]],
-  ['iscovered_39',['isCovered',['../classpesieve_1_1_i_a_t_thunks_series.html#afa77af01bd49d5428a03227b1d2a2283',1,'pesieve::IATThunksSeries::isCovered()'],['../classpesieve_1_1_i_a_t_block.html#a28382cc44baf47b6b930c355aca5984e',1,'pesieve::IATBlock::isCovered()']]],
+  ['iscovered_39',['isCovered',['../classpesieve_1_1_i_a_t_thunks_series.html#afa77af01bd49d5428a03227b1d2a2283',1,'pesieve::IATThunksSeries::isCovered()'],['../classpesieve_1_1_i_a_t_block.html#a55cba9be25b9ad8c2b15073b5fb3eb17',1,'pesieve::IATBlock::isCovered()']]],
   ['isdotnet_40',['isDotNet',['../classpesieve_1_1_module_data.html#a669207603953e5ce9ca208a9b4b3636b',1,'pesieve::ModuleData']]],
   ['isdotnetmanagedcode_41',['isDotNetManagedCode',['../classpesieve_1_1_module_data.html#afd198d7810e60af9584f4fc2fd90e9fa',1,'pesieve::ModuleData']]],
   ['isexecutable_42',['isExecutable',['../classpesieve_1_1_working_set_scanner.html#ac66d70d22a149e709998b4cf68b40ad1',1,'pesieve::WorkingSetScanner']]],
@@ -58,6 +58,6 @@ var searchData=
   ['issectionentry_55',['isSectionEntry',['../classpesieve_1_1_remote_module_data.html#ad9f27c0872806491dbcb729d27e04bce',1,'pesieve::RemoteModuleData']]],
   ['issectionexecutable_56',['isSectionExecutable',['../classpesieve_1_1_remote_module_data.html#a98f87651ef4162967b54bb662bd8e0b7',1,'pesieve::RemoteModuleData']]],
   ['issuspicious_57',['isSuspicious',['../classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93',1,'pesieve::ScannedModule']]],
-  ['isvalid_58',['isValid',['../classpesieve_1_1_i_a_t_block.html#ad006425151deeffedc45c870d5383dcf',1,'pesieve::IATBlock']]],
+  ['isvalid_58',['isValid',['../classpesieve_1_1_i_a_t_block.html#a51f4f94343508d1acc169ef1b1fcb617',1,'pesieve::IATBlock']]],
   ['isvalidpe_59',['isValidPe',['../classpesieve_1_1_pe_buffer.html#a314ac1c88e3eb95becd89ae75c92b67f',1,'pesieve::PeBuffer']]]
 ];

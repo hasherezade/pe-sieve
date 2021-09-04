@@ -27,7 +27,7 @@ var searchData=
   ['countresultspertype_24',['countResultsPerType',['../classpesieve_1_1_process_scan_report.html#a0ace09b839d1a638f209eed6f70a1187',1,'pesieve::ProcessScanReport']]],
   ['countsectionswithstatus_25',['countSectionsWithStatus',['../classpesieve_1_1_code_scan_report.html#a1d1e5ff35f794df92f75c4ac33355b9d',1,'pesieve::CodeScanReport']]],
   ['countsuspiciouspertype_26',['countSuspiciousPerType',['../classpesieve_1_1_process_scan_report.html#ac9a4018b68508a26966c9c02f14aa4da',1,'pesieve::ProcessScanReport']]],
-  ['countthunks_27',['countThunks',['../classpesieve_1_1_i_a_t_block.html#a64e428423d6c02fb93616d4828114e64',1,'pesieve::IATBlock']]],
+  ['countthunks_27',['countThunks',['../classpesieve_1_1_i_a_t_block.html#a2d4d263518aab46409802d50e84b2f9e',1,'pesieve::IATBlock']]],
   ['counttotal_28',['countTotal',['../classpesieve_1_1_process_dump_report.html#abbbbcc15b01367e5830c7e62eece636c',1,'pesieve::ProcessDumpReport']]],
   ['countunpackedsections_29',['countUnpackedSections',['../classpesieve_1_1_code_scan_report.html#a13fde9f443f304c019598570f95f98f7',1,'pesieve::CodeScanReport']]],
   ['create_5fdir_5frecursively_30',['create_dir_recursively',['../namespacepesieve_1_1util.html#a04f5ff8195f6fd23668379fbd46879dc',1,'pesieve::util']]]
