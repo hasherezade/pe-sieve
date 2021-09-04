@@ -5,6 +5,9 @@
 
 #include <fstream>
 
+//!  the minimal function count that the additional Import Table must have to trigger Import Table recreation (if run in autodetect mode)
+#define MIN_FUNC_COUNT 3
+
 using namespace pesieve;
 
 namespace pesieve {
@@ -43,7 +46,7 @@ bool pesieve::ImpReconstructor::hasNewImportTables() const
 		const IATBlock* iblock = iats_itr->second;
 		if (!iblock->isMain 
 			&& iblock->isTerminated
-			&& iblock->countThunks() > 1)
+			&& iblock->countThunks() >= MIN_FUNC_COUNT)
 		{
 			has_new_table = true;
 			break;
