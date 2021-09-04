@@ -11,16 +11,21 @@
 
 namespace pesieve {
 
-	IATBlock* find_iat_block(
-		IN bool is64bit,
-		IN BYTE* vBuf,
-		IN size_t vBufSize,
-		IN const peconv::ExportsMapper* exportsMap,
-		IN OPTIONAL size_t search_offset
-	);
+	class ThunkFoundCallback
+	{
+	public:
+		ThunkFoundCallback()
+		{
+		}
+
+		virtual bool shouldProcessVA(ULONGLONG va) = 0;
+
+		virtual bool shouldAcceptExport(ULONGLONG va, const peconv::ExportedFunc &exp) = 0;
+	};
+	//---
 
 	template <typename FIELD_T>
-	size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN const peconv::ExportsMapper* exportsMap, IN OUT IATBlock &iat)
+	size_t fill_iat(BYTE* vBuf, size_t vBufSize, IN const peconv::ExportsMapper* exportsMap, IN OUT IATBlock &iat, IN ThunkFoundCallback *callback)
 	{
 		if (!vBuf || !exportsMap || !iat.iatOffset) return 0;
 
@@ -44,16 +49,28 @@ namespace pesieve {
 				}
 				continue;
 			}
-			exp = exportsMap->find_export_by_va(*imp);
+
+			const FIELD_T imp_va = (*imp);
+
+			if (callback) {
+				if (!callback->shouldProcessVA(imp_va)) break;
+			}
+
+			//std::cout << "checking: " << std::hex << possible_rva << std::endl;
+			const peconv::ExportedFunc *exp = exportsMap->find_export_by_va(imp_va);
 			if (!exp) break;
+
+			if (callback) {
+				if (!callback->shouldAcceptExport(imp_va, *exp)) break;
+			}
 
 			is_terminated = false;
 			DWORD offset = MASK_TO_DWORD((BYTE*)imp - vBuf);
-			iat.append(offset, *imp, exp);
+			iat.append(offset, imp_va, exp);
 
 			if (!series) series = new IATThunksSeries(offset);
 			if (series) {
-				series->insert(offset, *imp);
+				series->insert(offset, imp_va);
 			}
 		}
 		if (series) {
@@ -71,9 +88,11 @@ namespace pesieve {
 	}
 
 	template <typename FIELD_T>
-	IATBlock* find_iat(bool is64bit, BYTE* vBuf, size_t vBufSize, IN const peconv::ExportsMapper* exportsMap, IN OPTIONAL size_t search_offset = 0)
+	IATBlock* find_iat(BYTE* vBuf, size_t vBufSize, IN const peconv::ExportsMapper* exportsMap, IN size_t search_offset, IN ThunkFoundCallback *callback)
 	{
-		if (!vBuf || !exportsMap) return nullptr;
+		if (!vBuf || !vBufSize ||  !exportsMap) return nullptr;
+
+		const bool is64bit = (sizeof(FIELD_T) == sizeof(DWORD)) ? false : true;
 
 		size_t max_check = vBufSize - sizeof(FIELD_T);
 		if (search_offset > vBufSize || max_check < sizeof(FIELD_T)) {
@@ -83,16 +102,25 @@ namespace pesieve {
 		for (BYTE* ptr = vBuf + search_offset; ptr < vBuf + max_check; ptr++) {
 			FIELD_T *to_check = (FIELD_T*)ptr;
 			if (!peconv::validate_ptr(vBuf, vBufSize, to_check, sizeof(FIELD_T))) break;
-			FIELD_T possible_rva = (*to_check);
-			if (possible_rva == 0) continue;
+			FIELD_T possible_va = (*to_check);
+			if (possible_va == 0) continue;
+
+			if (callback) {
+				if (!callback->shouldProcessVA(possible_va)) continue;
+			}
+
 			//std::cout << "checking: " << std::hex << possible_rva << std::endl;
-			const peconv::ExportedFunc *exp = exportsMap->find_export_by_va(possible_rva);
+			const peconv::ExportedFunc *exp = exportsMap->find_export_by_va(possible_va);
 			if (!exp) continue;
+
+			if (callback) {
+				if (!callback->shouldAcceptExport(possible_va, *exp)) continue;
+			}
 
 			DWORD iat_offset = DWORD(ptr - vBuf);
 			IATBlock *iat_block = new IATBlock(is64bit, iat_offset);
 			//validate IAT:
-			size_t _iat_size = fill_iat<FIELD_T>(vBuf, vBufSize, exportsMap, *iat_block);
+			size_t _iat_size = fill_iat<FIELD_T>(vBuf, vBufSize, exportsMap, *iat_block, callback);
 			if (_iat_size > 0) {
 				iat_block->iatSize = _iat_size;
 				return iat_block;

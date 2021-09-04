@@ -32,7 +32,7 @@ namespace pesieve {
 		}
 
 		// Returns the size of the internal buffer
-		size_t getBufferSize()
+		size_t getBufferSize() const
 		{
 			return vBufSize;
 		}
@@ -58,12 +58,12 @@ namespace pesieve {
 
 		bool dumpToFile(IN std::string dumpFileName);
 
-		ULONGLONG getModuleBase()
+		ULONGLONG getModuleBase() const
 		{
 			return moduleBase;
 		}
 
-		ULONGLONG getRelocBase()
+		ULONGLONG getRelocBase() const
 		{
 			return relocBase;
 		}
@@ -76,7 +76,7 @@ namespace pesieve {
 	protected:
 		bool _readRemote(ULONGLONG module_base, size_t pe_vsize);
 
-		size_t calcRemoteImgSize(ULONGLONG module_base);
+		size_t calcRemoteImgSize(ULONGLONG module_base) const;
 
 		bool allocBuffer(const size_t pe_vsize)
 		{
