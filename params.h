@@ -48,7 +48,7 @@ public:
 			this->setInfo(PARAM_IMP_REC, "Set in which mode the ImportTable should be recovered");
 			for (size_t i = 0; i < PE_IMPREC_MODES_COUNT; i++) {
 				t_imprec_mode mode = (t_imprec_mode)(i);
-				enumParam->addEnumValue(mode, translate_imprec_mode(mode));
+				enumParam->addEnumValue(mode, imprec_mode_to_id(mode), translate_imprec_mode(mode));
 			}
 		}
 
@@ -138,7 +138,7 @@ public:
 			this->setInfo(PARAM_DUMP_MODE, "Set in which mode the detected PE files should be dumped.");
 			for (size_t i = 0; i < PE_DUMP_MODES_COUNT; i++) {
 				peconv::t_pe_dump_mode mode = (peconv::t_pe_dump_mode)(i);
-				enumParam->addEnumValue(mode, translate_dump_mode(mode));
+				enumParam->addEnumValue(mode, dump_mode_to_id(mode), translate_dump_mode(mode));
 			}
 		}
 

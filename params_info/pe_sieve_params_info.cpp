@@ -20,6 +20,21 @@ std::string pesieve::translate_dump_mode(const DWORD dump_mode)
 	return "undefined";
 }
 
+std::string pesieve::dump_mode_to_id(const DWORD dump_mode)
+{
+	switch (dump_mode) {
+	case pesieve::PE_DUMP_AUTO:
+		return "A";
+	case pesieve::PE_DUMP_VIRTUAL:
+		return "V";
+	case pesieve::PE_DUMP_UNMAP:
+		return "U";
+	case pesieve::PE_DUMP_REALIGN:
+		return "R";
+	}
+	return "N";
+}
+
 std::string pesieve::translate_out_filter(const pesieve::t_output_filter o_filter)
 {
 	switch (o_filter) {
@@ -41,12 +56,28 @@ std::string pesieve::translate_imprec_mode(const pesieve::t_imprec_mode imprec_m
 	case pesieve::PE_IMPREC_AUTO:
 		return "try to autodetect the most suitable mode";
 	case pesieve::PE_IMPREC_UNERASE:
-		return "recover erased parts of the partialy damaged ImportTable";
+		return "unerase the erased parts of the partialy damaged ImportTable";
 	case pesieve::PE_IMPREC_REBUILD:
-		return "build the ImportTable from the scratch, basing on the found IAT(s)";
+		return "build the ImportTable from the scratch, basing on the found IATs";
 	}
 	return "undefined";
 }
+
+std::string pesieve::imprec_mode_to_id(const pesieve::t_imprec_mode imprec_mode)
+{
+	switch (imprec_mode) {
+	case pesieve::PE_IMPREC_NONE:
+		return "N";
+	case pesieve::PE_IMPREC_AUTO:
+		return "A";
+	case pesieve::PE_IMPREC_UNERASE:
+		return "U";
+	case pesieve::PE_IMPREC_REBUILD:
+		return "R";
+	}
+	return "N";
+}
+
 
 std::string pesieve::translate_dotnet_policy(const pesieve::t_dotnet_policy &mode)
 {
