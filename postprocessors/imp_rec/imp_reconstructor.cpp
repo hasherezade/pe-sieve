@@ -326,7 +326,7 @@ bool pesieve::ImpReconstructor::findImportTable(IN const peconv::ExportsMapper* 
 
 	if (!import_table) return false;
 
-	DWORD imp_offset = (BYTE*)import_table - vBuf;
+	DWORD imp_offset = MASK_TO_DWORD((ULONG_PTR)import_table - (ULONG_PTR)vBuf);
 	if (imp_dir->VirtualAddress == imp_offset && imp_dir->Size == table_size) {
 		//std::cout << "[*] Validated Imports offset!\n";
 		return true;
