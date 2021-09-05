@@ -98,7 +98,7 @@ public:
 		enumParam = new EnumParam(PARAM_IAT, "scan_mode", false);
 		if (enumParam) {
 			this->addParam(enumParam);
-			this->setInfo(PARAM_IAT, "Level of details of the JSON report.");
+			this->setInfo(PARAM_IAT, "Scan for IAT hooks.");
 			for (size_t i = 0; i < PE_IATS_MODES_COUNT; i++) {
 				t_iat_scan_mode mode = (t_iat_scan_mode)(i);
 				enumParam->addEnumValue(mode, translate_iat_scan_mode(mode));
