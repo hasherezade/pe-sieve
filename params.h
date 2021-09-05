@@ -175,87 +175,27 @@ public:
 
 	void fillStruct(t_params &ps)
 	{
-		IntParam *intParam = dynamic_cast<IntParam*>(this->getParam(PARAM_PID));
-		if (intParam) ps.pid = intParam->value;
+		copyVal<IntParam>(PARAM_PID, ps.pid);
+		copyVal<EnumParam>(PARAM_IMP_REC, ps.imprec_mode);
+		copyVal<EnumParam>(PARAM_OUT_FILTER, ps.out_filter);
 
-		EnumParam* mEnum = dynamic_cast<EnumParam*>(this->getParam(PARAM_IMP_REC));
-		if (mEnum && mEnum->isSet()) {
-			ps.imprec_mode = (pesieve::t_imprec_mode)mEnum->value;
-		}
+		copyCStr<StringParam>(PARAM_MODULES_IGNORE, ps.modules_ignored, _countof(ps.modules_ignored));
 
-		//PARAM_OUT_FILTER
-		mEnum = dynamic_cast<EnumParam*>(this->getParam(PARAM_OUT_FILTER));
-		if (mEnum && mEnum->isSet()) {
-			ps.out_filter = (pesieve::t_output_filter)mEnum->value;
-		}
+		copyVal<BoolParam>(PARAM_QUIET, ps.quiet);
+		copyVal<BoolParam>(PARAM_JSON, ps.json_output);
 
-		StringParam* mStr = dynamic_cast<StringParam*>(this->getParam(PARAM_MODULES_IGNORE));
-		if (mStr) {
-			mStr->copyToCStr(ps.modules_ignored, sizeof(ps.modules_ignored));
-		}
+		copyVal<EnumParam>(PARAM_JSON_LVL, ps.json_lvl);
 
-		///PARAM_QUIET
-		BoolParam* mBool = dynamic_cast<BoolParam*>(this->getParam(PARAM_QUIET));
-		if (mBool && mBool->isSet()) {
-			ps.quiet = mBool->value;
-		}
+		copyVal<BoolParam>(PARAM_MINIDUMP, ps.minidump);
+		copyVal<BoolParam>(PARAM_SHELLCODE, ps.shellcode);
+		copyVal<BoolParam>(PARAM_REFLECTION, ps.make_reflection);
 
-		//PARAM_JSON
-		mBool = dynamic_cast<BoolParam*>(this->getParam(PARAM_JSON));
-		if (mBool && mBool->isSet()) {
-			ps.json_output = mBool->value;
-		}
+		copyVal<EnumParam>(PARAM_IAT, ps.iat);
+		copyVal<EnumParam>(PARAM_DOTNET_POLICY, ps.dotnet_policy);
+		copyVal<EnumParam>(PARAM_DATA, ps.data);
+		copyVal<EnumParam>(PARAM_DUMP_MODE, ps.dump_mode);
 
-		// PARAM_JSON_LVL
-		mEnum = dynamic_cast<EnumParam*>(this->getParam(PARAM_JSON_LVL));
-		if (mEnum && mEnum->isSet()) {
-			ps.json_lvl = (pesieve::t_json_level)mEnum->value;
-		}
-
-		// PARAM_MINIDUMP
-		mBool = dynamic_cast<BoolParam*>(this->getParam(PARAM_MINIDUMP));
-		if (mBool && mBool->isSet()) {
-			ps.minidump = mBool->value;
-		}
-
-		mBool = dynamic_cast<BoolParam*>(this->getParam(PARAM_SHELLCODE));
-		if (mBool && mBool->isSet()) {
-			ps.shellcode = mBool->value;
-		}
-
-		mBool = dynamic_cast<BoolParam*>(this->getParam(PARAM_REFLECTION));
-		if (mBool && mBool->isSet()) {
-			ps.make_reflection = mBool->value;
-		}
-
-		//PARAM_IAT
-		mEnum = dynamic_cast<EnumParam*>(this->getParam(PARAM_IAT));
-		if (mEnum && mEnum->isSet()) {
-			ps.iat = (pesieve::t_iat_scan_mode)mEnum->value;
-		}
-
-		//PARAM_DOTNET_POLICY
-		mEnum = dynamic_cast<EnumParam*>(this->getParam(PARAM_DOTNET_POLICY));
-		if (mEnum && mEnum->isSet()) {
-			ps.dotnet_policy = (pesieve::t_dotnet_policy)mEnum->value;
-		}
-
-		//PARAM_DATA
-		mEnum = dynamic_cast<EnumParam*>(this->getParam(PARAM_DATA));
-		if (mEnum && mEnum->isSet()) {
-			ps.data = (pesieve::t_data_scan_mode)mEnum->value;
-		}
-
-		//PARAM_DUMP_MODE
-		mEnum = dynamic_cast<EnumParam*>(this->getParam(PARAM_DUMP_MODE));
-		if (mEnum && mEnum->isSet()) {
-			ps.dump_mode = (pesieve::t_dump_mode)mEnum->value;
-		}
-
-		mStr = dynamic_cast<StringParam*>(this->getParam(PARAM_DIR));
-		if (mStr) {
-			mStr->copyToCStr(ps.output_dir, sizeof(ps.output_dir));
-		}
+		copyCStr<StringParam>(PARAM_DIR, ps.output_dir, _countof(ps.output_dir));
 	}
 
 	void printBanner()
@@ -272,9 +212,9 @@ public:
   _        _______       _______      __   _______     __       _______ \n";
 		char logo3[] = "\
 ________________________________________________________________________\n";
-		paramkit::print_in_color(2, logo);
-		paramkit::print_in_color(4, logo2);
-		paramkit::print_in_color(4, logo3);
+		paramkit::print_in_color(DARK_GREEN, logo);
+		paramkit::print_in_color(DARK_RED, logo2);
+		paramkit::print_in_color(DARK_RED, logo3);
 		std::cout << "\n";
 		std::cout << pesieve::info();
 	}
