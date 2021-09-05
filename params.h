@@ -95,7 +95,7 @@ public:
 		this->setInfo(PARAM_REFLECTION, "Make a process reflection before scan.\n\t   This allows i.e. to force-read inaccessible pages.");
 
 		//PARAM_IAT
-		enumParam = new EnumParam(PARAM_IAT, "scan_mode", false);
+		enumParam = new EnumParam(PARAM_IAT, "iat_scan_mode", false);
 		if (enumParam) {
 			this->addParam(enumParam);
 			this->setInfo(PARAM_IAT, "Scan for IAT hooks.");
