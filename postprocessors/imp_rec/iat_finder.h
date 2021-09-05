@@ -11,7 +11,7 @@
 
 namespace pesieve {
 
-	//!  a class containig callbacks for functions: find_iat, fill_iat
+	//!  A class containing callbacks for functions: find_iat, fill_iat
 	class ThunkFoundCallback
 	{
 	public:
