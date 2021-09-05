@@ -17,10 +17,8 @@ var searchData=
   ['param_5fquiet_14',['PARAM_QUIET',['../params_8h.html#a9178d30e44e733010cb0b40cc555ab6f',1,'params.h']]],
   ['param_5freflection_15',['PARAM_REFLECTION',['../params_8h.html#aef61cade7236c5b6028ede7566b9c6f7',1,'params.h']]],
   ['param_5fshellcode_16',['PARAM_SHELLCODE',['../params_8h.html#ab0f6b67eee6cff9eb986ef337fe06687',1,'params.h']]],
-  ['param_5fversion_17',['PARAM_VERSION',['../params_8h.html#aba6ebb88c00a487fc2790c5cdbdc432a',1,'params.h']]],
-  ['param_5fversion2_18',['PARAM_VERSION2',['../params_8h.html#a2f09dad803f7605b220212d8ac2d7ade',1,'params.h']]],
-  ['pe_5fnot_5ffound_19',['PE_NOT_FOUND',['../artefact__scanner_8h.html#a65c124f8908a936f95abd087ce9e65a3',1,'artefact_scanner.h']]],
-  ['pesieve_5fapi_20',['PESIEVE_API',['../pe__sieve__api_8h.html#ac572addbdbbff59edebf2e26544482e5',1,'pe_sieve_api.h']]],
-  ['pesieve_5fapi_5ffunc_21',['PESIEVE_API_FUNC',['../pe__sieve__api_8h.html#af8a670441ca96827a2997727a85d9ca3',1,'pe_sieve_api.h']]],
-  ['pesieve_5fexports_22',['PESIEVE_EXPORTS',['../dll__main_8cpp.html#afe01093004e99bce7bb71653685e31a9',1,'PESIEVE_EXPORTS():&#160;dll_main.cpp'],['../pe__sieve__api_8cpp.html#afe01093004e99bce7bb71653685e31a9',1,'PESIEVE_EXPORTS():&#160;pe_sieve_api.cpp']]]
+  ['pe_5fnot_5ffound_17',['PE_NOT_FOUND',['../artefact__scanner_8h.html#a65c124f8908a936f95abd087ce9e65a3',1,'artefact_scanner.h']]],
+  ['pesieve_5fapi_18',['PESIEVE_API',['../pe__sieve__api_8h.html#ac572addbdbbff59edebf2e26544482e5',1,'pe_sieve_api.h']]],
+  ['pesieve_5fapi_5ffunc_19',['PESIEVE_API_FUNC',['../pe__sieve__api_8h.html#af8a670441ca96827a2997727a85d9ca3',1,'pe_sieve_api.h']]],
+  ['pesieve_5fexports_20',['PESIEVE_EXPORTS',['../dll__main_8cpp.html#afe01093004e99bce7bb71653685e31a9',1,'PESIEVE_EXPORTS():&#160;dll_main.cpp'],['../pe__sieve__api_8cpp.html#afe01093004e99bce7bb71653685e31a9',1,'PESIEVE_EXPORTS():&#160;pe_sieve_api.cpp']]]
 ];
