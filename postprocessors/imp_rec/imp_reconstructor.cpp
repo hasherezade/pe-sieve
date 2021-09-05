@@ -5,9 +5,6 @@
 
 #include <fstream>
 
-//!  the minimal function count that the additional Import Table must have in order to trigger Import Table recreation (if run in autodetect mode)
-#define MIN_FUNC_COUNT 3
-
 using namespace pesieve;
 
 namespace pesieve {
@@ -38,20 +35,29 @@ BYTE* pesieve::ImportTableBuffer::getDllSpaceAt(const DWORD rva, size_t required
 
 //---
 
-bool pesieve::ImpReconstructor::hasNewImportTables() const
+bool pesieve::ImpReconstructor::hasBiggerDynamicIAT() const
 {
-	bool has_new_table = false;
+	// check the size of the main import table (from the Data Directory)
+	size_t main_size = 0;
 	std::map<DWORD, IATBlock*>::const_iterator iats_itr;
 	for (iats_itr = foundIATs.cbegin(); iats_itr != foundIATs.cend(); ++iats_itr) {
 		const IATBlock* iblock = iats_itr->second;
-		if (!iblock->isMain 
+		if (iblock->isMain) {
+			main_size = iblock->countThunks();
+			break;
+		}
+	}
+	// find a dynamic IAT bigger than the default:
+	bool has_new_table = false;
+	for (iats_itr = foundIATs.cbegin(); iats_itr != foundIATs.cend(); ++iats_itr) {
+		const IATBlock* iblock = iats_itr->second;
+		if (!iblock->isMain
 			&& iblock->isTerminated
-			&& iblock->countThunks() >= MIN_FUNC_COUNT)
+			&& iblock->countThunks() > main_size)
 		{
 			has_new_table = true;
 			break;
 		}
-
 	}
 	return has_new_table;
 }
@@ -76,7 +82,7 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImport
 		return IMP_RECOVERY_NOT_APPLICABLE;
 	}
 
-	if (imprec_mode == PE_IMPREC_UNERASE || (imprec_mode == PE_IMPREC_AUTO && !hasNewImportTables())) {
+	if (imprec_mode == PE_IMPREC_UNERASE || (imprec_mode == PE_IMPREC_AUTO && !hasBiggerDynamicIAT())) {
 
 		if (this->isDefaultImportValid(exportsMap)) {
 			// Valid Import Table already set
