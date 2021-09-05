@@ -142,27 +142,3 @@ std::string pesieve::translate_iat_scan_mode(const pesieve::t_iat_scan_mode mode
 	}
 	return "undefined";
 }
-
-pesieve::t_imprec_mode pesieve::normalize_imprec_mode(size_t mode_id)
-{
-	if (mode_id > pesieve::PE_IMPREC_MODES_COUNT) {
-		return pesieve::PE_IMPREC_NONE;
-	}
-	return (t_imprec_mode)mode_id;
-}
-
-pesieve::t_dump_mode pesieve::normalize_dump_mode(size_t mode_id)
-{
-	if (mode_id > pesieve::PE_DUMP_MODES_COUNT) {
-		return pesieve::PE_DUMP_AUTO;
-	}
-	return (pesieve::t_dump_mode) mode_id;
-}
-
-pesieve::t_json_level pesieve::normalize_json_level(size_t mode_id)
-{
-	if (mode_id > pesieve::JSON_LVL_COUNT) {
-		return pesieve::JSON_DETAILS;
-	}
-	return (pesieve::t_json_level) mode_id;
-}

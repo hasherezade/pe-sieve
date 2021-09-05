@@ -28,10 +28,6 @@ using namespace pesieve;
 #define PARAM_JSON_LVL "jlvl"
 #define PARAM_DIR "dir"
 #define PARAM_MINIDUMP "minidmp"
-//info:
-#define PARAM_VERSION "version"
-#define PARAM_VERSION2 "ver"
-
 
 class PEsieveParams : public Params
 {

@@ -12,12 +12,7 @@ namespace pesieve {
 	std::string translate_iat_scan_mode(const pesieve::t_iat_scan_mode mode);
 	std::string translate_json_level(const pesieve::t_json_level &mode);
 
-	pesieve::t_imprec_mode normalize_imprec_mode(size_t mode_id);
-	pesieve::t_dump_mode normalize_dump_mode(size_t mode_id);
-	pesieve::t_json_level normalize_json_level(size_t mode_id);
-
 	std::string dump_mode_to_id(const DWORD dump_mode);
 	std::string imprec_mode_to_id(const pesieve::t_imprec_mode imprec_mode);
 };
-
 
