@@ -112,7 +112,7 @@ $(function() {
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_class" href="class_p_esieve_params.html">PEsieveParams</a> uParams(<a class="code hl_variable" href="pe__sieve__version_8h.html#ad2baba56d6787accaec805eb79edcec6">PESIEVE_VERSION</a>);</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">if</span> (argc &lt; 2) {</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        uParams.<a class="code hl_function" href="class_p_esieve_params.html#a329838ce31e84c366fa8df6451decf00">printBanner</a>();</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        uParams.info(<span class="keyword">false</span>, <span class="stringliteral">&quot;&quot;</span>, <span class="keyword">false</span>);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        uParams.printBriefInfo();</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        system(<span class="stringliteral">&quot;pause&quot;</span>);</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="pe__sieve__return__codes_8h.html#abc1ca83d5b8fef97216b0f38dee607dcad8eee6a48a9f9276e410834baa85f478">PESIEVE_INFO</a>;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    }</div>
