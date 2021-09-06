@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 		system("pause");
 		return PESIEVE_INFO;
 	}
-	if (!uParams.parse(argc, argv) || !uParams.hasRequiredFilled()) {
+	if (!uParams.parse(argc, argv)) {
 		return PESIEVE_INFO;
 	}
 	uParams.fillStruct(args);
