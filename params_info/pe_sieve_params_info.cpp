@@ -1,7 +1,6 @@
 #include "pe_sieve_params_info.h"
 
 #include <windows.h>
-#include <psapi.h>
 
 using namespace pesieve;
 

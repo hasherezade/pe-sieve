@@ -144,31 +144,31 @@ public:
 		this->setInfo(PARAM_DIR, "Set a root directory for the output (default: current directory).");
 
 		//optional: group parameters
-		std::string str_group = "output options";
+		std::string str_group = "5. output options";
 		this->addGroup(new ParamGroup(str_group));
 		this->addParamToGroup(PARAM_DIR, str_group);
 		this->addParamToGroup(PARAM_JSON, str_group);
 		this->addParamToGroup(PARAM_JSON_LVL, str_group);
 		this->addParamToGroup(PARAM_OUT_FILTER, str_group);
 
-		str_group = "scanner settings";
+		str_group = "1. scanner settings";
 		this->addGroup(new ParamGroup(str_group));
 		this->addParamToGroup(PARAM_QUIET, str_group);
 		this->addParamToGroup(PARAM_REFLECTION, str_group);
 
-		str_group = "scan options";
+		str_group = "3. scan options";
 		this->addGroup(new ParamGroup(str_group));
 		this->addParamToGroup(PARAM_DATA, str_group);
 		this->addParamToGroup(PARAM_IAT, str_group);
 		this->addParamToGroup(PARAM_SHELLCODE, str_group);
 
-		str_group = "dump options";
+		str_group = "4. dump options";
 		this->addGroup(new ParamGroup(str_group));
 		this->addParamToGroup(PARAM_MINIDUMP, str_group);
 		this->addParamToGroup(PARAM_IMP_REC, str_group);
 		this->addParamToGroup(PARAM_DUMP_MODE, str_group);
 
-		str_group = "scan exclusions";
+		str_group = "2. scan exclusions";
 		this->addGroup(new ParamGroup(str_group));
 		this->addParamToGroup(PARAM_DOTNET_POLICY, str_group);
 		this->addParamToGroup(PARAM_MODULES_IGNORE, str_group);
