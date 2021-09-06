@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 	PEsieveParams uParams(PESIEVE_VERSION);
 	if (argc < 2) {
 		uParams.printBanner();
-		uParams.info(false, "", false);
+		uParams.printBriefInfo();
 		system("pause");
 		return PESIEVE_INFO;
 	}
