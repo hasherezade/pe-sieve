@@ -58,10 +58,10 @@ public:
 			}
 		}
 
-		this->addParam(new StringParam(PARAM_MODULES_IGNORE, false));
+		this->addParam(new StringListParam(PARAM_MODULES_IGNORE, false, PARAM_LIST_SEPARATOR));
 		{
 			std::stringstream ss1;
-			ss1 << "Do not scan module/s with given name/s (separated by '" << PARAM_LIST_SEPARATOR << "').";
+			ss1 << "Do not scan module/s with given name/s.";
 			std::stringstream ss2;
 			ss2 << "\t   Example: kernel32.dll" << PARAM_LIST_SEPARATOR << "user32.dll";
 			this->setInfo(PARAM_MODULES_IGNORE, ss1.str(), ss2.str());
