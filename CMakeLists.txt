@@ -111,7 +111,6 @@ set (postprocessors_hdrs
 set (imprec_srcs
 	postprocessors/imp_rec/imp_reconstructor.cpp
 	postprocessors/imp_rec/iat_block.cpp
-	postprocessors/imp_rec/iat_finder.cpp
 	postprocessors/imp_rec/import_table_finder.cpp
 )
 
