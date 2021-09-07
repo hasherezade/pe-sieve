@@ -47,7 +47,7 @@ size_t pesieve::PeReconstructor::shiftPeHeader()
 	const size_t pe_offset = nt_offset - sizeof(IMAGE_NT_SIGNATURE);
 	IMAGE_DOS_HEADER dos_template = { 0 };
 	dos_template.e_magic = IMAGE_DOS_SIGNATURE;
-	dos_template.e_lfanew = pe_offset + shift_size;
+	dos_template.e_lfanew = LONG(pe_offset + shift_size);
 
 	//check mz signature:
 	BYTE *mz_ptr = vBuf + this->artefacts.peBaseOffset;
