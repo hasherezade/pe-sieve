@@ -36,7 +36,7 @@ public:
 		: Params(version)
 	{
 		this->addParam(new IntParam(PARAM_PID, true));
-		this->setInfo(PARAM_PID, "Set the PID of the target process.");//\n\t(decimal, or hexadecimal with '0x' prefix)");
+		this->setInfo(PARAM_PID, "Set the PID of the target process.");
 
 		EnumParam *enumParam = new EnumParam(PARAM_IMP_REC, "imprec_mode", false);
 		if (enumParam) {
@@ -63,7 +63,7 @@ public:
 			std::stringstream ss1;
 			ss1 << "Do not scan module/s with given name/s.";
 			std::stringstream ss2;
-			ss2 << "\t   Example: kernel32.dll" << PARAM_LIST_SEPARATOR << "user32.dll";
+			ss2 << INFO_SPACER << "Example: kernel32.dll" << PARAM_LIST_SEPARATOR << "user32.dll";
 			this->setInfo(PARAM_MODULES_IGNORE, ss1.str(), ss2.str());
 		}
 		
@@ -93,7 +93,10 @@ public:
 
 		//PARAM_REFLECTION
 		this->addParam(new BoolParam(PARAM_REFLECTION, false));
-		this->setInfo(PARAM_REFLECTION, "Make a process reflection before scan.", "\t   This allows i.e. to force-read inaccessible pages.");
+		this->setInfo(PARAM_REFLECTION, 
+			"Make a process reflection before scan.", 
+			std::string(INFO_SPACER) + "This allows i.e. to force-read inaccessible pages."
+		);
 
 		//PARAM_IAT
 		enumParam = new EnumParam(PARAM_IAT, "iat_scan_mode", false);
