@@ -101,21 +101,19 @@ bool pesieve::WorkingSetScanner::isScannedAsModule(MemPageData &memPage)
 
 bool pesieve::WorkingSetScanner::scanImg()
 {
-	const bool show_info = (!args.quiet);
-
 	if (!memPage.loadMappedName()) {
 		//cannot retrieve the mapped name
 		return false;
 	}
 
 	const HMODULE module_start = (HMODULE)memPage.alloc_base;
-	
-	if (show_info) {
+
+	if (!args.quiet) {
 		std::cout << "[!] Scanning detached: " << std::hex << module_start << " : " << memPage.mapped_name << std::endl;
 	}
 	RemoteModuleData remoteModData(this->processHandle, this->isReflection, module_start);
 	if (!remoteModData.isInitialized()) {
-		if (show_info) {
+		if (!args.quiet) {
 			std::cout << "[-] Could not read the remote PE at: " << std::hex << module_start << std::endl;
 		}
 		return false;
@@ -124,37 +122,41 @@ bool pesieve::WorkingSetScanner::scanImg()
 	//load module from file:
 	ModuleData modData(processHandle, module_start, memPage.mapped_name);
 	if (!modData.loadOriginal()) {
-		if (show_info) {
+		if (!args.quiet) {
 			std::cerr << "[-] [" << std::hex << modData.moduleHandle << "] Could not read the module file" << std::endl;
 		}
 		processReport.appendReport(new UnreachableModuleReport(processHandle, module_start, 0, memPage.mapped_name));
 		return false;
 	}
-	const t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, processReport);
+	t_scan_status scan_status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, processReport);
 #ifdef _DEBUG
 	std::cout << "[*] Scanned for hollows. Status: " << status << std::endl;
 #endif
-	if (status == SCAN_ERROR) {
-		//failed scanning it as a loaded PE module
+	if (scan_status == SCAN_ERROR) {
+		// failed scanning it as a loaded PE module
 		return false;
 	}
-	if (status == SCAN_NOT_SUSPICIOUS) {
-		if (modData.isDotNet()) {
+	if (scan_status == SCAN_SUSPICIOUS) {
+		// detected as hollowed, no need for further scans
+		return true;
+	}
+
+	if (modData.isDotNet()) {
+		// .NET module will not be scanned
 #ifdef _DEBUG
-			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
+		std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
 #endif
-			processReport.appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
-			return true;
-		}
-		if (!args.no_hooks) {
-			const bool scan_data = (this->args.data >= pesieve::PE_DATA_SCAN_ALWAYS && this->args.data != PE_DATA_SCAN_INACCESSIBLE_ONLY)
-				|| (!memPage.is_dep_enabled && (this->args.data == pesieve::PE_DATA_SCAN_NO_DEP));
-			const bool scan_inaccessible = (this->isReflection && (this->args.data >= pesieve::PE_DATA_SCAN_INACCESSIBLE));
-			const t_scan_status hooks_stat = ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport, scan_data, scan_inaccessible);
+		processReport.appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
+		return true;
+	}
+	if (!args.no_hooks) {
+		const bool scan_data = (this->args.data >= pesieve::PE_DATA_SCAN_ALWAYS && this->args.data != PE_DATA_SCAN_INACCESSIBLE_ONLY)
+			|| (!memPage.is_dep_enabled && (this->args.data == pesieve::PE_DATA_SCAN_NO_DEP));
+		const bool scan_inaccessible = (this->isReflection && (this->args.data >= pesieve::PE_DATA_SCAN_INACCESSIBLE));
+		scan_status = ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport, scan_data, scan_inaccessible);
 #ifdef _DEBUG
-			std::cout << "[*] Scanned for hooks. Status: " << hooks_stat << std::endl;
+		std::cout << "[*] Scanned for hooks. Status: " << scan_status << std::endl;
 #endif
-		}
 	}
 	return true;
 }
