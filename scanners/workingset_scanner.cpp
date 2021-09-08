@@ -123,7 +123,13 @@ bool pesieve::WorkingSetScanner::scanImg()
 
 	//load module from file:
 	ModuleData modData(processHandle, module_start, memPage.mapped_name);
-	
+	if (!modData.loadOriginal()) {
+		if (show_info) {
+			std::cerr << "[-] [" << std::hex << modData.moduleHandle << "] Could not read the module file" << std::endl;
+		}
+		processReport.appendReport(new UnreachableModuleReport(processHandle, module_start, 0, memPage.mapped_name));
+		return false;
+	}
 	const t_scan_status status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, processReport);
 #ifdef _DEBUG
 	std::cout << "[*] Scanned for hollows. Status: " << status << std::endl;
