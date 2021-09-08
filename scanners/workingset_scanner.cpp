@@ -130,7 +130,7 @@ bool pesieve::WorkingSetScanner::scanImg()
 	}
 	t_scan_status scan_status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, processReport);
 #ifdef _DEBUG
-	std::cout << "[*] Scanned for hollows. Status: " << status << std::endl;
+	std::cout << "[*] Scanned for hollows. Status: " << scan_status << std::endl;
 #endif
 	if (scan_status == SCAN_ERROR) {
 		// failed scanning it as a loaded PE module
