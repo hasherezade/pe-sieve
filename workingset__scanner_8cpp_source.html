@@ -203,7 +203,7 @@ $(function() {
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    }</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <a class="code hl_typedef" href="namespacepesieve.html#a941a03e321f7620227f2d6901dbd9af4">t_scan_status</a> scan_status = <a class="code hl_function" href="classpesieve_1_1_process_scanner.html#a8f5f9ef11d71f271adbb261efc4453f3">ProcessScanner::scanForHollows</a>(processHandle, modData, remoteModData, processReport);</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;[*] Scanned for hollows. Status: &quot;</span> &lt;&lt; status &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;[*] Scanned for hollows. Status: &quot;</span> &lt;&lt; scan_status &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keywordflow">if</span> (scan_status == <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a7d8673b01da918587ac8390c2efc6a6a">SCAN_ERROR</a>) {</div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        <span class="comment">// failed scanning it as a loaded PE module</span></div>
