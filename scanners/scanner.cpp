@@ -82,8 +82,9 @@ t_scan_status pesieve::ProcessScanner::scanForHooks(HANDLE processHandle, Module
 	hooks.setScanData(scan_data);
 	hooks.setScanInaccessible(scan_inaccessible);
 	CodeScanReport *scan_report = hooks.scanRemote();
-	if (!scan_report) return SCAN_ERROR;
-
+	if (!scan_report) {
+		return SCAN_ERROR;
+	}
 	t_scan_status is_hooked = ModuleScanReport::get_scan_status(scan_report);
 
 	scan_report->moduleFile = modData.szModName;
