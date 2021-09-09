@@ -128,12 +128,12 @@ bool pesieve::ModuleData::loadImportThunks(std::set<DWORD>& thunk_rvas)
 
 	//---
 	if (!peconv::has_valid_import_table(original_module, original_size)) {
-		// No reloc table
+		// No import table
 		return false;
 	}
 	CollectThunks collector(*this, thunk_rvas);
 	if (!peconv::process_import_table(original_module, original_size, &collector)) {
-		// Could not collect relocations
+		// Could not collect thunks
 		return false;
 	}
 	if (thunk_rvas.size()) {
