@@ -30,21 +30,23 @@ size_t pesieve::CodeScanReport::generateTags(std::string reportPath)
 
 bool pesieve::CodeScanner::clearIAT(PeSection &originalSec, PeSection &remoteSec)
 {
-	IMAGE_DATA_DIRECTORY* iat_dir = peconv::get_directory_entry(moduleData.original_module, IMAGE_DIRECTORY_ENTRY_IAT);
-	if (!iat_dir) {
+	// collect IAT fields:
+	std::set<DWORD> impThunkRVAs;
+	moduleData.loadImportThunks(impThunkRVAs);
+	if (impThunkRVAs.size() == 0) {
 		return false;
 	}
-	DWORD iat_rva = iat_dir->VirtualAddress;
-	DWORD iat_size = iat_dir->Size;
 
-	if (originalSec.isContained(iat_rva, iat_size))
-	{
-#ifdef _DEBUG
-		std::cout << "IAT is in Code section!" << std::endl;
-#endif
-		DWORD offset = iat_rva - originalSec.rva;
-		memset(originalSec.loadedSection + offset, 0, iat_size);
-		memset(remoteSec.loadedSection + offset, 0, iat_size);
+	const size_t thunk_size = moduleData.is64bit() ? sizeof(ULONGLONG) : sizeof(DWORD);
+	std::set<DWORD>::iterator itr;
+	for (itr = impThunkRVAs.begin(); itr != impThunkRVAs.end(); ++itr) {
+		const DWORD iat_field = *itr;
+		// clear fields one by one:
+		if (originalSec.isContained(iat_field, thunk_size)) {
+			const DWORD offset = iat_field - originalSec.rva;
+			memset(originalSec.loadedSection + offset, 0, thunk_size);
+			memset(remoteSec.loadedSection + offset, 0, thunk_size);
+		}
 	}
 	return true;
 }
@@ -290,6 +292,7 @@ t_scan_status pesieve::CodeScanner::scanUsingBase(
 	if (!moduleData.relocateToBase(load_base)) {
 		return SCAN_ERROR;
 	}
+
 	size_t errors = 0;
 	size_t modified = 0;
 	std::map<size_t, PeSection*>::iterator itr;

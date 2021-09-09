@@ -92,6 +92,7 @@ namespace pesieve {
 		bool reloadWow64();
 		bool relocateToBase(ULONGLONG new_base);
 		bool loadRelocatedFields(std::set<DWORD>& fields_rvas);
+		bool loadImportThunks(std::set<DWORD>& fields_rvas);
 
 		HANDLE processHandle;
 		HMODULE moduleHandle;
