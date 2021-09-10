@@ -32,8 +32,8 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageDat
 		return false;
 	}
 
+	// check preconditions:
 	const bool is_managed = this->processReport.isManagedProcess();
-
 	if (mode == pesieve::PE_DATA_SCAN_NO_DEP 
 		&& memPage.is_dep_enabled && !is_managed)
 	{
@@ -44,8 +44,10 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageDat
 	{
 		return false;
 	}
-	if ((mode >= pesieve::PE_DATA_SCAN_ALWAYS) && (mode != pesieve::PE_DATA_SCAN_INACCESSIBLE_ONLY)) {
-		if (pesieve::util::is_readable(memPage.mapping_type, memPage.protection)) {
+	// preconditions are fulfilled, now check the access:
+	const bool is_page_readable = pesieve::util::is_readable(memPage.mapping_type, memPage.protection);
+	if (mode != pesieve::PE_DATA_SCAN_INACCESSIBLE_ONLY) {
+		if (is_page_readable) {
 			return true;
 		}
 	}
