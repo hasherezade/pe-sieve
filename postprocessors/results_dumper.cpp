@@ -274,10 +274,7 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 
 
 		module_buf.setRelocBase(mod->getRelocBase());
-		if (imprec_mode == pesieve::PE_IMPREC_NONE 
-			|| (mod->isDotNetModule && imprec_mode == pesieve::PE_IMPREC_AUTO) // do not recover imports in .NET modules
-			)
-		{
+		if (imprec_mode == pesieve::PE_IMPREC_NONE) {
 			modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode);
 		}
 		else {

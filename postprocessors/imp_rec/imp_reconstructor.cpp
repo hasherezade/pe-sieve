@@ -93,6 +93,11 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImport
 			return pesieve::ImpReconstructor::IMP_DIR_FIXED;
 		}
 	}
+	const bool isDotnet = peconv::is_dot_net(peBuffer.vBuf, peBuffer.vBufSize);
+	if (isDotnet && imprec_mode == PE_IMPREC_AUTO) {
+		// Valid Import Table already set
+		return pesieve::ImpReconstructor::IMP_ALREADY_OK;
+	}
 
 	t_imprec_res res = IMP_RECOVERY_ERROR;
 
