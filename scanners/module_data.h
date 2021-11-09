@@ -195,7 +195,7 @@ namespace pesieve {
 		}
 
 		HANDLE processHandle;
-		bool isRefl;
+		const bool isRefl;
 		HMODULE modBaseAddr;
 
 		BYTE *imgBuffer;

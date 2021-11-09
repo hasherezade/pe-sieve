@@ -22,7 +22,7 @@ namespace pesieve {
 		{
 			_freeRemote();
 		}
-		bool isRefl() { return is_process_refl; }
+		bool isRefl() const { return is_process_refl; }
 		bool fillInfo();
 		bool isInfoFilled() { return is_info_filled; }
 		size_t getLoadedSize() { return loadedSize; }

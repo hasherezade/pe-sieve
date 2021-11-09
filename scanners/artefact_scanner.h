@@ -268,7 +268,7 @@ namespace pesieve {
 		MemPageData *prevMemPage;
 		MemPageData *artPagePtr; //pointer to the page where the artefacts were found: either to memPage or to prevMemPage
 		bool isProcess64bit;
-		bool isReflection;
+		const bool isReflection;
 		ProcessScanReport& processReport;
 	};
 

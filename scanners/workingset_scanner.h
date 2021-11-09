@@ -93,11 +93,11 @@ namespace pesieve {
 	class WorkingSetScanner : public ProcessFeatureScanner {
 	public:
 		WorkingSetScanner(HANDLE _procHndl, MemPageData &_memPageDatal, pesieve::t_params _args, ProcessScanReport& _process_report)
-			: ProcessFeatureScanner(_procHndl), memPage(_memPageDatal),
+			: ProcessFeatureScanner(_procHndl), memPage(_memPageDatal), 
+			isReflection(_memPageDatal.isRefl()),
 			args(_args),
 			processReport(_process_report)
 		{
-			isReflection = _memPageDatal.isRefl();
 		}
 
 		virtual ~WorkingSetScanner() {}
@@ -113,7 +113,7 @@ namespace pesieve {
 		bool isCode(MemPageData &memPageData);
 		WorkingSetScanReport* scanExecutableArea(MemPageData &memPageData);
 
-		bool isReflection;
+		const bool isReflection;
 		MemPageData &memPage;
 
 		ProcessScanReport& processReport;
