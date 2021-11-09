@@ -348,7 +348,7 @@ $(function() {
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#a457911397fddaf4d660cf8330a00bb20">  276</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a457911397fddaf4d660cf8330a00bb20">pesieve::RemoteModuleData::loadHeader</a>()</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>{</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    <span class="keywordflow">if</span> (!peconv::read_remote_pe_header(this-&gt;processHandle, (PBYTE)this-&gt;modBaseAddr, this-&gt;headerBuffer, peconv::MAX_HEADER_SIZE, this-&gt;isRefl)) {</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    <span class="keywordflow">if</span> (!peconv::read_remote_pe_header(this-&gt;processHandle, (PBYTE)this-&gt;modBaseAddr, this-&gt;headerBuffer, peconv::MAX_HEADER_SIZE, this-&gt;isReflection)) {</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    }</div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
