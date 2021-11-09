@@ -275,7 +275,7 @@ bool pesieve::RemoteModuleData::loadFullImage()
 
 bool pesieve::RemoteModuleData::loadHeader()
 {
-	if (!peconv::read_remote_pe_header(this->processHandle, (PBYTE)this->modBaseAddr, this->headerBuffer, peconv::MAX_HEADER_SIZE, this->isRefl)) {
+	if (!peconv::read_remote_pe_header(this->processHandle, (PBYTE)this->modBaseAddr, this->headerBuffer, peconv::MAX_HEADER_SIZE, this->isReflection)) {
 		return false;
 	}
 	return true;

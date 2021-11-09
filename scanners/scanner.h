@@ -53,7 +53,7 @@ namespace pesieve {
 
 		HANDLE processHandle;
 		bool isDEP;
-		bool isReflection;
+		const bool isReflection;
 		size_t hModsMax;
 		pesieve::t_params args;
 

@@ -68,7 +68,7 @@ namespace pesieve {
 			this->rva = section_hdr->VirtualAddress;
 			//get the code section from the module:
 			this->loadedSize = 0;
-			this->loadedSection = peconv::get_remote_pe_section(remoteModData.processHandle, (PBYTE)remoteModData.modBaseAddr, section_number, loadedSize, true, remoteModData.isRefl);
+			this->loadedSection = peconv::get_remote_pe_section(remoteModData.processHandle, (PBYTE)remoteModData.modBaseAddr, section_number, loadedSize, true, remoteModData.isReflection);
 			if (loadedSection == nullptr) {
 				return false;
 			}

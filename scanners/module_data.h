@@ -120,7 +120,7 @@ namespace pesieve {
 		static std::string getMappedName(HANDLE _processHandle, LPVOID _modBaseAddr);
 
 		RemoteModuleData(HANDLE _processHandle, bool _isRefl, HMODULE _modBaseAddr)
-			: processHandle(_processHandle), isRefl(_isRefl), modBaseAddr(_modBaseAddr),
+			: processHandle(_processHandle), isReflection(_isRefl), modBaseAddr(_modBaseAddr),
 			imgBuffer(nullptr), imgBufferSize(0)
 		{
 			isHdrReady = false;
@@ -195,7 +195,7 @@ namespace pesieve {
 		}
 
 		HANDLE processHandle;
-		const bool isRefl;
+		const bool isReflection;
 		HMODULE modBaseAddr;
 
 		BYTE *imgBuffer;
