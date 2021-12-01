@@ -43,6 +43,8 @@ git clone --recursive https://github.com/hasherezade/pe-sieve.git
 
 Download the latest [release](https://github.com/hasherezade/pe-sieve/releases), or [read more](https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ#how-to-get-it).
 
+![](https://community.chocolatey.org/favicon.ico) Available also via [Chocolatey](https://community.chocolatey.org/packages/pesieve)
+
 <hr/>
 
 logo by [Baran Pirinçal](https://github.com/baranpirincal)
