@@ -250,21 +250,32 @@ size_t pesieve::CodeScanner::collectExecutableSections(RemoteModuleData &_remote
 
 		//get the code section from the remote module:
 		PeSection *remoteSec = new PeSection(_remoteModData, i);
-		if (!remoteSec->isInitialized()) {
+		if (remoteSec->isInitialized()) {
+			if (is_entry // always scan section containing Entry Point
+				|| is_code(remoteSec->loadedSection, remoteSec->loadedSize))
+			{
+				sections[i] = remoteSec;
+				continue;
+			}
+		}
+		else {
+			// report about failed initialization
 			my_report.sectionToResult[i] = CodeScanReport::SECTION_SCAN_ERR;
-			continue;
 		}
-		if (is_entry // always scan section containing Entry Point
-			|| is_code(remoteSec->loadedSection, remoteSec->loadedSize))
-		{
-			sections[i] = remoteSec;
-		}
+		// the section was not added to the list, delete it instead:
+		delete remoteSec;
 	}
 	//corner case: PEs without sections
 	if (sec_count == 0) {
 		PeSection *remoteSec = new PeSection(_remoteModData, 0);
 		if (remoteSec->isInitialized()) {
 			sections[0] = remoteSec;
+		}
+		else {
+			// report about failed initialization
+			my_report.sectionToResult[0] = CodeScanReport::SECTION_SCAN_ERR;
+			// the section was not added to the list, delete it instead:
+			delete remoteSec;
 		}
 	}
 	return sections.size() - initial_size;
