@@ -104,6 +104,7 @@ namespace pesieve {
 		DWORD pid;              ///< pid of the process that was scanned
 		bool is_managed;        ///< is process managed (.NET)
 		bool is_64bit;          ///< is process 64 bit
+		bool is_reflection;     ///< was the scan performed on process reflection
 		DWORD scanned;          ///< number of all scanned modules
 		DWORD suspicious;       ///< general summary of suspicious
 		DWORD replaced;         ///< PE file replaced in memory (probably hollowed)

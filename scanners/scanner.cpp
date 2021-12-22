@@ -157,7 +157,7 @@ ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 
 	const bool is_64bit = pesieve::util::is_process_64bit(this->processHandle);
 
-	ProcessScanReport *pReport = new ProcessScanReport(this->args.pid, is_64bit);
+	ProcessScanReport *pReport = new ProcessScanReport(this->args.pid, is_64bit, this->isReflection);
 
 	char image_buf[MAX_PATH] = { 0 };
 	GetProcessImageFileNameA(this->processHandle, image_buf, MAX_PATH);
