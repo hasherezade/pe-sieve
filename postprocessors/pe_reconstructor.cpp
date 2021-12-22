@@ -119,19 +119,29 @@ bool pesieve::PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 
 	const ULONGLONG pe_img_base = (ULONGLONG)artefacts.peImageBase();
 
-	for (size_t i = 0; i < artefacts.secCount; i++, curr_sec++) {
-		if (!is_valid_section(vBuf, vBufSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
-			break;
-		}
+	const size_t hdr_sec_count = peconv::get_sections_count(vBuf, vBufSize);
+	const size_t sec_count = artefacts.secCount > hdr_sec_count ? artefacts.secCount : hdr_sec_count;
+
+	size_t i = 0;
+	for (i = 0; i < sec_count; i++, curr_sec++) {
+
 		const DWORD sec_rva = curr_sec->VirtualAddress;
 		const DWORD sec_size = curr_sec->Misc.VirtualSize;
+
+		if (!is_valid_section(vBuf, vBufSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
+#ifdef _DEBUG
+			std::cout << i << "# Invalid section found: " << std::hex
+				<< sec_rva << " of size: " << sec_size << std::endl;
+#endif
+			break;
+		}
 
 		ULONGLONG sec_va = pe_img_base + sec_rva;
 		size_t real_sec_size = peconv::fetch_region_size(processHandle, (PBYTE)sec_va);
 		if (sec_size > real_sec_size) {
 			curr_sec->Misc.VirtualSize = DWORD(real_sec_size);
 #ifdef _DEBUG
-			std::cout << i << "# Fixed section size: " << std::hex
+			std::cout << i << "# Fixed section " << std::hex << sec_rva  << " size: " << std::hex
 				<< sec_size << " vs real: " << real_sec_size << std::endl;
 #endif
 		}
@@ -145,7 +155,7 @@ bool pesieve::PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 					DWORD diff = curr_sec->VirtualAddress - prev_sec->VirtualAddress;
 					prev_sec->Misc.VirtualSize = diff;
 #ifdef _DEBUG
-					std::cout << "Trimmed section" << std::endl;
+					std::cout << "Trimmed section: " << std::dec << i << std::endl;
 #endif
 				}
 			}
@@ -153,6 +163,12 @@ bool pesieve::PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 		if (curr_sec->Misc.VirtualSize > 0) {
 			prev_sec = curr_sec;
 		}
+	}
+	
+	IMAGE_FILE_HEADER* file_hdr = const_cast<IMAGE_FILE_HEADER*>(peconv::get_file_hdr(vBuf, vBufSize));
+	if (file_hdr && (i > 0)) {
+		// set the actual number of valid sections:
+		file_hdr->NumberOfSections = i;
 	}
 
 	if (max_sec_size == 0) {
@@ -237,7 +253,6 @@ bool pesieve::PeReconstructor::reconstructFileHdr()
 		hdr_candidate->NumberOfSections = WORD(this->artefacts.secCount);
 		hdr_candidate->SizeOfOptionalHeader = WORD(calc_offset);
 	}
-
 	hdr_candidate->NumberOfSymbols = 0;
 	hdr_candidate->PointerToSymbolTable = 0;
 	return true;
