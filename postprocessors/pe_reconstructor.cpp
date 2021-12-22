@@ -124,11 +124,18 @@ bool pesieve::PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 
 	size_t i = 0;
 	for (i = 0; i < sec_count; i++, curr_sec++) {
-
+		if (!peconv::validate_ptr(vBuf, vBufSize, curr_sec, sizeof(IMAGE_SECTION_HEADER))) {
+			// buffer finished
+			break;
+		}
 		const DWORD sec_rva = curr_sec->VirtualAddress;
 		const DWORD sec_size = curr_sec->Misc.VirtualSize;
 
-		if (!is_valid_section(vBuf, vBufSize, (BYTE*)curr_sec, IMAGE_SCN_MEM_READ)) {
+		const ULONGLONG sec_va = pe_img_base + sec_rva;
+		size_t real_sec_size = peconv::fetch_region_size(processHandle, (PBYTE)sec_va);
+
+		// if the RVA is out of scope, and the calculated size is 0:
+		if (!peconv::validate_ptr(vBuf, vBufSize, vBuf + sec_rva, sizeof(BYTE)) && !real_sec_size) {
 #ifdef _DEBUG
 			std::cout << i << "# Invalid section found: " << std::hex
 				<< sec_rva << " of size: " << sec_size << std::endl;
@@ -136,8 +143,6 @@ bool pesieve::PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 			break;
 		}
 
-		ULONGLONG sec_va = pe_img_base + sec_rva;
-		size_t real_sec_size = peconv::fetch_region_size(processHandle, (PBYTE)sec_va);
 		if (sec_size > real_sec_size) {
 			curr_sec->Misc.VirtualSize = DWORD(real_sec_size);
 #ifdef _DEBUG
