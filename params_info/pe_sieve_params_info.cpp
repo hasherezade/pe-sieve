@@ -57,11 +57,11 @@ std::string pesieve::translate_imprec_mode(const pesieve::t_imprec_mode imprec_m
 	case pesieve::PE_IMPREC_UNERASE:
 		return "unerase the erased parts of the partialy damaged ImportTable";
 	case pesieve::PE_IMPREC_REBUILD0:
-		return "build the ImportTable from scratch, basing on the found IATs:\n\t        use only terminated blocks (restrictive mode)";
+		return "build the ImportTable from scratch, basing on the found IATs:\n\t         use only terminated blocks (restrictive mode)";
 	case pesieve::PE_IMPREC_REBUILD1:
-		return "build the ImportTable from scratch, basing on the found IATs:\n\t        use terminated blocks, or blocks with more than 1 thunk";
+		return "build the ImportTable from scratch, basing on the found IATs:\n\t         use terminated blocks, or blocks with more than 1 thunk";
 	case pesieve::PE_IMPREC_REBUILD2:
-		return "build the ImportTable from scratch, basing on the found IATs:\n\t        use terminated blocks: use all found blocks (aggressive mode)";
+		return "build the ImportTable from scratch, basing on the found IATs:\n\t         use all found blocks (aggressive mode)";
 	}
 	return "undefined";
 }
