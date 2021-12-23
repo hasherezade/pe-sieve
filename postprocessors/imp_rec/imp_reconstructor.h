@@ -158,7 +158,7 @@ namespace pesieve {
 	public:
 
 		ImpReconstructor(PeBuffer &_peBuffer)
-			: peBuffer(_peBuffer), is64bit(false)
+			: peBuffer(_peBuffer), is64bit(false), mainIatRva(0)
 		{
 			if (!peBuffer.vBuf) return;
 			if (peBuffer.isValidPe()) {
@@ -167,6 +167,7 @@ namespace pesieve {
 			else {
 				this->is64bit = pesieve::util::is_64bit_code(peBuffer.vBuf, peBuffer.vBufSize);
 			}
+			this->mainIatRva = getMainIATOffset();
 		}
 
 		~ImpReconstructor()
@@ -204,6 +205,7 @@ namespace pesieve {
 
 		IATBlock* findIATBlock(IN const peconv::ExportsMapper* exportsMap, size_t start_offset);
 		IATBlock* findIAT(IN const peconv::ExportsMapper* exportsMap, size_t start_offset);
+		DWORD getMainIATOffset();
 
 		//!  has a dynamic IAT bigger than the basic one (that is set in Data Directory)
 		bool hasBiggerDynamicIAT() const;
@@ -237,6 +239,7 @@ namespace pesieve {
 
 		PeBuffer &peBuffer;
 		bool is64bit;
+		DWORD mainIatRva; //< RVA of the IAT that is set in the Data Directory
 		std::map<DWORD, IATBlock*> foundIATs;
 	};
 
