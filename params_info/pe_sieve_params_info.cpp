@@ -56,11 +56,16 @@ std::string pesieve::translate_imprec_mode(const pesieve::t_imprec_mode imprec_m
 		return "try to autodetect the most suitable mode";
 	case pesieve::PE_IMPREC_UNERASE:
 		return "unerase the erased parts of the partialy damaged ImportTable";
-	case pesieve::PE_IMPREC_REBUILD:
-		return "build the ImportTable from scratch, basing on the found IATs";
+	case pesieve::PE_IMPREC_REBUILD0:
+		return "build the ImportTable from scratch, basing on the found IATs:\n\t        use only terminated blocks (restrictive mode)";
+	case pesieve::PE_IMPREC_REBUILD1:
+		return "build the ImportTable from scratch, basing on the found IATs:\n\t        use terminated blocks, or blocks with more than 1 thunk";
+	case pesieve::PE_IMPREC_REBUILD2:
+		return "build the ImportTable from scratch, basing on the found IATs:\n\t        use terminated blocks: use all found blocks (aggressive mode)";
 	}
 	return "undefined";
 }
+
 
 std::string pesieve::imprec_mode_to_id(const pesieve::t_imprec_mode imprec_mode)
 {
@@ -71,8 +76,12 @@ std::string pesieve::imprec_mode_to_id(const pesieve::t_imprec_mode imprec_mode)
 		return "A";
 	case pesieve::PE_IMPREC_UNERASE:
 		return "U";
-	case pesieve::PE_IMPREC_REBUILD:
-		return "R";
+	case pesieve::PE_IMPREC_REBUILD0:
+		return "R0";
+	case pesieve::PE_IMPREC_REBUILD1:
+		return "R1";
+	case pesieve::PE_IMPREC_REBUILD2:
+		return "R2";
 	}
 	return "N";
 }

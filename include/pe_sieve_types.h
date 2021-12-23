@@ -33,7 +33,9 @@ namespace pesieve {
 		PE_IMPREC_NONE = 0, ///< do not try to recover imports
 		PE_IMPREC_AUTO,     ///< try to autodetect the most suitable mode
 		PE_IMPREC_UNERASE,  ///< recover erased parts of the partialy damaged import table
-		PE_IMPREC_REBUILD,  ///< build the import table from the scratch, basing on the found IAT(s)
+		PE_IMPREC_REBUILD0,  ///< build the import table from the scratch, basing on the found IAT(s): use only terminated blocks (restrictive mode)
+		PE_IMPREC_REBUILD1,  ///< build the import table from the scratch, basing on the found IAT(s): use terminated blocks, or blocks with more than 1 thunk
+		PE_IMPREC_REBUILD2,  ///< build the import table from the scratch, basing on the found IAT(s): use all found blocks (aggressive mode)
 		PE_IMPREC_MODES_COUNT
 	} t_imprec_mode;
 

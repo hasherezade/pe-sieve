@@ -174,6 +174,12 @@ namespace pesieve {
 			deleteFoundIATs();
 		}
 
+		typedef enum imprec_filter {
+			IMP_REC0,
+			IMP_REC1,
+			IMP_REC2
+		} t_imprec_filter;
+
 		typedef enum imprec_res {
 			IMP_NOT_FOUND = -3,
 			IMP_RECOVERY_ERROR = -2,
@@ -196,7 +202,7 @@ namespace pesieve {
 		bool hasBiggerDynamicIAT() const;
 
 		bool findImportTable(IN const peconv::ExportsMapper* exportsMap);
-		size_t collectIATs(IN const peconv::ExportsMapper* exportsMap);
+		size_t collectIATs(IN const peconv::ExportsMapper* exportsMap, t_imprec_filter filter);
 
 		bool isDefaultImportValid(IN const peconv::ExportsMapper* exportsMap);
 
@@ -204,10 +210,20 @@ namespace pesieve {
 		ImportTableBuffer* constructImportTable();
 		bool appendImportTable(ImportTableBuffer &importTable);
 
-		bool appendFoundIAT(DWORD iat_offset, IATBlock* found_block)
+		bool appendFoundIAT(DWORD iat_offset, IATBlock* found_block, t_imprec_filter level)
 		{
 			if (foundIATs.find(iat_offset) != foundIATs.end()) {
 				return false; //already exist
+			}
+			switch (level) {
+			case IMP_REC0:
+				if (!found_block->isTerminated) {
+					return false;
+				}
+			case IMP_REC1:
+				if (!found_block->isTerminated && found_block->countThunks() < 2) {
+					return false;
+				}
 			}
 			foundIATs[iat_offset] = found_block;
 			return true;
