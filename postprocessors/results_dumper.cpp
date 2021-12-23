@@ -58,8 +58,12 @@ namespace pesieve {
 			return "IMP_DIR_FIXED";
 		case ImpReconstructor::IMP_FIXED:
 			return "IMP_FIXED";
-		case ImpReconstructor::IMP_RECREATED:
-			return "IMP_RECREATED";
+		case ImpReconstructor::IMP_RECREATED_FILTER0:
+			return "IMP_RECREATED_FILTER0";
+		case ImpReconstructor::IMP_RECREATED_FILTER1:
+			return "IMP_RECREATED_FILTER1";
+		case ImpReconstructor::IMP_RECREATED_FILTER2:
+			return "IMP_RECREATED_FILTER2";
 		}
 		return "Undefined";
 	}

@@ -62,14 +62,11 @@ bool pesieve::ImpReconstructor::hasBiggerDynamicIAT() const
 	return has_new_table;
 }
 
-
-pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode)
+pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::_recreateImportTableFiltered(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode& imprec_mode)
 {
-	if (!exportsMap || imprec_mode == pesieve::PE_IMPREC_NONE) {
-		return IMP_RECOVERY_SKIPPED;
-	}
+	// convert to filter:
 
-	t_imprec_filter filter = t_imprec_filter::IMP_REC0;
+	int filter = t_imprec_filter::IMP_REC0;
 	switch (imprec_mode) {
 	case PE_IMPREC_REBUILD0:
 		filter = t_imprec_filter::IMP_REC0; break;
@@ -78,9 +75,54 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImport
 	case PE_IMPREC_REBUILD2:
 		filter = t_imprec_filter::IMP_REC2; break;
 	}
-	std::cout << "ImpRec mode: " << std::dec << imprec_mode << "\n";
-	std::cout << "Filter: " << std::dec << filter << "\n";
-	if (!collectIATs(exportsMap, filter)) {
+
+	// Try to rebuild ImportTable for module
+
+	while (!findIATsCoverage(exportsMap, (t_imprec_filter)filter)) {
+		if (imprec_mode != PE_IMPREC_AUTO) {
+			// no autodetect: don't try different modes
+			return IMP_RECOVERY_ERROR;
+		}
+		// try next filter:
+		filter++;
+		//limit exceeded, quit with error:
+		if (filter == IMP_REC_COUNT) {
+			return IMP_RECOVERY_ERROR;
+		}
+	}
+
+	//coverage found, try to rebuild:
+	bool isOk = false;
+	ImportTableBuffer* impBuf = constructImportTable();
+	if (impBuf) {
+		if (appendImportTable(*impBuf)) {
+			isOk = true;
+		}
+	}
+	delete impBuf;
+
+	if (!isOk) {
+		return IMP_RECOVERY_ERROR;
+	}
+	// convert results:
+	switch (filter) {
+	case t_imprec_filter::IMP_REC0:
+		return IMP_RECREATED_FILTER0;
+	case t_imprec_filter::IMP_REC1:
+		return IMP_RECREATED_FILTER1;
+	case t_imprec_filter::IMP_REC2:
+		return IMP_RECREATED_FILTER2;
+	}
+	return IMP_RECREATED_FILTER0;
+}
+
+pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode)
+{
+	if (!exportsMap || imprec_mode == pesieve::PE_IMPREC_NONE) {
+		return IMP_RECOVERY_SKIPPED;
+	}
+
+	if (!collectIATs(exportsMap)) {
 		return IMP_NOT_FOUND;
 	}
 
@@ -112,23 +154,15 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImport
 		return pesieve::ImpReconstructor::IMP_ALREADY_OK;
 	}
 
-	t_imprec_res res = IMP_RECOVERY_ERROR;
 
 	// Try to rebuild ImportTable for module
 	if ((imprec_mode == PE_IMPREC_REBUILD0 || imprec_mode == PE_IMPREC_REBUILD1 || imprec_mode == PE_IMPREC_REBUILD2)
 		|| imprec_mode == PE_IMPREC_AUTO) {
 
-		if (findIATsCoverage(exportsMap)) {
-			ImportTableBuffer *impBuf = constructImportTable();
-			if (impBuf) {
-				if (appendImportTable(*impBuf)) {
-					res = IMP_RECREATED;
-				}
-			}
-			delete impBuf;
-		}
+		return _recreateImportTableFiltered(exportsMap, imprec_mode);
+
 	}
-	return res;
+	return IMP_RECOVERY_ERROR;
 }
 
 bool pesieve::ImpReconstructor::printFoundIATs(std::string reportPath)
@@ -271,7 +305,7 @@ IATBlock* pesieve::ImpReconstructor::findIAT(IN const peconv::ExportsMapper* exp
 	return iat_block;
 }
 
-size_t pesieve::ImpReconstructor::collectIATs(IN const peconv::ExportsMapper* exportsMap, t_imprec_filter filter)
+size_t pesieve::ImpReconstructor::collectIATs(IN const peconv::ExportsMapper* exportsMap)
 {
 	BYTE *vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;
@@ -290,7 +324,7 @@ size_t pesieve::ImpReconstructor::collectIATs(IN const peconv::ExportsMapper* ex
 		found++;
 		const DWORD iat_offset = currIAT->iatOffset;
 		const size_t iat_end = iat_offset + currIAT->iatSize;
-		if (!appendFoundIAT(iat_offset, currIAT, filter)) {
+		if (!appendFoundIAT(iat_offset, currIAT)) {
 			delete currIAT; //this IAT already exist in the map
 		}
 		// next search should be after thie current IAT:
@@ -367,12 +401,26 @@ bool pesieve::ImpReconstructor::findImportTable(IN const peconv::ExportsMapper* 
 	return true;
 }
 
-bool pesieve::ImpReconstructor::findIATsCoverage(IN const peconv::ExportsMapper* exportsMap)
+bool pesieve::ImpReconstructor::findIATsCoverage(IN const peconv::ExportsMapper* exportsMap, t_imprec_filter filter)
 {
+	size_t neededIATs = 0;
 	size_t covered = 0;
 	std::map<DWORD, IATBlock*>::iterator itr;
 	for (itr = foundIATs.begin(); itr != foundIATs.end(); ++itr) {
 		IATBlock* iat = itr->second;
+
+		switch (filter) {
+		case IMP_REC0:
+			if (!iat->isTerminated) {
+				continue;
+			}
+		case IMP_REC1:
+			if (!iat->isTerminated && iat->countThunks() < 2) {
+				continue;
+			}
+		}
+		neededIATs++;
+
 		if (iat->makeCoverage(exportsMap)) {
 			covered++;
 		}
@@ -380,7 +428,10 @@ bool pesieve::ImpReconstructor::findIATsCoverage(IN const peconv::ExportsMapper*
 			std::cout << "[-] Failed covering block: " << std::hex << itr->first << " series: " << iat->thunkSeries.size() << "\n";
 		}
 	}
-	return (covered == foundIATs.size());
+	if (neededIATs == 0) {
+		return false;
+	}
+	return (covered == neededIATs);
 }
 
 ImportTableBuffer* pesieve::ImpReconstructor::constructImportTable()

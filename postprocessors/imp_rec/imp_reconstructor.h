@@ -177,7 +177,8 @@ namespace pesieve {
 		typedef enum imprec_filter {
 			IMP_REC0,
 			IMP_REC1,
-			IMP_REC2
+			IMP_REC2,
+			IMP_REC_COUNT
 		} t_imprec_filter;
 
 		typedef enum imprec_res {
@@ -188,13 +189,19 @@ namespace pesieve {
 			IMP_ALREADY_OK = 1,
 			IMP_DIR_FIXED = 2,
 			IMP_FIXED = 3,
-			IMP_RECREATED = 4
+			IMP_RECREATED_FILTER0 = 4,
+			IMP_RECREATED_FILTER1 = 5,
+			IMP_RECREATED_FILTER2 = 6,
 		} t_imprec_res;
+
 		t_imprec_res rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode);
 
 		bool printFoundIATs(std::string reportPath);
 
 	private:
+
+		t_imprec_res _recreateImportTableFiltered(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode& imprec_mode);
+
 		IATBlock* findIATBlock(IN const peconv::ExportsMapper* exportsMap, size_t start_offset);
 		IATBlock* findIAT(IN const peconv::ExportsMapper* exportsMap, size_t start_offset);
 
@@ -202,28 +209,18 @@ namespace pesieve {
 		bool hasBiggerDynamicIAT() const;
 
 		bool findImportTable(IN const peconv::ExportsMapper* exportsMap);
-		size_t collectIATs(IN const peconv::ExportsMapper* exportsMap, t_imprec_filter filter);
+		size_t collectIATs(IN const peconv::ExportsMapper* exportsMap);
 
 		bool isDefaultImportValid(IN const peconv::ExportsMapper* exportsMap);
 
-		bool findIATsCoverage(IN const peconv::ExportsMapper* exportsMap);
+		bool findIATsCoverage(IN const peconv::ExportsMapper* exportsMap, t_imprec_filter filter);
 		ImportTableBuffer* constructImportTable();
 		bool appendImportTable(ImportTableBuffer &importTable);
 
-		bool appendFoundIAT(DWORD iat_offset, IATBlock* found_block, t_imprec_filter level)
+		bool appendFoundIAT(DWORD iat_offset, IATBlock* found_block)
 		{
 			if (foundIATs.find(iat_offset) != foundIATs.end()) {
 				return false; //already exist
-			}
-			switch (level) {
-			case IMP_REC0:
-				if (!found_block->isTerminated) {
-					return false;
-				}
-			case IMP_REC1:
-				if (!found_block->isTerminated && found_block->countThunks() < 2) {
-					return false;
-				}
 			}
 			foundIATs[iat_offset] = found_block;
 			return true;
