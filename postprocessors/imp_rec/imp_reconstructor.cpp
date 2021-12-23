@@ -411,11 +411,11 @@ bool pesieve::ImpReconstructor::findIATsCoverage(IN const peconv::ExportsMapper*
 
 		switch (filter) {
 		case IMP_REC0:
-			if (!iat->isTerminated) {
+			if (!iat->isMain && !iat->isTerminated) {
 				continue;
 			}
 		case IMP_REC1:
-			if (!iat->isTerminated && iat->countThunks() < 2) {
+			if (!iat->isMain && !iat->isTerminated && iat->countThunks() < 2) {
 				continue;
 			}
 		}
