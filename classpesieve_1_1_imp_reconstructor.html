@@ -80,6 +80,12 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
+<tr class="memitem:a3e4f5db6215140c46c4c03f79b290589"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_imp_reconstructor.html#a3e4f5db6215140c46c4c03f79b290589">imprec_filter</a> { <a class="el" href="classpesieve_1_1_imp_reconstructor.html#a3e4f5db6215140c46c4c03f79b290589a753690845a6d95d80d88189cbf369d1f">IMP_REC0</a>
+, <a class="el" href="classpesieve_1_1_imp_reconstructor.html#a3e4f5db6215140c46c4c03f79b290589ab073babff83d4221d82f2c32394bfd3c">IMP_REC1</a>
+, <a class="el" href="classpesieve_1_1_imp_reconstructor.html#a3e4f5db6215140c46c4c03f79b290589a85c7cd6610acfd41f575560f84c72bec">IMP_REC2</a>
+, <a class="el" href="classpesieve_1_1_imp_reconstructor.html#a3e4f5db6215140c46c4c03f79b290589a7cb570d3647c06789da2d72901d65721">IMP_REC_COUNT</a>
+ }</td></tr>
+<tr class="separator:a3e4f5db6215140c46c4c03f79b290589"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9230d5b439e1f91586c29071ad9ec18"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18">imprec_res</a> { <br />
 &#160;&#160;<a class="el" href="classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18a5b16c13eec87e4ba307546016c5e40be">IMP_NOT_FOUND</a> = -3
 , <a class="el" href="classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18a217055404d833d8acf434367ae5a8a7e">IMP_RECOVERY_ERROR</a> = -2
@@ -89,10 +95,15 @@ Public Types</h2></td></tr>
 &#160;&#160;<a class="el" href="classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18ad8c6c2a23febda50327373a4aa23c8b7">IMP_ALREADY_OK</a> = 1
 , <a class="el" href="classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18afc9614257229d52e5d7d732638d06fe3">IMP_DIR_FIXED</a> = 2
 , <a class="el" href="classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18a42e3e30f4636403d9271e0038719f4f5">IMP_FIXED</a> = 3
-, <a class="el" href="classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18a749b2c5b23f7fa14dc51ea2f28b599d0">IMP_RECREATED</a> = 4
+, <a class="el" href="classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18a211b8ab86bd0f5458a6329199d29a4df">IMP_RECREATED_FILTER0</a> = 4
+, <br />
+&#160;&#160;<a class="el" href="classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18a36daf4210abe004a77f1ba290e533e68">IMP_RECREATED_FILTER1</a> = 5
+, <a class="el" href="classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18a7616e26969e003cabbd2e04b956c750c">IMP_RECREATED_FILTER2</a> = 6
 <br />
  }</td></tr>
 <tr class="separator:ad9230d5b439e1f91586c29071ad9ec18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7dcf9adadfc7884b92992c523b2b4f4"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="classpesieve_1_1_imp_reconstructor.html#a3e4f5db6215140c46c4c03f79b290589">pesieve::ImpReconstructor::imprec_filter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_imp_reconstructor.html#ab7dcf9adadfc7884b92992c523b2b4f4">t_imprec_filter</a></td></tr>
+<tr class="separator:ab7dcf9adadfc7884b92992c523b2b4f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3594f1ad2fcbad785c0f7afb389c45db"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="classpesieve_1_1_imp_reconstructor.html#ad9230d5b439e1f91586c29071ad9ec18">pesieve::ImpReconstructor::imprec_res</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_imp_reconstructor.html#a3594f1ad2fcbad785c0f7afb389c45db">t_imprec_res</a></td></tr>
 <tr class="separator:a3594f1ad2fcbad785c0f7afb389c45db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -111,6 +122,20 @@ Public Member Functions</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="imp__reconstructor_8h_source.html#l00156">156</a> of file <a class="el" href="imp__reconstructor_8h_source.html">imp_reconstructor.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="ab7dcf9adadfc7884b92992c523b2b4f4" name="ab7dcf9adadfc7884b92992c523b2b4f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7dcf9adadfc7884b92992c523b2b4f4">&#9670;&nbsp;</a></span>t_imprec_filter</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef enum <a class="el" href="classpesieve_1_1_imp_reconstructor.html#a3e4f5db6215140c46c4c03f79b290589">pesieve::ImpReconstructor::imprec_filter</a> <a class="el" href="classpesieve_1_1_imp_reconstructor.html#ab7dcf9adadfc7884b92992c523b2b4f4">pesieve::ImpReconstructor::t_imprec_filter</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a3594f1ad2fcbad785c0f7afb389c45db" name="a3594f1ad2fcbad785c0f7afb389c45db"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3594f1ad2fcbad785c0f7afb389c45db">&#9670;&nbsp;</a></span>t_imprec_res</h2>
 
@@ -126,6 +151,28 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a3e4f5db6215140c46c4c03f79b290589" name="a3e4f5db6215140c46c4c03f79b290589"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e4f5db6215140c46c4c03f79b290589">&#9670;&nbsp;</a></span>imprec_filter</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classpesieve_1_1_imp_reconstructor.html#a3e4f5db6215140c46c4c03f79b290589">pesieve::ImpReconstructor::imprec_filter</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3e4f5db6215140c46c4c03f79b290589a753690845a6d95d80d88189cbf369d1f" name="a3e4f5db6215140c46c4c03f79b290589a753690845a6d95d80d88189cbf369d1f"></a>IMP_REC0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a3e4f5db6215140c46c4c03f79b290589ab073babff83d4221d82f2c32394bfd3c" name="a3e4f5db6215140c46c4c03f79b290589ab073babff83d4221d82f2c32394bfd3c"></a>IMP_REC1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a3e4f5db6215140c46c4c03f79b290589a85c7cd6610acfd41f575560f84c72bec" name="a3e4f5db6215140c46c4c03f79b290589a85c7cd6610acfd41f575560f84c72bec"></a>IMP_REC2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a3e4f5db6215140c46c4c03f79b290589a7cb570d3647c06789da2d72901d65721" name="a3e4f5db6215140c46c4c03f79b290589a7cb570d3647c06789da2d72901d65721"></a>IMP_REC_COUNT&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="imp__reconstructor_8h_source.html#l00178">178</a> of file <a class="el" href="imp__reconstructor_8h_source.html">imp_reconstructor.h</a>.</p>
+
+</div>
+</div>
 <a id="ad9230d5b439e1f91586c29071ad9ec18" name="ad9230d5b439e1f91586c29071ad9ec18"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad9230d5b439e1f91586c29071ad9ec18">&#9670;&nbsp;</a></span>imprec_res</h2>
 
@@ -145,10 +192,12 @@ Public Member Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="ad9230d5b439e1f91586c29071ad9ec18ad8c6c2a23febda50327373a4aa23c8b7" name="ad9230d5b439e1f91586c29071ad9ec18ad8c6c2a23febda50327373a4aa23c8b7"></a>IMP_ALREADY_OK&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ad9230d5b439e1f91586c29071ad9ec18afc9614257229d52e5d7d732638d06fe3" name="ad9230d5b439e1f91586c29071ad9ec18afc9614257229d52e5d7d732638d06fe3"></a>IMP_DIR_FIXED&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ad9230d5b439e1f91586c29071ad9ec18a42e3e30f4636403d9271e0038719f4f5" name="ad9230d5b439e1f91586c29071ad9ec18a42e3e30f4636403d9271e0038719f4f5"></a>IMP_FIXED&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ad9230d5b439e1f91586c29071ad9ec18a749b2c5b23f7fa14dc51ea2f28b599d0" name="ad9230d5b439e1f91586c29071ad9ec18a749b2c5b23f7fa14dc51ea2f28b599d0"></a>IMP_RECREATED&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad9230d5b439e1f91586c29071ad9ec18a211b8ab86bd0f5458a6329199d29a4df" name="ad9230d5b439e1f91586c29071ad9ec18a211b8ab86bd0f5458a6329199d29a4df"></a>IMP_RECREATED_FILTER0&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad9230d5b439e1f91586c29071ad9ec18a36daf4210abe004a77f1ba290e533e68" name="ad9230d5b439e1f91586c29071ad9ec18a36daf4210abe004a77f1ba290e533e68"></a>IMP_RECREATED_FILTER1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad9230d5b439e1f91586c29071ad9ec18a7616e26969e003cabbd2e04b956c750c" name="ad9230d5b439e1f91586c29071ad9ec18a7616e26969e003cabbd2e04b956c750c"></a>IMP_RECREATED_FILTER2&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="imp__reconstructor_8h_source.html#l00177">177</a> of file <a class="el" href="imp__reconstructor_8h_source.html">imp_reconstructor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="imp__reconstructor_8h_source.html#l00185">185</a> of file <a class="el" href="imp__reconstructor_8h_source.html">imp_reconstructor.h</a>.</p>
 
 </div>
 </div>
@@ -215,7 +264,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="imp__reconstructor_8h_source.html#l00172">172</a> of file <a class="el" href="imp__reconstructor_8h_source.html">imp_reconstructor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="imp__reconstructor_8h_source.html#l00173">173</a> of file <a class="el" href="imp__reconstructor_8h_source.html">imp_reconstructor.h</a>.</p>
 
 </div>
 </div>
@@ -236,7 +285,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="imp__reconstructor_8cpp_source.html#l00120">120</a> of file <a class="el" href="imp__reconstructor_8cpp_source.html">imp_reconstructor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="imp__reconstructor_8cpp_source.html#l00168">168</a> of file <a class="el" href="imp__reconstructor_8cpp_source.html">imp_reconstructor.cpp</a>.</p>
 
 </div>
 </div>
@@ -266,7 +315,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="imp__reconstructor_8cpp_source.html#l00065">65</a> of file <a class="el" href="imp__reconstructor_8cpp_source.html">imp_reconstructor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="imp__reconstructor_8cpp_source.html#l00119">119</a> of file <a class="el" href="imp__reconstructor_8cpp_source.html">imp_reconstructor.cpp</a>.</p>
 
 </div>
 </div>
