@@ -207,7 +207,9 @@ size_t pesieve::IATBlock::sizeOfDllsSpace()
 std::string pesieve::IATBlock::toString()
 {
 	std::stringstream stream;
-	stream << "---\nIAT at: " << std::hex << iatOffset << ", size: " << iatSize << ", thunks: " << countThunks() << ", is_terminated: " << isTerminated << "\n";
+	stream << "---\nIAT at: " << std::hex << iatOffset << ", size: " << iatSize << ", thunks: "
+		<< countThunks() << ", is_terminated: " << isTerminated << ", is_main: " << isMain << "\n";
+
 	if (this->importTableOffset) {
 		stream << "ImportTable: " << std::hex << importTableOffset << "\n";
 	}

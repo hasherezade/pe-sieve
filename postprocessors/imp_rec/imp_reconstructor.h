@@ -158,7 +158,7 @@ namespace pesieve {
 	public:
 
 		ImpReconstructor(PeBuffer &_peBuffer)
-			: peBuffer(_peBuffer), is64bit(false)
+			: peBuffer(_peBuffer), is64bit(false), mainIatRva(0)
 		{
 			if (!peBuffer.vBuf) return;
 			if (peBuffer.isValidPe()) {
@@ -167,12 +167,20 @@ namespace pesieve {
 			else {
 				this->is64bit = pesieve::util::is_64bit_code(peBuffer.vBuf, peBuffer.vBufSize);
 			}
+			this->mainIatRva = getMainIATOffset();
 		}
 
 		~ImpReconstructor()
 		{
 			deleteFoundIATs();
 		}
+
+		typedef enum imprec_filter {
+			IMP_REC0,
+			IMP_REC1,
+			IMP_REC2,
+			IMP_REC_COUNT
+		} t_imprec_filter;
 
 		typedef enum imprec_res {
 			IMP_NOT_FOUND = -3,
@@ -182,15 +190,22 @@ namespace pesieve {
 			IMP_ALREADY_OK = 1,
 			IMP_DIR_FIXED = 2,
 			IMP_FIXED = 3,
-			IMP_RECREATED = 4
+			IMP_RECREATED_FILTER0 = 4,
+			IMP_RECREATED_FILTER1 = 5,
+			IMP_RECREATED_FILTER2 = 6,
 		} t_imprec_res;
+
 		t_imprec_res rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode);
 
 		bool printFoundIATs(std::string reportPath);
 
 	private:
+
+		t_imprec_res _recreateImportTableFiltered(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode& imprec_mode);
+
 		IATBlock* findIATBlock(IN const peconv::ExportsMapper* exportsMap, size_t start_offset);
 		IATBlock* findIAT(IN const peconv::ExportsMapper* exportsMap, size_t start_offset);
+		DWORD getMainIATOffset();
 
 		//!  has a dynamic IAT bigger than the basic one (that is set in Data Directory)
 		bool hasBiggerDynamicIAT() const;
@@ -200,7 +215,7 @@ namespace pesieve {
 
 		bool isDefaultImportValid(IN const peconv::ExportsMapper* exportsMap);
 
-		bool findIATsCoverage(IN const peconv::ExportsMapper* exportsMap);
+		bool findIATsCoverage(IN const peconv::ExportsMapper* exportsMap, t_imprec_filter filter);
 		ImportTableBuffer* constructImportTable();
 		bool appendImportTable(ImportTableBuffer &importTable);
 
@@ -224,6 +239,7 @@ namespace pesieve {
 
 		PeBuffer &peBuffer;
 		bool is64bit;
+		DWORD mainIatRva; //< RVA of the IAT that is set in the Data Directory
 		std::map<DWORD, IATBlock*> foundIATs;
 	};
 
