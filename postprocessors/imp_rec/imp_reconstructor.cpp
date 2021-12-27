@@ -41,7 +41,7 @@ bool pesieve::ImpReconstructor::hasDynamicIAT() const
 {
 	std::map<DWORD, IATBlock*>::const_iterator iats_itr;
 
-	// find a dynamic IAT bigger than the default:
+	// find a dynamic IAT additional to the default one:
 	bool has_new_table = false;
 	for (iats_itr = foundIATs.cbegin(); iats_itr != foundIATs.cend(); ++iats_itr) {
 		const IATBlock* iblock = iats_itr->second;
@@ -291,10 +291,7 @@ void pesieve::ImpReconstructor::collectMainIatData()
 		// No import table
 		return;
 	}
-	if (!peconv::collect_thunks(vBuf, vBufSize, mainIatThunks)) {
-		// Could not collect thunks
-		return;
-	}
+	peconv::collect_thunks(vBuf, vBufSize, mainIatThunks);
 }
 
 IATBlock* pesieve::ImpReconstructor::findIAT(IN const peconv::ExportsMapper* exportsMap, size_t start_offset)
