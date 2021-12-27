@@ -207,8 +207,8 @@ namespace pesieve {
 		IATBlock* findIAT(IN const peconv::ExportsMapper* exportsMap, size_t start_offset);
 		void collectMainIatData();
 
-		//!  has a dynamic IAT bigger than the basic one (that is set in Data Directory)
-		bool hasBiggerDynamicIAT() const;
+		//!  has a dynamic IAT in addition to the basic one (that is set in Data Directory)
+		bool hasDynamicIAT() const;
 
 		bool findImportTable(IN const peconv::ExportsMapper* exportsMap);
 		size_t collectIATs(IN const peconv::ExportsMapper* exportsMap);

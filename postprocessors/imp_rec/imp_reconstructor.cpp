@@ -7,6 +7,8 @@
 
 using namespace pesieve;
 
+#define MIN_THUNKS_COUNT 2
+
 namespace pesieve {
 	BYTE* get_buffer_space_at(IN BYTE* buffer, IN const size_t buffer_size, IN const DWORD buffer_rva, IN const DWORD required_rva, IN const size_t required_size)
 	{
@@ -35,10 +37,8 @@ BYTE* pesieve::ImportTableBuffer::getDllSpaceAt(const DWORD rva, size_t required
 
 //---
 
-bool pesieve::ImpReconstructor::hasBiggerDynamicIAT() const
+bool pesieve::ImpReconstructor::hasDynamicIAT() const
 {
-	// check the size of the main import table (from the Data Directory)
-	size_t main_size = this->mainIatThunks.size();
 	std::map<DWORD, IATBlock*>::const_iterator iats_itr;
 
 	// find a dynamic IAT bigger than the default:
@@ -47,7 +47,7 @@ bool pesieve::ImpReconstructor::hasBiggerDynamicIAT() const
 		const IATBlock* iblock = iats_itr->second;
 		if (!iblock->isInMain
 			&& iblock->isTerminated
-			&& iblock->countThunks() > main_size)
+			&& iblock->countThunks() >= MIN_THUNKS_COUNT)
 		{
 			has_new_table = true;
 			break;
@@ -131,9 +131,12 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImport
 		return IMP_RECOVERY_NOT_APPLICABLE;
 	}
 
-	if (imprec_mode == PE_IMPREC_UNERASE || (imprec_mode == PE_IMPREC_AUTO && !hasBiggerDynamicIAT())) {
+	const bool is_default_valid = this->isDefaultImportValid(exportsMap);
 
-		if (this->isDefaultImportValid(exportsMap)) {
+	if (imprec_mode == PE_IMPREC_UNERASE || 
+		(imprec_mode == PE_IMPREC_AUTO && (!is_default_valid || !this->hasDynamicIAT())))
+	{
+		if (is_default_valid) {
 			// Valid Import Table already set
 			return pesieve::ImpReconstructor::IMP_ALREADY_OK;
 		}
@@ -147,14 +150,12 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImport
 		// Valid Import Table already set
 		return pesieve::ImpReconstructor::IMP_ALREADY_OK;
 	}
-
-
+	
 	// Try to rebuild ImportTable for module
 	if ((imprec_mode == PE_IMPREC_REBUILD0 || imprec_mode == PE_IMPREC_REBUILD1 || imprec_mode == PE_IMPREC_REBUILD2)
-		|| imprec_mode == PE_IMPREC_AUTO) {
-
+		|| imprec_mode == PE_IMPREC_AUTO)
+	{
 		return _recreateImportTableFiltered(exportsMap, imprec_mode);
-
 	}
 	return IMP_RECOVERY_ERROR;
 }
@@ -431,7 +432,7 @@ bool pesieve::ImpReconstructor::findIATsCoverage(IN const peconv::ExportsMapper*
 				continue;
 			}
 		case IMP_REC1:
-			if (!iat->isInMain && !iat->isTerminated && iat->countThunks() < 2) {
+			if (!iat->isInMain && !iat->isTerminated && iat->countThunks() < MIN_THUNKS_COUNT) {
 				continue;
 			}
 		}
