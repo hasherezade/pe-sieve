@@ -81,7 +81,7 @@ namespace pesieve {
 		IATBlock(bool _is64bit, DWORD _iat_offset)
 			: is64bit(_is64bit),
 			iatOffset(_iat_offset), iatSize(0),
-			isMain(false), isTerminated(false), isCoverageComplete(false),
+			isInMain(false), isTerminated(false), isCoverageComplete(false),
 			importTableOffset(0)
 		{
 		}
@@ -144,7 +144,7 @@ namespace pesieve {
 		size_t sizeOfDllsSpace();
 
 		bool isTerminated; // is the IAT finished by 0
-		bool isMain; // is the IAT set in the Data Directory
+		bool isInMain; // is the IAT included in the one set in the Data Directory
 
 		DWORD iatOffset;
 		size_t iatSize;

@@ -7,6 +7,8 @@
 
 using namespace pesieve;
 
+#define MIN_THUNKS_COUNT 2
+
 namespace pesieve {
 	BYTE* get_buffer_space_at(IN BYTE* buffer, IN const size_t buffer_size, IN const DWORD buffer_rva, IN const DWORD required_rva, IN const size_t required_size)
 	{
@@ -35,25 +37,17 @@ BYTE* pesieve::ImportTableBuffer::getDllSpaceAt(const DWORD rva, size_t required
 
 //---
 
-bool pesieve::ImpReconstructor::hasBiggerDynamicIAT() const
+bool pesieve::ImpReconstructor::hasDynamicIAT() const
 {
-	// check the size of the main import table (from the Data Directory)
-	size_t main_size = 0;
 	std::map<DWORD, IATBlock*>::const_iterator iats_itr;
-	for (iats_itr = foundIATs.cbegin(); iats_itr != foundIATs.cend(); ++iats_itr) {
-		const IATBlock* iblock = iats_itr->second;
-		if (iblock->isMain) {
-			main_size = iblock->countThunks();
-			break;
-		}
-	}
-	// find a dynamic IAT bigger than the default:
+
+	// find a dynamic IAT additional to the default one:
 	bool has_new_table = false;
 	for (iats_itr = foundIATs.cbegin(); iats_itr != foundIATs.cend(); ++iats_itr) {
 		const IATBlock* iblock = iats_itr->second;
-		if (!iblock->isMain
+		if (!iblock->isInMain
 			&& iblock->isTerminated
-			&& iblock->countThunks() > main_size)
+			&& iblock->countThunks() >= MIN_THUNKS_COUNT)
 		{
 			has_new_table = true;
 			break;
@@ -137,9 +131,12 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImport
 		return IMP_RECOVERY_NOT_APPLICABLE;
 	}
 
-	if (imprec_mode == PE_IMPREC_UNERASE || (imprec_mode == PE_IMPREC_AUTO && !hasBiggerDynamicIAT())) {
+	const bool is_default_valid = this->isDefaultImportValid(exportsMap);
 
-		if (this->isDefaultImportValid(exportsMap)) {
+	if (imprec_mode == PE_IMPREC_UNERASE || 
+		(imprec_mode == PE_IMPREC_AUTO && (!is_default_valid || !this->hasDynamicIAT())))
+	{
+		if (is_default_valid) {
 			// Valid Import Table already set
 			return pesieve::ImpReconstructor::IMP_ALREADY_OK;
 		}
@@ -153,14 +150,12 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImport
 		// Valid Import Table already set
 		return pesieve::ImpReconstructor::IMP_ALREADY_OK;
 	}
-
-
+	
 	// Try to rebuild ImportTable for module
 	if ((imprec_mode == PE_IMPREC_REBUILD0 || imprec_mode == PE_IMPREC_REBUILD1 || imprec_mode == PE_IMPREC_REBUILD2)
-		|| imprec_mode == PE_IMPREC_AUTO) {
-
+		|| imprec_mode == PE_IMPREC_AUTO)
+	{
 		return _recreateImportTableFiltered(exportsMap, imprec_mode);
-
 	}
 	return IMP_RECOVERY_ERROR;
 }
@@ -286,34 +281,17 @@ IATBlock* pesieve::ImpReconstructor::findIATBlock(IN const peconv::ExportsMapper
 }
 
 
-DWORD pesieve::ImpReconstructor::getMainIATOffset()
+void pesieve::ImpReconstructor::collectMainIatData()
 {
 	BYTE* vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;
-	if (!vBuf) return 0;
+	if (!vBuf) return;
 
-	IMAGE_DATA_DIRECTORY* dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
-	if (dir) {
-		return dir->VirtualAddress;
-	}
 	if (!peconv::has_valid_import_table(vBuf, vBufSize)) {
 		// No import table
-		return 0;
+		return;
 	}
-	std::set<DWORD> thunk_rvas;
-	if (!peconv::collect_thunks(vBuf, vBufSize, thunk_rvas)) {
-		// Could not collect thunks
-		return 0;
-	}
-	std::set<DWORD>::iterator itr = thunk_rvas.begin();
-	if (itr == thunk_rvas.end()) {
-		return 0;
-	}
-	const DWORD lowest_rva = *itr;
-#ifdef _DEBUG
-	std::cout << __FUNCTION__ << "main_iat RVA: " << std::hex << lowest_rva << std::endl;
-#endif
-	return lowest_rva;
+	peconv::collect_thunks(vBuf, vBufSize, mainIatThunks);
 }
 
 IATBlock* pesieve::ImpReconstructor::findIAT(IN const peconv::ExportsMapper* exportsMap, size_t start_offset)
@@ -326,8 +304,17 @@ IATBlock* pesieve::ImpReconstructor::findIAT(IN const peconv::ExportsMapper* exp
 	if (!iat_block) {
 		return nullptr;
 	}
-	if (mainIatRva != 0 && iat_block->iatOffset == mainIatRva) {
-		iat_block->isMain = true;
+	DWORD mainIatRVA = 0;
+	DWORD mainIatSize = 0;
+	IMAGE_DATA_DIRECTORY* dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
+	if (dir) {
+		mainIatRVA = dir->VirtualAddress;
+		mainIatSize = dir->Size;
+	}
+	if ( (mainIatRVA != 0 && iat_block->iatOffset >= mainIatRVA && iat_block->iatOffset < (mainIatRVA + mainIatSize) )
+		|| mainIatThunks.find(iat_block->iatOffset) != mainIatThunks.end() )
+	{
+		iat_block->isInMain = true;
 	}
 	return iat_block;
 }
@@ -438,11 +425,11 @@ bool pesieve::ImpReconstructor::findIATsCoverage(IN const peconv::ExportsMapper*
 
 		switch (filter) {
 		case IMP_REC0:
-			if (!iat->isMain && !iat->isTerminated) {
+			if (!iat->isInMain && !iat->isTerminated) {
 				continue;
 			}
 		case IMP_REC1:
-			if (!iat->isMain && !iat->isTerminated && iat->countThunks() < 2) {
+			if (!iat->isInMain && !iat->isTerminated && iat->countThunks() < MIN_THUNKS_COUNT) {
 				continue;
 			}
 		}

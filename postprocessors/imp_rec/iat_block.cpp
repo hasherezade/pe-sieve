@@ -66,7 +66,7 @@ bool pesieve::IATThunksSeries::fillNamesSpace(const BYTE* buf_start, size_t buf_
 		}
 		else {
 			DWORD *val = (DWORD*)buf;
-			*val = names_rva;
+			*val = MASK_TO_DWORD(names_rva);
 		}
 		//no need to fill names, they will be autofilled during dumping
 		buf += field_size;
@@ -208,7 +208,7 @@ std::string pesieve::IATBlock::toString()
 {
 	std::stringstream stream;
 	stream << "---\nIAT at: " << std::hex << iatOffset << ", size: " << iatSize << ", thunks: "
-		<< countThunks() << ", is_terminated: " << isTerminated << ", is_main: " << isMain << "\n";
+		<< countThunks() << ", is_terminated: " << isTerminated << ", in_main: " << isInMain << "\n";
 
 	if (this->importTableOffset) {
 		stream << "ImportTable: " << std::hex << importTableOffset << "\n";
