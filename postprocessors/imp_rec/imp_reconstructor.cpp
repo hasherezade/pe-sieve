@@ -301,7 +301,7 @@ DWORD pesieve::ImpReconstructor::getMainIATOffset()
 		return 0;
 	}
 	std::set<DWORD> thunk_rvas;
-	if (!peconv::collect_thunks(vBuf, vBufSize, &thunk_rvas)) {
+	if (!peconv::collect_thunks(vBuf, vBufSize, thunk_rvas)) {
 		// Could not collect thunks
 		return 0;
 	}
