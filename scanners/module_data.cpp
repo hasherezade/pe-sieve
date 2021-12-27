@@ -105,34 +105,11 @@ bool pesieve::ModuleData::loadImportThunks(std::set<DWORD>& thunk_rvas)
 	if (!original_module || !original_size) {
 		return false;
 	}
-	//---
-	class CollectThunks : public peconv::ImportThunksCallback
-	{
-	public:
-		CollectThunks(ModuleData &_mod, std::set<DWORD>& _fields)
-			: ImportThunksCallback(_mod.original_module, _mod.original_size),
-			mod(_mod), fields(_fields)
-		{
-		}
-
-		virtual bool processThunks(LPSTR libName, ULONG_PTR origFirstThunkPtr, ULONG_PTR firstThunkPtr)
-		{
-			DWORD thunk_rvas = mod.vaToRva(firstThunkPtr, (ULONG_PTR)mod.original_module);
-			fields.insert(thunk_rvas);
-			return true;
-		}
-
-		std::set<DWORD> &fields;
-		ModuleData &mod;
-	};
-
-	//---
 	if (!peconv::has_valid_import_table(original_module, original_size)) {
 		// No import table
 		return false;
 	}
-	CollectThunks collector(*this, thunk_rvas);
-	if (!peconv::process_import_table(original_module, original_size, &collector)) {
+	if (!peconv::collect_thunks(original_module, original_size, thunk_rvas)) {
 		// Could not collect thunks
 		return false;
 	}

@@ -296,51 +296,12 @@ DWORD pesieve::ImpReconstructor::getMainIATOffset()
 	if (dir) {
 		return dir->VirtualAddress;
 	}
-	//
-	class CollectThunks : public peconv::ImportThunksCallback
-	{
-	public:
-		CollectThunks(BYTE* _vBuf, size_t _vBufSize, std::set<DWORD>& _fields)
-			: ImportThunksCallback(_vBuf, _vBufSize), vBuf(_vBuf), vBufSize(_vBufSize),
-			fields(_fields)
-		{
-		}
-
-		virtual bool processThunks(LPSTR libName, ULONG_PTR origFirstThunkPtr, ULONG_PTR firstThunkPtr)
-		{
-			ULONG_PTR thunk_rva = vaToRva(firstThunkPtr);
-			fields.insert(thunk_rva);
-			return true;
-		}
-
-		DWORD vaToRva(ULONGLONG va, ULONGLONG module_base = 0)
-		{
-			if (module_base == 0) {
-				module_base = reinterpret_cast<ULONGLONG>(this->vBuf);
-			}
-			if (va < module_base) {
-				return 0; // not this module
-			}
-			if (va > module_base + this->vBufSize) {
-				return 0; // not this module
-			}
-			ULONGLONG diff = (va - module_base);
-			return static_cast<DWORD>(diff);
-		}
-
-		std::set<DWORD>& fields;
-		BYTE* vBuf;
-		size_t vBufSize;
-	};
-
-	//---
 	if (!peconv::has_valid_import_table(vBuf, vBufSize)) {
 		// No import table
 		return 0;
 	}
 	std::set<DWORD> thunk_rvas;
-	CollectThunks collector(vBuf, vBufSize, thunk_rvas);
-	if (!peconv::process_import_table(vBuf, vBufSize, &collector)) {
+	if (!peconv::collect_thunks(vBuf, vBufSize, &thunk_rvas)) {
 		// Could not collect thunks
 		return 0;
 	}
