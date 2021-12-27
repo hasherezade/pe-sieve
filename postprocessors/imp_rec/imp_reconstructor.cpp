@@ -38,20 +38,14 @@ BYTE* pesieve::ImportTableBuffer::getDllSpaceAt(const DWORD rva, size_t required
 bool pesieve::ImpReconstructor::hasBiggerDynamicIAT() const
 {
 	// check the size of the main import table (from the Data Directory)
-	size_t main_size = 0;
+	size_t main_size = this->mainIatThunks.size();
 	std::map<DWORD, IATBlock*>::const_iterator iats_itr;
-	for (iats_itr = foundIATs.cbegin(); iats_itr != foundIATs.cend(); ++iats_itr) {
-		const IATBlock* iblock = iats_itr->second;
-		if (iblock->isMain) {
-			main_size = iblock->countThunks();
-			break;
-		}
-	}
+
 	// find a dynamic IAT bigger than the default:
 	bool has_new_table = false;
 	for (iats_itr = foundIATs.cbegin(); iats_itr != foundIATs.cend(); ++iats_itr) {
 		const IATBlock* iblock = iats_itr->second;
-		if (!iblock->isMain
+		if (!iblock->isInMain
 			&& iblock->isTerminated
 			&& iblock->countThunks() > main_size)
 		{
@@ -286,34 +280,20 @@ IATBlock* pesieve::ImpReconstructor::findIATBlock(IN const peconv::ExportsMapper
 }
 
 
-DWORD pesieve::ImpReconstructor::getMainIATOffset()
+void pesieve::ImpReconstructor::collectMainIatData()
 {
 	BYTE* vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;
-	if (!vBuf) return 0;
+	if (!vBuf) return;
 
-	IMAGE_DATA_DIRECTORY* dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
-	if (dir) {
-		return dir->VirtualAddress;
-	}
 	if (!peconv::has_valid_import_table(vBuf, vBufSize)) {
 		// No import table
-		return 0;
+		return;
 	}
-	std::set<DWORD> thunk_rvas;
-	if (!peconv::collect_thunks(vBuf, vBufSize, thunk_rvas)) {
+	if (!peconv::collect_thunks(vBuf, vBufSize, mainIatThunks)) {
 		// Could not collect thunks
-		return 0;
+		return;
 	}
-	std::set<DWORD>::iterator itr = thunk_rvas.begin();
-	if (itr == thunk_rvas.end()) {
-		return 0;
-	}
-	const DWORD lowest_rva = *itr;
-#ifdef _DEBUG
-	std::cout << __FUNCTION__ << "main_iat RVA: " << std::hex << lowest_rva << std::endl;
-#endif
-	return lowest_rva;
 }
 
 IATBlock* pesieve::ImpReconstructor::findIAT(IN const peconv::ExportsMapper* exportsMap, size_t start_offset)
@@ -326,8 +306,17 @@ IATBlock* pesieve::ImpReconstructor::findIAT(IN const peconv::ExportsMapper* exp
 	if (!iat_block) {
 		return nullptr;
 	}
-	if (mainIatRva != 0 && iat_block->iatOffset == mainIatRva) {
-		iat_block->isMain = true;
+	DWORD mainIatRVA = 0;
+	DWORD mainIatSize = 0;
+	IMAGE_DATA_DIRECTORY* dir = peconv::get_directory_entry(vBuf, IMAGE_DIRECTORY_ENTRY_IAT, true);
+	if (dir) {
+		mainIatRVA = dir->VirtualAddress;
+		mainIatSize = dir->Size;
+	}
+	if ( (mainIatRVA != 0 && iat_block->iatOffset >= mainIatRVA && iat_block->iatOffset < (mainIatRVA + mainIatSize) )
+		|| mainIatThunks.find(iat_block->iatOffset) != mainIatThunks.end() )
+	{
+		iat_block->isInMain = true;
 	}
 	return iat_block;
 }
@@ -438,11 +427,11 @@ bool pesieve::ImpReconstructor::findIATsCoverage(IN const peconv::ExportsMapper*
 
 		switch (filter) {
 		case IMP_REC0:
-			if (!iat->isMain && !iat->isTerminated) {
+			if (!iat->isInMain && !iat->isTerminated) {
 				continue;
 			}
 		case IMP_REC1:
-			if (!iat->isMain && !iat->isTerminated && iat->countThunks() < 2) {
+			if (!iat->isInMain && !iat->isTerminated && iat->countThunks() < 2) {
 				continue;
 			}
 		}

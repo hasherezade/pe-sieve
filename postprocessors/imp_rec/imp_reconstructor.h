@@ -126,7 +126,7 @@ namespace pesieve {
 
 			//overwrite the Data Directory:
 			imp_dir->VirtualAddress = descriptorsRVA;
-			imp_dir->Size = import_table_size;
+			imp_dir->Size = MASK_TO_DWORD(import_table_size);
 			return true;
 		}
 
@@ -158,7 +158,7 @@ namespace pesieve {
 	public:
 
 		ImpReconstructor(PeBuffer &_peBuffer)
-			: peBuffer(_peBuffer), is64bit(false), mainIatRva(0)
+			: peBuffer(_peBuffer), is64bit(false)
 		{
 			if (!peBuffer.vBuf) return;
 			if (peBuffer.isValidPe()) {
@@ -167,7 +167,7 @@ namespace pesieve {
 			else {
 				this->is64bit = pesieve::util::is_64bit_code(peBuffer.vBuf, peBuffer.vBufSize);
 			}
-			this->mainIatRva = getMainIATOffset();
+			collectMainIatData();
 		}
 
 		~ImpReconstructor()
@@ -205,7 +205,7 @@ namespace pesieve {
 
 		IATBlock* findIATBlock(IN const peconv::ExportsMapper* exportsMap, size_t start_offset);
 		IATBlock* findIAT(IN const peconv::ExportsMapper* exportsMap, size_t start_offset);
-		DWORD getMainIATOffset();
+		void collectMainIatData();
 
 		//!  has a dynamic IAT bigger than the basic one (that is set in Data Directory)
 		bool hasBiggerDynamicIAT() const;
@@ -239,8 +239,9 @@ namespace pesieve {
 
 		PeBuffer &peBuffer;
 		bool is64bit;
-		DWORD mainIatRva; //< RVA of the IAT that is set in the Data Directory
 		std::map<DWORD, IATBlock*> foundIATs;
+
+		std::set<DWORD> mainIatThunks; //< RVAs of the Thunks of the main IAT
 	};
 
 }; // namespace pesieve
