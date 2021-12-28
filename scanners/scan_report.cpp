@@ -203,10 +203,10 @@ const bool pesieve::ProcessScanReport::toJSON(
 	stream << std::dec << report.is_64bit << ",\n";
 	OUT_PADDED(stream, level, "\"is_managed\" : ");
 	stream << std::dec << report.is_managed << ",\n";
-	OUT_PADDED(stream, level, "\"is_reflection\" : ");
-	stream << std::dec << report.is_reflection << ",\n";
 	OUT_PADDED(stream, level, "\"main_image_path\" : \"");
 	stream << escape_path_separators(this->mainImagePath) << "\",\n";
+	OUT_PADDED(stream, level, "\"used_reflection\" : ");
+	stream << std::dec << report.is_reflection << ",\n";
 	OUT_PADDED(stream, level, "\"scanned\" : \n");
 	OUT_PADDED(stream, level, "{\n");
 	//stream << " {\n";
