@@ -56,11 +56,22 @@ int main(int argc, char *argv[])
 	}
 	uParams.fillStruct(args);
 	//---
+	// if scanning of inaccessible pages was requested, auto-enable reflection mode:
+	if (args.data == pesieve::PE_DATA_SCAN_INACCESSIBLE || args.data == pesieve::PE_DATA_SCAN_INACCESSIBLE_ONLY) {
+		if (!args.make_reflection) {
+			args.make_reflection = true;
+			if (!args.quiet) {
+				paramkit::print_in_color(paramkit::WARNING_COLOR, "[WARNING] Scanning of inaccessible pages requested: auto-enabled reflection mode!\n");
+			}
+		}
+	}
+	//print info about current settings:
 	if (!args.quiet) {
 		std::cout << "PID: " << args.pid << std::endl;
 		std::cout << "Output filter: " << translate_out_filter(args.out_filter) << std::endl;
 		std::cout << "Dump mode: " << translate_dump_mode(args.dump_mode) << std::endl;
 	}
+
 	pesieve::ReportEx* report = pesieve::scan_and_dump(args);
 	t_pesieve_res res = PESIEVE_ERROR;
 	if (report != nullptr) {

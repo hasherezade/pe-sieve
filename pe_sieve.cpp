@@ -193,15 +193,18 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 			if (cloned_proc) {
 				target_proc = cloned_proc;
 			}
+			else {
+				if (!args.quiet) std::cerr << "[-] Failed to create the process reflection" << std::endl;
+			}
 		}
 
 		if (!args.quiet) {
 			if (cloned_proc) {
-				std::cout << "Using process reflection!\n";
+				std::cout << "[*] Using process reflection!\n";
 			}
 			else {
-				std::cout << "Using raw process!\n";
-				if (args.data >= PE_DATA_SCAN_INACCESSIBLE) {
+				std::cout << "[*] Using raw process!\n";
+				if (args.data == pesieve::PE_DATA_SCAN_INACCESSIBLE || args.data == pesieve::PE_DATA_SCAN_INACCESSIBLE_ONLY) {
 					print_in_color(WARNING_COLOR, "[WARNING] Scanning of inaccessible pages is possible only in reflection mode!\n");
 				}
 			}
