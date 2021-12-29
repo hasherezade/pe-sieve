@@ -27,7 +27,7 @@ PE-sieve is meant to be a **light-weight engine** dedicated to scan **a single p
 
 There are few other tools that use PE-sieve as an engine, but focus on some specific usecases. They offer additional features and filters on the top of its base.
 
-📌 [HollowsHunter](https://github.com/hasherezade/hollows_hunter) - if instead of scanning a particular process you want to **scan full system** with PE-sieve, this is the tool for you
+📌 [HollowsHunter](https://github.com/hasherezade/hollows_hunter) - if instead of scanning a particular process you want to **multiple processes at once, or even the full system** with PE-sieve, this is the tool for you
 
 📌 [MalUnpack](https://github.com/hasherezade/mal_unpack) - offers quick **unpacking** of supplied malware sample
 
