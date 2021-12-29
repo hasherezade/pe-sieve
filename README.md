@@ -6,7 +6,7 @@
 [![Github All Releases](https://img.shields.io/github/downloads/hasherezade/pe-sieve/total.svg)](https://github.com/hasherezade/pe-sieve/releases)
 [![Github Latest Release](https://img.shields.io/github/downloads/hasherezade/pe-sieve/latest/total.svg)](https://github.com/hasherezade/pe-sieve/releases)
 
-[![License](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)](https://opensource.org/licenses/BSD-2-Clause)
+[![License](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)](https://github.com/hasherezade/pe-sieve/blob/master/LICENSE)
 [![Platform Badge](https://img.shields.io/badge/Windows-0078D6?logo=windows)](https://github.com/hasherezade/pe-sieve)
 [![Discussions](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://github.com/hasherezade/pe-sieve/discussions)
 
