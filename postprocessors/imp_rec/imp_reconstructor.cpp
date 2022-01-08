@@ -131,11 +131,10 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImport
 		return IMP_RECOVERY_NOT_APPLICABLE;
 	}
 
-	const bool is_default_valid = this->isDefaultImportValid(exportsMap);
-
 	if (imprec_mode == PE_IMPREC_UNERASE || 
-		(imprec_mode == PE_IMPREC_AUTO && (!is_default_valid || !this->hasDynamicIAT())))
+		(imprec_mode == PE_IMPREC_AUTO && !this->hasDynamicIAT()))
 	{
+		const bool is_default_valid = this->isDefaultImportValid(exportsMap);
 		if (is_default_valid) {
 			// Valid Import Table already set
 			return pesieve::ImpReconstructor::IMP_ALREADY_OK;
