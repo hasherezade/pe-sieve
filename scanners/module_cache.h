@@ -64,7 +64,8 @@ namespace pesieve
 
 	public:
 		
-		static const size_t MinCacheCntr = 3;
+		static const size_t MinUsageCntr = 3;
+		static const size_t MaxCachedModules = 255;
 
 		ModulesCache()
 		{
@@ -100,7 +101,8 @@ namespace pesieve
 			{
 				std::lock_guard<std::mutex> guard(cacheMutex);
 				size_t currCntr = usageCounter[szModName]++;
-				if (mod_buf && currCntr >= MinCacheCntr) {
+				size_t cachedModulesCntr = cachedModules.size();
+				if (mod_buf && currCntr >= MinUsageCntr && cachedModulesCntr < MaxCachedModules) {
 					CachedModule* cached = new(std::nothrow) CachedModule(mod_buf, original_size);
 					if (cached) {
 						if (cached->moduleData) {
