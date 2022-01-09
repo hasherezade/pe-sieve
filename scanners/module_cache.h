@@ -12,7 +12,6 @@ namespace pesieve
 	public:
 		CachedModule() : moduleData(nullptr), moduleSize(0)
 		{
-
 		}
 
 		CachedModule(BYTE* _moduleData, size_t _moduleSize)
@@ -64,15 +63,39 @@ namespace pesieve
 
 	public:
 		
-		static const size_t MinUsageCntr = 3;
-		static const size_t MaxCachedModules = 1000;
+		static const size_t MinUsageCntr = 3; ///< how many times loading of the module must be requested before the module is added to cache
+		static const size_t MaxCachedModules = 1000; ///< how many modules can be stored in the cache at the time
 
 		ModulesCache()
 		{
+#ifdef _DEBUG
 			std::cout << "Cache initialized\n";
+#endif
 		}
 
 		~ModulesCache()
+		{
+			_deleteCache();
+		}
+
+		BYTE* loadCached(LPSTR szModName, size_t& original_size);
+
+	protected:
+
+		BYTE* _getCached(const std::string &modName, size_t& cacheSize)
+		{
+			std::lock_guard<std::mutex> guard(cacheMutex);
+
+			std::map<std::string, CachedModule*>::iterator itr = cachedModules.find(modName);
+			if (itr != cachedModules.end()) {
+				const CachedModule* cached = itr->second;
+				if (!cached) return nullptr;
+				return cached->makeCacheCopy(cacheSize);
+			}
+			return nullptr;
+		}
+
+		void _deleteCache()
 		{
 			std::lock_guard<std::mutex> guard(cacheMutex);
 
@@ -88,64 +111,15 @@ namespace pesieve
 				delete cached;
 			}
 			cachedModules.clear();
+			usageCounter.clear();
 #ifdef _DEBUG
 			std::cout << "Cache deleted\n";
 #endif
 		}
 
-		BYTE* loadCached(LPSTR szModName, size_t& original_size)
-		{
-			BYTE* mod_buf = getCached(szModName, original_size);
-			if (mod_buf) {
-#ifdef _DEBUG
-				std::cout << "Got module from cache: " << szModName << "\n";
-#endif
-				return mod_buf;
-			}
-				
-			mod_buf = peconv::load_pe_module(szModName, original_size, false, false);
-			// Add to cache if needed...
-			{
-				std::lock_guard<std::mutex> guard(cacheMutex);
-				size_t currCntr = usageCounter[szModName]++;
-				size_t cachedModulesCntr = cachedModules.size();
-				if (mod_buf && currCntr >= MinUsageCntr && cachedModulesCntr < MaxCachedModules) {
-					CachedModule* cached = new(std::nothrow) CachedModule(mod_buf, original_size);
-					if (cached) {
-						if (cached->moduleData) {
-							cachedModules[szModName] = cached;
-						}
-						else {
-							delete cached;
-						}
-					}
-				}
-			}
-			//
-			return mod_buf;
-		}
+		std::map<std::string, size_t> usageCounter; ///< how many times loading of the same module was requested before it was cached
 
-	protected:
-
-
-		BYTE* getCached(const std::string &modName, size_t& cacheSize)
-		{
-			std::lock_guard<std::mutex> guard(cacheMutex);
-
-			std::map<std::string, CachedModule*>::iterator itr = cachedModules.find(modName);
-			if (itr != cachedModules.end()) {
-				const CachedModule* cached = itr->second;
-				if (!cached) return nullptr;
-				return cached->makeCacheCopy(cacheSize);
-			}
-			return nullptr;
-		}
-
-
-		//< how many times loading of the same module was requested
-		std::map<std::string, size_t> usageCounter;
-
-		std::map<std::string, CachedModule*> cachedModules;
+		std::map<std::string, CachedModule*> cachedModules; ///< the list of all the cached modules
 
 		std::mutex cacheMutex;
 	};
