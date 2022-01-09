@@ -65,7 +65,7 @@ namespace pesieve
 	public:
 		
 		static const size_t MinUsageCntr = 3;
-		static const size_t MaxCachedModules = 255;
+		static const size_t MaxCachedModules = 1000;
 
 		ModulesCache()
 		{
@@ -77,8 +77,13 @@ namespace pesieve
 			std::lock_guard<std::mutex> guard(cacheMutex);
 
 			std::map<std::string, CachedModule*>::iterator itr;
+#ifdef _DEBUG
+			size_t i = 0;
+#endif
 			for (itr = cachedModules.begin(); itr != cachedModules.end(); ++itr) {
-				std::cout << "Deleting cached module: " << itr->first << "\n";
+#ifdef _DEBUG
+				std::cout << "[" << i++ << "] Deleting cached module: " << itr->first << "\n";
+#endif
 				CachedModule* cached = itr->second;
 				delete cached;
 			}
