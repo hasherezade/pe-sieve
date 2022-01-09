@@ -85,7 +85,6 @@ set (scanners_hdrs
 	scanners/scanner.h
 	scanners/module_scan_report.h
 	scanners/scan_report.h
-	scanners/module_cache.h
 	scanners/module_data.h
 	scanners/mempage_data.h
 	scanners/pe_section.h
