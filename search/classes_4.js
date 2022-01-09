@@ -6,7 +6,8 @@ var searchData=
   ['mempagedata_3',['MemPageData',['../classpesieve_1_1_mem_page_data.html',1,'pesieve']]],
   ['moduledata_4',['ModuleData',['../classpesieve_1_1_module_data.html',1,'pesieve']]],
   ['moduledumpreport_5',['ModuleDumpReport',['../classpesieve_1_1_module_dump_report.html',1,'pesieve']]],
-  ['modulescanner_6',['ModuleScanner',['../classpesieve_1_1_module_scanner.html',1,'pesieve']]],
-  ['modulescanreport_7',['ModuleScanReport',['../classpesieve_1_1_module_scan_report.html',1,'pesieve']]],
-  ['modulesinfo_8',['ModulesInfo',['../classpesieve_1_1_modules_info.html',1,'pesieve']]]
+  ['modulescache_6',['ModulesCache',['../classpesieve_1_1_modules_cache.html',1,'pesieve']]],
+  ['modulescanner_7',['ModuleScanner',['../classpesieve_1_1_module_scanner.html',1,'pesieve']]],
+  ['modulescanreport_8',['ModuleScanReport',['../classpesieve_1_1_module_scan_report.html',1,'pesieve']]],
+  ['modulesinfo_9',['ModulesInfo',['../classpesieve_1_1_modules_info.html',1,'pesieve']]]
 ];

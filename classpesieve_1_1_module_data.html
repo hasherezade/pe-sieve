@@ -86,10 +86,10 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abc76a800aefda6cd1c79c5fb94d52cb9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#abc76a800aefda6cd1c79c5fb94d52cb9">ModuleData</a> (HANDLE _processHandle, HMODULE _module, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> _isPEBConnected)</td></tr>
-<tr class="separator:abc76a800aefda6cd1c79c5fb94d52cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a439b54325c5c82bd0a08b2f0a9959a62"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#a439b54325c5c82bd0a08b2f0a9959a62">ModuleData</a> (HANDLE _processHandle, HMODULE _module, std::string module_name)</td></tr>
-<tr class="separator:a439b54325c5c82bd0a08b2f0a9959a62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a265979704c14d44a80f50a65a38bd04f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#a265979704c14d44a80f50a65a38bd04f">ModuleData</a> (HANDLE _processHandle, HMODULE _module, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> _isPEBConnected, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> _useCache)</td></tr>
+<tr class="separator:a265979704c14d44a80f50a65a38bd04f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa68a746a51673e00f1585bbf3bc1a771"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#aa68a746a51673e00f1585bbf3bc1a771">ModuleData</a> (HANDLE _processHandle, HMODULE _module, std::string module_name, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> _useCache)</td></tr>
+<tr class="separator:aa68a746a51673e00f1585bbf3bc1a771"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01184c7738b03f631512515c5596f2d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#a01184c7738b03f631512515c5596f2d0">~ModuleData</a> ()</td></tr>
 <tr class="separator:a01184c7738b03f631512515c5596f2d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57fffdfd8f7a26fb3bfa9a827451c660"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#a57fffdfd8f7a26fb3bfa9a827451c660">is64bit</a> ()</td></tr>
@@ -149,6 +149,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a7f242e23b293e9741c8b4821a5df9dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c6bdfac3eeef79c206e3f959ea0519b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#a4c6bdfac3eeef79c206e3f959ea0519b">isPEBConnected</a></td></tr>
 <tr class="separator:a4c6bdfac3eeef79c206e3f959ea0519b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add3ec24357fc53606f9d379b871ae82a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_data.html#add3ec24357fc53606f9d379b871ae82a">useCache</a></td></tr>
+<tr class="separator:add3ec24357fc53606f9d379b871ae82a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -158,10 +160,10 @@ Friends</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Loads a module from the disk, corresponding to the module in the scanned process' memory. </p>
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00014">14</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00015">15</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="abc76a800aefda6cd1c79c5fb94d52cb9" name="abc76a800aefda6cd1c79c5fb94d52cb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc76a800aefda6cd1c79c5fb94d52cb9">&#9670;&nbsp;</a></span>ModuleData() <span class="overload">[1/2]</span></h2>
+<a id="a265979704c14d44a80f50a65a38bd04f" name="a265979704c14d44a80f50a65a38bd04f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a265979704c14d44a80f50a65a38bd04f">&#9670;&nbsp;</a></span>ModuleData() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -185,7 +187,13 @@ Friends</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td>
-          <td class="paramname"><em>_isPEBConnected</em>&#160;</td>
+          <td class="paramname"><em>_isPEBConnected</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td>
+          <td class="paramname"><em>_useCache</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -200,12 +208,12 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00017">17</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00018">18</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classpesieve_1_1_module_data_abc76a800aefda6cd1c79c5fb94d52cb9_cgraph.png" border="0" usemap="#aclasspesieve_1_1_module_data_abc76a800aefda6cd1c79c5fb94d52cb9_cgraph" alt=""/></div>
-<map name="aclasspesieve_1_1_module_data_abc76a800aefda6cd1c79c5fb94d52cb9_cgraph" id="aclasspesieve_1_1_module_data_abc76a800aefda6cd1c79c5fb94d52cb9_cgraph">
+<div class="center"><img src="classpesieve_1_1_module_data_a265979704c14d44a80f50a65a38bd04f_cgraph.png" border="0" usemap="#aclasspesieve_1_1_module_data_a265979704c14d44a80f50a65a38bd04f_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_module_data_a265979704c14d44a80f50a65a38bd04f_cgraph" id="aclasspesieve_1_1_module_data_a265979704c14d44a80f50a65a38bd04f_cgraph">
 <area shape="rect" title=" " alt="" coords="5,217,148,259"/>
 <area shape="rect" href="classpesieve_1_1_module_data.html#afe5c22949731e3387a32ce58d241df1c" title=" " alt="" coords="196,217,339,259"/>
 <area shape="rect" href="classpesieve_1_1_remote_module_data.html#a5ca5644771dbbfe8b03dc4e7694925fb" title=" " alt="" coords="387,217,573,259"/>
@@ -230,8 +238,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a439b54325c5c82bd0a08b2f0a9959a62" name="a439b54325c5c82bd0a08b2f0a9959a62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a439b54325c5c82bd0a08b2f0a9959a62">&#9670;&nbsp;</a></span>ModuleData() <span class="overload">[2/2]</span></h2>
+<a id="aa68a746a51673e00f1585bbf3bc1a771" name="aa68a746a51673e00f1585bbf3bc1a771"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa68a746a51673e00f1585bbf3bc1a771">&#9670;&nbsp;</a></span>ModuleData() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -255,7 +263,13 @@ Here is the call graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>module_name</em>&#160;</td>
+          <td class="paramname"><em>module_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td>
+          <td class="paramname"><em>_useCache</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -270,7 +284,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00026">26</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00028">28</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -297,7 +311,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00035">35</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00037">37</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -326,18 +340,21 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00037">37</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00038">38</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_module_data_a573baa3ed4eba4d8143fca8bc4e74c7f_cgraph.png" border="0" usemap="#aclasspesieve_1_1_module_data_a573baa3ed4eba4d8143fca8bc4e74c7f_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_module_data_a573baa3ed4eba4d8143fca8bc4e74c7f_cgraph" id="aclasspesieve_1_1_module_data_a573baa3ed4eba4d8143fca8bc4e74c7f_cgraph">
-<area shape="rect" title=" " alt="" coords="5,57,148,98"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="207,5,340,32"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a39cfbc887b8c190834eece6c67a4af17" title=" " alt="" coords="196,122,351,163"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#aed4eb6ec69c30d271b4f4b6c4244f03e" title=" " alt="" coords="200,57,347,98"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a24a78069a922debb11a69d5bb0498ceb" title=" " alt="" coords="399,67,532,93"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="408,119,523,161"/>
+<area shape="rect" title=" " alt="" coords="5,90,148,131"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="209,5,342,32"/>
+<area shape="rect" href="classpesieve_1_1_modules_cache.html#a9d5758c091cc26b610b52ce5b6db5207" title=" " alt="" coords="196,57,355,98"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a39cfbc887b8c190834eece6c67a4af17" title=" " alt="" coords="198,122,353,163"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#aed4eb6ec69c30d271b4f4b6c4244f03e" title=" " alt="" coords="202,187,349,229"/>
+<area shape="rect" href="classpesieve_1_1_modules_cache.html#aa072125ae38d157a65fc0995a73d1a32" title=" " alt="" coords="403,57,561,98"/>
+<area shape="rect" href="structpesieve_1_1_cached_module.html#a2443214b92a4d2835613cfa160e6cbd7" title=" " alt="" coords="609,57,768,98"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a24a78069a922debb11a69d5bb0498ceb" title=" " alt="" coords="415,192,549,219"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="425,123,539,165"/>
 </map>
 </div>
 
@@ -366,7 +383,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00083">83</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00085">85</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -393,7 +410,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00040">40</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00042">42</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -420,7 +437,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00048">48</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00050">50</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -447,7 +464,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00168">168</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00175">175</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
 
 </div>
 </div>
@@ -474,7 +491,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00078">78</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00080">80</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -501,7 +518,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00073">73</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00075">75</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -521,7 +538,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00103">103</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00110">110</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
 
 </div>
 </div>
@@ -548,7 +565,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00015">15</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00016">16</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -592,7 +609,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00026">26</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00027">27</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
 
 </div>
 </div>
@@ -612,7 +629,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00063">63</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00070">70</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -641,7 +658,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00155">155</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00162">162</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
 
 </div>
 </div>
@@ -661,7 +678,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00122">122</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00129">129</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
 
 </div>
 </div>
@@ -699,7 +716,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00050">50</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00052">52</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -718,7 +735,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00142">142</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8cpp_source.html#l00149">149</a> of file <a class="el" href="module__data_8cpp_source.html">module_data.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -771,7 +788,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00058">58</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00060">60</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -805,7 +822,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00112">112</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00116">116</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -830,7 +847,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00109">109</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00112">112</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -846,7 +863,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00100">100</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00102">102</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -870,7 +887,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00110">110</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00113">113</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -886,7 +903,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00098">98</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00100">100</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -902,7 +919,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00102">102</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00104">104</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -918,7 +935,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00103">103</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00105">105</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -934,7 +951,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00097">97</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00099">99</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
@@ -950,7 +967,31 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00099">99</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00101">101</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
+
+</div>
+</div>
+<a id="add3ec24357fc53606f9d379b871ae82a" name="add3ec24357fc53606f9d379b871ae82a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add3ec24357fc53606f9d379b871ae82a">&#9670;&nbsp;</a></span>useCache</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::ModuleData::useCache</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="module__data_8h_source.html#l00114">114</a> of file <a class="el" href="module__data_8h_source.html">module_data.h</a>.</p>
 
 </div>
 </div>
