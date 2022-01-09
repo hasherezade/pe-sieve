@@ -47,7 +47,9 @@ namespace pesieve
 
 		~CachedModule()
 		{
+#ifdef _DEBUG
 			std::cout << "Deleting cached module...\n";
+#endif
 			peconv::free_unaligned(moduleData);
 			moduleData = nullptr;
 			moduleSize = 0;
@@ -75,6 +77,7 @@ namespace pesieve
 
 			std::map<std::string, CachedModule*>::iterator itr;
 			for (itr = cachedModules.begin(); itr != cachedModules.end(); ++itr) {
+				std::cout << "Deleting cached module: " << itr->first << "\n";
 				CachedModule* cached = itr->second;
 				delete cached;
 			}
@@ -98,7 +101,15 @@ namespace pesieve
 				std::lock_guard<std::mutex> guard(cacheMutex);
 				size_t currCntr = usageCounter[szModName]++;
 				if (mod_buf && currCntr >= MinCacheCntr) {
-					cachedModules[szModName] = new CachedModule(mod_buf, original_size);
+					CachedModule* cached = new(std::nothrow) CachedModule(mod_buf, original_size);
+					if (cached) {
+						if (cached->moduleData) {
+							cachedModules[szModName] = cached;
+						}
+						else {
+							delete cached;
+						}
+					}
 				}
 			}
 			//
