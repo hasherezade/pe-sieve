@@ -209,7 +209,7 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 		throw std::runtime_error("Could not query the working set. ");
 		return 0;
 	}
-	DWORD start_tick = GetTickCount();
+	ULONGLONG start_tick = GetTickCount64();
 	std::set<ULONGLONG> region_bases;
 	size_t pages_count = util::enum_workingset(processHandle, region_bases);
 	if (!args.quiet) {
@@ -243,7 +243,7 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 		pReport.appendReport(my_report);
 	}
 	if (!args.quiet) {
-		DWORD total_time = GetTickCount() - start_tick;
+		ULONGLONG total_time = GetTickCount64() - start_tick;
 		std::cout << "[*] Workingset scanned in " << std::dec << total_time << " ms" << std::endl;
 	}
 	return counter;
