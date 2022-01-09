@@ -11,6 +11,7 @@
 
 using namespace pesieve::util;
 
+pesieve::ModulesCache cache;
 //---
 bool pesieve::ModuleData::loadModuleName()
 {
@@ -48,7 +49,7 @@ bool pesieve::ModuleData::_loadOriginal(bool disableFSredir)
 		isRedirDisabled = wow64_disable_fs_redirection(&old_val);
 		// try to load with FS redirection disabled
 	}
-	original_module = peconv::load_pe_module(szModName, original_size, false, false);
+	original_module = cache.loadCached(szModName, original_size);
 	if (isRedirDisabled) {
 		wow64_revert_fs_redirection(old_val);
 	}

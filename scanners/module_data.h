@@ -7,6 +7,7 @@
 
 #include <peconv.h>
 #include "../utils/format_util.h"
+#include "module_cache.h"
 
 namespace pesieve {
 
