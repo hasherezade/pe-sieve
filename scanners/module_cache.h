@@ -88,7 +88,9 @@ namespace pesieve
 				delete cached;
 			}
 			cachedModules.clear();
+#ifdef _DEBUG
 			std::cout << "Cache deleted\n";
+#endif
 		}
 
 		BYTE* loadCached(LPSTR szModName, size_t& original_size)

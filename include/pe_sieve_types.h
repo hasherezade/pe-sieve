@@ -96,6 +96,7 @@ namespace pesieve {
 		t_dump_mode dump_mode;  ///< in which mode the detected PE implants should be dumped
 		bool json_output;       ///< display the final summary as the JSON report
 		bool make_reflection;   ///< operate on a process reflection rather than on the live process (this allows i.e. to force-read inaccessible pages)
+		bool use_cache;      ///< enable cache for the scanned modules
 		t_json_level json_lvl;  ///< level of the details of the JSON report
 		char output_dir[MAX_PATH + 1];  ///< the root directory where the output should be saved (default: current directory)
 		char modules_ignored[MAX_MODULE_BUF_LEN]; ///< a list of modules that will not be scanned, separated by PARAM_LIST_SEPARATOR

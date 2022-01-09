@@ -122,7 +122,7 @@ bool pesieve::WorkingSetScanner::scanImg()
 	}
 
 	//load module from file:
-	ModuleData modData(processHandle, module_start, memPage.mapped_name);
+	ModuleData modData(processHandle, module_start, memPage.mapped_name, args.use_cache);
 	if (!modData.loadOriginal()) {
 		if (!args.quiet) {
 			std::cerr << "[-] [" << std::hex << modData.moduleHandle << "] Could not read the module file" << std::endl;

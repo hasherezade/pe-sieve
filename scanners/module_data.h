@@ -15,8 +15,9 @@ namespace pesieve {
 	class ModuleData {
 
 	public:
-		ModuleData(HANDLE _processHandle, HMODULE _module, bool _isPEBConnected)
-			: processHandle(_processHandle), moduleHandle(_module), isPEBConnected(_isPEBConnected),
+		ModuleData(HANDLE _processHandle, HMODULE _module, bool _isPEBConnected, bool _useCache)
+			: processHandle(_processHandle), moduleHandle(_module),
+			isPEBConnected(_isPEBConnected), useCache(_useCache),
 			is_module_named(false), original_size(0), original_module(nullptr),
 			is_dot_net(false)
 		{
@@ -24,8 +25,8 @@ namespace pesieve {
 			loadModuleName();
 		}
 
-		ModuleData(HANDLE _processHandle, HMODULE _module, std::string module_name)
-			: processHandle(_processHandle), moduleHandle(_module),
+		ModuleData(HANDLE _processHandle, HMODULE _module, std::string module_name, bool _useCache)
+			: processHandle(_processHandle), moduleHandle(_module), useCache(_useCache),
 			is_module_named(false), original_size(0), original_module(nullptr),
 			is_dot_net(false)
 		{
@@ -107,8 +108,10 @@ namespace pesieve {
 		bool _loadOriginal(bool disableFSredir);
 		bool loadModuleName();
 		bool isDotNetManagedCode();
+
 		bool is_dot_net;
 		bool isPEBConnected;
+		bool useCache;
 
 		friend class PeSection;
 	};

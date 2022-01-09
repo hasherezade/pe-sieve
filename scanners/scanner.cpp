@@ -274,7 +274,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 		if (processHandle == nullptr) break;
 
 		//load module from file:
-		ModuleData modData(processHandle, hMods[counter], true);
+		ModuleData modData(processHandle, hMods[counter], true, args.use_cache);
 		ModuleScanReport *mappingScanReport = this->scanForMappingMismatch(modData, pReport);
 
 		//load the original file to make the comparisons:
@@ -359,7 +359,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 		if (processHandle == nullptr) break;
 
 		//load module from file:
-		ModuleData modData(processHandle, hMods[counter], true);
+		ModuleData modData(processHandle, hMods[counter], true, args.use_cache);
 
 		// Don't scan modules that are in the ignore list
 		std::string plainName = peconv::get_file_name(modData.szModName);
