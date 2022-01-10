@@ -212,10 +212,10 @@ CodeScanReport::t_section_status pesieve::CodeScanner::scanSection(PeSection &or
 		
 		BYTE *not_padding = first_different(diff_bgn, diff, 0);
 		if (not_padding) {
-			const size_t found_offset = not_padding - remoteSec.loadedSection;
+			const DWORD found_offset = MASK_TO_DWORD((ULONG_PTR)not_padding - (ULONG_PTR)remoteSec.loadedSection);
 			const DWORD found_rva = remoteSec.rva + found_offset;
 			PatchList::Patch* currPatch = new PatchList::Patch(moduleData.moduleHandle, patchesList.size(), found_rva);
-			currPatch->setEnd((DWORD)remoteSec.rva + remoteSec.loadedSize);
+			currPatch->setEnd(MASK_TO_DWORD(remoteSec.rva + remoteSec.loadedSize));
 			patchesList.insert(currPatch);
 		}
 	}

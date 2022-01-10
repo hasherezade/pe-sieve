@@ -100,12 +100,12 @@ bool  pesieve::PeBuffer::resizeLastSection(size_t new_img_size)
 		return false;
 	}
 
-	if (!peconv::update_image_size(vBuf, new_img_size)) {
+	if (!peconv::update_image_size(vBuf, MASK_TO_DWORD(new_img_size))) {
 		return false;
 	}
 
-	last_sec->Misc.VirtualSize = new_sec_vsize;
-	last_sec->SizeOfRawData = new_sec_rsize;
+	last_sec->Misc.VirtualSize = MASK_TO_DWORD(new_sec_vsize);
+	last_sec->SizeOfRawData = MASK_TO_DWORD(new_sec_rsize);
 	return true;
 }
 

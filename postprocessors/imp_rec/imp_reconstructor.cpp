@@ -391,7 +391,7 @@ bool pesieve::ImpReconstructor::findImportTable(IN const peconv::ExportsMapper* 
 			currIAT->importTableOffset = DWORD((ULONG_PTR)import_table - (ULONG_PTR)vBuf);
 			//overwrite the Data Directory:
 			iat_dir->VirtualAddress = iat_offset;
-			iat_dir->Size = currIAT->iatSize;
+			iat_dir->Size = MASK_TO_DWORD(currIAT->iatSize);
 			break;
 		}
 	}
@@ -410,7 +410,7 @@ bool pesieve::ImpReconstructor::findImportTable(IN const peconv::ExportsMapper* 
 #endif
 	//overwrite the Data Directory:
 	imp_dir->VirtualAddress = imp_offset;
-	imp_dir->Size = table_size;
+	imp_dir->Size = MASK_TO_DWORD(table_size);
 	return true;
 }
 
@@ -451,7 +451,7 @@ ImportTableBuffer* pesieve::ImpReconstructor::constructImportTable()
 {
 	BYTE *vBuf = this->peBuffer.vBuf;
 	const size_t vBufSize = this->peBuffer.vBufSize;
-	if (!vBuf) return nullptr;
+	if (!vBuf || !vBufSize) return nullptr;
 
 	size_t ready_blocks = 0;
 	std::map<DWORD, IATBlock*>::iterator itr;
@@ -464,11 +464,12 @@ ImportTableBuffer* pesieve::ImpReconstructor::constructImportTable()
 	if (ready_blocks == 0) {
 		return nullptr;
 	}
-	ImportTableBuffer *importTableBuffer = new ImportTableBuffer(vBufSize);
+	const DWORD end_rva = MASK_TO_DWORD(vBufSize);
+	ImportTableBuffer *importTableBuffer = new ImportTableBuffer(end_rva);
 	importTableBuffer->allocDesciptors(ready_blocks + 1);
 
-	const DWORD names_start_rva = importTableBuffer->getRVA() + importTableBuffer->getDescriptorsSize();
-	size_t orig_thunk_rva = names_start_rva;
+	const DWORD names_start_rva = MASK_TO_DWORD(importTableBuffer->getRVA() + importTableBuffer->getDescriptorsSize());
+	DWORD orig_thunk_rva = names_start_rva;
 	size_t names_space = 0;
 	size_t i = 0;
 	for (itr = foundIATs.begin(); itr != foundIATs.end(); ++itr) {
@@ -482,14 +483,14 @@ ImportTableBuffer* pesieve::ImpReconstructor::constructImportTable()
 			importTableBuffer->descriptors[i].FirstThunk = series->startOffset;
 			importTableBuffer->descriptors[i].OriginalFirstThunk = orig_thunk_rva;
 			//calculate size for names
-			const size_t names_space_size = series->sizeOfNamesSpace(this->is64bit);
+			const DWORD names_space_size = MASK_TO_DWORD(series->sizeOfNamesSpace(this->is64bit));
 			names_space += names_space_size;
 			orig_thunk_rva += names_space_size;
 		}
 	}
 	//fill functions' names:
 	importTableBuffer->allocNamesSpace(names_start_rva, names_space);
-	const DWORD dlls_rva = names_start_rva + names_space;
+	const DWORD dlls_rva = MASK_TO_DWORD(names_start_rva + names_space);
 	size_t dlls_area_size = 0;
 	i = 0;
 	for (itr = foundIATs.begin(); itr != foundIATs.end(); ++itr) {
@@ -519,7 +520,7 @@ ImportTableBuffer* pesieve::ImpReconstructor::constructImportTable()
 		if (!iat->isValid()) {
 			continue;
 		}
-		size_t max_dll_name = iat->maxDllLen();
+		DWORD max_dll_name = MASK_TO_DWORD(iat->maxDllLen());
 		IATThunksSeriesSet::iterator sItr;
 		for (sItr = iat->thunkSeries.begin(); sItr != iat->thunkSeries.end(); ++sItr, ++i) {
 			IATThunksSeries *series = *sItr;

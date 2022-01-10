@@ -173,7 +173,7 @@ bool pesieve::PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 	IMAGE_FILE_HEADER* file_hdr = const_cast<IMAGE_FILE_HEADER*>(peconv::get_file_hdr(vBuf, vBufSize));
 	if (file_hdr && (i > 0)) {
 		// set the actual number of valid sections:
-		file_hdr->NumberOfSections = i;
+		file_hdr->NumberOfSections = MASK_TO_WORD(i);
 	}
 
 	if (max_sec_size == 0) {

@@ -55,8 +55,8 @@ namespace pesieve {
 			unload(); //ensure that buffers are empty
 
 			//corner case: if no sections in PE
-			DWORD sec_num = peconv::get_sections_count(remoteModData.headerBuffer, remoteModData.getHeaderSize());
-			if (sec_num == 0 && section_number == 0) {
+			const size_t hdr_sec_num = peconv::get_sections_count(remoteModData.headerBuffer, remoteModData.getHeaderSize());
+			if (hdr_sec_num == 0 && section_number == 0) {
 				return loadRemoteImageAsSection(remoteModData);
 			}
 			//normal case: if PE has sections
@@ -80,8 +80,8 @@ namespace pesieve {
 			unload(); //ensure that buffers are empty
 
 			//corner case: if no sections in PE
-			DWORD sec_num = peconv::get_sections_count(modData.original_module, modData.original_size);
-			if (sec_num == 0 && section_number == 0) {
+			const size_t hdr_sec_num = peconv::get_sections_count(modData.original_module, modData.original_size);
+			if (hdr_sec_num == 0 && section_number == 0) {
 				return loadOriginalImageAsSection(modData);
 			}
 			PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(modData.original_module, modData.original_size, section_number);

@@ -149,15 +149,15 @@ pesieve::t_report pesieve::ProcessScanReport::generateSummary() const
 			summary.errors++;
 		}
 	}
-	summary.replaced = countHdrsReplaced();
-	summary.patched = countSuspiciousPerType(REPORT_CODE_SCAN);
-	summary.iat_hooked = countSuspiciousPerType(REPORT_IAT_SCAN);
-	summary.implanted_shc = countSuspiciousPerType(REPORT_MEMPAGE_SCAN);
-	summary.implanted_pe = countSuspiciousPerType(REPORT_ARTEFACT_SCAN);
-	summary.implanted = summary.implanted_shc + summary.implanted_pe;
-	summary.hdr_mod = countSuspiciousPerType(REPORT_HEADERS_SCAN) - summary.replaced;
-	summary.unreachable_file = countSuspiciousPerType(REPORT_UNREACHABLE_SCAN) + countResultsPerType(REPORT_UNREACHABLE_SCAN, pesieve::SCAN_ERROR);
-	summary.other = summary.suspicious - (summary.patched + summary.replaced + summary.implanted + summary.hdr_mod + summary.iat_hooked);
+	summary.replaced = MASK_TO_DWORD(countHdrsReplaced());
+	summary.patched = MASK_TO_DWORD(countSuspiciousPerType(REPORT_CODE_SCAN));
+	summary.iat_hooked = MASK_TO_DWORD(countSuspiciousPerType(REPORT_IAT_SCAN));
+	summary.implanted_shc = MASK_TO_DWORD(countSuspiciousPerType(REPORT_MEMPAGE_SCAN));
+	summary.implanted_pe = MASK_TO_DWORD(countSuspiciousPerType(REPORT_ARTEFACT_SCAN));
+	summary.implanted = MASK_TO_DWORD(summary.implanted_shc + summary.implanted_pe);
+	summary.hdr_mod = MASK_TO_DWORD(countSuspiciousPerType(REPORT_HEADERS_SCAN) - summary.replaced);
+	summary.unreachable_file = MASK_TO_DWORD(countSuspiciousPerType(REPORT_UNREACHABLE_SCAN) + countResultsPerType(REPORT_UNREACHABLE_SCAN, pesieve::SCAN_ERROR));
+	summary.other = MASK_TO_DWORD(summary.suspicious - (summary.patched + summary.replaced + summary.implanted + summary.hdr_mod + summary.iat_hooked));
 	return summary;
 }
 
