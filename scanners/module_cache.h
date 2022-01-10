@@ -21,9 +21,6 @@ namespace pesieve
 			if (!moduleData) return;
 
 			memcpy(moduleData, _moduleData, _moduleSize);
-#ifdef _DEBUG
-			std::cout << "Created buffer cache:  " << std::hex << (ULONG_PTR)moduleData << " \n";
-#endif
 			moduleSize = _moduleSize;
 		}
 
@@ -33,14 +30,9 @@ namespace pesieve
 
 			BYTE* buf_copy = peconv::alloc_aligned(moduleSize, PAGE_READWRITE);
 			if (!buf_copy) return nullptr;
-#ifdef _DEBUG
-			std::cout << "Copying moduleData:  "<< std::hex << (ULONG_PTR)moduleData << " \n";
-#endif
+
 			memcpy(buf_copy, moduleData, moduleSize);
 			copySize = moduleSize;
-#ifdef _DEBUG
-			std::cout << "Copied: "<< copySize << "\n";
-#endif
 			return buf_copy;
 		}
 
@@ -90,6 +82,7 @@ namespace pesieve
 			if (itr != cachedModules.end()) {
 				const CachedModule* cached = itr->second;
 				if (!cached) return nullptr;
+
 				return cached->makeCacheCopy(cacheSize);
 			}
 			return nullptr;
@@ -113,7 +106,7 @@ namespace pesieve
 			cachedModules.clear();
 			usageCounter.clear();
 #ifdef _DEBUG
-			std::cout << "Cache deleted\n";
+			std::cout << "Cache deleted. Total: " << i << " modules.\n";
 #endif
 		}
 
