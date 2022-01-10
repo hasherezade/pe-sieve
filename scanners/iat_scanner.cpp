@@ -203,8 +203,10 @@ IATScanReport* pesieve::IATScanner::scanRemote()
 		return nullptr;
 	}
 	if (!hasImportTable(remoteModData)) {
-		IATScanReport *report = new IATScanReport(processHandle, remoteModData.modBaseAddr, remoteModData.getModuleSize(), moduleData.szModName);
-		report->status = SCAN_NOT_SUSPICIOUS;
+		IATScanReport *report = new(std::nothrow) IATScanReport(processHandle, remoteModData.modBaseAddr, remoteModData.getModuleSize(), moduleData.szModName);
+		if (report) {
+			report->status = SCAN_NOT_SUSPICIOUS;
+		}
 		return report;
 	}
 	if (!remoteModData.loadFullImage()) {
@@ -224,7 +226,7 @@ IATScanReport* pesieve::IATScanner::scanRemote()
 		status = SCAN_SUSPICIOUS;
 	}
 
-	IATScanReport *report = new IATScanReport(processHandle, remoteModData.modBaseAddr, remoteModData.getModuleSize(), moduleData.szModName);
+	IATScanReport *report = new(std::nothrow) IATScanReport(processHandle, remoteModData.modBaseAddr, remoteModData.getModuleSize(), moduleData.szModName);
 	if (!report) {
 		return nullptr;
 	}

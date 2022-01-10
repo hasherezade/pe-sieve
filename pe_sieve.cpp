@@ -175,8 +175,11 @@ namespace pesieve {
 
 pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 {
-	ReportEx *report = new ReportEx();
-
+	ReportEx *report = new(std::nothrow) ReportEx();
+	if (!report) {
+		// should not happen
+		return nullptr;
+	}
 	HANDLE orig_proc = nullptr; // original process handle
 	HANDLE cloned_proc = nullptr; // process reflection handle
 

@@ -142,7 +142,8 @@ size_t pesieve::CodeScanner::collectPatches(DWORD section_rva, PBYTE orig_code, 
 		}
 		if (currPatch == nullptr) {
 			//open a new patch
-			currPatch = new PatchList::Patch(moduleData.moduleHandle, patchesList.size(), (DWORD) section_rva + i);
+			currPatch = new(std::nothrow) PatchList::Patch(moduleData.moduleHandle, patchesList.size(), (DWORD) section_rva + i);
+			if (!currPatch) continue;
 			patchesList.insert(currPatch);
 			DWORD parsed_size = (DWORD) analyzer.analyze(*currPatch);
 			if (parsed_size > 0) {
@@ -214,9 +215,11 @@ CodeScanReport::t_section_status pesieve::CodeScanner::scanSection(PeSection &or
 		if (not_padding) {
 			const DWORD found_offset = MASK_TO_DWORD((ULONG_PTR)not_padding - (ULONG_PTR)remoteSec.loadedSection);
 			const DWORD found_rva = remoteSec.rva + found_offset;
-			PatchList::Patch* currPatch = new PatchList::Patch(moduleData.moduleHandle, patchesList.size(), found_rva);
-			currPatch->setEnd(MASK_TO_DWORD(remoteSec.rva + remoteSec.loadedSize));
-			patchesList.insert(currPatch);
+			PatchList::Patch* currPatch = new(std::nothrow) PatchList::Patch(moduleData.moduleHandle, patchesList.size(), found_rva);
+			if (currPatch) {
+				currPatch->setEnd(MASK_TO_DWORD(remoteSec.rva + remoteSec.loadedSize));
+				patchesList.insert(currPatch);
+			}
 		}
 	}
 	if (patchesList.size()) {
@@ -249,8 +252,8 @@ size_t pesieve::CodeScanner::collectExecutableSections(RemoteModuleData &_remote
 		}
 
 		//get the code section from the remote module:
-		PeSection *remoteSec = new PeSection(_remoteModData, i);
-		if (remoteSec->isInitialized()) {
+		PeSection *remoteSec = new(std::nothrow) PeSection(_remoteModData, i);
+		if (remoteSec && remoteSec->isInitialized()) {
 			if (is_entry // always scan section containing Entry Point
 				|| is_code(remoteSec->loadedSection, remoteSec->loadedSize))
 			{
@@ -267,8 +270,8 @@ size_t pesieve::CodeScanner::collectExecutableSections(RemoteModuleData &_remote
 	}
 	//corner case: PEs without sections
 	if (sec_count == 0) {
-		PeSection *remoteSec = new PeSection(_remoteModData, 0);
-		if (remoteSec->isInitialized()) {
+		PeSection *remoteSec = new(std::nothrow) PeSection(_remoteModData, 0);
+		if (remoteSec && remoteSec->isInitialized()) {
 			sections[0] = remoteSec;
 		}
 		else {
@@ -342,7 +345,7 @@ pesieve::CodeScanReport* pesieve::CodeScanner::scanRemote()
 		std::cerr << "[-] Failed to read the module header" << std::endl;
 		return nullptr;
 	}
-	CodeScanReport *my_report = new CodeScanReport(this->processHandle, moduleData.moduleHandle, remoteModData.getModuleSize());
+	CodeScanReport *my_report = new(std::nothrow) CodeScanReport(this->processHandle, moduleData.moduleHandle, remoteModData.getModuleSize());
 	if (!my_report) return nullptr; //this should not happen...
 
 	my_report->isDotNetModule = moduleData.isDotNet();

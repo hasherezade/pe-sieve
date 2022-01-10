@@ -465,7 +465,10 @@ ImportTableBuffer* pesieve::ImpReconstructor::constructImportTable()
 		return nullptr;
 	}
 	const DWORD end_rva = MASK_TO_DWORD(vBufSize);
-	ImportTableBuffer *importTableBuffer = new ImportTableBuffer(end_rva);
+	ImportTableBuffer *importTableBuffer = new(std::nothrow) ImportTableBuffer(end_rva);
+	if (!importTableBuffer) {
+		return nullptr;
+	}
 	importTableBuffer->allocDesciptors(ready_blocks + 1);
 
 	const DWORD names_start_rva = MASK_TO_DWORD(importTableBuffer->getRVA() + importTableBuffer->getDescriptorsSize());

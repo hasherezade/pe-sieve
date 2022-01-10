@@ -33,7 +33,7 @@ namespace pesieve {
 
 		bool allocDesciptors(size_t descriptors_count)
 		{
-			descriptors = new IMAGE_IMPORT_DESCRIPTOR[descriptors_count];
+			descriptors = new(std::nothrow) IMAGE_IMPORT_DESCRIPTOR[descriptors_count];
 			if (!descriptors) {
 				return false;
 			}
@@ -47,7 +47,7 @@ namespace pesieve {
 		bool allocNamesSpace(DWORD names_rva, size_t names_size)
 		{
 			delete[]namesBuf;
-			this->namesBuf = new BYTE[names_size];
+			this->namesBuf = new(std::nothrow) BYTE[names_size];
 			if (!this->namesBuf) {
 				this->namesBufSize = 0;
 				return false;
@@ -61,7 +61,7 @@ namespace pesieve {
 		bool allocDllsSpace(DWORD dlls_rva, size_t dlls_area_size)
 		{
 			delete[]dllsBuf;
-			this->dllsBuf = new BYTE[dlls_area_size];
+			this->dllsBuf = new(std::nothrow) BYTE[dlls_area_size];
 			if (!this->dllsBuf) {
 				this->dllsBufSize = 0;
 				return false;
