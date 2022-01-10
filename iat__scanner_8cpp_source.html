@@ -275,115 +275,117 @@ $(function() {
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    }</div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keywordflow">if</span> (!hasImportTable(remoteModData)) {</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        <a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a> *report = <span class="keyword">new</span> <a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a>(processHandle, remoteModData.<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a74f010e8b6a9735727d807b8b780c195">modBaseAddr</a>, remoteModData.<a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a5fa7b4928f1716975bc143344126cd60">getModuleSize</a>(), moduleData.szModName);</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a16ceb9869161945d59ad00ce88bd8000">SCAN_NOT_SUSPICIOUS</a>;</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        <span class="keywordflow">return</span> report;</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    }</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="keywordflow">if</span> (!remoteModData.<a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#aae5bff1125a636a7faf7052ae32169e4">loadFullImage</a>()) {</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;[-] Failed to initialize remote module&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    }</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    BYTE *vBuf = remoteModData.<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a80d58616c53fd337027deaec5be92127">imgBuffer</a>;</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    <span class="keywordtype">size_t</span> vBufSize = remoteModData.<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a61e597d35fe6e41aeab0a230f5ae607a">imgBufferSize</a>;</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    <span class="keywordflow">if</span> (!vBuf) {</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    }</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    peconv::ImpsNotCovered not_covered;</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    peconv::fix_imports(vBuf, vBufSize, exportsMap, &amp;not_covered);</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <a class="code hl_typedef" href="namespacepesieve.html#a941a03e321f7620227f2d6901dbd9af4">t_scan_status</a> status = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a16ceb9869161945d59ad00ce88bd8000">SCAN_NOT_SUSPICIOUS</a>;</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    <span class="keywordflow">if</span> (not_covered.count() &gt; 0) {</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>        status = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883af7dbcf7b2ecb3b3edef901f5bdb041fd">SCAN_SUSPICIOUS</a>;</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    }</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a> *report = <span class="keyword">new</span> <a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a>(processHandle, remoteModData.<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a74f010e8b6a9735727d807b8b780c195">modBaseAddr</a>, remoteModData.<a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a5fa7b4928f1716975bc143344126cd60">getModuleSize</a>(), moduleData.szModName);</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    <span class="keywordflow">if</span> (!report) {</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    }</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="keywordflow">if</span> (not_covered.count()) {</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        listAllImports(report-&gt;<a class="code hl_variable" href="classpesieve_1_1_i_a_t_scan_report.html#aced6746baed17a2b1faee5ae4599e6fd">storedFunc</a>);</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    }</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keywordflow">if</span> (this-&gt;hooksFilter != <a class="code hl_enumvalue" href="pe__sieve__types_8h.html#a7c5f7e9e508b6cfcd5ffd9ab223246d7aa75339cfd186e902e8865f76f3e802d8">PE_IATS_UNFILTERED</a>) {</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        filterResults(not_covered, *report);</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    }</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        report-&gt;<a class="code hl_variable" href="classpesieve_1_1_i_a_t_scan_report.html#ad7d4b8a134b7afd117bbb49c85a0b638">notCovered</a> = not_covered;</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    }</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = status;</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <span class="keywordflow">if</span> (report-&gt;<a class="code hl_function" href="classpesieve_1_1_i_a_t_scan_report.html#ac5085baa77c99946b6c111eab61934cd">countHooked</a>() == 0) {</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>        report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a16ceb9869161945d59ad00ce88bd8000">SCAN_NOT_SUSPICIOUS</a>;</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    }</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    <span class="keywordflow">return</span> report;</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>}</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="keywordtype">void</span> pesieve::IATScanner::initExcludedPaths()</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>{</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="keywordtype">char</span> sysWow64Path[MAX_PATH] = { 0 };</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    ExpandEnvironmentStringsA(<span class="stringliteral">&quot;%SystemRoot%\\SysWoW64&quot;</span>, sysWow64Path, MAX_PATH);</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    this-&gt;m_sysWow64Path_str = sysWow64Path;</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    std::transform(m_sysWow64Path_str.begin(), m_sysWow64Path_str.end(), m_sysWow64Path_str.begin(), tolower);</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    <span class="keywordtype">char</span> system32Path[MAX_PATH] = { 0 };</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    ExpandEnvironmentStringsA(<span class="stringliteral">&quot;%SystemRoot%\\system32&quot;</span>, system32Path, MAX_PATH);</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    this-&gt;m_system32Path_str = system32Path;</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    std::transform(m_system32Path_str.begin(), m_system32Path_str.end(), m_system32Path_str.begin(), tolower);</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>}</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="keywordtype">bool</span> pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &amp;notCovered, <a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a> &amp;report)</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>{</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    std::map&lt;ULONGLONG, ULONGLONG&gt;::iterator itr;</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    <span class="keywordflow">for</span> (itr = notCovered.thunkToAddr.begin(); itr != notCovered.thunkToAddr.end(); ++itr)</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    {</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>        <span class="keyword">const</span> ULONGLONG thunk = itr-&gt;first;</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        <span class="keyword">const</span> ULONGLONG addr = itr-&gt;second;</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        <a class="code hl_class" href="classpesieve_1_1_scanned_module.html">ScannedModule</a> *modExp = modulesInfo.findModuleContaining(addr);</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        ULONGLONG module_start = (modExp) ? modExp-&gt;<a class="code hl_function" href="classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef">getStart</a>() : peconv::fetch_alloc_base(this-&gt;processHandle, (BYTE*)addr);</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        <span class="keywordflow">if</span> (module_start == 0) {</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>            <span class="comment">// invalid address of the hook</span></div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>            report.<a class="code hl_variable" href="classpesieve_1_1_i_a_t_scan_report.html#ad7d4b8a134b7afd117bbb49c85a0b638">notCovered</a>.insert(thunk, addr);</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        }</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>        <span class="keywordflow">if</span> (this-&gt;hooksFilter == <a class="code hl_enumvalue" href="pe__sieve__types_8h.html#a7c5f7e9e508b6cfcd5ffd9ab223246d7a2789a5087df80c8ef84c2151888669a6">PE_IATS_CLEAN_SYS_FILTERED</a>) {</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>            <span class="comment">// insert hooks leading to suspicious modules:</span></div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>            <span class="keywordflow">if</span> (modExp &amp;&amp; modExp-&gt;<a class="code hl_function" href="classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93">isSuspicious</a>()) {</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>                report.<a class="code hl_variable" href="classpesieve_1_1_i_a_t_scan_report.html#ad7d4b8a134b7afd117bbb49c85a0b638">notCovered</a>.insert(thunk, addr);</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>                <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>            }</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        }</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        <span class="comment">// filter out hooks leading to system DLLs</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>        <span class="keywordtype">char</span> moduleName[MAX_PATH] = { 0 };</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        <span class="keywordflow">if</span> (GetModuleFileNameExA(this-&gt;processHandle, (HMODULE)module_start, moduleName, <span class="keyword">sizeof</span>(moduleName))) {</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>            std::string dirName = peconv::get_directory_name(moduleName);</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>            std::transform(dirName.begin(), dirName.end(), dirName.begin(), tolower);</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;Module dir name: &quot;</span> &lt;&lt; dirName &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>            <span class="keywordflow">if</span> (dirName == m_system32Path_str || dirName == m_sysWow64Path_str) {</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>                std::cout &lt;&lt; <span class="stringliteral">&quot;Skipped: &quot;</span> &lt;&lt; dirName &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>                <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>            }</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        }</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        <span class="comment">// insert hooks leading to non-system modules:</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>        report.<a class="code hl_variable" href="classpesieve_1_1_i_a_t_scan_report.html#ad7d4b8a134b7afd117bbb49c85a0b638">notCovered</a>.insert(thunk, addr);</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    }</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>}</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span><span class="keywordtype">void</span> pesieve::IATScanner::listAllImports(std::map&lt;ULONGLONG, peconv::ExportedFunc&gt; &amp;_storedFunc)</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>{</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    BYTE *vBuf = remoteModData.<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a80d58616c53fd337027deaec5be92127">imgBuffer</a>; </div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    <span class="keywordtype">size_t</span> vBufSize = remoteModData.<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a61e597d35fe6e41aeab0a230f5ae607a">imgBufferSize</a>;</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    <span class="keywordflow">if</span> (!vBuf) {</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    }</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    <a class="code hl_class" href="classpesieve_1_1_import_info_callback.html">ImportInfoCallback</a> callback(vBuf, vBufSize, _storedFunc);</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    peconv::process_import_table(vBuf, vBufSize, &amp;callback);</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>}</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span> </div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        <a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a> *report = <span class="keyword">new</span>(std::nothrow) <a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a>(processHandle, remoteModData.<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a74f010e8b6a9735727d807b8b780c195">modBaseAddr</a>, remoteModData.<a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a5fa7b4928f1716975bc143344126cd60">getModuleSize</a>(), moduleData.szModName);</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        <span class="keywordflow">if</span> (report) {</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>            report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a16ceb9869161945d59ad00ce88bd8000">SCAN_NOT_SUSPICIOUS</a>;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        }</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        <span class="keywordflow">return</span> report;</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    }</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    <span class="keywordflow">if</span> (!remoteModData.<a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#aae5bff1125a636a7faf7052ae32169e4">loadFullImage</a>()) {</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;[-] Failed to initialize remote module&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    }</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    BYTE *vBuf = remoteModData.<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a80d58616c53fd337027deaec5be92127">imgBuffer</a>;</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="keywordtype">size_t</span> vBufSize = remoteModData.<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a61e597d35fe6e41aeab0a230f5ae607a">imgBufferSize</a>;</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    <span class="keywordflow">if</span> (!vBuf) {</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    }</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    peconv::ImpsNotCovered not_covered;</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    peconv::fix_imports(vBuf, vBufSize, exportsMap, &amp;not_covered);</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <a class="code hl_typedef" href="namespacepesieve.html#a941a03e321f7620227f2d6901dbd9af4">t_scan_status</a> status = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a16ceb9869161945d59ad00ce88bd8000">SCAN_NOT_SUSPICIOUS</a>;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="keywordflow">if</span> (not_covered.count() &gt; 0) {</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>        status = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883af7dbcf7b2ecb3b3edef901f5bdb041fd">SCAN_SUSPICIOUS</a>;</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    }</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    <a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a> *report = <span class="keyword">new</span>(std::nothrow) <a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a>(processHandle, remoteModData.<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a74f010e8b6a9735727d807b8b780c195">modBaseAddr</a>, remoteModData.<a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a5fa7b4928f1716975bc143344126cd60">getModuleSize</a>(), moduleData.szModName);</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    <span class="keywordflow">if</span> (!report) {</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    }</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="keywordflow">if</span> (not_covered.count()) {</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        listAllImports(report-&gt;<a class="code hl_variable" href="classpesieve_1_1_i_a_t_scan_report.html#aced6746baed17a2b1faee5ae4599e6fd">storedFunc</a>);</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    }</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    <span class="keywordflow">if</span> (this-&gt;hooksFilter != <a class="code hl_enumvalue" href="pe__sieve__types_8h.html#a7c5f7e9e508b6cfcd5ffd9ab223246d7aa75339cfd186e902e8865f76f3e802d8">PE_IATS_UNFILTERED</a>) {</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        filterResults(not_covered, *report);</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    }</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        report-&gt;<a class="code hl_variable" href="classpesieve_1_1_i_a_t_scan_report.html#ad7d4b8a134b7afd117bbb49c85a0b638">notCovered</a> = not_covered;</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    }</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = status;</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <span class="keywordflow">if</span> (report-&gt;<a class="code hl_function" href="classpesieve_1_1_i_a_t_scan_report.html#ac5085baa77c99946b6c111eab61934cd">countHooked</a>() == 0) {</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a16ceb9869161945d59ad00ce88bd8000">SCAN_NOT_SUSPICIOUS</a>;</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    }</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordflow">return</span> report;</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>}</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="keywordtype">void</span> pesieve::IATScanner::initExcludedPaths()</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>{</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="keywordtype">char</span> sysWow64Path[MAX_PATH] = { 0 };</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    ExpandEnvironmentStringsA(<span class="stringliteral">&quot;%SystemRoot%\\SysWoW64&quot;</span>, sysWow64Path, MAX_PATH);</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    this-&gt;m_sysWow64Path_str = sysWow64Path;</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    std::transform(m_sysWow64Path_str.begin(), m_sysWow64Path_str.end(), m_sysWow64Path_str.begin(), tolower);</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    <span class="keywordtype">char</span> system32Path[MAX_PATH] = { 0 };</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    ExpandEnvironmentStringsA(<span class="stringliteral">&quot;%SystemRoot%\\system32&quot;</span>, system32Path, MAX_PATH);</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    this-&gt;m_system32Path_str = system32Path;</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    std::transform(m_system32Path_str.begin(), m_system32Path_str.end(), m_system32Path_str.begin(), tolower);</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>}</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="keywordtype">bool</span> pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &amp;notCovered, <a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a> &amp;report)</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>{</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    std::map&lt;ULONGLONG, ULONGLONG&gt;::iterator itr;</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <span class="keywordflow">for</span> (itr = notCovered.thunkToAddr.begin(); itr != notCovered.thunkToAddr.end(); ++itr)</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    {</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        <span class="keyword">const</span> ULONGLONG thunk = itr-&gt;first;</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        <span class="keyword">const</span> ULONGLONG addr = itr-&gt;second;</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        <a class="code hl_class" href="classpesieve_1_1_scanned_module.html">ScannedModule</a> *modExp = modulesInfo.findModuleContaining(addr);</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        ULONGLONG module_start = (modExp) ? modExp-&gt;<a class="code hl_function" href="classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef">getStart</a>() : peconv::fetch_alloc_base(this-&gt;processHandle, (BYTE*)addr);</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>        <span class="keywordflow">if</span> (module_start == 0) {</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>            <span class="comment">// invalid address of the hook</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>            report.<a class="code hl_variable" href="classpesieve_1_1_i_a_t_scan_report.html#ad7d4b8a134b7afd117bbb49c85a0b638">notCovered</a>.insert(thunk, addr);</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>            <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>        }</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        <span class="keywordflow">if</span> (this-&gt;hooksFilter == <a class="code hl_enumvalue" href="pe__sieve__types_8h.html#a7c5f7e9e508b6cfcd5ffd9ab223246d7a2789a5087df80c8ef84c2151888669a6">PE_IATS_CLEAN_SYS_FILTERED</a>) {</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>            <span class="comment">// insert hooks leading to suspicious modules:</span></div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>            <span class="keywordflow">if</span> (modExp &amp;&amp; modExp-&gt;<a class="code hl_function" href="classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93">isSuspicious</a>()) {</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                report.<a class="code hl_variable" href="classpesieve_1_1_i_a_t_scan_report.html#ad7d4b8a134b7afd117bbb49c85a0b638">notCovered</a>.insert(thunk, addr);</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>            }</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>        }</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        <span class="comment">// filter out hooks leading to system DLLs</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>        <span class="keywordtype">char</span> moduleName[MAX_PATH] = { 0 };</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>        <span class="keywordflow">if</span> (GetModuleFileNameExA(this-&gt;processHandle, (HMODULE)module_start, moduleName, <span class="keyword">sizeof</span>(moduleName))) {</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>            std::string dirName = peconv::get_directory_name(moduleName);</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>            std::transform(dirName.begin(), dirName.end(), dirName.begin(), tolower);</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;Module dir name: &quot;</span> &lt;&lt; dirName &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>            <span class="keywordflow">if</span> (dirName == m_system32Path_str || dirName == m_sysWow64Path_str) {</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>                std::cout &lt;&lt; <span class="stringliteral">&quot;Skipped: &quot;</span> &lt;&lt; dirName &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>            }</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>        }</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>        <span class="comment">// insert hooks leading to non-system modules:</span></div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>        report.<a class="code hl_variable" href="classpesieve_1_1_i_a_t_scan_report.html#ad7d4b8a134b7afd117bbb49c85a0b638">notCovered</a>.insert(thunk, addr);</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    }</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>}</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span> </div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="keywordtype">void</span> pesieve::IATScanner::listAllImports(std::map&lt;ULONGLONG, peconv::ExportedFunc&gt; &amp;_storedFunc)</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>{</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    BYTE *vBuf = remoteModData.<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a80d58616c53fd337027deaec5be92127">imgBuffer</a>; </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    <span class="keywordtype">size_t</span> vBufSize = remoteModData.<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a61e597d35fe6e41aeab0a230f5ae607a">imgBufferSize</a>;</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    <span class="keywordflow">if</span> (!vBuf) {</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    }</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    <a class="code hl_class" href="classpesieve_1_1_import_info_callback.html">ImportInfoCallback</a> callback(vBuf, vBufSize, _storedFunc);</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>    peconv::process_import_table(vBuf, vBufSize, &amp;callback);</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>}</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
 <div class="ttc" id="aclasspesieve_1_1_i_a_t_scan_report_html"><div class="ttname"><a href="classpesieve_1_1_i_a_t_scan_report.html">pesieve::IATScanReport</a></div><div class="ttdoc">A report from an IAT scan, generated by IATScanner.</div><div class="ttdef"><b>Definition:</b> <a href="iat__scanner_8h_source.html#l00011">iat_scanner.h:12</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_i_a_t_scan_report_html_a38b39af3d39fa546ffb66143ed2c9138"><div class="ttname"><a href="classpesieve_1_1_i_a_t_scan_report.html#a38b39af3d39fa546ffb66143ed2c9138">pesieve::IATScanReport::saveNotRecovered</a></div><div class="ttdeci">static bool saveNotRecovered(IN std::string fileName, IN HANDLE hProcess, IN const std::map&lt; ULONGLONG, peconv::ExportedFunc &gt; *storedFunc, IN peconv::ImpsNotCovered &amp;notCovered, IN const ModulesInfo &amp;modulesInfo, IN const peconv::ExportsMapper *exportsMap)</div><div class="ttdef"><b>Definition:</b> <a href="iat__scanner_8cpp_source.html#l00100">iat_scanner.cpp:100</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_i_a_t_scan_report_html_a7a2690d5018a87fb8207392e72dbdbda"><div class="ttname"><a href="classpesieve_1_1_i_a_t_scan_report.html#a7a2690d5018a87fb8207392e72dbdbda">pesieve::IATScanReport::generateList</a></div><div class="ttdeci">bool generateList(IN const std::string &amp;fileName, IN HANDLE hProcess, IN const ModulesInfo &amp;modulesInfo, IN const peconv::ExportsMapper *exportsMap)</div><div class="ttdef"><b>Definition:</b> <a href="iat__scanner_8cpp_source.html#l00173">iat_scanner.cpp:173</a></div></div>

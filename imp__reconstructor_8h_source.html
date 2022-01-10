@@ -106,7 +106,7 @@ $(function() {
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classpesieve_1_1_import_table_buffer.html#adc8c45704dbab903b08ab0bdaeef513b">   34</a></span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_import_table_buffer.html#adc8c45704dbab903b08ab0bdaeef513b">allocDesciptors</a>(<span class="keywordtype">size_t</span> descriptors_count)</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        {</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            <a class="code hl_variable" href="classpesieve_1_1_import_table_buffer.html#ae843b50c15c6cee83ddd7f5ea8a1a95f">descriptors</a> = <span class="keyword">new</span> IMAGE_IMPORT_DESCRIPTOR[descriptors_count];</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            <a class="code hl_variable" href="classpesieve_1_1_import_table_buffer.html#ae843b50c15c6cee83ddd7f5ea8a1a95f">descriptors</a> = <span class="keyword">new</span>(std::nothrow) IMAGE_IMPORT_DESCRIPTOR[descriptors_count];</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classpesieve_1_1_import_table_buffer.html#ae843b50c15c6cee83ddd7f5ea8a1a95f">descriptors</a>) {</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            }</div>
@@ -120,7 +120,7 @@ $(function() {
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classpesieve_1_1_import_table_buffer.html#a7d1ad0c14a30eb85e5b9f14e2a5a3fdb">   47</a></span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_import_table_buffer.html#a7d1ad0c14a30eb85e5b9f14e2a5a3fdb">allocNamesSpace</a>(<a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> names_rva, <span class="keywordtype">size_t</span> names_size)</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        {</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            <span class="keyword">delete</span>[]namesBuf;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            this-&gt;namesBuf = <span class="keyword">new</span> BYTE[names_size];</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            this-&gt;namesBuf = <span class="keyword">new</span>(std::nothrow) BYTE[names_size];</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            <span class="keywordflow">if</span> (!this-&gt;namesBuf) {</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                this-&gt;namesBufSize = 0;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -134,7 +134,7 @@ $(function() {
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classpesieve_1_1_import_table_buffer.html#a582a28c3c9c44a7122cee1408452f4d0">   61</a></span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_import_table_buffer.html#a582a28c3c9c44a7122cee1408452f4d0">allocDllsSpace</a>(<a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> dlls_rva, <span class="keywordtype">size_t</span> dlls_area_size)</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        {</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            <span class="keyword">delete</span>[]dllsBuf;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>            this-&gt;dllsBuf = <span class="keyword">new</span> BYTE[dlls_area_size];</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>            this-&gt;dllsBuf = <span class="keyword">new</span>(std::nothrow) BYTE[dlls_area_size];</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            <span class="keywordflow">if</span> (!this-&gt;dllsBuf) {</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                this-&gt;dllsBufSize = 0;</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
