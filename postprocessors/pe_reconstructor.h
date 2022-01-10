@@ -37,7 +37,7 @@ namespace pesieve {
 			opt_hdr_ptr->SizeOfHeaders = 0x400; //typical header size
 		}
 		if (opt_hdr_ptr->SizeOfImage < artefacts.calculatedImgSize) {
-			opt_hdr_ptr->SizeOfImage = artefacts.calculatedImgSize;
+			opt_hdr_ptr->SizeOfImage = MASK_TO_DWORD(artefacts.calculatedImgSize);
 		}
 		return true;
 	}
