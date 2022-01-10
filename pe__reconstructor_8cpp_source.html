@@ -246,7 +246,7 @@ $(function() {
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    IMAGE_FILE_HEADER* file_hdr = <span class="keyword">const_cast&lt;</span>IMAGE_FILE_HEADER*<span class="keyword">&gt;</span>(peconv::get_file_hdr(vBuf, vBufSize));</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="keywordflow">if</span> (file_hdr &amp;&amp; (i &gt; 0)) {</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        <span class="comment">// set the actual number of valid sections:</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        file_hdr-&gt;NumberOfSections = i;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        file_hdr-&gt;NumberOfSections = MASK_TO_WORD(i);</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    }</div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    <span class="keywordflow">if</span> (max_sec_size == 0) {</div>

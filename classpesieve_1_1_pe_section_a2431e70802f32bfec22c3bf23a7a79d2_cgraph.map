@@ -1,6 +1,5 @@
 <map id="pesieve::PeSection::loadRemote" name="pesieve::PeSection::loadRemote">
-<area shape="rect" id="node1" title=" " alt="" coords="5,57,139,98"/>
-<area shape="rect" id="node2" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="207,5,353,32"/>
-<area shape="rect" id="node3" href="$classpesieve_1_1_remote_module_data.html#a1b9234ac424ed82767dafb08c80a8163" title=" " alt="" coords="187,57,373,98"/>
-<area shape="rect" id="node4" href="$classpesieve_1_1_pe_section.html#a7981814c58c2cd54408e59452458bc65" title=" " alt="" coords="213,122,347,163"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,39,139,80"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_remote_module_data.html#a1b9234ac424ed82767dafb08c80a8163" title=" " alt="" coords="187,5,373,47"/>
+<area shape="rect" id="node3" href="$classpesieve_1_1_pe_section.html#a7981814c58c2cd54408e59452458bc65" title=" " alt="" coords="213,71,347,112"/>
 </map>
