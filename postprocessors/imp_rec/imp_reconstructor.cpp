@@ -39,21 +39,28 @@ BYTE* pesieve::ImportTableBuffer::getDllSpaceAt(const DWORD rva, size_t required
 
 bool pesieve::ImpReconstructor::hasDynamicIAT() const
 {
+	size_t maxSize = getMaxDynamicIATSize(true);
+	return (maxSize >= MIN_THUNKS_COUNT);
+}
+
+size_t pesieve::ImpReconstructor::getMaxDynamicIATSize(IN bool isIatTerminated) const
+{
 	std::map<DWORD, IATBlock*>::const_iterator iats_itr;
 
-	// find a dynamic IAT additional to the default one:
-	bool has_new_table = false;
+	size_t maxIATSize = 0;
 	for (iats_itr = foundIATs.cbegin(); iats_itr != foundIATs.cend(); ++iats_itr) {
 		const IATBlock* iblock = iats_itr->second;
-		if (!iblock->isInMain
-			&& iblock->isTerminated
-			&& iblock->countThunks() >= MIN_THUNKS_COUNT)
+		const size_t currCount = iblock->countThunks();
+
+		if (!iblock->isInMain // is it a dynamic IAT
+			&& (iblock->isTerminated == isIatTerminated))
 		{
-			has_new_table = true;
-			break;
+			if (currCount > maxIATSize) {
+				maxIATSize = currCount;
+			}
 		}
 	}
-	return has_new_table;
+	return maxIATSize;
 }
 
 pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::_recreateImportTableFiltered(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode& imprec_mode)
@@ -68,6 +75,17 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::_recreateImpo
 		filter = t_imprec_filter::IMP_REC1; break;
 	case PE_IMPREC_REBUILD2:
 		filter = t_imprec_filter::IMP_REC2; break;
+	}
+
+	// in AUTO mode: chose higher filter if the unterminated IAT is bigger than any terminated:
+
+	if (imprec_mode == PE_IMPREC_AUTO) {
+		const size_t untermIATSize = getMaxDynamicIATSize(false);
+		const size_t termIATSize = getMaxDynamicIATSize(true);
+
+		if ((termIATSize < untermIATSize) && (untermIATSize > MIN_THUNKS_COUNT)) {
+			filter = t_imprec_filter::IMP_REC1;
+		}
 	}
 
 	// Try to rebuild ImportTable for module
@@ -149,7 +167,7 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImport
 		// Valid Import Table already set
 		return pesieve::ImpReconstructor::IMP_ALREADY_OK;
 	}
-	
+
 	// Try to rebuild ImportTable for module
 	if ((imprec_mode == PE_IMPREC_REBUILD0 || imprec_mode == PE_IMPREC_REBUILD1 || imprec_mode == PE_IMPREC_REBUILD2)
 		|| imprec_mode == PE_IMPREC_AUTO)
@@ -518,6 +536,7 @@ ImportTableBuffer* pesieve::ImpReconstructor::constructImportTable()
 	importTableBuffer->allocDllsSpace(dlls_rva, dlls_area_size);
 	DWORD dll_name_rva = dlls_rva;
 	i = 0;
+	//TODO: optimize it: write the repeating DLL names only once
 	for (itr = foundIATs.begin(); itr != foundIATs.end(); ++itr) {
 		IATBlock* iat = itr->second;
 		if (!iat->isValid()) {
