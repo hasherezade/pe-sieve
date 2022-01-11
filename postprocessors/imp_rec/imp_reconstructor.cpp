@@ -43,6 +43,23 @@ bool pesieve::ImpReconstructor::hasDynamicIAT() const
 	return (maxSize >= MIN_THUNKS_COUNT);
 }
 
+size_t pesieve::ImpReconstructor::getMainIATSize() const
+{
+	std::map<DWORD, IATBlock*>::const_iterator iats_itr;
+
+	//the main IAT can be in chunks, so join them together...
+	size_t totalIatSize = 0;
+	for (iats_itr = foundIATs.cbegin(); iats_itr != foundIATs.cend(); ++iats_itr) {
+		const IATBlock* iblock = iats_itr->second;
+		const size_t currCount = iblock->countThunks();
+
+		if (iblock->isInMain) {
+			totalIatSize += currCount;
+		}
+	}
+	return totalIatSize;
+}
+
 size_t pesieve::ImpReconstructor::getMaxDynamicIATSize(IN bool isIatTerminated) const
 {
 	std::map<DWORD, IATBlock*>::const_iterator iats_itr;
@@ -77,14 +94,18 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::_recreateImpo
 		filter = t_imprec_filter::IMP_REC2; break;
 	}
 
-	// in AUTO mode: chose higher filter if the unterminated IAT is bigger than any terminated:
+	// in AUTO mode: chose higher filter if the unterminated IAT is bigger than the main IAT, or any terminated:
 
 	if (imprec_mode == PE_IMPREC_AUTO) {
-		const size_t untermIATSize = getMaxDynamicIATSize(false);
-		const size_t termIATSize = getMaxDynamicIATSize(true);
 
-		if ((termIATSize < untermIATSize) && (untermIATSize > MIN_THUNKS_COUNT)) {
-			filter = t_imprec_filter::IMP_REC1;
+		const size_t untermIATSize = getMaxDynamicIATSize(false);
+		if (untermIATSize > MIN_THUNKS_COUNT) {
+			const size_t mainIATSize = getMainIATSize();
+			const size_t termIATSize = getMaxDynamicIATSize(true);
+
+			if ((untermIATSize > mainIATSize) && (untermIATSize > termIATSize)) {
+				filter = t_imprec_filter::IMP_REC1;
+			}
 		}
 	}
 
