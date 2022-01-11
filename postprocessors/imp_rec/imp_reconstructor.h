@@ -210,6 +210,10 @@ namespace pesieve {
 		//!  has a dynamic IAT in addition to the basic one (that is set in Data Directory)
 		bool hasDynamicIAT() const;
 
+		size_t getMainIATSize() const;
+
+		size_t getMaxDynamicIATSize(IN bool isIatTerminated) const;
+
 		bool findImportTable(IN const peconv::ExportsMapper* exportsMap);
 		size_t collectIATs(IN const peconv::ExportsMapper* exportsMap);
 
