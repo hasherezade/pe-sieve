@@ -28,7 +28,7 @@ namespace pesieve
 		{
 			if (!moduleData || !moduleSize) return nullptr;
 
-			BYTE* buf_copy = peconv::alloc_aligned(moduleSize, PAGE_READWRITE);
+			BYTE* buf_copy = peconv::alloc_unaligned(moduleSize);
 			if (!buf_copy) return nullptr;
 
 			memcpy(buf_copy, moduleData, moduleSize);
@@ -73,6 +73,8 @@ namespace pesieve
 		BYTE* loadCached(LPSTR szModName, size_t& original_size);
 
 	protected:
+
+		BYTE* _loadRawCached(LPSTR szModName, size_t& original_size);
 
 		BYTE* _getCached(const std::string &modName, size_t& cacheSize)
 		{
