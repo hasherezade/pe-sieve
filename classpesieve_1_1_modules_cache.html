@@ -91,25 +91,29 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:ae0e0c3d59c52621dd5331fff0a64440d"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_modules_cache.html#ae0e0c3d59c52621dd5331fff0a64440d">MinUsageCntr</a> = 3</td></tr>
+<tr class="memitem:ae0e0c3d59c52621dd5331fff0a64440d"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_modules_cache.html#ae0e0c3d59c52621dd5331fff0a64440d">MinUsageCntr</a> = 2</td></tr>
 <tr class="memdesc:ae0e0c3d59c52621dd5331fff0a64440d"><td class="mdescLeft">&#160;</td><td class="mdescRight">how many times loading of the module must be requested before the module is added to cache  <a href="classpesieve_1_1_modules_cache.html#ae0e0c3d59c52621dd5331fff0a64440d">More...</a><br /></td></tr>
 <tr class="separator:ae0e0c3d59c52621dd5331fff0a64440d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae090d44986e1a16d03bd59e4d5307745"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_modules_cache.html#ae090d44986e1a16d03bd59e4d5307745">MaxCachedModules</a> = 1000</td></tr>
+<tr class="memitem:ae090d44986e1a16d03bd59e4d5307745"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_modules_cache.html#ae090d44986e1a16d03bd59e4d5307745">MaxCachedModules</a> = 255</td></tr>
 <tr class="memdesc:ae090d44986e1a16d03bd59e4d5307745"><td class="mdescLeft">&#160;</td><td class="mdescRight">how many modules can be stored in the cache at the time  <a href="classpesieve_1_1_modules_cache.html#ae090d44986e1a16d03bd59e4d5307745">More...</a><br /></td></tr>
 <tr class="separator:ae090d44986e1a16d03bd59e4d5307745"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:aa072125ae38d157a65fc0995a73d1a32"><td class="memItemLeft" align="right" valign="top">BYTE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_modules_cache.html#aa072125ae38d157a65fc0995a73d1a32">_getCached</a> (const std::string &amp;modName, size_t &amp;cacheSize)</td></tr>
-<tr class="separator:aa072125ae38d157a65fc0995a73d1a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6480d8a3a5cfae373000d31cf021fa0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_modules_cache.html#ab6480d8a3a5cfae373000d31cf021fa0">_deleteCache</a> ()</td></tr>
-<tr class="separator:ab6480d8a3a5cfae373000d31cf021fa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a307eb472ff63b68b58c20990ed206864"><td class="memItemLeft" align="right" valign="top">BYTE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_modules_cache.html#a307eb472ff63b68b58c20990ed206864">getMappedCached</a> (const std::string &amp;modName, size_t &amp;mappedSize)</td></tr>
+<tr class="separator:a307eb472ff63b68b58c20990ed206864"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff959373d5ea27c5c1b852afc3991a1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_modules_cache.html#aff959373d5ea27c5c1b852afc3991a1e">prepareCacheSpace</a> ()</td></tr>
+<tr class="separator:aff959373d5ea27c5c1b852afc3991a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4ec15561c2e37bdf6fc201140334b3d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_modules_cache.html#ac4ec15561c2e37bdf6fc201140334b3d">_deleteLeastRecent</a> ()</td></tr>
+<tr class="separator:ac4ec15561c2e37bdf6fc201140334b3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93ef9057d536ccd0cf4b49973f4db531"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_modules_cache.html#a93ef9057d536ccd0cf4b49973f4db531">deleteCache</a> ()</td></tr>
+<tr class="separator:a93ef9057d536ccd0cf4b49973f4db531"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:af4d9976f22d8c4801b186a436c5aff25"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_modules_cache.html#af4d9976f22d8c4801b186a436c5aff25">usageCounter</a></td></tr>
-<tr class="memdesc:af4d9976f22d8c4801b186a436c5aff25"><td class="mdescLeft">&#160;</td><td class="mdescRight">how many times loading of the same module was requested before it was cached  <a href="classpesieve_1_1_modules_cache.html#af4d9976f22d8c4801b186a436c5aff25">More...</a><br /></td></tr>
-<tr class="separator:af4d9976f22d8c4801b186a436c5aff25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5922ae9f6de3058cba3e6c7503631bc"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_modules_cache.html#ae5922ae9f6de3058cba3e6c7503631bc">usageBeforeCounter</a></td></tr>
+<tr class="memdesc:ae5922ae9f6de3058cba3e6c7503631bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">how many times loading of the same module was requested before it was cached  <a href="classpesieve_1_1_modules_cache.html#ae5922ae9f6de3058cba3e6c7503631bc">More...</a><br /></td></tr>
+<tr class="separator:ae5922ae9f6de3058cba3e6c7503631bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfe6dbd83bee54a4e606dca20cddbee8"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, <a class="el" href="structpesieve_1_1_cached_module.html">CachedModule</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_modules_cache.html#adfe6dbd83bee54a4e606dca20cddbee8">cachedModules</a></td></tr>
 <tr class="memdesc:adfe6dbd83bee54a4e606dca20cddbee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">the list of all the cached modules  <a href="classpesieve_1_1_modules_cache.html#adfe6dbd83bee54a4e606dca20cddbee8">More...</a><br /></td></tr>
 <tr class="separator:adfe6dbd83bee54a4e606dca20cddbee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,7 +122,7 @@ Protected Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00054">54</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00052">52</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a75dbc306df755b0178cd8c0fec0bab80" name="a75dbc306df755b0178cd8c0fec0bab80"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a75dbc306df755b0178cd8c0fec0bab80">&#9670;&nbsp;</a></span>ModulesCache()</h2>
@@ -143,7 +147,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00061">61</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00059">59</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
 
 </div>
 </div>
@@ -170,22 +174,22 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00068">68</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00066">66</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_modules_cache_a204450c69beceb76df57ba223781a827_cgraph.png" border="0" usemap="#aclasspesieve_1_1_modules_cache_a204450c69beceb76df57ba223781a827_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_modules_cache_a204450c69beceb76df57ba223781a827_cgraph" id="aclasspesieve_1_1_modules_cache_a204450c69beceb76df57ba223781a827_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,164,47"/>
-<area shape="rect" href="classpesieve_1_1_modules_cache.html#ab6480d8a3a5cfae373000d31cf021fa0" title=" " alt="" coords="212,5,371,47"/>
+<area shape="rect" href="classpesieve_1_1_modules_cache.html#a93ef9057d536ccd0cf4b49973f4db531" title=" " alt="" coords="212,5,371,47"/>
 </map>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab6480d8a3a5cfae373000d31cf021fa0" name="ab6480d8a3a5cfae373000d31cf021fa0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6480d8a3a5cfae373000d31cf021fa0">&#9670;&nbsp;</a></span>_deleteCache()</h2>
+<a id="ac4ec15561c2e37bdf6fc201140334b3d" name="ac4ec15561c2e37bdf6fc201140334b3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4ec15561c2e37bdf6fc201140334b3d">&#9670;&nbsp;</a></span>_deleteLeastRecent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -194,7 +198,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void pesieve::ModulesCache::_deleteCache </td>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::ModulesCache::_deleteLeastRecent </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -207,12 +211,12 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00091">91</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00099">99</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
 
 </div>
 </div>
-<a id="aa072125ae38d157a65fc0995a73d1a32" name="aa072125ae38d157a65fc0995a73d1a32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa072125ae38d157a65fc0995a73d1a32">&#9670;&nbsp;</a></span>_getCached()</h2>
+<a id="a93ef9057d536ccd0cf4b49973f4db531" name="a93ef9057d536ccd0cf4b49973f4db531"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93ef9057d536ccd0cf4b49973f4db531">&#9670;&nbsp;</a></span>deleteCache()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -221,7 +225,34 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">BYTE * pesieve::ModulesCache::_getCached </td>
+          <td class="memname">void pesieve::ModulesCache::deleteCache </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00134">134</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
+
+</div>
+</div>
+<a id="a307eb472ff63b68b58c20990ed206864" name="a307eb472ff63b68b58c20990ed206864"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a307eb472ff63b68b58c20990ed206864">&#9670;&nbsp;</a></span>getMappedCached()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">BYTE * pesieve::ModulesCache::getMappedCached </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>modName</em>, </td>
@@ -230,7 +261,7 @@ Here is the call graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t &amp;&#160;</td>
-          <td class="paramname"><em>cacheSize</em>&#160;</td>
+          <td class="paramname"><em>mappedSize</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -245,14 +276,14 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00077">77</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00074">74</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classpesieve_1_1_modules_cache_aa072125ae38d157a65fc0995a73d1a32_cgraph.png" border="0" usemap="#aclasspesieve_1_1_modules_cache_aa072125ae38d157a65fc0995a73d1a32_cgraph" alt=""/></div>
-<map name="aclasspesieve_1_1_modules_cache_aa072125ae38d157a65fc0995a73d1a32_cgraph" id="aclasspesieve_1_1_modules_cache_aa072125ae38d157a65fc0995a73d1a32_cgraph">
+<div class="center"><img src="classpesieve_1_1_modules_cache_a307eb472ff63b68b58c20990ed206864_cgraph.png" border="0" usemap="#aclasspesieve_1_1_modules_cache_a307eb472ff63b68b58c20990ed206864_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_modules_cache_a307eb472ff63b68b58c20990ed206864_cgraph" id="aclasspesieve_1_1_modules_cache_a307eb472ff63b68b58c20990ed206864_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,164,47"/>
-<area shape="rect" href="structpesieve_1_1_cached_module.html#a2443214b92a4d2835613cfa160e6cbd7" title=" " alt="" coords="212,5,371,47"/>
+<area shape="rect" href="structpesieve_1_1_cached_module.html#a8794ef18c90ac2540faf837fe04edd6d" title=" " alt="" coords="212,5,371,47"/>
 </map>
 </div>
 
@@ -284,15 +315,53 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__cache_8cpp_source.html#l00004">4</a> of file <a class="el" href="module__cache_8cpp_source.html">module_cache.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__cache_8cpp_source.html#l00003">3</a> of file <a class="el" href="module__cache_8cpp_source.html">module_cache.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_modules_cache_a9d5758c091cc26b610b52ce5b6db5207_cgraph.png" border="0" usemap="#aclasspesieve_1_1_modules_cache_a9d5758c091cc26b610b52ce5b6db5207_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_modules_cache_a9d5758c091cc26b610b52ce5b6db5207_cgraph" id="aclasspesieve_1_1_modules_cache_a9d5758c091cc26b610b52ce5b6db5207_cgraph">
+<area shape="rect" title=" " alt="" coords="5,39,164,80"/>
+<area shape="rect" href="classpesieve_1_1_modules_cache.html#a307eb472ff63b68b58c20990ed206864" title=" " alt="" coords="212,5,371,47"/>
+<area shape="rect" href="classpesieve_1_1_modules_cache.html#aff959373d5ea27c5c1b852afc3991a1e" title=" " alt="" coords="212,71,371,112"/>
+<area shape="rect" href="structpesieve_1_1_cached_module.html#a8794ef18c90ac2540faf837fe04edd6d" title=" " alt="" coords="419,5,577,47"/>
+<area shape="rect" href="classpesieve_1_1_modules_cache.html#ac4ec15561c2e37bdf6fc201140334b3d" title=" " alt="" coords="419,71,577,112"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="aff959373d5ea27c5c1b852afc3991a1e" name="aff959373d5ea27c5c1b852afc3991a1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff959373d5ea27c5c1b852afc3991a1e">&#9670;&nbsp;</a></span>prepareCacheSpace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::ModulesCache::prepareCacheSpace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00089">89</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classpesieve_1_1_modules_cache_aff959373d5ea27c5c1b852afc3991a1e_cgraph.png" border="0" usemap="#aclasspesieve_1_1_modules_cache_aff959373d5ea27c5c1b852afc3991a1e_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_modules_cache_aff959373d5ea27c5c1b852afc3991a1e_cgraph" id="aclasspesieve_1_1_modules_cache_aff959373d5ea27c5c1b852afc3991a1e_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,164,47"/>
-<area shape="rect" href="classpesieve_1_1_modules_cache.html#aa072125ae38d157a65fc0995a73d1a32" title=" " alt="" coords="212,5,371,47"/>
-<area shape="rect" href="structpesieve_1_1_cached_module.html#a2443214b92a4d2835613cfa160e6cbd7" title=" " alt="" coords="419,5,577,47"/>
+<area shape="rect" href="classpesieve_1_1_modules_cache.html#ac4ec15561c2e37bdf6fc201140334b3d" title=" " alt="" coords="212,5,371,47"/>
 </map>
 </div>
 
@@ -321,7 +390,7 @@ Here is the call graph for this function:</div>
 
 <p>the list of all the cached modules </p>
 
-<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00115">115</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00158">158</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
 
 </div>
 </div>
@@ -345,7 +414,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00117">117</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00160">160</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
 
 </div>
 </div>
@@ -359,7 +428,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const size_t pesieve::ModulesCache::MaxCachedModules = 1000</td>
+          <td class="memname">const size_t pesieve::ModulesCache::MaxCachedModules = 255</td>
         </tr>
       </table>
   </td>
@@ -371,7 +440,7 @@ Here is the call graph for this function:</div>
 
 <p>how many modules can be stored in the cache at the time </p>
 
-<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00059">59</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00057">57</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
 
 </div>
 </div>
@@ -385,7 +454,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const size_t pesieve::ModulesCache::MinUsageCntr = 3</td>
+          <td class="memname">const size_t pesieve::ModulesCache::MinUsageCntr = 2</td>
         </tr>
       </table>
   </td>
@@ -397,12 +466,12 @@ Here is the call graph for this function:</div>
 
 <p>how many times loading of the module must be requested before the module is added to cache </p>
 
-<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00058">58</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00056">56</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
 
 </div>
 </div>
-<a id="af4d9976f22d8c4801b186a436c5aff25" name="af4d9976f22d8c4801b186a436c5aff25"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4d9976f22d8c4801b186a436c5aff25">&#9670;&nbsp;</a></span>usageCounter</h2>
+<a id="ae5922ae9f6de3058cba3e6c7503631bc" name="ae5922ae9f6de3058cba3e6c7503631bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5922ae9f6de3058cba3e6c7503631bc">&#9670;&nbsp;</a></span>usageBeforeCounter</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -411,7 +480,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;std::string, size_t&gt; pesieve::ModulesCache::usageCounter</td>
+          <td class="memname">std::map&lt;std::string, size_t&gt; pesieve::ModulesCache::usageBeforeCounter</td>
         </tr>
       </table>
   </td>
@@ -423,7 +492,7 @@ Here is the call graph for this function:</div>
 
 <p>how many times loading of the same module was requested before it was cached </p>
 
-<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00113">113</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__cache_8h_source.html#l00156">156</a> of file <a class="el" href="module__cache_8h_source.html">module_cache.h</a>.</p>
 
 </div>
 </div>
