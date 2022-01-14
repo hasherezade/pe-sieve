@@ -86,10 +86,18 @@ namespace pesieve
 			return nullptr;
 		}
 
-		bool deleteLeastRecent()
+		bool prepareCacheSpace()
 		{
 			std::lock_guard<std::mutex> guard(cacheMutex);
+			const bool is_cache_available = cachedModules.size() < MaxCachedModules;
+			if (is_cache_available) {
+				return true;
+			}
+			return _deleteLeastRecent();
+		}
 
+		bool _deleteLeastRecent()
+		{
 			ULONGLONG lTimestamp = 0;
 			ULONGLONG gTimestamp = 0;
 			std::map<std::string, CachedModule*>::iterator foundItr = cachedModules.end();
