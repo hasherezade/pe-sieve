@@ -2,7 +2,7 @@
 
 BYTE* pesieve::ModulesCache::loadCached(LPSTR szModName, size_t& module_size)
 {
-	BYTE *mapped_pe = _getMappedCached(szModName, module_size);
+	BYTE *mapped_pe = getMappedCached(szModName, module_size);
 	if (mapped_pe) {
 		return mapped_pe; // retrieved from cache
 	}
@@ -37,7 +37,7 @@ BYTE* pesieve::ModulesCache::loadCached(LPSTR szModName, size_t& module_size)
 	}
 	if (!is_cache_available) {
 		//try to free some cache...
-		_deleteLeastRecent();
+		deleteLeastRecent();
 	}
 	mapped_pe = peconv::load_pe_module(raw_buf, raw_size, module_size, false, false);
 	peconv::free_file(raw_buf);

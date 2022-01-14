@@ -65,13 +65,13 @@ namespace pesieve
 
 		~ModulesCache()
 		{
-			_deleteCache();
+			deleteCache();
 		}
 
 		BYTE* loadCached(LPSTR szModName, size_t& original_size);
 
 	protected:
-		BYTE* _getMappedCached(const std::string &modName, size_t& mappedSize)
+		BYTE* getMappedCached(const std::string &modName, size_t& mappedSize)
 		{
 			std::lock_guard<std::mutex> guard(cacheMutex);
 
@@ -86,7 +86,7 @@ namespace pesieve
 			return nullptr;
 		}
 
-		bool _deleteLeastRecent()
+		bool deleteLeastRecent()
 		{
 			std::lock_guard<std::mutex> guard(cacheMutex);
 
@@ -123,7 +123,7 @@ namespace pesieve
 			return true;
 		}
 
-		void _deleteCache()
+		void deleteCache()
 		{
 			std::lock_guard<std::mutex> guard(cacheMutex);
 
