@@ -10,18 +10,19 @@ namespace pesieve
 
 	struct CachedModule {
 	public:
-		CachedModule() : moduleData(nullptr), moduleSize(0)
+		CachedModule() : moduleData(nullptr), moduleSize(0), lastUsage(0)
 		{
 		}
 
 		CachedModule(BYTE* _moduleData, size_t _moduleSize)
-			: moduleData(nullptr), moduleSize(0)
+			: moduleData(nullptr), moduleSize(0), lastUsage(0)
 		{
 			moduleData = peconv::alloc_unaligned(_moduleSize);
 			if (!moduleData) return;
 
 			memcpy(moduleData, _moduleData, _moduleSize);
 			moduleSize = _moduleSize;
+			lastUsage = GetTickCount64();
 		}
 
 		BYTE* mapFromCached(size_t &mappedSize) const
@@ -44,6 +45,7 @@ namespace pesieve
 		
 		BYTE* moduleData = nullptr;
 		size_t moduleSize = 0;
+		ULONGLONG lastUsage = 0;
 	};
 
 
@@ -51,8 +53,8 @@ namespace pesieve
 
 	public:
 		
-		static const size_t MinUsageCntr = 3; ///< how many times loading of the module must be requested before the module is added to cache
-		static const size_t MaxCachedModules = 1000; ///< how many modules can be stored in the cache at the time
+		static const size_t MinUsageCntr = 2; ///< how many times loading of the module must be requested before the module is added to cache
+		static const size_t MaxCachedModules = 255; ///< how many modules can be stored in the cache at the time
 
 		ModulesCache()
 		{
@@ -75,12 +77,50 @@ namespace pesieve
 
 			std::map<std::string, CachedModule*>::iterator itr = cachedModules.find(modName);
 			if (itr != cachedModules.end()) {
-				const CachedModule* cached = itr->second;
+				CachedModule* cached = itr->second;
 				if (!cached) return nullptr;
-
+				
+				cached->lastUsage = GetTickCount64();
 				return cached->mapFromCached(mappedSize);
 			}
 			return nullptr;
+		}
+
+		bool _deleteLeastRecent()
+		{
+			std::lock_guard<std::mutex> guard(cacheMutex);
+
+			ULONGLONG lTimestamp = 0;
+			ULONGLONG gTimestamp = 0;
+			std::map<std::string, CachedModule*>::iterator foundItr = cachedModules.end();
+
+			std::map<std::string, CachedModule*>::iterator itr;
+			for (itr = cachedModules.begin(); itr != cachedModules.end(); ++itr) {
+				CachedModule* mod = itr->second;
+				if (!mod) continue;
+
+				if ((lTimestamp == 0) || (mod->lastUsage < lTimestamp)) {
+					lTimestamp = mod->lastUsage;
+					foundItr = itr;
+				}
+
+				if ((gTimestamp == 0) || (mod->lastUsage > gTimestamp)) {
+					gTimestamp = mod->lastUsage;
+				}
+			}
+
+			if ((gTimestamp == lTimestamp) || (foundItr == cachedModules.end())) {
+				return false; // nothing to remove
+			}
+#ifdef _DEBUG
+			std::cout << "Deleting the least recent module: " << foundItr->first << " timestamp: " << lTimestamp << "\n";
+#endif
+			// remove the module that was used the least recently:
+			usageBeforeCounter[foundItr->first] = 0;
+			CachedModule* mod1 = foundItr->second;
+			delete mod1;
+			cachedModules.erase(foundItr);
+			return true;
 		}
 
 		void _deleteCache()
@@ -99,13 +139,13 @@ namespace pesieve
 				delete cached;
 			}
 			cachedModules.clear();
-			usageCounter.clear();
+			usageBeforeCounter.clear();
 #ifdef _DEBUG
 			std::cout << "Cache deleted. Total: " << i << " modules.\n";
 #endif
 		}
 
-		std::map<std::string, size_t> usageCounter; ///< how many times loading of the same module was requested before it was cached
+		std::map<std::string, size_t> usageBeforeCounter; ///< how many times loading of the same module was requested before it was cached
 
 		std::map<std::string, CachedModule*> cachedModules; ///< the list of all the cached modules
 
