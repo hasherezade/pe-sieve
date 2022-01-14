@@ -24,16 +24,12 @@ namespace pesieve
 			moduleSize = _moduleSize;
 		}
 
-		BYTE* makeCacheCopy(size_t &copySize) const
+		BYTE* mapFromCached(size_t &mappedSize) const
 		{
-			if (!moduleData || !moduleSize) return nullptr;
+			if (!this->moduleData || !this->moduleSize) return nullptr;
 
-			BYTE* buf_copy = peconv::alloc_unaligned(moduleSize);
-			if (!buf_copy) return nullptr;
-
-			memcpy(buf_copy, moduleData, moduleSize);
-			copySize = moduleSize;
-			return buf_copy;
+			BYTE* my_pe = peconv::load_pe_module(moduleData, moduleSize, mappedSize, false, false);
+			return my_pe;
 		}
 
 		~CachedModule()
@@ -73,10 +69,7 @@ namespace pesieve
 		BYTE* loadCached(LPSTR szModName, size_t& original_size);
 
 	protected:
-
-		BYTE* _loadRawCached(LPSTR szModName, size_t& original_size);
-
-		BYTE* _getCached(const std::string &modName, size_t& cacheSize)
+		BYTE* _getMappedCached(const std::string &modName, size_t& mappedSize)
 		{
 			std::lock_guard<std::mutex> guard(cacheMutex);
 
@@ -85,7 +78,7 @@ namespace pesieve
 				const CachedModule* cached = itr->second;
 				if (!cached) return nullptr;
 
-				return cached->makeCacheCopy(cacheSize);
+				return cached->mapFromCached(mappedSize);
 			}
 			return nullptr;
 		}
