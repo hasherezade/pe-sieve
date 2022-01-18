@@ -3,6 +3,7 @@
 #include <peconv.h>
 
 #include <fstream>
+#include <iostream>
 
 using namespace pesieve;
 
@@ -222,30 +223,67 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 		std::cerr << "[-] Failed to initialize module data: " << moduleData.szModName << std::endl;
 		return false;
 	}
-
+	if (moduleData.is64bit() != remoteModData.is64bit()) {
+		std::cerr << "[-] Mismatching ModuleData given: " << moduleData.szModName << std::endl;
+		return false;
+	}
 	// get addresses of the thunks from the original module (file)
-	std::set<DWORD> origModThunks;
-	if (!moduleData.loadImportThunks(origModThunks)) {
+	peconv::ImportsCollection collection;
+	if (!moduleData.loadImportsList(collection)) {
 		return false;
 	}
 
+	std::map<DWORD, peconv::ExportedFunc*>::iterator itr;
 	// get filled thunks from the mapped module (remote):
-	std::set<DWORD>::iterator itr;
-	for (itr = origModThunks.begin(); itr != origModThunks.end(); ++itr) {
-		DWORD thunk_rva = (*itr);
+
+	for (itr = collection.thunkToFunc.begin(); itr != collection.thunkToFunc.end(); ++itr) {
+		DWORD thunk_rva = itr->first;
+
 		//std::cout << "Thunk: " << std::hex << *itr << "\n";
-		ULONGLONG next_thunk = 0;
+		ULONGLONG filled_val = 0;
 		if (moduleData.is64bit()) {
-			next_thunk = get_thunk_at_rva<ULONGLONG>(remoteModData.imgBuffer, remoteModData.imgBufferSize, thunk_rva);
+			filled_val = get_thunk_at_rva<ULONGLONG>(remoteModData.imgBuffer, remoteModData.imgBufferSize, thunk_rva);
 		}
 		else {
-			next_thunk = get_thunk_at_rva<DWORD>(remoteModData.imgBuffer, remoteModData.imgBufferSize, thunk_rva);
+			filled_val = get_thunk_at_rva<DWORD>(remoteModData.imgBuffer, remoteModData.imgBufferSize, thunk_rva);
 		}
+		peconv::ExportedFunc* func = itr->second;
+		if (!func) {
+			// cannot retrieve the origial import
+			continue;
+		}
+		const std::set<peconv::ExportedFunc>* possibleExports = exportsMap.find_exports_by_va(filled_val);
 		// no export at this thunk:
-		if (exportsMap.find_export_by_va(next_thunk) == nullptr) {
-			not_covered.insert(thunk_rva, next_thunk);
+		if (!possibleExports || possibleExports->size() == 0) {
+			std::cout << "Function not covered: " << std::hex << thunk_rva << " " << func->libName << " func: " << func->toString() << " val: " << std::hex << filled_val << "\n";
+			not_covered.insert(thunk_rva, filled_val);
+			continue;
 		}
+
+		// check if the defined import matches the possible ones:
+		bool is_covered = false;
+		std::set<peconv::ExportedFunc>::const_iterator cItr;
+		for (cItr = possibleExports->begin(); cItr != possibleExports->end(); ++cItr) {
+			const peconv::ExportedFunc possibleFunc = *cItr;
+			if (peconv::ExportedFunc::isTheSameFunc(possibleFunc, *func)) {
+				is_covered = true;
+				break;
+			}
+		}
+
+		if (!is_covered) {
+			std::cout << "Mismatch at RVA: " << std::hex << thunk_rva << " " << func->libName<< " func: " << func->toString() << "\n";
+
+			for (cItr = possibleExports->begin(); cItr != possibleExports->end(); ++cItr) {
+				const peconv::ExportedFunc possibleFunc = *cItr;
+				std::cout << "\t proposed: " << possibleFunc.libName << " : " << possibleFunc.toString() << "\n";
+			}
+			not_covered.insert(thunk_rva, filled_val);
+		}
+		
 	}
+
+    std::cout << "Total not covered: " << not_covered.count() << "\n";
 	return true;
 }
 
@@ -277,13 +315,14 @@ IATScanReport* pesieve::IATScanner::scanRemote()
 	scanByOriginalTable(not_covered);
 
 	// then try to find by coverage:
-	peconv::fix_imports(vBuf, vBufSize, exportsMap, &not_covered);
+	//peconv::fix_imports(vBuf, vBufSize, exportsMap, &not_covered);
 
 	t_scan_status status = SCAN_NOT_SUSPICIOUS;
 	if (not_covered.count() > 0) {
+		std::cout << moduleData.szModName << " not covered: " << not_covered.count() << "\n";
 		status = SCAN_SUSPICIOUS;
 	}
-
+	
 	IATScanReport *report = new(std::nothrow) IATScanReport(processHandle, remoteModData.modBaseAddr, remoteModData.getModuleSize(), moduleData.szModName);
 	if (!report) {
 		return nullptr;

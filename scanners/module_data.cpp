@@ -126,6 +126,25 @@ bool pesieve::ModuleData::loadImportThunks(std::set<DWORD>& thunk_rvas)
 	return false;
 }
 
+bool pesieve::ModuleData::loadImportsList(peconv::ImportsCollection &collection)
+{
+	if (!original_module || !original_size) {
+		return false;
+	}
+	if (!peconv::has_valid_import_table(original_module, original_size)) {
+		// No import table
+		return false;
+	}
+	if (!peconv::collect_imports(original_module, original_size, collection)) {
+		// Could not collect imports
+		return false;
+	}
+	if (collection.size()) {
+		return true;
+	}
+	return false;
+}
+
 bool pesieve::ModuleData::relocateToBase(ULONGLONG new_base)
 {
 	if (!original_module) return false;
