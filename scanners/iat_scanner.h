@@ -14,7 +14,7 @@ namespace pesieve {
 
 		static bool saveNotRecovered(IN std::string fileName,
 			IN HANDLE hProcess,
-			IN const std::map<ULONGLONG, peconv::ExportedFunc> *storedFunc,
+			IN peconv::ImportsCollection *storedFunc,
 			IN peconv::ImpsNotCovered &notCovered,
 			IN const ModulesInfo &modulesInfo,
 			IN const peconv::ExportsMapper *exportsMap);
@@ -48,7 +48,7 @@ namespace pesieve {
 		const bool hooksToJSON(std::stringstream &outs, size_t level);
 		size_t countHooked() { return notCovered.count(); }
 
-		std::map<ULONGLONG, peconv::ExportedFunc> storedFunc;
+		peconv::ImportsCollection storedFunc;
 		peconv::ImpsNotCovered notCovered;
 
 	};
@@ -85,7 +85,7 @@ namespace pesieve {
 
 		bool hasImportTable(RemoteModuleData &remoteModData);
 		bool filterResults(peconv::ImpsNotCovered &not_covered, IATScanReport &report);
-		void listAllImports(std::map<ULONGLONG, peconv::ExportedFunc> &_storedFunc);
+		void listAllImports(peconv::ImportsCollection &collection);
 
 		const peconv::ExportsMapper &exportsMap;
 		const ModulesInfo &modulesInfo;

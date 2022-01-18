@@ -7,57 +7,6 @@
 
 using namespace pesieve;
 
-namespace pesieve {
-
-	class ImportInfoCallback : public peconv::ImportThunksCallback
-	{
-	public:
-		ImportInfoCallback(BYTE* _modulePtr, size_t _moduleSize, std::map<ULONGLONG, peconv::ExportedFunc> &_storedFunc)
-			: ImportThunksCallback(_modulePtr, _moduleSize), storedFunc(_storedFunc)
-		{
-		}
-
-		virtual bool processThunks(LPSTR lib_name, ULONG_PTR origFirstThunkPtr, ULONG_PTR firstThunkPtr)
-		{
-			if (this->is64b) {
-				IMAGE_THUNK_DATA64* desc = reinterpret_cast<IMAGE_THUNK_DATA64*>(origFirstThunkPtr);
-				ULONGLONG* call_via = reinterpret_cast<ULONGLONG*>(firstThunkPtr);
-				return processThunks_tpl<ULONGLONG, IMAGE_THUNK_DATA64>(lib_name, desc, call_via, IMAGE_ORDINAL_FLAG64);
-			}
-			IMAGE_THUNK_DATA32* desc = reinterpret_cast<IMAGE_THUNK_DATA32*>(origFirstThunkPtr);
-			DWORD* call_via = reinterpret_cast<DWORD*>(firstThunkPtr);
-			return processThunks_tpl<DWORD, IMAGE_THUNK_DATA32>(lib_name, desc, call_via, IMAGE_ORDINAL_FLAG32);
-		}
-
-	protected:
-		template <typename T_FIELD, typename T_IMAGE_THUNK_DATA>
-		bool processThunks_tpl(LPSTR lib_name, T_IMAGE_THUNK_DATA* desc, T_FIELD* call_via, T_FIELD ordinal_flag)
-		{
-			ULONGLONG call_via_rva = ((ULONG_PTR)call_via - (ULONG_PTR)this->modulePtr);
-			T_FIELD raw_ordinal = 0;
-			bool is_by_ord = (desc->u1.Ordinal & ordinal_flag) != 0;
-			if (is_by_ord) {
-				raw_ordinal = desc->u1.Ordinal & (~ordinal_flag);
-#ifdef _DEBUG
-				std::cout << "raw ordinal: " << std::hex << raw_ordinal << std::endl;
-#endif
-				this->storedFunc[call_via_rva] = peconv::ExportedFunc(peconv::get_dll_shortname(lib_name), raw_ordinal);
-			}
-			else {
-				PIMAGE_IMPORT_BY_NAME by_name = (PIMAGE_IMPORT_BY_NAME)((ULONGLONG)modulePtr + desc->u1.AddressOfData);
-				LPSTR func_name = reinterpret_cast<LPSTR>(by_name->Name);
-				raw_ordinal = by_name->Hint;
-				this->storedFunc[call_via_rva] = peconv::ExportedFunc(peconv::get_dll_shortname(lib_name), func_name, raw_ordinal);
-			}
-			return true;
-		}
-
-		//fields:
-		std::map<ULONGLONG, peconv::ExportedFunc> &storedFunc;
-	};
-	///----
-}; //namespace pesieve
-
 const bool IATScanReport::hooksToJSON(std::stringstream &outs, size_t level)
 {
 	if (notCovered.count() == 0) {
@@ -79,12 +28,13 @@ const bool IATScanReport::hooksToJSON(std::stringstream &outs, size_t level)
 		OUT_PADDED(outs, (level + 1), "\"thunk_rva\" : ");
 		outs << "\"" << std::hex << (ULONGLONG)thunk << "\"" << ",\n";
 
-		std::map<ULONGLONG, peconv::ExportedFunc>::const_iterator found = storedFunc.find(thunk);
-		if (found != storedFunc.end()) {
-			const peconv::ExportedFunc &func = found->second;
-
-			OUT_PADDED(outs, (level + 1), "\"func_name\" : ");
-			outs << "\"" << func.toString() << "\"" << ",\n";
+		std::map<DWORD, peconv::ExportedFunc*>::const_iterator found = storedFunc.thunkToFunc.find(thunk);
+		if (found != storedFunc.thunkToFunc.end()) {
+			const peconv::ExportedFunc *func = found->second;
+			if (func) {
+				OUT_PADDED(outs, (level + 1), "\"func_name\" : ");
+				outs << "\"" << func->toString() << "\"" << ",\n";
+			}
 		}
 
 		OUT_PADDED(outs, (level + 1), "\"target\" : ");
@@ -100,7 +50,7 @@ const bool IATScanReport::hooksToJSON(std::stringstream &outs, size_t level)
 
 bool IATScanReport::saveNotRecovered(IN std::string fileName,
 	IN HANDLE hProcess,
-	IN const std::map<ULONGLONG, peconv::ExportedFunc> *storedFunc,
+	IN peconv::ImportsCollection *storedFunc,
 	IN peconv::ImpsNotCovered &notCovered,
 	IN const ModulesInfo &modulesInfo,
 	IN const peconv::ExportsMapper *exportsMap)
@@ -124,10 +74,11 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 		report << std::hex << thunk << delim;
 
 		if (storedFunc) {
-			std::map<ULONGLONG, peconv::ExportedFunc>::const_iterator found = storedFunc->find(thunk);
-			if (found != storedFunc->end()) {
-				const peconv::ExportedFunc &func = found->second;
-				report << func.toString();
+			std::map<DWORD, peconv::ExportedFunc*>::const_iterator found = storedFunc->thunkToFunc.find(thunk);
+			if (found != storedFunc->thunkToFunc.end()) {
+				const peconv::ExportedFunc *func = found->second;
+				if (!func) continue; //this should not happen
+				report << func->toString();
 			}
 			else {
 				report << "(unknown)";
@@ -443,14 +394,13 @@ bool pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATS
 	return true;
 }
 
-void pesieve::IATScanner::listAllImports(std::map<ULONGLONG, peconv::ExportedFunc> &_storedFunc)
+void pesieve::IATScanner::listAllImports(peconv::ImportsCollection &_storedFunc)
 {
 	BYTE *vBuf = remoteModData.imgBuffer; 
 	size_t vBufSize = remoteModData.imgBufferSize;
 	if (!vBuf) {
 		return;
 	}
-	ImportInfoCallback callback(vBuf, vBufSize, _storedFunc);
-	peconv::process_import_table(vBuf, vBufSize, &callback);
+	peconv::collect_imports(vBuf, vBufSize, _storedFunc);
 }
 
