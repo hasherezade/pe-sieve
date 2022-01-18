@@ -12,7 +12,7 @@ var searchData=
   ['init_9',['init',['../classpesieve_1_1_remote_module_data.html#a609e79972a0b37cdfb72a4be35f838c0',1,'pesieve::RemoteModuleData']]],
   ['init_5fsyspaths_10',['init_syspaths',['../namespacepesieve_1_1util.html#a7784404ead578981dc824836d8a59797',1,'pesieve::util']]],
   ['insert_11',['insert',['../classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d',1,'pesieve::IATThunksSeries::insert()'],['../classpesieve_1_1_patch_list.html#aba42493625d041b27aac121eec37655f',1,'pesieve::PatchList::insert()']]],
-  ['is64bit_12',['is64bit',['../classpesieve_1_1_module_data.html#a57fffdfd8f7a26fb3bfa9a827451c660',1,'pesieve::ModuleData']]],
+  ['is64bit_12',['is64bit',['../classpesieve_1_1_module_data.html#a57fffdfd8f7a26fb3bfa9a827451c660',1,'pesieve::ModuleData::is64bit()'],['../classpesieve_1_1_remote_module_data.html#a576416e1c402e3b9b8c34cc33bc863d6',1,'pesieve::RemoteModuleData::is64bit()']]],
   ['is64modifier_13',['is64Modifier',['../classpesieve_1_1_patch_analyzer.html#a4c5ab2246b9124276defa70d025f4e73',1,'pesieve::PatchAnalyzer']]],
   ['is_5f32bit_5fcode_14',['is_32bit_code',['../namespacepesieve_1_1util.html#a5d26b70522a977f7074c0e3c6154dbc2',1,'pesieve::util']]],
   ['is_5f64bit_5fcode_15',['is_64bit_code',['../namespacepesieve_1_1util.html#afa17e492f946ff1f4e79f1c843d88a38',1,'pesieve::util']]],
