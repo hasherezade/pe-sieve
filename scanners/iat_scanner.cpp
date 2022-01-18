@@ -196,6 +196,59 @@ bool pesieve::IATScanner::hasImportTable(RemoteModuleData &remoteModData)
 	return true;
 }
 
+
+template <typename FIELD_T>
+FIELD_T get_thunk_at_rva(BYTE *mod_buf, size_t mod_size, DWORD rva)
+{
+	if (!mod_buf || !mod_size) {
+		return 0;
+	}
+	if (!peconv::validate_ptr(mod_buf, mod_size, (BYTE*)((ULONG_PTR)mod_buf + rva), sizeof(FIELD_T))) {
+		return 0;
+	}
+
+	FIELD_T* field_ptr = (FIELD_T*)((ULONG_PTR)mod_buf + rva);
+	return (*field_ptr);
+}
+
+bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covered)
+{
+	if (!remoteModData.isInitialized()) {
+		std::cerr << "[-] Failed to initialize remote module header" << std::endl;
+		return false;
+	}
+
+	if (!moduleData.isInitialized() && !moduleData.loadOriginal()) {
+		std::cerr << "[-] Failed to initialize module data: " << moduleData.szModName << std::endl;
+		return false;
+	}
+
+	// get addresses of the thunks from the original module (file)
+	std::set<DWORD> origModThunks;
+	if (!moduleData.loadImportThunks(origModThunks)) {
+		return false;
+	}
+
+	// get filled thunks from the mapped module (remote):
+	std::set<DWORD>::iterator itr;
+	for (itr = origModThunks.begin(); itr != origModThunks.end(); ++itr) {
+		DWORD thunk_rva = (*itr);
+		//std::cout << "Thunk: " << std::hex << *itr << "\n";
+		ULONGLONG next_thunk = 0;
+		if (moduleData.is64bit()) {
+			next_thunk = get_thunk_at_rva<ULONGLONG>(remoteModData.imgBuffer, remoteModData.imgBufferSize, thunk_rva);
+		}
+		else {
+			next_thunk = get_thunk_at_rva<DWORD>(remoteModData.imgBuffer, remoteModData.imgBufferSize, thunk_rva);
+		}
+		// no export at this thunk:
+		if (exportsMap.find_export_by_va(next_thunk) == nullptr) {
+			not_covered.insert(thunk_rva, next_thunk);
+		}
+	}
+	return true;
+}
+
 IATScanReport* pesieve::IATScanner::scanRemote()
 {
 	if (!remoteModData.isInitialized()) {
@@ -219,6 +272,11 @@ IATScanReport* pesieve::IATScanner::scanRemote()
 		return nullptr;
 	}
 	peconv::ImpsNotCovered not_covered;
+
+	// first try to find by the Import Table in the original file:
+	scanByOriginalTable(not_covered);
+
+	// then try to find by coverage:
 	peconv::fix_imports(vBuf, vBufSize, exportsMap, &not_covered);
 
 	t_scan_status status = SCAN_NOT_SUSPICIOUS;

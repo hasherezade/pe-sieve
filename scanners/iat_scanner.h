@@ -77,6 +77,8 @@ namespace pesieve {
 		virtual IATScanReport* scanRemote();
 
 	private:
+		bool scanByOriginalTable(peconv::ImpsNotCovered &not_covered);
+
 		void initExcludedPaths();
 
 		bool hasImportTable(RemoteModuleData &remoteModData);
