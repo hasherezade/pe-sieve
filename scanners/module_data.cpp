@@ -21,6 +21,9 @@ bool pesieve::ModuleData::loadModuleName()
 		return false;
 	}
 	memcpy(this->szModName, my_name.c_str(), my_name.length());
+
+	// autoswitch the path to Wow64 mode if needed:
+	autoswichIfWow64Mapping();
 	return true;
 }
 
@@ -126,6 +129,25 @@ bool pesieve::ModuleData::loadImportThunks(std::set<DWORD>& thunk_rvas)
 	return false;
 }
 
+bool pesieve::ModuleData::loadImportsList(peconv::ImportsCollection &collection)
+{
+	if (!original_module || !original_size) {
+		return false;
+	}
+	if (!peconv::has_valid_import_table(original_module, original_size)) {
+		// No import table
+		return false;
+	}
+	if (!peconv::collect_imports(original_module, original_size, collection)) {
+		// Could not collect imports
+		return false;
+	}
+	if (collection.size()) {
+		return true;
+	}
+	return false;
+}
+
 bool pesieve::ModuleData::relocateToBase(ULONGLONG new_base)
 {
 	if (!original_module) return false;
@@ -144,6 +166,28 @@ bool pesieve::ModuleData::relocateToBase(ULONGLONG new_base)
 	}
 	peconv::update_image_base(original_module, new_base);
 	return true;
+}
+
+
+bool pesieve::ModuleData::autoswichIfWow64Mapping()
+{
+	std::string mapped_name = pesieve::RemoteModuleData::getMappedName(processHandle, this->moduleHandle);
+	std::string module_name = this->szModName;
+	bool is_same = (to_lowercase(mapped_name) == to_lowercase(module_name));
+
+	size_t mod_name_len = module_name.length();
+	if (!is_same && mod_name_len > 0) {
+		//check Wow64
+		char path_copy[MAX_PATH] = { 0 };
+		memcpy(path_copy, this->szModName, mod_name_len);
+		convert_to_wow64_path(path_copy);
+		is_same = (to_lowercase(mapped_name) == to_lowercase(path_copy));
+		if (is_same) {
+			this->switchToWow64Path();
+			return true;
+		}
+	}
+	return false;
 }
 
 bool pesieve::ModuleData::switchToWow64Path()
@@ -165,10 +209,17 @@ bool pesieve::ModuleData::reloadWow64()
 
 	//reload it and check again...
 	peconv::free_pe_buffer(original_module, original_size);
-	original_module = peconv::load_pe_module(szModName, original_size, false, false);
+	if (this->useCache) {
+		original_module = cache.loadCached(szModName, original_size);
+	}
+	else {
+		original_module = peconv::load_pe_module(szModName, original_size, false, false);
+	}
 	if (!original_module) {
+		std::cout << "[-] Failed to reload: " << szModName << "\n";
 		return false;
 	}
+	std::cout << "[+] Reloaded: " << szModName << "\n";
 	return true;
 }
 

@@ -95,6 +95,7 @@ namespace pesieve {
 		bool relocateToBase(ULONGLONG new_base);
 		bool loadRelocatedFields(std::set<DWORD>& fields_rvas);
 		bool loadImportThunks(std::set<DWORD>& fields_rvas);
+		bool loadImportsList(peconv::ImportsCollection &collection);
 
 		HANDLE processHandle;
 		HMODULE moduleHandle;
@@ -107,6 +108,7 @@ namespace pesieve {
 	protected:
 		bool _loadOriginal(bool disableFSredir);
 		bool loadModuleName();
+		bool autoswichIfWow64Mapping();
 		bool isDotNetManagedCode();
 
 		bool is_dot_net;
@@ -146,6 +148,12 @@ namespace pesieve {
 				return false;
 			}
 			return true;
+		}
+
+		bool is64bit()
+		{
+			if (!isHdrReady) return 0;
+			return peconv::is64bit(headerBuffer);
 		}
 
 		size_t getHdrImageSize()
