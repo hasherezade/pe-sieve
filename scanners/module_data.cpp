@@ -184,7 +184,12 @@ bool pesieve::ModuleData::reloadWow64()
 
 	//reload it and check again...
 	peconv::free_pe_buffer(original_module, original_size);
-	original_module = peconv::load_pe_module(szModName, original_size, false, false);
+	if (this->useCache) {
+		original_module = cache.loadCached(szModName, original_size);
+	}
+	else {
+		original_module = peconv::load_pe_module(szModName, original_size, false, false);
+	}
 	if (!original_module) {
 		return false;
 	}
