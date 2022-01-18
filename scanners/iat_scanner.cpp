@@ -212,6 +212,30 @@ FIELD_T get_thunk_at_rva(BYTE *mod_buf, size_t mod_size, DWORD rva)
 	return (*field_ptr);
 }
 
+
+bool pesieve::IATScanner::isValidFuncFilled(const peconv::ExportedFunc &possibleFunc, const peconv::ExportedFunc &definedFunc)
+{
+	const std::string possible_short = peconv::remove_extension(peconv::get_file_name(possibleFunc.libName));
+	const std::string defined_short = peconv::remove_extension(peconv::get_file_name(definedFunc.libName));
+
+	if (!peconv::ExportedFunc::isTheSameFuncName(possibleFunc, definedFunc)) {
+		return false;
+	}
+
+	if (defined_short.compare(possible_short) == 0) {
+		return true;
+	}
+	std::string fullName = exportsMap.get_dll_path(possibleFunc.libName);
+	if (isInSystemDir(fullName)) {
+		//std::cout << "^ Common redir, full: " << fullName << " dFunc: " << definedFunc.toString() << "\n";
+		//common redirection
+		return true;
+	}
+
+	//std::cout << "!! Names mismatch: [" << defined_short << "] vs [" << possible_short << "] , full: "  << fullName << "\n";
+	return false;
+}
+
 bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covered)
 {
 	if (!remoteModData.isInitialized()) {
@@ -252,12 +276,20 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 			// cannot retrieve the origial import
 			continue;
 		}
+
 		const std::set<peconv::ExportedFunc>* possibleExports = exportsMap.find_exports_by_va(filled_val);
 		// no export at this thunk:
 		if (!possibleExports || possibleExports->size() == 0) {
+
+			//filter out .NET: mscoree._CorExeMain
+			const std::string dShortName = peconv::get_dll_shortname(func->libName);
+			if ( dShortName.compare("mscoree") == 0 && (func->funcName.compare("_CorExeMain") || func->funcName.compare("_CorDllMain")) ) {
+				continue; //this is normal, skip it
+			}
+
 			not_covered.insert(thunk_rva, filled_val);
 #ifdef _DEBUG
-			std::cout << "Function not covered: " << std::hex << thunk_rva << " " << func->libName << " func: " << func->toString() << " val: " << std::hex << filled_val << "\n";
+			std::cout << "Function not covered: " << std::hex << thunk_rva << " [" << dShortName << "] func: [" << func->funcName << "] val: " << std::hex << filled_val << "\n";
 #endif
 			continue;
 		}
@@ -267,7 +299,7 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 		std::set<peconv::ExportedFunc>::const_iterator cItr;
 		for (cItr = possibleExports->begin(); cItr != possibleExports->end(); ++cItr) {
 			const peconv::ExportedFunc possibleFunc = *cItr;
-			if (peconv::ExportedFunc::isTheSameFunc(possibleFunc, *func)) {
+			if (isValidFuncFilled(possibleFunc, *func)){
 				is_covered = true;
 				break;
 			}
@@ -362,6 +394,17 @@ void pesieve::IATScanner::initExcludedPaths()
 	std::transform(m_system32Path_str.begin(), m_system32Path_str.end(), m_system32Path_str.begin(), tolower);
 }
 
+bool pesieve::IATScanner::isInSystemDir(const std::string &moduleName)
+{
+	std::string dirName = peconv::get_directory_name(moduleName);
+	std::transform(dirName.begin(), dirName.end(), dirName.begin(), tolower);
+
+	if (dirName == m_system32Path_str || dirName == m_sysWow64Path_str) {
+		return true;
+	}
+	return false;
+}
+
 bool pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATScanReport &report)
 {
 	std::map<ULONGLONG, ULONGLONG>::iterator itr;
@@ -387,14 +430,9 @@ bool pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATS
 		// filter out hooks leading to system DLLs
 		char moduleName[MAX_PATH] = { 0 };
 		if (GetModuleFileNameExA(this->processHandle, (HMODULE)module_start, moduleName, sizeof(moduleName))) {
-			std::string dirName = peconv::get_directory_name(moduleName);
-			std::transform(dirName.begin(), dirName.end(), dirName.begin(), tolower);
+			if (isInSystemDir(moduleName)) {
 #ifdef _DEBUG
-			std::cout << "Module dir name: " << dirName << "\n";
-#endif
-			if (dirName == m_system32Path_str || dirName == m_sysWow64Path_str) {
-#ifdef _DEBUG
-				std::cout << "Skipped: " << dirName << "\n";
+				std::cout << "Skipped: " << moduleName << "\n";
 #endif
 				continue;
 			}
