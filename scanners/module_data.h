@@ -108,6 +108,7 @@ namespace pesieve {
 	protected:
 		bool _loadOriginal(bool disableFSredir);
 		bool loadModuleName();
+		bool autoswichIfWow64Mapping();
 		bool isDotNetManagedCode();
 
 		bool is_dot_net;

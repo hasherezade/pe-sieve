@@ -21,6 +21,9 @@ bool pesieve::ModuleData::loadModuleName()
 		return false;
 	}
 	memcpy(this->szModName, my_name.c_str(), my_name.length());
+
+	// autoswitch the path to Wow64 mode if needed:
+	autoswichIfWow64Mapping();
 	return true;
 }
 
@@ -165,6 +168,28 @@ bool pesieve::ModuleData::relocateToBase(ULONGLONG new_base)
 	return true;
 }
 
+
+bool pesieve::ModuleData::autoswichIfWow64Mapping()
+{
+	std::string mapped_name = pesieve::RemoteModuleData::getMappedName(processHandle, this->moduleHandle);
+	std::string module_name = this->szModName;
+	bool is_same = (to_lowercase(mapped_name) == to_lowercase(module_name));
+
+	size_t mod_name_len = module_name.length();
+	if (!is_same && mod_name_len > 0) {
+		//check Wow64
+		char path_copy[MAX_PATH] = { 0 };
+		memcpy(path_copy, this->szModName, mod_name_len);
+		convert_to_wow64_path(path_copy);
+		is_same = (to_lowercase(mapped_name) == to_lowercase(path_copy));
+		if (is_same) {
+			this->switchToWow64Path();
+			return true;
+		}
+	}
+	return false;
+}
+
 bool pesieve::ModuleData::switchToWow64Path()
 {
 	BOOL isWow64 = FALSE;
@@ -191,8 +216,10 @@ bool pesieve::ModuleData::reloadWow64()
 		original_module = peconv::load_pe_module(szModName, original_size, false, false);
 	}
 	if (!original_module) {
+		std::cout << "[-] Failed to reload: " << szModName << "\n";
 		return false;
 	}
+	std::cout << "[+] Reloaded: " << szModName << "\n";
 	return true;
 }
 
