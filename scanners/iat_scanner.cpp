@@ -212,16 +212,13 @@ FIELD_T get_thunk_at_rva(BYTE *mod_buf, size_t mod_size, DWORD rva)
 	return (*field_ptr);
 }
 
+
 bool pesieve::IATScanner::isValidFuncFilled(const peconv::ExportedFunc &possibleFunc, const peconv::ExportedFunc &definedFunc)
 {
-	const std::string possible_short = peconv::get_dll_shortname(possibleFunc.libName);
-	const std::string defined_short = peconv::get_dll_shortname(definedFunc.libName);
+	const std::string possible_short = peconv::remove_extension(peconv::get_file_name(possibleFunc.libName));
+	const std::string defined_short = peconv::remove_extension(peconv::get_file_name(definedFunc.libName));
 
 	if (!peconv::ExportedFunc::isTheSameFuncName(possibleFunc, definedFunc)) {
-		if (possible_short == "ntdll" && (defined_short.find("api-ms-") != std::string::npos)) {
-			//std::cout << "# Common redir, ntdll: [" << possibleFunc.funcName << "] vs  [" << definedFunc.funcName << "] ( " <<  defined_short <<" )\n";
-			return true;
-		}
 		return false;
 	}
 
@@ -230,12 +227,12 @@ bool pesieve::IATScanner::isValidFuncFilled(const peconv::ExportedFunc &possible
 	}
 	std::string fullName = exportsMap.get_dll_path(possibleFunc.libName);
 	if (isInSystemDir(fullName)) {
-		//std::cout << "^ Common redir, full: " << fullName << "\n";
+		//std::cout << "^ Common redir, full: " << fullName << " dFunc: " << definedFunc.toString() << "\n";
 		//common redirection
 		return true;
 	}
 
-	std::cout << "!! Names mismatch: [" << defined_short << "] vs [" << possible_short << "] , full: "  << fullName << "\n";
+	//std::cout << "!! Names mismatch: [" << defined_short << "] vs [" << possible_short << "] , full: "  << fullName << "\n";
 	return false;
 }
 
@@ -291,9 +288,9 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 			}
 
 			not_covered.insert(thunk_rva, filled_val);
-//#ifdef _DEBUG
+#ifdef _DEBUG
 			std::cout << "Function not covered: " << std::hex << thunk_rva << " [" << dShortName << "] func: [" << func->funcName << "] val: " << std::hex << filled_val << "\n";
-//#endif
+#endif
 			continue;
 		}
 
@@ -310,14 +307,14 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 
 		if (!is_covered) {
 			not_covered.insert(thunk_rva, filled_val);
-//#ifdef _DEBUG
+#ifdef _DEBUG
 			std::cout << "Mismatch at RVA: " << std::hex << thunk_rva << " " << func->libName<< " func: " << func->toString() << "\n";
 
 			for (cItr = possibleExports->begin(); cItr != possibleExports->end(); ++cItr) {
 				const peconv::ExportedFunc possibleFunc = *cItr;
 				std::cout << "\t proposed: " << possibleFunc.libName << " : " << possibleFunc.toString() << "\n";
 			}
-//#endif
+#endif
 		}
 	}
 	return true;
