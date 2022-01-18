@@ -21,7 +21,7 @@ var searchData=
   ['startrva_18',['startRva',['../classpesieve_1_1_patch_list_1_1_patch.html#a7b946d650da353c56690ff150eb4a82c',1,'pesieve::PatchList::Patch']]],
   ['status_19',['status',['../classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68',1,'pesieve::ModuleScanReport']]],
   ['stop_5fva_20',['stop_va',['../classpesieve_1_1_mem_page_data.html#a7c151bd819b2444eb7e93c92fcd4f8ce',1,'pesieve::MemPageData']]],
-  ['storedfunc_21',['storedFunc',['../classpesieve_1_1_import_info_callback.html#a44096efcd24b9704d4f7ab0b5e8ad63c',1,'pesieve::ImportInfoCallback::storedFunc()'],['../classpesieve_1_1_i_a_t_scan_report.html#aced6746baed17a2b1faee5ae4599e6fd',1,'pesieve::IATScanReport::storedFunc()']]],
+  ['storedfunc_21',['storedFunc',['../classpesieve_1_1_i_a_t_scan_report.html#a7a631d5a508e52d214764f5d25490b2e',1,'pesieve::IATScanReport']]],
   ['suspicious_22',['suspicious',['../structt__report.html#a822d97e839761f50f8d0377d139cbf2f',1,'t_report']]],
   ['szmodname_23',['szModName',['../classpesieve_1_1_module_data.html#ab7463bd2db1ce6343e1be66600c48cd8',1,'pesieve::ModuleData']]]
 ];

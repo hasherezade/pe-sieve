@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['savenotrecovered_0',['saveNotRecovered',['../classpesieve_1_1_i_a_t_scan_report.html#a38b39af3d39fa546ffb66143ed2c9138',1,'pesieve::IATScanReport']]],
+  ['savenotrecovered_0',['saveNotRecovered',['../classpesieve_1_1_i_a_t_scan_report.html#a74b0f4aa345e576b2493d183e91b72a8',1,'pesieve::IATScanReport']]],
   ['scan_5fand_5fdump_1',['scan_and_dump',['../namespacepesieve.html#ad71d3d82e248bd37f2becabe0ca00f55',1,'pesieve']]],
   ['scan_5ferror_2',['SCAN_ERROR',['../namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a7d8673b01da918587ac8390c2efc6a6a',1,'pesieve']]],
   ['scan_5fnot_5fsuspicious_3',['SCAN_NOT_SUSPICIOUS',['../namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a16ceb9869161945d59ad00ce88bd8000',1,'pesieve']]],
@@ -72,7 +72,7 @@ var searchData=
   ['startrva_69',['startRva',['../classpesieve_1_1_patch_list_1_1_patch.html#a7b946d650da353c56690ff150eb4a82c',1,'pesieve::PatchList::Patch']]],
   ['status_70',['status',['../classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68',1,'pesieve::ModuleScanReport']]],
   ['stop_5fva_71',['stop_va',['../classpesieve_1_1_mem_page_data.html#a7c151bd819b2444eb7e93c92fcd4f8ce',1,'pesieve::MemPageData']]],
-  ['storedfunc_72',['storedFunc',['../classpesieve_1_1_i_a_t_scan_report.html#aced6746baed17a2b1faee5ae4599e6fd',1,'pesieve::IATScanReport::storedFunc()'],['../classpesieve_1_1_import_info_callback.html#a44096efcd24b9704d4f7ab0b5e8ad63c',1,'pesieve::ImportInfoCallback::storedFunc()']]],
+  ['storedfunc_72',['storedFunc',['../classpesieve_1_1_i_a_t_scan_report.html#a7a631d5a508e52d214764f5d25490b2e',1,'pesieve::IATScanReport']]],
   ['strings_5futil_2ecpp_73',['strings_util.cpp',['../strings__util_8cpp.html',1,'']]],
   ['strings_5futil_2eh_74',['strings_util.h',['../strings__util_8h.html',1,'']]],
   ['strip_5fprefix_75',['strip_prefix',['../namespacepesieve_1_1util.html#a2d19e21063f990f24ceea5c64d452cfc',1,'pesieve::util']]],

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['savenotrecovered_0',['saveNotRecovered',['../classpesieve_1_1_i_a_t_scan_report.html#a38b39af3d39fa546ffb66143ed2c9138',1,'pesieve::IATScanReport']]],
+  ['savenotrecovered_0',['saveNotRecovered',['../classpesieve_1_1_i_a_t_scan_report.html#a74b0f4aa345e576b2493d183e91b72a8',1,'pesieve::IATScanReport']]],
   ['scan_5fand_5fdump_1',['scan_and_dump',['../namespacepesieve.html#ad71d3d82e248bd37f2becabe0ca00f55',1,'pesieve']]],
   ['scan_5freport_5fto_5fjson_2',['scan_report_to_json',['../namespacepesieve.html#ac15c23cae68ffb0a95a1fb1085a140ef',1,'pesieve']]],
   ['scan_5freport_5fto_5fstring_3',['scan_report_to_string',['../namespacepesieve.html#a22be478637fe6ab08135f946a1a85aac',1,'pesieve']]],
