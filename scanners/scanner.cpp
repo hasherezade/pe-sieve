@@ -353,7 +353,10 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 	if (modules_count == 0) {
 		return 0;
 	}
-
+	if (!args.quiet) {
+		std::cout << "Scanning for IAT hooks: " << modules_count << " modules." << std::endl;
+	}
+	ULONGLONG start_tick = GetTickCount64();
 	size_t counter = 0;
 	for (counter = 0; counter < modules_count; counter++) {
 		if (processHandle == nullptr) break;
@@ -379,6 +382,10 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 		if (is_iat_patched == SCAN_ERROR) {
 			continue;
 		}
+	}
+	if (!args.quiet) {
+		ULONGLONG total_time = GetTickCount64() - start_tick;
+		std::cout << "[*] IATs scanned in " << std::dec << total_time << " ms" << std::endl;
 	}
 	return counter;
 }

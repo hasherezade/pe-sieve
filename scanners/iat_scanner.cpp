@@ -255,8 +255,10 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 		const std::set<peconv::ExportedFunc>* possibleExports = exportsMap.find_exports_by_va(filled_val);
 		// no export at this thunk:
 		if (!possibleExports || possibleExports->size() == 0) {
-			std::cout << "Function not covered: " << std::hex << thunk_rva << " " << func->libName << " func: " << func->toString() << " val: " << std::hex << filled_val << "\n";
 			not_covered.insert(thunk_rva, filled_val);
+#ifdef _DEBUG
+			std::cout << "Function not covered: " << std::hex << thunk_rva << " " << func->libName << " func: " << func->toString() << " val: " << std::hex << filled_val << "\n";
+#endif
 			continue;
 		}
 
@@ -272,18 +274,17 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 		}
 
 		if (!is_covered) {
+			not_covered.insert(thunk_rva, filled_val);
+#ifdef _DEBUG
 			std::cout << "Mismatch at RVA: " << std::hex << thunk_rva << " " << func->libName<< " func: " << func->toString() << "\n";
 
 			for (cItr = possibleExports->begin(); cItr != possibleExports->end(); ++cItr) {
 				const peconv::ExportedFunc possibleFunc = *cItr;
 				std::cout << "\t proposed: " << possibleFunc.libName << " : " << possibleFunc.toString() << "\n";
 			}
-			not_covered.insert(thunk_rva, filled_val);
+#endif
 		}
-		
 	}
-
-    std::cout << "Total not covered: " << not_covered.count() << "\n";
 	return true;
 }
 
@@ -311,15 +312,18 @@ IATScanReport* pesieve::IATScanner::scanRemote()
 	}
 	peconv::ImpsNotCovered not_covered;
 
-	// first try to find by the Import Table in the original file:
-	scanByOriginalTable(not_covered);
-
-	// then try to find by coverage:
-	//peconv::fix_imports(vBuf, vBufSize, exportsMap, &not_covered);
-
 	t_scan_status status = SCAN_NOT_SUSPICIOUS;
+
+	// first try to find by the Import Table in the original file:
+	if (!scanByOriginalTable(not_covered)) {
+		// IAT scan failed:
+		status = SCAN_ERROR;
+	}
+
 	if (not_covered.count() > 0) {
-		std::cout << moduleData.szModName << " not covered: " << not_covered.count() << "\n";
+#ifdef _DEBUG
+		std::cout << "[*] IAT: " << moduleData.szModName << " hooked: " << not_covered.count() << "\n";
+#endif
 		status = SCAN_SUSPICIOUS;
 	}
 	
