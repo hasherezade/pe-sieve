@@ -166,8 +166,8 @@ FIELD_T get_thunk_at_rva(BYTE *mod_buf, size_t mod_size, DWORD rva)
 
 bool pesieve::IATScanner::isValidFuncFilled(const peconv::ExportedFunc &possibleFunc, const peconv::ExportedFunc &definedFunc)
 {
-	const std::string possible_short = peconv::remove_extension(peconv::get_file_name(possibleFunc.libName));
-	const std::string defined_short = peconv::remove_extension(peconv::get_file_name(definedFunc.libName));
+	const std::string possible_short = peconv::remove_module_extension(peconv::get_file_name(possibleFunc.libName));
+	const std::string defined_short = peconv::remove_module_extension(peconv::get_file_name(definedFunc.libName));
 
 	if (!peconv::ExportedFunc::isTheSameFuncName(possibleFunc, definedFunc)) {
 		return false;
