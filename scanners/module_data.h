@@ -152,7 +152,7 @@ namespace pesieve {
 
 		bool is64bit()
 		{
-			if (!isHdrReady) return 0;
+			if (!isHdrReady) return false;
 			return peconv::is64bit(headerBuffer);
 		}
 
