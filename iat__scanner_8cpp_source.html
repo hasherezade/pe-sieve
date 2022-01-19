@@ -239,8 +239,8 @@ $(function() {
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="keywordtype">bool</span> pesieve::IATScanner::isValidFuncFilled(<span class="keyword">const</span> peconv::ExportedFunc &amp;possibleFunc, <span class="keyword">const</span> peconv::ExportedFunc &amp;definedFunc)</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>{</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keyword">const</span> std::string possible_short = peconv::remove_extension(peconv::get_file_name(possibleFunc.libName));</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="keyword">const</span> std::string defined_short = peconv::remove_extension(peconv::get_file_name(definedFunc.libName));</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keyword">const</span> std::string possible_short = peconv::remove_module_extension(peconv::get_file_name(possibleFunc.libName));</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="keyword">const</span> std::string defined_short = peconv::remove_module_extension(peconv::get_file_name(definedFunc.libName));</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="keywordflow">if</span> (!peconv::ExportedFunc::isTheSameFuncName(possibleFunc, definedFunc)) {</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
