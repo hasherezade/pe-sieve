@@ -78,7 +78,7 @@ namespace pesieve {
 
 	private:
 		bool scanByOriginalTable(peconv::ImpsNotCovered &not_covered);
-		bool isValidFuncFilled(const peconv::ExportedFunc &possibleFunc, const peconv::ExportedFunc &definedFunc);
+		bool isValidFuncFilled(ULONGLONG filled_val, const peconv::ExportedFunc &definedFunc, const peconv::ExportedFunc& possibleFunc);
 
 		void initExcludedPaths();
 		bool isInSystemDir(const std::string &moduleName);

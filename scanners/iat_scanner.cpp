@@ -164,7 +164,7 @@ FIELD_T get_thunk_at_rva(BYTE *mod_buf, size_t mod_size, DWORD rva)
 }
 
 
-bool pesieve::IATScanner::isValidFuncFilled(const peconv::ExportedFunc &possibleFunc, const peconv::ExportedFunc &definedFunc)
+bool pesieve::IATScanner::isValidFuncFilled(ULONGLONG filled_val, const peconv::ExportedFunc& definedFunc, const peconv::ExportedFunc &possibleFunc)
 {
 	const std::string possible_short = peconv::remove_module_extension(peconv::get_file_name(possibleFunc.libName));
 	const std::string defined_short = peconv::remove_module_extension(peconv::get_file_name(definedFunc.libName));
@@ -173,17 +173,19 @@ bool pesieve::IATScanner::isValidFuncFilled(const peconv::ExportedFunc &possible
 		return false;
 	}
 
-	if (defined_short.compare(possible_short) == 0) {
+	if (defined_short == possible_short) {
 		return true;
 	}
-	std::string fullName = exportsMap.get_dll_path(possibleFunc.libName);
+	ULONGLONG dll_base = this->exportsMap.find_dll_base_by_func_va(filled_val);
+	if (!dll_base) {
+		return false; //could not find a DLL by this function value
+	}
+	// check for a common redirection to another system DLL:
+	const std::string fullName = exportsMap.get_dll_path(dll_base);
+	//std::cout << std::hex << filled_val << " : " << dll_base << " : " << fullName << " : " << definedFunc.toString() << " : " << defined_short  << " vs " << possible_short << "\n";
 	if (isInSystemDir(fullName)) {
-		//std::cout << "^ Common redir, full: " << fullName << " dFunc: " << definedFunc.toString() << "\n";
-		//common redirection
 		return true;
 	}
-
-	//std::cout << "!! Names mismatch: [" << defined_short << "] vs [" << possible_short << "] , full: "  << fullName << "\n";
 	return false;
 }
 
@@ -222,8 +224,8 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 		else {
 			filled_val = get_thunk_at_rva<DWORD>(remoteModData.imgBuffer, remoteModData.imgBufferSize, thunk_rva);
 		}
-		peconv::ExportedFunc* func = itr->second;
-		if (!func) {
+		peconv::ExportedFunc* defined_func = itr->second;
+		if (!defined_func) {
 			// cannot retrieve the origial import
 			continue;
 		}
@@ -233,14 +235,14 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 		if (!possibleExports || possibleExports->size() == 0) {
 
 			//filter out .NET: mscoree._CorExeMain
-			const std::string dShortName = peconv::get_dll_shortname(func->libName);
-			if ( dShortName.compare("mscoree") == 0 && (func->funcName.compare("_CorExeMain") || func->funcName.compare("_CorDllMain")) ) {
+			const std::string dShortName = peconv::get_dll_shortname(defined_func->libName);
+			if ( dShortName.compare("mscoree") == 0 && (defined_func->funcName.compare("_CorExeMain") || defined_func->funcName.compare("_CorDllMain")) ) {
 				continue; //this is normal, skip it
 			}
 
 			not_covered.insert(thunk_rva, filled_val);
 #ifdef _DEBUG
-			std::cout << "Function not covered: " << std::hex << thunk_rva << " [" << dShortName << "] func: [" << func->funcName << "] val: " << std::hex << filled_val << "\n";
+			std::cout << "Function not covered: " << std::hex << thunk_rva << " [" << dShortName << "] func: [" << defined_func->funcName << "] val: " << std::hex << filled_val << "\n";
 #endif
 			continue;
 		}
@@ -250,7 +252,7 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 		std::set<peconv::ExportedFunc>::const_iterator cItr;
 		for (cItr = possibleExports->begin(); cItr != possibleExports->end(); ++cItr) {
 			const peconv::ExportedFunc possibleFunc = *cItr;
-			if (isValidFuncFilled(possibleFunc, *func)){
+			if (isValidFuncFilled(filled_val, *defined_func, possibleFunc)){
 				is_covered = true;
 				break;
 			}
@@ -379,14 +381,12 @@ bool pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATS
 			}
 		}
 		// filter out hooks leading to system DLLs
-		char moduleName[MAX_PATH] = { 0 };
-		if (GetModuleFileNameExA(this->processHandle, (HMODULE)module_start, moduleName, sizeof(moduleName))) {
-			if (isInSystemDir(moduleName)) {
+		std::string moduleName = this->exportsMap.get_dll_path(module_start);
+		if (isInSystemDir(moduleName)) {
 #ifdef _DEBUG
-				std::cout << "Skipped: " << moduleName << "\n";
+			std::cout << "Skipped: " << moduleName << "\n";
 #endif
-				continue;
-			}
+			continue;
 		}
 		// insert hooks leading to non-system modules:
 		report.notCovered.insert(thunk, addr);
