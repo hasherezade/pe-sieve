@@ -261,7 +261,7 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 		if (!is_covered) {
 			not_covered.insert(thunk_rva, filled_val);
 #ifdef _DEBUG
-			std::cout << "Mismatch at RVA: " << std::hex << thunk_rva << " " << func->libName<< " func: " << func->toString() << "\n";
+			std::cout << "Mismatch at RVA: " << std::hex << thunk_rva << " " << defined_func->libName<< " func: " << defined_func->toString() << "\n";
 
 			for (cItr = possibleExports->begin(); cItr != possibleExports->end(); ++cItr) {
 				const peconv::ExportedFunc possibleFunc = *cItr;
