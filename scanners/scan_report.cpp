@@ -108,6 +108,23 @@ void pesieve::ProcessScanReport::appendToType(ModuleScanReport *report)
 	this->reportsByType[type].insert(report);
 }
 
+bool pesieve::ProcessScanReport::isModuleReplaced(HMODULE module_base)
+{
+	if (!hasModule((ULONGLONG)module_base)) {
+		return false;
+	}
+	std::set<ModuleScanReport*>::const_iterator itr;
+	for (itr = reportsByType[REPORT_HEADERS_SCAN].begin(); itr != reportsByType[REPORT_HEADERS_SCAN].end(); ++itr) {
+		HeadersScanReport* report = dynamic_cast<HeadersScanReport*>(*itr);
+		if (report && report->module == module_base) {
+			if (report->isHdrReplaced()) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 size_t pesieve::ProcessScanReport::countHdrsReplaced() const
 {
 	size_t replaced = 0;

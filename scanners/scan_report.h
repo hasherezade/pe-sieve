@@ -86,6 +86,8 @@ namespace pesieve {
 			return true;
 		}
 
+		bool isModuleReplaced(HMODULE module_base);
+
 		ScannedModule* getModuleContaining(ULONGLONG field_addr, size_t field_size = 0) const
 		{
 			return modulesInfo.findModuleContaining(field_addr, field_size);
