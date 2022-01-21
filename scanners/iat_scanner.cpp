@@ -163,18 +163,13 @@ FIELD_T get_thunk_at_rva(BYTE *mod_buf, size_t mod_size, DWORD rva)
 	return (*field_ptr);
 }
 
-
 bool pesieve::IATScanner::isValidFuncFilled(ULONGLONG filled_val, const peconv::ExportedFunc& definedFunc, const peconv::ExportedFunc &possibleFunc)
 {
-	const std::string possible_short = peconv::remove_module_extension(peconv::get_file_name(possibleFunc.libName));
-	const std::string defined_short = peconv::remove_module_extension(peconv::get_file_name(definedFunc.libName));
-
 	if (!peconv::ExportedFunc::isTheSameFuncName(possibleFunc, definedFunc)) {
 		return false;
 	}
-
-	if (defined_short == possible_short) {
-		return true;
+	if (!peconv::ExportedFunc::isTheSameDllName(possibleFunc, definedFunc)) {
+		return false;
 	}
 	ULONGLONG dll_base = this->exportsMap.find_dll_base_by_func_va(filled_val);
 	if (!dll_base) {
