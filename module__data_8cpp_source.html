@@ -343,142 +343,161 @@ $(function() {
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    <span class="keywordflow">return</span> expanded;</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>}</div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#a609e79972a0b37cdfb72a4be35f838c0">  273</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a609e79972a0b37cdfb72a4be35f838c0">pesieve::RemoteModuleData::init</a>()</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#a4a7d767d81581e48f429f57286462406">  273</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a4a7d767d81581e48f429f57286462406">pesieve::RemoteModuleData::loadImportsList</a>(peconv::ImportsCollection&amp; collection)</div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>{</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    this-&gt;isHdrReady = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    <span class="keywordflow">if</span> (!loadHeader()) {</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    }</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    this-&gt;isHdrReady = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>}</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#a2d851432acd3771fea6a89ac0a3b78c5">  283</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a2d851432acd3771fea6a89ac0a3b78c5">pesieve::RemoteModuleData::_loadFullImage</a>(<span class="keywordtype">size_t</span> mod_size)</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>{</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    <span class="keywordflow">if</span> (this-&gt;isFullImageLoaded()) {</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    }</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    this-&gt;imgBuffer = peconv::alloc_pe_buffer(mod_size, PAGE_READWRITE);</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    this-&gt;imgBufferSize = peconv::read_remote_pe(this-&gt;processHandle, (PBYTE)this-&gt;modBaseAddr, mod_size, this-&gt;imgBuffer, mod_size);</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    <span class="keywordflow">if</span> (this-&gt;imgBufferSize == mod_size) {</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    }</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    this-&gt;freeFullImage();</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>}</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#aae5bff1125a636a7faf7052ae32169e4">  297</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#aae5bff1125a636a7faf7052ae32169e4">pesieve::RemoteModuleData::loadFullImage</a>()</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>{</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    <span class="keywordflow">if</span> (this-&gt;isFullImageLoaded()) {</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    }</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    <span class="keywordtype">size_t</span> mod_size = this-&gt;getHdrImageSize();</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    <span class="keywordflow">if</span> (_loadFullImage(mod_size)) {</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    }</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    <span class="comment">//try again with calculated size:</span></div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    mod_size = calcImgSize();</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    <span class="keywordflow">return</span> _loadFullImage(mod_size);</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>}</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span> </div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#a457911397fddaf4d660cf8330a00bb20">  311</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a457911397fddaf4d660cf8330a00bb20">pesieve::RemoteModuleData::loadHeader</a>()</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>{</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    <span class="keywordflow">if</span> (!peconv::read_remote_pe_header(this-&gt;processHandle, (PBYTE)this-&gt;modBaseAddr, this-&gt;headerBuffer, peconv::MAX_HEADER_SIZE, this-&gt;isReflection)) {</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>    }</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>}</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span> </div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#acf38553702d88269f9d753cc5e22d111">  319</a></span>ULONGLONG <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#acf38553702d88269f9d753cc5e22d111">pesieve::RemoteModuleData::getRemoteSectionVa</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> section_num)</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>{</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>    <span class="keywordflow">if</span> (!this-&gt;isInitialized()) <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(headerBuffer, peconv::MAX_HEADER_SIZE, section_num);</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    <span class="keywordflow">if</span> ((section_hdr == NULL) || section_hdr-&gt;SizeOfRawData == 0) {</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>        <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    }</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>    <span class="keywordflow">return</span> (ULONGLONG) modBaseAddr + section_hdr-&gt;VirtualAddress;</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    <span class="keywordflow">if</span> (!isFullImageLoaded()) {</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    }</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    <span class="keywordflow">if</span> (!peconv::has_valid_import_table(imgBuffer, imgBufferSize)) {</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        <span class="comment">// No import table</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    }</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <span class="keywordflow">if</span> (!peconv::collect_imports(imgBuffer, imgBufferSize, collection)) {</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        <span class="comment">// Could not collect imports</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    }</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    <span class="keywordflow">if</span> (collection.size()) {</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    }</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>}</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#a609e79972a0b37cdfb72a4be35f838c0">  292</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a609e79972a0b37cdfb72a4be35f838c0">pesieve::RemoteModuleData::init</a>()</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>{</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    this-&gt;isHdrReady = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    <span class="keywordflow">if</span> (!loadHeader()) {</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    }</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    this-&gt;isHdrReady = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>}</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#a2d851432acd3771fea6a89ac0a3b78c5">  302</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a2d851432acd3771fea6a89ac0a3b78c5">pesieve::RemoteModuleData::_loadFullImage</a>(<span class="keywordtype">size_t</span> mod_size)</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>{</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    <span class="keywordflow">if</span> (this-&gt;isFullImageLoaded()) {</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    }</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    this-&gt;imgBuffer = peconv::alloc_pe_buffer(mod_size, PAGE_READWRITE);</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    this-&gt;imgBufferSize = peconv::read_remote_pe(this-&gt;processHandle, (PBYTE)this-&gt;modBaseAddr, mod_size, this-&gt;imgBuffer, mod_size);</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    <span class="keywordflow">if</span> (this-&gt;imgBufferSize == mod_size) {</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    }</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    this-&gt;freeFullImage();</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>}</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span> </div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#aae5bff1125a636a7faf7052ae32169e4">  316</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#aae5bff1125a636a7faf7052ae32169e4">pesieve::RemoteModuleData::loadFullImage</a>()</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>{</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>    <span class="keywordflow">if</span> (this-&gt;isFullImageLoaded()) {</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>    }</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>    <span class="keywordtype">size_t</span> mod_size = this-&gt;getHdrImageSize();</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>    <span class="keywordflow">if</span> (_loadFullImage(mod_size)) {</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    }</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>    <span class="comment">//try again with calculated size:</span></div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    mod_size = calcImgSize();</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>    <span class="keywordflow">return</span> _loadFullImage(mod_size);</div>
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>}</div>
 <div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#ad9f27c0872806491dbcb729d27e04bce">  330</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#ad9f27c0872806491dbcb729d27e04bce">pesieve::RemoteModuleData::isSectionEntry</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> section_number)</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#a457911397fddaf4d660cf8330a00bb20">  330</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a457911397fddaf4d660cf8330a00bb20">pesieve::RemoteModuleData::loadHeader</a>()</div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>{</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    <span class="keywordflow">if</span> (!this-&gt;isInitialized()) {</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    <span class="keywordflow">if</span> (!peconv::read_remote_pe_header(this-&gt;processHandle, (PBYTE)this-&gt;modBaseAddr, this-&gt;headerBuffer, peconv::MAX_HEADER_SIZE, this-&gt;isReflection)) {</div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>    }</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>    <span class="keyword">const</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> ep_va = peconv::get_entry_point_rva(this-&gt;headerBuffer);</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    <span class="keywordflow">if</span> (ep_va == 0) {</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    }</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>    PIMAGE_SECTION_HEADER sec_hdr = peconv::get_section_hdr(this-&gt;headerBuffer, peconv::MAX_HEADER_SIZE, section_number);</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    <span class="keywordflow">if</span> (!sec_hdr) {</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>    }</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>    <span class="keywordflow">if</span> (ep_va &gt;= sec_hdr-&gt;VirtualAddress </div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>        &amp;&amp; ep_va &lt; (sec_hdr-&gt;VirtualAddress + sec_hdr-&gt;Misc.VirtualSize))</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    {</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    }</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>}</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#a98f87651ef4162967b54bb662bd8e0b7">  351</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a98f87651ef4162967b54bb662bd8e0b7">pesieve::RemoteModuleData::isSectionExecutable</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> section_number, <span class="keywordtype">bool</span> allow_data, <span class="keywordtype">bool</span> allow_inaccessible)</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>{</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    <span class="comment">//for special cases when the section is not set executable in headers, but in reality is executable...</span></div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>    <span class="comment">//get the section header from the module:</span></div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    ULONGLONG start_va = getRemoteSectionVa(section_number);</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    <span class="keywordflow">if</span> (start_va == NULL) {</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    }</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    MEMORY_BASIC_INFORMATION page_info = { 0 };</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>    </div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID) start_va, &amp;page_info, <span class="keyword">sizeof</span>(page_info));</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    <span class="keywordflow">if</span> (out != <span class="keyword">sizeof</span>(page_info)) {</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Cannot retrieve remote section info&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>    }</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    std::cout &lt;&lt; std::hex &lt;&lt; <span class="stringliteral">&quot;Sec: &quot;</span> &lt;&lt; section_number &lt;&lt; <span class="stringliteral">&quot; VA: &quot;</span> &lt;&lt; start_va &lt;&lt; <span class="stringliteral">&quot; t: &quot;</span> &lt;&lt; page_info.Type &lt;&lt; <span class="stringliteral">&quot; p: &quot;</span> &lt;&lt; page_info.Protect &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span> </div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespacepesieve_1_1util.html#ab5a500e51ff539294a3c71f6b95aa65b">pesieve::util::is_executable</a>(page_info.Type, page_info.Protect)) {</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>        <span class="comment">//std::cout &lt;&lt; std::hex &lt;&lt; &quot;p1 Sec: &quot; &lt;&lt; section_number &lt;&lt; &quot; VA: &quot; &lt;&lt; start_va &lt;&lt; &quot; t: &quot; &lt;&lt; page_info.Type &lt;&lt; &quot; p: &quot; &lt;&lt; page_info.Protect &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    }</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    <span class="keywordflow">if</span> (allow_data) {</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>        <span class="keywordflow">if</span> (<a class="code hl_function" href="namespacepesieve_1_1util.html#a57e9c1266c247784669f5ea0191e086d">pesieve::util::is_readable</a>(page_info.Type, page_info.Protect)) {</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>            <span class="comment">//std::cout &lt;&lt; std::hex &lt;&lt; &quot;p1 Sec: &quot; &lt;&lt; section_number &lt;&lt; &quot; VA: &quot; &lt;&lt; start_va &lt;&lt; &quot; t: &quot; &lt;&lt; page_info.Type &lt;&lt; &quot; p: &quot; &lt;&lt; page_info.Protect &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>        }</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    }</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>    <span class="keywordflow">if</span> (allow_inaccessible) {</div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>        <span class="keywordflow">if</span> (<a class="code hl_function" href="namespacepesieve_1_1util.html#a9bc0e707ae1cceda1678bc269f2870ea">pesieve::util::is_normal_inaccessible</a>(page_info.State, page_info.Type, page_info.Protect)) {</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>            <span class="comment">//std::cout &lt;&lt; &quot;[&quot; &lt;&lt; section_number &lt;&lt; &quot;] Inaccessible section found!\n&quot;;</span></div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>        }</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>    }</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>}</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>}</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#acf38553702d88269f9d753cc5e22d111">  338</a></span>ULONGLONG <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#acf38553702d88269f9d753cc5e22d111">pesieve::RemoteModuleData::getRemoteSectionVa</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> section_num)</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>{</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    <span class="keywordflow">if</span> (!this-&gt;isInitialized()) <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span> </div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>    PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(headerBuffer, peconv::MAX_HEADER_SIZE, section_num);</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>    <span class="keywordflow">if</span> ((section_hdr == NULL) || section_hdr-&gt;SizeOfRawData == 0) {</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>        <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    }</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="keywordflow">return</span> (ULONGLONG) modBaseAddr + section_hdr-&gt;VirtualAddress;</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>}</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#ad9f27c0872806491dbcb729d27e04bce">  349</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#ad9f27c0872806491dbcb729d27e04bce">pesieve::RemoteModuleData::isSectionEntry</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> section_number)</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>{</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    <span class="keywordflow">if</span> (!this-&gt;isInitialized()) {</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>    }</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>    <span class="keyword">const</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> ep_va = peconv::get_entry_point_rva(this-&gt;headerBuffer);</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    <span class="keywordflow">if</span> (ep_va == 0) {</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>    }</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    PIMAGE_SECTION_HEADER sec_hdr = peconv::get_section_hdr(this-&gt;headerBuffer, peconv::MAX_HEADER_SIZE, section_number);</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    <span class="keywordflow">if</span> (!sec_hdr) {</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    }</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    <span class="keywordflow">if</span> (ep_va &gt;= sec_hdr-&gt;VirtualAddress </div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>        &amp;&amp; ep_va &lt; (sec_hdr-&gt;VirtualAddress + sec_hdr-&gt;Misc.VirtualSize))</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>    {</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>    }</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>}</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span> </div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#a98f87651ef4162967b54bb662bd8e0b7">  370</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a98f87651ef4162967b54bb662bd8e0b7">pesieve::RemoteModuleData::isSectionExecutable</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> section_number, <span class="keywordtype">bool</span> allow_data, <span class="keywordtype">bool</span> allow_inaccessible)</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>{</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    <span class="comment">//for special cases when the section is not set executable in headers, but in reality is executable...</span></div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    <span class="comment">//get the section header from the module:</span></div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    ULONGLONG start_va = getRemoteSectionVa(section_number);</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    <span class="keywordflow">if</span> (start_va == NULL) {</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    }</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>    MEMORY_BASIC_INFORMATION page_info = { 0 };</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    </div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID) start_va, &amp;page_info, <span class="keyword">sizeof</span>(page_info));</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    <span class="keywordflow">if</span> (out != <span class="keyword">sizeof</span>(page_info)) {</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Cannot retrieve remote section info&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>    }</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    std::cout &lt;&lt; std::hex &lt;&lt; <span class="stringliteral">&quot;Sec: &quot;</span> &lt;&lt; section_number &lt;&lt; <span class="stringliteral">&quot; VA: &quot;</span> &lt;&lt; start_va &lt;&lt; <span class="stringliteral">&quot; t: &quot;</span> &lt;&lt; page_info.Type &lt;&lt; <span class="stringliteral">&quot; p: &quot;</span> &lt;&lt; page_info.Protect &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span> </div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#a6eb25ec1a932a2c35d7decd82c3436a6">  391</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a6eb25ec1a932a2c35d7decd82c3436a6">pesieve::RemoteModuleData::hasExecutableSection</a>(<span class="keywordtype">bool</span> allow_data, <span class="keywordtype">bool</span> allow_inaccessible)</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>{</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    <span class="keywordtype">size_t</span> sec_count = peconv::get_sections_count(this-&gt;headerBuffer, peconv::MAX_HEADER_SIZE);</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; sec_count ; i++) {</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>        <span class="keywordflow">if</span> (isSectionExecutable(i, allow_data, allow_inaccessible)) {</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>        }</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>    }</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>}</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span> </div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span><span class="comment">//calculate image size basing on the sizes of sections</span></div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#a2566f869e49becd1a75b1e3d11fbff10">  403</a></span><span class="keywordtype">size_t</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a2566f869e49becd1a75b1e3d11fbff10">pesieve::RemoteModuleData::calcImgSize</a>()</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>{</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    <span class="keywordflow">if</span> (!isHdrReady) <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span> </div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classpesieve_1_1_artefact_scanner.html#aeedfc8d641b324dd3eb203313731292f">ArtefactScanner::calcImgSize</a>(this-&gt;processHandle, this-&gt;modBaseAddr, this-&gt;headerBuffer, peconv::MAX_HEADER_SIZE);</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespacepesieve_1_1util.html#ab5a500e51ff539294a3c71f6b95aa65b">pesieve::util::is_executable</a>(page_info.Type, page_info.Protect)) {</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>        <span class="comment">//std::cout &lt;&lt; std::hex &lt;&lt; &quot;p1 Sec: &quot; &lt;&lt; section_number &lt;&lt; &quot; VA: &quot; &lt;&lt; start_va &lt;&lt; &quot; t: &quot; &lt;&lt; page_info.Type &lt;&lt; &quot; p: &quot; &lt;&lt; page_info.Protect &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>    }</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>    <span class="keywordflow">if</span> (allow_data) {</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>        <span class="keywordflow">if</span> (<a class="code hl_function" href="namespacepesieve_1_1util.html#a57e9c1266c247784669f5ea0191e086d">pesieve::util::is_readable</a>(page_info.Type, page_info.Protect)) {</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>            <span class="comment">//std::cout &lt;&lt; std::hex &lt;&lt; &quot;p1 Sec: &quot; &lt;&lt; section_number &lt;&lt; &quot; VA: &quot; &lt;&lt; start_va &lt;&lt; &quot; t: &quot; &lt;&lt; page_info.Type &lt;&lt; &quot; p: &quot; &lt;&lt; page_info.Protect &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>        }</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>    }</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>    <span class="keywordflow">if</span> (allow_inaccessible) {</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>        <span class="keywordflow">if</span> (<a class="code hl_function" href="namespacepesieve_1_1util.html#a9bc0e707ae1cceda1678bc269f2870ea">pesieve::util::is_normal_inaccessible</a>(page_info.State, page_info.Type, page_info.Protect)) {</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>            <span class="comment">//std::cout &lt;&lt; &quot;[&quot; &lt;&lt; section_number &lt;&lt; &quot;] Inaccessible section found!\n&quot;;</span></div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>        }</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>    }</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>}</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span> </div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#a6eb25ec1a932a2c35d7decd82c3436a6">  410</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a6eb25ec1a932a2c35d7decd82c3436a6">pesieve::RemoteModuleData::hasExecutableSection</a>(<span class="keywordtype">bool</span> allow_data, <span class="keywordtype">bool</span> allow_inaccessible)</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>{</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>    <span class="keywordtype">size_t</span> sec_count = peconv::get_sections_count(this-&gt;headerBuffer, peconv::MAX_HEADER_SIZE);</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; sec_count ; i++) {</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>        <span class="keywordflow">if</span> (isSectionExecutable(i, allow_data, allow_inaccessible)) {</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>        }</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    }</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>}</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span> </div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span><span class="comment">//calculate image size basing on the sizes of sections</span></div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#a2566f869e49becd1a75b1e3d11fbff10">  422</a></span><span class="keywordtype">size_t</span> <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a2566f869e49becd1a75b1e3d11fbff10">pesieve::RemoteModuleData::calcImgSize</a>()</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>{</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>    <span class="keywordflow">if</span> (!isHdrReady) <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span> </div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classpesieve_1_1_artefact_scanner.html#aeedfc8d641b324dd3eb203313731292f">ArtefactScanner::calcImgSize</a>(this-&gt;processHandle, this-&gt;modBaseAddr, this-&gt;headerBuffer, peconv::MAX_HEADER_SIZE);</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>}</div>
 <div class="ttc" id="aartefact__scanner_8h_html"><div class="ttname"><a href="artefact__scanner_8h.html">artefact_scanner.h</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_artefact_scanner_html_aeedfc8d641b324dd3eb203313731292f"><div class="ttname"><a href="classpesieve_1_1_artefact_scanner.html#aeedfc8d641b324dd3eb203313731292f">pesieve::ArtefactScanner::calcImgSize</a></div><div class="ttdeci">static size_t calcImgSize(HANDLE processHandle, HMODULE modBaseAddr, BYTE *headerBuffer, size_t headerBufferSize, IMAGE_SECTION_HEADER *hdr_ptr=NULL)</div><div class="ttdef"><b>Definition:</b> <a href="artefact__scanner_8cpp_source.html#l00176">artefact_scanner.cpp:176</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_module_data_html"><div class="ttname"><a href="classpesieve_1_1_module_data.html">pesieve::ModuleData</a></div><div class="ttdoc">Loads a module from the disk, corresponding to the module in the scanned process' memory.</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8h_source.html#l00015">module_data.h:15</a></div></div>
@@ -499,17 +518,18 @@ $(function() {
 <div class="ttc" id="aclasspesieve_1_1_module_data_html_afe5c22949731e3387a32ce58d241df1c"><div class="ttname"><a href="classpesieve_1_1_module_data.html#afe5c22949731e3387a32ce58d241df1c">pesieve::ModuleData::loadModuleName</a></div><div class="ttdeci">bool loadModuleName()</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00016">module_data.cpp:16</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_modules_cache_html"><div class="ttname"><a href="classpesieve_1_1_modules_cache.html">pesieve::ModulesCache</a></div><div class="ttdef"><b>Definition:</b> <a href="module__cache_8h_source.html#l00052">module_cache.h:52</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_modules_cache_html_a9d5758c091cc26b610b52ce5b6db5207"><div class="ttname"><a href="classpesieve_1_1_modules_cache.html#a9d5758c091cc26b610b52ce5b6db5207">pesieve::ModulesCache::loadCached</a></div><div class="ttdeci">BYTE * loadCached(LPSTR szModName, size_t &amp;original_size)</div><div class="ttdef"><b>Definition:</b> <a href="module__cache_8cpp_source.html#l00003">module_cache.cpp:3</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_a2566f869e49becd1a75b1e3d11fbff10"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#a2566f869e49becd1a75b1e3d11fbff10">pesieve::RemoteModuleData::calcImgSize</a></div><div class="ttdeci">size_t calcImgSize()</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00403">module_data.cpp:403</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_a2d851432acd3771fea6a89ac0a3b78c5"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#a2d851432acd3771fea6a89ac0a3b78c5">pesieve::RemoteModuleData::_loadFullImage</a></div><div class="ttdeci">bool _loadFullImage(size_t v_size)</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00283">module_data.cpp:283</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_a457911397fddaf4d660cf8330a00bb20"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#a457911397fddaf4d660cf8330a00bb20">pesieve::RemoteModuleData::loadHeader</a></div><div class="ttdeci">bool loadHeader()</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00311">module_data.cpp:311</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_a2566f869e49becd1a75b1e3d11fbff10"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#a2566f869e49becd1a75b1e3d11fbff10">pesieve::RemoteModuleData::calcImgSize</a></div><div class="ttdeci">size_t calcImgSize()</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00422">module_data.cpp:422</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_a2d851432acd3771fea6a89ac0a3b78c5"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#a2d851432acd3771fea6a89ac0a3b78c5">pesieve::RemoteModuleData::_loadFullImage</a></div><div class="ttdeci">bool _loadFullImage(size_t v_size)</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00302">module_data.cpp:302</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_a457911397fddaf4d660cf8330a00bb20"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#a457911397fddaf4d660cf8330a00bb20">pesieve::RemoteModuleData::loadHeader</a></div><div class="ttdeci">bool loadHeader()</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00330">module_data.cpp:330</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_a4a7d767d81581e48f429f57286462406"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#a4a7d767d81581e48f429f57286462406">pesieve::RemoteModuleData::loadImportsList</a></div><div class="ttdeci">bool loadImportsList(peconv::ImportsCollection &amp;collection)</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00273">module_data.cpp:273</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_a5ca5644771dbbfe8b03dc4e7694925fb"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#a5ca5644771dbbfe8b03dc4e7694925fb">pesieve::RemoteModuleData::getModuleName</a></div><div class="ttdeci">static std::string getModuleName(HANDLE _processHandle, HMODULE _modBaseAddr)</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00246">module_data.cpp:246</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_a609e79972a0b37cdfb72a4be35f838c0"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#a609e79972a0b37cdfb72a4be35f838c0">pesieve::RemoteModuleData::init</a></div><div class="ttdeci">bool init()</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00273">module_data.cpp:273</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_a6eb25ec1a932a2c35d7decd82c3436a6"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#a6eb25ec1a932a2c35d7decd82c3436a6">pesieve::RemoteModuleData::hasExecutableSection</a></div><div class="ttdeci">bool hasExecutableSection(bool allow_data, bool allow_inaccessible)</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00391">module_data.cpp:391</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_a98f87651ef4162967b54bb662bd8e0b7"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#a98f87651ef4162967b54bb662bd8e0b7">pesieve::RemoteModuleData::isSectionExecutable</a></div><div class="ttdeci">bool isSectionExecutable(const size_t section_number, bool allow_data, bool allow_inaccessible)</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00351">module_data.cpp:351</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_a609e79972a0b37cdfb72a4be35f838c0"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#a609e79972a0b37cdfb72a4be35f838c0">pesieve::RemoteModuleData::init</a></div><div class="ttdeci">bool init()</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00292">module_data.cpp:292</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_a6eb25ec1a932a2c35d7decd82c3436a6"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#a6eb25ec1a932a2c35d7decd82c3436a6">pesieve::RemoteModuleData::hasExecutableSection</a></div><div class="ttdeci">bool hasExecutableSection(bool allow_data, bool allow_inaccessible)</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00410">module_data.cpp:410</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_a98f87651ef4162967b54bb662bd8e0b7"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#a98f87651ef4162967b54bb662bd8e0b7">pesieve::RemoteModuleData::isSectionExecutable</a></div><div class="ttdeci">bool isSectionExecutable(const size_t section_number, bool allow_data, bool allow_inaccessible)</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00370">module_data.cpp:370</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_aa7907e6b996cbdbd1b185e8d91f7cbe9"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#aa7907e6b996cbdbd1b185e8d91f7cbe9">pesieve::RemoteModuleData::getMappedName</a></div><div class="ttdeci">static std::string getMappedName(HANDLE _processHandle, LPVOID _modBaseAddr)</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00260">module_data.cpp:260</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_aae5bff1125a636a7faf7052ae32169e4"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#aae5bff1125a636a7faf7052ae32169e4">pesieve::RemoteModuleData::loadFullImage</a></div><div class="ttdeci">bool loadFullImage()</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00297">module_data.cpp:297</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_acf38553702d88269f9d753cc5e22d111"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#acf38553702d88269f9d753cc5e22d111">pesieve::RemoteModuleData::getRemoteSectionVa</a></div><div class="ttdeci">ULONGLONG getRemoteSectionVa(const size_t section_num)</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00319">module_data.cpp:319</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_ad9f27c0872806491dbcb729d27e04bce"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#ad9f27c0872806491dbcb729d27e04bce">pesieve::RemoteModuleData::isSectionEntry</a></div><div class="ttdeci">bool isSectionEntry(const size_t section_number)</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00330">module_data.cpp:330</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_aae5bff1125a636a7faf7052ae32169e4"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#aae5bff1125a636a7faf7052ae32169e4">pesieve::RemoteModuleData::loadFullImage</a></div><div class="ttdeci">bool loadFullImage()</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00316">module_data.cpp:316</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_acf38553702d88269f9d753cc5e22d111"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#acf38553702d88269f9d753cc5e22d111">pesieve::RemoteModuleData::getRemoteSectionVa</a></div><div class="ttdeci">ULONGLONG getRemoteSectionVa(const size_t section_num)</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00338">module_data.cpp:338</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_remote_module_data_html_ad9f27c0872806491dbcb729d27e04bce"><div class="ttname"><a href="classpesieve_1_1_remote_module_data.html#ad9f27c0872806491dbcb729d27e04bce">pesieve::RemoteModuleData::isSectionEntry</a></div><div class="ttdeci">bool isSectionEntry(const size_t section_number)</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00349">module_data.cpp:349</a></div></div>
 <div class="ttc" id="amodule__data_8cpp_html_aa06e024667b6246c50061e3121257daa"><div class="ttname"><a href="module__data_8cpp.html#aa06e024667b6246c50061e3121257daa">cache</a></div><div class="ttdeci">pesieve::ModulesCache cache</div><div class="ttdef"><b>Definition:</b> <a href="module__data_8cpp_source.html#l00014">module_data.cpp:14</a></div></div>
 <div class="ttc" id="amodule__data_8h_html"><div class="ttname"><a href="module__data_8h.html">module_data.h</a></div></div>
 <div class="ttc" id="anamespacepesieve_1_1util_html"><div class="ttname"><a href="namespacepesieve_1_1util.html">pesieve::util</a></div><div class="ttdef"><b>Definition:</b> <a href="artefact__scanner_8cpp_source.html#l00012">artefact_scanner.cpp:12</a></div></div>

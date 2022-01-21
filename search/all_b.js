@@ -14,7 +14,7 @@ var searchData=
   ['loadedsize_11',['loadedSize',['../classpesieve_1_1_mem_page_data.html#acf57eef7b3771d5ab116e8ba4552634c',1,'pesieve::MemPageData::loadedSize()'],['../classpesieve_1_1_pe_section.html#a45e6b2d32b562e2feb8cd5bb33ac6eb2',1,'pesieve::PeSection::loadedSize()']]],
   ['loadfullimage_12',['loadFullImage',['../classpesieve_1_1_remote_module_data.html#aae5bff1125a636a7faf7052ae32169e4',1,'pesieve::RemoteModuleData']]],
   ['loadheader_13',['loadHeader',['../classpesieve_1_1_remote_module_data.html#a457911397fddaf4d660cf8330a00bb20',1,'pesieve::RemoteModuleData']]],
-  ['loadimportslist_14',['loadImportsList',['../classpesieve_1_1_module_data.html#acad74839a2978c3465c09bb93a3a2dc5',1,'pesieve::ModuleData']]],
+  ['loadimportslist_14',['loadImportsList',['../classpesieve_1_1_module_data.html#acad74839a2978c3465c09bb93a3a2dc5',1,'pesieve::ModuleData::loadImportsList()'],['../classpesieve_1_1_remote_module_data.html#a4a7d767d81581e48f429f57286462406',1,'pesieve::RemoteModuleData::loadImportsList()']]],
   ['loadimportthunks_15',['loadImportThunks',['../classpesieve_1_1_module_data.html#af0313c259e26056468c62b7b0aee5399',1,'pesieve::ModuleData']]],
   ['loadmappedname_16',['loadMappedName',['../classpesieve_1_1_mem_page_data.html#a0b0278c8ee2cd31e5d36cec1a08edeef',1,'pesieve::MemPageData']]],
   ['loadmodulename_17',['loadModuleName',['../classpesieve_1_1_module_data.html#afe5c22949731e3387a32ce58d241df1c',1,'pesieve::ModuleData::loadModuleName()'],['../classpesieve_1_1_mem_page_data.html#a683ee088e6b736f33491d54243a5b6a4',1,'pesieve::MemPageData::loadModuleName()']]],
