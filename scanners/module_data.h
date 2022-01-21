@@ -184,6 +184,7 @@ namespace pesieve {
 		bool loadFullImage();
 		bool isFullImageLoaded() { return (imgBuffer != nullptr) && (imgBufferSize != 0); }
 		ULONGLONG getRemoteSectionVa(const size_t section_num);
+		bool loadImportsList(peconv::ImportsCollection& collection);
 
 		ULONGLONG getModuleBase()
 		{

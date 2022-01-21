@@ -270,6 +270,25 @@ std::string pesieve::RemoteModuleData::getMappedName(HANDLE processHandle, LPVOI
 	return expanded;
 }
 
+bool pesieve::RemoteModuleData::loadImportsList(peconv::ImportsCollection& collection)
+{
+	if (!isFullImageLoaded()) {
+		return false;
+	}
+	if (!peconv::has_valid_import_table(imgBuffer, imgBufferSize)) {
+		// No import table
+		return false;
+	}
+	if (!peconv::collect_imports(imgBuffer, imgBufferSize, collection)) {
+		// Could not collect imports
+		return false;
+	}
+	if (collection.size()) {
+		return true;
+	}
+	return false;
+}
+
 bool pesieve::RemoteModuleData::init()
 {
 	this->isHdrReady = false;
