@@ -142,10 +142,7 @@ bool pesieve::ModuleData::loadImportsList(peconv::ImportsCollection &collection)
 		// Could not collect imports
 		return false;
 	}
-	if (collection.size()) {
-		return true;
-	}
-	return false;
+	return true;
 }
 
 bool pesieve::ModuleData::relocateToBase(ULONGLONG new_base)
@@ -283,10 +280,7 @@ bool pesieve::RemoteModuleData::loadImportsList(peconv::ImportsCollection& colle
 		// Could not collect imports
 		return false;
 	}
-	if (collection.size()) {
-		return true;
-	}
-	return false;
+	return true;
 }
 
 bool pesieve::RemoteModuleData::init()
