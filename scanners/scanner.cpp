@@ -53,6 +53,11 @@ t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, Modu
 	if (is_suspicious && !scan_report->isHdrReplaced()) {
 		is_suspicious = SCAN_NOT_SUSPICIOUS;
 	}
+	if (modData.isDotNet() && !scan_report->isHdrReplaced()) {
+		// it is normal for .NET modules to have some modifications in the headers
+		scan_report->status = SCAN_NOT_SUSPICIOUS;
+		is_suspicious = SCAN_NOT_SUSPICIOUS;
+	}
 	process_report.appendReport(scan_report);
 	return is_suspicious;
 }
@@ -307,14 +312,6 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 		if (!args.quiet) {
 			std::cout << "[*] Scanning: " << modData.szModName << std::endl;
 		}
-		if (modData.isDotNet()) {
-			pReport.isManaged = true;
-#ifdef _DEBUG
-			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
-#endif
-			pReport.appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
-			continue;
-		}
 		//load data about the remote module
 		RemoteModuleData remoteModData(processHandle, this->isReflection, hMods[counter]);
 		if (remoteModData.isInitialized() == false) {
@@ -330,8 +327,16 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 			//if the content does not differ, ignore the different name of the mapped file
 			mappingScanReport->status = SCAN_NOT_SUSPICIOUS;
 		}
-		if (pReport.exportsMap != nullptr) {
+		if (pReport.exportsMap) {
 			pReport.exportsMap->add_to_lookup(modData.szModName, (HMODULE) modData.original_module, (ULONGLONG) modData.moduleHandle);
+		}
+		if (modData.isDotNet()) {
+			pReport.isManaged = true;
+#ifdef _DEBUG
+			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
+#endif
+			pReport.appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
+			continue;
 		}
 		// if hooks not disabled and process is not hollowed, check for hooks:
 		if (!args.no_hooks && (is_hollowed == SCAN_NOT_SUSPICIOUS)) {

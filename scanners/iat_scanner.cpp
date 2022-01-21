@@ -194,10 +194,6 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 		std::cerr << "[-] Failed to initialize module data: " << moduleData.szModName << std::endl;
 		return false;
 	}
-	if (moduleData.is64bit() != remoteModData.is64bit()) {
-		std::cerr << "[-] Mismatching ModuleData given: " << moduleData.szModName << std::endl;
-		return false;
-	}
 	peconv::ImportsCollection collection;
 	if (!listAllImports(collection)) {
 		return false;
