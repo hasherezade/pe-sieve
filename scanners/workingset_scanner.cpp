@@ -142,10 +142,7 @@ bool pesieve::WorkingSetScanner::scanImg()
 		// detected as hollowed, no need for further scans
 		return true;
 	}
-	if (processReport.exportsMap && !processReport.isModuleReplaced(modData.moduleHandle)) {
-		std::cout << "[*] Adding detached to imports lookup: " << memPage.mapped_name << "\n";
-		processReport.exportsMap->add_to_lookup(memPage.mapped_name, (HMODULE)modData.original_module, modData.original_size, (ULONGLONG)modData.moduleHandle);
-	}
+
 	if (modData.isDotNet()) {
 		// .NET module will not be scanned
 #ifdef _DEBUG
