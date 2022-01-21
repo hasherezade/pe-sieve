@@ -85,7 +85,9 @@ namespace pesieve {
 
 		bool hasImportTable(RemoteModuleData &remoteModData);
 		bool filterResults(peconv::ImpsNotCovered &not_covered, IATScanReport &report);
-		void listAllImports(peconv::ImportsCollection &collection);
+
+		//! get addresses of the thunks from the original module (file)
+		bool listAllImports(peconv::ImportsCollection &collection);
 
 		const peconv::ExportsMapper &exportsMap;
 		const ModulesInfo &modulesInfo;

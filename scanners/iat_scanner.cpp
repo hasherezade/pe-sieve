@@ -190,7 +190,6 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 		std::cerr << "[-] Failed to initialize remote module header" << std::endl;
 		return false;
 	}
-
 	if (!moduleData.isInitialized() && !moduleData.loadOriginal()) {
 		std::cerr << "[-] Failed to initialize module data: " << moduleData.szModName << std::endl;
 		return false;
@@ -199,12 +198,19 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 		std::cerr << "[-] Mismatching ModuleData given: " << moduleData.szModName << std::endl;
 		return false;
 	}
-	// get addresses of the thunks from the original module (file)
 	peconv::ImportsCollection collection;
-	if (!moduleData.loadImportsList(collection)) {
+	if (!listAllImports(collection)) {
 		return false;
 	}
+	if (collection.size() == 0) {
+		return true; //nothing to scan...
+	}
 
+	// load full remote for the IAT scan:
+	if (!remoteModData.loadFullImage()) {
+		std::cerr << "[-] Failed to initialize remote module" << std::endl;
+		return false;
+	}
 	std::map<DWORD, peconv::ExportedFunc*>::iterator itr;
 	// get filled thunks from the mapped module (remote):
 
@@ -274,24 +280,8 @@ IATScanReport* pesieve::IATScanner::scanRemote()
 		std::cerr << "[-] Failed to initialize remote module header" << std::endl;
 		return nullptr;
 	}
-	if (!hasImportTable(remoteModData)) {
-		IATScanReport *report = new(std::nothrow) IATScanReport(processHandle, remoteModData.modBaseAddr, remoteModData.getModuleSize(), moduleData.szModName);
-		if (report) {
-			report->status = SCAN_NOT_SUSPICIOUS;
-		}
-		return report;
-	}
-	if (!remoteModData.loadFullImage()) {
-		std::cerr << "[-] Failed to initialize remote module" << std::endl;
-		return nullptr;
-	}
-	BYTE *vBuf = remoteModData.imgBuffer;
-	size_t vBufSize = remoteModData.imgBufferSize;
-	if (!vBuf) {
-		return nullptr;
-	}
-	peconv::ImpsNotCovered not_covered;
 
+	peconv::ImpsNotCovered not_covered;
 	t_scan_status status = SCAN_NOT_SUSPICIOUS;
 
 	// first try to find by the Import Table in the original file:
@@ -389,13 +379,8 @@ bool pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATS
 	return true;
 }
 
-void pesieve::IATScanner::listAllImports(peconv::ImportsCollection &_storedFunc)
+bool pesieve::IATScanner::listAllImports(peconv::ImportsCollection &_storedFunc)
 {
-	BYTE *vBuf = remoteModData.imgBuffer; 
-	size_t vBufSize = remoteModData.imgBufferSize;
-	if (!vBuf) {
-		return;
-	}
-	peconv::collect_imports(vBuf, vBufSize, _storedFunc);
+	return moduleData.loadImportsList(_storedFunc);
 }
 
