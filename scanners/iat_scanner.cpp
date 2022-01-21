@@ -168,8 +168,8 @@ bool pesieve::IATScanner::isValidFuncFilled(ULONGLONG filled_val, const peconv::
 	if (!peconv::ExportedFunc::isTheSameFuncName(possibleFunc, definedFunc)) {
 		return false;
 	}
-	if (!peconv::ExportedFunc::isTheSameDllName(possibleFunc, definedFunc)) {
-		return false;
+	if (peconv::ExportedFunc::isTheSameDllName(possibleFunc, definedFunc)) {
+		return true;
 	}
 	ULONGLONG dll_base = this->exportsMap.find_dll_base_by_func_va(filled_val);
 	if (!dll_base) {
