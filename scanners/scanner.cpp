@@ -286,9 +286,9 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 	size_t counter = 0;
 	for (counter = 0; counter < modules_count; counter++) {
 		if (processHandle == nullptr) break;
-
+		const HMODULE module_base = hMods[counter];
 		//load module from file:
-		ModuleData modData(processHandle, hMods[counter], true, args.use_cache);
+		ModuleData modData(processHandle, module_base, true, args.use_cache);
 		ModuleScanReport *mappingScanReport = this->scanForMappingMismatch(modData, pReport);
 
 		//load the original file to make the comparisons:
@@ -297,7 +297,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 				std::cout << "[!][" << args.pid << "] Suspicious: could not read the module file!" << std::endl;
 			}
 			//make a report that finding original module was not possible
-			pReport.appendReport(new UnreachableModuleReport(processHandle, hMods[counter], 0, modData.szModName));
+			pReport.appendReport(new UnreachableModuleReport(processHandle, module_base, 0, modData.szModName));
 			continue;
 		}
 
@@ -318,10 +318,10 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 			std::cout << "[*] Scanning: " << modData.szModName << std::endl;
 		}
 		//load data about the remote module
-		RemoteModuleData remoteModData(processHandle, this->isReflection, hMods[counter]);
+		RemoteModuleData remoteModData(processHandle, this->isReflection, module_base);
 		if (remoteModData.isInitialized() == false) {
 			//make a report that initializing remote module was not possible
-			pReport.appendReport(new MalformedHeaderReport(processHandle, hMods[counter], 0, modData.szModName));
+			pReport.appendReport(new MalformedHeaderReport(processHandle, module_base, 0, modData.szModName));
 			continue;
 		}
 		t_scan_status is_hollowed = scanForHollows(processHandle, modData, remoteModData, pReport);
@@ -373,10 +373,11 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 	ULONGLONG start_tick = GetTickCount64();
 	size_t counter = 0;
 	for (counter = 0; counter < modules_count; counter++) {
-		if (processHandle == nullptr) break;
+		if (!processHandle) break; // this should never happen
 
+		const HMODULE module_base = hMods[counter];
 		//load module from file:
-		ModuleData modData(processHandle, hMods[counter], true, args.use_cache);
+		ModuleData modData(processHandle, module_base, true, args.use_cache);
 
 		// Don't scan modules that are in the ignore list
 		std::string plainName = peconv::get_file_name(modData.szModName);
@@ -385,10 +386,10 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 		}
 
 		//load data about the remote module
-		RemoteModuleData remoteModData(processHandle, this->isReflection, hMods[counter]);
+		RemoteModuleData remoteModData(processHandle, this->isReflection, module_base);
 		if (remoteModData.isInitialized() == false) {
 			//make a report that initializing remote module was not possible
-			pReport.appendReport(new MalformedHeaderReport(processHandle, hMods[counter], 0, modData.szModName));
+			pReport.appendReport(new MalformedHeaderReport(processHandle, module_base, 0, modData.szModName));
 			continue;
 		}
 

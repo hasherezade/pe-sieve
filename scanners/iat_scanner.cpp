@@ -2,6 +2,7 @@
 
 #include <peconv.h>
 
+#include <string>
 #include <fstream>
 #include <iostream>
 
@@ -48,6 +49,30 @@ const bool IATScanReport::hooksToJSON(std::stringstream &outs, size_t level)
 	return true;
 }
 
+std::string IATScanReport::formatTargetName(IN HANDLE hProcess, IN const peconv::ExportsMapper* exportsMap, IN const ModulesInfo& modulesInfo, ULONGLONG module_start, ULONGLONG addr)
+{
+	if (!exportsMap) {
+		return "";
+	}
+	const peconv::ExportedFunc* func = exportsMap->find_export_by_va(addr);
+	if (func) {
+		return func->toString();
+	}
+	const ScannedModule* modExp = modulesInfo.findModuleContaining(addr);
+	if (module_start == 0) {
+		return "(invalid)";
+	}
+	std::stringstream report;
+	char moduleName[MAX_PATH] = { 0 };
+	if (GetModuleBaseNameA(hProcess, (HMODULE)module_start, moduleName, sizeof(moduleName))) {
+		report << peconv::get_dll_shortname(moduleName) << ".(unknown_func)";
+	}
+	else {
+		report << "(unknown)";
+	}
+	return report.str();
+}
+
 bool IATScanReport::saveNotRecovered(IN std::string fileName,
 	IN HANDLE hProcess,
 	IN peconv::ImportsCollection *storedFunc,
@@ -85,36 +110,15 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 			}
 			report << "->";
 		}
+		ScannedModule* modExp = modulesInfo.findModuleContaining(addr);
+		ULONGLONG module_start = (modExp) ? modExp->getStart() : peconv::fetch_alloc_base(hProcess, (BYTE*)addr);
+		report << formatTargetName(hProcess, exportsMap, modulesInfo, module_start, addr);
 
-		if (exportsMap) {
-			ScannedModule *modExp = modulesInfo.findModuleContaining(addr);
-			ULONGLONG module_start = (modExp) ? modExp->getStart() : peconv::fetch_alloc_base(hProcess, (BYTE*)addr);
+		size_t offset = addr - module_start;
+		report << delim << std::hex << module_start << "+" << offset;
 
-			const peconv::ExportedFunc* func = exportsMap->find_export_by_va(addr);
-			if (func) {
-				report << func->toString();
-			}
-			else {
-				if (module_start == 0) {
-					report << "(invalid)";
-				}
-				else {
-					char moduleName[MAX_PATH] = { 0 };
-					if (GetModuleBaseNameA(hProcess, (HMODULE)module_start, moduleName, sizeof(moduleName))) {
-						report << peconv::get_dll_shortname(moduleName) << ".(unknown_func)";
-					}
-					else {
-						report << "(unknown)";
-					}
-				}
-			}
-
-			size_t offset = addr - module_start;
-			report << delim << std::hex << module_start << "+" << offset;
-
-			if (modExp) {
-				report << delim << modExp->isSuspicious();
-			}
+		if (modExp) {
+			report << delim << modExp->isSuspicious();
 		}
 		report << std::endl;
 	}
@@ -130,22 +134,6 @@ bool IATScanReport::generateList(IN const std::string &fileName, IN HANDLE hProc
 		notCovered,
 		modulesInfo,
 		exportsMap);
-}
-
-bool pesieve::IATScanner::hasImportTable(RemoteModuleData &remoteModData)
-{
-	if (!remoteModData.isInitialized()) {
-		return false;
-	}
-	IMAGE_DATA_DIRECTORY *dir = peconv::get_directory_entry((BYTE*)remoteModData.headerBuffer, IMAGE_DIRECTORY_ENTRY_IMPORT);
-	if (!dir) {
-		return false;
-	}
-	if (dir->VirtualAddress > remoteModData.getHdrImageSize()) {
-		std::cerr << "[-] Import Table out of scope" << std::endl;
-		return false;
-	}
-	return true;
 }
 
 
@@ -194,6 +182,8 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 		std::cerr << "[-] Failed to initialize module data: " << moduleData.szModName << std::endl;
 		return false;
 	}
+
+	// first try to find by the Import Table in the original file:
 	peconv::ImportsCollection collection;
 	if (!listAllImports(collection)) {
 		return false;
@@ -233,7 +223,9 @@ bool pesieve::IATScanner::scanByOriginalTable(peconv::ImpsNotCovered &not_covere
 
 			//filter out .NET: mscoree._CorExeMain
 			const std::string dShortName = peconv::get_dll_shortname(defined_func->libName);
-			if ( dShortName.compare("mscoree") == 0 && (defined_func->funcName.compare("_CorExeMain") || defined_func->funcName.compare("_CorDllMain")) ) {
+			if (dShortName == "mscoree" 
+				&& (defined_func->funcName == "_CorExeMain" || defined_func->funcName == "_CorDllMain") )
+			{
 				continue; //this is normal, skip it
 			}
 
@@ -280,7 +272,6 @@ IATScanReport* pesieve::IATScanner::scanRemote()
 	peconv::ImpsNotCovered not_covered;
 	t_scan_status status = SCAN_NOT_SUSPICIOUS;
 
-	// first try to find by the Import Table in the original file:
 	if (!scanByOriginalTable(not_covered)) {
 		// IAT scan failed:
 		status = SCAN_ERROR;

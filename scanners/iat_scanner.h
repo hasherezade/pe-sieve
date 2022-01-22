@@ -51,6 +51,8 @@ namespace pesieve {
 		peconv::ImportsCollection storedFunc;
 		peconv::ImpsNotCovered notCovered;
 
+	protected:
+		static std::string formatTargetName(IN HANDLE hProcess, IN const peconv::ExportsMapper* exportsMap, IN const ModulesInfo& modulesInfo, ULONGLONG module_start, ULONGLONG module_va);
 	};
 
 	//---
@@ -83,7 +85,6 @@ namespace pesieve {
 		void initExcludedPaths();
 		bool isInSystemDir(const std::string &moduleName);
 
-		bool hasImportTable(RemoteModuleData &remoteModData);
 		bool filterResults(peconv::ImpsNotCovered &not_covered, IATScanReport &report);
 
 		//! get addresses of the thunks from the original module (file)
