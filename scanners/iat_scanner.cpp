@@ -37,10 +37,8 @@ const bool IATScanReport::hooksToJSON(std::stringstream &outs, size_t level)
 				outs << "\"" << func->toString() << "\"" << ",\n";
 			}
 		}
-
-		OUT_PADDED(outs, (level + 1), "\"target\" : ");
+		OUT_PADDED(outs, (level + 1), "\"target_va\" : ");
 		outs << "\"" << std::hex << (ULONGLONG)addr << "\"";
-
 		outs << "\n";
 		OUT_PADDED(outs, level, "}");
 	}
@@ -49,8 +47,11 @@ const bool IATScanReport::hooksToJSON(std::stringstream &outs, size_t level)
 	return true;
 }
 
-std::string IATScanReport::formatTargetName(IN HANDLE hProcess, IN const peconv::ExportsMapper* exportsMap, IN const ModulesInfo& modulesInfo, ULONGLONG module_start, ULONGLONG addr)
+std::string IATScanReport::formatTargetName(IN const peconv::ExportsMapper* exportsMap, IN const ModulesInfo& modulesInfo, IN const ULONGLONG module_start, IN ULONGLONG addr)
 {
+	if (addr == 0) {
+		return "(invalid)";
+	}
 	if (!exportsMap) {
 		return "";
 	}
@@ -59,18 +60,33 @@ std::string IATScanReport::formatTargetName(IN HANDLE hProcess, IN const peconv:
 		return func->toString();
 	}
 	const ScannedModule* modExp = modulesInfo.findModuleContaining(addr);
-	if (module_start == 0) {
-		return "(invalid)";
+	if (!modExp) {
+		if (module_start == 0) {
+			return "(invalid)";
+		}
+		return "(unknown)";
 	}
 	std::stringstream report;
-	char moduleName[MAX_PATH] = { 0 };
-	if (GetModuleBaseNameA(hProcess, (HMODULE)module_start, moduleName, sizeof(moduleName))) {
-		report << peconv::get_dll_shortname(moduleName) << ".(unknown_func)";
-	}
-	else {
-		report << "(unknown)";
-	}
+	report << peconv::get_dll_shortname(modExp->getModName());
+	report << ".(unknown_func)";
 	return report.str();
+}
+
+std::string IATScanReport::formatHookedFuncName(IN peconv::ImportsCollection* storedFunc, DWORD thunk_rva)
+{
+	if (!storedFunc) {
+		return "(unknown)";
+	}
+	std::map<DWORD, peconv::ExportedFunc*>::const_iterator found = storedFunc->thunkToFunc.find(thunk_rva);
+	if (found != storedFunc->thunkToFunc.end()) {
+		const peconv::ExportedFunc* func = found->second;
+		if (!func) {
+			return ""; //this should not happen
+		}
+		return func->toString();
+	}
+	return "(unknown)";
+	
 }
 
 bool IATScanReport::saveNotRecovered(IN std::string fileName,
@@ -98,21 +114,12 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 		const ULONGLONG addr = itr->second;
 		report << std::hex << thunk << delim;
 
-		if (storedFunc) {
-			std::map<DWORD, peconv::ExportedFunc*>::const_iterator found = storedFunc->thunkToFunc.find(thunk);
-			if (found != storedFunc->thunkToFunc.end()) {
-				const peconv::ExportedFunc *func = found->second;
-				if (!func) continue; //this should not happen
-				report << func->toString();
-			}
-			else {
-				report << "(unknown)";
-			}
-			report << "->";
-		}
-		ScannedModule* modExp = modulesInfo.findModuleContaining(addr);
-		ULONGLONG module_start = (modExp) ? modExp->getStart() : peconv::fetch_alloc_base(hProcess, (BYTE*)addr);
-		report << formatTargetName(hProcess, exportsMap, modulesInfo, module_start, addr);
+		report << "[" << formatHookedFuncName(storedFunc, thunk) << "]";
+		report << "->";
+
+		const ScannedModule* modExp = modulesInfo.findModuleContaining(addr);
+		const ULONGLONG module_start = (modExp) ? modExp->getStart() : peconv::fetch_alloc_base(hProcess, (BYTE*)addr);
+		report << "[" << formatTargetName(exportsMap, modulesInfo, module_start, addr) << "]";
 
 		size_t offset = addr - module_start;
 		report << delim << std::hex << module_start << "+" << offset;

@@ -52,7 +52,8 @@ namespace pesieve {
 		peconv::ImpsNotCovered notCovered;
 
 	protected:
-		static std::string formatTargetName(IN HANDLE hProcess, IN const peconv::ExportsMapper* exportsMap, IN const ModulesInfo& modulesInfo, ULONGLONG module_start, ULONGLONG module_va);
+		static std::string formatHookedFuncName(IN peconv::ImportsCollection* storedFunc, DWORD thunk_rva);
+		static std::string formatTargetName(IN const peconv::ExportsMapper* exportsMap, IN const ModulesInfo& modulesInfo, IN const ULONGLONG module_start, IN ULONGLONG addr);
 	};
 
 	//---
