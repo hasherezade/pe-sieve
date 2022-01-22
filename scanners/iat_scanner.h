@@ -19,8 +19,8 @@ namespace pesieve {
 			IN const ModulesInfo &modulesInfo,
 			IN const peconv::ExportsMapper *exportsMap);
 
-		IATScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, std::string _moduleFile)
-			: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_SUSPICIOUS)
+		IATScanReport(HMODULE _module, size_t _moduleSize, std::string _moduleFile)
+			: ModuleScanReport(_module, _moduleSize, SCAN_SUSPICIOUS)
 		{
 			moduleFile = _moduleFile;
 		}

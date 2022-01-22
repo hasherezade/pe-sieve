@@ -33,7 +33,7 @@ t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, Modu
 	HeadersScanner scanner(processHandle, modData, remoteModData);
 	HeadersScanReport *scan_report = scanner.scanRemote();
 	if (!scan_report) {
-		process_report.appendReport(new UnreachableModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
+		process_report.appendReport(new UnreachableModuleReport(modData.moduleHandle, modData.original_size, modData.szModName));
 		return SCAN_ERROR;
 	}
 	
@@ -297,7 +297,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 				std::cout << "[!][" << args.pid << "] Suspicious: could not read the module file!" << std::endl;
 			}
 			//make a report that finding original module was not possible
-			pReport.appendReport(new UnreachableModuleReport(processHandle, module_base, 0, modData.szModName));
+			pReport.appendReport(new UnreachableModuleReport(module_base, 0, modData.szModName));
 			continue;
 		}
 
@@ -311,7 +311,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 			if (!args.quiet) {
 				std::cout << "[*] Skipping ignored: " << std::hex << (ULONGLONG)modData.moduleHandle << " : " << modData.szModName << std::endl;
 			}
-			pReport.appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
+			pReport.appendReport(new SkippedModuleReport(modData.moduleHandle, modData.original_size, modData.szModName));
 			continue;
 		}
 		if (!args.quiet) {
@@ -321,7 +321,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 		RemoteModuleData remoteModData(processHandle, this->isReflection, module_base);
 		if (remoteModData.isInitialized() == false) {
 			//make a report that initializing remote module was not possible
-			pReport.appendReport(new MalformedHeaderReport(processHandle, module_base, 0, modData.szModName));
+			pReport.appendReport(new MalformedHeaderReport(module_base, 0, modData.szModName));
 			continue;
 		}
 		t_scan_status is_hollowed = scanForHollows(processHandle, modData, remoteModData, pReport);
@@ -340,7 +340,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 #ifdef _DEBUG
 			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
 #endif
-			pReport.appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
+			pReport.appendReport(new SkippedModuleReport(modData.moduleHandle, modData.original_size, modData.szModName));
 			continue;
 		}
 		// if hooks not disabled and process is not hollowed, check for hooks:
@@ -389,7 +389,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 		RemoteModuleData remoteModData(processHandle, this->isReflection, module_base);
 		if (remoteModData.isInitialized() == false) {
 			//make a report that initializing remote module was not possible
-			pReport.appendReport(new MalformedHeaderReport(processHandle, module_base, 0, modData.szModName));
+			pReport.appendReport(new MalformedHeaderReport(module_base, 0, modData.szModName));
 			continue;
 		}
 

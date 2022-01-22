@@ -10,8 +10,8 @@ namespace pesieve {
 	class HeadersScanReport : public ModuleScanReport
 	{
 	public:
-		HeadersScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
-			: ModuleScanReport(processHandle, _module, _moduleSize),
+		HeadersScanReport(HMODULE _module, size_t _moduleSize)
+			: ModuleScanReport(_module, _moduleSize),
 			dosHdrModified(false), fileHdrModified(false), ntHdrModified(false),
 			secHdrModified(false),
 			epModified(false), archMismatch(false), is64(false)

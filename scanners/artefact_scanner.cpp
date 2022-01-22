@@ -880,7 +880,7 @@ ArtefactScanReport* pesieve::ArtefactScanner::scanRemote()
 	}
 	const size_t region_size = size_t(memPage.region_end - region_start);
 
-	ArtefactScanReport *my_report = new ArtefactScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS, *peArt);
+	ArtefactScanReport *my_report = new ArtefactScanReport((HMODULE)region_start, region_size, SCAN_SUSPICIOUS, *peArt);
 	my_report->protection = memPage.protection;
 	my_report->has_shellcode = hasShellcode((HMODULE)region_start, region_size, *peArt);
 	delete peArt;

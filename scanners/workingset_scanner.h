@@ -18,8 +18,8 @@ namespace pesieve {
 	class WorkingSetScanReport : public ModuleScanReport
 	{
 	public:
-		WorkingSetScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, t_scan_status status)
-			: ModuleScanReport(processHandle, _module, _moduleSize, status)
+		WorkingSetScanReport(HMODULE _module, size_t _moduleSize, t_scan_status status)
+			: ModuleScanReport(_module, _moduleSize, status)
 		{
 			is_executable = false;
 			is_listed_module = false;

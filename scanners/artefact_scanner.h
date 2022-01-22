@@ -116,8 +116,8 @@ namespace pesieve {
 	class ArtefactScanReport : public WorkingSetScanReport
 	{
 	public:
-		ArtefactScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, t_scan_status status, PeArtefacts &peArt)
-			: WorkingSetScanReport(processHandle, _module, _moduleSize, status),
+		ArtefactScanReport(HMODULE _module, size_t _moduleSize, t_scan_status status, PeArtefacts &peArt)
+			: WorkingSetScanReport(_module, _moduleSize, status),
 			artefacts(peArt),
 			initialRegionSize(_moduleSize)
 		{

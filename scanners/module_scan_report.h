@@ -35,7 +35,7 @@ namespace pesieve {
 			return report->status;
 		}
 
-		ModuleScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, t_scan_status _status)
+		ModuleScanReport(HMODULE _module, size_t _moduleSize, t_scan_status _status)
 		{
 			this->module = _module;
 			this->moduleSize = _moduleSize;
@@ -43,7 +43,7 @@ namespace pesieve {
 			this->isDotNetModule = false;
 		}
 
-		ModuleScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
+		ModuleScanReport(HMODULE _module, size_t _moduleSize)
 		{
 			this->module = _module;
 			this->moduleSize = _moduleSize;
@@ -90,8 +90,8 @@ namespace pesieve {
 	class UnreachableModuleReport : public ModuleScanReport
 	{
 	public:
-		UnreachableModuleReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, std::string _moduleFile)
-			: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_ERROR)
+		UnreachableModuleReport(HMODULE _module, size_t _moduleSize, std::string _moduleFile)
+			: ModuleScanReport(_module, _moduleSize, SCAN_ERROR)
 		{
 			moduleFile = _moduleFile;
 		}
@@ -110,8 +110,8 @@ namespace pesieve {
 	class SkippedModuleReport : public ModuleScanReport
 	{
 	public:
-		SkippedModuleReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, std::string _moduleFile)
-			: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_NOT_SUSPICIOUS)
+		SkippedModuleReport(HMODULE _module, size_t _moduleSize, std::string _moduleFile)
+			: ModuleScanReport(_module, _moduleSize, SCAN_NOT_SUSPICIOUS)
 		{
 			moduleFile = _moduleFile;
 		}
@@ -130,8 +130,8 @@ namespace pesieve {
 	class MalformedHeaderReport : public ModuleScanReport
 	{
 	public:
-		MalformedHeaderReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize, std::string _moduleFile)
-			: ModuleScanReport(processHandle, _module, _moduleSize, SCAN_SUSPICIOUS)
+		MalformedHeaderReport(HMODULE _module, size_t _moduleSize, std::string _moduleFile)
+			: ModuleScanReport(_module, _moduleSize, SCAN_SUSPICIOUS)
 		{
 			moduleFile = _moduleFile;
 		}

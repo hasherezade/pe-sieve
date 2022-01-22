@@ -84,7 +84,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 	//report about shellcode:
 	ULONGLONG region_start = memPage.region_start;
 	const size_t region_size = size_t (memPage.region_end - region_start);
-	WorkingSetScanReport *my_report = new WorkingSetScanReport(processHandle, (HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
+	WorkingSetScanReport *my_report = new WorkingSetScanReport((HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
 	my_report->has_pe = isScannedAsModule(memPage) && this->processReport.hasModule(memPage.region_start);
 	my_report->has_shellcode = true;
 	return my_report;
@@ -127,7 +127,7 @@ bool pesieve::WorkingSetScanner::scanImg()
 		if (!args.quiet) {
 			std::cerr << "[-] [" << std::hex << modData.moduleHandle << "] Could not read the module file" << std::endl;
 		}
-		processReport.appendReport(new UnreachableModuleReport(processHandle, module_start, 0, memPage.mapped_name));
+		processReport.appendReport(new UnreachableModuleReport(module_start, 0, memPage.mapped_name));
 		return false;
 	}
 	t_scan_status scan_status = ProcessScanner::scanForHollows(processHandle, modData, remoteModData, processReport);
@@ -148,7 +148,7 @@ bool pesieve::WorkingSetScanner::scanImg()
 #ifdef _DEBUG
 		std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
 #endif
-		processReport.appendReport(new SkippedModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
+		processReport.appendReport(new SkippedModuleReport(modData.moduleHandle, modData.original_size, modData.szModName));
 		return true;
 	}
 	if (!args.no_hooks) {

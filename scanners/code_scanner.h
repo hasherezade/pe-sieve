@@ -21,8 +21,8 @@ namespace pesieve {
 			SECTION_UNPACKED = 2
 		} t_section_status;
 
-		CodeScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
-			: ModuleScanReport(processHandle, _module, _moduleSize), relocBase(0)
+		CodeScanReport(HMODULE _module, size_t _moduleSize)
+			: ModuleScanReport(_module, _moduleSize), relocBase(0)
 		{
 		}
 

@@ -12,8 +12,8 @@ namespace pesieve {
 	class MappingScanReport : public ModuleScanReport
 	{
 	public:
-		MappingScanReport(HANDLE processHandle, HMODULE _module, size_t _moduleSize)
-			: ModuleScanReport(processHandle, _module, _moduleSize)
+		MappingScanReport(HMODULE _module, size_t _moduleSize)
+			: ModuleScanReport(_module, _moduleSize)
 		{
 		}
 

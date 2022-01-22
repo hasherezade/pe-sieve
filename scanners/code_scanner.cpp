@@ -345,7 +345,7 @@ pesieve::CodeScanReport* pesieve::CodeScanner::scanRemote()
 		std::cerr << "[-] Failed to read the module header" << std::endl;
 		return nullptr;
 	}
-	CodeScanReport *my_report = new(std::nothrow) CodeScanReport(this->processHandle, moduleData.moduleHandle, remoteModData.getModuleSize());
+	CodeScanReport *my_report = new(std::nothrow) CodeScanReport(moduleData.moduleHandle, remoteModData.getModuleSize());
 	if (!my_report) return nullptr; //this should not happen...
 
 	my_report->isDotNetModule = moduleData.isDotNet();

@@ -18,7 +18,7 @@ const bool IATScanReport::hooksToJSON(std::stringstream &outs, size_t level)
 
 	std::map<ULONGLONG, ULONGLONG>::iterator itr;
 	for (itr = notCovered.thunkToAddr.begin(); itr != notCovered.thunkToAddr.end(); ++itr) {
-		const ULONGLONG thunk = itr->first;
+		const DWORD thunk_rva = itr->first;
 		const ULONGLONG addr = itr->second;
 		if (!is_first) {
 			outs << ",\n";
@@ -27,9 +27,9 @@ const bool IATScanReport::hooksToJSON(std::stringstream &outs, size_t level)
 		OUT_PADDED(outs, level, "{\n");
 
 		OUT_PADDED(outs, (level + 1), "\"thunk_rva\" : ");
-		outs << "\"" << std::hex << (ULONGLONG)thunk << "\"" << ",\n";
+		outs << "\"" << std::hex << thunk_rva << "\"" << ",\n";
 
-		std::map<DWORD, peconv::ExportedFunc*>::const_iterator found = storedFunc.thunkToFunc.find(thunk);
+		std::map<DWORD, peconv::ExportedFunc*>::const_iterator found = storedFunc.thunkToFunc.find(thunk_rva);
 		if (found != storedFunc.thunkToFunc.end()) {
 			const peconv::ExportedFunc *func = found->second;
 			if (func) {
@@ -110,11 +110,11 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 	std::map<ULONGLONG,ULONGLONG>::iterator itr;
 	for (itr = notCovered.thunkToAddr.begin(); itr != notCovered.thunkToAddr.end(); ++itr)
 	{
-		const ULONGLONG thunk = itr->first;
+		const DWORD thunk_rva = itr->first;
 		const ULONGLONG addr = itr->second;
-		report << std::hex << thunk << delim;
+		report << std::hex << thunk_rva << delim;
 
-		report << "[" << formatHookedFuncName(storedFunc, thunk) << "]";
+		report << "[" << formatHookedFuncName(storedFunc, thunk_rva) << "]";
 		report << "->";
 
 		const ScannedModule* modExp = modulesInfo.findModuleContaining(addr);
@@ -291,7 +291,7 @@ IATScanReport* pesieve::IATScanner::scanRemote()
 		status = SCAN_SUSPICIOUS;
 	}
 	
-	IATScanReport *report = new(std::nothrow) IATScanReport(processHandle, remoteModData.modBaseAddr, remoteModData.getModuleSize(), moduleData.szModName);
+	IATScanReport *report = new(std::nothrow) IATScanReport(remoteModData.modBaseAddr, remoteModData.getModuleSize(), moduleData.szModName);
 	if (!report) {
 		return nullptr;
 	}
