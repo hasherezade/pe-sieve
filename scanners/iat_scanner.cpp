@@ -16,7 +16,7 @@ const bool IATScanReport::hooksToJSON(std::stringstream &outs, size_t level)
 	bool is_first = true;
 	OUT_PADDED(outs, level, "\"hooks_list\" : [\n");
 
-	std::map<ULONGLONG, ULONGLONG>::iterator itr;
+	std::map<DWORD, ULONGLONG>::iterator itr;
 	for (itr = notCovered.thunkToAddr.begin(); itr != notCovered.thunkToAddr.end(); ++itr) {
 		const DWORD thunk_rva = itr->first;
 		const ULONGLONG addr = itr->second;
@@ -107,7 +107,7 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 		return false;
 	}
 
-	std::map<ULONGLONG,ULONGLONG>::iterator itr;
+	std::map<DWORD,ULONGLONG>::iterator itr;
 	for (itr = notCovered.thunkToAddr.begin(); itr != notCovered.thunkToAddr.end(); ++itr)
 	{
 		const DWORD thunk_rva = itr->first;
@@ -339,10 +339,10 @@ bool pesieve::IATScanner::isInSystemDir(const std::string &moduleName)
 
 bool pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &notCovered, IATScanReport &report)
 {
-	std::map<ULONGLONG, ULONGLONG>::iterator itr;
+	std::map<DWORD, ULONGLONG>::iterator itr;
 	for (itr = notCovered.thunkToAddr.begin(); itr != notCovered.thunkToAddr.end(); ++itr)
 	{
-		const ULONGLONG thunk = itr->first;
+		const DWORD thunk = itr->first;
 		const ULONGLONG addr = itr->second;
 
 		ScannedModule *modExp = modulesInfo.findModuleContaining(addr);
