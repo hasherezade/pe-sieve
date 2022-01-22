@@ -97,6 +97,7 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 	IN const peconv::ExportsMapper *exportsMap)
 {
 	const char delim = ';';
+	const char internal_delim = ':';
 
 	if (notCovered.count() == 0) {
 		return false;
@@ -113,20 +114,26 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 		const DWORD thunk_rva = itr->first;
 		const ULONGLONG addr = itr->second;
 		report << std::hex << thunk_rva << delim;
-
-		report << "[" << formatHookedFuncName(storedFunc, thunk_rva) << "]";
-		report << "->";
-
+		if (storedFunc) {
+			report << "[" << formatHookedFuncName(storedFunc, thunk_rva) << "]";
+			report << "->";
+		}
 		const ScannedModule* modExp = modulesInfo.findModuleContaining(addr);
 		const ULONGLONG module_start = (modExp) ? modExp->getStart() : peconv::fetch_alloc_base(hProcess, (BYTE*)addr);
-		report << "[" << formatTargetName(exportsMap, modulesInfo, module_start, addr) << "]";
-
-		size_t offset = addr - module_start;
-		report << delim << std::hex << module_start << "+" << offset;
-
+		const size_t offset = addr - module_start;
+		report << std::hex << addr;
+		report << "["
+			<< std::hex << module_start << "+" << offset
+			<< internal_delim
+			<< formatTargetName(exportsMap, modulesInfo, module_start, addr);
+		report << internal_delim;
 		if (modExp) {
-			report << delim << modExp->isSuspicious();
+			report << modExp->isSuspicious();
 		}
+		else {
+			report << true; // module not found, assume suspicious
+		}
+		report  << "]";
 		report << std::endl;
 	}
 	report.close();
