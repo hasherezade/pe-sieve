@@ -72,6 +72,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="classpesieve_1_1_i_a_t_scan_report-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pesieve::IATScanReport Class Reference</div></div>
 </div><!--header-->
@@ -138,6 +139,11 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a81a3db5ec326f35e954130c395633153 inherit pub_attribs_classpesieve_1_1_module_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10b0bdf16cb9e7af32e1ab9b35532f68 inherit pub_attribs_classpesieve_1_1_module_scan_report"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepesieve.html#a941a03e321f7620227f2d6901dbd9af4">t_scan_status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a></td></tr>
 <tr class="separator:a10b0bdf16cb9e7af32e1ab9b35532f68 inherit pub_attribs_classpesieve_1_1_module_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:afccd9b201fb95c30a2565738c2f53867"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_i_a_t_scan_report.html#afccd9b201fb95c30a2565738c2f53867">formatTargetName</a> (IN HANDLE hProcess, IN const peconv::ExportsMapper *exportsMap, IN const <a class="el" href="classpesieve_1_1_modules_info.html">ModulesInfo</a> &amp;modulesInfo, ULONGLONG module_start, ULONGLONG module_va)</td></tr>
+<tr class="separator:afccd9b201fb95c30a2565738c2f53867"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -231,6 +237,62 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="afccd9b201fb95c30a2565738c2f53867" name="afccd9b201fb95c30a2565738c2f53867"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afccd9b201fb95c30a2565738c2f53867">&#9670;&nbsp;</a></span>formatTargetName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string IATScanReport::formatTargetName </td>
+          <td>(</td>
+          <td class="paramtype">IN HANDLE&#160;</td>
+          <td class="paramname"><em>hProcess</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IN const peconv::ExportsMapper *&#160;</td>
+          <td class="paramname"><em>exportsMap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IN const <a class="el" href="classpesieve_1_1_modules_info.html">ModulesInfo</a> &amp;&#160;</td>
+          <td class="paramname"><em>modulesInfo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ULONGLONG&#160;</td>
+          <td class="paramname"><em>module_start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ULONGLONG&#160;</td>
+          <td class="paramname"><em>module_va</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="iat__scanner_8cpp_source.html#l00052">52</a> of file <a class="el" href="iat__scanner_8cpp_source.html">iat_scanner.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a7a2690d5018a87fb8207392e72dbdbda" name="a7a2690d5018a87fb8207392e72dbdbda"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7a2690d5018a87fb8207392e72dbdbda">&#9670;&nbsp;</a></span>generateList()</h2>
 
@@ -269,16 +331,17 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="iat__scanner_8cpp_source.html#l00125">125</a> of file <a class="el" href="iat__scanner_8cpp_source.html">iat_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="iat__scanner_8cpp_source.html#l00129">129</a> of file <a class="el" href="iat__scanner_8cpp_source.html">iat_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_i_a_t_scan_report_a7a2690d5018a87fb8207392e72dbdbda_cgraph.png" border="0" usemap="#aclasspesieve_1_1_i_a_t_scan_report_a7a2690d5018a87fb8207392e72dbdbda_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_i_a_t_scan_report_a7a2690d5018a87fb8207392e72dbdbda_cgraph" id="aclasspesieve_1_1_i_a_t_scan_report_a7a2690d5018a87fb8207392e72dbdbda_cgraph">
-<area shape="rect" title=" " alt="" coords="5,39,168,80"/>
-<area shape="rect" href="classpesieve_1_1_i_a_t_scan_report.html#a74b0f4aa345e576b2493d183e91b72a8" title=" " alt="" coords="216,39,379,80"/>
-<area shape="rect" href="classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="427,5,593,47"/>
-<area shape="rect" href="classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="427,71,593,112"/>
+<area shape="rect" title=" " alt="" coords="5,71,168,112"/>
+<area shape="rect" href="classpesieve_1_1_i_a_t_scan_report.html#a74b0f4aa345e576b2493d183e91b72a8" title=" " alt="" coords="216,71,379,112"/>
+<area shape="rect" href="classpesieve_1_1_i_a_t_scan_report.html#afccd9b201fb95c30a2565738c2f53867" title=" " alt="" coords="429,5,591,47"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="427,71,593,112"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="427,136,593,177"/>
 </map>
 </div>
 
@@ -310,7 +373,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="iat__scanner_8cpp_source.html#l00010">10</a> of file <a class="el" href="iat__scanner_8cpp_source.html">iat_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="iat__scanner_8cpp_source.html#l00011">11</a> of file <a class="el" href="iat__scanner_8cpp_source.html">iat_scanner.cpp</a>.</p>
 
 </div>
 </div>
@@ -372,15 +435,16 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="iat__scanner_8cpp_source.html#l00051">51</a> of file <a class="el" href="iat__scanner_8cpp_source.html">iat_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="iat__scanner_8cpp_source.html#l00076">76</a> of file <a class="el" href="iat__scanner_8cpp_source.html">iat_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_i_a_t_scan_report_a74b0f4aa345e576b2493d183e91b72a8_cgraph.png" border="0" usemap="#aclasspesieve_1_1_i_a_t_scan_report_a74b0f4aa345e576b2493d183e91b72a8_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_i_a_t_scan_report_a74b0f4aa345e576b2493d183e91b72a8_cgraph" id="aclasspesieve_1_1_i_a_t_scan_report_a74b0f4aa345e576b2493d183e91b72a8_cgraph">
-<area shape="rect" title=" " alt="" coords="5,39,168,80"/>
-<area shape="rect" href="classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="216,5,383,47"/>
-<area shape="rect" href="classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="216,71,383,112"/>
+<area shape="rect" title=" " alt="" coords="5,71,168,112"/>
+<area shape="rect" href="classpesieve_1_1_i_a_t_scan_report.html#afccd9b201fb95c30a2565738c2f53867" title=" " alt="" coords="218,5,381,47"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="216,71,383,112"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="216,136,383,177"/>
 </map>
 </div>
 
