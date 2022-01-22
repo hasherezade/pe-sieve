@@ -142,8 +142,10 @@ Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
-<tr class="memitem:afccd9b201fb95c30a2565738c2f53867"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_i_a_t_scan_report.html#afccd9b201fb95c30a2565738c2f53867">formatTargetName</a> (IN HANDLE hProcess, IN const peconv::ExportsMapper *exportsMap, IN const <a class="el" href="classpesieve_1_1_modules_info.html">ModulesInfo</a> &amp;modulesInfo, ULONGLONG module_start, ULONGLONG module_va)</td></tr>
-<tr class="separator:afccd9b201fb95c30a2565738c2f53867"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72330dd800a7a663223323f8d836bc32"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_i_a_t_scan_report.html#a72330dd800a7a663223323f8d836bc32">formatHookedFuncName</a> (IN peconv::ImportsCollection *<a class="el" href="classpesieve_1_1_i_a_t_scan_report.html#a7a631d5a508e52d214764f5d25490b2e">storedFunc</a>, DWORD thunk_rva)</td></tr>
+<tr class="separator:a72330dd800a7a663223323f8d836bc32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae687714420a235f95d8867021eb502c"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_i_a_t_scan_report.html#aae687714420a235f95d8867021eb502c">formatTargetName</a> (IN const peconv::ExportsMapper *exportsMap, IN const <a class="el" href="classpesieve_1_1_modules_info.html">ModulesInfo</a> &amp;modulesInfo, IN const ULONGLONG module_start, IN ULONGLONG addr)</td></tr>
+<tr class="separator:aae687714420a235f95d8867021eb502c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -237,8 +239,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="afccd9b201fb95c30a2565738c2f53867" name="afccd9b201fb95c30a2565738c2f53867"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afccd9b201fb95c30a2565738c2f53867">&#9670;&nbsp;</a></span>formatTargetName()</h2>
+<a id="a72330dd800a7a663223323f8d836bc32" name="a72330dd800a7a663223323f8d836bc32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72330dd800a7a663223323f8d836bc32">&#9670;&nbsp;</a></span>formatHookedFuncName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -247,34 +249,16 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string IATScanReport::formatTargetName </td>
+          <td class="memname">std::string IATScanReport::formatHookedFuncName </td>
           <td>(</td>
-          <td class="paramtype">IN HANDLE&#160;</td>
-          <td class="paramname"><em>hProcess</em>, </td>
+          <td class="paramtype">IN peconv::ImportsCollection *&#160;</td>
+          <td class="paramname"><em>storedFunc</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">IN const peconv::ExportsMapper *&#160;</td>
-          <td class="paramname"><em>exportsMap</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">IN const <a class="el" href="classpesieve_1_1_modules_info.html">ModulesInfo</a> &amp;&#160;</td>
-          <td class="paramname"><em>modulesInfo</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ULONGLONG&#160;</td>
-          <td class="paramname"><em>module_start</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ULONGLONG&#160;</td>
-          <td class="paramname"><em>module_va</em>&#160;</td>
+          <td class="paramtype">DWORD&#160;</td>
+          <td class="paramname"><em>thunk_rva</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -289,7 +273,66 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="iat__scanner_8cpp_source.html#l00052">52</a> of file <a class="el" href="iat__scanner_8cpp_source.html">iat_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="iat__scanner_8cpp_source.html#l00075">75</a> of file <a class="el" href="iat__scanner_8cpp_source.html">iat_scanner.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aae687714420a235f95d8867021eb502c" name="aae687714420a235f95d8867021eb502c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae687714420a235f95d8867021eb502c">&#9670;&nbsp;</a></span>formatTargetName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string IATScanReport::formatTargetName </td>
+          <td>(</td>
+          <td class="paramtype">IN const peconv::ExportsMapper *&#160;</td>
+          <td class="paramname"><em>exportsMap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IN const <a class="el" href="classpesieve_1_1_modules_info.html">ModulesInfo</a> &amp;&#160;</td>
+          <td class="paramname"><em>modulesInfo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IN const ULONGLONG&#160;</td>
+          <td class="paramname"><em>module_start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IN ULONGLONG&#160;</td>
+          <td class="paramname"><em>addr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="iat__scanner_8cpp_source.html#l00050">50</a> of file <a class="el" href="iat__scanner_8cpp_source.html">iat_scanner.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classpesieve_1_1_i_a_t_scan_report_aae687714420a235f95d8867021eb502c_cgraph.png" border="0" usemap="#aclasspesieve_1_1_i_a_t_scan_report_aae687714420a235f95d8867021eb502c_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_i_a_t_scan_report_aae687714420a235f95d8867021eb502c_cgraph" id="aclasspesieve_1_1_i_a_t_scan_report_aae687714420a235f95d8867021eb502c_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,168,47"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="216,5,383,47"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -331,17 +374,19 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="iat__scanner_8cpp_source.html#l00129">129</a> of file <a class="el" href="iat__scanner_8cpp_source.html">iat_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="iat__scanner_8cpp_source.html#l00136">136</a> of file <a class="el" href="iat__scanner_8cpp_source.html">iat_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_i_a_t_scan_report_a7a2690d5018a87fb8207392e72dbdbda_cgraph.png" border="0" usemap="#aclasspesieve_1_1_i_a_t_scan_report_a7a2690d5018a87fb8207392e72dbdbda_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_i_a_t_scan_report_a7a2690d5018a87fb8207392e72dbdbda_cgraph" id="aclasspesieve_1_1_i_a_t_scan_report_a7a2690d5018a87fb8207392e72dbdbda_cgraph">
-<area shape="rect" title=" " alt="" coords="5,71,168,112"/>
-<area shape="rect" href="classpesieve_1_1_i_a_t_scan_report.html#a74b0f4aa345e576b2493d183e91b72a8" title=" " alt="" coords="216,71,379,112"/>
-<area shape="rect" href="classpesieve_1_1_i_a_t_scan_report.html#afccd9b201fb95c30a2565738c2f53867" title=" " alt="" coords="429,5,591,47"/>
-<area shape="rect" href="classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="427,71,593,112"/>
-<area shape="rect" href="classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="427,136,593,177"/>
+<area shape="rect" title=" " alt="" coords="5,104,168,145"/>
+<area shape="rect" href="classpesieve_1_1_i_a_t_scan_report.html#a74b0f4aa345e576b2493d183e91b72a8" title=" " alt="" coords="216,104,379,145"/>
+<area shape="rect" href="classpesieve_1_1_i_a_t_scan_report.html#a72330dd800a7a663223323f8d836bc32" title=" " alt="" coords="427,5,601,47"/>
+<area shape="rect" href="classpesieve_1_1_i_a_t_scan_report.html#aae687714420a235f95d8867021eb502c" title=" " alt="" coords="433,71,595,112"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="431,136,597,177"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="431,201,597,243"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="649,71,816,112"/>
 </map>
 </div>
 
@@ -435,16 +480,18 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="iat__scanner_8cpp_source.html#l00076">76</a> of file <a class="el" href="iat__scanner_8cpp_source.html">iat_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="iat__scanner_8cpp_source.html#l00092">92</a> of file <a class="el" href="iat__scanner_8cpp_source.html">iat_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_i_a_t_scan_report_a74b0f4aa345e576b2493d183e91b72a8_cgraph.png" border="0" usemap="#aclasspesieve_1_1_i_a_t_scan_report_a74b0f4aa345e576b2493d183e91b72a8_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_i_a_t_scan_report_a74b0f4aa345e576b2493d183e91b72a8_cgraph" id="aclasspesieve_1_1_i_a_t_scan_report_a74b0f4aa345e576b2493d183e91b72a8_cgraph">
-<area shape="rect" title=" " alt="" coords="5,71,168,112"/>
-<area shape="rect" href="classpesieve_1_1_i_a_t_scan_report.html#afccd9b201fb95c30a2565738c2f53867" title=" " alt="" coords="218,5,381,47"/>
-<area shape="rect" href="classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="216,71,383,112"/>
-<area shape="rect" href="classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="216,136,383,177"/>
+<area shape="rect" title=" " alt="" coords="5,104,168,145"/>
+<area shape="rect" href="classpesieve_1_1_i_a_t_scan_report.html#a72330dd800a7a663223323f8d836bc32" title=" " alt="" coords="216,5,391,47"/>
+<area shape="rect" href="classpesieve_1_1_i_a_t_scan_report.html#aae687714420a235f95d8867021eb502c" title=" " alt="" coords="222,71,385,112"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="220,136,387,177"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="220,201,387,243"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="439,71,605,112"/>
 </map>
 </div>
 

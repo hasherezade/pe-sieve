@@ -22,8 +22,9 @@ var searchData=
   ['first_5fdifferent_19',['first_different',['../namespacepesieve.html#ad710b4114538c040cf66158264fbe899',1,'pesieve']]],
   ['fixsectionscharacteristics_20',['fixSectionsCharacteristics',['../classpesieve_1_1_pe_reconstructor.html#a9e12362010a44611c7bcdcc9d6608d45',1,'pesieve::PeReconstructor']]],
   ['fixsectionsvirtualsize_21',['fixSectionsVirtualSize',['../classpesieve_1_1_pe_reconstructor.html#a12ecde5ccd9c8081192600f2b05e6bc9',1,'pesieve::PeReconstructor']]],
-  ['formattargetname_22',['formatTargetName',['../classpesieve_1_1_i_a_t_scan_report.html#afccd9b201fb95c30a2565738c2f53867',1,'pesieve::IATScanReport']]],
-  ['foundany_23',['foundAny',['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#aed8f32729b34e73763ea7d150a0723a7',1,'pesieve::ArtefactScanner::ArtefactsMapping']]],
-  ['freebuffer_24',['freeBuffer',['../classpesieve_1_1_pe_buffer.html#a23c8cf5875b9d0e63d1e5080d0fe7787',1,'pesieve::PeBuffer']]],
-  ['freefullimage_25',['freeFullImage',['../classpesieve_1_1_remote_module_data.html#aec7840414faf08a309da0a2bbeae7e1e',1,'pesieve::RemoteModuleData']]]
+  ['formathookedfuncname_22',['formatHookedFuncName',['../classpesieve_1_1_i_a_t_scan_report.html#a72330dd800a7a663223323f8d836bc32',1,'pesieve::IATScanReport']]],
+  ['formattargetname_23',['formatTargetName',['../classpesieve_1_1_i_a_t_scan_report.html#aae687714420a235f95d8867021eb502c',1,'pesieve::IATScanReport']]],
+  ['foundany_24',['foundAny',['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#aed8f32729b34e73763ea7d150a0723a7',1,'pesieve::ArtefactScanner::ArtefactsMapping']]],
+  ['freebuffer_25',['freeBuffer',['../classpesieve_1_1_pe_buffer.html#a23c8cf5875b9d0e63d1e5080d0fe7787',1,'pesieve::PeBuffer']]],
+  ['freefullimage_26',['freeFullImage',['../classpesieve_1_1_remote_module_data.html#aec7840414faf08a309da0a2bbeae7e1e',1,'pesieve::RemoteModuleData']]]
 ];
