@@ -30,8 +30,8 @@ t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, Modu
 #ifdef _WIN64
 	is_process_wow64(processHandle, &isWow64);
 #endif
-	HeadersScanner hollows(processHandle, modData, remoteModData);
-	HeadersScanReport *scan_report = hollows.scanRemote();
+	HeadersScanner scanner(processHandle, modData, remoteModData);
+	HeadersScanReport *scan_report = scanner.scanRemote();
 	if (!scan_report) {
 		process_report.appendReport(new UnreachableModuleReport(processHandle, modData.moduleHandle, modData.original_size, modData.szModName));
 		return SCAN_ERROR;
@@ -43,23 +43,23 @@ t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, Modu
 #endif
 		if (modData.reloadWow64()) {
 			delete scan_report; // delete previous report
-			scan_report = hollows.scanRemote();
+			scan_report = scanner.scanRemote();
 		}
 	}
 	scan_report->moduleFile = modData.szModName;
 	scan_report->isInPEB = modData.isModuleInPEBList();
 
-	t_scan_status is_suspicious = ModuleScanReport::get_scan_status(scan_report);
-	if (is_suspicious && !scan_report->isHdrReplaced()) {
-		is_suspicious = SCAN_NOT_SUSPICIOUS;
+	t_scan_status is_replaced = ModuleScanReport::get_scan_status(scan_report);
+	if (is_replaced && !scan_report->isHdrReplaced()) {
+		is_replaced = SCAN_NOT_SUSPICIOUS;
 	}
 	if (modData.isDotNet() && !scan_report->isHdrReplaced()) {
 		// it is normal for .NET modules to have some modifications in the headers
 		scan_report->status = SCAN_NOT_SUSPICIOUS;
-		is_suspicious = SCAN_NOT_SUSPICIOUS;
+		is_replaced = SCAN_NOT_SUSPICIOUS;
 	}
 	process_report.appendReport(scan_report);
-	return is_suspicious;
+	return is_replaced;
 }
 
 t_scan_status pesieve::ProcessScanner::scanForIATHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report, t_iat_scan_mode filter)
@@ -74,7 +74,6 @@ t_scan_status pesieve::ProcessScanner::scanForIATHooks(HANDLE processHandle, Mod
 		return SCAN_ERROR;
 	}
 	IATScanner scanner(processHandle, modData, remoteModData, *expMap, process_report.modulesInfo, filter);
-
 	IATScanReport *scan_report = scanner.scanRemote();
 	if (!scan_report) {
 		return SCAN_ERROR;
@@ -87,10 +86,10 @@ t_scan_status pesieve::ProcessScanner::scanForIATHooks(HANDLE processHandle, Mod
 
 t_scan_status pesieve::ProcessScanner::scanForHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report, bool scan_data, bool scan_inaccessible)
 {
-	CodeScanner hooks(processHandle, modData, remoteModData);
-	hooks.setScanData(scan_data);
-	hooks.setScanInaccessible(scan_inaccessible);
-	CodeScanReport *scan_report = hooks.scanRemote();
+	CodeScanner scanner(processHandle, modData, remoteModData);
+	scanner.setScanData(scan_data);
+	scanner.setScanInaccessible(scan_inaccessible);
+	CodeScanReport *scan_report = scanner.scanRemote();
 	if (!scan_report) {
 		return SCAN_ERROR;
 	}
@@ -176,15 +175,10 @@ ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 
 	// scan modules
 	size_t modulesScanned = 0;
-	size_t iatsScanned = 0;
 	try {
 		modulesScanned = scanModules(*pReport);
-		if (args.iat) {
-			iatsScanned = scanModulesIATs(*pReport);
-		}
 	} catch (std::exception &e) {
 		modulesScanned = 0;
-		iatsScanned = 0;
 		errorsStr << e.what();
 	}
 
@@ -200,6 +194,17 @@ ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 		errorsStr << e.what();
 	}
 
+	// scan IATs
+	size_t iatsScanned = 0;
+	if (args.iat) {
+		try {
+			iatsScanned = scanModulesIATs(*pReport);
+		}
+		catch (std::exception& e) {
+			iatsScanned = 0;
+			errorsStr << e.what();
+		}
+	}
 	// throw error only if none of the scans was successful
 	if (!modulesScanned && !iatsScanned && !regionsScanned) {
 		throw std::runtime_error(errorsStr.str());
@@ -235,8 +240,8 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 		memPage.is_listed_module = pReport.hasModule(region_base);
 		memPage.is_dep_enabled = this->isDEP;
 
-		WorkingSetScanner memPageScanner(this->processHandle, memPage, this->args, pReport);
-		WorkingSetScanReport *my_report = memPageScanner.scanRemote();
+		WorkingSetScanner scanner(this->processHandle, memPage, this->args, pReport);
+		WorkingSetScanReport *my_report = scanner.scanRemote();
 		if (!my_report) {
 			continue;
 		}
@@ -260,9 +265,9 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 
 ModuleScanReport* pesieve::ProcessScanner::scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report)
 {
-	MappingScanner mappingScanner(processHandle, modData);
+	MappingScanner scanner(processHandle, modData);
+	MappingScanReport *scan_report = scanner.scanRemote();
 
-	MappingScanReport *scan_report = mappingScanner.scanRemote();
 	process_report.appendReport(scan_report);
 	return scan_report;
 }
