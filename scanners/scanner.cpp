@@ -304,24 +304,33 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 		}
 
 		// Don't scan modules that are in the ignore list
-		std::string plainName = peconv::get_file_name(modData.szModName);
+		const std::string plainName = peconv::get_file_name(modData.szModName);
 		if (is_in_list(plainName.c_str(), this->ignoredModules)) {
 			// ...but add such modules to the exports lookup:
 			if (pReport.exportsMap && modData.loadOriginal()) {
 				pReport.exportsMap->add_to_lookup(modData.szModName, (HMODULE)modData.original_module, (ULONGLONG)modData.moduleHandle);
 			}
+			if (modData.isDotNet()) pReport.isManaged = true;
 			if (!args.quiet) {
 				std::cout << "[*] Skipping ignored: " << std::hex << (ULONGLONG)modData.moduleHandle << " : " << modData.szModName << std::endl;
 			}
 			pReport.appendReport(new SkippedModuleReport(modData.moduleHandle, modData.original_size, modData.szModName));
 			continue;
 		}
+		if (modData.isDotNet()) {
+			// the process contains at least one .NET module. Treat it as managed process:
+			pReport.isManaged = true;
+		}
 		if (!args.quiet) {
-			std::cout << "[*] Scanning: " << modData.szModName << std::endl;
+			std::cout << "[*] Scanning: " << modData.szModName;
+			if (modData.isDotNet()) {
+				std::cout << " (.NET) ";
+			}
+			std::cout << std::endl;
 		}
 		//load data about the remote module
 		RemoteModuleData remoteModData(processHandle, this->isReflection, module_base);
-		if (remoteModData.isInitialized() == false) {
+		if (!remoteModData.isInitialized()) {
 			//make a report that initializing remote module was not possible
 			pReport.appendReport(new MalformedHeaderReport(module_base, 0, modData.szModName));
 			continue;
@@ -334,25 +343,20 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 			//if the content does not differ, ignore the different name of the mapped file
 			mappingScanReport->status = SCAN_NOT_SUSPICIOUS;
 		}
+
+		// the module is not hollowed, so we can add it to the exports lookup:
 		if (pReport.exportsMap) {
 			pReport.exportsMap->add_to_lookup(modData.szModName, (HMODULE) modData.original_module, (ULONGLONG) modData.moduleHandle);
 		}
-		if (modData.isDotNet()) {
-			pReport.isManaged = true;
-#ifdef _DEBUG
-			std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
-#endif
-			pReport.appendReport(new SkippedModuleReport(modData.moduleHandle, modData.original_size, modData.szModName));
-			continue;
-		}
-		// if hooks not disabled and process is not hollowed, check for hooks:
-		if (!args.no_hooks && (is_hollowed == SCAN_NOT_SUSPICIOUS)) {
-			
+
+		if (!args.no_hooks //if hooks not disabled
+			&& (is_hollowed == SCAN_NOT_SUSPICIOUS) // and process is not hollowed
+			) 
+		{
 			const bool scan_data = ((this->args.data >= pesieve::PE_DATA_SCAN_ALWAYS) && (this->args.data != pesieve::PE_DATA_SCAN_INACCESSIBLE_ONLY))
 				|| (!this->isDEP && (this->args.data == pesieve::PE_DATA_SCAN_NO_DEP));
 			
 			const bool scan_inaccessible = (this->isReflection && (this->args.data >= PE_DATA_SCAN_INACCESSIBLE));
-
 			scanForHooks(processHandle, modData, remoteModData, pReport, scan_data, scan_inaccessible);
 		}
 	}

@@ -104,7 +104,6 @@ void pesieve::ProcessScanReport::appendToType(ModuleScanReport *report)
 	if (type >= REPORT_TYPES_COUNT) {
 		return;
 	}
-
 	this->reportsByType[type].insert(report);
 }
 
