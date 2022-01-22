@@ -131,7 +131,9 @@ inline bool set_non_suspicious(const std::set<ModuleScanReport*> &scan_reports, 
 
 bool pesieve::ProcessScanner::filterDotNetReport(ProcessScanReport& process_report)
 {
-	if (!process_report.isManaged || this->args.dotnet_policy == pesieve::PE_DNET_NONE) {
+	if (!process_report.isManaged // Not a .NET process
+		|| this->args.dotnet_policy == pesieve::PE_DNET_NONE) // .NET policy not set
+	{
 		return false; // no filtering needed
 	}
 	bool is_set = false;
@@ -212,7 +214,7 @@ ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 	//post-process hooks
 	resolveHooksTargets(*pReport);
 
-	//post-process .NET modules
+	//post-process detection reports according to the .NET policy
 	filterDotNetReport(*pReport);
 	return pReport;
 }
