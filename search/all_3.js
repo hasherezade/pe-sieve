@@ -21,7 +21,7 @@ var searchData=
   ['code_5fscanner_2ecpp_18',['code_scanner.cpp',['../code__scanner_8cpp.html',1,'']]],
   ['code_5fscanner_2eh_19',['code_scanner.h',['../code__scanner_8h.html',1,'']]],
   ['codescanner_20',['CodeScanner',['../classpesieve_1_1_code_scanner.html#af8c8ca15cb6b4bae485d4f8f1d0b6c76',1,'pesieve::CodeScanner::CodeScanner()'],['../classpesieve_1_1_code_scanner.html',1,'pesieve::CodeScanner']]],
-  ['codescanreport_21',['CodeScanReport',['../classpesieve_1_1_code_scan_report.html#ae3e23e18513c027becb973e8d19278eb',1,'pesieve::CodeScanReport::CodeScanReport()'],['../classpesieve_1_1_code_scan_report.html',1,'pesieve::CodeScanReport']]],
+  ['codescanreport_21',['CodeScanReport',['../classpesieve_1_1_code_scan_report.html#ad4d34efd2729c1e2353e25de992fcfb0',1,'pesieve::CodeScanReport::CodeScanReport()'],['../classpesieve_1_1_code_scan_report.html',1,'pesieve::CodeScanReport']]],
   ['codesize_22',['codeSize',['../classpesieve_1_1_patch_analyzer.html#ab9e470a2c5b4de696cfdabaa8346284e',1,'pesieve::PatchAnalyzer']]],
   ['color_5fscheme_2eh_23',['color_scheme.h',['../color__scheme_8h.html',1,'']]],
   ['console_5fcolor_2ecpp_24',['console_color.cpp',['../console__color_8cpp.html',1,'']]],
