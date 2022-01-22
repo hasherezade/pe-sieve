@@ -89,7 +89,7 @@ $(function() {
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordtype">bool</span> is_first = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <a class="code hl_define" href="format__util_8h.html#af8c1dc1f3ee7d070821c2490bba01a84">OUT_PADDED</a>(outs, level, <span class="stringliteral">&quot;\&quot;hooks_list\&quot; : [\n&quot;</span>);</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    std::map&lt;ULONGLONG, ULONGLONG&gt;::iterator itr;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    std::map&lt;DWORD, ULONGLONG&gt;::iterator itr;</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordflow">for</span> (itr = <a class="code hl_variable" href="classpesieve_1_1_i_a_t_scan_report.html#ad7d4b8a134b7afd117bbb49c85a0b638">notCovered</a>.thunkToAddr.begin(); itr != <a class="code hl_variable" href="classpesieve_1_1_i_a_t_scan_report.html#ad7d4b8a134b7afd117bbb49c85a0b638">notCovered</a>.thunkToAddr.end(); ++itr) {</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keyword">const</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> thunk_rva = itr-&gt;first;</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <span class="keyword">const</span> ULONGLONG addr = itr-&gt;second;</div>
@@ -180,7 +180,7 @@ $(function() {
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    }</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    std::map&lt;ULONGLONG,ULONGLONG&gt;::iterator itr;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    std::map&lt;DWORD,ULONGLONG&gt;::iterator itr;</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordflow">for</span> (itr = <a class="code hl_variable" href="classpesieve_1_1_i_a_t_scan_report.html#ad7d4b8a134b7afd117bbb49c85a0b638">notCovered</a>.thunkToAddr.begin(); itr != <a class="code hl_variable" href="classpesieve_1_1_i_a_t_scan_report.html#ad7d4b8a134b7afd117bbb49c85a0b638">notCovered</a>.thunkToAddr.end(); ++itr)</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    {</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keyword">const</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> thunk_rva = itr-&gt;first;</div>
@@ -411,10 +411,10 @@ $(function() {
 <div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
 <div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span><span class="keywordtype">bool</span> pesieve::IATScanner::filterResults(peconv::ImpsNotCovered &amp;notCovered, <a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a> &amp;report)</div>
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>{</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>    std::map&lt;ULONGLONG, ULONGLONG&gt;::iterator itr;</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>    std::map&lt;DWORD, ULONGLONG&gt;::iterator itr;</div>
 <div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>    <span class="keywordflow">for</span> (itr = notCovered.thunkToAddr.begin(); itr != notCovered.thunkToAddr.end(); ++itr)</div>
 <div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    {</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>        <span class="keyword">const</span> ULONGLONG thunk = itr-&gt;first;</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>        <span class="keyword">const</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> thunk = itr-&gt;first;</div>
 <div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>        <span class="keyword">const</span> ULONGLONG addr = itr-&gt;second;</div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span> </div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>        <a class="code hl_class" href="classpesieve_1_1_scanned_module.html">ScannedModule</a> *modExp = modulesInfo.findModuleContaining(addr);</div>
