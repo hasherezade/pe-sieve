@@ -92,7 +92,7 @@ namespace pesieve {
 		bool zeroUnusedFields(PBYTE hdr_buffer, size_t hdrs_size);
 		bool isSecHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size);
 		bool isDosHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size);
-		bool isFileHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size);
+		bool isFileHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size, bool mask_arch_mismatch = false);
 		bool isNtHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size);
 	};
 

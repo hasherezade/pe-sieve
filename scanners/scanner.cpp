@@ -53,11 +53,6 @@ t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, Modu
 	if (is_replaced && !scan_report->isHdrReplaced()) {
 		is_replaced = SCAN_NOT_SUSPICIOUS;
 	}
-	if (modData.isDotNet() && !scan_report->isHdrReplaced()) {
-		// it is normal for .NET modules to have some modifications in the headers
-		scan_report->status = SCAN_NOT_SUSPICIOUS;
-		is_replaced = SCAN_NOT_SUSPICIOUS;
-	}
 	process_report.appendReport(scan_report);
 	return is_replaced;
 }

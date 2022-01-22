@@ -62,17 +62,20 @@ HeadersScanReport* pesieve::HeadersScanner::scanRemote()
 	my_report->secHdrModified = isSecHdrModified(hdr_buffer1, hdr_buffer2, hdrs_size);
 
 	if (moduleData.isDotNet()) {
+		const bool dotNetFileHdrModif = isFileHdrModified(hdr_buffer1, hdr_buffer2, hdrs_size, my_report->archMismatch);
 #ifdef _DEBUG
 		std::cout << "[#] .NET module detected as SUSPICIOUS\n";
 #endif
 		if (!my_report->isHdrReplaced()
-			&& (my_report->archMismatch && my_report->epModified)
+			&& !my_report->dosHdrModified
+			&& !dotNetFileHdrModif
+			&& (my_report->epModified || (my_report->archMismatch && my_report->ntHdrModified))
 			)
 		{
 			//.NET modules may overwrite some parts of their own headers
-#ifdef _DEBUG
+//#ifdef _DEBUG
 			std::cout << "[#] Filtered out modifications typical for .NET files, setting as not suspicious\n";
-#endif
+//#endif
 			my_report->status = SCAN_NOT_SUSPICIOUS;
 			return my_report;
 		}
@@ -147,7 +150,7 @@ bool pesieve::HeadersScanner::isSecHdrModified(const PBYTE hdr_buffer1, const PB
 	return false;
 }
 
-bool pesieve::HeadersScanner::isFileHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size)
+bool pesieve::HeadersScanner::isFileHdrModified(const PBYTE hdr_buffer1, const PBYTE hdr_buffer2, const size_t hdrs_size, bool mask_arch_mismatch)
 {
 	const IMAGE_FILE_HEADER *file_hdr1 = peconv::get_file_hdr(hdr_buffer1, hdrs_size);
 	const IMAGE_FILE_HEADER *file_hdr2 = peconv::get_file_hdr(hdr_buffer2, hdrs_size);
@@ -157,6 +160,17 @@ bool pesieve::HeadersScanner::isFileHdrModified(const PBYTE hdr_buffer1, const P
 
 	if (memcmp(file_hdr1, file_hdr2, sizeof(IMAGE_FILE_HEADER)) == 0) {
 		return false;
+	}
+	if (mask_arch_mismatch) {
+		if (file_hdr1->Machine == file_hdr2->Machine
+			&& file_hdr1->Characteristics == file_hdr2->Characteristics
+			&& file_hdr1->NumberOfSections == file_hdr2->NumberOfSections
+			&& file_hdr1->TimeDateStamp == file_hdr2->TimeDateStamp
+			&& file_hdr1->SizeOfOptionalHeader != file_hdr2->SizeOfOptionalHeader)
+		{
+			// only the SizeOfOptionalHeader has changed
+			return false;
+		}
 	}
 	return true;
 }
