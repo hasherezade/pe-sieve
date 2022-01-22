@@ -30,18 +30,19 @@ HeadersScanReport* pesieve::HeadersScanner::scanRemote()
 	memcpy(hdr_buffer2, moduleData.original_module, hdrs_size);
 
 	// some .NET modules overwrite their own headers, so at this point they should be excluded from the comparison
-	DWORD ep1 = peconv::get_entry_point_rva(hdr_buffer1);
-	DWORD ep2 = peconv::get_entry_point_rva(hdr_buffer2);
+	const DWORD ep1 = peconv::get_entry_point_rva(hdr_buffer1);
+	const DWORD ep2 = peconv::get_entry_point_rva(hdr_buffer2);
 	if (ep1 != ep2) {
 		my_report->epModified = true;
 	}
-	DWORD arch1 = peconv::get_nt_hdr_architecture(hdr_buffer1);
-	DWORD arch2 = peconv::get_nt_hdr_architecture(hdr_buffer2);
+	const DWORD arch1 = peconv::get_nt_hdr_architecture(hdr_buffer1);
+	const DWORD arch2 = peconv::get_nt_hdr_architecture(hdr_buffer2);
 	if (arch1 != arch2) {
 		// this often happend in .NET modules
 		//if there is an architecture mismatch it may indicate that a different version of the app was loaded (possibly legit)
 		my_report->archMismatch = true;
 	}
+
 	//normalize before comparing:
 	peconv::update_image_base(hdr_buffer1, 0);
 	peconv::update_image_base(hdr_buffer2, 0);
@@ -82,12 +83,13 @@ HeadersScanReport* pesieve::HeadersScanner::scanRemote()
 
 bool pesieve::HeadersScanner::zeroUnusedFields(PBYTE hdr_buffer, size_t hdrs_size)
 {
-	size_t section_num = peconv::get_sections_count(hdr_buffer, hdrs_size);
 	bool is_modified = false;
+	size_t section_num = peconv::get_sections_count(hdr_buffer, hdrs_size);
 
 	for (size_t i = 0; i < section_num; i++) {
 		PIMAGE_SECTION_HEADER sec_hdr = peconv::get_section_hdr(hdr_buffer, hdrs_size, i);
 		if (sec_hdr == nullptr) continue;
+
 		if (sec_hdr->SizeOfRawData == 0) {
 			sec_hdr->PointerToRawData = 0;
 			is_modified = true;
@@ -153,7 +155,7 @@ bool pesieve::HeadersScanner::isFileHdrModified(const PBYTE hdr_buffer1, const P
 	if (!file_hdr1 && !file_hdr2) return false;
 	if (!file_hdr1 || !file_hdr2) return true;
 
-	if (memcmp(file_hdr1, file_hdr2, sizeof(IMAGE_NT_HEADERS64)) == 0) {
+	if (memcmp(file_hdr1, file_hdr2, sizeof(IMAGE_FILE_HEADER)) == 0) {
 		return false;
 	}
 	return true;
@@ -165,8 +167,8 @@ bool pesieve::HeadersScanner::isNtHdrModified(const PBYTE hdr_buffer1, const PBY
 	if (peconv::is64bit(hdr_buffer2) != is64) {
 		return true;
 	}
-	BYTE *nt1 = peconv::get_nt_hdrs(hdr_buffer1, hdrs_size);
-	BYTE *nt2 = peconv::get_nt_hdrs(hdr_buffer2, hdrs_size);
+	const BYTE *nt1 = peconv::get_nt_hdrs(hdr_buffer1, hdrs_size);
+	const BYTE *nt2 = peconv::get_nt_hdrs(hdr_buffer2, hdrs_size);
 	if (!nt1 && !nt2) return false;
 	if (!nt1 || !nt2) return true;
 
