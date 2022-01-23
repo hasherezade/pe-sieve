@@ -21,5 +21,6 @@ var searchData=
   ['loadoriginal_18',['loadOriginal',['../classpesieve_1_1_pe_section.html#ae0525b58e8fd1eb8426d5eb2ebe1d278',1,'pesieve::PeSection::loadOriginal()'],['../classpesieve_1_1_module_data.html#a729adaeb197b9f1415ff35e98e24c203',1,'pesieve::ModuleData::loadOriginal()']]],
   ['loadrelocatedfields_19',['loadRelocatedFields',['../classpesieve_1_1_module_data.html#a561bfce148fdcf705144537fa2739bc2',1,'pesieve::ModuleData']]],
   ['loadremote_20',['loadRemote',['../classpesieve_1_1_pe_section.html#a2431e70802f32bfec22c3bf23a7a79d2',1,'pesieve::PeSection']]],
-  ['long_5fpath_5fprefix_21',['LONG_PATH_PREFIX',['../path__converter_8cpp.html#a10ada049714deddcb7c882a173f62999',1,'path_converter.cpp']]]
+  ['lock_21',['Lock',['../structpesieve_1_1util_1_1_mutex.html#a1d253302cb2cda6c5ea0b76192cd9e2f',1,'pesieve::util::Mutex']]],
+  ['long_5fpath_5fprefix_22',['LONG_PATH_PREFIX',['../path__converter_8cpp.html#a10ada049714deddcb7c882a173f62999',1,'path_converter.cpp']]]
 ];

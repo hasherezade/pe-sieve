@@ -9,5 +9,7 @@ var searchData=
   ['modulescache_6',['ModulesCache',['../classpesieve_1_1_modules_cache.html',1,'pesieve']]],
   ['modulescanner_7',['ModuleScanner',['../classpesieve_1_1_module_scanner.html',1,'pesieve']]],
   ['modulescanreport_8',['ModuleScanReport',['../classpesieve_1_1_module_scan_report.html',1,'pesieve']]],
-  ['modulesinfo_9',['ModulesInfo',['../classpesieve_1_1_modules_info.html',1,'pesieve']]]
+  ['modulesinfo_9',['ModulesInfo',['../classpesieve_1_1_modules_info.html',1,'pesieve']]],
+  ['mutex_10',['Mutex',['../structpesieve_1_1util_1_1_mutex.html',1,'pesieve::util']]],
+  ['mutexlocker_11',['MutexLocker',['../structpesieve_1_1util_1_1_mutex_locker.html',1,'pesieve::util']]]
 ];
