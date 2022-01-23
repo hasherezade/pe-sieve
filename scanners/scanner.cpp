@@ -33,7 +33,6 @@ t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, Modu
 	HeadersScanner scanner(processHandle, modData, remoteModData);
 	HeadersScanReport *scan_report = scanner.scanRemote();
 	if (!scan_report) {
-		process_report.appendReport(new UnreachableModuleReport(modData.moduleHandle, modData.original_size, modData.szModName));
 		return SCAN_ERROR;
 	}
 	
@@ -297,25 +296,24 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 			pReport.appendReport(new UnreachableModuleReport(module_base, 0, modData.szModName));
 			continue;
 		}
-
+		if (modData.isDotNet()) {
+			// the process contains at least one .NET module. Treat it as managed process:
+			pReport.isManaged = true;
+		}
 		// Don't scan modules that are in the ignore list
 		const std::string plainName = peconv::get_file_name(modData.szModName);
 		if (is_in_list(plainName.c_str(), this->ignoredModules)) {
 			// ...but add such modules to the exports lookup:
-			if (pReport.exportsMap && modData.loadOriginal()) {
+			if (pReport.exportsMap) {
 				pReport.exportsMap->add_to_lookup(modData.szModName, (HMODULE)modData.original_module, (ULONGLONG)modData.moduleHandle);
 			}
-			if (modData.isDotNet()) pReport.isManaged = true;
 			if (!args.quiet) {
 				std::cout << "[*] Skipping ignored: " << std::hex << (ULONGLONG)modData.moduleHandle << " : " << modData.szModName << std::endl;
 			}
 			pReport.appendReport(new SkippedModuleReport(modData.moduleHandle, modData.original_size, modData.szModName));
 			continue;
 		}
-		if (modData.isDotNet()) {
-			// the process contains at least one .NET module. Treat it as managed process:
-			pReport.isManaged = true;
-		}
+
 		if (!args.quiet) {
 			std::cout << "[*] Scanning: " << modData.szModName;
 			if (modData.isDotNet()) {
