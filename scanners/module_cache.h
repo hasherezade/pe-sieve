@@ -54,7 +54,8 @@ namespace pesieve
 
 	struct CachedModule {
 	public:
-		CachedModule() : moduleData(nullptr), moduleSize(0), lastUsage(0)
+		CachedModule() 
+			: moduleData(nullptr), moduleSize(0), lastUsage(0)
 		{
 		}
 
@@ -87,9 +88,9 @@ namespace pesieve
 			moduleSize = 0;
 		}
 		
-		BYTE* moduleData = nullptr;
-		size_t moduleSize = 0;
-		ULONGLONG lastUsage = 0;
+		BYTE* moduleData;
+		size_t moduleSize;
+		ULONGLONG lastUsage;
 	};
 
 
