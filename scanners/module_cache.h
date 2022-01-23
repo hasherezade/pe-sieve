@@ -3,14 +3,59 @@
 #include <peconv.h>
 #include <string>
 #include <map>
-#include <mutex>
 
 namespace pesieve
 {
+	namespace util {
+		struct Mutex {
+		public:
+			Mutex()
+			{
+				InitializeCriticalSection(&cs);
+			}
+
+			void Lock()
+			{
+				EnterCriticalSection(&cs);
+			}
+
+			void Unlock()
+			{
+				LeaveCriticalSection(&cs);
+			}
+
+			~Mutex()
+			{
+				DeleteCriticalSection(&cs);
+			}
+
+		private:
+			CRITICAL_SECTION cs;
+		};
+
+		struct MutexLocker
+		{
+		public:
+			MutexLocker(Mutex& _mutex)
+				: mutex(_mutex)
+			{
+				mutex.Lock();
+			}
+
+			~MutexLocker()
+			{
+				mutex.Unlock();
+			}
+
+		private:
+			Mutex& mutex;
+		};
+	};
 
 	struct CachedModule {
 	public:
-		CachedModule() : moduleData(nullptr), moduleSize(0), lastUsage(0)
+		CachedModule() 
+			: moduleData(nullptr), moduleSize(0), lastUsage(0)
 		{
 		}
 
@@ -43,9 +88,9 @@ namespace pesieve
 			moduleSize = 0;
 		}
 		
-		BYTE* moduleData = nullptr;
-		size_t moduleSize = 0;
-		ULONGLONG lastUsage = 0;
+		BYTE* moduleData;
+		size_t moduleSize;
+		ULONGLONG lastUsage;
 	};
 
 
@@ -73,7 +118,7 @@ namespace pesieve
 	protected:
 		BYTE* getMappedCached(const std::string &modName, size_t& mappedSize)
 		{
-			std::lock_guard<std::mutex> guard(cacheMutex);
+			util::MutexLocker guard(cacheMutex);
 
 			std::map<std::string, CachedModule*>::iterator itr = cachedModules.find(modName);
 			if (itr != cachedModules.end()) {
@@ -88,7 +133,7 @@ namespace pesieve
 
 		bool prepareCacheSpace(bool force_free = false)
 		{
-			std::lock_guard<std::mutex> guard(cacheMutex);
+			util::MutexLocker guard(cacheMutex);
 			const bool is_cache_available = cachedModules.size() < MaxCachedModules;
 			if (is_cache_available && !force_free) {
 				return true;
@@ -133,7 +178,7 @@ namespace pesieve
 
 		void deleteCache()
 		{
-			std::lock_guard<std::mutex> guard(cacheMutex);
+			util::MutexLocker guard(cacheMutex);
 
 			std::map<std::string, CachedModule*>::iterator itr;
 #ifdef _DEBUG
@@ -157,7 +202,7 @@ namespace pesieve
 
 		std::map<std::string, CachedModule*> cachedModules; ///< the list of all the cached modules
 
-		std::mutex cacheMutex;
+		util::Mutex cacheMutex;
 	};
 
 };
