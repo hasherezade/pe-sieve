@@ -392,10 +392,8 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 			continue;
 		}
 
-		t_scan_status is_iat_patched = scanForIATHooks(processHandle, modData, remoteModData, pReport, this->args.iat);
-		if (is_iat_patched == SCAN_ERROR) {
-			continue;
-		}
+		// do the IAT scan:
+		scanForIATHooks(processHandle, modData, remoteModData, pReport, this->args.iat);
 	}
 	if (!args.quiet) {
 		ULONGLONG total_time = GetTickCount64() - start_tick;

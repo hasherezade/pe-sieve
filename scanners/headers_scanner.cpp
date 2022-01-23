@@ -73,9 +73,9 @@ HeadersScanReport* pesieve::HeadersScanner::scanRemote()
 			)
 		{
 			//.NET modules may overwrite some parts of their own headers
-//#ifdef _DEBUG
+#ifdef _DEBUG
 			std::cout << "[#] Filtered out modifications typical for .NET files, setting as not suspicious\n";
-//#endif
+#endif
 			my_report->status = SCAN_NOT_SUSPICIOUS;
 			return my_report;
 		}
@@ -87,7 +87,7 @@ HeadersScanReport* pesieve::HeadersScanner::scanRemote()
 bool pesieve::HeadersScanner::zeroUnusedFields(PBYTE hdr_buffer, size_t hdrs_size)
 {
 	bool is_modified = false;
-	size_t section_num = peconv::get_sections_count(hdr_buffer, hdrs_size);
+	const size_t section_num = peconv::get_sections_count(hdr_buffer, hdrs_size);
 
 	for (size_t i = 0; i < section_num; i++) {
 		PIMAGE_SECTION_HEADER sec_hdr = peconv::get_section_hdr(hdr_buffer, hdrs_size, i);
