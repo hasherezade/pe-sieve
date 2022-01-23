@@ -16,7 +16,7 @@ var searchData=
   ['pesieve_5fhelp_13',['PESieve_help',['../pe__sieve__api_8h.html#aaa092db8bd00f4bbda08c9b6a6663624',1,'PESieve_help(void):&#160;pe_sieve_api.cpp'],['../pe__sieve__api_8cpp.html#aaa092db8bd00f4bbda08c9b6a6663624',1,'PESieve_help(void):&#160;pe_sieve_api.cpp']]],
   ['pesieve_5fscan_14',['PESieve_scan',['../pe__sieve__api_8h.html#a1b35bcafd8e217ab26bd59b5b0bb1b8e',1,'PESieve_scan(const PEsieve_params args):&#160;pe_sieve_api.cpp'],['../pe__sieve__api_8cpp.html#a1b35bcafd8e217ab26bd59b5b0bb1b8e',1,'PESieve_scan(const PEsieve_params args):&#160;pe_sieve_api.cpp']]],
   ['pesieveparams_15',['PEsieveParams',['../class_p_esieve_params.html#a8bfd0082eab50ce4b744b92e4b956b22',1,'PEsieveParams']]],
-  ['preparecachespace_16',['prepareCacheSpace',['../classpesieve_1_1_modules_cache.html#aff959373d5ea27c5c1b852afc3991a1e',1,'pesieve::ModulesCache']]],
+  ['preparecachespace_16',['prepareCacheSpace',['../classpesieve_1_1_modules_cache.html#a7a9aacf20afa87dc50740e562150c90e',1,'pesieve::ModulesCache']]],
   ['print_5fin_5fcolor_17',['print_in_color',['../namespacepesieve_1_1util.html#a7eca64fd4903e8fe4eebefd19e4a6614',1,'pesieve::util']]],
   ['print_5freport_18',['print_report',['../main_8cpp.html#a1ce5c23b0c75233b648ff726786f473c',1,'main.cpp']]],
   ['printbanner_19',['printBanner',['../class_p_esieve_params.html#a329838ce31e84c366fa8df6451decf00',1,'PEsieveParams']]],
