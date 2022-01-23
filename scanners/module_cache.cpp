@@ -15,7 +15,7 @@ BYTE* pesieve::ModulesCache::loadCached(LPSTR szModName, size_t& module_size)
 	bool force_free_cache = false;
 	// Add to cache if needed...
 	{
-		std::lock_guard<std::mutex> guard(cacheMutex);
+		util::MutexLocker guard(cacheMutex);
 		size_t currCntr = usageBeforeCounter[szModName]++;
 		const size_t cachedModulesCntr = cachedModules.size();
 		const bool is_cache_available = cachedModulesCntr < MaxCachedModules;
