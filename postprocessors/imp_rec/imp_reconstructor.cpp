@@ -84,14 +84,14 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::_recreateImpo
 {
 	// convert to filter:
 
-	int filter = t_imprec_filter::IMP_REC0;
+	int filter = IMP_REC0;
 	switch (imprec_mode) {
 	case PE_IMPREC_REBUILD0:
-		filter = t_imprec_filter::IMP_REC0; break;
+		filter = IMP_REC0; break;
 	case PE_IMPREC_REBUILD1:
-		filter = t_imprec_filter::IMP_REC1; break;
+		filter = IMP_REC1; break;
 	case PE_IMPREC_REBUILD2:
-		filter = t_imprec_filter::IMP_REC2; break;
+		filter = IMP_REC2; break;
 	}
 
 	// in AUTO mode: chose higher filter if the unterminated IAT is bigger than the main IAT, or any terminated:
@@ -139,11 +139,11 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::_recreateImpo
 	}
 	// convert results:
 	switch (filter) {
-	case t_imprec_filter::IMP_REC0:
+	case IMP_REC0:
 		return IMP_RECREATED_FILTER0;
-	case t_imprec_filter::IMP_REC1:
+	case IMP_REC1:
 		return IMP_RECREATED_FILTER1;
-	case t_imprec_filter::IMP_REC2:
+	case IMP_REC2:
 		return IMP_RECREATED_FILTER2;
 	}
 	return IMP_RECREATED_FILTER0;

@@ -43,9 +43,9 @@ namespace pesieve
 			moduleSize = 0;
 		}
 		
-		BYTE* moduleData = nullptr;
-		size_t moduleSize = 0;
-		ULONGLONG lastUsage = 0;
+		BYTE* moduleData;
+		size_t moduleSize;
+		ULONGLONG lastUsage;
 	};
 
 
