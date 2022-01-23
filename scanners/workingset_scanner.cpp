@@ -142,15 +142,6 @@ bool pesieve::WorkingSetScanner::scanImg()
 		// detected as hollowed, no need for further scans
 		return true;
 	}
-
-	if (modData.isDotNet()) {
-		// .NET module will not be scanned
-#ifdef _DEBUG
-		std::cout << "[*] Skipping a .NET module: " << modData.szModName << std::endl;
-#endif
-		processReport.appendReport(new SkippedModuleReport(modData.moduleHandle, modData.original_size, modData.szModName));
-		return true;
-	}
 	if (!args.no_hooks) {
 		const bool scan_data = (this->args.data >= pesieve::PE_DATA_SCAN_ALWAYS && this->args.data != PE_DATA_SCAN_INACCESSIBLE_ONLY)
 			|| (!memPage.is_dep_enabled && (this->args.data == pesieve::PE_DATA_SCAN_NO_DEP));
