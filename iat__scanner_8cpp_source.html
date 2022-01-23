@@ -193,7 +193,7 @@ $(function() {
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        }</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <span class="keyword">const</span> <a class="code hl_class" href="classpesieve_1_1_scanned_module.html">ScannedModule</a>* modExp = modulesInfo.findModuleContaining(addr);</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="keyword">const</span> ULONGLONG module_start = (modExp) ? modExp-&gt;<a class="code hl_function" href="classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef">getStart</a>() : peconv::fetch_alloc_base(hProcess, (BYTE*)addr);</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="keyword">const</span> <span class="keywordtype">size_t</span> offset = addr - module_start;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="keyword">const</span> ULONGLONG offset = addr - module_start;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        report &lt;&lt; std::hex &lt;&lt; addr;</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        report &lt;&lt; <span class="stringliteral">&quot;[&quot;</span></div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>            &lt;&lt; std::hex &lt;&lt; module_start &lt;&lt; <span class="stringliteral">&quot;+&quot;</span> &lt;&lt; offset</div>
