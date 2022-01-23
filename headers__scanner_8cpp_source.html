@@ -146,9 +146,9 @@ $(function() {
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            )</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        {</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            <span class="comment">//.NET modules may overwrite some parts of their own headers</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">//#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#ifdef _DEBUG</span></div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;[#] Filtered out modifications typical for .NET files, setting as not suspicious\n&quot;</span>;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">//#endif</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            my_report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a16ceb9869161945d59ad00ce88bd8000">SCAN_NOT_SUSPICIOUS</a>;</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>            <span class="keywordflow">return</span> my_report;</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        }</div>
@@ -160,7 +160,7 @@ $(function() {
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="keywordtype">bool</span> pesieve::HeadersScanner::zeroUnusedFields(PBYTE hdr_buffer, <span class="keywordtype">size_t</span> hdrs_size)</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>{</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordtype">bool</span> is_modified = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordtype">size_t</span> section_num = peconv::get_sections_count(hdr_buffer, hdrs_size);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> section_num = peconv::get_sections_count(hdr_buffer, hdrs_size);</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; section_num; i++) {</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        PIMAGE_SECTION_HEADER sec_hdr = peconv::get_section_hdr(hdr_buffer, hdrs_size, i);</div>
