@@ -120,7 +120,7 @@ bool IATScanReport::saveNotRecovered(IN std::string fileName,
 		}
 		const ScannedModule* modExp = modulesInfo.findModuleContaining(addr);
 		const ULONGLONG module_start = (modExp) ? modExp->getStart() : peconv::fetch_alloc_base(hProcess, (BYTE*)addr);
-		const size_t offset = addr - module_start;
+		const ULONGLONG offset = addr - module_start;
 		report << std::hex << addr;
 		report << "["
 			<< std::hex << module_start << "+" << offset
