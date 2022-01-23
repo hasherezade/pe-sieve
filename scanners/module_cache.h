@@ -86,11 +86,11 @@ namespace pesieve
 			return nullptr;
 		}
 
-		bool prepareCacheSpace()
+		bool prepareCacheSpace(bool force_free = false)
 		{
 			std::lock_guard<std::mutex> guard(cacheMutex);
 			const bool is_cache_available = cachedModules.size() < MaxCachedModules;
-			if (is_cache_available) {
+			if (is_cache_available && !force_free) {
 				return true;
 			}
 			return _deleteLeastRecent();
