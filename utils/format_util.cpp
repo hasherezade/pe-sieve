@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <sstream>
+#include <fstream>
 #include <iomanip>
 
 namespace pesieve {
@@ -147,4 +148,15 @@ size_t pesieve::util::string_to_list(IN::std::string s, IN char _delim, OUT::std
 		elements_list.insert(next_str);
 	}
 	return elements_list.size();
+}
+
+size_t pesieve::util::load_list_from_file(IN::std::string filename, IN char _delim, OUT::std::set<::std::string>& elements_list, bool to_lower)
+{
+	std::ifstream infile(filename);
+	std::string line;
+	size_t total = 0;
+	while (std::getline(infile, line)) {
+		total += string_to_list(line, _delim, elements_list, to_lower);
+	}
+	return total;
 }

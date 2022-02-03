@@ -25,6 +25,7 @@ namespace pesieve {
 		{
 			this->processHandle = procHndl;
 			pesieve::util::string_to_list(args.modules_ignored, PARAM_LIST_SEPARATOR, ignoredModules);
+			pesieve::util::load_list_from_file(args.modules_ignored_list, PARAM_LIST_SEPARATOR, ignoredModules);
 		}
 
 		~ProcessScanner()

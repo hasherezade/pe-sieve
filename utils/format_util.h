@@ -33,6 +33,8 @@ namespace pesieve {
 
 		size_t string_to_list(IN::std::string s, IN char _delim, OUT std::set<std::string>& elements_list, bool to_lower=true);
 
+		size_t load_list_from_file(IN::std::string filename, IN char _delim, OUT::std::set<::std::string>& elements_list, bool to_lower = true);
+
 	};
 };
 

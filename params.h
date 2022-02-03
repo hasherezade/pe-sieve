@@ -15,6 +15,7 @@ using namespace pesieve;
 #define PARAM_DATA "data"
 #define PARAM_IAT "iat"
 #define PARAM_MODULES_IGNORE "mignore"
+#define PARAM_MODULES_IGNORE_LIST "mignorel"
 #define PARAM_REFLECTION "refl"
 #define PARAM_DOTNET_POLICY "dnet"
 
@@ -66,7 +67,14 @@ public:
 			ss2 << INFO_SPACER << "Example: kernel32.dll" << PARAM_LIST_SEPARATOR << "user32.dll";
 			this->setInfo(PARAM_MODULES_IGNORE, ss1.str(), ss2.str());
 		}
-		
+		//PARAM_MODULES_IGNORE_LIST
+		this->addParam(new StringParam(PARAM_MODULES_IGNORE_LIST, false));
+		{
+			std::stringstream ss1;
+			ss1 << "A file containing a list of modules excluded from the scan.";
+			this->setInfo(PARAM_MODULES_IGNORE_LIST, ss1.str());
+		}
+
 		this->addParam(new BoolParam(PARAM_QUIET, false));
 		this->setInfo(PARAM_QUIET, "Print only the summary. Do not log on stdout during the scan.");
 
@@ -175,6 +183,7 @@ public:
 		this->addGroup(new ParamGroup(str_group));
 		this->addParamToGroup(PARAM_DOTNET_POLICY, str_group);
 		this->addParamToGroup(PARAM_MODULES_IGNORE, str_group);
+		this->addParamToGroup(PARAM_MODULES_IGNORE_LIST, str_group);
 	}
 
 	void fillStruct(t_params &ps)
@@ -184,6 +193,7 @@ public:
 		copyVal<EnumParam>(PARAM_OUT_FILTER, ps.out_filter);
 
 		copyCStr<StringParam>(PARAM_MODULES_IGNORE, ps.modules_ignored, _countof(ps.modules_ignored));
+		copyCStr<StringParam>(PARAM_MODULES_IGNORE_LIST, ps.modules_ignored_list, _countof(ps.modules_ignored_list));
 
 		copyVal<BoolParam>(PARAM_QUIET, ps.quiet);
 		copyVal<BoolParam>(PARAM_JSON, ps.json_output);
