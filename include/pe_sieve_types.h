@@ -8,7 +8,7 @@
 #include <windows.h>
 #include <pshpack4.h> // ensure 4 byte packing of the structures
 
-#define MAX_MODULE_BUF_LEN 1024
+#define MAX_MODULE_BUF_LEN 2048
 #define PARAM_LIST_SEPARATOR ';'
 
 #ifndef __cplusplus
