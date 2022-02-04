@@ -29,7 +29,7 @@ namespace pesieve {
 		bool is_in_list(const char *searched_string, const char *strings_list);
 
 		// Converts a delimiter-separated list (i.e. "kernel32.dll,user32.dll,ntdll.dll") into multi-SZ string. Returns the count of the strings.
-		size_t delim_list_to_multi_sz(IN const char* delim_list_str, IN const char delimiter, OUT char* buffer, IN const size_t buffer_max_chars);
+		size_t delim_list_to_multi_sz(IN const std::string & input, IN const char delimiter, OUT std::string & output);
 
 	};
 };

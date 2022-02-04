@@ -23,8 +23,7 @@ namespace pesieve {
 			: args(_args), isDEP(false), isReflection(is_reflection)
 		{
 			this->processHandle = procHndl;
-			ZeroMemory(ignoredModules, _countof(ignoredModules));
-			pesieve::util::delim_list_to_multi_sz(args.modules_ignored, PARAM_LIST_SEPARATOR, ignoredModules, _countof(ignoredModules));
+			pesieve::util::delim_list_to_multi_sz(args.modules_ignored, PARAM_LIST_SEPARATOR, ignoredModules);
 		}
 
 		~ProcessScanner()
@@ -57,7 +56,7 @@ namespace pesieve {
 		size_t hModsMax;
 		pesieve::t_params args;
 
-		char ignoredModules[MAX_MODULE_BUF_LEN];
+		std::string ignoredModules;
 	};
 
 }; //namespace pesieve

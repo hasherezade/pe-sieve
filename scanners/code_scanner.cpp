@@ -263,7 +263,7 @@ size_t pesieve::CodeScanner::collectExecutableSections(RemoteModuleData &_remote
 		}
 		else {
 			// report about failed initialization
-			my_report.sectionToResult[i] = CodeScanReport::SECTION_SCAN_ERR;
+			my_report.sectionToResult[(DWORD)i] = CodeScanReport::SECTION_SCAN_ERR;
 		}
 		// the section was not added to the list, delete it instead:
 		delete remoteSec;

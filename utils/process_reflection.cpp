@@ -188,7 +188,7 @@ namespace pesieve {
 			if (ret == S_OK) {
 				args->is_ok = true;
 				args->returned_hndl = info.ReflectionProcessHandle;
-				args->returned_pid = (DWORD)info.ReflectionClientId.UniqueProcess;
+				args->returned_pid = (DWORD)(DWORD_PTR)info.ReflectionClientId.UniqueProcess;
 			}
 			return ret;
 		}

@@ -183,7 +183,7 @@ public:
 		copyVal<EnumParam>(PARAM_IMP_REC, ps.imprec_mode);
 		copyVal<EnumParam>(PARAM_OUT_FILTER, ps.out_filter);
 
-		copyCStr<StringParam>(PARAM_MODULES_IGNORE, ps.modules_ignored, _countof(ps.modules_ignored));
+		copyString(PARAM_MODULES_IGNORE, ps.modules_ignored);
 
 		copyVal<BoolParam>(PARAM_QUIET, ps.quiet);
 		copyVal<BoolParam>(PARAM_JSON, ps.json_output);
@@ -199,7 +199,7 @@ public:
 		copyVal<EnumParam>(PARAM_DATA, ps.data);
 		copyVal<EnumParam>(PARAM_DUMP_MODE, ps.dump_mode);
 
-		copyCStr<StringParam>(PARAM_DIR, ps.output_dir, _countof(ps.output_dir));
+		copyString(PARAM_DIR, ps.output_dir);
 	}
 
 	void printBanner()

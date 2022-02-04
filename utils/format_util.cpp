@@ -99,40 +99,48 @@ bool pesieve::util::is_in_list(const char *searched_str, const char *str_list)
 	return result;
 }
 
-size_t pesieve::util::delim_list_to_multi_sz(IN const char *delim_list_str, IN const char delimiter, OUT char *buffer, IN const size_t buffer_max_chars)
+size_t pesieve::util::delim_list_to_multi_sz(IN const std::string & input, IN const char delimiter, OUT std::string & output)
 {
-	size_t str_count = 0;
-	const char * separator;
-	char * buffer_end = buffer + buffer_max_chars - 2;
+	char * target_begin;
+	char * source_end;
+	char * source;
+	char * target;
+	size_t length;
 
-	// Clear the array
-	memset(buffer, 0, buffer_max_chars);
+	// Copy the source into the target; we will work on top of the target's buffer
+	output = input;
 
-	// Parse the string
-	while (delim_list_str && delim_list_str[0])
+	// Append two chars to make sure we have enough space for two zeros.
+	// Don't count them into length
+	length = output.size();
+	output.append(2, delimiter);
+
+	// Prepare the pointer range
+	target_begin = target = source = (char *)(output.c_str());
+	source_end = source + length;
+
+	// Parse the input string. Separator and any spaces following behind it are skipped.
+	while(source < source_end)
 	{
-		// Get the next separator
-		separator = strchr(delim_list_str, delimiter);
-		if (separator == NULL)
+		// Did we find the delimiter?
+		if(source[0] == delimiter)
 		{
-			StringCchCopy(buffer, (buffer_end - buffer), delim_list_str);
-			str_count++;
-			break;
+			// Skip the source delimiter and all. Put zero to the target
+			while(source[0] == delimiter || source[0] == ' ')
+				source++;
+			*target++ = 0;
+			continue;
 		}
 
-		// Put the part to the string
-		if (separator > delim_list_str)
-		{
-			StringCchCopyNEx(buffer, (buffer_end - buffer), delim_list_str, (separator - delim_list_str), &buffer, NULL, 0);
-			str_count++;
-			buffer++;
-		}
-
-		// Skip comma and spaces
-		while (separator[0] == delimiter || separator[0] == ' ')
-			separator++;
-		delim_list_str = separator;
+		// Simply copy the char
+		*target++ = *source++;
 	}
-	return str_count;
+
+	// Append two zeros, making it multi-sz
+	*target++ = 0;
+	*target++ = 0;
+
+	// Return length of the target
+	return (target - target_begin);
 }
 
