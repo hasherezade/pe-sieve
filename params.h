@@ -64,7 +64,8 @@ public:
 			std::stringstream ss1;
 			ss1 << "Do not scan module/s with given name/s.";
 			std::stringstream ss2;
-			ss2 << INFO_SPACER << "Example: kernel32.dll" << PARAM_LIST_SEPARATOR << "user32.dll";
+			ss2 << INFO_SPACER << "Example: kernel32.dll" << PARAM_LIST_SEPARATOR << "user32.dll\n";
+			ss2 << INFO_SPACER << "The whole string cannot be longer than " << std::dec << MAX_MODULE_BUF_LEN << " characters.";
 			this->setInfo(PARAM_MODULES_IGNORE, ss1.str(), ss2.str());
 		}
 		//PARAM_MODULES_IGNORE_LIST
