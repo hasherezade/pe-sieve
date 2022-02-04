@@ -39,6 +39,11 @@ void print_report(const pesieve::ReportEx& report, const t_params args)
 	}
 }
 
+void free_params(t_params &args)
+{
+	free_strparam(args.modules_ignored);
+}
+
 int main(int argc, char *argv[])
 {
 	bool info_req = false;
@@ -84,6 +89,8 @@ int main(int argc, char *argv[])
 		delete report;
 		report = nullptr;
 	}
+
+	free_params(args);
 #ifdef _DEBUG
 	system("pause");
 #endif

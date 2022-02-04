@@ -29,6 +29,27 @@ using namespace pesieve;
 #define PARAM_DIR "dir"
 #define PARAM_MINIDUMP "minidmp"
 
+
+bool alloc_strparam(PARAM_STRING& strparam, ULONG len)
+{
+	if (strparam.buffer != nullptr) { // already allocated
+		return false;
+	}
+	strparam.buffer = (char*)calloc(len + 1, sizeof(char));
+	if (strparam.buffer) {
+		strparam.length = len;
+		return true;
+	}
+	return false;
+}
+
+void free_strparam(PARAM_STRING& strparam)
+{
+	free(strparam.buffer);
+	strparam.buffer = nullptr;
+	strparam.length = 0;
+}
+
 class PEsieveParams : public Params
 {
 public:
@@ -188,12 +209,7 @@ public:
 		if (!len) {
 			return false;
 		}
-		if (strparam.buffer == nullptr) {
-			strparam.buffer = (char*)calloc(len + 1, sizeof(char));
-			if (strparam.buffer) {
-				strparam.length = len;
-			}
-		}
+		alloc_strparam(strparam, len);
 		bool is_copied = false;
 		if (strparam.buffer) {
 			is_copied = copyCStr<StringParam>(paramId, strparam.buffer, strparam.length);
