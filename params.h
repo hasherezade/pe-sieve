@@ -73,7 +73,9 @@ public:
 		{
 			std::stringstream ss1;
 			ss1 << "A file containing a list of modules excluded from the scan.";
-			this->setInfo(PARAM_MODULES_IGNORE_LIST, ss1.str());
+			std::stringstream ss2;
+			ss2 << INFO_SPACER << "Like /mignore, but supplied as a file. No limits for the length.\n";
+			this->setInfo(PARAM_MODULES_IGNORE_LIST, ss1.str(), ss2.str());
 		}
 
 		this->addParam(new BoolParam(PARAM_QUIET, false));
