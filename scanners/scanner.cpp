@@ -24,6 +24,29 @@
 using namespace pesieve;
 using namespace pesieve::util;
 
+namespace pesieve {
+
+	bool validate_param_str(PARAM_STRING &strparam)
+	{
+		if (!strparam.buffer || strparam.length == 0) {
+			return false;
+		}
+		if (IsBadReadPtr(strparam.buffer, strparam.length)) {
+			return false;
+		}
+		return true;
+	}
+};
+
+pesieve::ProcessScanner::ProcessScanner(HANDLE procHndl, bool is_reflection, pesieve::t_params _args)
+	: args(_args), isDEP(false), isReflection(is_reflection)
+{
+	this->processHandle = procHndl;
+	if (validate_param_str(args.modules_ignored)) {
+		pesieve::util::string_to_list(args.modules_ignored.buffer, PARAM_LIST_SEPARATOR, ignoredModules);
+	}
+}
+
 t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
 	BOOL isWow64 = FALSE;

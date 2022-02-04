@@ -81,6 +81,11 @@ namespace pesieve {
 		JSON_LVL_COUNT
 	} t_json_level;
 
+	typedef struct _PARAM_STRING {
+		ULONG length;
+		char* buffer;
+	} PARAM_STRING;
+
 	//!  Input parameters for PE-sieve, defining the configuration.
 	typedef struct {
 		DWORD pid;                 ///< the PID of the process to be scanned
@@ -99,7 +104,7 @@ namespace pesieve {
 		bool use_cache;      ///< enable cache for the scanned modules
 		t_json_level json_lvl;  ///< level of the details of the JSON report
 		char output_dir[MAX_PATH + 1];  ///< the root directory where the output should be saved (default: current directory)
-		char modules_ignored[MAX_MODULE_BUF_LEN]; ///< a list of modules that will not be scanned, separated by PARAM_LIST_SEPARATOR
+		PARAM_STRING modules_ignored; ///< a list of modules that will not be scanned, separated by PARAM_LIST_SEPARATOR
 	} t_params;
 
 	//!  Final summary about the scanned process.

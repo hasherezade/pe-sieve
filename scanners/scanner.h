@@ -20,12 +20,7 @@ namespace pesieve {
 		\param is_reflection : a flag indicating if the given handle (procHndl) leads to a raw process, or the process reflection
 		\param args : the configuration of the scan (defined as t_params)
 		*/
-		ProcessScanner(HANDLE procHndl, bool is_reflection, pesieve::t_params _args)
-			: args(_args), isDEP(false), isReflection(is_reflection)
-		{
-			this->processHandle = procHndl;
-			pesieve::util::string_to_list(args.modules_ignored, PARAM_LIST_SEPARATOR, ignoredModules);
-		}
+		ProcessScanner(HANDLE procHndl, bool is_reflection, pesieve::t_params _args);
 
 		~ProcessScanner()
 		{
