@@ -28,7 +28,7 @@ namespace pesieve {
 		*/
 		bool is_number(const char* buf);
 
-		// Checks if the given cstring is in the multi-SZ list
+		// Checks if the given cstring is in the given set
 		bool is_in_list(const char *searched_string, std::set<std::string>& string_list);
 
 		size_t string_to_list(IN::std::string s, IN char _delim, OUT std::set<std::string>& elements_list, bool to_lower=true);
