@@ -38,6 +38,7 @@ var searchData=
   ['sizeofnamesspace_35',['sizeOfNamesSpace',['../classpesieve_1_1_i_a_t_thunks_series.html#ac6382d6ee5d6eae79c47e9ff6af8806b',1,'pesieve::IATThunksSeries']]],
   ['skippedmodulereport_36',['SkippedModuleReport',['../classpesieve_1_1_skipped_module_report.html#a9fde7e6d86205f7d71394ad5f533df68',1,'pesieve::SkippedModuleReport']]],
   ['splitseries_37',['splitSeries',['../classpesieve_1_1_i_a_t_block.html#af25037eb1bb7ea83fa7e5a24807727d7',1,'pesieve::IATBlock']]],
-  ['strip_5fprefix_38',['strip_prefix',['../namespacepesieve_1_1util.html#a2d19e21063f990f24ceea5c64d452cfc',1,'pesieve::util']]],
-  ['switchtowow64path_39',['switchToWow64Path',['../classpesieve_1_1_module_data.html#a2e919f44d71aad97bb40a77086c28e7b',1,'pesieve::ModuleData']]]
+  ['string_5fto_5flist_38',['string_to_list',['../namespacepesieve_1_1util.html#a6bf8eed39c860ca4caf8dc081b57529e',1,'pesieve::util']]],
+  ['strip_5fprefix_39',['strip_prefix',['../namespacepesieve_1_1util.html#a2d19e21063f990f24ceea5c64d452cfc',1,'pesieve::util']]],
+  ['switchtowow64path_40',['switchToWow64Path',['../classpesieve_1_1_module_data.html#a2e919f44d71aad97bb40a77086c28e7b',1,'pesieve::ModuleData']]]
 ];

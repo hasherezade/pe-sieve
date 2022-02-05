@@ -73,10 +73,11 @@ var searchData=
   ['status_70',['status',['../classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68',1,'pesieve::ModuleScanReport']]],
   ['stop_5fva_71',['stop_va',['../classpesieve_1_1_mem_page_data.html#a7c151bd819b2444eb7e93c92fcd4f8ce',1,'pesieve::MemPageData']]],
   ['storedfunc_72',['storedFunc',['../classpesieve_1_1_i_a_t_scan_report.html#a7a631d5a508e52d214764f5d25490b2e',1,'pesieve::IATScanReport']]],
-  ['strings_5futil_2ecpp_73',['strings_util.cpp',['../strings__util_8cpp.html',1,'']]],
-  ['strings_5futil_2eh_74',['strings_util.h',['../strings__util_8h.html',1,'']]],
-  ['strip_5fprefix_75',['strip_prefix',['../namespacepesieve_1_1util.html#a2d19e21063f990f24ceea5c64d452cfc',1,'pesieve::util']]],
-  ['suspicious_76',['suspicious',['../structt__report.html#a822d97e839761f50f8d0377d139cbf2f',1,'t_report']]],
-  ['switchtowow64path_77',['switchToWow64Path',['../classpesieve_1_1_module_data.html#a2e919f44d71aad97bb40a77086c28e7b',1,'pesieve::ModuleData']]],
-  ['szmodname_78',['szModName',['../classpesieve_1_1_module_data.html#ab7463bd2db1ce6343e1be66600c48cd8',1,'pesieve::ModuleData']]]
+  ['string_5fto_5flist_73',['string_to_list',['../namespacepesieve_1_1util.html#a6bf8eed39c860ca4caf8dc081b57529e',1,'pesieve::util']]],
+  ['strings_5futil_2ecpp_74',['strings_util.cpp',['../strings__util_8cpp.html',1,'']]],
+  ['strings_5futil_2eh_75',['strings_util.h',['../strings__util_8h.html',1,'']]],
+  ['strip_5fprefix_76',['strip_prefix',['../namespacepesieve_1_1util.html#a2d19e21063f990f24ceea5c64d452cfc',1,'pesieve::util']]],
+  ['suspicious_77',['suspicious',['../structt__report.html#a822d97e839761f50f8d0377d139cbf2f',1,'t_report']]],
+  ['switchtowow64path_78',['switchToWow64Path',['../classpesieve_1_1_module_data.html#a2e919f44d71aad97bb40a77086c28e7b',1,'pesieve::ModuleData']]],
+  ['szmodname_79',['szModName',['../classpesieve_1_1_module_data.html#ab7463bd2db1ce6343e1be66600c48cd8',1,'pesieve::ModuleData']]]
 ];

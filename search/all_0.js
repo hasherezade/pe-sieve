@@ -12,7 +12,8 @@ var searchData=
   ['_5floadfullimage_9',['_loadFullImage',['../classpesieve_1_1_remote_module_data.html#a2d851432acd3771fea6a89ac0a3b78c5',1,'pesieve::RemoteModuleData']]],
   ['_5floadoriginal_10',['_loadOriginal',['../classpesieve_1_1_module_data.html#a573baa3ed4eba4d8143fca8bc4e74c7f',1,'pesieve::ModuleData']]],
   ['_5floadremote_11',['_loadRemote',['../classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2',1,'pesieve::MemPageData']]],
-  ['_5freadremote_12',['_readRemote',['../classpesieve_1_1_pe_buffer.html#a62cf4335cc4f61b8e6fc07b40aa55659',1,'pesieve::PeBuffer']]],
-  ['_5ftojson_13',['_toJSON',['../classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137',1,'pesieve::ModuleScanReport']]],
-  ['_5fvalidatesecregions_14',['_validateSecRegions',['../classpesieve_1_1_artefact_scanner.html#aa33a04b0c2a6ea781cc0f68f8dff906f',1,'pesieve::ArtefactScanner::_validateSecRegions(MemPageData &amp;memPage, LPVOID sec_hdr, size_t sec_count, ULONGLONG pe_image_base, bool is_virtual)'],['../classpesieve_1_1_artefact_scanner.html#a03c815ce8e0b33ccffe947b0d7e6d4f9',1,'pesieve::ArtefactScanner::_validateSecRegions(MemPageData &amp;memPage, LPVOID sec_hdr, size_t sec_count)']]]
+  ['_5fparam_5fstring_12',['_PARAM_STRING',['../struct___p_a_r_a_m___s_t_r_i_n_g.html',1,'']]],
+  ['_5freadremote_13',['_readRemote',['../classpesieve_1_1_pe_buffer.html#a62cf4335cc4f61b8e6fc07b40aa55659',1,'pesieve::PeBuffer']]],
+  ['_5ftojson_14',['_toJSON',['../classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137',1,'pesieve::ModuleScanReport']]],
+  ['_5fvalidatesecregions_15',['_validateSecRegions',['../classpesieve_1_1_artefact_scanner.html#aa33a04b0c2a6ea781cc0f68f8dff906f',1,'pesieve::ArtefactScanner::_validateSecRegions(MemPageData &amp;memPage, LPVOID sec_hdr, size_t sec_count, ULONGLONG pe_image_base, bool is_virtual)'],['../classpesieve_1_1_artefact_scanner.html#a03c815ce8e0b33ccffe947b0d7e6d4f9',1,'pesieve::ArtefactScanner::_validateSecRegions(MemPageData &amp;memPage, LPVOID sec_hdr, size_t sec_count)']]]
 ];

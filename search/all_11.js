@@ -64,6 +64,7 @@ var searchData=
   ['rtl_5fclone_5fprocess_5fflags_5fcreate_5fsuspended_61',['RTL_CLONE_PROCESS_FLAGS_CREATE_SUSPENDED',['../process__reflection_8cpp.html#a32cecac9c7a7d39eb28c815e5cfae2f2',1,'process_reflection.cpp']]],
   ['rtl_5fclone_5fprocess_5fflags_5finherit_5fhandles_62',['RTL_CLONE_PROCESS_FLAGS_INHERIT_HANDLES',['../process__reflection_8cpp.html#a82f1405153b8ad80df8c7398d29e19f5',1,'process_reflection.cpp']]],
   ['rtl_5fclone_5fprocess_5fflags_5fno_5fsynchronize_63',['RTL_CLONE_PROCESS_FLAGS_NO_SYNCHRONIZE',['../process__reflection_8cpp.html#a9ebf762b1a1365370dcdf4d1258447d8',1,'process_reflection.cpp']]],
-  ['rva_64',['rva',['../classpesieve_1_1_pe_section.html#abb3723c684e695788cedc1654463b409',1,'pesieve::PeSection']]],
-  ['rvatova_65',['rvaToVa',['../classpesieve_1_1_module_data.html#a1227c638b7039f75d3bf31b61fe13bf9',1,'pesieve::ModuleData']]]
+  ['rtrim_64',['rtrim',['../namespacepesieve_1_1util.html#a31052004d33cccf72236cd5bd451fa91',1,'pesieve::util']]],
+  ['rva_65',['rva',['../classpesieve_1_1_pe_section.html#abb3723c684e695788cedc1654463b409',1,'pesieve::PeSection']]],
+  ['rvatova_66',['rvaToVa',['../classpesieve_1_1_module_data.html#a1227c638b7039f75d3bf31b61fe13bf9',1,'pesieve::ModuleData']]]
 ];

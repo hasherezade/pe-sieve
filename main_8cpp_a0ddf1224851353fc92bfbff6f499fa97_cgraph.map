@@ -1,52 +1,52 @@
 <map id="main" name="main">
-<area shape="rect" id="node1" title=" " alt="" coords="5,331,56,357"/>
-<area shape="rect" id="node2" href="$class_p_esieve_params.html#aa3e674be50ae8239e41fccfea510f400" title=" " alt="" coords="104,5,272,32"/>
-<area shape="rect" id="node3" href="$classpesieve_1_1_process_scan_report.html#a493399a015b35b5be092366256d90aad" title=" " alt="" coords="1033,125,1223,166"/>
-<area shape="rect" id="node6" href="$namespacepesieve_1_1util.html#a7eca64fd4903e8fe4eebefd19e4a6614" title=" " alt="" coords="591,349,712,390"/>
-<area shape="rect" id="node9" href="$main_8cpp.html#a1ce5c23b0c75233b648ff726786f473c" title=" " alt="" coords="370,180,457,207"/>
-<area shape="rect" id="node14" href="$class_p_esieve_params.html#a329838ce31e84c366fa8df6451decf00" title=" " alt="" coords="320,305,507,332"/>
-<area shape="rect" id="node15" href="$namespacepesieve.html#ad71d3d82e248bd37f2becabe0ca00f55" title="The main action performed by PE&#45;sieve: scanning the process and dumping the detected material." alt="" coords="104,671,272,697"/>
-<area shape="rect" id="node49" href="$namespacepesieve.html#a7d3250596f391d7bf3ae3f5fc1609736" title=" " alt="" coords="127,722,249,763"/>
-<area shape="rect" id="node50" href="$namespacepesieve.html#abe5f652e94b13f6f140330db727bd36b" title=" " alt="" coords="127,787,249,829"/>
-<area shape="rect" id="node4" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="1289,1345,1435,1372"/>
-<area shape="rect" id="node5" href="$classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63" title=" " alt="" coords="1271,125,1453,166"/>
-<area shape="rect" id="node7" href="$namespacepesieve_1_1util.html#a3a202097bb77191265159f34903c4ccb" title=" " alt="" coords="833,209,948,250"/>
-<area shape="rect" id="node8" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="1081,216,1175,243"/>
-<area shape="rect" id="node10" href="$namespacepesieve.html#ac15c23cae68ffb0a95a1fb1085a140ef" title=" " alt="" coords="581,173,722,214"/>
-<area shape="rect" id="node13" href="$namespacepesieve.html#a22be478637fe6ab08135f946a1a85aac" title=" " alt="" coords="581,107,722,149"/>
-<area shape="rect" id="node11" href="$classpesieve_1_1_process_scan_report.html#a1269fd73204b2b9171466ac32bc03252" title=" " alt="" coords="796,274,985,315"/>
-<area shape="rect" id="node12" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="1059,274,1197,315"/>
-<area shape="rect" id="node16" href="$namespacepesieve.html#abbc56d07d9ca9ce478537f02e33e9c49" title=" " alt="" coords="341,811,485,837"/>
-<area shape="rect" id="node33" href="$namespacepesieve_1_1util.html#a129420a85af343c8251c9002770f7038" title=" " alt="" coords="831,1602,950,1643"/>
-<area shape="rect" id="node35" href="$namespacepesieve_1_1util.html#ae1d43b41f528e751af81c0d3c5352f20" title=" " alt="" coords="584,1317,719,1358"/>
-<area shape="rect" id="node42" href="$namespacepesieve.html#ab1f1c03c718b6eb265187467d8d37cce" title=" " alt="" coords="336,1200,491,1227"/>
-<area shape="rect" id="node45" href="$namespacepesieve_1_1util.html#ac39000bfb52a6dbdacb7a5b68bb21674" title=" " alt="" coords="821,1667,960,1709"/>
-<area shape="rect" id="node46" href="$classpesieve_1_1_process_scanner.html#aefb7a8283826f88d60ba428fa155c0d4" title="The main function of ProcessScanner, deploying the scan. Throws exceptions in case of a failure." alt="" coords="567,437,736,478"/>
-<area shape="rect" id="node17" href="$classpesieve_1_1_process_dump_report.html#acd254aea75b8454bda044b23dcc55d6e" title=" " alt="" coords="555,901,748,942"/>
-<area shape="rect" id="node18" href="$classpesieve_1_1_results_dumper.html#ac42eecae9a332ba8d8b52d4f9e1c5e27" title=" " alt="" coords="570,966,733,1007"/>
-<area shape="rect" id="node21" href="$classpesieve_1_1_results_dumper.html#afa4ee6cbf009cd4e1b6421686bd9ca81" title=" " alt="" coords="570,770,733,811"/>
-<area shape="rect" id="node23" href="$classpesieve_1_1_results_dumper.html#a7eb61d510081fbdaf90594182ddc2feb" title=" " alt="" coords="809,770,972,811"/>
-<area shape="rect" id="node24" href="$namespacepesieve_1_1util.html#a4f8f94b209d1771e90f0b56e303cddd1" title=" " alt="" coords="567,624,736,651"/>
-<area shape="rect" id="node30" href="$classpesieve_1_1_results_dumper.html#af2abd1f120baa9a7afad41c1bd809906" title=" " alt="" coords="570,835,733,877"/>
-<area shape="rect" id="node31" href="$namespacepesieve_1_1util.html#a4ba167cd494fc46d5b9e52eb3b56b1d7" title=" " alt="" coords="587,1079,715,1121"/>
-<area shape="rect" id="node19" href="$classpesieve_1_1_process_scan_report.html#a7b36b5cf6979968d1c3d590b6875d89c" title=" " alt="" coords="796,966,985,1007"/>
-<area shape="rect" id="node20" href="$classpesieve_1_1_results_dumper.html#a0530341a87284f2c065bc14ecbdef41d" title=" " alt="" coords="809,901,972,942"/>
-<area shape="rect" id="node22" href="$classpesieve_1_1_process_scan_report.html#a0611939155d7d2de69941e7e00390848" title=" " alt="" coords="796,835,985,877"/>
-<area shape="rect" id="node25" href="$namespacepesieve_1_1util.html#a79abe45c817b882898d257ae476f8339" title=" " alt="" coords="818,470,963,511"/>
-<area shape="rect" id="node26" href="$path__converter_8cpp.html#aa38e814828efe4c9d588eb4529ed5b1c" title=" " alt="" coords="836,536,945,563"/>
-<area shape="rect" id="node27" href="$namespacepesieve_1_1util.html#aef45bac1fce06bb27d1c8bdb41d0d84c" title=" " alt="" coords="821,587,960,629"/>
-<area shape="rect" id="node28" href="$namespacepesieve_1_1util.html#a030a7f8a58a027763c9207b0ff815d26" title=" " alt="" coords="805,653,976,680"/>
-<area shape="rect" id="node29" href="$namespacepesieve_1_1util.html#a2d19e21063f990f24ceea5c64d452cfc" title=" " alt="" coords="830,705,951,746"/>
-<area shape="rect" id="node32" href="$namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="1061,1200,1195,1227"/>
-<area shape="rect" id="node34" href="$namespacepesieve_1_1util.html#a56df5353038c000c74a9c1875a989460" title=" " alt="" coords="1071,1602,1185,1643"/>
-<area shape="rect" id="node36" href="$namespacepesieve_1_1util.html#aefec5a38617d857c79158986bf31e35d" title=" " alt="" coords="1039,1367,1217,1409"/>
-<area shape="rect" id="node37" href="$namespacepesieve_1_1util.html#aaa37231fc8a56358e0bc48341ac002f5" title=" " alt="" coords="1034,1485,1222,1526"/>
-<area shape="rect" id="node38" href="$namespacepesieve_1_1util.html#a46521976f18192481eaa49d00afbfa09" title=" " alt="" coords="820,1434,961,1475"/>
-<area shape="rect" id="node39" href="$namespacepesieve_1_1util.html#afba959689955746f1dace179d157d7a0" title=" " alt="" coords="820,1083,961,1125"/>
-<area shape="rect" id="node40" href="$namespacepesieve_1_1util.html#a5cbe7813276c076317aed409972b8710" title=" " alt="" coords="823,1317,958,1358"/>
-<area shape="rect" id="node41" href="$namespacepesieve_1_1util.html#a905cd117f8d7e19b984bc395defc3b63" title=" " alt="" coords="821,1251,960,1293"/>
-<area shape="rect" id="node43" href="$namespacepesieve.html#a4c7e67a288c6e0581c8848b5649b0223" title=" " alt="" coords="573,1547,730,1589"/>
-<area shape="rect" id="node44" href="$namespacepesieve.html#ab939d4edad1446e418ec8fb4d33cb137" title=" " alt="" coords="583,1193,719,1234"/>
-<area shape="rect" id="node47" href="$namespacepesieve_1_1util.html#a4e03a2c1c527e0f0b4063f8ac12ff22d" title=" " alt="" coords="821,405,960,446"/>
-<area shape="rect" id="node48" href="$namespacepesieve_1_1util.html#a015be6a0937814caf43586043817d922" title=" " alt="" coords="811,339,970,381"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,307,56,334"/>
+<area shape="rect" id="node2" href="$class_p_esieve_params.html#aa3e674be50ae8239e41fccfea510f400" title=" " alt="" coords="104,17,272,43"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#a7ae814d25724b5525d225dd408fb994e" title=" " alt="" coords="141,71,235,98"/>
+<area shape="rect" id="node7" href="$classpesieve_1_1_process_scan_report.html#a493399a015b35b5be092366256d90aad" title=" " alt="" coords="1033,173,1223,215"/>
+<area shape="rect" id="node10" href="$namespacepesieve_1_1util.html#a7eca64fd4903e8fe4eebefd19e4a6614" title=" " alt="" coords="591,356,712,397"/>
+<area shape="rect" id="node13" href="$main_8cpp.html#a1ce5c23b0c75233b648ff726786f473c" title=" " alt="" coords="370,246,457,273"/>
+<area shape="rect" id="node18" href="$class_p_esieve_params.html#a329838ce31e84c366fa8df6451decf00" title=" " alt="" coords="320,307,507,334"/>
+<area shape="rect" id="node19" href="$namespacepesieve.html#ad71d3d82e248bd37f2becabe0ca00f55" title="The main action performed by PE&#45;sieve: scanning the process and dumping the detected material." alt="" coords="104,703,272,730"/>
+<area shape="rect" id="node49" href="$namespacepesieve.html#a7d3250596f391d7bf3ae3f5fc1609736" title=" " alt="" coords="127,755,249,796"/>
+<area shape="rect" id="node50" href="$namespacepesieve.html#abe5f652e94b13f6f140330db727bd36b" title=" " alt="" coords="127,820,249,861"/>
+<area shape="rect" id="node3" href="$class_p_esieve_params.html#ad1661e0f27b81c5e647fe886393dc516" title=" " alt="" coords="330,5,497,47"/>
+<area shape="rect" id="node4" href="$params_8h.html#aacaafdd14dacc8a889b91f87d1cff43e" title=" " alt="" coords="598,13,705,39"/>
+<area shape="rect" id="node6" href="$params_8h.html#ae5bce7f115c2f5448f6453cff04fcebe" title=" " alt="" coords="362,71,465,98"/>
+<area shape="rect" id="node8" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="1289,917,1435,943"/>
+<area shape="rect" id="node9" href="$classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63" title=" " alt="" coords="1271,173,1453,215"/>
+<area shape="rect" id="node11" href="$namespacepesieve_1_1util.html#a3a202097bb77191265159f34903c4ccb" title=" " alt="" coords="833,356,948,397"/>
+<area shape="rect" id="node12" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="1081,363,1175,390"/>
+<area shape="rect" id="node14" href="$namespacepesieve.html#ac15c23cae68ffb0a95a1fb1085a140ef" title=" " alt="" coords="581,239,722,280"/>
+<area shape="rect" id="node17" href="$namespacepesieve.html#a22be478637fe6ab08135f946a1a85aac" title=" " alt="" coords="581,173,722,215"/>
+<area shape="rect" id="node15" href="$classpesieve_1_1_process_scan_report.html#a1269fd73204b2b9171466ac32bc03252" title=" " alt="" coords="796,239,985,280"/>
+<area shape="rect" id="node16" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="1059,239,1197,280"/>
+<area shape="rect" id="node20" href="$namespacepesieve.html#abbc56d07d9ca9ce478537f02e33e9c49" title=" " alt="" coords="341,642,485,669"/>
+<area shape="rect" id="node33" href="$namespacepesieve_1_1util.html#a129420a85af343c8251c9002770f7038" title=" " alt="" coords="831,785,950,827"/>
+<area shape="rect" id="node35" href="$namespacepesieve_1_1util.html#ae1d43b41f528e751af81c0d3c5352f20" title=" " alt="" coords="584,969,719,1011"/>
+<area shape="rect" id="node42" href="$namespacepesieve.html#ab1f1c03c718b6eb265187467d8d37cce" title=" " alt="" coords="336,735,491,762"/>
+<area shape="rect" id="node45" href="$namespacepesieve_1_1util.html#ac39000bfb52a6dbdacb7a5b68bb21674" title=" " alt="" coords="821,1319,960,1360"/>
+<area shape="rect" id="node46" href="$classpesieve_1_1_process_scanner.html#aefb7a8283826f88d60ba428fa155c0d4" title="The main function of ProcessScanner, deploying the scan. Throws exceptions in case of a failure." alt="" coords="567,1416,736,1457"/>
+<area shape="rect" id="node21" href="$classpesieve_1_1_process_dump_report.html#acd254aea75b8454bda044b23dcc55d6e" title=" " alt="" coords="555,604,748,645"/>
+<area shape="rect" id="node22" href="$classpesieve_1_1_results_dumper.html#ac42eecae9a332ba8d8b52d4f9e1c5e27" title=" " alt="" coords="570,669,733,711"/>
+<area shape="rect" id="node25" href="$classpesieve_1_1_results_dumper.html#afa4ee6cbf009cd4e1b6421686bd9ca81" title=" " alt="" coords="570,473,733,515"/>
+<area shape="rect" id="node27" href="$classpesieve_1_1_results_dumper.html#a7eb61d510081fbdaf90594182ddc2feb" title=" " alt="" coords="809,421,972,463"/>
+<area shape="rect" id="node28" href="$namespacepesieve_1_1util.html#a4f8f94b209d1771e90f0b56e303cddd1" title=" " alt="" coords="567,1047,736,1074"/>
+<area shape="rect" id="node30" href="$classpesieve_1_1_results_dumper.html#af2abd1f120baa9a7afad41c1bd809906" title=" " alt="" coords="570,539,733,580"/>
+<area shape="rect" id="node31" href="$namespacepesieve_1_1util.html#a4ba167cd494fc46d5b9e52eb3b56b1d7" title=" " alt="" coords="587,787,715,828"/>
+<area shape="rect" id="node23" href="$classpesieve_1_1_process_scan_report.html#a7b36b5cf6979968d1c3d590b6875d89c" title=" " alt="" coords="796,617,985,659"/>
+<area shape="rect" id="node24" href="$classpesieve_1_1_results_dumper.html#a0530341a87284f2c065bc14ecbdef41d" title=" " alt="" coords="809,552,972,593"/>
+<area shape="rect" id="node26" href="$classpesieve_1_1_process_scan_report.html#a0611939155d7d2de69941e7e00390848" title=" " alt="" coords="796,487,985,528"/>
+<area shape="rect" id="node29" href="$namespacepesieve_1_1util.html#a79abe45c817b882898d257ae476f8339" title=" " alt="" coords="818,1384,963,1425"/>
+<area shape="rect" id="node32" href="$namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="1061,1267,1195,1294"/>
+<area shape="rect" id="node34" href="$namespacepesieve_1_1util.html#a56df5353038c000c74a9c1875a989460" title=" " alt="" coords="1071,788,1185,829"/>
+<area shape="rect" id="node36" href="$namespacepesieve_1_1util.html#aefec5a38617d857c79158986bf31e35d" title=" " alt="" coords="1039,1077,1217,1119"/>
+<area shape="rect" id="node37" href="$namespacepesieve_1_1util.html#aaa37231fc8a56358e0bc48341ac002f5" title=" " alt="" coords="1034,909,1222,951"/>
+<area shape="rect" id="node38" href="$namespacepesieve_1_1util.html#a46521976f18192481eaa49d00afbfa09" title=" " alt="" coords="820,968,961,1009"/>
+<area shape="rect" id="node39" href="$namespacepesieve_1_1util.html#afba959689955746f1dace179d157d7a0" title=" " alt="" coords="820,851,961,892"/>
+<area shape="rect" id="node40" href="$namespacepesieve_1_1util.html#a5cbe7813276c076317aed409972b8710" title=" " alt="" coords="823,1033,958,1075"/>
+<area shape="rect" id="node41" href="$namespacepesieve_1_1util.html#a905cd117f8d7e19b984bc395defc3b63" title=" " alt="" coords="821,1201,960,1243"/>
+<area shape="rect" id="node43" href="$namespacepesieve.html#a4c7e67a288c6e0581c8848b5649b0223" title=" " alt="" coords="573,852,730,893"/>
+<area shape="rect" id="node44" href="$namespacepesieve.html#ab939d4edad1446e418ec8fb4d33cb137" title=" " alt="" coords="583,1123,719,1164"/>
+<area shape="rect" id="node47" href="$namespacepesieve_1_1util.html#a4e03a2c1c527e0f0b4063f8ac12ff22d" title=" " alt="" coords="821,1449,960,1491"/>
+<area shape="rect" id="node48" href="$namespacepesieve_1_1util.html#a015be6a0937814caf43586043817d922" title=" " alt="" coords="811,1515,970,1556"/>
 </map>

@@ -14,5 +14,6 @@ var searchData=
   ['translate_5fintegrity_5flevel_11',['translate_integrity_level',['../process__privilege_8cpp.html#abbf8ec8b9bb90b98b259f9099f903d28',1,'process_privilege.cpp']]],
   ['translate_5fjson_5flevel_12',['translate_json_level',['../namespacepesieve.html#aaf607f48cf768a8df296c8a97b521dd4',1,'pesieve']]],
   ['translate_5fmapping_5ftype_13',['translate_mapping_type',['../classpesieve_1_1_working_set_scan_report.html#a6fbdc9666d6eb78801d4ecb6e7cd6182',1,'pesieve::WorkingSetScanReport']]],
-  ['translate_5fout_5ffilter_14',['translate_out_filter',['../namespacepesieve.html#abe5f652e94b13f6f140330db727bd36b',1,'pesieve']]]
+  ['translate_5fout_5ffilter_14',['translate_out_filter',['../namespacepesieve.html#abe5f652e94b13f6f140330db727bd36b',1,'pesieve']]],
+  ['trim_15',['trim',['../namespacepesieve_1_1util.html#a41a7f0400a783c1055880e61fc23b10e',1,'pesieve::util']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['headersscanner_0',['HeadersScanner',['../classpesieve_1_1_headers_scanner.html',1,'pesieve']]],
-  ['headersscanreport_1',['HeadersScanReport',['../classpesieve_1_1_headers_scan_report.html',1,'pesieve']]],
-  ['hooktargetresolver_2',['HookTargetResolver',['../classpesieve_1_1_hook_target_resolver.html',1,'pesieve']]]
+  ['cachedmodule_0',['CachedModule',['../structpesieve_1_1_cached_module.html',1,'pesieve']]],
+  ['codescanner_1',['CodeScanner',['../classpesieve_1_1_code_scanner.html',1,'pesieve']]],
+  ['codescanreport_2',['CodeScanReport',['../classpesieve_1_1_code_scan_report.html',1,'pesieve']]]
 ];
