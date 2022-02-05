@@ -8,7 +8,6 @@
 #include <windows.h>
 #include <pshpack4.h> // ensure 4 byte packing of the structures
 
-#define MAX_MODULE_BUF_LEN 1024
 #define PARAM_LIST_SEPARATOR ';'
 
 #ifndef __cplusplus
@@ -81,6 +80,7 @@ namespace pesieve {
 		JSON_LVL_COUNT
 	} t_json_level;
 
+	//!  A wrapper for a dynamically allocated string.
 	typedef struct _PARAM_STRING {
 		ULONG length;
 		char* buffer;
