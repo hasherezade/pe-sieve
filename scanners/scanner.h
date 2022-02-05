@@ -1,6 +1,7 @@
 #pragma once
 
 #include <windows.h>
+#include <string>
 #include <map>
 
 #include <peconv.h>
@@ -19,13 +20,7 @@ namespace pesieve {
 		\param is_reflection : a flag indicating if the given handle (procHndl) leads to a raw process, or the process reflection
 		\param args : the configuration of the scan (defined as t_params)
 		*/
-		ProcessScanner(HANDLE procHndl, bool is_reflection, pesieve::t_params _args)
-			: args(_args), isDEP(false), isReflection(is_reflection)
-		{
-			this->processHandle = procHndl;
-			ZeroMemory(ignoredModules, _countof(ignoredModules));
-			pesieve::util::delim_list_to_multi_sz(args.modules_ignored, PARAM_LIST_SEPARATOR, ignoredModules, _countof(ignoredModules));
-		}
+		ProcessScanner(HANDLE procHndl, bool is_reflection, pesieve::t_params _args);
 
 		~ProcessScanner()
 		{
@@ -57,7 +52,7 @@ namespace pesieve {
 		size_t hModsMax;
 		pesieve::t_params args;
 
-		char ignoredModules[MAX_MODULE_BUF_LEN];
+		std::set<std::string> ignoredModules;
 	};
 
 }; //namespace pesieve

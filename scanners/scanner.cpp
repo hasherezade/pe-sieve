@@ -24,6 +24,29 @@
 using namespace pesieve;
 using namespace pesieve::util;
 
+namespace pesieve {
+
+	bool validate_param_str(PARAM_STRING &strparam)
+	{
+		if (!strparam.buffer || strparam.length == 0) {
+			return false;
+		}
+		if (IsBadReadPtr(strparam.buffer, strparam.length)) {
+			return false;
+		}
+		return true;
+	}
+};
+
+pesieve::ProcessScanner::ProcessScanner(HANDLE procHndl, bool is_reflection, pesieve::t_params _args)
+	: args(_args), isDEP(false), isReflection(is_reflection)
+{
+	this->processHandle = procHndl;
+	if (validate_param_str(args.modules_ignored)) {
+		pesieve::util::string_to_list(args.modules_ignored.buffer, PARAM_LIST_SEPARATOR, ignoredModules);
+	}
+}
+
 t_scan_status pesieve::ProcessScanner::scanForHollows(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report)
 {
 	BOOL isWow64 = FALSE;
@@ -302,7 +325,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 		}
 		// Don't scan modules that are in the ignore list
 		const std::string plainName = peconv::get_file_name(modData.szModName);
-		if (is_in_list(plainName.c_str(), this->ignoredModules)) {
+		if (is_in_list(plainName, this->ignoredModules)) {
 			// ...but add such modules to the exports lookup:
 			if (pReport.exportsMap) {
 				pReport.exportsMap->add_to_lookup(modData.szModName, (HMODULE)modData.original_module, (ULONGLONG)modData.moduleHandle);
@@ -380,7 +403,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 
 		// Don't scan modules that are in the ignore list
 		std::string plainName = peconv::get_file_name(modData.szModName);
-		if (is_in_list(plainName.c_str(), this->ignoredModules)) {
+		if (is_in_list(plainName, this->ignoredModules)) {
 			continue;
 		}
 

@@ -1,10 +1,8 @@
 #include "format_util.h"
 
-#include <strsafe.h>
-
+#include <algorithm>
 #include <sstream>
 #include <iomanip>
-#include <algorithm>
 
 namespace pesieve {
 	namespace util {
@@ -79,60 +77,66 @@ bool pesieve::util::is_number(const char* my_buf)
 	return true;
 }
 
-bool pesieve::util::is_in_list(const char *searched_str, const char *str_list)
+bool pesieve::util::is_in_list(std::string searched_str, std::set<std::string>& string_list, bool to_lower)
 {
-	const char * list_entry = nullptr;
 	bool result = false;
-
-	if (!searched_str || !searched_str[0]) {
-		return false;
+	if (to_lower) {
+		std::transform(searched_str.begin(), searched_str.end(), searched_str.begin(), std::tolower);
 	}
-
-	for (list_entry = str_list; list_entry && list_entry[0]; list_entry = list_entry + strlen(list_entry) + 1)
-	{
-		if (!_stricmp(list_entry, searched_str))
-		{
-			result = true;
-			break;
-		}
+	std::set<std::string>::iterator found = string_list.find(searched_str);
+	if (found != string_list.end()) {
+		result = true;
 	}
 	return result;
 }
 
-size_t pesieve::util::delim_list_to_multi_sz(IN const char *delim_list_str, IN const char delimiter, OUT char *buffer, IN const size_t buffer_max_chars)
-{
-	size_t str_count = 0;
-	const char * separator;
-	char * buffer_end = buffer + buffer_max_chars - 2;
+namespace pesieve {
+	namespace util {
 
-	// Clear the array
-	memset(buffer, 0, buffer_max_chars);
-
-	// Parse the string
-	while (delim_list_str && delim_list_str[0])
-	{
-		// Get the next separator
-		separator = strchr(delim_list_str, delimiter);
-		if (separator == NULL)
+		std::string& ltrim(std::string& str, const std::string& chars = "\t\n\v\f\r ")
 		{
-			StringCchCopy(buffer, (buffer_end - buffer), delim_list_str);
-			str_count++;
-			break;
+			str.erase(0, str.find_first_not_of(chars));
+			return str;
 		}
 
-		// Put the part to the string
-		if (separator > delim_list_str)
+		std::string& rtrim(std::string& str, const std::string& chars = "\t\n\v\f\r ")
 		{
-			StringCchCopyNEx(buffer, (buffer_end - buffer), delim_list_str, (separator - delim_list_str), &buffer, NULL, 0);
-			str_count++;
-			buffer++;
+			str.erase(str.find_last_not_of(chars) + 1);
+			return str;
 		}
 
-		// Skip comma and spaces
-		while (separator[0] == delimiter || separator[0] == ' ')
-			separator++;
-		delim_list_str = separator;
+		std::string& trim(std::string& str, const std::string& chars = "\t\n\v\f\r ")
+		{
+			return ltrim(rtrim(str, chars), chars);
+		}
 	}
-	return str_count;
-}
+};
 
+size_t pesieve::util::string_to_list(IN::std::string s, IN char _delim, OUT::std::set<::std::string>& elements_list, bool to_lower)
+{
+	std::string delim(std::string(1, _delim));
+	size_t start = 0;
+	size_t end = s.find(delim);
+	while (end != std::string::npos)
+	{
+		std::string next_str = s.substr(start, end - start);
+		trim(next_str);
+		if (next_str.length() > 0) {
+			if (to_lower) {
+				std::transform(next_str.begin(), next_str.end(), next_str.begin(), std::tolower);
+			}
+			elements_list.insert(next_str);
+		}
+		start = end + delim.length();
+		end = s.find(delim, start);
+	}
+	std::string next_str = s.substr(start, end);
+	trim(next_str);
+	if (next_str.length() > 0) {
+		if (to_lower) {
+			std::transform(next_str.begin(), next_str.end(), next_str.begin(), std::tolower);
+		}
+		elements_list.insert(next_str);
+	}
+	return elements_list.size();
+}
