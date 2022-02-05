@@ -28,8 +28,8 @@ namespace pesieve {
 		*/
 		bool is_number(const char* buf);
 
-		// Checks if the given cstring is in the given set
-		bool is_in_list(const char *searched_string, std::set<std::string>& string_list);
+		// Checks if the given string is in the given set
+		bool is_in_list(std::string searched_string, std::set<std::string>& string_list, bool to_lower=true);
 
 		size_t string_to_list(IN::std::string s, IN char _delim, OUT std::set<std::string>& elements_list, bool to_lower=true);
 

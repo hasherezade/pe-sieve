@@ -77,23 +77,15 @@ bool pesieve::util::is_number(const char* my_buf)
 	return true;
 }
 
-bool pesieve::util::is_in_list(const char *searched_str, std::set<std::string>& string_list)
+bool pesieve::util::is_in_list(std::string searched_str, std::set<std::string>& string_list, bool to_lower)
 {
 	bool result = false;
-
-	if (!searched_str || !searched_str[0]) {
-		return false;
+	if (to_lower) {
+		std::transform(searched_str.begin(), searched_str.end(), searched_str.begin(), std::tolower);
 	}
-
-	std::set<std::string>::iterator itr;
-	for (itr = string_list.begin(); itr != string_list.end(); ++itr)
-	{
-		const std::string list_entry = *itr;
-		if (!_stricmp(list_entry.c_str(), searched_str))
-		{
-			result = true;
-			break;
-		}
+	std::set<std::string>::iterator found = string_list.find(searched_str);
+	if (found != string_list.end()) {
+		result = true;
 	}
 	return result;
 }

@@ -325,7 +325,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 		}
 		// Don't scan modules that are in the ignore list
 		const std::string plainName = peconv::get_file_name(modData.szModName);
-		if (is_in_list(plainName.c_str(), this->ignoredModules)) {
+		if (is_in_list(plainName, this->ignoredModules)) {
 			// ...but add such modules to the exports lookup:
 			if (pReport.exportsMap) {
 				pReport.exportsMap->add_to_lookup(modData.szModName, (HMODULE)modData.original_module, (ULONGLONG)modData.moduleHandle);
@@ -403,7 +403,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 
 		// Don't scan modules that are in the ignore list
 		std::string plainName = peconv::get_file_name(modData.szModName);
-		if (is_in_list(plainName.c_str(), this->ignoredModules)) {
+		if (is_in_list(plainName, this->ignoredModules)) {
 			continue;
 		}
 
