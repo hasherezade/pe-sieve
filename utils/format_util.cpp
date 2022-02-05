@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <sstream>
 #include <iomanip>
+#include <cctype>
 
 namespace pesieve {
 	namespace util {
