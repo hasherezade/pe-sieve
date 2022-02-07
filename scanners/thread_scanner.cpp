@@ -1,5 +1,6 @@
 #include "thread_scanner.h"
 #include <peconv.h>
+#include "../utils/process_util.h"
 
 using namespace pesieve;
 
