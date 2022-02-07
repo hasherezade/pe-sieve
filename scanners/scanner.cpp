@@ -466,6 +466,8 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 			return 0;
 		}
 	}
+
+	ThreadScanner::InitSymbols(this->processHandle);
 	std::vector<thread_info>::iterator itr;
 	for (itr = threads_info.begin(); itr != threads_info.end(); ++itr) {
 		const thread_info &info = *itr;
@@ -473,6 +475,7 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 		ThreadScanReport* report = scanner.scanRemote();
 		pReport.appendReport(report);
 	}
+	ThreadScanner::FreeSymbols(this->processHandle);
 
 	if (!args.quiet) {
 		ULONGLONG total_time = GetTickCount64() - start_tick;

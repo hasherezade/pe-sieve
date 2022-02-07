@@ -35,7 +35,7 @@ size_t pesieve::ThreadScanner::enumStackFrames(HANDLE hProcess, HANDLE hThread, 
 		frame.AddrFrame.Offset = c.rbp;
 		frame.AddrFrame.Mode = AddrModeFlat;
 
-		while (StackWalk64(IMAGE_FILE_MACHINE_AMD64, hProcess, hThread, &frame, ctx, NULL, NULL, NULL, NULL)) {
+		while (StackWalk64(IMAGE_FILE_MACHINE_AMD64, hProcess, hThread, &frame, ctx, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL)) {
 			std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
 			c.call_stack.push_back(next_addr);
@@ -60,7 +60,7 @@ size_t pesieve::ThreadScanner::enumStackFrames(HANDLE hProcess, HANDLE hThread, 
 		frame.AddrFrame.Offset = c.rbp;
 		frame.AddrFrame.Mode = AddrModeFlat;
 
-		while (StackWalk(IMAGE_FILE_MACHINE_I386, hProcess, hThread, &frame, ctx, NULL, NULL, NULL, NULL)) {
+		while (StackWalk(IMAGE_FILE_MACHINE_I386, hProcess, hThread, &frame, ctx, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL)) {
 			std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
 			c.call_stack.push_back(next_addr);
@@ -183,6 +183,23 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 		my_report->thread_ip = susp_addr;
 	}
 	return true;
+}
+
+
+bool pesieve::ThreadScanner::InitSymbols(HANDLE hProc)
+{
+	if (SymInitialize(hProc, NULL, TRUE)) {
+		return true;
+	}
+	return false;
+}
+
+bool pesieve::ThreadScanner::FreeSymbols(HANDLE hProc)
+{
+	if (SymCleanup(hProc)) {
+		return true;
+	}
+	return false;
 }
 
 ThreadScanReport* pesieve::ThreadScanner::scanRemote()
