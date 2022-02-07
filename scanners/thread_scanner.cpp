@@ -136,7 +136,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		if (get_page_details(processHandle, (LPVOID)c.rip, page_info)) {
 			my_report->module = (HMODULE)page_info.BaseAddress;
 			my_report->moduleSize = page_info.RegionSize;
-			my_report->access = page_info.AllocationProtect;
+			my_report->protection = page_info.AllocationProtect;
 		}
 	}
 	std::cout << "Is resolved: " << is_res << "\n";
