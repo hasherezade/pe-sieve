@@ -473,7 +473,7 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 		const DWORD tid = th32.th32ThreadID;
 		ThreadScanner scanner(this->processHandle, tid, pReport.modulesInfo, pReport.exportsMap);
 		ThreadScanReport *report = scanner.scanRemote();
-		delete report; // delete for now...
+		pReport.appendReport(report);
 
 	} while (Thread32Next(hThreadSnapShot, &th32));
 

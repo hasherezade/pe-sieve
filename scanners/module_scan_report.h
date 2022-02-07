@@ -67,10 +67,14 @@ namespace pesieve {
 		t_scan_status status;
 
 	protected:
-		const virtual bool _toJSON(std::stringstream &outs, size_t level = JSON_LEVEL, const pesieve::t_json_level &jdetails = JSON_BASIC)
+		const virtual bool _toJSON(std::stringstream& outs, size_t level = JSON_LEVEL, const pesieve::t_json_level& jdetails = JSON_BASIC)
 		{
 			OUT_PADDED(outs, level, "\"module\" : ");
-			outs << "\"" << std::hex << (ULONGLONG) module << "\"" << ",\n";
+			outs << "\"" << std::hex << (ULONGLONG)module << "\"" << ",\n";
+			if (moduleSize){
+				OUT_PADDED(outs, level, "\"module_size\" : ");
+				outs << "\"" << std::hex << (ULONGLONG)moduleSize << "\"" << ",\n";
+			}
 			if (moduleFile.length()) {
 				OUT_PADDED(outs, level, "\"module_file\" : ");
 				outs << "\"" << pesieve::util::escape_path_separators(moduleFile) << "\"" << ",\n";

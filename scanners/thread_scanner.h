@@ -11,7 +11,8 @@ namespace pesieve {
 	{
 	public:
 		ThreadScanReport(DWORD _tid)
-			: ModuleScanReport(0, 0), tid(_tid)
+			: ModuleScanReport(0, 0), 
+			tid(_tid), thread_start(0), thread_return(0), access(0)
 		{
 		}
 
@@ -19,8 +20,20 @@ namespace pesieve {
 		{
 			ModuleScanReport::_toJSON(outs, level);
 			outs << ",\n";
-			OUT_PADDED(outs, level, "\"is_alertable\" : ");
-			outs << isAlertable;
+
+			OUT_PADDED(outs, level, "\"thread_id\" : ");
+			outs << std::dec << tid;
+			outs << ",\n";
+			OUT_PADDED(outs, level, "\"thread_start\" : ");
+			outs << "\"" << std::hex << thread_start << "\"";
+			outs << ",\n";
+			if (thread_return) {
+				OUT_PADDED(outs, level, "\"thread_return\" : ");
+				outs << "\"" << std::hex << thread_return << "\"";
+				outs << ",\n";
+			}
+			OUT_PADDED(outs, level, "\"access\" : ");
+			outs << "\"" << std::hex << access << "\"";
 		}
 
 		const virtual bool toJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level &jdetails)
@@ -31,9 +44,11 @@ namespace pesieve {
 			OUT_PADDED(outs, level, "}");
 			return true;
 		}
-		std::set<ULONGLONG> routines;
-		bool isAlertable;
+
+		ULONGLONG thread_start;
+		ULONGLONG thread_return;
 		DWORD tid;
+		DWORD access;
 	};
 
 

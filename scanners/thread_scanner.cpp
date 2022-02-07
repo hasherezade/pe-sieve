@@ -70,6 +70,21 @@ bool pesieve::ThreadScanner::resolveAddr(ULONGLONG addr)
 	return is_resolved;
 }
 
+bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORMATION &page_info)
+{
+	size_t page_info_size = sizeof(MEMORY_BASIC_INFORMATION);
+	const SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID)start_va, &page_info, page_info_size);
+	const bool is_read = (out == page_info_size) ? true : false;
+	const DWORD error = is_read ? ERROR_SUCCESS : GetLastError();
+	if (error != ERROR_SUCCESS) {//error == ERROR_INVALID_PARAMETER) {
+		//nothing to read
+		return false;
+	}
+	page_info.BaseAddress;
+	page_info.RegionSize;
+	return true;
+}
+
 ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 {
 	HANDLE hThread = OpenThread(
@@ -109,9 +124,21 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		std::cout << std::hex << " Ret: " << c.ret_addr;
 	}
 	std::cout << "\n";
-	resolveAddr(c.rip);
+	bool is_res = resolveAddr(c.rip);
 	if (c.ret_addr != 0) {
 		resolveAddr(c.ret_addr);
 	}
+	if (!is_res) {
+		my_report->status = SCAN_SUSPICIOUS;
+		my_report->thread_start = c.rip;
+		my_report->thread_return = c.ret_addr;
+		MEMORY_BASIC_INFORMATION page_info = { 0 };
+		if (get_page_details(processHandle, (LPVOID)c.rip, page_info)) {
+			my_report->module = (HMODULE)page_info.BaseAddress;
+			my_report->moduleSize = page_info.RegionSize;
+			my_report->access = page_info.AllocationProtect;
+		}
+	}
+	std::cout << "Is resolved: " << is_res << "\n";
 	return my_report;
 }
