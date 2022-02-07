@@ -129,6 +129,7 @@ set (postprocessors_srcs
 set (utils_srcs
 	utils/format_util.cpp
 	utils/process_util.cpp
+	utils/threads_util.cpp
 	utils/process_privilege.cpp
 	utils/process_minidump.cpp
 	utils/path_util.cpp
@@ -146,6 +147,7 @@ set (utils_hdrs
 	utils/path_util.h
 	utils/path_converter.h
 	utils/process_util.h
+	utils/threads_util.h
 	utils/process_privilege.h
 	utils/process_minidump.h
 	utils/workingset_enum.h

@@ -1,6 +1,7 @@
 #include "thread_scanner.h"
 #include <peconv.h>
 #include "../utils/process_util.h"
+#include "../utils/ntddk.h"
 
 using namespace pesieve;
 
@@ -100,16 +101,24 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	HANDLE hThread = OpenThread(
 		THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION | SYNCHRONIZE,
 		FALSE,
-		tid
+		info.tid
 	);
 	if (!hThread) {
 		std::cerr << "[-] Could not OpenThread. Error: " << GetLastError() << std::endl;
 		return nullptr;
 	}
 
-	ThreadScanReport* my_report = new ThreadScanReport(tid);
+	if (info.is_extended) {
+		std::cout << " Start: " << std::hex << info.ext.start_addr << std::dec << " State: " << info.ext.state << " WaitReason: " << info.ext.wait_reason << "\n";
+		resolveAddr(info.ext.start_addr);
+	}
+	ThreadScanReport* my_report = new ThreadScanReport(info.tid);
 	thread_ctx c = { 0 };
 	bool is_ok = fetch_thread_ctx(processHandle, hThread, c);
+
+	DWORD exit_code = 0;
+	GetExitCodeThread(hThread, &exit_code);
+
 	CloseHandle(hThread);
 
 	if (!is_ok) {
@@ -129,7 +138,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 			c.ret_addr = my_ret;
 		}
 	}
-	std::cout << std::hex << "Tid: " << tid << " b:" << c.is64b << " Rip: " << c.rip << " Rsp: " << c.rsp;
+	std::cout << std::hex << "Tid: " << info.tid << " b:" << c.is64b << " Rip: " << c.rip << " Rsp: " << c.rsp << " ExitCode: " << exit_code;
 	if (c.ret_addr != 0) {
 		std::cout << std::hex << " Ret: " << c.ret_addr;
 	}
@@ -138,10 +147,12 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	if (c.ret_addr != 0) {
 		resolveAddr(c.ret_addr);
 	}
+
 	if (!is_res) {
 		my_report->status = SCAN_SUSPICIOUS;
 		my_report->thread_start = c.rip;
 		my_report->thread_return = c.ret_addr;
+		my_report->exit_code = exit_code;
 		MEMORY_BASIC_INFORMATION page_info = { 0 };
 		if (get_page_details(processHandle, (LPVOID)c.rip, page_info)) {
 			my_report->module = (HMODULE)page_info.BaseAddress;

@@ -3,6 +3,7 @@
 #include <windows.h>
 
 #include "module_scanner.h"
+#include "../utils/threads_util.h"
 
 namespace pesieve {
 
@@ -12,7 +13,7 @@ namespace pesieve {
 	public:
 		ThreadScanReport(DWORD _tid)
 			: ModuleScanReport(0, 0), 
-			tid(_tid), thread_start(0), thread_return(0), protection(0)
+			tid(_tid), thread_start(0), thread_return(0), protection(0), exit_code(0)
 		{
 		}
 
@@ -32,6 +33,11 @@ namespace pesieve {
 				outs << "\"" << std::hex << thread_return << "\"";
 				outs << ",\n";
 			}
+			if (exit_code) {
+				OUT_PADDED(outs, level, "\"exit_code\" : ");
+				outs << "\"" << std::hex << exit_code << "\"";
+				outs << ",\n";
+			}
 			OUT_PADDED(outs, level, "\"protection\" : ");
 			outs << "\"" << std::hex << protection << "\"";
 		}
@@ -49,14 +55,16 @@ namespace pesieve {
 		ULONGLONG thread_return;
 		DWORD tid;
 		DWORD protection;
+		DWORD exit_code;
 	};
 
 
 	//!  A scanner for threads
 	class ThreadScanner : public ProcessFeatureScanner {
 	public:
-		ThreadScanner(HANDLE hProc, DWORD _tid, ModulesInfo& _modulesInfo, peconv::ExportsMapper* _exportsMap)
-			: ProcessFeatureScanner(hProc), tid(_tid), modulesInfo(_modulesInfo), exportsMap(_exportsMap)
+		ThreadScanner(HANDLE hProc, const util::thread_info& _info, ModulesInfo& _modulesInfo, peconv::ExportsMapper* _exportsMap)
+			: ProcessFeatureScanner(hProc), 
+			info(_info), modulesInfo(_modulesInfo), exportsMap(_exportsMap)
 		{
 		}
 
@@ -65,7 +73,7 @@ namespace pesieve {
 	protected:
 		bool resolveAddr(ULONGLONG addr);
 
-		DWORD tid;
+		const util::thread_info& info;
 		ModulesInfo& modulesInfo;
 		peconv::ExportsMapper* exportsMap;
 	};

@@ -451,31 +451,24 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 
 	const DWORD pid = pReport.pid; //original PID, not a reflection!
 
-	HANDLE hThreadSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, pid);
-	if (hThreadSnapShot == INVALID_HANDLE_VALUE) {
-		const DWORD err = GetLastError();
-		std::cerr << "[-] Could not create threads snapshot. Error: " << std::dec << err << std::endl;
-		return 0;
-	}
-	THREADENTRY32 th32 = { 0 };
-	th32.dwSize = sizeof(THREADENTRY32);
+	std::vector<thread_info> threads_info;
+	if (!pesieve::util::fetch_threads_info(pid, threads_info)) { //extended info, but doesn't work on old Windows...
 
-	//check all threads in the process:
-	if (!Thread32First(hThreadSnapShot, &th32)) {
-		CloseHandle(hThreadSnapShot);
-		std::cerr << "[-] Could not enumerate thread. Error: " << GetLastError() << std::endl;
-		return 0;
-	}
-	do {
-		if (th32.th32OwnerProcessID != pid) {
-			continue;
+		if (!pesieve::util::fetch_threads_by_snapshot(pid, threads_info)) { // works on old Windows, but gives less data..
+
+			if (!args.quiet) {
+				std::cout << "[-] Failed enumerating threads." << std::endl;
+			}
+			return 0;
 		}
-		const DWORD tid = th32.th32ThreadID;
-		ThreadScanner scanner(this->processHandle, tid, pReport.modulesInfo, pReport.exportsMap);
-		ThreadScanReport *report = scanner.scanRemote();
+	}
+	std::vector<thread_info>::iterator itr;
+	for (itr = threads_info.begin(); itr != threads_info.end(); ++itr) {
+		const thread_info &info = *itr;
+		ThreadScanner scanner(this->processHandle, info, pReport.modulesInfo, pReport.exportsMap);
+		ThreadScanReport* report = scanner.scanRemote();
 		pReport.appendReport(report);
-
-	} while (Thread32Next(hThreadSnapShot, &th32));
+	}
 
 	if (!args.quiet) {
 		ULONGLONG total_time = GetTickCount64() - start_tick;
