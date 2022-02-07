@@ -36,16 +36,16 @@ size_t pesieve::ThreadScanner::enumStackFrames(HANDLE hProcess, HANDLE hThread, 
 		frame.AddrFrame.Mode = AddrModeFlat;
 
 		while (StackWalk64(IMAGE_FILE_MACHINE_AMD64, hProcess, hThread, &frame, ctx, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL)) {
-			std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
+			//std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
 			c.call_stack.push_back(next_addr);
 			c.ret_addr = next_addr;
-			bool is_res = isAddrInShellcode(next_addr);
-			if (is_res) {
-				if (in_shc) break;
-				in_shc = is_res;
-				std::cout << "<-SHC\n";
-			}
+			in_shc = isAddrInShellcode(next_addr);
+#ifdef _DEBUG
+			this->resolveAddr(next_addr);
+#endif
+
+			if (in_shc) break;
 			fetched++;
 		}
 	}
@@ -61,17 +61,14 @@ size_t pesieve::ThreadScanner::enumStackFrames(HANDLE hProcess, HANDLE hThread, 
 		frame.AddrFrame.Mode = AddrModeFlat;
 
 		while (StackWalk(IMAGE_FILE_MACHINE_I386, hProcess, hThread, &frame, ctx, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL)) {
-			std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
+			//std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
 			c.call_stack.push_back(next_addr);
 			c.ret_addr = next_addr;
-			bool is_res = isAddrInShellcode(next_addr);
+			in_shc = isAddrInShellcode(next_addr);
+#ifdef _DEBUG
 			this->resolveAddr(next_addr);
-			if (is_res) {
-				if (in_shc) break;
-				in_shc = is_res;
-				std::cout << "<-SHC\n";
-			}
+#endif
 			fetched++;
 		}
 	}
@@ -210,11 +207,16 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		info.tid
 	);
 	if (!hThread) {
+#ifdef _DEBUG
 		std::cerr << "[-] Could not OpenThread. Error: " << GetLastError() << std::endl;
+#endif
 		return nullptr;
 	}
+#ifdef _DEBUG
 	std::cout << std::dec << "---\nTid: " << info.tid << "\n";
+#endif
 	if (info.is_extended) {
+#ifdef _DEBUG
 		std::cout << " Start: " << std::hex << info.ext.start_addr << std::dec << " State: " << info.ext.state;
 		if (info.ext.state == Waiting) {
 			std::cout << " WaitReason: " << info.ext.wait_reason 
@@ -222,6 +224,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		}
 		std::cout << "\n";
 		resolveAddr(info.ext.start_addr);
+#endif
 	}
 	ThreadScanReport* my_report = new ThreadScanReport(info.tid);
 	thread_ctx c = { 0 };
@@ -236,7 +239,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		my_report->status = SCAN_ERROR;
 		return my_report;
 	}
-
+#ifdef _DEBUG
 	std::cout << " b:" << c.is64b << std::hex << " Rip: " << c.rip << " Rsp: " << c.rsp; 
 	if (exit_code != STILL_ACTIVE) 
 		std::cout << " ExitCode: " << exit_code;
@@ -245,15 +248,16 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		std::cout << std::hex << " Ret: " << c.ret_addr;
 	}
 	std::cout << "\n";
-	bool is_res = resolveAddr(c.rip);
-	if (!is_res) {
+#endif
+	bool is_shc = isAddrInShellcode(c.rip);
+	if (is_shc) {
 		if (reportSuspiciousAddr(my_report, c.rip, c)) {
 			return my_report;
 		}
 	}
 	if (c.ret_addr != 0) {
-		is_res = resolveAddr(c.ret_addr);
-		if (!is_res) {
+		is_shc = isAddrInShellcode(c.ret_addr);
+		if (is_shc) {
 			if (reportSuspiciousAddr(my_report, c.ret_addr, c)) {
 				return my_report;
 			}
