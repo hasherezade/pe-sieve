@@ -2,6 +2,11 @@
 
 #include <sstream>
 #include <fstream>
+#include <string>
+#include <locale>
+#include <codecvt>
+
+#include <tlhelp32.h>
 
 #include "../utils/format_util.h"
 #include "../utils/path_converter.h"
@@ -16,10 +21,7 @@
 #include "workingset_scanner.h"
 #include "mapping_scanner.h"
 #include "hook_targets_resolver.h"
-
-#include <string>
-#include <locale>
-#include <codecvt>
+#include "thread_scanner.h"
 
 using namespace pesieve;
 using namespace pesieve::util;
@@ -224,6 +226,19 @@ ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 			errorsStr << e.what();
 		}
 	}
+
+	// scan threads
+	size_t threadsScanned = 0;
+	if (args.threads) {
+		try {
+			threadsScanned = scanThreads(*pReport);
+		}
+		catch (std::exception& e) {
+			threadsScanned = 0;
+			errorsStr << e.what();
+		}
+	}
+
 	// throw error only if none of the scans was successful
 	if (!modulesScanned && !iatsScanned && !regionsScanned) {
 		throw std::runtime_error(errorsStr.str());
@@ -423,4 +438,47 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 		std::cout << "[*] IATs scanned in " << std::dec << total_time << " ms" << std::endl;
 	}
 	return counter;
+}
+
+
+size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws exceptions
+{
+	if (!args.quiet) {
+		std::cout << "Scanning threads." << std::endl;
+	}
+	const bool is_64bit = pesieve::util::is_process_64bit(this->processHandle);
+	ULONGLONG start_tick = GetTickCount64();
+
+	DWORD pid = GetProcessId(this->processHandle);
+	HANDLE hThreadSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, pid);
+	if (hThreadSnapShot == INVALID_HANDLE_VALUE) {
+		const DWORD err = GetLastError();
+		std::cerr << "[-] Could not create threads snapshot. Error: " << std::dec << err << std::endl;
+		return 0;
+	}
+	THREADENTRY32 th32 = { 0 };
+	th32.dwSize = sizeof(THREADENTRY32);
+
+	//check all threads in the process:
+	if (!Thread32First(hThreadSnapShot, &th32)) {
+		CloseHandle(hThreadSnapShot);
+		std::cerr << "[-] Could not enumerate thread. Error: " << GetLastError() << std::endl;
+		return 0;
+	}
+	do {
+		if (th32.th32OwnerProcessID != pid) {
+			continue;
+		}
+		const DWORD tid = th32.th32ThreadID;
+		ThreadScanner scanner(this->processHandle, tid, pReport.modulesInfo, pReport.exportsMap);
+		ThreadScanReport *report = scanner.scanRemote();
+		delete report; // delete for now...
+
+	} while (Thread32Next(hThreadSnapShot, &th32));
+
+	if (!args.quiet) {
+		ULONGLONG total_time = GetTickCount64() - start_tick;
+		std::cout << "[*] Threads scanned in " << std::dec << total_time << " ms" << std::endl;
+	}
+	return 0;
 }

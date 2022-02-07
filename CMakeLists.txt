@@ -71,6 +71,7 @@ set (scanners_srcs
 	scanners/scan_report.cpp
 	scanners/scanned_modules.cpp
 	scanners/hook_targets_resolver.cpp
+	scanners/thread_scanner.cpp
 )
 
 set (scanners_hdrs
@@ -93,6 +94,7 @@ set (scanners_hdrs
 	scanners/patch_analyzer.h
 	scanners/scanned_modules.h
 	scanners/hook_targets_resolver.h
+	scanners/thread_scanner.h
 )
 
 set (imprec_hdrs
