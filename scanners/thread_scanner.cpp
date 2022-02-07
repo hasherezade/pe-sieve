@@ -59,11 +59,21 @@ bool pesieve::ThreadScanner::resolveAddr(ULONGLONG addr)
 		std::cout << " : " << mod->getModName();
 		is_resolved = true;
 	}
-	if (exportsMap) {
-		const peconv::ExportedFunc* exp = exportsMap->find_export_by_va(addr);
-		if (exp) {
-			std::cout << " : " << exp->toString();
-			is_resolved = true;
+	if (exportsMap && is_resolved) {
+		bool search_name = false;
+		if (mod->getModName() == "ntdll.dll" || mod->getModName() == "win32u.dll") {
+			search_name = true;
+		}
+		for (size_t i = 0; i < 25; i++) {
+			const peconv::ExportedFunc* exp = exportsMap->find_export_by_va(addr - i);
+			if (exp) {
+				std::cout << " : " << exp->toString();
+				is_resolved = true;
+				break;
+			}
+			if (!search_name) {
+				break;
+			}
 		}
 	}
 	std::cout << std::endl;
