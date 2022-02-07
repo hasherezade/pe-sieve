@@ -449,7 +449,8 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 	const bool is_64bit = pesieve::util::is_process_64bit(this->processHandle);
 	ULONGLONG start_tick = GetTickCount64();
 
-	DWORD pid = GetProcessId(this->processHandle);
+	const DWORD pid = pReport.pid; //original PID, not a reflection!
+
 	HANDLE hThreadSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, pid);
 	if (hThreadSnapShot == INVALID_HANDLE_VALUE) {
 		const DWORD err = GetLastError();
