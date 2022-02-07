@@ -11,12 +11,14 @@ namespace pesieve {
 			ULONG_PTR start_addr;
 			DWORD state;
 			DWORD wait_reason;
+			DWORD wait_time;
 
 			_thread_info_ext()
 			{
 				this->start_addr = 0;
 				this->state = 0;
 				this->wait_reason = 0;
+				this->wait_time = 0;
 			}
 
 			_thread_info_ext(const _thread_info_ext& other)
@@ -24,6 +26,7 @@ namespace pesieve {
 				this->start_addr = other.start_addr;
 				this->state = other.state;
 				this->wait_reason = other.wait_reason;
+				this->wait_time = other.wait_time;
 			}
 
 		} thread_info_ext;
@@ -48,6 +51,12 @@ namespace pesieve {
 			}
 
 		} thread_info;
+
+		bool is_suspeneded(const thread_info& info);
+
+		bool is_delayed(const thread_info& info);
+
+		bool is_terminated(const thread_info& info);
 
 		bool fetch_threads_info(DWORD pid, std::vector<thread_info>& threads_info);
 

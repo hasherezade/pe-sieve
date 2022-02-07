@@ -443,10 +443,14 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 
 size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws exceptions
 {
+	const bool is_64bit = pesieve::util::is_process_64bit(this->processHandle);
+#ifndef _WIN64
+	if (is_64bit) return 0;
+#endif
+	
 	if (!args.quiet) {
 		std::cout << "Scanning threads." << std::endl;
 	}
-	const bool is_64bit = pesieve::util::is_process_64bit(this->processHandle);
 	ULONGLONG start_tick = GetTickCount64();
 
 	const DWORD pid = pReport.pid; //original PID, not a reflection!

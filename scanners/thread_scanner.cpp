@@ -3,16 +3,82 @@
 #include "../utils/process_util.h"
 #include "../utils/ntddk.h"
 
+#include <DbgHelp.h>
+#pragma comment(lib, "dbghelp")
+
 using namespace pesieve;
 
-typedef struct _thread_ctx {
-	bool is64b;
-	ULONGLONG rip;
-	ULONGLONG rsp;
-	ULONGLONG ret_addr;
-} thread_ctx;
+bool pesieve::ThreadScanner::isAddrInShellcode(ULONGLONG addr)
+{
+	ScannedModule* mod = modulesInfo.findModuleContaining(addr);
+	if (!mod) return true;
 
-bool fetch_thread_ctx(HANDLE hProcess, HANDLE hThread, thread_ctx& c)
+	//the module is named
+	if (mod->getModName().length() > 0) {
+		return false;
+	}
+	return true;
+}
+
+size_t pesieve::ThreadScanner::enumStackFrames(HANDLE hProcess, HANDLE hThread, thread_ctx& c, IN LPVOID ctx)
+{
+	size_t fetched = 0;
+	bool in_shc = false;
+#ifdef _WIN64
+	if (c.is64b) {
+		STACKFRAME64 frame = { 0 };
+
+		frame.AddrPC.Offset = c.rip;
+		frame.AddrPC.Mode = AddrModeFlat;
+		frame.AddrStack.Offset = c.rsp;
+		frame.AddrStack.Mode = AddrModeFlat;
+		frame.AddrFrame.Offset = c.rbp;
+		frame.AddrFrame.Mode = AddrModeFlat;
+
+		while (StackWalk64(IMAGE_FILE_MACHINE_AMD64, hProcess, hThread, &frame, ctx, NULL, NULL, NULL, NULL)) {
+			std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
+			const ULONGLONG next_addr = frame.AddrPC.Offset;
+			c.call_stack.push_back(next_addr);
+			c.ret_addr = next_addr;
+			bool is_res = isAddrInShellcode(next_addr);
+			if (is_res) {
+				if (in_shc) break;
+				in_shc = is_res;
+				std::cout << "<-SHC\n";
+			}
+			fetched++;
+		}
+	}
+#endif
+	if (!c.is64b) {
+		STACKFRAME frame = { 0 };
+
+		frame.AddrPC.Offset = c.rip;
+		frame.AddrPC.Mode = AddrModeFlat;
+		frame.AddrStack.Offset = c.rsp;
+		frame.AddrStack.Mode = AddrModeFlat;
+		frame.AddrFrame.Offset = c.rbp;
+		frame.AddrFrame.Mode = AddrModeFlat;
+
+		while (StackWalk(IMAGE_FILE_MACHINE_I386, hProcess, hThread, &frame, ctx, NULL, NULL, NULL, NULL)) {
+			std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
+			const ULONGLONG next_addr = frame.AddrPC.Offset;
+			c.call_stack.push_back(next_addr);
+			c.ret_addr = next_addr;
+			bool is_res = isAddrInShellcode(next_addr);
+			this->resolveAddr(next_addr);
+			if (is_res) {
+				if (in_shc) break;
+				in_shc = is_res;
+				std::cout << "<-SHC\n";
+			}
+			fetched++;
+		}
+	}
+	return fetched;
+}
+
+bool pesieve::ThreadScanner::fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThread, OUT thread_ctx& c)
 {
 	bool is_ok = false;
 	BOOL is_wow64 = FALSE;
@@ -27,7 +93,9 @@ bool fetch_thread_ctx(HANDLE hProcess, HANDLE hThread, thread_ctx& c)
 
 			c.rip = ctx.Eip;
 			c.rsp = ctx.Esp;
+			c.rbp = ctx.Ebp;
 			c.is64b = false;
+			enumStackFrames(hProcess, hThread, c, &ctx);
 		}
 	}
 #endif
@@ -40,12 +108,16 @@ bool fetch_thread_ctx(HANDLE hProcess, HANDLE hThread, thread_ctx& c)
 #ifdef _WIN64
 			c.rip = ctx.Rip;
 			c.rsp = ctx.Rsp;
+			c.rbp = ctx.Rbp;
 			c.is64b = true;
+
+
 #else
 			c.rip = ctx.Eip;
 			c.rsp = ctx.Esp;
 			c.is64b = false;
 #endif
+			enumStackFrames(hProcess, hThread, c, &ctx);
 		}
 	}
 	return is_ok;
@@ -91,8 +163,25 @@ bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORM
 		//nothing to read
 		return false;
 	}
-	page_info.BaseAddress;
-	page_info.RegionSize;
+	return true;
+}
+
+bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx  &c)
+{
+	MEMORY_BASIC_INFORMATION page_info = { 0 };
+	if (get_page_details(processHandle, (LPVOID)susp_addr, page_info)) {
+		if (page_info.State & MEM_FREE) {
+			return false;
+		}
+		ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
+		my_report->page_state = page_info.State;
+		my_report->status = SCAN_SUSPICIOUS;
+		my_report->module = (HMODULE)base;
+		my_report->moduleSize = page_info.RegionSize;
+		my_report->protection = page_info.AllocationProtect;
+
+		my_report->thread_ip = susp_addr;
+	}
 	return true;
 }
 
@@ -107,14 +196,19 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		std::cerr << "[-] Could not OpenThread. Error: " << GetLastError() << std::endl;
 		return nullptr;
 	}
-
+	std::cout << std::dec << "---\nTid: " << info.tid << "\n";
 	if (info.is_extended) {
-		std::cout << " Start: " << std::hex << info.ext.start_addr << std::dec << " State: " << info.ext.state << " WaitReason: " << info.ext.wait_reason << "\n";
+		std::cout << " Start: " << std::hex << info.ext.start_addr << std::dec << " State: " << info.ext.state;
+		if (info.ext.state == Waiting) {
+			std::cout << " WaitReason: " << info.ext.wait_reason 
+				<< " WaitTime: " << info.ext.wait_time;
+		}
+		std::cout << "\n";
 		resolveAddr(info.ext.start_addr);
 	}
 	ThreadScanReport* my_report = new ThreadScanReport(info.tid);
 	thread_ctx c = { 0 };
-	bool is_ok = fetch_thread_ctx(processHandle, hThread, c);
+	bool is_ok = fetchThreadCtx(processHandle, hThread, c);
 
 	DWORD exit_code = 0;
 	GetExitCodeThread(hThread, &exit_code);
@@ -126,40 +220,27 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		return my_report;
 	}
 
-	if (c.is64b) {
-		ULONGLONG my_ret = 0;
-		if (peconv::read_remote_memory(processHandle, (LPVOID)c.rsp, (BYTE*)&my_ret, sizeof(my_ret), sizeof(my_ret)) == sizeof(my_ret)) {
-			c.ret_addr = my_ret;
-		}
-	}
-	else {
-		DWORD my_ret = 0;
-		if (peconv::read_remote_memory(processHandle, (LPVOID)c.rsp, (BYTE*)&my_ret, sizeof(my_ret), sizeof(my_ret)) == sizeof(my_ret)) {
-			c.ret_addr = my_ret;
-		}
-	}
-	std::cout << std::hex << "Tid: " << info.tid << " b:" << c.is64b << " Rip: " << c.rip << " Rsp: " << c.rsp << " ExitCode: " << exit_code;
+	std::cout << " b:" << c.is64b << std::hex << " Rip: " << c.rip << " Rsp: " << c.rsp; 
+	if (exit_code != STILL_ACTIVE) 
+		std::cout << " ExitCode: " << exit_code;
+
 	if (c.ret_addr != 0) {
 		std::cout << std::hex << " Ret: " << c.ret_addr;
 	}
 	std::cout << "\n";
 	bool is_res = resolveAddr(c.rip);
-	if (c.ret_addr != 0) {
-		resolveAddr(c.ret_addr);
-	}
-
 	if (!is_res) {
-		my_report->status = SCAN_SUSPICIOUS;
-		my_report->thread_start = c.rip;
-		my_report->thread_return = c.ret_addr;
-		my_report->exit_code = exit_code;
-		MEMORY_BASIC_INFORMATION page_info = { 0 };
-		if (get_page_details(processHandle, (LPVOID)c.rip, page_info)) {
-			my_report->module = (HMODULE)page_info.BaseAddress;
-			my_report->moduleSize = page_info.RegionSize;
-			my_report->protection = page_info.AllocationProtect;
+		if (reportSuspiciousAddr(my_report, c.rip, c)) {
+			return my_report;
 		}
 	}
-	std::cout << "Is resolved: " << is_res << "\n";
+	if (c.ret_addr != 0) {
+		is_res = resolveAddr(c.ret_addr);
+		if (!is_res) {
+			if (reportSuspiciousAddr(my_report, c.ret_addr, c)) {
+				return my_report;
+			}
+		}
+	}
 	return my_report;
 }

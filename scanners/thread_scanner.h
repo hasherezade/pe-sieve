@@ -13,7 +13,7 @@ namespace pesieve {
 	public:
 		ThreadScanReport(DWORD _tid)
 			: ModuleScanReport(0, 0), 
-			tid(_tid), thread_start(0), thread_return(0), protection(0), exit_code(0)
+			tid(_tid), thread_ip(0), thread_return(0), protection(0), page_state(0)
 		{
 		}
 
@@ -25,19 +25,19 @@ namespace pesieve {
 			OUT_PADDED(outs, level, "\"thread_id\" : ");
 			outs << std::dec << tid;
 			outs << ",\n";
-			OUT_PADDED(outs, level, "\"thread_start\" : ");
-			outs << "\"" << std::hex << thread_start << "\"";
+			OUT_PADDED(outs, level, "\"thread_ip\" : ");
+			outs << "\"" << std::hex << thread_ip << "\"";
 			outs << ",\n";
 			if (thread_return) {
 				OUT_PADDED(outs, level, "\"thread_return\" : ");
 				outs << "\"" << std::hex << thread_return << "\"";
 				outs << ",\n";
 			}
-			if (exit_code) {
-				OUT_PADDED(outs, level, "\"exit_code\" : ");
-				outs << "\"" << std::hex << exit_code << "\"";
-				outs << ",\n";
-			}
+
+			OUT_PADDED(outs, level, "\"page_state\" : ");
+			outs << "\"" << std::hex << page_state << "\"";
+			outs << ",\n";
+
 			OUT_PADDED(outs, level, "\"protection\" : ");
 			outs << "\"" << std::hex << protection << "\"";
 		}
@@ -51,11 +51,11 @@ namespace pesieve {
 			return true;
 		}
 
-		ULONGLONG thread_start;
+		ULONGLONG thread_ip;
 		ULONGLONG thread_return;
 		DWORD tid;
 		DWORD protection;
-		DWORD exit_code;
+		DWORD page_state;
 	};
 
 
@@ -71,7 +71,21 @@ namespace pesieve {
 		virtual ThreadScanReport* scanRemote();
 
 	protected:
+
+		typedef struct _thread_ctx {
+			bool is64b;
+			ULONGLONG rip;
+			ULONGLONG rsp;
+			ULONGLONG rbp;
+			ULONGLONG ret_addr;
+			std::vector<ULONGLONG> call_stack;
+		} thread_ctx;
+
+		bool isAddrInShellcode(ULONGLONG addr);
 		bool resolveAddr(ULONGLONG addr);
+		bool fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThread, OUT thread_ctx& c);
+		size_t enumStackFrames(HANDLE hProcess, HANDLE hThread, thread_ctx& c, IN LPVOID ctx);
+		bool reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx& c);
 
 		const util::thread_info& info;
 		ModulesInfo& modulesInfo;
