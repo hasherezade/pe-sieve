@@ -35,8 +35,8 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 	}
 	size_t fetched = 0;
 	bool in_shc = false;
-#ifdef _WIN64
 	const pesieve::thread_ctx& c = *(args->c);
+#ifdef _WIN64
 	if (c.is64b) {
 		STACKFRAME64 frame = { 0 };
 
