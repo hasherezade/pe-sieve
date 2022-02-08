@@ -8,40 +8,6 @@
 #include <iostream>
 #endif
 
-bool pesieve::util::is_suspeneded(const thread_info& info)
-{
-	if (!info.is_extended) {
-		return false;//TODO: status UNKNOWN
-	}
-	if (info.ext.state == Waiting && info.ext.wait_reason == Suspended) {
-		return true;
-	}
-	return false;
-}
-
-bool pesieve::util::is_delayed(const thread_info& info)
-{
-	if (!info.is_extended) {
-		return false;//TODO: status UNKNOWN
-	}
-	if (info.ext.state == Waiting && info.ext.wait_reason == DelayExecution) {
-		return true;
-	}
-	return false;
-}
-
-bool pesieve::util::is_terminated(const thread_info& info)
-{
-	if (!info.is_extended) {
-		return false;//TODO: status UNKNOWN
-	}
-	if (info.ext.state == Terminated) {
-		return true;
-	}
-	return false;
-}
-
-
 bool pesieve::util::fetch_threads_info(DWORD pid, std::vector<thread_info>& threads_info)
 {
 	BYTE* buffer = nullptr;

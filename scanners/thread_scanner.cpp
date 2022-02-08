@@ -199,6 +199,29 @@ bool pesieve::ThreadScanner::FreeSymbols(HANDLE hProc)
 	return false;
 }
 
+
+bool should_scan(const util::thread_info& info)
+{
+	if (!info.is_extended) {
+		return true;
+	}
+	const KTHREAD_STATE state = (KTHREAD_STATE)info.ext.state;
+	if (state == Running || state == Ready) {
+		return true;
+	}
+	if (state == Terminated) {
+		return false;
+	}
+	if (state == Waiting) {
+		if (info.ext.wait_reason == DelayExecution
+			|| info.ext.wait_reason == Suspended)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 {
 	HANDLE hThread = OpenThread(
@@ -227,6 +250,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 #endif
 	}
 	ThreadScanReport* my_report = new ThreadScanReport(info.tid);
+
 	thread_ctx c = { 0 };
 	bool is_ok = fetchThreadCtx(processHandle, hThread, c);
 
@@ -249,6 +273,17 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	}
 	std::cout << "\n";
 #endif
+
+	if (exit_code != STILL_ACTIVE) {
+		my_report->status = SCAN_NOT_SUSPICIOUS;
+		return my_report;
+	}
+	// if extended info given, allow to filter out from the scan
+	
+	if (!should_scan(info)) {
+		my_report->status = SCAN_NOT_SUSPICIOUS;
+		return my_report;
+	}
 	bool is_shc = isAddrInShellcode(c.rip);
 	if (is_shc) {
 		if (reportSuspiciousAddr(my_report, c.rip, c)) {

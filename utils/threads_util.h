@@ -52,14 +52,9 @@ namespace pesieve {
 
 		} thread_info;
 
-		bool is_suspeneded(const thread_info& info);
-
-		bool is_delayed(const thread_info& info);
-
-		bool is_terminated(const thread_info& info);
-
 		bool fetch_threads_info(DWORD pid, std::vector<thread_info>& threads_info);
 
 		bool fetch_threads_by_snapshot(DWORD pid, std::vector<thread_info>& threads_info);
-	};
-};
+
+	}; // namespace util
+}; // namespace pesieve
