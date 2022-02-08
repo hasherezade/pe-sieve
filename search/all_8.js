@@ -29,5 +29,7 @@ var searchData=
   ['hooktargetmodule_26',['hookTargetModule',['../classpesieve_1_1_patch_list_1_1_patch.html#acec7a5d8080e88233a3df43d8baf22b5',1,'pesieve::PatchList::Patch']]],
   ['hooktargetresolver_27',['HookTargetResolver',['../classpesieve_1_1_hook_target_resolver.html#a67f45c79aabc8609ff844bfde436bc4d',1,'pesieve::HookTargetResolver::HookTargetResolver()'],['../classpesieve_1_1_hook_target_resolver.html',1,'pesieve::HookTargetResolver']]],
   ['hooktargetva_28',['hookTargetVA',['../classpesieve_1_1_patch_list_1_1_patch.html#a88a970b68970e94884d5f4e2efd80359',1,'pesieve::PatchList::Patch']]],
-  ['hpss_29',['HPSS',['../process__reflection_8cpp.html#a245cc83fbf7f180ff454a487cae263ea',1,'process_reflection.cpp']]]
+  ['hprocess_29',['hProcess',['../struct__t__stack__enum__params.html#a657834de8b3a9b7525907db521be6552',1,'_t_stack_enum_params']]],
+  ['hpss_30',['HPSS',['../process__reflection_8cpp.html#a245cc83fbf7f180ff454a487cae263ea',1,'process_reflection.cpp']]],
+  ['hthread_31',['hThread',['../struct__t__stack__enum__params.html#af39d9900e3d580fea3a16440f979bcef',1,'_t_stack_enum_params']]]
 ];

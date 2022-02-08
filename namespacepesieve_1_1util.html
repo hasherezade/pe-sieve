@@ -70,6 +70,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
@@ -79,6 +80,10 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1util_1_1__thread__info.html">_thread_info</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1util_1_1__thread__info__ext.html">_thread_info_ext</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1util_1_1_mutex.html">Mutex</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1util_1_1_mutex_locker.html">MutexLocker</a></td></tr>
@@ -91,6 +96,13 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1util_1_1_t___r_t_l_p___p_r_o_c_e_s_s___r_e_f_l_e_c_t_i_o_n___r_e_f_l_e_c_t_i_o_n___i_n_f_o_r_m_a_t_i_o_n.html">T_RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a1fa6e7833c3c780daa59e9f568a58534"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structpesieve_1_1util_1_1__thread__info__ext.html">pesieve::util::_thread_info_ext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html#a1fa6e7833c3c780daa59e9f568a58534">thread_info_ext</a></td></tr>
+<tr class="separator:a1fa6e7833c3c780daa59e9f568a58534"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad14df902e4cf78a24e85c3984b8d9e74"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structpesieve_1_1util_1_1__thread__info.html">pesieve::util::_thread_info</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html#ad14df902e4cf78a24e85c3984b8d9e74">thread_info</a></td></tr>
+<tr class="separator:ad14df902e4cf78a24e85c3984b8d9e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -296,6 +308,10 @@ Functions</h2></td></tr>
 <tr class="separator:a39356c7ae484d7b1dae7548ff4e50609"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6211673ea221530eb4472658fdab12a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html#a6211673ea221530eb4472658fdab12a6">is_cstr_equal</a> (char const *a, char const *b, const size_t max_len)</td></tr>
 <tr class="separator:a6211673ea221530eb4472658fdab12a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07b6bf4dd20edee9d0b422c45ae68d7a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html#a07b6bf4dd20edee9d0b422c45ae68d7a">fetch_threads_info</a> (<a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> pid, std::vector&lt; <a class="el" href="namespacepesieve_1_1util.html#ad14df902e4cf78a24e85c3984b8d9e74">thread_info</a> &gt; &amp;threads_info)</td></tr>
+<tr class="separator:a07b6bf4dd20edee9d0b422c45ae68d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad102c156b27f56f767ce6c2580c2761c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html#ad102c156b27f56f767ce6c2580c2761c">fetch_threads_by_snapshot</a> (<a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> pid, std::vector&lt; <a class="el" href="namespacepesieve_1_1util.html#ad14df902e4cf78a24e85c3984b8d9e74">thread_info</a> &gt; &amp;threads_info)</td></tr>
+<tr class="separator:ad102c156b27f56f767ce6c2580c2761c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b470a0106a3ad9352e64d1295bd9870"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html#a7b470a0106a3ad9352e64d1295bd9870">get_next_commited_region</a> (HANDLE processHandle, ULONGLONG start_va, MEMORY_BASIC_INFORMATION &amp;page_info)</td></tr>
 <tr class="separator:a7b470a0106a3ad9352e64d1295bd9870"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9658166c62196dd00f2041c0a821b2aa"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html#a9658166c62196dd00f2041c0a821b2aa">enum_workingset</a> (HANDLE processHandle, std::set&lt; ULONGLONG &gt; &amp;region_bases)</td></tr>
@@ -350,6 +366,35 @@ Variables</h2></td></tr>
 <tr class="memitem:ad91ff983665019c0b9c5076384577817"><td class="memItemLeft" align="right" valign="top">OUT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html#ad91ff983665019c0b9c5076384577817">PBOOL</a> = nullptr</td></tr>
 <tr class="separator:ad91ff983665019c0b9c5076384577817"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="ad14df902e4cf78a24e85c3984b8d9e74" name="ad14df902e4cf78a24e85c3984b8d9e74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad14df902e4cf78a24e85c3984b8d9e74">&#9670;&nbsp;</a></span>thread_info</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="structpesieve_1_1util_1_1__thread__info.html">pesieve::util::_thread_info</a> <a class="el" href="namespacepesieve_1_1util.html#ad14df902e4cf78a24e85c3984b8d9e74">pesieve::util::thread_info</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1fa6e7833c3c780daa59e9f568a58534" name="a1fa6e7833c3c780daa59e9f568a58534"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fa6e7833c3c780daa59e9f568a58534">&#9670;&nbsp;</a></span>thread_info_ext</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="structpesieve_1_1util_1_1__thread__info__ext.html">pesieve::util::_thread_info_ext</a> <a class="el" href="namespacepesieve_1_1util.html#a1fa6e7833c3c780daa59e9f568a58534">pesieve::util::thread_info_ext</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a06aec04d3d9256eeb727d8c9df34a8e9" name="a06aec04d3d9256eeb727d8c9df34a8e9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a06aec04d3d9256eeb727d8c9df34a8e9">&#9670;&nbsp;</a></span>process_integrity_t</h2>
@@ -1099,6 +1144,85 @@ Here is the call graph for this function:</div>
 <area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="663,13,808,39"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#a970337282940a37076a16db56183c03d" title=" " alt="" coords="451,130,605,157"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#a39356c7ae484d7b1dae7548ff4e50609" title=" " alt="" coords="441,247,615,274"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ad102c156b27f56f767ce6c2580c2761c" name="ad102c156b27f56f767ce6c2580c2761c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad102c156b27f56f767ce6c2580c2761c">&#9670;&nbsp;</a></span>fetch_threads_by_snapshot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::util::fetch_threads_by_snapshot </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>&#160;</td>
+          <td class="paramname"><em>pid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="namespacepesieve_1_1util.html#ad14df902e4cf78a24e85c3984b8d9e74">thread_info</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>threads_info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="threads__util_8cpp_source.html#l00085">85</a> of file <a class="el" href="threads__util_8cpp_source.html">threads_util.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespacepesieve_1_1util_ad102c156b27f56f767ce6c2580c2761c_cgraph.png" border="0" usemap="#anamespacepesieve_1_1util_ad102c156b27f56f767ce6c2580c2761c_cgraph" alt=""/></div>
+<map name="anamespacepesieve_1_1util_ad102c156b27f56f767ce6c2580c2761c_cgraph" id="anamespacepesieve_1_1util_ad102c156b27f56f767ce6c2580c2761c_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,157,47"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="205,13,351,39"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a07b6bf4dd20edee9d0b422c45ae68d7a" name="a07b6bf4dd20edee9d0b422c45ae68d7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07b6bf4dd20edee9d0b422c45ae68d7a">&#9670;&nbsp;</a></span>fetch_threads_info()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::util::fetch_threads_info </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>&#160;</td>
+          <td class="paramname"><em>pid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="namespacepesieve_1_1util.html#ad14df902e4cf78a24e85c3984b8d9e74">thread_info</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>threads_info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="threads__util_8cpp_source.html#l00011">11</a> of file <a class="el" href="threads__util_8cpp_source.html">threads_util.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespacepesieve_1_1util_a07b6bf4dd20edee9d0b422c45ae68d7a_cgraph.png" border="0" usemap="#anamespacepesieve_1_1util_a07b6bf4dd20edee9d0b422c45ae68d7a_cgraph" alt=""/></div>
+<map name="anamespacepesieve_1_1util_a07b6bf4dd20edee9d0b422c45ae68d7a_cgraph" id="anamespacepesieve_1_1util_a07b6bf4dd20edee9d0b422c45ae68d7a_cgraph">
+<area shape="rect" title=" " alt="" coords="5,23,131,65"/>
+<area shape="rect" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="215,5,309,32"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a31ce9e0299d60a275b024faa3e45ef62" title=" " alt="" coords="179,56,345,83"/>
 </map>
 </div>
 

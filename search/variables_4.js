@@ -8,5 +8,6 @@ var searchData=
   ['errorscount_5',['errorsCount',['../classpesieve_1_1_process_scan_report.html#a7e3ec7b7c894b6fa0f572a2367955ef4',1,'pesieve::ProcessScanReport']]],
   ['eventhandle_6',['EventHandle',['../namespacepesieve_1_1util.html#a60b9a4a2b6b3b508c726b687102996a0',1,'pesieve::util']]],
   ['exceptionparam_7',['ExceptionParam',['../namespacepesieve_1_1util.html#a2f48b0c1e52ab5c08ca7312301fc8543',1,'pesieve::util']]],
-  ['exportsmap_8',['exportsMap',['../classpesieve_1_1_process_scan_report.html#a4f395a9b2f05200683c08886fb81e992',1,'pesieve::ProcessScanReport']]]
+  ['exportsmap_8',['exportsMap',['../classpesieve_1_1_process_scan_report.html#a4f395a9b2f05200683c08886fb81e992',1,'pesieve::ProcessScanReport::exportsMap()'],['../classpesieve_1_1_thread_scanner.html#aa32fde697d92f5f545c9d2faa5ade268',1,'pesieve::ThreadScanner::exportsMap()']]],
+  ['ext_9',['ext',['../structpesieve_1_1util_1_1__thread__info.html#aa8f037bcc48e97319145006c5ceef188',1,'pesieve::util::_thread_info']]]
 ];

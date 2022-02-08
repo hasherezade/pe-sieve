@@ -10,5 +10,7 @@ var searchData=
   ['hooked_5ffunc_7',['hooked_func',['../classpesieve_1_1_patch_list_1_1_patch.html#a4aa1cbe33dae22e9e11bcbaf2e78331f',1,'pesieve::PatchList::Patch']]],
   ['hooktargetmodname_8',['hookTargetModName',['../classpesieve_1_1_patch_list_1_1_patch.html#a539b13c352084f0c62380fd35f388d83',1,'pesieve::PatchList::Patch']]],
   ['hooktargetmodule_9',['hookTargetModule',['../classpesieve_1_1_patch_list_1_1_patch.html#acec7a5d8080e88233a3df43d8baf22b5',1,'pesieve::PatchList::Patch']]],
-  ['hooktargetva_10',['hookTargetVA',['../classpesieve_1_1_patch_list_1_1_patch.html#a88a970b68970e94884d5f4e2efd80359',1,'pesieve::PatchList::Patch']]]
+  ['hooktargetva_10',['hookTargetVA',['../classpesieve_1_1_patch_list_1_1_patch.html#a88a970b68970e94884d5f4e2efd80359',1,'pesieve::PatchList::Patch']]],
+  ['hprocess_11',['hProcess',['../struct__t__stack__enum__params.html#a657834de8b3a9b7525907db521be6552',1,'_t_stack_enum_params']]],
+  ['hthread_12',['hThread',['../struct__t__stack__enum__params.html#af39d9900e3d580fea3a16440f979bcef',1,'_t_stack_enum_params']]]
 ];
