@@ -104,7 +104,7 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::_recreateImpo
 			const size_t termIATSize = getMaxDynamicIATSize(true);
 
 			if ((untermIATSize > mainIATSize) && (untermIATSize > termIATSize)) {
-				filter = t_imprec_filter::IMP_REC1;
+				filter = IMP_REC1;
 			}
 		}
 	}

@@ -20,7 +20,7 @@ bool pesieve::ThreadScanner::isAddrInShellcode(ULONGLONG addr)
 	return true;
 }
 
-size_t pesieve::ThreadScanner::enumStackFrames(HANDLE hProcess, HANDLE hThread, thread_ctx& c, IN LPVOID ctx)
+size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT thread_ctx& c)
 {
 	size_t fetched = 0;
 	bool in_shc = false;
@@ -38,13 +38,11 @@ size_t pesieve::ThreadScanner::enumStackFrames(HANDLE hProcess, HANDLE hThread, 
 		while (StackWalk64(IMAGE_FILE_MACHINE_AMD64, hProcess, hThread, &frame, ctx, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL)) {
 			//std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
-			c.call_stack.push_back(next_addr);
 			c.ret_addr = next_addr;
 			in_shc = isAddrInShellcode(next_addr);
 #ifdef _DEBUG
 			this->resolveAddr(next_addr);
 #endif
-
 			if (in_shc) break;
 			fetched++;
 		}
@@ -63,7 +61,6 @@ size_t pesieve::ThreadScanner::enumStackFrames(HANDLE hProcess, HANDLE hThread, 
 		while (StackWalk(IMAGE_FILE_MACHINE_I386, hProcess, hThread, &frame, ctx, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL)) {
 			//std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
-			c.call_stack.push_back(next_addr);
 			c.ret_addr = next_addr;
 			in_shc = isAddrInShellcode(next_addr);
 #ifdef _DEBUG
@@ -92,7 +89,7 @@ bool pesieve::ThreadScanner::fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThrea
 			c.rsp = ctx.Esp;
 			c.rbp = ctx.Ebp;
 			c.is64b = false;
-			enumStackFrames(hProcess, hThread, c, &ctx);
+			enumStackFrames(hProcess, hThread, &ctx, c);
 		}
 	}
 #endif
@@ -114,7 +111,7 @@ bool pesieve::ThreadScanner::fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThrea
 			c.rsp = ctx.Esp;
 			c.is64b = false;
 #endif
-			enumStackFrames(hProcess, hThread, c, &ctx);
+			enumStackFrames(hProcess, hThread, &ctx, c);
 		}
 	}
 	return is_ok;
@@ -214,7 +211,8 @@ bool should_scan(const util::thread_info& info)
 	}
 	if (state == Waiting) {
 		if (info.ext.wait_reason == DelayExecution
-			|| info.ext.wait_reason == Suspended)
+			|| info.ext.wait_reason == Suspended
+			|| info.ext.wait_reason == Executive)
 		{
 			return true;
 		}

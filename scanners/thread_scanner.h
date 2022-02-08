@@ -83,13 +83,12 @@ namespace pesieve {
 			ULONGLONG rsp;
 			ULONGLONG rbp;
 			ULONGLONG ret_addr;
-			std::vector<ULONGLONG> call_stack;
 		} thread_ctx;
 
 		bool isAddrInShellcode(ULONGLONG addr);
 		bool resolveAddr(ULONGLONG addr);
 		bool fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThread, OUT thread_ctx& c);
-		size_t enumStackFrames(HANDLE hProcess, HANDLE hThread, thread_ctx& c, IN LPVOID ctx);
+		size_t enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT thread_ctx& c);
 		bool reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx& c);
 
 		const util::thread_info& info;
