@@ -58,6 +58,14 @@ namespace pesieve {
 		DWORD page_state;
 	};
 
+	//!  A custom structure keeping a fragment of a thread context
+	typedef struct _thread_ctx {
+		bool is64b;
+		ULONGLONG rip;
+		ULONGLONG rsp;
+		ULONGLONG rbp;
+		ULONGLONG ret_addr;
+	} thread_ctx;
 
 	//!  A scanner for threads
 	//! Based on the idea presented here: https://github.com/thefLink/Hunt-Sleeping-Beacons
@@ -76,14 +84,6 @@ namespace pesieve {
 		virtual ThreadScanReport* scanRemote();
 
 	protected:
-
-		typedef struct _thread_ctx {
-			bool is64b;
-			ULONGLONG rip;
-			ULONGLONG rsp;
-			ULONGLONG rbp;
-			ULONGLONG ret_addr;
-		} thread_ctx;
 
 		bool isAddrInShellcode(ULONGLONG addr);
 		bool resolveAddr(ULONGLONG addr);

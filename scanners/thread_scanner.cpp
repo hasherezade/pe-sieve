@@ -8,23 +8,35 @@
 
 using namespace pesieve;
 
-bool pesieve::ThreadScanner::isAddrInShellcode(ULONGLONG addr)
-{
-	ScannedModule* mod = modulesInfo.findModuleContaining(addr);
-	if (!mod) return true;
+typedef struct _t_stack_enum_params {
+	HANDLE hProcess;
+	HANDLE hThread;
+	LPVOID ctx;
+	const pesieve::thread_ctx* c;
+	std::vector<ULONGLONG> stack_frame;
+	bool is_ok;
 
-	//the module is named
-	if (mod->getModName().length() > 0) {
-		return false;
+	_t_stack_enum_params(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN const pesieve::thread_ctx& c)
+	{
+		this->hProcess = hProcess;
+		this->hThread = hThread;
+		this->ctx = ctx;
+		this->c = &c;
+		this->is_ok = false;
 	}
-	return true;
-}
+} t_stack_enum_params;
 
-size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT thread_ctx& c)
+
+DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 {
+	t_stack_enum_params* args = static_cast<t_stack_enum_params*>(lpParam);
+	if (!args || !args->c || !args->ctx) {
+		return STATUS_INVALID_PARAMETER;
+	}
 	size_t fetched = 0;
 	bool in_shc = false;
 #ifdef _WIN64
+	const pesieve::thread_ctx& c = *(args->c);
 	if (c.is64b) {
 		STACKFRAME64 frame = { 0 };
 
@@ -35,15 +47,10 @@ size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hTh
 		frame.AddrFrame.Offset = c.rbp;
 		frame.AddrFrame.Mode = AddrModeFlat;
 
-		while (StackWalk64(IMAGE_FILE_MACHINE_AMD64, hProcess, hThread, &frame, ctx, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL)) {
+		while (StackWalk64(IMAGE_FILE_MACHINE_AMD64, args->hProcess, args->hThread, &frame, args->ctx, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL)) {
 			//std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
-			c.ret_addr = next_addr;
-			in_shc = isAddrInShellcode(next_addr);
-#ifdef _DEBUG
-			this->resolveAddr(next_addr);
-#endif
-			if (in_shc) break;
+			args->stack_frame.push_back(next_addr);
 			fetched++;
 		}
 	}
@@ -58,18 +65,59 @@ size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hTh
 		frame.AddrFrame.Offset = c.rbp;
 		frame.AddrFrame.Mode = AddrModeFlat;
 
-		while (StackWalk(IMAGE_FILE_MACHINE_I386, hProcess, hThread, &frame, ctx, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL)) {
+		while (StackWalk(IMAGE_FILE_MACHINE_I386, args->hProcess, args->hThread, &frame, args->ctx, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL)) {
 			//std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
-			c.ret_addr = next_addr;
-			in_shc = isAddrInShellcode(next_addr);
-#ifdef _DEBUG
-			this->resolveAddr(next_addr);
-#endif
+			args->stack_frame.push_back(next_addr);
 			fetched++;
 		}
 	}
-	return fetched;
+	if (fetched) {
+		args->is_ok = true;
+		return STATUS_SUCCESS;
+	}
+	return STATUS_UNSUCCESSFUL;
+}
+
+size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT thread_ctx& c)
+{
+	// do it in a new thread to prevent stucking...
+	t_stack_enum_params args(hProcess, hThread, ctx, c);
+	const size_t max_wait = 1000;
+	{
+		HANDLE enumThread = CreateThread(
+			NULL,                   // default security attributes
+			0,                      // use default stack size  
+			enum_stack_thread,       // thread function name
+			&args,          // argument to thread function 
+			0,                      // use default creation flags 
+			0);   // returns the thread identifier
+
+		DWORD wait_result = WaitForSingleObject(enumThread, max_wait);
+		if (wait_result == WAIT_TIMEOUT) {
+			std::cerr << "[!] Cannot retrieve stack frame: timeout passed!\n";
+			TerminateThread(enumThread, 0);
+			CloseHandle(enumThread);
+			return 0;
+		}
+		CloseHandle(enumThread);
+	}
+
+	if (!args.is_ok) {
+		return 0;
+	}
+	// filter:
+	size_t cntr = 0;
+	std::vector<ULONGLONG>::iterator itr;
+	for (itr = args.stack_frame.begin(); itr != args.stack_frame.end(); ++itr) {
+		cntr++;
+		ULONGLONG next_addr = *itr;
+		c.ret_addr = next_addr;
+		if (isAddrInShellcode(next_addr)) {
+			break;
+		}
+	}
+	return cntr;
 }
 
 bool pesieve::ThreadScanner::fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThread, OUT thread_ctx& c)
@@ -115,6 +163,18 @@ bool pesieve::ThreadScanner::fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThrea
 		}
 	}
 	return is_ok;
+}
+
+bool pesieve::ThreadScanner::isAddrInShellcode(ULONGLONG addr)
+{
+	ScannedModule* mod = modulesInfo.findModuleContaining(addr);
+	if (!mod) return true;
+
+	//the module is named
+	if (mod->getModName().length() > 0) {
+		return false;
+	}
+	return true;
 }
 
 bool pesieve::ThreadScanner::resolveAddr(ULONGLONG addr)
