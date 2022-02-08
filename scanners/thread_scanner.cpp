@@ -66,7 +66,6 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 		frame.AddrFrame.Mode = AddrModeFlat;
 
 		while (StackWalk(IMAGE_FILE_MACHINE_I386, args->hProcess, args->hThread, &frame, args->ctx, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL)) {
-			//std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
 			args->stack_frame.push_back(next_addr);
 			fetched++;
@@ -112,8 +111,14 @@ size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hTh
 	for (itr = args.stack_frame.begin(); itr != args.stack_frame.end(); ++itr) {
 		cntr++;
 		ULONGLONG next_addr = *itr;
+#ifdef _DEBUG
+		resolveAddr(next_addr);
+#endif
 		c.ret_addr = next_addr;
 		if (isAddrInShellcode(next_addr)) {
+#ifdef _DEBUG
+			std::cout << std::hex << next_addr << " <=== SHELLCODE\n";
+#endif
 			break;
 		}
 	}

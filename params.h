@@ -115,7 +115,7 @@ public:
 
 		//PARAM_THREADS
 		this->addParam(new BoolParam(PARAM_THREADS, false));
-		this->setInfo(PARAM_THREADS, "Scan also threads.");
+		this->setInfo(PARAM_THREADS, "Detect threads leading to shellcodes and 'sleeping beacons'.");
 
 		//PARAM_REFLECTION
 		this->addParam(new BoolParam(PARAM_REFLECTION, false));
