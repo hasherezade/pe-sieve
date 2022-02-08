@@ -153,7 +153,7 @@ bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORM
 	const SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID)start_va, &page_info, page_info_size);
 	const bool is_read = (out == page_info_size) ? true : false;
 	const DWORD error = is_read ? ERROR_SUCCESS : GetLastError();
-	if (error != ERROR_SUCCESS) {//error == ERROR_INVALID_PARAMETER) {
+	if (error != ERROR_SUCCESS) {
 		//nothing to read
 		return false;
 	}
@@ -163,19 +163,20 @@ bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORM
 bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx  &c)
 {
 	MEMORY_BASIC_INFORMATION page_info = { 0 };
-	if (get_page_details(processHandle, (LPVOID)susp_addr, page_info)) {
-		if (page_info.State & MEM_FREE) {
-			return false;
-		}
-		ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
-		my_report->page_state = page_info.State;
-		my_report->status = SCAN_SUSPICIOUS;
-		my_report->module = (HMODULE)base;
-		my_report->moduleSize = page_info.RegionSize;
-		my_report->protection = page_info.AllocationProtect;
-
-		my_report->thread_ip = susp_addr;
+	if (!get_page_details(processHandle, (LPVOID)susp_addr, page_info)) {
+		return false;
 	}
+	if (page_info.State & MEM_FREE) {
+		return false;
+	}
+	ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
+	my_report->page_state = page_info.State;
+	my_report->status = SCAN_SUSPICIOUS;
+	my_report->module = (HMODULE)base;
+	my_report->moduleSize = page_info.RegionSize;
+	my_report->protection = page_info.AllocationProtect;
+
+	my_report->thread_ip = susp_addr;
 	return true;
 }
 
@@ -196,7 +197,7 @@ bool pesieve::ThreadScanner::FreeSymbols(HANDLE hProc)
 	return false;
 }
 
-
+// if extended info given, allow to filter out from the scan basing on the thread state and conditions
 bool should_scan(const util::thread_info& info)
 {
 	if (!info.is_extended) {
@@ -235,9 +236,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	}
 #ifdef _DEBUG
 	std::cout << std::dec << "---\nTid: " << info.tid << "\n";
-#endif
 	if (info.is_extended) {
-#ifdef _DEBUG
 		std::cout << " Start: " << std::hex << info.ext.start_addr << std::dec << " State: " << info.ext.state;
 		if (info.ext.state == Waiting) {
 			std::cout << " WaitReason: " << info.ext.wait_reason 
@@ -245,19 +244,26 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		}
 		std::cout << "\n";
 		resolveAddr(info.ext.start_addr);
-#endif
 	}
+#endif
 	ThreadScanReport* my_report = new ThreadScanReport(info.tid);
-
+#ifndef _DEBUG
+	// if NOT compiled in a debug mode, make this check BEFORE scan
+	if (!should_scan(info)) {
+		CloseHandle(hThread); // close the opened thread
+		my_report->status = SCAN_NOT_SUSPICIOUS;
+		return my_report;
+	}
+#endif
 	thread_ctx c = { 0 };
-	bool is_ok = fetchThreadCtx(processHandle, hThread, c);
+	const bool is_ok = fetchThreadCtx(processHandle, hThread, c);
 
 	DWORD exit_code = 0;
 	GetExitCodeThread(hThread, &exit_code);
-
 	CloseHandle(hThread);
 
 	if (!is_ok) {
+		// could not fetch the thread context and information
 		my_report->status = SCAN_ERROR;
 		return my_report;
 	}
@@ -276,12 +282,14 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		my_report->status = SCAN_NOT_SUSPICIOUS;
 		return my_report;
 	}
-	// if extended info given, allow to filter out from the scan
-	
+#ifdef _DEBUG
+	// if compiled in a debug mode, make this check AFTER scan
+	// (so that we can see first what was skipped)
 	if (!should_scan(info)) {
 		my_report->status = SCAN_NOT_SUSPICIOUS;
 		return my_report;
 	}
+#endif
 	bool is_shc = isAddrInShellcode(c.rip);
 	if (is_shc) {
 		if (reportSuspiciousAddr(my_report, c.rip, c)) {
