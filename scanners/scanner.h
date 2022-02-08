@@ -39,6 +39,7 @@ namespace pesieve {
 	protected:
 		size_t scanModules(ProcessScanReport &pReport); //throws exceptions
 		size_t scanModulesIATs(ProcessScanReport &pReport); //throws exceptions
+		size_t scanThreads(ProcessScanReport& pReport); //throws exceptions
 		size_t scanWorkingSet(ProcessScanReport &pReport);  //throws exceptions
 
 		ModuleScanReport* scanForMappingMismatch(ModuleData& modData, ProcessScanReport& process_report);

@@ -12,6 +12,7 @@ using namespace pesieve;
 //scan options:
 #define PARAM_PID "pid"
 #define PARAM_SHELLCODE "shellc"
+#define PARAM_THREADS "threads"
 #define PARAM_DATA "data"
 #define PARAM_IAT "iat"
 #define PARAM_MODULES_IGNORE "mignore"
@@ -112,6 +113,10 @@ public:
 		this->addParam(new BoolParam(PARAM_SHELLCODE, false));
 		this->setInfo(PARAM_SHELLCODE, "Detect shellcode implants. (By default it detects PE only).");
 
+		//PARAM_THREADS
+		this->addParam(new BoolParam(PARAM_THREADS, false));
+		this->setInfo(PARAM_THREADS, "Detect threads leading to shellcodes and 'sleeping beacons'.");
+
 		//PARAM_REFLECTION
 		this->addParam(new BoolParam(PARAM_REFLECTION, false));
 		this->setInfo(PARAM_REFLECTION, 
@@ -185,6 +190,7 @@ public:
 		this->addParamToGroup(PARAM_DATA, str_group);
 		this->addParamToGroup(PARAM_IAT, str_group);
 		this->addParamToGroup(PARAM_SHELLCODE, str_group);
+		this->addParamToGroup(PARAM_THREADS, str_group);
 
 		str_group = "4. dump options";
 		this->addGroup(new ParamGroup(str_group));
@@ -232,6 +238,7 @@ public:
 
 		copyVal<BoolParam>(PARAM_MINIDUMP, ps.minidump);
 		copyVal<BoolParam>(PARAM_SHELLCODE, ps.shellcode);
+		copyVal<BoolParam>(PARAM_THREADS, ps.threads);
 		copyVal<BoolParam>(PARAM_REFLECTION, ps.make_reflection);
 
 		copyVal<EnumParam>(PARAM_IAT, ps.iat);

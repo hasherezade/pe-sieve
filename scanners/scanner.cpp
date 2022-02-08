@@ -2,6 +2,11 @@
 
 #include <sstream>
 #include <fstream>
+#include <string>
+#include <locale>
+#include <codecvt>
+
+#include <tlhelp32.h>
 
 #include "../utils/format_util.h"
 #include "../utils/path_converter.h"
@@ -16,10 +21,7 @@
 #include "workingset_scanner.h"
 #include "mapping_scanner.h"
 #include "hook_targets_resolver.h"
-
-#include <string>
-#include <locale>
-#include <codecvt>
+#include "thread_scanner.h"
 
 using namespace pesieve;
 using namespace pesieve::util;
@@ -224,6 +226,19 @@ ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 			errorsStr << e.what();
 		}
 	}
+
+	// scan threads
+	size_t threadsScanned = 0;
+	if (args.threads) {
+		try {
+			threadsScanned = scanThreads(*pReport);
+		}
+		catch (std::exception& e) {
+			threadsScanned = 0;
+			errorsStr << e.what();
+		}
+	}
+
 	// throw error only if none of the scans was successful
 	if (!modulesScanned && !iatsScanned && !regionsScanned) {
 		throw std::runtime_error(errorsStr.str());
@@ -423,4 +438,48 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 		std::cout << "[*] IATs scanned in " << std::dec << total_time << " ms" << std::endl;
 	}
 	return counter;
+}
+
+
+size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws exceptions
+{
+	const bool is_64bit = pesieve::util::is_process_64bit(this->processHandle);
+#ifndef _WIN64
+	if (is_64bit) return 0;
+#endif
+	
+	if (!args.quiet) {
+		std::cout << "Scanning threads." << std::endl;
+	}
+	ULONGLONG start_tick = GetTickCount64();
+
+	const DWORD pid = pReport.pid; //original PID, not a reflection!
+
+	std::vector<thread_info> threads_info;
+	if (!pesieve::util::fetch_threads_info(pid, threads_info)) { //extended info, but doesn't work on old Windows...
+
+		if (!pesieve::util::fetch_threads_by_snapshot(pid, threads_info)) { // works on old Windows, but gives less data..
+
+			if (!args.quiet) {
+				std::cout << "[-] Failed enumerating threads." << std::endl;
+			}
+			return 0;
+		}
+	}
+
+	ThreadScanner::InitSymbols(this->processHandle);
+	std::vector<thread_info>::iterator itr;
+	for (itr = threads_info.begin(); itr != threads_info.end(); ++itr) {
+		const thread_info &info = *itr;
+		ThreadScanner scanner(this->processHandle, info, pReport.modulesInfo, pReport.exportsMap);
+		ThreadScanReport* report = scanner.scanRemote();
+		pReport.appendReport(report);
+	}
+	ThreadScanner::FreeSymbols(this->processHandle);
+
+	if (!args.quiet) {
+		ULONGLONG total_time = GetTickCount64() - start_tick;
+		std::cout << "[*] Threads scanned in " << std::dec << total_time << " ms" << std::endl;
+	}
+	return 0;
 }
