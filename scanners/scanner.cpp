@@ -443,17 +443,22 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 
 size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws exceptions
 {
+	const DWORD pid = pReport.pid; //original PID, not a reflection!
+
+	//dont't scan your own threads - it may give wrong results:
+	if (pid == GetCurrentProcessId()) {
+		return 0;
+	}
+
 	const bool is_64bit = pesieve::util::is_process_64bit(this->processHandle);
 #ifndef _WIN64
 	if (is_64bit) return 0;
 #endif
-	
+
 	if (!args.quiet) {
 		std::cout << "Scanning threads." << std::endl;
 	}
 	ULONGLONG start_tick = GetTickCount64();
-
-	const DWORD pid = pReport.pid; //original PID, not a reflection!
 
 	std::vector<thread_info> threads_info;
 	if (!pesieve::util::fetch_threads_info(pid, threads_info)) { //extended info, but doesn't work on old Windows...

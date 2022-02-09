@@ -68,7 +68,7 @@ namespace pesieve {
 	} thread_ctx;
 
 	//!  A scanner for threads
-	//! Based on the idea presented here: https://github.com/thefLink/Hunt-Sleeping-Beacons
+	//!  Stack-scan inspired by the idea presented here: https://github.com/thefLink/Hunt-Sleeping-Beacons
 	class ThreadScanner : public ProcessFeatureScanner {
 	public:
 		// neccessery to validly recognize stack frame
