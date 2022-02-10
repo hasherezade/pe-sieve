@@ -111,11 +111,11 @@ public:
 
 		//PARAM_SHELLCODE
 		this->addParam(new BoolParam(PARAM_SHELLCODE, false));
-		this->setInfo(PARAM_SHELLCODE, "Detect shellcode implants. (By default it detects PE only).");
+		this->setInfo(PARAM_SHELLCODE, "Detect shellcode implants (by patterns). ");
 
 		//PARAM_THREADS
 		this->addParam(new BoolParam(PARAM_THREADS, false));
-		this->setInfo(PARAM_THREADS, "Detect threads leading to shellcodes and 'sleeping beacons'.");
+		this->setInfo(PARAM_THREADS, "Scan threads' callstack. Detect shellcodes, incl. 'sleeping beacons'.");
 
 		//PARAM_REFLECTION
 		this->addParam(new BoolParam(PARAM_REFLECTION, false));
