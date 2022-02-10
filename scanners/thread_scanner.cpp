@@ -8,8 +8,6 @@
 
 using namespace pesieve;
 
-#define _DEBUG
-
 typedef struct _t_stack_enum_params {
 	HANDLE hProcess;
 	HANDLE hThread;
