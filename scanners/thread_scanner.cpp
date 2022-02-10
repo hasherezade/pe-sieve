@@ -8,6 +8,8 @@
 
 using namespace pesieve;
 
+#define _DEBUG
+
 typedef struct _t_stack_enum_params {
 	HANDLE hProcess;
 	HANDLE hThread;
@@ -124,7 +126,8 @@ size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hTh
 #endif
 		bool is_curr_shc = false;
 		const ScannedModule* mod = modulesInfo.findModuleContaining(next_addr);
-		if (!mod || mod->getModName().length() == 0) {
+		const std::string mod_name = mod ? mod->getModName() : "";
+		if (mod_name.length() == 0) {
 			has_shellcode = is_curr_shc = true;
 #ifdef _DEBUG
 			std::cout << std::hex << next_addr << " <=== SHELLCODE\n";
@@ -133,17 +136,14 @@ size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hTh
 		if (!has_shellcode || is_curr_shc) {
 			// store the last address, till the first called shellcode:
 			c.ret_addr = next_addr;
-			continue;
 		}
-		if (has_shellcode && !is_curr_shc) {
-			// check if the found shellcode is a .NET JIT:
-			if (mod->getModName() == "clr.dll") {
-				c.is_managed = true;
+		// check if the found shellcode is a .NET JIT:
+		if (mod_name == "clr.dll") {
+			c.is_managed = true;
 #ifdef _DEBUG
-				std::cout << std::hex << next_addr << " <--- .NET\n";
+			std::cout << std::hex << next_addr << " <--- .NET\n";
 #endif
-			}
-			break;
+			if (has_shellcode) break;
 		}
 	}
 	return cntr;
