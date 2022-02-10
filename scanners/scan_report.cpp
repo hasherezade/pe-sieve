@@ -6,6 +6,7 @@
 #include "workingset_scanner.h"
 #include "artefact_scanner.h"
 #include "mapping_scanner.h"
+#include "thread_scanner.h"
 
 #include "../utils/format_util.h"
 
@@ -76,6 +77,9 @@ pesieve::ProcessScanReport::t_report_type pesieve::ProcessScanReport::getReportT
 	}
 	if (dynamic_cast<SkippedModuleReport*>(report)) {
 		return pesieve::ProcessScanReport::REPORT_SKIPPED_SCAN;
+	}
+	if (dynamic_cast<ThreadScanReport*>(report)) {
+		return pesieve::ProcessScanReport::REPORT_THREADS_SCAN;
 	}
 	return pesieve::ProcessScanReport::REPORT_TYPES_COUNT;
 }
@@ -168,7 +172,7 @@ pesieve::t_report pesieve::ProcessScanReport::generateSummary() const
 	summary.replaced = MASK_TO_DWORD(countHdrsReplaced());
 	summary.patched = MASK_TO_DWORD(countSuspiciousPerType(REPORT_CODE_SCAN));
 	summary.iat_hooked = MASK_TO_DWORD(countSuspiciousPerType(REPORT_IAT_SCAN));
-	summary.implanted_shc = MASK_TO_DWORD(countSuspiciousPerType(REPORT_MEMPAGE_SCAN));
+	summary.implanted_shc = MASK_TO_DWORD(countSuspiciousPerType(REPORT_MEMPAGE_SCAN) + countSuspiciousPerType(REPORT_THREADS_SCAN));
 	summary.implanted_pe = MASK_TO_DWORD(countSuspiciousPerType(REPORT_ARTEFACT_SCAN));
 	summary.implanted = MASK_TO_DWORD(summary.implanted_shc + summary.implanted_pe);
 	summary.hdr_mod = MASK_TO_DWORD(countSuspiciousPerType(REPORT_HEADERS_SCAN) - summary.replaced);

@@ -173,9 +173,14 @@ bool pesieve::ProcessScanner::filterDotNetReport(ProcessScanReport& process_repo
 	if (this->args.dotnet_policy == pesieve::PE_DNET_SKIP_SHC
 		|| this->args.dotnet_policy == pesieve::PE_DNET_SKIP_ALL)
 	{
-		// set shellcodes as not suspicious
+		// set shellcodes detected by mempage scan as not suspicious
 		const std::set<ModuleScanReport*> &reports = process_report.reportsByType[ProcessScanReport::REPORT_MEMPAGE_SCAN];
-		is_set = set_non_suspicious(reports, false);
+		const bool is_set1 = set_non_suspicious(reports, false);
+
+		// set shellcodes detected by thread scan as not-suspicious
+		const std::set<ModuleScanReport*>& reports2 = process_report.reportsByType[ProcessScanReport::REPORT_THREADS_SCAN];
+		const bool is_set2 = set_non_suspicious(reports2, false);
+		is_set = is_set1 || is_set2;
 	}
 	return is_set;
 }

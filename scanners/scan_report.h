@@ -27,6 +27,7 @@ namespace pesieve {
 			REPORT_UNREACHABLE_SCAN,
 			REPORT_SKIPPED_SCAN,
 			REPORT_IAT_SCAN,
+			REPORT_THREADS_SCAN,
 			REPORT_TYPES_COUNT
 		} t_report_type;
 
