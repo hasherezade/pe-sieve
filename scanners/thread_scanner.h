@@ -11,9 +11,13 @@ namespace pesieve {
 	class ThreadScanReport : public ModuleScanReport
 	{
 	public:
+		const DWORD THREAD_STATE_UNKNOWN = (-1);
+		const DWORD THREAD_STATE_WAITING = 5;
+
 		ThreadScanReport(DWORD _tid)
 			: ModuleScanReport(0, 0), 
-			tid(_tid), thread_ip(0), thread_return(0), protection(0), page_state(0)
+			tid(_tid), thread_ip(0), protection(0),
+			thread_state(THREAD_STATE_UNKNOWN), thread_wait_reason(0)
 		{
 		}
 
@@ -28,16 +32,17 @@ namespace pesieve {
 			OUT_PADDED(outs, level, "\"thread_ip\" : ");
 			outs << "\"" << std::hex << thread_ip << "\"";
 			outs << ",\n";
-			if (thread_return) {
-				OUT_PADDED(outs, level, "\"thread_return\" : ");
-				outs << "\"" << std::hex << thread_return << "\"";
+			if (thread_state != THREAD_STATE_UNKNOWN) {
+				OUT_PADDED(outs, level, "\"thread_state\" : ");
+				outs << std::dec << thread_state;
 				outs << ",\n";
+
+				if (thread_state == THREAD_STATE_WAITING) {
+					OUT_PADDED(outs, level, "\"thread_wait_reason\" : ");
+					outs << std::dec << thread_wait_reason;
+					outs << ",\n";
+				}
 			}
-
-			OUT_PADDED(outs, level, "\"page_state\" : ");
-			outs << "\"" << std::hex << page_state << "\"";
-			outs << ",\n";
-
 			OUT_PADDED(outs, level, "\"protection\" : ");
 			outs << "\"" << std::hex << protection << "\"";
 		}
@@ -52,10 +57,10 @@ namespace pesieve {
 		}
 
 		ULONGLONG thread_ip;
-		ULONGLONG thread_return;
 		DWORD tid;
 		DWORD protection;
-		DWORD page_state;
+		DWORD thread_state;
+		DWORD thread_wait_reason;
 	};
 
 	//!  A custom structure keeping a fragment of a thread context

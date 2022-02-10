@@ -8,7 +8,7 @@ namespace pesieve {
 
 		typedef struct _thread_info_ext
 		{
-			ULONG_PTR start_addr;
+			ULONGLONG start_addr;
 			DWORD state;
 			DWORD wait_reason;
 			DWORD wait_time;

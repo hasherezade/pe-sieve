@@ -235,7 +235,10 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 		return false;
 	}
 	ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
-	my_report->page_state = page_info.State;
+	if (this->info.is_extended) {
+		my_report->thread_state = info.ext.state;
+		my_report->thread_wait_reason = info.ext.wait_reason;
+	}
 	my_report->status = SCAN_SUSPICIOUS;
 	my_report->module = (HMODULE)base;
 	my_report->moduleSize = page_info.RegionSize;
@@ -276,9 +279,15 @@ bool should_scan(const util::thread_info& info)
 		return false;
 	}
 	if (state == Waiting) {
+		if (info.ext.start_addr == 0) {
+			return true;
+		}
 		if (info.ext.wait_reason == DelayExecution
 			|| info.ext.wait_reason == Suspended
-			|| info.ext.wait_reason == Executive)
+			|| info.ext.wait_reason == Executive // the thread is waiting got the scheduler
+			|| info.ext.wait_reason == UserRequest // i.e. WaitForSingleObject/WaitForMultipleObjects
+			|| info.ext.wait_reason == WrUserRequest // i.e. when the thread calls GetMessage
+			)
 		{
 			return true;
 		}
