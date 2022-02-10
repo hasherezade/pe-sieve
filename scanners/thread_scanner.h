@@ -11,8 +11,8 @@ namespace pesieve {
 	class ThreadScanReport : public ModuleScanReport
 	{
 	public:
-		const DWORD THREAD_STATE_UNKNOWN = (-1);
-		const DWORD THREAD_STATE_WAITING = 5;
+		static const DWORD THREAD_STATE_UNKNOWN = (-1);
+		static const DWORD THREAD_STATE_WAITING = 5;
 
 		ThreadScanReport(DWORD _tid)
 			: ModuleScanReport(0, 0), 
