@@ -16,6 +16,11 @@ typedef struct _t_stack_enum_params {
 	std::vector<ULONGLONG> stack_frame;
 	bool is_ok;
 
+	_t_stack_enum_params()
+		: hProcess(NULL), hThread(NULL), ctx(NULL), c(NULL), is_ok(false)
+	{
+	}
+
 	_t_stack_enum_params(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN const pesieve::thread_ctx& c)
 	{
 		this->hProcess = hProcess;
@@ -105,8 +110,11 @@ size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hTh
 	if (!args.is_ok) {
 		return 0;
 	}
+
 	// filter:
 	size_t cntr = 0;
+	bool has_shellcode = false;
+	c.is_managed = false;
 	std::vector<ULONGLONG>::iterator itr;
 	for (itr = args.stack_frame.begin(); itr != args.stack_frame.end(); ++itr) {
 		cntr++;
@@ -114,11 +122,27 @@ size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hTh
 #ifdef _DEBUG
 		resolveAddr(next_addr);
 #endif
-		c.ret_addr = next_addr;
-		if (isAddrInShellcode(next_addr)) {
+		bool is_curr_shc = false;
+		const ScannedModule* mod = modulesInfo.findModuleContaining(next_addr);
+		if (!mod || mod->getModName().length() == 0) {
+			has_shellcode = is_curr_shc = true;
 #ifdef _DEBUG
 			std::cout << std::hex << next_addr << " <=== SHELLCODE\n";
 #endif
+		}
+		if (!has_shellcode || is_curr_shc) {
+			// store the last address, till the first called shellcode:
+			c.ret_addr = next_addr;
+			continue;
+		}
+		if (has_shellcode && !is_curr_shc) {
+			// check if the found shellcode is a .NET JIT:
+			if (mod->getModName() == "clr.dll") {
+				c.is_managed = true;
+#ifdef _DEBUG
+				std::cout << std::hex << next_addr << " <--- .NET\n";
+#endif
+			}
 			break;
 		}
 	}
@@ -234,12 +258,12 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 	if (page_info.State & MEM_FREE) {
 		return false;
 	}
+	my_report->status = SCAN_SUSPICIOUS;
 	ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
 	if (this->info.is_extended) {
 		my_report->thread_state = info.ext.state;
 		my_report->thread_wait_reason = info.ext.wait_reason;
 	}
-	my_report->status = SCAN_SUSPICIOUS;
 	my_report->module = (HMODULE)base;
 	my_report->moduleSize = page_info.RegionSize;
 	my_report->protection = page_info.AllocationProtect;
@@ -370,7 +394,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 			return my_report;
 		}
 	}
-	if (c.ret_addr != 0) {
+	if ((c.ret_addr != 0) && (c.is_managed == false)) {
 		is_shc = isAddrInShellcode(c.ret_addr);
 		if (is_shc) {
 			if (reportSuspiciousAddr(my_report, c.ret_addr, c)) {

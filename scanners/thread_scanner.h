@@ -69,7 +69,8 @@ namespace pesieve {
 		ULONGLONG rip;
 		ULONGLONG rsp;
 		ULONGLONG rbp;
-		ULONGLONG ret_addr;
+		ULONGLONG ret_addr; // the last return address on the stack (or the address of the first shellcode)
+		bool is_managed; // does it containg .NET managed JIT code
 	} thread_ctx;
 
 	//!  A scanner for threads
