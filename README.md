@@ -1,7 +1,7 @@
 <img src="./logo/PE-SIEVE_small.png" alt="">
 
 [![Build status](https://ci.appveyor.com/api/projects/status/crlo8iyvi4bm80yp?svg=true)](https://ci.appveyor.com/project/hasherezade/pe-sieve)
-[![Codacy Badge](https://app.codacy.com/gh/hasherezade/pe-sieve/dashboard?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b75fd4d95bd94629879381241e4a7c02)](https://app.codacy.com/gh/hasherezade/pe-sieve/dashboard?branch=master)
 [![Commit activity](https://img.shields.io/github/commit-activity/m/hasherezade/pe-sieve)](https://github.com/hasherezade/pe-sieve/commits)
 [![Last Commit](https://img.shields.io/github/last-commit/hasherezade/pe-sieve/master)](https://github.com/hasherezade/pe-sieve/commits)
 
