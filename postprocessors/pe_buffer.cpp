@@ -121,9 +121,12 @@ bool pesieve::PeBuffer::dumpPeToFile(
 	std::cout << "Dumping using relocBase: " << std::hex << relocBase << "\n";
 #endif
 	if (exportsMap != nullptr) {
-		if (!peconv::fix_imports(this->vBuf, this->vBufSize, *exportsMap, notCovered)) {
+		const bool fixed = peconv::fix_imports(this->vBuf, this->vBufSize, *exportsMap, notCovered);
+#ifdef _DEBUG
+		if (!fixed) {
 			std::cerr << "[-] Unable to fix imports!" << std::endl;
 		}
+#endif
 	}
 	if (dumpMode == peconv::PE_DUMP_AUTO) {
 		bool is_raw_alignment_valid = peconv::is_valid_sectons_alignment(vBuf, vBufSize, true);
