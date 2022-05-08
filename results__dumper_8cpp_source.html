@@ -402,90 +402,92 @@ $(function() {
 <div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>        }</div>
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    }</div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;[-] Failed dumping module!&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>        is_dumped = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>    }</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    <a class="code hl_class" href="classpesieve_1_1_code_scan_report.html">pesieve::CodeScanReport</a> *codeScanReport = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classpesieve_1_1_code_scan_report.html">pesieve::CodeScanReport</a>*<span class="keyword">&gt;</span>(mod);</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    <span class="keywordflow">if</span> (codeScanReport) {</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>        std::string tags_file = modDumpReport-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_dump_report.html#ad9ffe25caa0688a2951d0695c8f012c5">dumpFileName</a> + <span class="stringliteral">&quot;.tag&quot;</span>;</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>        <span class="keywordflow">if</span> (codeScanReport-&gt;<a class="code hl_function" href="classpesieve_1_1_code_scan_report.html#a45205114e41750adb1c00ed8b96c3f93">generateTags</a>(tags_file)) {</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>            modDumpReport-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_dump_report.html#a9e00541b53ec4e69efe8dd2ef565680d">tagsFileName</a> = tags_file;</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>            modDumpReport-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_dump_report.html#ac28ccaf7ec4d2d63019c04fda207a99c">isReportDumped</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>        }</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    }</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span> </div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a>* iatHooksReport = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a>*<span class="keyword">&gt;</span>(mod);</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    <span class="keywordflow">if</span> (iatHooksReport) {</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>        std::string imports_not_rec_file = modDumpReport-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_dump_report.html#ad9ffe25caa0688a2951d0695c8f012c5">dumpFileName</a> + <span class="stringliteral">&quot;.iat_hooks.txt&quot;</span>;</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span> </div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>        <span class="keywordflow">if</span> (iatHooksReport-&gt;<a class="code hl_function" href="classpesieve_1_1_i_a_t_scan_report.html#a7a2690d5018a87fb8207392e72dbdbda">generateList</a>(imports_not_rec_file, processHandle, modulesInfo, exportsMap)) {</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>            modDumpReport-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_dump_report.html#ae10bb477a536712cd2c9887760212a75">iatHooksFileName</a> = imports_not_rec_file;</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>            modDumpReport-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_dump_report.html#ac28ccaf7ec4d2d63019c04fda207a99c">isReportDumped</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>        }</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>    }</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    <span class="keywordflow">return</span> is_dumped;</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>}</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span> </div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno"><a class="line" href="classpesieve_1_1_results_dumper.html#a80b1f13b3c6c00ab4dc325addf09d8d5">  358</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classpesieve_1_1_results_dumper.html#a80b1f13b3c6c00ab4dc325addf09d8d5">pesieve::ResultsDumper::makeAndJoinDirectories</a>(std::stringstream&amp; stream)</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>{</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacepesieve.html#ae7c522acc84b373982b219f51b481fbf">make_dump_dir</a>(this-&gt;baseDir)) {</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>        this-&gt;baseDir = <span class="stringliteral">&quot;&quot;</span>; <span class="comment">// reset path</span></div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    }</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    std::string inner_dir = this-&gt;dumpDir;</div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>    <span class="keywordflow">if</span> (baseDir.length() &gt; 0) {</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>        inner_dir = this-&gt;baseDir + <a class="code hl_define" href="results__dumper_8cpp.html#a0920890c442b665b0c6609fa796e9047">DIR_SEPARATOR</a> + this-&gt;dumpDir;</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>    }</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacepesieve.html#ae7c522acc84b373982b219f51b481fbf">make_dump_dir</a>(inner_dir)) {</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>        this-&gt;dumpDir = <span class="stringliteral">&quot;&quot;</span>; <span class="comment">// reset path</span></div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    }</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    <span class="keywordflow">if</span> (baseDir.length() &gt; 0) {</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>        stream &lt;&lt; baseDir;</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>        stream &lt;&lt; <a class="code hl_define" href="results__dumper_8cpp.html#a0920890c442b665b0c6609fa796e9047">DIR_SEPARATOR</a>;</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    }</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    <span class="keywordflow">if</span> (this-&gt;dumpDir.length() &gt; 0) {</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>        stream &lt;&lt; this-&gt;dumpDir;</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>        stream &lt;&lt; <a class="code hl_define" href="results__dumper_8cpp.html#a0920890c442b665b0c6609fa796e9047">DIR_SEPARATOR</a>;</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    }</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>}</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span> </div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno"><a class="line" href="classpesieve_1_1_results_dumper.html#a036c085f3d96b90831512c3a595ba072">  380</a></span>std::string <a class="code hl_function" href="classpesieve_1_1_results_dumper.html#a036c085f3d96b90831512c3a595ba072">pesieve::ResultsDumper::makeModuleDumpPath</a>(ULONGLONG modBaseAddr, std::string fname, <span class="keyword">const</span> std::string &amp;default_extension)</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>{</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>    std::stringstream stream;</div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    makeAndJoinDirectories(stream);</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    stream &lt;&lt; std::hex &lt;&lt; modBaseAddr;</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    <span class="keywordflow">if</span> (fname.length() &gt; 0) {</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>        stream &lt;&lt; <span class="stringliteral">&quot;.&quot;</span>;</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>        stream &lt;&lt; fname;</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>        stream &lt;&lt; <span class="stringliteral">&quot;.&quot;</span> &lt;&lt; default_extension;</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    }</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    <span class="keywordflow">return</span> stream.str();</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>}</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span> </div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno"><a class="line" href="classpesieve_1_1_results_dumper.html#a7eb61d510081fbdaf90594182ddc2feb">  394</a></span>std::string <a class="code hl_function" href="classpesieve_1_1_results_dumper.html#a7eb61d510081fbdaf90594182ddc2feb">pesieve::ResultsDumper::makeOutPath</a>(std::string fname, <span class="keyword">const</span> std::string&amp; default_extension)</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>{</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    std::stringstream stream;</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>    makeAndJoinDirectories(stream);</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span> </div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>    <span class="keywordflow">if</span> (fname.length() &gt; 0) {</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>        stream &lt;&lt; fname;</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>    }</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>    <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>        stream &lt;&lt; std::dec &lt;&lt; time(<span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>        stream &lt;&lt; default_extension;</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    }</div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>    <span class="keywordflow">return</span> stream.str();</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>}</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span> </div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno"><a class="line" href="classpesieve_1_1_results_dumper.html#a0530341a87284f2c065bc14ecbdef41d">  409</a></span>std::string <a class="code hl_function" href="classpesieve_1_1_results_dumper.html#a0530341a87284f2c065bc14ecbdef41d">pesieve::ResultsDumper::makeDirName</a>(<span class="keyword">const</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> process_id)</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>{</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>    std::stringstream stream;</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>    stream &lt;&lt; <span class="stringliteral">&quot;process_&quot;</span>;</div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>    stream &lt;&lt; process_id;</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>    <span class="keywordflow">return</span> stream.str();</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>}</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>        <span class="keywordflow">if</span> (!this-&gt;quiet) {</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>            std::cerr &lt;&lt; <span class="stringliteral">&quot;[-] Failed dumping module!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>        }</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>        is_dumped = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    }</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    <a class="code hl_class" href="classpesieve_1_1_code_scan_report.html">pesieve::CodeScanReport</a> *codeScanReport = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classpesieve_1_1_code_scan_report.html">pesieve::CodeScanReport</a>*<span class="keyword">&gt;</span>(mod);</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>    <span class="keywordflow">if</span> (codeScanReport) {</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>        std::string tags_file = modDumpReport-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_dump_report.html#ad9ffe25caa0688a2951d0695c8f012c5">dumpFileName</a> + <span class="stringliteral">&quot;.tag&quot;</span>;</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span> </div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>        <span class="keywordflow">if</span> (codeScanReport-&gt;<a class="code hl_function" href="classpesieve_1_1_code_scan_report.html#a45205114e41750adb1c00ed8b96c3f93">generateTags</a>(tags_file)) {</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>            modDumpReport-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_dump_report.html#a9e00541b53ec4e69efe8dd2ef565680d">tagsFileName</a> = tags_file;</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>            modDumpReport-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_dump_report.html#ac28ccaf7ec4d2d63019c04fda207a99c">isReportDumped</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>        }</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    }</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span> </div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    <a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a>* iatHooksReport = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classpesieve_1_1_i_a_t_scan_report.html">IATScanReport</a>*<span class="keyword">&gt;</span>(mod);</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    <span class="keywordflow">if</span> (iatHooksReport) {</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>        std::string imports_not_rec_file = modDumpReport-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_dump_report.html#ad9ffe25caa0688a2951d0695c8f012c5">dumpFileName</a> + <span class="stringliteral">&quot;.iat_hooks.txt&quot;</span>;</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>        <span class="keywordflow">if</span> (iatHooksReport-&gt;<a class="code hl_function" href="classpesieve_1_1_i_a_t_scan_report.html#a7a2690d5018a87fb8207392e72dbdbda">generateList</a>(imports_not_rec_file, processHandle, modulesInfo, exportsMap)) {</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>            modDumpReport-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_dump_report.html#ae10bb477a536712cd2c9887760212a75">iatHooksFileName</a> = imports_not_rec_file;</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>            modDumpReport-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_dump_report.html#ac28ccaf7ec4d2d63019c04fda207a99c">isReportDumped</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>        }</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>    }</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>    <span class="keywordflow">return</span> is_dumped;</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>}</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> </div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno"><a class="line" href="classpesieve_1_1_results_dumper.html#a80b1f13b3c6c00ab4dc325addf09d8d5">  360</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classpesieve_1_1_results_dumper.html#a80b1f13b3c6c00ab4dc325addf09d8d5">pesieve::ResultsDumper::makeAndJoinDirectories</a>(std::stringstream&amp; stream)</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>{</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacepesieve.html#ae7c522acc84b373982b219f51b481fbf">make_dump_dir</a>(this-&gt;baseDir)) {</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>        this-&gt;baseDir = <span class="stringliteral">&quot;&quot;</span>; <span class="comment">// reset path</span></div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>    }</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>    std::string inner_dir = this-&gt;dumpDir;</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>    <span class="keywordflow">if</span> (baseDir.length() &gt; 0) {</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>        inner_dir = this-&gt;baseDir + <a class="code hl_define" href="results__dumper_8cpp.html#a0920890c442b665b0c6609fa796e9047">DIR_SEPARATOR</a> + this-&gt;dumpDir;</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>    }</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacepesieve.html#ae7c522acc84b373982b219f51b481fbf">make_dump_dir</a>(inner_dir)) {</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>        this-&gt;dumpDir = <span class="stringliteral">&quot;&quot;</span>; <span class="comment">// reset path</span></div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    }</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    <span class="keywordflow">if</span> (baseDir.length() &gt; 0) {</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>        stream &lt;&lt; baseDir;</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>        stream &lt;&lt; <a class="code hl_define" href="results__dumper_8cpp.html#a0920890c442b665b0c6609fa796e9047">DIR_SEPARATOR</a>;</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    }</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    <span class="keywordflow">if</span> (this-&gt;dumpDir.length() &gt; 0) {</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>        stream &lt;&lt; this-&gt;dumpDir;</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>        stream &lt;&lt; <a class="code hl_define" href="results__dumper_8cpp.html#a0920890c442b665b0c6609fa796e9047">DIR_SEPARATOR</a>;</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    }</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>}</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span> </div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno"><a class="line" href="classpesieve_1_1_results_dumper.html#a036c085f3d96b90831512c3a595ba072">  382</a></span>std::string <a class="code hl_function" href="classpesieve_1_1_results_dumper.html#a036c085f3d96b90831512c3a595ba072">pesieve::ResultsDumper::makeModuleDumpPath</a>(ULONGLONG modBaseAddr, std::string fname, <span class="keyword">const</span> std::string &amp;default_extension)</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>{</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    std::stringstream stream;</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    makeAndJoinDirectories(stream);</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>    stream &lt;&lt; std::hex &lt;&lt; modBaseAddr;</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>    <span class="keywordflow">if</span> (fname.length() &gt; 0) {</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>        stream &lt;&lt; <span class="stringliteral">&quot;.&quot;</span>;</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>        stream &lt;&lt; fname;</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>        stream &lt;&lt; <span class="stringliteral">&quot;.&quot;</span> &lt;&lt; default_extension;</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>    }</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    <span class="keywordflow">return</span> stream.str();</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>}</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span> </div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno"><a class="line" href="classpesieve_1_1_results_dumper.html#a7eb61d510081fbdaf90594182ddc2feb">  396</a></span>std::string <a class="code hl_function" href="classpesieve_1_1_results_dumper.html#a7eb61d510081fbdaf90594182ddc2feb">pesieve::ResultsDumper::makeOutPath</a>(std::string fname, <span class="keyword">const</span> std::string&amp; default_extension)</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>{</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>    std::stringstream stream;</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>    makeAndJoinDirectories(stream);</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span> </div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>    <span class="keywordflow">if</span> (fname.length() &gt; 0) {</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>        stream &lt;&lt; fname;</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>    }</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>    <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>        stream &lt;&lt; std::dec &lt;&lt; time(<span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>        stream &lt;&lt; default_extension;</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    }</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>    <span class="keywordflow">return</span> stream.str();</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>}</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span> </div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno"><a class="line" href="classpesieve_1_1_results_dumper.html#a0530341a87284f2c065bc14ecbdef41d">  411</a></span>std::string <a class="code hl_function" href="classpesieve_1_1_results_dumper.html#a0530341a87284f2c065bc14ecbdef41d">pesieve::ResultsDumper::makeDirName</a>(<span class="keyword">const</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> process_id)</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>{</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>    std::stringstream stream;</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>    stream &lt;&lt; <span class="stringliteral">&quot;process_&quot;</span>;</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>    stream &lt;&lt; process_id;</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>    <span class="keywordflow">return</span> stream.str();</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>}</div>
 <div class="ttc" id="aclasspesieve_1_1_artefact_scan_report_html"><div class="ttname"><a href="classpesieve_1_1_artefact_scan_report.html">pesieve::ArtefactScanReport</a></div><div class="ttdoc">A report from the artefacts scan, generated by ArtefactScanner.</div><div class="ttdef"><b>Definition:</b> <a href="artefact__scanner_8h_source.html#l00116">artefact_scanner.h:117</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_artefact_scan_report_html_a5c39ea6661e0c5de664c1395b2709612"><div class="ttname"><a href="classpesieve_1_1_artefact_scan_report.html#a5c39ea6661e0c5de664c1395b2709612">pesieve::ArtefactScanReport::artefacts</a></div><div class="ttdeci">PeArtefacts artefacts</div><div class="ttdef"><b>Definition:</b> <a href="artefact__scanner_8h_source.html#l00151">artefact_scanner.h:151</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_code_scan_report_html"><div class="ttname"><a href="classpesieve_1_1_code_scan_report.html">pesieve::CodeScanReport</a></div><div class="ttdoc">A report from the code scan, generated by CodeScanner.</div><div class="ttdef"><b>Definition:</b> <a href="code__scanner_8h_source.html#l00013">code_scanner.h:14</a></div></div>
@@ -549,10 +551,10 @@ $(function() {
 <div class="ttc" id="aclasspesieve_1_1_process_scan_report_html_a7b36b5cf6979968d1c3d590b6875d89c"><div class="ttname"><a href="classpesieve_1_1_process_scan_report.html#a7b36b5cf6979968d1c3d590b6875d89c">pesieve::ProcessScanReport::getPid</a></div><div class="ttdeci">DWORD getPid()</div><div class="ttdef"><b>Definition:</b> <a href="scan__report_8h_source.html#l00100">scan_report.h:100</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_process_scan_report_html_a86f176fae060ac8d4383722e8cda6bc8"><div class="ttname"><a href="classpesieve_1_1_process_scan_report.html#a86f176fae060ac8d4383722e8cda6bc8">pesieve::ProcessScanReport::modulesInfo</a></div><div class="ttdeci">ModulesInfo modulesInfo</div><div class="ttdef"><b>Definition:</b> <a href="scan__report_8h_source.html#l00137">scan_report.h:137</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_process_scan_report_html_a93b2183ae6cdd3c5ffabcfb5593e891f"><div class="ttname"><a href="classpesieve_1_1_process_scan_report.html#a93b2183ae6cdd3c5ffabcfb5593e891f">pesieve::ProcessScanReport::moduleReports</a></div><div class="ttdeci">std::vector&lt; ModuleScanReport * &gt; moduleReports</div><div class="ttdef"><b>Definition:</b> <a href="scan__report_8h_source.html#l00104">scan_report.h:104</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_results_dumper_html_a036c085f3d96b90831512c3a595ba072"><div class="ttname"><a href="classpesieve_1_1_results_dumper.html#a036c085f3d96b90831512c3a595ba072">pesieve::ResultsDumper::makeModuleDumpPath</a></div><div class="ttdeci">std::string makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname, const std::string &amp;defaultExtension)</div><div class="ttdef"><b>Definition:</b> <a href="results__dumper_8cpp_source.html#l00380">results_dumper.cpp:380</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_results_dumper_html_a0530341a87284f2c065bc14ecbdef41d"><div class="ttname"><a href="classpesieve_1_1_results_dumper.html#a0530341a87284f2c065bc14ecbdef41d">pesieve::ResultsDumper::makeDirName</a></div><div class="ttdeci">std::string makeDirName(const DWORD process_id)</div><div class="ttdef"><b>Definition:</b> <a href="results__dumper_8cpp_source.html#l00409">results_dumper.cpp:409</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_results_dumper_html_a7eb61d510081fbdaf90594182ddc2feb"><div class="ttname"><a href="classpesieve_1_1_results_dumper.html#a7eb61d510081fbdaf90594182ddc2feb">pesieve::ResultsDumper::makeOutPath</a></div><div class="ttdeci">std::string makeOutPath(std::string fname, const std::string &amp;defaultExtension=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> <a href="results__dumper_8cpp_source.html#l00394">results_dumper.cpp:394</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_results_dumper_html_a80b1f13b3c6c00ab4dc325addf09d8d5"><div class="ttname"><a href="classpesieve_1_1_results_dumper.html#a80b1f13b3c6c00ab4dc325addf09d8d5">pesieve::ResultsDumper::makeAndJoinDirectories</a></div><div class="ttdeci">void makeAndJoinDirectories(std::stringstream &amp;name_stream)</div><div class="ttdef"><b>Definition:</b> <a href="results__dumper_8cpp_source.html#l00358">results_dumper.cpp:358</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_results_dumper_html_a036c085f3d96b90831512c3a595ba072"><div class="ttname"><a href="classpesieve_1_1_results_dumper.html#a036c085f3d96b90831512c3a595ba072">pesieve::ResultsDumper::makeModuleDumpPath</a></div><div class="ttdeci">std::string makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname, const std::string &amp;defaultExtension)</div><div class="ttdef"><b>Definition:</b> <a href="results__dumper_8cpp_source.html#l00382">results_dumper.cpp:382</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_results_dumper_html_a0530341a87284f2c065bc14ecbdef41d"><div class="ttname"><a href="classpesieve_1_1_results_dumper.html#a0530341a87284f2c065bc14ecbdef41d">pesieve::ResultsDumper::makeDirName</a></div><div class="ttdeci">std::string makeDirName(const DWORD process_id)</div><div class="ttdef"><b>Definition:</b> <a href="results__dumper_8cpp_source.html#l00411">results_dumper.cpp:411</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_results_dumper_html_a7eb61d510081fbdaf90594182ddc2feb"><div class="ttname"><a href="classpesieve_1_1_results_dumper.html#a7eb61d510081fbdaf90594182ddc2feb">pesieve::ResultsDumper::makeOutPath</a></div><div class="ttdeci">std::string makeOutPath(std::string fname, const std::string &amp;defaultExtension=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> <a href="results__dumper_8cpp_source.html#l00396">results_dumper.cpp:396</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_results_dumper_html_a80b1f13b3c6c00ab4dc325addf09d8d5"><div class="ttname"><a href="classpesieve_1_1_results_dumper.html#a80b1f13b3c6c00ab4dc325addf09d8d5">pesieve::ResultsDumper::makeAndJoinDirectories</a></div><div class="ttdeci">void makeAndJoinDirectories(std::stringstream &amp;name_stream)</div><div class="ttdef"><b>Definition:</b> <a href="results__dumper_8cpp_source.html#l00360">results_dumper.cpp:360</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_results_dumper_html_ac42eecae9a332ba8d8b52d4f9e1c5e27"><div class="ttname"><a href="classpesieve_1_1_results_dumper.html#ac42eecae9a332ba8d8b52d4f9e1c5e27">pesieve::ResultsDumper::dumpDetectedModules</a></div><div class="ttdeci">ProcessDumpReport * dumpDetectedModules(HANDLE hProcess, bool isRefl, ProcessScanReport &amp;process_report, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode)</div><div class="ttdef"><b>Definition:</b> <a href="results__dumper_8cpp_source.html#l00177">results_dumper.cpp:177</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_results_dumper_html_ac79b1165530a90cfe03beb6b69db2e41"><div class="ttname"><a href="classpesieve_1_1_results_dumper.html#ac79b1165530a90cfe03beb6b69db2e41">pesieve::ResultsDumper::dumpModule</a></div><div class="ttdeci">bool dumpModule(IN HANDLE processHandle, IN bool isRefl, IN const ModulesInfo &amp;modulesInfo, IN ModuleScanReport *modReport, IN const peconv::ExportsMapper *exportsMap, IN const pesieve::t_dump_mode dump_mode, IN const pesieve::t_imprec_mode imprec_mode, OUT ProcessDumpReport &amp;dumpReport)</div><div class="ttdef"><b>Definition:</b> <a href="results__dumper_8cpp_source.html#l00212">results_dumper.cpp:212</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_results_dumper_html_af6b1d45c903e72f5efc36afa2247a2c8"><div class="ttname"><a href="classpesieve_1_1_results_dumper.html#af6b1d45c903e72f5efc36afa2247a2c8">pesieve::ResultsDumper::dumpDir</a></div><div class="ttdeci">std::string dumpDir</div><div class="ttdef"><b>Definition:</b> <a href="results__dumper_8h_source.html#l00066">results_dumper.h:66</a></div></div>
