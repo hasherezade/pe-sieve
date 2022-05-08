@@ -329,7 +329,9 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 		}
 	}
 	else {
-		std::cerr << "[-] Failed dumping module!" << std::endl;
+		if (!this->quiet) {
+			std::cerr << "[-] Failed dumping module!" << std::endl;
+		}
 		is_dumped = false;
 	}
 
