@@ -3,7 +3,7 @@
 #include "../utils/process_util.h"
 #include "../utils/ntddk.h"
 
-#include <DbgHelp.h>
+#include <dbghelp.h>
 #pragma comment(lib, "dbghelp")
 
 using namespace pesieve;
