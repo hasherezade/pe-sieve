@@ -82,7 +82,7 @@ bool pesieve::util::is_in_list(std::string searched_str, std::set<std::string>& 
 {
 	bool result = false;
 	if (to_lower) {
-		std::transform(searched_str.begin(), searched_str.end(), searched_str.begin(), std::tolower);
+		std::transform(searched_str.begin(), searched_str.end(), searched_str.begin(), [](unsigned char c){ return std::tolower(c); });
 	}
 	std::set<std::string>::iterator found = string_list.find(searched_str);
 	if (found != string_list.end()) {
@@ -124,7 +124,7 @@ size_t pesieve::util::string_to_list(IN::std::string s, IN char _delim, OUT::std
 		trim(next_str);
 		if (next_str.length() > 0) {
 			if (to_lower) {
-				std::transform(next_str.begin(), next_str.end(), next_str.begin(), std::tolower);
+				std::transform(next_str.begin(), next_str.end(), next_str.begin(), [](unsigned char c){ return std::tolower(c); });
 			}
 			elements_list.insert(next_str);
 		}
@@ -135,7 +135,7 @@ size_t pesieve::util::string_to_list(IN::std::string s, IN char _delim, OUT::std
 	trim(next_str);
 	if (next_str.length() > 0) {
 		if (to_lower) {
-			std::transform(next_str.begin(), next_str.end(), next_str.begin(), std::tolower);
+			std::transform(next_str.begin(), next_str.end(), next_str.begin(), [](unsigned char c){ return std::tolower(c); });
 		}
 		elements_list.insert(next_str);
 	}
