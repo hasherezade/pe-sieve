@@ -257,7 +257,7 @@ std::string pesieve::RemoteModuleData::getModuleName(HANDLE processHandle, HMODU
 std::string pesieve::RemoteModuleData::getMappedName(HANDLE processHandle, LPVOID modBaseAddr)
 {
 	char filename[MAX_PATH] = { 0 };
-	if (!GetMappedFileNameA(processHandle, modBaseAddr, filename, MAX_PATH) != 0) {
+	if (GetMappedFileNameA(processHandle, modBaseAddr, filename, MAX_PATH) == 0) {
 		return "";
 	}
 	std::string expanded = pesieve::util::expand_path(filename);
