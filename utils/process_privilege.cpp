@@ -6,7 +6,7 @@
 namespace pesieve {
 	namespace util {
 
-		inline HMODULE get_or_load_module(char* name)
+		inline HMODULE get_or_load_module(const char* name)
 		{
 			HMODULE hndl = GetModuleHandleA(name);
 			if (!hndl) {
