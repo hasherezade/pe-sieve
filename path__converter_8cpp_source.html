@@ -231,7 +231,7 @@ $(function() {
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>                            <span class="keywordtype">size_t</span> dir_len = strlen(pch);</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>                            <span class="comment">//if so, cut out the mappining path/device path and replace it with a drive letter</span></div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>                            std::string str2 = full_path.substr(dir_len, full_path_size);</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                            <span class="keywordflow">if</span> (str2[0] != <span class="stringliteral">&#39;//&#39;</span> &amp;&amp; str2[0] != <span class="charliteral">&#39;\\&#39;</span>) {</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                            <span class="keywordflow">if</span> (str2[0] != <span class="charliteral">&#39;/&#39;</span> &amp;&amp; str2[0] != <span class="charliteral">&#39;\\&#39;</span>) {</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>                                str2 = <span class="stringliteral">&quot;\\&quot;</span> + str2;</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>                            }</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>                            <span class="keywordflow">return</span> letter + str2;</div>

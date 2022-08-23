@@ -330,7 +330,7 @@ $(function() {
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#aa7907e6b996cbdbd1b185e8d91f7cbe9">  257</a></span>std::string <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#aa7907e6b996cbdbd1b185e8d91f7cbe9">pesieve::RemoteModuleData::getMappedName</a>(HANDLE processHandle, LPVOID modBaseAddr)</div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>{</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    <span class="keywordtype">char</span> filename[MAX_PATH] = { 0 };</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    <span class="keywordflow">if</span> (!GetMappedFileNameA(processHandle, modBaseAddr, filename, MAX_PATH) != 0) {</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    <span class="keywordflow">if</span> (GetMappedFileNameA(processHandle, modBaseAddr, filename, MAX_PATH) == 0) {</div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    }</div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    std::string expanded = <a class="code hl_function" href="namespacepesieve_1_1util.html#a4f8f94b209d1771e90f0b56e303cddd1">pesieve::util::expand_path</a>(filename);</div>
