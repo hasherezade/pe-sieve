@@ -62,7 +62,7 @@ namespace pesieve {
 	class IATScanner : public ModuleScanner {
 	public:
 
-		IATScanner::IATScanner(
+		IATScanner(
 			HANDLE hProc,
 			ModuleData &moduleData,
 			RemoteModuleData &remoteModData,
