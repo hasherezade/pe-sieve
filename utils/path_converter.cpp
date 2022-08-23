@@ -158,7 +158,7 @@ namespace pesieve {
 							size_t dir_len = strlen(pch);
 							//if so, cut out the mappining path/device path and replace it with a drive letter
 							std::string str2 = full_path.substr(dir_len, full_path_size);
-							if (str2[0] != '//' && str2[0] != '\\') {
+							if (str2[0] != '/' && str2[0] != '\\') {
 								str2 = "\\" + str2;
 							}
 							return letter + str2;
