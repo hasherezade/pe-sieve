@@ -95,16 +95,18 @@ size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hTh
 			enum_stack_thread,       // thread function name
 			&args,          // argument to thread function 
 			0,                      // use default creation flags 
-			0);   // returns the thread identifier
+			0);   // returns the thread identifiee
 
-		DWORD wait_result = WaitForSingleObject(enumThread, max_wait);
-		if (wait_result == WAIT_TIMEOUT) {
-			std::cerr << "[!] Cannot retrieve stack frame: timeout passed!\n";
-			TerminateThread(enumThread, 0);
+		if (enumThread) {
+			DWORD wait_result = WaitForSingleObject(enumThread, max_wait);
+			if (wait_result == WAIT_TIMEOUT) {
+				std::cerr << "[!] Cannot retrieve stack frame: timeout passed!\n";
+				TerminateThread(enumThread, 0);
+				CloseHandle(enumThread);
+				return 0;
+			}
 			CloseHandle(enumThread);
-			return 0;
 		}
-		CloseHandle(enumThread);
 	}
 
 	if (!args.is_ok) {
