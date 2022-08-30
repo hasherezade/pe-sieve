@@ -59,14 +59,14 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageDat
 	return false;
 }
 
-WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData &memPageData)
+WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData &_memPage)
 {
-	if (!memPage.load()) {
+	if (!_memPage.load()) {
 		return nullptr;
 	}
 	// check for PE artifacts (regardless if it has shellcode patterns):
-	if (!isScannedAsModule(memPage)) {
-		ArtefactScanner artefactScanner(this->processHandle, this->isReflection, memPage, this->processReport);
+	if (!isScannedAsModule(_memPage)) {
+		ArtefactScanner artefactScanner(this->processHandle, this->isReflection, _memPage, this->processReport);
 		WorkingSetScanReport *my_report1 = artefactScanner.scanRemote();
 		if (my_report1) {
 			//pe artefacts found
@@ -77,15 +77,15 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 		// not a PE file, and we are not interested in shellcode, so just finish it here
 		return nullptr;
 	}
-	if (!isCode(memPage)) {
+	if (!isCode(_memPage)) {
 		// shellcode patterns not found
 		return nullptr;
 	}
 	//report about shellcode:
-	ULONGLONG region_start = memPage.region_start;
-	const size_t region_size = size_t (memPage.region_end - region_start);
+	ULONGLONG region_start = _memPage.region_start;
+	const size_t region_size = size_t (_memPage.region_end - region_start);
 	WorkingSetScanReport *my_report = new WorkingSetScanReport((HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
-	my_report->has_pe = isScannedAsModule(memPage) && this->processReport.hasModule(memPage.region_start);
+	my_report->has_pe = isScannedAsModule(_memPage) && this->processReport.hasModule(_memPage.region_start);
 	my_report->has_shellcode = true;
 	return my_report;
 }
