@@ -10,6 +10,7 @@
 #include "scan_report.h"
 
 #include "../utils/format_util.h"
+#include "../utils/workingset_enum.h"
 #include "process_feature_scanner.h"
 #include "process_details.h"
 
@@ -93,9 +94,9 @@ namespace pesieve {
 	//!  A scanner for detection of code implants in the process workingset.
 	class WorkingSetScanner : public ProcessFeatureScanner {
 	public:
-		WorkingSetScanner(HANDLE _procHndl, process_details _proc_details, MemPageData &_memPageDatal, pesieve::t_params _args, ProcessScanReport& _process_report)
-			: ProcessFeatureScanner(_procHndl), pDetails(_proc_details), 
-			memPage(_memPageDatal),
+		WorkingSetScanner(HANDLE _procHndl, process_details _proc_details, const util::mem_region_info _mem_region, pesieve::t_params _args, ProcessScanReport& _process_report)
+			: ProcessFeatureScanner(_procHndl), pDetails(_proc_details),
+			memRegion(_mem_region),
 			args(_args),
 			processReport(_process_report)
 		{
@@ -115,7 +116,7 @@ namespace pesieve {
 		WorkingSetScanReport* scanExecutableArea(MemPageData &memPageData);
 
 		const process_details pDetails;
-		MemPageData &memPage;
+		const util::mem_region_info memRegion;
 
 		ProcessScanReport& processReport;
 		pesieve::t_params args;

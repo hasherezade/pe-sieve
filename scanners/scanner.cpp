@@ -274,14 +274,9 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 	//now scan all the nodes:
 
 	for (auto set_itr = region_bases.begin(); set_itr != region_bases.end(); ++set_itr, ++counter) {
-		const ULONGLONG region_base = set_itr->base;
-		//set_itr->print();
-		MemPageData memPage(this->processHandle, this->isReflection, region_base, 0);
+		const mem_region_info region = *set_itr;
 
-		memPage.is_listed_module = pReport.hasModule(region_base);
-		//memPage.is_dep_enabled = this->isDEP;
-
-		WorkingSetScanner scanner(this->processHandle, proc_details, memPage, this->args, pReport);
+		WorkingSetScanner scanner(this->processHandle, proc_details, region, this->args, pReport);
 		WorkingSetScanReport *my_report = scanner.scanRemote();
 		if (!my_report) {
 			continue;

@@ -156,6 +156,9 @@ bool pesieve::WorkingSetScanner::scanImg(MemPageData& memPage)
 
 WorkingSetScanReport* pesieve::WorkingSetScanner::scanRemote()
 {
+	MemPageData memPage(this->processHandle, this->pDetails.isReflection, this->memRegion.base, 0);
+	memPage.is_listed_module = this->processReport.hasModule(this->memRegion.base);
+
 	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
 #ifdef _DEBUG
 		std::cout << "[!] Could not fill: " << std::hex << memPage.start_va << " to: " << memPage.region_end << "\n";
