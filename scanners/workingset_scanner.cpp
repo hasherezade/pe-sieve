@@ -66,7 +66,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 	}
 	// check for PE artifacts (regardless if it has shellcode patterns):
 	if (!isScannedAsModule(_memPage)) {
-		ArtefactScanner artefactScanner(this->processHandle, this->pDetails.isReflection, _memPage, this->processReport);
+		ArtefactScanner artefactScanner(this->processHandle, this->pDetails, _memPage, this->processReport);
 		WorkingSetScanReport *my_report1 = artefactScanner.scanRemote();
 		if (my_report1) {
 			//pe artefacts found

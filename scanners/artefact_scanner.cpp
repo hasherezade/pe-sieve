@@ -832,7 +832,7 @@ PeArtefacts* pesieve::ArtefactScanner::findInPrevPages(ULONGLONG addr_start, ULO
 			//std::cout << "Aready scanned: " << std::hex << next_addr << " size: " << area_size << "\n";
 			break;
 		}
-		this->prevMemPage = new MemPageData(this->processHandle, this->isReflection, next_addr, addr_stop);
+		this->prevMemPage = new MemPageData(this->processHandle, this->pDetails.isReflection, next_addr, addr_stop);
 		peArt = findArtefacts(*prevMemPage, 0);
 		if (peArt) {
 			break;

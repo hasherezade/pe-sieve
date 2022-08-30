@@ -8,6 +8,7 @@
 #include "module_scan_report.h"
 #include "workingset_scanner.h"
 #include "../utils/process_util.h"
+#include "process_details.h"
 
 #define INVALID_OFFSET (-1)
 #define PE_NOT_FOUND 0
@@ -158,8 +159,8 @@ namespace pesieve {
 
 		static size_t calcImgSize(HANDLE processHandle, HMODULE modBaseAddr, BYTE* headerBuffer, size_t headerBufferSize, IMAGE_SECTION_HEADER *hdr_ptr = NULL);
 
-		ArtefactScanner(HANDLE _procHndl, bool _isProcRefl, MemPageData &_memPageData, ProcessScanReport& _process_report)
-			: ProcessFeatureScanner(_procHndl), isReflection(_isProcRefl),
+		ArtefactScanner(HANDLE _procHndl, const process_details _proc_details, MemPageData &_memPageData, ProcessScanReport& _process_report)
+			: ProcessFeatureScanner(_procHndl), pDetails(_proc_details),
 			processReport(_process_report), isProcess64bit(false),
 			memPage(_memPageData), prevMemPage(nullptr), artPagePtr(nullptr)
 		{
@@ -268,7 +269,7 @@ namespace pesieve {
 		MemPageData *prevMemPage;
 		MemPageData *artPagePtr; //pointer to the page where the artefacts were found: either to memPage or to prevMemPage
 		bool isProcess64bit;
-		const bool isReflection;
+		const process_details pDetails;
 		ProcessScanReport& processReport;
 	};
 
