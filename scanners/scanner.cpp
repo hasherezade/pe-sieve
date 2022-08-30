@@ -263,17 +263,17 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 		return 0;
 	}
 	ULONGLONG start_tick = GetTickCount64();
-	std::set<ULONGLONG> region_bases;
+	std::set<mem_region_info> region_bases;
 	size_t pages_count = util::enum_workingset(processHandle, region_bases);
 	if (!args.quiet) {
 		std::cout << "Scanning workingset: " << std::dec << pages_count << " memory regions." << std::endl;
 	}
 	size_t counter = 0;
 	//now scan all the nodes:
-	std::set<ULONGLONG>::iterator set_itr;
-	for (set_itr = region_bases.begin(); set_itr != region_bases.end(); ++set_itr, ++counter) {
-		const ULONGLONG region_base = *set_itr;
-		
+
+	for (auto set_itr = region_bases.begin(); set_itr != region_bases.end(); ++set_itr, ++counter) {
+		const ULONGLONG region_base = set_itr->base;
+		//set_itr->print();
 		MemPageData memPage(this->processHandle, this->isReflection, region_base, 0);
 
 		memPage.is_listed_module = pReport.hasModule(region_base);

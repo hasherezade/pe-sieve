@@ -61,7 +61,7 @@ namespace pesieve {
 	};
 };
 
-size_t pesieve::util::enum_workingset(HANDLE processHandle, std::set<ULONGLONG> &region_bases)
+size_t pesieve::util::enum_workingset(HANDLE processHandle, std::set<mem_region_info> &region_bases)
 {
 	region_bases.clear();
 
@@ -71,11 +71,13 @@ size_t pesieve::util::enum_workingset(HANDLE processHandle, std::set<ULONGLONG> 
 	{
 		ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
 		next_va = base + page_info.RegionSize; //end of the region
-		if (region_bases.find(base) != region_bases.end()) {
+		mem_region_info curr_info((ULONGLONG)page_info.AllocationBase, base, page_info.RegionSize);
+
+		if (region_bases.find(curr_info) != region_bases.end()) {
 			// don't let it stuck on adding the same region over and over again
 			break;
 		}
-		region_bases.insert(base);
+		region_bases.insert(curr_info);
 	}
 	return region_bases.size();
 }
