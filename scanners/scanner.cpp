@@ -262,6 +262,8 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 		throw std::runtime_error("Could not query the working set. ");
 		return 0;
 	}
+	process_details proc_details(this->isReflection, this->isDEP);
+
 	ULONGLONG start_tick = GetTickCount64();
 	std::set<mem_region_info> region_bases;
 	size_t pages_count = util::enum_workingset(processHandle, region_bases);
@@ -277,9 +279,9 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 		MemPageData memPage(this->processHandle, this->isReflection, region_base, 0);
 
 		memPage.is_listed_module = pReport.hasModule(region_base);
-		memPage.is_dep_enabled = this->isDEP;
+		//memPage.is_dep_enabled = this->isDEP;
 
-		WorkingSetScanner scanner(this->processHandle, memPage, this->args, pReport);
+		WorkingSetScanner scanner(this->processHandle, proc_details, memPage, this->args, pReport);
 		WorkingSetScanReport *my_report = scanner.scanRemote();
 		if (!my_report) {
 			continue;

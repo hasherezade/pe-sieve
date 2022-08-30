@@ -95,6 +95,7 @@ set (scanners_hdrs
 	scanners/scanned_modules.h
 	scanners/hook_targets_resolver.h
 	scanners/thread_scanner.h
+	scanners/process_details.h
 )
 
 set (imprec_hdrs

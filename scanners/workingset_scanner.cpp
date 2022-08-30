@@ -35,7 +35,7 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageDat
 	// check preconditions:
 	const bool is_managed = this->processReport.isManagedProcess();
 	if (mode == pesieve::PE_DATA_SCAN_NO_DEP 
-		&& memPage.is_dep_enabled && !is_managed)
+		&& this->pDetails.isDEP && !is_managed)
 	{
 		return false;
 	}
@@ -52,7 +52,7 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageDat
 		}
 	}
 	if ((mode >= pesieve::PE_DATA_SCAN_INACCESSIBLE) || (mode == pesieve::PE_DATA_SCAN_INACCESSIBLE_ONLY)) {
-		if (this->isReflection && (memPage.protection & PAGE_NOACCESS)) {
+		if (this->pDetails.isReflection && (memPage.protection & PAGE_NOACCESS)) {
 			return true;
 		}
 	}
@@ -66,7 +66,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 	}
 	// check for PE artifacts (regardless if it has shellcode patterns):
 	if (!isScannedAsModule(_memPage)) {
-		ArtefactScanner artefactScanner(this->processHandle, this->isReflection, _memPage, this->processReport);
+		ArtefactScanner artefactScanner(this->processHandle, this->pDetails.isReflection, _memPage, this->processReport);
 		WorkingSetScanReport *my_report1 = artefactScanner.scanRemote();
 		if (my_report1) {
 			//pe artefacts found
@@ -113,7 +113,7 @@ bool pesieve::WorkingSetScanner::scanImg()
 	if (!args.quiet) {
 		std::cout << "[!] Scanning detached: " << std::hex << module_start << " : " << memPage.mapped_name << std::endl;
 	}
-	RemoteModuleData remoteModData(this->processHandle, this->isReflection, module_start);
+	RemoteModuleData remoteModData(this->processHandle, this->pDetails.isReflection, module_start);
 	if (!remoteModData.isInitialized()) {
 		if (!args.quiet) {
 			std::cout << "[-] Could not read the remote PE at: " << std::hex << module_start << std::endl;
@@ -144,8 +144,8 @@ bool pesieve::WorkingSetScanner::scanImg()
 	}
 	if (!args.no_hooks) {
 		const bool scan_data = (this->args.data >= pesieve::PE_DATA_SCAN_ALWAYS && this->args.data != PE_DATA_SCAN_INACCESSIBLE_ONLY)
-			|| (!memPage.is_dep_enabled && (this->args.data == pesieve::PE_DATA_SCAN_NO_DEP));
-		const bool scan_inaccessible = (this->isReflection && (this->args.data >= pesieve::PE_DATA_SCAN_INACCESSIBLE));
+			|| (!this->pDetails.isDEP && (this->args.data == pesieve::PE_DATA_SCAN_NO_DEP));
+		const bool scan_inaccessible = (this->pDetails.isReflection && (this->args.data >= pesieve::PE_DATA_SCAN_INACCESSIBLE));
 		scan_status = ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport, scan_data, scan_inaccessible);
 #ifdef _DEBUG
 		std::cout << "[*] Scanned for hooks. Status: " << scan_status << std::endl;

@@ -11,6 +11,7 @@
 
 #include "../utils/format_util.h"
 #include "process_feature_scanner.h"
+#include "process_details.h"
 
 namespace pesieve {
 
@@ -92,9 +93,9 @@ namespace pesieve {
 	//!  A scanner for detection of code implants in the process workingset.
 	class WorkingSetScanner : public ProcessFeatureScanner {
 	public:
-		WorkingSetScanner(HANDLE _procHndl, MemPageData &_memPageDatal, pesieve::t_params _args, ProcessScanReport& _process_report)
-			: ProcessFeatureScanner(_procHndl), memPage(_memPageDatal), 
-			isReflection(_memPageDatal.isRefl()),
+		WorkingSetScanner(HANDLE _procHndl, process_details _proc_details, MemPageData &_memPageDatal, pesieve::t_params _args, ProcessScanReport& _process_report)
+			: ProcessFeatureScanner(_procHndl), pDetails(_proc_details), 
+			memPage(_memPageDatal),
 			args(_args),
 			processReport(_process_report)
 		{
@@ -113,7 +114,7 @@ namespace pesieve {
 		bool isCode(MemPageData &memPageData);
 		WorkingSetScanReport* scanExecutableArea(MemPageData &memPageData);
 
-		const bool isReflection;
+		const process_details pDetails;
 		MemPageData &memPage;
 
 		ProcessScanReport& processReport;
