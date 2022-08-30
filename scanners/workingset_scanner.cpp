@@ -10,23 +10,23 @@
 using namespace pesieve;
 using namespace pesieve::util;
 
-bool pesieve::WorkingSetScanner::isCode(MemPageData &memPageData)
+bool pesieve::WorkingSetScanner::isCode(MemPageData &memPage)
 {
 	if (!memPage.load()) {
 		return false;
 	}
-	return is_code(memPageData.getLoadedData(), memPageData.getLoadedSize());
+	return is_code(memPage.getLoadedData(), memPage.getLoadedSize());
 }
 
-bool pesieve::WorkingSetScanner::isExecutable(MemPageData &memPageData)
+bool pesieve::WorkingSetScanner::isExecutable(MemPageData &memPage)
 {
 	if (pesieve::util::is_executable(memPage.mapping_type, memPage.protection)) {
 		return true;
 	}
-	return isPotentiallyExecutable(memPageData, this->args.data);
+	return isPotentiallyExecutable(memPage, this->args.data);
 }
 
-bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageData, const t_data_scan_mode &mode)
+bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPage, const t_data_scan_mode &mode)
 {
 	if (mode == pesieve::PE_DATA_NO_SCAN) {
 		return false;
@@ -101,7 +101,7 @@ bool pesieve::WorkingSetScanner::isScannedAsModule(MemPageData &memPage)
 	return false;
 }
 
-bool pesieve::WorkingSetScanner::scanImg()
+bool pesieve::WorkingSetScanner::scanImg(MemPageData& memPage)
 {
 	if (!memPage.loadMappedName()) {
 		//cannot retrieve the mapped name
@@ -178,7 +178,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanRemote()
 		memPage.loadModuleName();
 		memPage.loadMappedName();
 		if (!isScannedAsModule(memPage)) {
-			scanImg();
+			scanImg(memPage);
 		}
 		const size_t region_size = (memPage.region_end) ? (memPage.region_end - memPage.region_start) : 0;
 		if (this->processReport.hasModuleContaining(memPage.region_start, region_size)) {

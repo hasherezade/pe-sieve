@@ -106,7 +106,7 @@ namespace pesieve {
 		virtual WorkingSetScanReport* scanRemote();
 
 	protected:
-		bool scanImg();
+		bool scanImg(MemPageData& memPage);
 		bool isScannedAsModule(MemPageData &memPageData);
 
 		bool isExecutable(MemPageData &memPageData);
