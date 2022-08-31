@@ -1,9 +1,8 @@
 <map id="pesieve::ThreadScanner::enumStackFrames" name="pesieve::ThreadScanner::enumStackFrames">
-<area shape="rect" id="node1" title=" " alt="" coords="5,107,167,149"/>
-<area shape="rect" id="node2" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="223,5,368,32"/>
-<area shape="rect" id="node3" href="$thread__scanner_8cpp.html#aae9f172c5997c8651c566511823bb19e" title=" " alt="" coords="227,56,363,83"/>
-<area shape="rect" id="node4" href="$classpesieve_1_1_modules_info.html#a15b3653af8bb2e2f86991103ab3b9f9e" title=" " alt="" coords="220,107,371,149"/>
-<area shape="rect" id="node6" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="424,198,591,239"/>
-<area shape="rect" id="node7" href="$classpesieve_1_1_thread_scanner.html#a5556239f285cff21f8cf85e282c0bd97" title=" " alt="" coords="215,225,376,266"/>
-<area shape="rect" id="node5" href="$classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="424,107,591,149"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,85,167,125"/>
+<area shape="rect" id="node2" href="$thread__scanner_8cpp.html#aae9f172c5997c8651c566511823bb19e" title=" " alt="" coords="227,5,363,31"/>
+<area shape="rect" id="node3" href="$classpesieve_1_1_modules_info.html#a15b3653af8bb2e2f86991103ab3b9f9e" title=" " alt="" coords="220,55,371,95"/>
+<area shape="rect" id="node5" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="424,145,591,185"/>
+<area shape="rect" id="node6" href="$classpesieve_1_1_thread_scanner.html#a5556239f285cff21f8cf85e282c0bd97" title=" " alt="" coords="215,170,376,210"/>
+<area shape="rect" id="node4" href="$classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="424,55,591,95"/>
 </map>

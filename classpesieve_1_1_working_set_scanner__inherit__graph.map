@@ -1,4 +1,4 @@
 <map id="pesieve::WorkingSetScanner" name="pesieve::WorkingSetScanner">
-<area shape="rect" id="node1" title="A scanner for detection of code implants in the process workingset." alt="" coords="18,80,206,107"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_process_feature_scanner.html" title="A base class for all the scanners checking appropriate process&#39; features." alt="" coords="5,5,219,32"/>
+<area shape="rect" id="node1" title="A scanner for detection of code implants in the process workingset." alt="" coords="18,79,206,104"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_process_feature_scanner.html" title="A base class for all the scanners checking appropriate process&#39; features." alt="" coords="5,5,219,31"/>
 </map>

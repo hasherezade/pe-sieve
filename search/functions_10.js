@@ -9,7 +9,7 @@ var searchData=
   ['scanforhooks_6',['scanForHooks',['../classpesieve_1_1_process_scanner.html#a54f87b9c4eed3467a37dfc4ed3d1d15c',1,'pesieve::ProcessScanner']]],
   ['scanforiathooks_7',['scanForIATHooks',['../classpesieve_1_1_process_scanner.html#acc5a0ed3f3d98a1520103fc17726a04a',1,'pesieve::ProcessScanner']]],
   ['scanformappingmismatch_8',['scanForMappingMismatch',['../classpesieve_1_1_process_scanner.html#ac8c976ee8b4f720e86cc6407d86b3b52',1,'pesieve::ProcessScanner']]],
-  ['scanimg_9',['scanImg',['../classpesieve_1_1_working_set_scanner.html#a018f0197870f70cc27dac527c032d681',1,'pesieve::WorkingSetScanner']]],
+  ['scanimg_9',['scanImg',['../classpesieve_1_1_working_set_scanner.html#ac138db8672dbc502cc8e23a41043fe21',1,'pesieve::WorkingSetScanner']]],
   ['scanmodules_10',['scanModules',['../classpesieve_1_1_process_scanner.html#a22777c54e387cc1718984fb3296a8b8e',1,'pesieve::ProcessScanner']]],
   ['scanmodulesiats_11',['scanModulesIATs',['../classpesieve_1_1_process_scanner.html#a5aaf559023b221cc16cb094b580c6824',1,'pesieve::ProcessScanner']]],
   ['scannedmodule_12',['ScannedModule',['../classpesieve_1_1_scanned_module.html#ae4ce9b4e984b5c38c05d66578f4146f7',1,'pesieve::ScannedModule']]],

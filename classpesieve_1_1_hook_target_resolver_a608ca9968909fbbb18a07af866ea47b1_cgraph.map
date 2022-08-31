@@ -1,10 +1,10 @@
 <map id="pesieve::HookTargetResolver::resolveTarget" name="pesieve::HookTargetResolver::resolveTarget">
-<area shape="rect" id="node1" title="Resolves the information about the target of the provided hook, and fills it back into the object." alt="" coords="5,165,197,207"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_patch_list_1_1_patch.html#abefc01f22610a8bfa9c06e76323f685f" title=" " alt="" coords="254,5,426,47"/>
-<area shape="rect" id="node3" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="257,71,423,112"/>
-<area shape="rect" id="node4" href="$classpesieve_1_1_process_scan_report.html#abbccac104f264bc0b548a0f493a66dde" title=" " alt="" coords="245,136,435,177"/>
-<area shape="rect" id="node6" href="$classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="681,165,848,207"/>
-<area shape="rect" id="node7" href="$classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="257,253,423,295"/>
-<area shape="rect" id="node8" href="$classpesieve_1_1_patch_list_1_1_patch.html#a7995c01369861207268c6d18f6ed3934" title=" " alt="" coords="252,319,428,360"/>
-<area shape="rect" id="node5" href="$classpesieve_1_1_modules_info.html#a15b3653af8bb2e2f86991103ab3b9f9e" title=" " alt="" coords="483,136,633,177"/>
+<area shape="rect" id="node1" title="Resolves the information about the target of the provided hook, and fills it back into the object." alt="" coords="5,163,197,203"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_patch_list_1_1_patch.html#abefc01f22610a8bfa9c06e76323f685f" title=" " alt="" coords="254,5,426,45"/>
+<area shape="rect" id="node3" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="257,69,423,109"/>
+<area shape="rect" id="node4" href="$classpesieve_1_1_process_scan_report.html#abbccac104f264bc0b548a0f493a66dde" title=" " alt="" coords="245,133,435,173"/>
+<area shape="rect" id="node6" href="$classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="681,163,848,203"/>
+<area shape="rect" id="node7" href="$classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="257,248,423,288"/>
+<area shape="rect" id="node8" href="$classpesieve_1_1_patch_list_1_1_patch.html#a7995c01369861207268c6d18f6ed3934" title=" " alt="" coords="252,312,428,352"/>
+<area shape="rect" id="node5" href="$classpesieve_1_1_modules_info.html#a15b3653af8bb2e2f86991103ab3b9f9e" title=" " alt="" coords="483,133,633,173"/>
 </map>

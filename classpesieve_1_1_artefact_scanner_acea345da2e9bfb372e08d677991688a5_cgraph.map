@@ -1,10 +1,10 @@
 <map id="pesieve::ArtefactScanner::findArtefacts" name="pesieve::ArtefactScanner::findArtefacts">
-<area shape="rect" id="node1" title=" " alt="" coords="5,129,172,171"/>
-<area shape="rect" id="node2" href="$namespacepesieve_1_1util.html#a64072c72d2a3391e021c9f1d6eb60e97" title=" " alt="" coords="255,12,375,53"/>
-<area shape="rect" id="node4" href="$classpesieve_1_1_mem_page_data.html#a8a6928d919b90825ccd6ea0213b53452" title=" " alt="" coords="459,71,617,112"/>
-<area shape="rect" id="node5" href="$classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#aed8f32729b34e73763ea7d150a0723a7" title=" " alt="" coords="220,129,411,171"/>
-<area shape="rect" id="node6" href="$classpesieve_1_1_mem_page_data.html#a01d3a9dc59b2965fa6defbc4dfda8524" title=" " alt="" coords="236,195,395,236"/>
-<area shape="rect" id="node8" href="$classpesieve_1_1_mem_page_data.html#aa2d9e7295a7b0f82d3492850f3e8dca1" title=" " alt="" coords="236,260,395,301"/>
-<area shape="rect" id="node3" href="$classpesieve_1_1_mem_page_data.html#a6817c520ee6e8fb641df9602098a3d52" title=" " alt="" coords="459,5,617,47"/>
-<area shape="rect" id="node7" href="$classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="459,195,617,236"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,127,172,167"/>
+<area shape="rect" id="node2" href="$namespacepesieve_1_1util.html#a64072c72d2a3391e021c9f1d6eb60e97" title=" " alt="" coords="255,12,375,52"/>
+<area shape="rect" id="node4" href="$classpesieve_1_1_mem_page_data.html#a8a6928d919b90825ccd6ea0213b53452" title=" " alt="" coords="459,69,617,109"/>
+<area shape="rect" id="node5" href="$classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#aed8f32729b34e73763ea7d150a0723a7" title=" " alt="" coords="220,127,411,167"/>
+<area shape="rect" id="node6" href="$classpesieve_1_1_mem_page_data.html#a01d3a9dc59b2965fa6defbc4dfda8524" title=" " alt="" coords="236,191,395,231"/>
+<area shape="rect" id="node8" href="$classpesieve_1_1_mem_page_data.html#aa2d9e7295a7b0f82d3492850f3e8dca1" title=" " alt="" coords="236,255,395,295"/>
+<area shape="rect" id="node3" href="$classpesieve_1_1_mem_page_data.html#a6817c520ee6e8fb641df9602098a3d52" title=" " alt="" coords="459,5,617,45"/>
+<area shape="rect" id="node7" href="$classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="459,191,617,231"/>
 </map>

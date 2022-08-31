@@ -10,7 +10,7 @@ var searchData=
   ['sectionrva_7',['sectionRVA',['../classpesieve_1_1_patch_analyzer.html#a34eb7c1430a1851749e5e096e9a2dbfa',1,'pesieve::PatchAnalyzer']]],
   ['sectiontoresult_8',['sectionToResult',['../classpesieve_1_1_code_scan_report.html#ade146d4d6dff33f669825e68d2d035da',1,'pesieve::CodeScanReport']]],
   ['shellcode_9',['shellcode',['../structt__params.html#a4357839a0da17ba7dcfbb09291d2be2e',1,'t_params']]],
-  ['size_10',['size',['../structpesieve_1_1t__pattern.html#adcacd3ece43241726f6c8f1c05dff150',1,'pesieve::t_pattern']]],
+  ['size_10',['size',['../structpesieve_1_1t__pattern.html#adcacd3ece43241726f6c8f1c05dff150',1,'pesieve::t_pattern::size()'],['../structpesieve_1_1util_1_1__mem__region__info.html#a5b8ade2cf0b8931e4f81b98ae2bfdac5',1,'pesieve::util::_mem_region_info::size()']]],
   ['skipped_11',['skipped',['../structt__report.html#aa8b7ccd280287ebc6a2adb185beb531a',1,'t_report']]],
   ['snapshothandle_12',['SnapshotHandle',['../namespacepesieve_1_1util.html#a6af9e73116d4d74647d319a492b721b0',1,'pesieve::util']]],
   ['stack_5fframe_13',['stack_frame',['../struct__t__stack__enum__params.html#afd374d69c557b225099cff673e6ab6d7',1,'_t_stack_enum_params']]],

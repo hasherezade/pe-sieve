@@ -23,13 +23,14 @@ var searchData=
   ['pe_5fsieve_5freturn_5fcodes_2eh_20',['pe_sieve_return_codes.h',['../pe__sieve__return__codes_8h.html',1,'']]],
   ['pe_5fsieve_5ftypes_2eh_21',['pe_sieve_types.h',['../pe__sieve__types_8h.html',1,'']]],
   ['pe_5fsieve_5fversion_2eh_22',['pe_sieve_version.h',['../pe__sieve__version_8h.html',1,'']]],
-  ['process_5ffeature_5fscanner_2eh_23',['process_feature_scanner.h',['../process__feature__scanner_8h.html',1,'']]],
-  ['process_5fminidump_2ecpp_24',['process_minidump.cpp',['../process__minidump_8cpp.html',1,'']]],
-  ['process_5fminidump_2eh_25',['process_minidump.h',['../process__minidump_8h.html',1,'']]],
-  ['process_5fprivilege_2ecpp_26',['process_privilege.cpp',['../process__privilege_8cpp.html',1,'']]],
-  ['process_5fprivilege_2eh_27',['process_privilege.h',['../process__privilege_8h.html',1,'']]],
-  ['process_5freflection_2ecpp_28',['process_reflection.cpp',['../process__reflection_8cpp.html',1,'']]],
-  ['process_5freflection_2eh_29',['process_reflection.h',['../process__reflection_8h.html',1,'']]],
-  ['process_5futil_2ecpp_30',['process_util.cpp',['../process__util_8cpp.html',1,'']]],
-  ['process_5futil_2eh_31',['process_util.h',['../process__util_8h.html',1,'']]]
+  ['process_5fdetails_2eh_23',['process_details.h',['../process__details_8h.html',1,'']]],
+  ['process_5ffeature_5fscanner_2eh_24',['process_feature_scanner.h',['../process__feature__scanner_8h.html',1,'']]],
+  ['process_5fminidump_2ecpp_25',['process_minidump.cpp',['../process__minidump_8cpp.html',1,'']]],
+  ['process_5fminidump_2eh_26',['process_minidump.h',['../process__minidump_8h.html',1,'']]],
+  ['process_5fprivilege_2ecpp_27',['process_privilege.cpp',['../process__privilege_8cpp.html',1,'']]],
+  ['process_5fprivilege_2eh_28',['process_privilege.h',['../process__privilege_8h.html',1,'']]],
+  ['process_5freflection_2ecpp_29',['process_reflection.cpp',['../process__reflection_8cpp.html',1,'']]],
+  ['process_5freflection_2eh_30',['process_reflection.h',['../process__reflection_8h.html',1,'']]],
+  ['process_5futil_2ecpp_31',['process_util.cpp',['../process__util_8cpp.html',1,'']]],
+  ['process_5futil_2eh_32',['process_util.h',['../process__util_8h.html',1,'']]]
 ];

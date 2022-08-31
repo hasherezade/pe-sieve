@@ -1,5 +1,5 @@
 <map id="pesieve::HeadersScanner" name="pesieve::HeadersScanner">
-<area shape="rect" id="node1" title="A scanner for detection of PE header&#39;s modifications." alt="" coords="27,155,197,181"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_module_scanner.html" title="A base class for all the scanners operating on module data." alt="" coords="31,80,193,107"/>
-<area shape="rect" id="node3" href="$classpesieve_1_1_process_feature_scanner.html" title="A base class for all the scanners checking appropriate process&#39; features." alt="" coords="5,5,219,32"/>
+<area shape="rect" id="node1" title="A scanner for detection of PE header&#39;s modifications." alt="" coords="27,152,197,177"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_module_scanner.html" title="A base class for all the scanners operating on module data." alt="" coords="31,79,193,104"/>
+<area shape="rect" id="node3" href="$classpesieve_1_1_process_feature_scanner.html" title="A base class for all the scanners checking appropriate process&#39; features." alt="" coords="5,5,219,31"/>
 </map>

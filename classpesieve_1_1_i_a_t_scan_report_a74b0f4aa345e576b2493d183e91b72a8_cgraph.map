@@ -1,9 +1,8 @@
 <map id="pesieve::IATScanReport::saveNotRecovered" name="pesieve::IATScanReport::saveNotRecovered">
-<area shape="rect" id="node1" title=" " alt="" coords="5,122,168,163"/>
-<area shape="rect" id="node2" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="231,5,376,32"/>
-<area shape="rect" id="node3" href="$classpesieve_1_1_i_a_t_scan_report.html#a72330dd800a7a663223323f8d836bc32" title=" " alt="" coords="216,57,391,98"/>
-<area shape="rect" id="node4" href="$classpesieve_1_1_i_a_t_scan_report.html#aae687714420a235f95d8867021eb502c" title=" " alt="" coords="222,122,385,163"/>
-<area shape="rect" id="node6" href="$classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="220,187,387,229"/>
-<area shape="rect" id="node7" href="$classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="220,253,387,294"/>
-<area shape="rect" id="node5" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="439,122,605,163"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,101,168,141"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_i_a_t_scan_report.html#a72330dd800a7a663223323f8d836bc32" title=" " alt="" coords="216,5,391,45"/>
+<area shape="rect" id="node3" href="$classpesieve_1_1_i_a_t_scan_report.html#aae687714420a235f95d8867021eb502c" title=" " alt="" coords="222,69,385,109"/>
+<area shape="rect" id="node5" href="$classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="220,133,387,173"/>
+<area shape="rect" id="node6" href="$classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="220,197,387,237"/>
+<area shape="rect" id="node4" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="439,69,605,109"/>
 </map>

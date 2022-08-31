@@ -1,15 +1,14 @@
 <map id="pesieve::open_process" name="pesieve::open_process">
-<area shape="rect" id="node1" title=" " alt="" coords="5,119,160,146"/>
-<area shape="rect" id="node2" href="$namespacepesieve.html#a4c7e67a288c6e0581c8848b5649b0223" title=" " alt="" coords="208,24,365,65"/>
-<area shape="rect" id="node4" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="801,31,947,58"/>
-<area shape="rect" id="node6" href="$namespacepesieve.html#ab939d4edad1446e418ec8fb4d33cb137" title=" " alt="" coords="219,141,355,183"/>
-<area shape="rect" id="node11" href="$namespacepesieve_1_1util.html#a7eca64fd4903e8fe4eebefd19e4a6614" title=" " alt="" coords="226,232,347,273"/>
-<area shape="rect" id="node3" href="$namespacepesieve_1_1util.html#a0488834f09bf17273a1c1a97b4e9041b" title=" " alt="" coords="435,24,550,65"/>
-<area shape="rect" id="node5" href="$process__privilege_8cpp.html#abbf8ec8b9bb90b98b259f9099f903d28" title=" " alt="" coords="625,24,749,65"/>
-<area shape="rect" id="node7" href="$namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="426,141,559,167"/>
-<area shape="rect" id="node8" href="$namespacepesieve_1_1util.html#a43b6faf00b6a97279f2d67f4a3fd2513" title=" " alt="" coords="413,192,572,233"/>
-<area shape="rect" id="node9" href="$namespacepesieve_1_1util.html#a24a78069a922debb11a69d5bb0498ceb" title=" " alt="" coords="620,143,753,170"/>
-<area shape="rect" id="node10" href="$namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="629,195,744,236"/>
-<area shape="rect" id="node12" href="$namespacepesieve_1_1util.html#a3a202097bb77191265159f34903c4ccb" title=" " alt="" coords="435,257,550,299"/>
-<area shape="rect" id="node13" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="639,265,734,291"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,99,160,125"/>
+<area shape="rect" id="node2" href="$namespacepesieve.html#a4c7e67a288c6e0581c8848b5649b0223" title=" " alt="" coords="208,5,365,45"/>
+<area shape="rect" id="node4" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="620,70,765,95"/>
+<area shape="rect" id="node6" href="$namespacepesieve.html#ab939d4edad1446e418ec8fb4d33cb137" title=" " alt="" coords="219,120,355,160"/>
+<area shape="rect" id="node10" href="$namespacepesieve_1_1util.html#a7eca64fd4903e8fe4eebefd19e4a6614" title=" " alt="" coords="226,209,347,249"/>
+<area shape="rect" id="node3" href="$namespacepesieve_1_1util.html#a0488834f09bf17273a1c1a97b4e9041b" title=" " alt="" coords="435,5,550,45"/>
+<area shape="rect" id="node5" href="$process__privilege_8cpp.html#abbf8ec8b9bb90b98b259f9099f903d28" title=" " alt="" coords="631,5,755,45"/>
+<area shape="rect" id="node7" href="$namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="626,121,759,146"/>
+<area shape="rect" id="node8" href="$namespacepesieve_1_1util.html#a43b6faf00b6a97279f2d67f4a3fd2513" title=" " alt="" coords="413,171,572,211"/>
+<area shape="rect" id="node9" href="$namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="635,171,750,211"/>
+<area shape="rect" id="node11" href="$namespacepesieve_1_1util.html#a3a202097bb77191265159f34903c4ccb" title=" " alt="" coords="435,235,550,275"/>
+<area shape="rect" id="node12" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="645,242,740,267"/>
 </map>
