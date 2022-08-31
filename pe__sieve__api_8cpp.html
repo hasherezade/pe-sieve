@@ -98,6 +98,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a834c4cf611a1ecb96edf1827053ba917"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pe__sieve__api_8cpp.html#a834c4cf611a1ecb96edf1827053ba917">print_report</a> (const <a class="el" href="classpesieve_1_1_report_ex.html">pesieve::ReportEx</a> &amp;report, const pesieve::t_params args, char *json_buf, size_t json_buf_size)</td></tr>
 <tr class="separator:a834c4cf611a1ecb96edf1827053ba917"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8afaeaeff5205fdacb87081b4e3a3e3f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__api_8h.html#ab9c9b0bb96563edfc03236f9b522dd91">PEsieve_report</a> <a class="el" href="pe__sieve__api_8h.html#af8a670441ca96827a2997727a85d9ca3">PESIEVE_API_FUNC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pe__sieve__api_8cpp.html#a8afaeaeff5205fdacb87081b4e3a3e3f">PESieve_scan_ex</a> (const <a class="el" href="pe__sieve__api_8h.html#a6fd416fe2fa8efb29be1fd09956cbf31">PEsieve_params</a> args, char *json_buf, size_t json_buf_size, size_t *needed_size)</td></tr>
+<tr class="memdesc:a8afaeaeff5205fdacb87081b4e3a3e3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a PE-sieve scan with a supplied set of parameters (defined as a structure <a class="el" href="structt__params.html" title="Input parameters for PE-sieve, defining the configuration.">t_params</a>). Returns a summary of the scan in a variable of type <a class="el" href="structt__report.html" title="Final summary about the scanned process.">t_report</a>. Allows to supply a buffer that will be filled with full JSON report.  <a href="pe__sieve__api_8cpp.html#a8afaeaeff5205fdacb87081b4e3a3e3f">More...</a><br /></td></tr>
 <tr class="separator:a8afaeaeff5205fdacb87081b4e3a3e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b35bcafd8e217ab26bd59b5b0bb1b8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__api_8h.html#ab9c9b0bb96563edfc03236f9b522dd91">PEsieve_report</a> <a class="el" href="pe__sieve__api_8h.html#af8a670441ca96827a2997727a85d9ca3">PESIEVE_API_FUNC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pe__sieve__api_8cpp.html#a1b35bcafd8e217ab26bd59b5b0bb1b8e">PESieve_scan</a> (const <a class="el" href="pe__sieve__api_8h.html#a6fd416fe2fa8efb29be1fd09956cbf31">PEsieve_params</a> args)</td></tr>
 <tr class="memdesc:a1b35bcafd8e217ab26bd59b5b0bb1b8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a PE-sieve scan with a supplied set of parameters (defined as a structure <a class="el" href="structt__params.html" title="Input parameters for PE-sieve, defining the configuration.">t_params</a>). Returns a summary of the scan in a variable of type <a class="el" href="structt__report.html" title="Final summary about the scanned process.">t_report</a>.  <a href="pe__sieve__api_8cpp.html#a1b35bcafd8e217ab26bd59b5b0bb1b8e">More...</a><br /></td></tr>
@@ -201,7 +202,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="pe__sieve__api_8cpp_a1b35bcafd8e217ab26bd59b5b0bb1b8e_cgraph.png" border="0" usemap="#ape__sieve__api_8cpp_a1b35bcafd8e217ab26bd59b5b0bb1b8e_cgraph" alt=""/></div>
 <map name="ape__sieve__api_8cpp_a1b35bcafd8e217ab26bd59b5b0bb1b8e_cgraph" id="ape__sieve__api_8cpp_a1b35bcafd8e217ab26bd59b5b0bb1b8e_cgraph">
 <area shape="rect" title="Performs a PE&#45;sieve scan with a supplied set of parameters (defined as a structure t_params)...." alt="" coords="5,70,112,95"/>
-<area shape="rect" href="pe__sieve__api_8cpp.html#a8afaeaeff5205fdacb87081b4e3a3e3f" title=" " alt="" coords="160,70,287,95"/>
+<area shape="rect" href="pe__sieve__api_8cpp.html#a8afaeaeff5205fdacb87081b4e3a3e3f" title="Performs a PE&#45;sieve scan with a supplied set of parameters (defined as a structure t_params)...." alt="" coords="160,70,287,95"/>
 <area shape="rect" href="classpesieve_1_1_process_scan_report.html#a493399a015b35b5be092366256d90aad" title=" " alt="" coords="1221,120,1411,160"/>
 <area shape="rect" href="pe__sieve__api_8cpp.html#a834c4cf611a1ecb96edf1827053ba917" title=" " alt="" coords="375,17,462,42"/>
 <area shape="rect" href="namespacepesieve.html#ad71d3d82e248bd37f2becabe0ca00f55" title="The main action performed by PE&#45;sieve: scanning the process and dumping the detected material." alt="" coords="335,1006,503,1031"/>
@@ -283,7 +284,7 @@ Here is the call graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>buf_needed_size</em>&#160;</td>
+          <td class="paramname"><em>needed_size</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -292,7 +293,8 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Performs a PE-sieve scan with a supplied set of parameters (defined as a structure <a class="el" href="structt__params.html" title="Input parameters for PE-sieve, defining the configuration.">t_params</a>). Returns a summary of the scan in a variable of type <a class="el" href="structt__report.html" title="Final summary about the scanned process.">t_report</a>. Allows to supply a buffer that will be filled with full JSON report. </p>
+
+<p>Performs a PE-sieve scan with a supplied set of parameters (defined as a structure <a class="el" href="structt__params.html" title="Input parameters for PE-sieve, defining the configuration.">t_params</a>). Returns a summary of the scan in a variable of type <a class="el" href="structt__report.html" title="Final summary about the scanned process.">t_report</a>. Allows to supply a buffer that will be filled with full JSON report. </p>
 
 <p class="definition">Definition at line <a class="el" href="pe__sieve__api_8cpp_source.html#l00029">29</a> of file <a class="el" href="pe__sieve__api_8cpp_source.html">pe_sieve_api.cpp</a>.</p>
 <div class="dynheader">
@@ -300,7 +302,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="pe__sieve__api_8cpp_a8afaeaeff5205fdacb87081b4e3a3e3f_cgraph.png" border="0" usemap="#ape__sieve__api_8cpp_a8afaeaeff5205fdacb87081b4e3a3e3f_cgraph" alt=""/></div>
 <map name="ape__sieve__api_8cpp_a8afaeaeff5205fdacb87081b4e3a3e3f_cgraph" id="ape__sieve__api_8cpp_a8afaeaeff5205fdacb87081b4e3a3e3f_cgraph">
-<area shape="rect" title=" " alt="" coords="5,1095,132,1121"/>
+<area shape="rect" title="Performs a PE&#45;sieve scan with a supplied set of parameters (defined as a structure t_params)...." alt="" coords="5,1095,132,1121"/>
 <area shape="rect" href="classpesieve_1_1_process_scan_report.html#a493399a015b35b5be092366256d90aad" title=" " alt="" coords="1092,1095,1281,1135"/>
 <area shape="rect" href="pe__sieve__api_8cpp.html#a834c4cf611a1ecb96edf1827053ba917" title=" " alt="" coords="221,1210,307,1235"/>
 <area shape="rect" href="namespacepesieve.html#ad71d3d82e248bd37f2becabe0ca00f55" title="The main action performed by PE&#45;sieve: scanning the process and dumping the detected material." alt="" coords="180,766,348,791"/>

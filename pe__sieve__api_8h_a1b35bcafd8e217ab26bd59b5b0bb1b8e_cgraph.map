@@ -1,6 +1,6 @@
 <map id="PESieve_scan" name="PESieve_scan">
 <area shape="rect" id="node1" title="Performs a PE&#45;sieve scan with a supplied set of parameters (defined as a structure t_params)...." alt="" coords="5,70,112,95"/>
-<area shape="rect" id="node2" href="$pe__sieve__api_8cpp.html#a8afaeaeff5205fdacb87081b4e3a3e3f" title=" " alt="" coords="160,70,287,95"/>
+<area shape="rect" id="node2" href="$pe__sieve__api_8cpp.html#a8afaeaeff5205fdacb87081b4e3a3e3f" title="Performs a PE&#45;sieve scan with a supplied set of parameters (defined as a structure t_params)...." alt="" coords="160,70,287,95"/>
 <area shape="rect" id="node3" href="$classpesieve_1_1_process_scan_report.html#a493399a015b35b5be092366256d90aad" title=" " alt="" coords="1221,120,1411,160"/>
 <area shape="rect" id="node6" href="$pe__sieve__api_8cpp.html#a834c4cf611a1ecb96edf1827053ba917" title=" " alt="" coords="375,17,462,42"/>
 <area shape="rect" id="node10" href="$namespacepesieve.html#ad71d3d82e248bd37f2becabe0ca00f55" title="The main action performed by PE&#45;sieve: scanning the process and dumping the detected material." alt="" coords="335,1006,503,1031"/>
