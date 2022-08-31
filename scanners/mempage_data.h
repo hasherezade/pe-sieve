@@ -13,7 +13,7 @@ namespace pesieve {
 			: processHandle(_process), start_va(_start_va), stop_va(_stop_va),
 			is_listed_module(false),
 			is_info_filled(false), loadedData(nullptr), loadedSize(0),
-			is_dep_enabled(false), is_process_refl(_is_process_refl)
+			is_process_refl(_is_process_refl)
 		{
 			fillInfo();
 		}
@@ -40,8 +40,6 @@ namespace pesieve {
 		bool is_private;
 		DWORD mapping_type;
 		bool is_listed_module;
-		bool is_dep_enabled;
-
 
 		ULONGLONG alloc_base;
 		ULONGLONG region_start;

@@ -729,22 +729,22 @@ PeArtefacts* pesieve::ArtefactScanner::generateArtefacts(ArtefactScanner::Artefa
 	return peArt;
 }
 
-PeArtefacts* pesieve::ArtefactScanner::findArtefacts(MemPageData &memPage, size_t start_offset)
+PeArtefacts* pesieve::ArtefactScanner::findArtefacts(MemPageData &_memPage, size_t start_offset)
 {
-	if (!memPage.load()) {
+	if (!_memPage.load()) {
 		return nullptr;
 	}
 
-	ArtefactsMapping bestMapping(memPage, this->isProcess64bit);
+	ArtefactsMapping bestMapping(_memPage, this->isProcess64bit);
 
-	for (size_t min_offset = start_offset; min_offset < memPage.getLoadedSize(); min_offset++)
+	for (size_t min_offset = start_offset; min_offset < _memPage.getLoadedSize(); min_offset++)
 	{
 		//std::cout << "Searching DOS header, min_offset: " << std::hex << min_offset << std::endl;
 
-		ArtefactsMapping aMap(memPage, this->isProcess64bit);
+		ArtefactsMapping aMap(_memPage, this->isProcess64bit);
 		//try to find the DOS header
 		if (findMzPe(aMap, min_offset)) {
-			const size_t dos_offset = calc_offset(memPage, aMap.dos_hdr);
+			const size_t dos_offset = calc_offset(_memPage, aMap.dos_hdr);
 			min_offset = (dos_offset != INVALID_OFFSET) ? dos_offset : min_offset;
 #ifdef _DEBUG
 			std::cout << std::hex << "Page: " << aMap.memPage.start_va << " Found DOS Header at: " << dos_offset << "\n";
@@ -754,20 +754,20 @@ PeArtefacts* pesieve::ArtefactScanner::findArtefacts(MemPageData &memPage, size_
 #ifdef _DEBUG
 			std::cout << std::hex << "Page: " << aMap.memPage.start_va << " Searching NT Header at: " << min_offset << "\n";
 #endif
-			IMAGE_FILE_HEADER *nt_hdr = findNtFileHdr(aMap.memPage, min_offset, memPage.getLoadedSize());
+			IMAGE_FILE_HEADER *nt_hdr = findNtFileHdr(aMap.memPage, min_offset, _memPage.getLoadedSize());
 			setNtFileHdr(aMap, nt_hdr);
 		}
 
 		//adjust constraints for further searches:
-		size_t max_section_search = memPage.getLoadedSize();
+		size_t max_section_search = _memPage.getLoadedSize();
 		if (aMap.nt_file_hdr) {
-			const size_t nt_offset = calc_offset(memPage, aMap.nt_file_hdr);
+			const size_t nt_offset = calc_offset(_memPage, aMap.nt_file_hdr);
 			if (nt_offset != INVALID_OFFSET && nt_offset > min_offset) {
 				min_offset = nt_offset;
 			}
 			//don't search sections in full module, only in the first mem page after the NT header:
-			max_section_search = (PAGE_SIZE < memPage.getLoadedSize()) ? PAGE_SIZE : memPage.getLoadedSize();
-			if (max_section_search + min_offset <= memPage.getLoadedSize()) {
+			max_section_search = (PAGE_SIZE < _memPage.getLoadedSize()) ? PAGE_SIZE : _memPage.getLoadedSize();
+			if (max_section_search + min_offset <= _memPage.getLoadedSize()) {
 				max_section_search += min_offset; //move the search window
 			}
 		}
@@ -776,12 +776,12 @@ PeArtefacts* pesieve::ArtefactScanner::findArtefacts(MemPageData &memPage, size_
 			//search sections by pattens:
 			if (max_section_search > min_offset) {
 				const size_t diff = max_section_search - min_offset;
-				IMAGE_SECTION_HEADER *sec_hdr = findSecByPatterns(memPage, diff, min_offset);
+				IMAGE_SECTION_HEADER *sec_hdr = findSecByPatterns(_memPage, diff, min_offset);
 				setSecHdr(aMap, sec_hdr);
 			}
 		}
 		if (aMap.sec_hdr) {
-			const size_t sec_offset = calc_offset(memPage, aMap.sec_hdr);
+			const size_t sec_offset = calc_offset(_memPage, aMap.sec_hdr);
 			if (sec_offset != INVALID_OFFSET && sec_offset > min_offset) {
 				const size_t sections_area_size = aMap.sec_count * sizeof(IMAGE_SECTION_HEADER);
 				min_offset = (sec_offset + sections_area_size);
@@ -832,7 +832,7 @@ PeArtefacts* pesieve::ArtefactScanner::findInPrevPages(ULONGLONG addr_start, ULO
 			//std::cout << "Aready scanned: " << std::hex << next_addr << " size: " << area_size << "\n";
 			break;
 		}
-		this->prevMemPage = new MemPageData(this->processHandle, this->isReflection, next_addr, addr_stop);
+		this->prevMemPage = new MemPageData(this->processHandle, this->pDetails.isReflection, next_addr, addr_stop);
 		peArt = findArtefacts(*prevMemPage, 0);
 		if (peArt) {
 			break;

@@ -10,23 +10,23 @@
 using namespace pesieve;
 using namespace pesieve::util;
 
-bool pesieve::WorkingSetScanner::isCode(MemPageData &memPageData)
+bool pesieve::WorkingSetScanner::isCode(MemPageData &memPage)
 {
 	if (!memPage.load()) {
 		return false;
 	}
-	return is_code(memPageData.getLoadedData(), memPageData.getLoadedSize());
+	return is_code(memPage.getLoadedData(), memPage.getLoadedSize());
 }
 
-bool pesieve::WorkingSetScanner::isExecutable(MemPageData &memPageData)
+bool pesieve::WorkingSetScanner::isExecutable(MemPageData &memPage)
 {
 	if (pesieve::util::is_executable(memPage.mapping_type, memPage.protection)) {
 		return true;
 	}
-	return isPotentiallyExecutable(memPageData, this->args.data);
+	return isPotentiallyExecutable(memPage, this->args.data);
 }
 
-bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageData, const t_data_scan_mode &mode)
+bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPage, const t_data_scan_mode &mode)
 {
 	if (mode == pesieve::PE_DATA_NO_SCAN) {
 		return false;
@@ -35,7 +35,7 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageDat
 	// check preconditions:
 	const bool is_managed = this->processReport.isManagedProcess();
 	if (mode == pesieve::PE_DATA_SCAN_NO_DEP 
-		&& memPage.is_dep_enabled && !is_managed)
+		&& this->pDetails.isDEP && !is_managed)
 	{
 		return false;
 	}
@@ -52,21 +52,21 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPageDat
 		}
 	}
 	if ((mode >= pesieve::PE_DATA_SCAN_INACCESSIBLE) || (mode == pesieve::PE_DATA_SCAN_INACCESSIBLE_ONLY)) {
-		if (this->isReflection && (memPage.protection & PAGE_NOACCESS)) {
+		if (this->pDetails.isReflection && (memPage.protection & PAGE_NOACCESS)) {
 			return true;
 		}
 	}
 	return false;
 }
 
-WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData &memPageData)
+WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData &_memPage)
 {
-	if (!memPage.load()) {
+	if (!_memPage.load()) {
 		return nullptr;
 	}
 	// check for PE artifacts (regardless if it has shellcode patterns):
-	if (!isScannedAsModule(memPage)) {
-		ArtefactScanner artefactScanner(this->processHandle, this->isReflection, memPage, this->processReport);
+	if (!isScannedAsModule(_memPage)) {
+		ArtefactScanner artefactScanner(this->processHandle, this->pDetails, _memPage, this->processReport);
 		WorkingSetScanReport *my_report1 = artefactScanner.scanRemote();
 		if (my_report1) {
 			//pe artefacts found
@@ -77,15 +77,15 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 		// not a PE file, and we are not interested in shellcode, so just finish it here
 		return nullptr;
 	}
-	if (!isCode(memPage)) {
+	if (!isCode(_memPage)) {
 		// shellcode patterns not found
 		return nullptr;
 	}
 	//report about shellcode:
-	ULONGLONG region_start = memPage.region_start;
-	const size_t region_size = size_t (memPage.region_end - region_start);
+	ULONGLONG region_start = _memPage.region_start;
+	const size_t region_size = size_t (_memPage.region_end - region_start);
 	WorkingSetScanReport *my_report = new WorkingSetScanReport((HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
-	my_report->has_pe = isScannedAsModule(memPage) && this->processReport.hasModule(memPage.region_start);
+	my_report->has_pe = isScannedAsModule(_memPage) && this->processReport.hasModule(_memPage.region_start);
 	my_report->has_shellcode = true;
 	return my_report;
 }
@@ -101,7 +101,7 @@ bool pesieve::WorkingSetScanner::isScannedAsModule(MemPageData &memPage)
 	return false;
 }
 
-bool pesieve::WorkingSetScanner::scanImg()
+bool pesieve::WorkingSetScanner::scanImg(MemPageData& memPage)
 {
 	if (!memPage.loadMappedName()) {
 		//cannot retrieve the mapped name
@@ -113,7 +113,7 @@ bool pesieve::WorkingSetScanner::scanImg()
 	if (!args.quiet) {
 		std::cout << "[!] Scanning detached: " << std::hex << module_start << " : " << memPage.mapped_name << std::endl;
 	}
-	RemoteModuleData remoteModData(this->processHandle, this->isReflection, module_start);
+	RemoteModuleData remoteModData(this->processHandle, this->pDetails.isReflection, module_start);
 	if (!remoteModData.isInitialized()) {
 		if (!args.quiet) {
 			std::cout << "[-] Could not read the remote PE at: " << std::hex << module_start << std::endl;
@@ -144,8 +144,8 @@ bool pesieve::WorkingSetScanner::scanImg()
 	}
 	if (!args.no_hooks) {
 		const bool scan_data = (this->args.data >= pesieve::PE_DATA_SCAN_ALWAYS && this->args.data != PE_DATA_SCAN_INACCESSIBLE_ONLY)
-			|| (!memPage.is_dep_enabled && (this->args.data == pesieve::PE_DATA_SCAN_NO_DEP));
-		const bool scan_inaccessible = (this->isReflection && (this->args.data >= pesieve::PE_DATA_SCAN_INACCESSIBLE));
+			|| (!this->pDetails.isDEP && (this->args.data == pesieve::PE_DATA_SCAN_NO_DEP));
+		const bool scan_inaccessible = (this->pDetails.isReflection && (this->args.data >= pesieve::PE_DATA_SCAN_INACCESSIBLE));
 		scan_status = ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport, scan_data, scan_inaccessible);
 #ifdef _DEBUG
 		std::cout << "[*] Scanned for hooks. Status: " << scan_status << std::endl;
@@ -156,12 +156,25 @@ bool pesieve::WorkingSetScanner::scanImg()
 
 WorkingSetScanReport* pesieve::WorkingSetScanner::scanRemote()
 {
+	MemPageData memPage(this->processHandle, this->pDetails.isReflection, this->memRegion.base, 0);
+	memPage.is_listed_module = this->processReport.hasModule(this->memRegion.base);
+
 	if (!memPage.isInfoFilled() && !memPage.fillInfo()) {
 #ifdef _DEBUG
 		std::cout << "[!] Could not fill: " << std::hex << memPage.start_va << " to: " << memPage.region_end << "\n";
 #endif
 		return nullptr;
 	}
+	// sanity checks to make sure that we are scanning the same page that was previously collected:
+	if (memPage.alloc_base != this->memRegion.alloc_base) {
+		std::cerr << "WARNING: Alloc Base mismatch: " << std::hex << memPage.alloc_base << " vs " << this->memRegion.alloc_base << std::endl;
+		return nullptr;
+	}
+	if ((memPage.region_end - memPage.region_start) != this->memRegion.size) {
+		std::cerr << "WARNING: Size mismatch: " << std::hex << (memPage.region_end - memPage.region_start) << " vs " << this->memRegion.size << std::endl;
+		return nullptr;
+	}
+
 	// is the page executable?
 	const bool is_any_exec = isExecutable(memPage);
 	if (!is_any_exec) {
@@ -178,7 +191,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanRemote()
 		memPage.loadModuleName();
 		memPage.loadMappedName();
 		if (!isScannedAsModule(memPage)) {
-			scanImg();
+			scanImg(memPage);
 		}
 		const size_t region_size = (memPage.region_end) ? (memPage.region_end - memPage.region_start) : 0;
 		if (this->processReport.hasModuleContaining(memPage.region_start, region_size)) {
