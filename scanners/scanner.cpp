@@ -211,10 +211,7 @@ ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 	// scan working set
 	size_t regionsScanned = 0;
 	try {
-		//dont't scan your own working set
-		if (peconv::get_process_id(this->processHandle) != GetCurrentProcessId()) {
-			regionsScanned = scanWorkingSet(*pReport);
-		}
+		regionsScanned = scanWorkingSet(*pReport);
 	} catch (std::exception &e) {
 		regionsScanned = 0;
 		errorsStr << e.what();
@@ -446,11 +443,6 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws exceptions
 {
 	const DWORD pid = pReport.pid; //original PID, not a reflection!
-
-	//dont't scan your own threads - it may give wrong results:
-	if (pid == GetCurrentProcessId()) {
-		return 0;
-	}
 
 	const bool is_64bit = pesieve::util::is_process_64bit(this->processHandle);
 #ifndef _WIN64
