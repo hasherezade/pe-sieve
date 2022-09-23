@@ -261,7 +261,7 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 	}
 	process_details proc_details(this->isReflection, this->isDEP);
 
-	ULONGLONG start_tick = GetTickCount64();
+	DWORD start_tick = GetTickCount();
 	std::set<mem_region_info> region_bases;
 	size_t pages_count = util::enum_workingset(processHandle, region_bases);
 	if (!args.quiet) {
@@ -290,7 +290,7 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 		pReport.appendReport(my_report);
 	}
 	if (!args.quiet) {
-		ULONGLONG total_time = GetTickCount64() - start_tick;
+		DWORD total_time = GetTickCount() - start_tick;
 		std::cout << "[*] Workingset scanned in " << std::dec << total_time << " ms" << std::endl;
 	}
 	return counter;
@@ -406,7 +406,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 	if (!args.quiet) {
 		std::cout << "Scanning for IAT hooks: " << modules_count << " modules." << std::endl;
 	}
-	ULONGLONG start_tick = GetTickCount64();
+	DWORD start_tick = GetTickCount();
 	size_t counter = 0;
 	for (counter = 0; counter < modules_count; counter++) {
 		if (!processHandle) break; // this should never happen
@@ -433,7 +433,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 		scanForIATHooks(processHandle, modData, remoteModData, pReport, this->args.iat);
 	}
 	if (!args.quiet) {
-		ULONGLONG total_time = GetTickCount64() - start_tick;
+		DWORD total_time = GetTickCount() - start_tick;
 		std::cout << "[*] IATs scanned in " << std::dec << total_time << " ms" << std::endl;
 	}
 	return counter;
@@ -452,7 +452,7 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 	if (!args.quiet) {
 		std::cout << "Scanning threads." << std::endl;
 	}
-	ULONGLONG start_tick = GetTickCount64();
+	DWORD start_tick = GetTickCount();
 
 	std::vector<thread_info> threads_info;
 	if (!pesieve::util::fetch_threads_info(pid, threads_info)) { //extended info, but doesn't work on old Windows...
@@ -477,7 +477,7 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 	ThreadScanner::FreeSymbols(this->processHandle);
 
 	if (!args.quiet) {
-		ULONGLONG total_time = GetTickCount64() - start_tick;
+		DWORD total_time = GetTickCount() - start_tick;
 		std::cout << "[*] Threads scanned in " << std::dec << total_time << " ms" << std::endl;
 	}
 	return 0;
