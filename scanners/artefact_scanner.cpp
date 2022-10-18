@@ -813,6 +813,16 @@ PeArtefacts* pesieve::ArtefactScanner::findArtefacts(MemPageData &_memPage, size
 
 		//do not continue the search if no artefacts found:
 		if (!aMap.foundAny()) break;
+
+		// adjust minimal values:
+		const size_t nt_offset = calc_offset(_memPage, aMap.nt_file_hdr);
+		const size_t sec_offset = calc_offset(_memPage, aMap.sec_hdr);
+		if (nt_offset != INVALID_OFFSET && nt_offset > min_offset) {
+			min_offset = nt_offset;
+		}
+		if (sec_offset != INVALID_OFFSET && sec_offset > min_offset) {
+			min_offset = sec_offset;
+		}
 	}
 	//use the best found set of artefacts:
 	return generateArtefacts(bestMapping);
