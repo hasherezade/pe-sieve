@@ -15,26 +15,11 @@ using namespace pesieve;
 size_t print_report(const pesieve::ReportEx& report, const pesieve::t_params args, const t_report_type rtype, char* json_buf, size_t json_buf_size)
 {
 	if (!report.scan_report || rtype == REPORT_NONE) return 0;
-
+	
 	size_t level = 1;
-	std::stringstream stream;
-	stream << "{\n";
-	if (rtype == REPORT_ALL || rtype == REPORT_SCANNED) {
-		OUT_PADDED(stream, level, "\"scan_report\" :\n");
-		stream << scan_report_to_json(*report.scan_report, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS, args.json_lvl, level);
-		if (rtype == REPORT_ALL) {
-			stream << ",";
-		}
-		stream << "\n";
-	}
-	if (rtype == REPORT_ALL || rtype == REPORT_DUMPED) {
-		OUT_PADDED(stream, level, "\"dump_report\" :\n");
-		stream << dump_report_to_json(*report.dump_report, args.json_lvl, level);
-		stream << "\n";
-	}
-	stream << "}\n";
-	std::string report_str = stream.str();
+	std::string report_str = report_to_json(report, rtype, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS, args.json_lvl, level);
 	const size_t report_len = report_str.length();
+
 	if (json_buf && json_buf_size) {
 		::memset(json_buf, 0, json_buf_size);
 		size_t max_len = report_len <= (json_buf_size - 1) ? report_len : (json_buf_size - 1);

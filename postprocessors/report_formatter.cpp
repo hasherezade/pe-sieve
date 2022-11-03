@@ -74,3 +74,27 @@ std::string pesieve::dump_report_to_json(
 	}
 	return report_all;
 }
+
+std::string pesieve::report_to_json(const pesieve::ReportEx& report, const t_report_type rtype, ProcessScanReport::t_report_filter filter, const pesieve::t_json_level& jdetails, size_t start_level)
+{
+	if (!report.scan_report || rtype == REPORT_NONE) return 0;
+
+	size_t level = 1;
+	std::stringstream stream;
+	stream << "{\n";
+	if (rtype == REPORT_ALL || rtype == REPORT_SCANNED) {
+		OUT_PADDED(stream, level, "\"scan_report\" :\n");
+		stream << scan_report_to_json(*report.scan_report, filter, jdetails, level);
+		if (rtype == REPORT_ALL) {
+			stream << ",";
+		}
+		stream << "\n";
+	}
+	if (rtype == REPORT_ALL || rtype == REPORT_DUMPED) {
+		OUT_PADDED(stream, level, "\"dump_report\" :\n");
+		stream << dump_report_to_json(*report.dump_report, jdetails, level);
+		stream << "\n";
+	}
+	stream << "}\n";
+	return stream.str();
+}

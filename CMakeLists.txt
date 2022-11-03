@@ -179,6 +179,7 @@ set (srcs
 
 set (hdrs
 	pe_sieve.h
+	pe_sieve_report.h
 	include/pe_sieve_types.h
 	${params_info_hdrs}
 	${scanners_hdrs}
