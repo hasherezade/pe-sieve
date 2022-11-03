@@ -167,11 +167,15 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanRemote()
 	}
 	// sanity checks to make sure that we are scanning the same page that was previously collected:
 	if (memPage.alloc_base != this->memRegion.alloc_base) {
+#ifdef _DEBUG
 		std::cerr << "WARNING: Alloc Base mismatch: " << std::hex << memPage.alloc_base << " vs " << this->memRegion.alloc_base << std::endl;
+#endif
 		return nullptr;
 	}
 	if ((memPage.region_end - memPage.region_start) != this->memRegion.size) {
+#ifdef _DEBUG
 		std::cerr << "WARNING: Size mismatch: " << std::hex << (memPage.region_end - memPage.region_start) << " vs " << this->memRegion.size << std::endl;
+#endif
 		return nullptr;
 	}
 
