@@ -92,7 +92,7 @@ std::string pesieve::report_to_json(const pesieve::ReportEx& report, const t_rep
 		stream << "\n";
 	}
 	if (rtype == REPORT_ALL || rtype == REPORT_DUMPED) {
-		if (has_dumps) {
+		if (has_dumps || rtype == REPORT_DUMPED) { // do not output an empty report, unless requested specifically
 			OUT_PADDED(stream, level, "\"dump_report\" :\n");
 			stream << dump_report_to_json(*report.dump_report, jdetails, level);
 			stream << "\n";

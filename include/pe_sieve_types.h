@@ -81,10 +81,10 @@ namespace pesieve {
 	} t_json_level;
 
 	typedef enum {
-		REPORT_NONE = 0,
-		REPORT_SCANNED,
-		REPORT_DUMPED,
-		REPORT_ALL
+		REPORT_NONE = 0,     ///< do not output a report
+		REPORT_SCANNED,	     ///< output the scan report
+		REPORT_DUMPED,	     ///< output the dumps report
+		REPORT_ALL           ///< output all available reports
 	} t_report_type;
 
 	//!  A wrapper for a dynamically allocated string.
