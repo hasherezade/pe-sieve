@@ -15,14 +15,25 @@ using namespace pesieve;
 size_t print_report(const pesieve::ReportEx& report, const pesieve::t_params args, const t_report_type rtype, char* json_buf, size_t json_buf_size)
 {
 	if (!report.scan_report || rtype == REPORT_NONE) return 0;
-	
-	std::string report_str = "";
+
+	size_t level = 1;
+	std::stringstream stream;
+	stream << "{\n";
 	if (rtype == REPORT_ALL || rtype == REPORT_SCANNED) {
-		report_str += scan_report_to_json(*report.scan_report, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS, args.json_lvl);
+		OUT_PADDED(stream, level, "\"scan_report\" :\n");
+		stream << scan_report_to_json(*report.scan_report, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS, args.json_lvl, level);
+		if (rtype == REPORT_ALL) {
+			stream << ",";
+		}
+		stream << "\n";
 	}
 	if (rtype == REPORT_ALL || rtype == REPORT_DUMPED) {
-		report_str += dump_report_to_json(*report.dump_report, args.json_lvl);
+		OUT_PADDED(stream, level, "\"dump_report\" :\n");
+		stream << dump_report_to_json(*report.dump_report, args.json_lvl, level);
+		stream << "\n";
 	}
+	stream << "}\n";
+	std::string report_str = stream.str();
 	const size_t report_len = report_str.length();
 	if (json_buf && json_buf_size) {
 		::memset(json_buf, 0, json_buf_size);
@@ -32,7 +43,7 @@ size_t print_report(const pesieve::ReportEx& report, const pesieve::t_params arg
 	return report_len;
 }
 
-PEsieve_report PESIEVE_API_FUNC PESieve_scan_ex(const PEsieve_params args, const PEsieve_rtype rtype, char *json_buf, size_t json_buf_size, size_t* needed_size)
+PEsieve_report PESIEVE_API_FUNC PESieve_scan_ex(IN const PEsieve_params args, IN const PEsieve_rtype rtype, OUT char* json_buf, IN size_t json_buf_size, OUT size_t* needed_size)
 {
 	const pesieve::ReportEx* report = pesieve::scan_and_dump(args);
 	if (report == nullptr) {
@@ -66,7 +77,7 @@ PEsieve_report PESIEVE_API_FUNC PESieve_scan_ex(const PEsieve_params args, const
 	return summary;
 }
 
-PEsieve_report PESIEVE_API_FUNC PESieve_scan(const PEsieve_params args)
+PEsieve_report PESIEVE_API_FUNC PESieve_scan(IN const PEsieve_params args)
 {
 	return PESieve_scan_ex(args, REPORT_NONE, nullptr, 0, nullptr);
 }

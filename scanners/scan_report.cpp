@@ -209,14 +209,16 @@ std::string pesieve::ProcessScanReport::listModules(size_t level, const pesieve:
 }
 
 const bool pesieve::ProcessScanReport::toJSON(
-	std::stringstream &stream, size_t level, 
+	std::stringstream &stream, size_t start_level,
 	const pesieve::ProcessScanReport::t_report_filter &filter, 
 	const pesieve::t_json_level &jdetails) const
 {
 	const t_report report = this->generateSummary();
 	//summary:
 	size_t other = report.other;
-	stream << "{\n";
+	size_t level = start_level + 1;
+	OUT_PADDED(stream, start_level, "{\n"); // beginning of the report
+
 	OUT_PADDED(stream, level, "\"pid\" : ");
 	stream << std::dec << report.pid << ",\n";
 	OUT_PADDED(stream, level, "\"is_64_bit\" : ");
@@ -260,7 +262,8 @@ const bool pesieve::ProcessScanReport::toJSON(
 	stream << std::dec << report.errors << "\n";
 	OUT_PADDED(stream, level, "},\n"); // scanned
 	stream << listModules(level, filter, jdetails);
-	stream << "}\n";
+
+	OUT_PADDED(stream, start_level, "}"); // end of the report
 	return true;
 }
 
