@@ -87,7 +87,7 @@ namespace pesieve {
 			return dumped;
 		}
 
-		const virtual bool toJSON(std::stringstream &stream, size_t level);
+		virtual bool toJSON(std::stringstream &stream, size_t level) const;
 
 		DWORD getPid() const { return pid; }
 
@@ -96,7 +96,7 @@ namespace pesieve {
 
 	protected:
 
-		std::string list_dumped_modules(size_t level);
+		std::string list_dumped_modules(size_t level) const;
 
 		void deleteModuleReports()
 		{

@@ -28,7 +28,7 @@ void print_report(const pesieve::ReportEx& report, const t_params args)
 
 	std::string report_str;
 	if (args.json_output) {
-		report_str = scan_report_to_json(*report.scan_report, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS, args.json_lvl);
+		report_str = report_to_json(report, pesieve::REPORT_ALL, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS, args.json_lvl);
 	} else {
 		report_str = scan_report_to_string(*report.scan_report);
 	}
