@@ -186,7 +186,8 @@ var menudata={children:[
 {text:"Enumerator",url:"globals_eval.html",children:[
 {text:"j",url:"globals_eval.html#index_j"},
 {text:"o",url:"globals_eval.html#index_o"},
-{text:"p",url:"globals_eval.html#index_p"}]},
+{text:"p",url:"globals_eval.html#index_p"},
+{text:"r",url:"globals_eval.html#index_r"}]},
 {text:"Macros",url:"globals_defs.html",children:[
 {text:"d",url:"globals_defs.html#index_d"},
 {text:"g",url:"globals_defs.html#index_g"},

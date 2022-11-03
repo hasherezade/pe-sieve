@@ -22,13 +22,14 @@ var searchData=
   ['dump_5freport_19',['dump_report',['../classpesieve_1_1_report_ex.html#a69ab643d4ed2e161c6787ea539ee36a5',1,'pesieve::ReportEx']]],
   ['dump_5freport_2ecpp_20',['dump_report.cpp',['../dump__report_8cpp.html',1,'']]],
   ['dump_5freport_2eh_21',['dump_report.h',['../dump__report_8h.html',1,'']]],
-  ['dumpdetectedmodules_22',['dumpDetectedModules',['../classpesieve_1_1_results_dumper.html#ac42eecae9a332ba8d8b52d4f9e1c5e27',1,'pesieve::ResultsDumper']]],
-  ['dumpdir_23',['dumpDir',['../classpesieve_1_1_results_dumper.html#af6b1d45c903e72f5efc36afa2247a2c8',1,'pesieve::ResultsDumper']]],
-  ['dumpfilename_24',['dumpFileName',['../classpesieve_1_1_module_dump_report.html#ad9ffe25caa0688a2951d0695c8f012c5',1,'pesieve::ModuleDumpReport']]],
-  ['dumpjsonreport_25',['dumpJsonReport',['../classpesieve_1_1_results_dumper.html#aa4c6543c10ea9e04174a6bf1ba60d5f7',1,'pesieve::ResultsDumper::dumpJsonReport(ProcessDumpReport &amp;process_report)'],['../classpesieve_1_1_results_dumper.html#afa4ee6cbf009cd4e1b6421686bd9ca81',1,'pesieve::ResultsDumper::dumpJsonReport(ProcessScanReport &amp;process_report, const ProcessScanReport::t_report_filter &amp;filter, const pesieve::t_json_level &amp;jdetails)']]],
-  ['dumpmodule_26',['dumpModule',['../classpesieve_1_1_results_dumper.html#ac79b1165530a90cfe03beb6b69db2e41',1,'pesieve::ResultsDumper']]],
-  ['dumppetofile_27',['dumpPeToFile',['../classpesieve_1_1_pe_buffer.html#a9032a33069a00aab2264c09172376d7a',1,'pesieve::PeBuffer']]],
-  ['dumptofile_28',['dumpToFile',['../classpesieve_1_1_pe_buffer.html#af917a4a96569cd80a957a44ef7dd2954',1,'pesieve::PeBuffer']]],
-  ['dumptype_29',['DumpType',['../namespacepesieve_1_1util.html#a139ea0310394c05aebb1940805bb1285',1,'pesieve::util']]],
-  ['dword_30',['DWORD',['../namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae',1,'pesieve::util']]]
+  ['dump_5freport_5fto_5fjson_22',['dump_report_to_json',['../namespacepesieve.html#a66549976a4e32dd1d7a784ec28a5c665',1,'pesieve']]],
+  ['dumpdetectedmodules_23',['dumpDetectedModules',['../classpesieve_1_1_results_dumper.html#ac42eecae9a332ba8d8b52d4f9e1c5e27',1,'pesieve::ResultsDumper']]],
+  ['dumpdir_24',['dumpDir',['../classpesieve_1_1_results_dumper.html#af6b1d45c903e72f5efc36afa2247a2c8',1,'pesieve::ResultsDumper']]],
+  ['dumpfilename_25',['dumpFileName',['../classpesieve_1_1_module_dump_report.html#ad9ffe25caa0688a2951d0695c8f012c5',1,'pesieve::ModuleDumpReport']]],
+  ['dumpjsonreport_26',['dumpJsonReport',['../classpesieve_1_1_results_dumper.html#aa4c6543c10ea9e04174a6bf1ba60d5f7',1,'pesieve::ResultsDumper::dumpJsonReport(ProcessDumpReport &amp;process_report)'],['../classpesieve_1_1_results_dumper.html#afa4ee6cbf009cd4e1b6421686bd9ca81',1,'pesieve::ResultsDumper::dumpJsonReport(ProcessScanReport &amp;process_report, const ProcessScanReport::t_report_filter &amp;filter, const pesieve::t_json_level &amp;jdetails)']]],
+  ['dumpmodule_27',['dumpModule',['../classpesieve_1_1_results_dumper.html#ac79b1165530a90cfe03beb6b69db2e41',1,'pesieve::ResultsDumper']]],
+  ['dumppetofile_28',['dumpPeToFile',['../classpesieve_1_1_pe_buffer.html#a9032a33069a00aab2264c09172376d7a',1,'pesieve::PeBuffer']]],
+  ['dumptofile_29',['dumpToFile',['../classpesieve_1_1_pe_buffer.html#af917a4a96569cd80a957a44ef7dd2954',1,'pesieve::PeBuffer']]],
+  ['dumptype_30',['DumpType',['../namespacepesieve_1_1util.html#a139ea0310394c05aebb1940805bb1285',1,'pesieve::util']]],
+  ['dword_31',['DWORD',['../namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae',1,'pesieve::util']]]
 ];

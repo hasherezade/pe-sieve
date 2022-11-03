@@ -105,8 +105,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab5df52d208711d1ae9c2084d459c9211"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd254aea75b8454bda044b23dcc55d6e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_process_dump_report.html#acd254aea75b8454bda044b23dcc55d6e">countDumped</a> () const</td></tr>
 <tr class="separator:acd254aea75b8454bda044b23dcc55d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4071f46a40ba0dc00e17bb4d6ad8ff17"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_process_dump_report.html#a4071f46a40ba0dc00e17bb4d6ad8ff17">toJSON</a> (std::stringstream &amp;stream, size_t level)</td></tr>
-<tr class="separator:a4071f46a40ba0dc00e17bb4d6ad8ff17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02c2ea00dee5a50a7053bfa9baa43e47"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_process_dump_report.html#a02c2ea00dee5a50a7053bfa9baa43e47">toJSON</a> (std::stringstream &amp;stream, size_t level) const</td></tr>
+<tr class="separator:a02c2ea00dee5a50a7053bfa9baa43e47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99fa36a6e0301b236fe2c1a45bd1a9b6"><td class="memItemLeft" align="right" valign="top">DWORD&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_process_dump_report.html#a99fa36a6e0301b236fe2c1a45bd1a9b6">getPid</a> () const</td></tr>
 <tr class="separator:a99fa36a6e0301b236fe2c1a45bd1a9b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -119,8 +119,8 @@ Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a98f5e6833d95dd0f4e71aa7fa4a89040"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_process_dump_report.html#a98f5e6833d95dd0f4e71aa7fa4a89040">list_dumped_modules</a> (size_t level)</td></tr>
-<tr class="separator:a98f5e6833d95dd0f4e71aa7fa4a89040"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a849cea7d3ce9eb54d1e405f35ded482c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_process_dump_report.html#a849cea7d3ce9eb54d1e405f35ded482c">list_dumped_modules</a> (size_t level) const</td></tr>
+<tr class="separator:a849cea7d3ce9eb54d1e405f35ded482c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a096704b9a48c85e20ee0b6a2da3b5710"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_process_dump_report.html#a096704b9a48c85e20ee0b6a2da3b5710">deleteModuleReports</a> ()</td></tr>
 <tr class="separator:a096704b9a48c85e20ee0b6a2da3b5710"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -378,8 +378,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a98f5e6833d95dd0f4e71aa7fa4a89040" name="a98f5e6833d95dd0f4e71aa7fa4a89040"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98f5e6833d95dd0f4e71aa7fa4a89040">&#9670;&#160;</a></span>list_dumped_modules()</h2>
+<a id="a849cea7d3ce9eb54d1e405f35ded482c" name="a849cea7d3ce9eb54d1e405f35ded482c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a849cea7d3ce9eb54d1e405f35ded482c">&#9670;&#160;</a></span>list_dumped_modules()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -392,7 +392,7 @@ Here is the call graph for this function:</div>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>level</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -402,12 +402,12 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dump__report_8cpp_source.html#l00082">82</a> of file <a class="el" href="dump__report_8cpp_source.html">dump_report.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dump__report_8cpp_source.html#l00085">85</a> of file <a class="el" href="dump__report_8cpp_source.html">dump_report.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classpesieve_1_1_process_dump_report_a98f5e6833d95dd0f4e71aa7fa4a89040_cgraph.png" border="0" usemap="#aclasspesieve_1_1_process_dump_report_a98f5e6833d95dd0f4e71aa7fa4a89040_cgraph" alt=""/></div>
-<map name="aclasspesieve_1_1_process_dump_report_a98f5e6833d95dd0f4e71aa7fa4a89040_cgraph" id="aclasspesieve_1_1_process_dump_report_a98f5e6833d95dd0f4e71aa7fa4a89040_cgraph">
+<div class="center"><img src="classpesieve_1_1_process_dump_report_a849cea7d3ce9eb54d1e405f35ded482c_cgraph.png" border="0" usemap="#aclasspesieve_1_1_process_dump_report_a849cea7d3ce9eb54d1e405f35ded482c_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_process_dump_report_a849cea7d3ce9eb54d1e405f35ded482c_cgraph" id="aclasspesieve_1_1_process_dump_report_a849cea7d3ce9eb54d1e405f35ded482c_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,199,45"/>
 <area shape="rect" href="classpesieve_1_1_module_dump_report.html#a60b37477c4f7d0d78a18c42849d1f97f" title=" " alt="" coords="247,5,433,45"/>
 </map>
@@ -415,8 +415,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a4071f46a40ba0dc00e17bb4d6ad8ff17" name="a4071f46a40ba0dc00e17bb4d6ad8ff17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4071f46a40ba0dc00e17bb4d6ad8ff17">&#9670;&#160;</a></span>toJSON()</h2>
+<a id="a02c2ea00dee5a50a7053bfa9baa43e47" name="a02c2ea00dee5a50a7053bfa9baa43e47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02c2ea00dee5a50a7053bfa9baa43e47">&#9670;&#160;</a></span>toJSON()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -425,7 +425,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::ProcessDumpReport::toJSON </td>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::ProcessDumpReport::toJSON </td>
           <td>(</td>
           <td class="paramtype">std::stringstream &amp;&#160;</td>
           <td class="paramname"><em>stream</em>, </td>
@@ -439,7 +439,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> const</td>
         </tr>
       </table>
   </td>
@@ -453,8 +453,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classpesieve_1_1_process_dump_report_a4071f46a40ba0dc00e17bb4d6ad8ff17_cgraph.png" border="0" usemap="#aclasspesieve_1_1_process_dump_report_a4071f46a40ba0dc00e17bb4d6ad8ff17_cgraph" alt=""/></div>
-<map name="aclasspesieve_1_1_process_dump_report_a4071f46a40ba0dc00e17bb4d6ad8ff17_cgraph" id="aclasspesieve_1_1_process_dump_report_a4071f46a40ba0dc00e17bb4d6ad8ff17_cgraph">
+<div class="center"><img src="classpesieve_1_1_process_dump_report_a02c2ea00dee5a50a7053bfa9baa43e47_cgraph.png" border="0" usemap="#aclasspesieve_1_1_process_dump_report_a02c2ea00dee5a50a7053bfa9baa43e47_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_process_dump_report_a02c2ea00dee5a50a7053bfa9baa43e47_cgraph" id="aclasspesieve_1_1_process_dump_report_a02c2ea00dee5a50a7053bfa9baa43e47_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,199,45"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="247,5,385,45"/>
 </map>

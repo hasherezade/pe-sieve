@@ -308,8 +308,12 @@ Functions</h2></td></tr>
 <tr class="separator:a294ac1ed36b2f8bbffab80b3314c7155"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22be478637fe6ab08135f946a1a85aac"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a22be478637fe6ab08135f946a1a85aac">scan_report_to_string</a> (const <a class="el" href="classpesieve_1_1_process_scan_report.html">ProcessScanReport</a> &amp;report)</td></tr>
 <tr class="separator:a22be478637fe6ab08135f946a1a85aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac15c23cae68ffb0a95a1fb1085a140ef"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#ac15c23cae68ffb0a95a1fb1085a140ef">scan_report_to_json</a> (const <a class="el" href="classpesieve_1_1_process_scan_report.html">ProcessScanReport</a> &amp;process_report, <a class="el" href="classpesieve_1_1_process_scan_report.html#a5e5555ab40a87968250aa56322071510">ProcessScanReport::t_report_filter</a> filter, const pesieve::t_json_level &amp;jdetails)</td></tr>
-<tr class="separator:ac15c23cae68ffb0a95a1fb1085a140ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0d32a6fb0ab39f3c4c571aec9e4df70"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#ac0d32a6fb0ab39f3c4c571aec9e4df70">scan_report_to_json</a> (const <a class="el" href="classpesieve_1_1_process_scan_report.html">ProcessScanReport</a> &amp;process_report, <a class="el" href="classpesieve_1_1_process_scan_report.html#a5e5555ab40a87968250aa56322071510">ProcessScanReport::t_report_filter</a> filter, const pesieve::t_json_level &amp;jdetails, size_t start_level=0)</td></tr>
+<tr class="separator:ac0d32a6fb0ab39f3c4c571aec9e4df70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66549976a4e32dd1d7a784ec28a5c665"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a66549976a4e32dd1d7a784ec28a5c665">dump_report_to_json</a> (const <a class="el" href="classpesieve_1_1_process_dump_report.html">ProcessDumpReport</a> &amp;process_report, const pesieve::t_json_level &amp;jdetails, size_t start_level=0)</td></tr>
+<tr class="separator:a66549976a4e32dd1d7a784ec28a5c665"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac548dcbb70d91e5b3ead778b0a15c716"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#ac548dcbb70d91e5b3ead778b0a15c716">report_to_json</a> (const <a class="el" href="classpesieve_1_1_report_ex.html">pesieve::ReportEx</a> &amp;report, const <a class="el" href="pe__sieve__types_8h.html#ac8c9bbde52a2aaaa12a023d92a7d75b1">t_report_type</a> rtype, <a class="el" href="classpesieve_1_1_process_scan_report.html#a5e5555ab40a87968250aa56322071510">ProcessScanReport::t_report_filter</a> filter, const pesieve::t_json_level &amp;jdetails, size_t start_level=0)</td></tr>
+<tr class="separator:ac548dcbb70d91e5b3ead778b0a15c716"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37106144bce7fd014a5bd3dc1631af0d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a37106144bce7fd014a5bd3dc1631af0d">get_payload_ext</a> (const <a class="el" href="classpesieve_1_1_artefact_scan_report.html">ArtefactScanReport</a> &amp;artefactRepot)</td></tr>
 <tr class="separator:a37106144bce7fd014a5bd3dc1631af0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb544770522131db2e3e0ff29e41b4ed"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#afb544770522131db2e3e0ff29e41b4ed">get_dump_mode_name</a> (peconv::t_pe_dump_mode dump_mode)</td></tr>
@@ -560,6 +564,52 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="pe__sieve__params__info_8cpp_source.html#l00022">22</a> of file <a class="el" href="pe__sieve__params__info_8cpp_source.html">pe_sieve_params_info.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a66549976a4e32dd1d7a784ec28a5c665" name="a66549976a4e32dd1d7a784ec28a5c665"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66549976a4e32dd1d7a784ec28a5c665">&#9670;&#160;</a></span>dump_report_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pesieve::dump_report_to_json </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpesieve_1_1_process_dump_report.html">ProcessDumpReport</a> &amp;&#160;</td>
+          <td class="paramname"><em>process_report</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const pesieve::t_json_level &amp;&#160;</td>
+          <td class="paramname"><em>jdetails</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>start_level</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="report__formatter_8cpp_source.html#l00059">59</a> of file <a class="el" href="report__formatter_8cpp_source.html">report_formatter.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespacepesieve_a66549976a4e32dd1d7a784ec28a5c665_cgraph.png" border="0" usemap="#anamespacepesieve_a66549976a4e32dd1d7a784ec28a5c665_cgraph" alt=""/></div>
+<map name="anamespacepesieve_a66549976a4e32dd1d7a784ec28a5c665_cgraph" id="anamespacepesieve_a66549976a4e32dd1d7a784ec28a5c665_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,151,45"/>
+<area shape="rect" href="classpesieve_1_1_process_dump_report.html#a02c2ea00dee5a50a7053bfa9baa43e47" title=" " alt="" coords="199,5,392,45"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="440,5,579,45"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -1473,6 +1523,68 @@ template&lt;typename IMAGE_OPTIONAL_HEADER_T &gt; </div>
 
 </div>
 </div>
+<a id="ac548dcbb70d91e5b3ead778b0a15c716" name="ac548dcbb70d91e5b3ead778b0a15c716"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac548dcbb70d91e5b3ead778b0a15c716">&#9670;&#160;</a></span>report_to_json()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pesieve::report_to_json </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classpesieve_1_1_report_ex.html">pesieve::ReportEx</a> &amp;&#160;</td>
+          <td class="paramname"><em>report</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="pe__sieve__types_8h.html#ac8c9bbde52a2aaaa12a023d92a7d75b1">t_report_type</a>&#160;</td>
+          <td class="paramname"><em>rtype</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpesieve_1_1_process_scan_report.html#a5e5555ab40a87968250aa56322071510">ProcessScanReport::t_report_filter</a>&#160;</td>
+          <td class="paramname"><em>filter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const pesieve::t_json_level &amp;&#160;</td>
+          <td class="paramname"><em>jdetails</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>start_level</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="report__formatter_8cpp_source.html#l00078">78</a> of file <a class="el" href="report__formatter_8cpp_source.html">report_formatter.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespacepesieve_ac548dcbb70d91e5b3ead778b0a15c716_cgraph.png" border="0" usemap="#anamespacepesieve_ac548dcbb70d91e5b3ead778b0a15c716_cgraph" alt=""/></div>
+<map name="anamespacepesieve_ac548dcbb70d91e5b3ead778b0a15c716_cgraph" id="anamespacepesieve_ac548dcbb70d91e5b3ead778b0a15c716_cgraph">
+<area shape="rect" title=" " alt="" coords="5,77,160,102"/>
+<area shape="rect" href="classpesieve_1_1_process_dump_report.html#acd254aea75b8454bda044b23dcc55d6e" title=" " alt="" coords="208,5,401,45"/>
+<area shape="rect" href="namespacepesieve.html#a66549976a4e32dd1d7a784ec28a5c665" title=" " alt="" coords="232,69,377,109"/>
+<area shape="rect" href="namespacepesieve.html#ac0d32a6fb0ab39f3c4c571aec9e4df70" title=" " alt="" coords="234,133,375,173"/>
+<area shape="rect" href="classpesieve_1_1_process_dump_report.html#a02c2ea00dee5a50a7053bfa9baa43e47" title=" " alt="" coords="449,69,643,109"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="691,101,829,141"/>
+<area shape="rect" href="classpesieve_1_1_process_scan_report.html#a1269fd73204b2b9171466ac32bc03252" title=" " alt="" coords="451,133,641,173"/>
+</map>
+</div>
+
+</div>
+</div>
 <a id="ad71d3d82e248bd37f2becabe0ca00f55" name="ad71d3d82e248bd37f2becabe0ca00f55"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad71d3d82e248bd37f2becabe0ca00f55">&#9670;&#160;</a></span>scan_and_dump()</h2>
 
@@ -1559,8 +1671,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="ac15c23cae68ffb0a95a1fb1085a140ef" name="ac15c23cae68ffb0a95a1fb1085a140ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac15c23cae68ffb0a95a1fb1085a140ef">&#9670;&#160;</a></span>scan_report_to_json()</h2>
+<a id="ac0d32a6fb0ab39f3c4c571aec9e4df70" name="ac0d32a6fb0ab39f3c4c571aec9e4df70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0d32a6fb0ab39f3c4c571aec9e4df70">&#9670;&#160;</a></span>scan_report_to_json()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1581,7 +1693,13 @@ Here is the call graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const pesieve::t_json_level &amp;&#160;</td>
-          <td class="paramname"><em>jdetails</em>&#160;</td>
+          <td class="paramname"><em>jdetails</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>start_level</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1595,8 +1713,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="namespacepesieve_ac15c23cae68ffb0a95a1fb1085a140ef_cgraph.png" border="0" usemap="#anamespacepesieve_ac15c23cae68ffb0a95a1fb1085a140ef_cgraph" alt=""/></div>
-<map name="anamespacepesieve_ac15c23cae68ffb0a95a1fb1085a140ef_cgraph" id="anamespacepesieve_ac15c23cae68ffb0a95a1fb1085a140ef_cgraph">
+<div class="center"><img src="namespacepesieve_ac0d32a6fb0ab39f3c4c571aec9e4df70_cgraph.png" border="0" usemap="#anamespacepesieve_ac0d32a6fb0ab39f3c4c571aec9e4df70_cgraph" alt=""/></div>
+<map name="anamespacepesieve_ac0d32a6fb0ab39f3c4c571aec9e4df70_cgraph" id="anamespacepesieve_ac0d32a6fb0ab39f3c4c571aec9e4df70_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,147,45"/>
 <area shape="rect" href="classpesieve_1_1_process_scan_report.html#a1269fd73204b2b9171466ac32bc03252" title=" " alt="" coords="195,5,384,45"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="432,5,571,45"/>
