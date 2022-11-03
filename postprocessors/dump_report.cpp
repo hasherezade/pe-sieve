@@ -52,7 +52,7 @@ const bool pesieve::ModuleDumpReport::toJSON(std::stringstream &outs, size_t lev
 
 // ProcessDumpReport
 
-const bool pesieve::ProcessDumpReport::toJSON(std::stringstream &stream, size_t level)
+bool pesieve::ProcessDumpReport::toJSON(std::stringstream &stream, size_t level) const
 {
 	stream << "{\n";
 	OUT_PADDED(stream, level, "\"pid\" : ");
@@ -79,7 +79,7 @@ const bool pesieve::ProcessDumpReport::toJSON(std::stringstream &stream, size_t 
 	return true;
 }
 
-std::string pesieve::ProcessDumpReport::list_dumped_modules(size_t level)
+std::string pesieve::ProcessDumpReport::list_dumped_modules(size_t level) const
 {
 	std::stringstream stream;
 	//summary:

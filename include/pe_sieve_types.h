@@ -80,6 +80,13 @@ namespace pesieve {
 		JSON_LVL_COUNT
 	} t_json_level;
 
+	typedef enum {
+		REPORT_NONE = 0,
+		REPORT_SCANNED,
+		REPORT_DUMPED,
+		REPORT_ALL
+	} t_report_type;
+
 	//!  A wrapper for a dynamically allocated string.
 	typedef struct _PARAM_STRING {
 		ULONG length;
