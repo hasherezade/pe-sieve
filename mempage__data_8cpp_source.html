@@ -138,7 +138,7 @@ $(function() {
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classpesieve_1_1_mem_page_data.html#ab431925c7d4bd5c61c377a4995f8169a">   59</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_mem_page_data.html#ab431925c7d4bd5c61c377a4995f8169a">pesieve::MemPageData::isRealMapping</a>()</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>{</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">if</span> (!this-&gt;loadedData || !fillInfo()) {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">if</span> (this-&gt;loadedData == <span class="keyword">nullptr</span> &amp;&amp; !fillInfo()) {</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">#ifdef _DEBUG</span></div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Not loaded!&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="preprocessor">#endif</span></div>
