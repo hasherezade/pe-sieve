@@ -25,5 +25,6 @@ var searchData=
   ['pesieve_5fmajor_5fversion_22',['PESIEVE_MAJOR_VERSION',['../pe__sieve__ver__short_8h.html#a438266f22a2b5359707aa7f76f38f69b',1,'pe_sieve_ver_short.h']]],
   ['pesieve_5fmicro_5fversion_23',['PESIEVE_MICRO_VERSION',['../pe__sieve__ver__short_8h.html#aa9b440c88301877c02e092306a39a7fc',1,'pe_sieve_ver_short.h']]],
   ['pesieve_5fminor_5fversion_24',['PESIEVE_MINOR_VERSION',['../pe__sieve__ver__short_8h.html#a24158745816b473d50f2a3582e2cb4cb',1,'pe_sieve_ver_short.h']]],
-  ['pesieve_5fpatch_5fversion_25',['PESIEVE_PATCH_VERSION',['../pe__sieve__ver__short_8h.html#a0263888c2b1544b193d90467b74de852',1,'pe_sieve_ver_short.h']]]
+  ['pesieve_5fpatch_5fversion_25',['PESIEVE_PATCH_VERSION',['../pe__sieve__ver__short_8h.html#a0263888c2b1544b193d90467b74de852',1,'pe_sieve_ver_short.h']]],
+  ['pesieve_5fversion_5fstr_26',['PESIEVE_VERSION_STR',['../pe__sieve__ver__short_8h.html#ad2eb02c74dcca25cd863d86fb4d67eaf',1,'pe_sieve_ver_short.h']]]
 ];
