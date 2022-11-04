@@ -58,7 +58,7 @@ bool pesieve::MemPageData::loadMappedName()
 
 bool pesieve::MemPageData::isRealMapping()
 {
-	if (!this->loadedData || !fillInfo()) {
+	if (this->loadedData == nullptr && !fillInfo()) {
 #ifdef _DEBUG
 		std::cerr << "Not loaded!" << std::endl;
 #endif
