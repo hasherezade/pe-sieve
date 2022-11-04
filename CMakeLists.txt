@@ -190,7 +190,8 @@ set (hdrs
 
 set (rsrc
 	resources.h
-	resources.rc
+	include/pe_sieve_ver_short.h
+	pe_sieve.rc
 )
 
 # set filters in Visual Studio project:

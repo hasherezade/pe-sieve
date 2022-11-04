@@ -44,12 +44,25 @@ void free_params(t_params &args)
 	free_strparam(args.modules_ignored);
 }
 
+std::string version_to_str(DWORD version)
+{
+	BYTE* chunks = (BYTE*)&version;
+	std::stringstream stream;
+	stream << std::hex <<
+		(int)chunks[3] << "." <<
+		(int)chunks[2] << "." <<
+		(int)chunks[1] << "." <<
+		(int)chunks[0];
+
+	return stream.str();
+}
+
 int main(int argc, char *argv[])
 {
 	bool info_req = false;
 	t_params args = { 0 };
 
-	PEsieveParams uParams(PESIEVE_VERSION);
+	PEsieveParams uParams(version_to_str(PESIEVE_VERSION_ID));
 	if (argc < 2) {
 		uParams.printBanner();
 		uParams.printBriefInfo();

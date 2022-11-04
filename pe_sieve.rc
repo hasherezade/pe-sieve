@@ -1,0 +1,32 @@
+#include "pe_sieve_ver_short.h"
+#include "resources.h"
+#include <windows.h>
+
+#define VER_COMPANYNAME_STR         "Hashereware (hashereware.com)"
+#define VER_FILETYPE                VFT_APP
+#define VER_FILESUBTYPE             VFT2_UNKNOWN
+#define VER_FILEOS                  VOS_NT_WINDOWS32
+#define VER_FILEDESCRIPTION_STR     "PE-sieve: scans given process, recognizes and dumps a variety of potentially malicious implants."
+#define VER_INTERNALNAME_STR        "pe-sieve.exe"
+#define VER_ORIGINALFILENAME_STR    "pe-sieve.exe"
+#define VER_LEGALCOPYRIGHT_STR      "Copyright © 2017-2022 Hasherezade"
+#define VER_PRODUCTNAME_STR         "PE-sieve"
+#define VER_FILEVERSION             PESIEVE_MAJOR_VERSION,PESIEVE_MINOR_VERSION,PESIEVE_MICRO_VERSION,PESIEVE_PATCH_VERSION
+
+#define VER_FILEFLAGSMASK (VS_FF_DEBUG | VS_FF_PRERELEASE)
+#ifdef DEBUG
+    #define VER_FILEFLAGS (VS_FF_DEBUG)
+#else
+    #define VER_FILEFLAGS (0)
+#endif
+
+#include "common.ver"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON                    "logo/favicon.ico"
