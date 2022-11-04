@@ -81,14 +81,13 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;windows.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="pe__sieve__ver__short_8h_source.html">pe_sieve_ver_short.h</a>&gt;</code><br />
 </div>
 <p><a href="pe__sieve__version_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ad2baba56d6787accaec805eb79edcec6"><td class="memItemLeft" align="right" valign="top">const char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pe__sieve__version_8h.html#ad2baba56d6787accaec805eb79edcec6">PESIEVE_VERSION</a> [] = &quot;0.3.4.1&quot;</td></tr>
-<tr class="separator:ad2baba56d6787accaec805eb79edcec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4f15b19f602d9ac80fb125bccf9e9a3"><td class="memItemLeft" align="right" valign="top">const DWORD&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pe__sieve__version_8h.html#ab4f15b19f602d9ac80fb125bccf9e9a3">PESIEVE_VERSION_ID</a> = 0x00030401</td></tr>
+<tr class="memitem:ab4f15b19f602d9ac80fb125bccf9e9a3"><td class="memItemLeft" align="right" valign="top">const DWORD&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pe__sieve__version_8h.html#ab4f15b19f602d9ac80fb125bccf9e9a3">PESIEVE_VERSION_ID</a> = MAKELONG(MAKEWORD(<a class="el" href="pe__sieve__ver__short_8h.html#a0263888c2b1544b193d90467b74de852">PESIEVE_PATCH_VERSION</a>, <a class="el" href="pe__sieve__ver__short_8h.html#aa9b440c88301877c02e092306a39a7fc">PESIEVE_MICRO_VERSION</a>), MAKEWORD(<a class="el" href="pe__sieve__ver__short_8h.html#a24158745816b473d50f2a3582e2cb4cb">PESIEVE_MINOR_VERSION</a>, <a class="el" href="pe__sieve__ver__short_8h.html#a438266f22a2b5359707aa7f76f38f69b">PESIEVE_MAJOR_VERSION</a>))</td></tr>
 <tr class="separator:ab4f15b19f602d9ac80fb125bccf9e9a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f1c109ef0e60d78cab0a7ff1a054037"><td class="memItemLeft" align="right" valign="top">const char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pe__sieve__version_8h.html#a9f1c109ef0e60d78cab0a7ff1a054037">PESIEVE_URL</a> [] = &quot;https://github.com/hasherezade/pe-sieve&quot;</td></tr>
 <tr class="separator:a9f1c109ef0e60d78cab0a7ff1a054037"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -106,23 +105,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__version_8h_source.html#l00011">11</a> of file <a class="el" href="pe__sieve__version_8h_source.html">pe_sieve_version.h</a>.</p>
-
-</div>
-</div>
-<a id="ad2baba56d6787accaec805eb79edcec6" name="ad2baba56d6787accaec805eb79edcec6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2baba56d6787accaec805eb79edcec6">&#9670;&#160;</a></span>PESIEVE_VERSION</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const char PESIEVE_VERSION[] = &quot;0.3.4.1&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pe__sieve__version_8h_source.html#l00009">9</a> of file <a class="el" href="pe__sieve__version_8h_source.html">pe_sieve_version.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__version_8h_source.html#l00010">10</a> of file <a class="el" href="pe__sieve__version_8h_source.html">pe_sieve_version.h</a>.</p>
 
 </div>
 </div>
@@ -133,12 +116,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const DWORD PESIEVE_VERSION_ID = 0x00030401</td>
+          <td class="memname">const DWORD PESIEVE_VERSION_ID = MAKELONG(MAKEWORD(<a class="el" href="pe__sieve__ver__short_8h.html#a0263888c2b1544b193d90467b74de852">PESIEVE_PATCH_VERSION</a>, <a class="el" href="pe__sieve__ver__short_8h.html#aa9b440c88301877c02e092306a39a7fc">PESIEVE_MICRO_VERSION</a>), MAKEWORD(<a class="el" href="pe__sieve__ver__short_8h.html#a24158745816b473d50f2a3582e2cb4cb">PESIEVE_MINOR_VERSION</a>, <a class="el" href="pe__sieve__ver__short_8h.html#a438266f22a2b5359707aa7f76f38f69b">PESIEVE_MAJOR_VERSION</a>))</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__version_8h_source.html#l00010">10</a> of file <a class="el" href="pe__sieve__version_8h_source.html">pe_sieve_version.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__version_8h_source.html#l00009">9</a> of file <a class="el" href="pe__sieve__version_8h_source.html">pe_sieve_version.h</a>.</p>
 
 </div>
 </div>
