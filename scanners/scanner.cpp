@@ -89,7 +89,9 @@ t_scan_status pesieve::ProcessScanner::scanForIATHooks(HANDLE processHandle, Mod
 	}
 
 	if (process_report.isModuleReplaced(modData.moduleHandle)) {
+#ifdef _DEBUG
 		std::cout << "Cannot scan replaced module for IAT hooks!\n";
+#endif
 		return SCAN_ERROR;
 	}
 	IATScanner scanner(processHandle, modData, remoteModData, *expMap, process_report.modulesInfo, filter);
