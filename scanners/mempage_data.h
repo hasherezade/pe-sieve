@@ -48,6 +48,7 @@ namespace pesieve {
 		std::string mapped_name; ///< if the region is mapped from a file, stores its file name
 		std::string module_name; ///< if the region is on the list of loaded PEs, stores its module name
 
+		// Checks if `loadedData` is already filled, if not, fills it by reading the remote memory.
 		bool load()
 		{
 			if (loadedData) {
@@ -65,6 +66,7 @@ namespace pesieve {
 
 		bool loadMappedName();
 		bool loadModuleName();
+
 		// checks if the memory area is mapped 1-to-1 from the file on the disk
 		bool isRealMapping();
 

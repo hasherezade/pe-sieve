@@ -58,12 +58,6 @@ bool pesieve::MemPageData::loadMappedName()
 
 bool pesieve::MemPageData::isRealMapping()
 {
-	if (this->loadedData == nullptr && !fillInfo()) {
-#ifdef _DEBUG
-		std::cerr << "Not loaded!" << std::endl;
-#endif
-		return false;
-	}
 	if (!loadMappedName()) {
 #ifdef _DEBUG
 		std::cerr << "Could not retrieve name" << std::endl;
@@ -88,7 +82,7 @@ bool pesieve::MemPageData::isRealMapping()
 	BYTE *rawData = (BYTE*) MapViewOfFile(mapping, FILE_MAP_READ, 0, 0, 0);
 	if (rawData == nullptr) {
 #ifdef _DEBUG
-		std::cerr << "Could not map view of file" << std::endl;
+		std::cerr << "Could not map view of file: " << this->mapped_name << std::endl;
 #endif
 		CloseHandle(mapping);
 		CloseHandle(file);
@@ -96,10 +90,17 @@ bool pesieve::MemPageData::isRealMapping()
 	}
 
 	bool is_same = false;
-	size_t r_size = GetFileSize(file, 0);
-	size_t smaller_size = this->loadedSize > r_size ? r_size : this->loadedSize;
-	if (memcmp(this->loadedData, rawData, smaller_size) == 0) {
-		is_same = true;
+	if (this->load()) {
+		size_t r_size = GetFileSize(file, 0);
+		size_t smaller_size = this->loadedSize > r_size ? r_size : this->loadedSize;
+		if (::memcmp(this->loadedData, rawData, smaller_size) == 0) {
+			is_same = true;
+		}
+	}
+	else {
+#ifdef _DEBUG
+		std::cerr << "[" << std::hex << start_va << "] Page not loaded!" << std::endl;
+#endif
 	}
 	UnmapViewOfFile(rawData);
 	CloseHandle(mapping);
