@@ -37,7 +37,7 @@ namespace pesieve {
 				this->size = other.size;
 			}
 
-			bool operator<(const _mem_region_info& rhs) const noexcept
+			bool operator<(const _mem_region_info& rhs) const
 			{
 				return this->base < rhs.base;
 			}
