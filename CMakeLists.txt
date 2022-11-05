@@ -252,7 +252,7 @@ if(PESIEVE_AS_STATIC_LIB OR PESIEVE_AS_DLL)
 	)
 	set_source_files_properties(main.def PROPERTIES HEADER_FILE_ONLY TRUE)
 else()
-	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} main.cpp params.h )
+	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} pe_sieve_res_icon.rc  main.cpp params.h )
 endif()
 
 set (used_libs
