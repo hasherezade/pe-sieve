@@ -9,14 +9,16 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <pe_sieve_version.h>
 #include <pe_sieve_types.h>
 #include <pe_sieve_return_codes.h>
 
+#include "pe_sieve_ver_short.h"
 #include "pe_sieve_report.h"
 #include "postprocessors/report_formatter.h"
 
 namespace pesieve {
+
+	const char PESIEVE_URL[] = "https://github.com/hasherezade/pe-sieve";
 
 	//! The string with the basic information about the scanner.
 	std::string info();
