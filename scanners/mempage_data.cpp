@@ -1,5 +1,6 @@
 #include "mempage_data.h"
 #include "module_data.h"
+#include "../utils/process_util.h"
 
 using namespace pesieve;
 
@@ -64,7 +65,10 @@ bool pesieve::MemPageData::isRealMapping()
 #endif
 		return false;
 	}
+	PVOID old_val = nullptr;
+	util::wow64_disable_fs_redirection(&old_val);
 	HANDLE file = CreateFileA(this->mapped_name.c_str(), GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	util::wow64_revert_fs_redirection(old_val);
 	if(file == INVALID_HANDLE_VALUE) {
 #ifdef _DEBUG
 		std::cerr << "Could not open file!" << std::endl;
