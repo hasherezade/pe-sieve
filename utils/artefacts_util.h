@@ -1,6 +1,8 @@
 #pragma once
 #include <windows.h>
 
+#define CODE_PATTERN_NOT_FOUND (-1)
+
 namespace pesieve {
 	namespace util {
 		/*
@@ -10,9 +12,19 @@ namespace pesieve {
 		*/
 		BYTE* find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size, size_t max_iter = 0);
 
-		bool is_32bit_code(BYTE *loadedData, size_t loadedSize);
-		bool is_64bit_code(BYTE *loadedData, size_t loadedSize);
+		/*
+		Scans the buffer searching for the hardcoded 32-bit code patterns. If found, returns the patten ID, otherwise returns CODE_PATTERN_NOT_FOUND
+		*/
+		DWORD is_32bit_code(BYTE *loadedData, size_t loadedSize);
 
+		/*
+		Scans the buffer searching for the hardcoded 64-bit code patterns. If found, returns the patten ID, otherwise returns CODE_PATTERN_NOT_FOUND
+		*/
+		DWORD is_64bit_code(BYTE *loadedData, size_t loadedSize);
+
+		/*
+		Scans the buffer searching for any hardcoded code patterns (both 32 and 64 bit).
+		*/
 		bool is_code(BYTE *loadedData, size_t loadedSize);
 
 		bool is_executable(DWORD mapping_type, DWORD protection);

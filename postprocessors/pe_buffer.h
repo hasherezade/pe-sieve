@@ -31,6 +31,8 @@ namespace pesieve {
 			return false;
 		}
 
+		bool isCode();
+
 		// Returns the size of the internal buffer
 		size_t getBufferSize() const
 		{

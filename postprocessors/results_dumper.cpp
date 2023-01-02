@@ -265,7 +265,7 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 
 	modDumpReport->dumpFileName = makeModuleDumpPath(module_buf.getModuleBase(), module_name, payload_ext);
 	modDumpReport->is_corrupt_pe = is_corrupt_pe;
-	modDumpReport->is_shellcode = !module_buf.isValidPe();
+	modDumpReport->is_shellcode = !module_buf.isValidPe() && module_buf.isCode();
 	
 	peconv::ImpsNotCovered notCovered;
 

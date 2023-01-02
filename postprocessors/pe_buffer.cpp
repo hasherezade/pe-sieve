@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "../scanners/artefact_scanner.h"
+#include "../utils/artefacts_util.h"
 
 size_t pesieve::PeBuffer::calcRemoteImgSize(ULONGLONG modBaseAddr) const
 {
@@ -153,4 +154,10 @@ bool pesieve::PeBuffer::dumpToFile(IN std::string dumpFileName)
 {
 	if (!vBuf) return false;
 	return peconv::dump_to_file(dumpFileName.c_str(), vBuf, vBufSize);
+}
+
+bool pesieve::PeBuffer::isCode()
+{
+	if (!vBuf) return false;
+	return pesieve::util::is_code(vBuf, vBufSize);
 }

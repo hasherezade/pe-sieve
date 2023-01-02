@@ -23,7 +23,7 @@ namespace pesieve {
 	} t_pattern;
 };
 
-bool pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
+DWORD pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 {
 	BYTE prolog32_pattern[] = {
 		0x55, // PUSH EBP
@@ -46,18 +46,17 @@ bool pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 		{ prolog32_3_pattern, sizeof(prolog32_3_pattern) }
 	};
 
-	bool pattern_found = false;
-	for (size_t i = 0; i < _countof(patterns); i++) {
+	DWORD pattern_found = CODE_PATTERN_NOT_FOUND;
+	for (DWORD i = 0; i < _countof(patterns); i++) {
 		if (find_pattern(loadedData, loadedSize, patterns[i].ptr, patterns[i].size)) {
-			pattern_found = true;
-			//std::cout << "Found 32bit pattern: " << i << "\n";
+			pattern_found = i;
 			break;
 		}
 	}
 	return pattern_found;
 }
 
-bool pesieve::util::is_64bit_code(BYTE *loadedData, size_t loadedSize)
+DWORD pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 {
 	BYTE prolog64_pattern[] = {
 		0x40, 0x53,       // PUSH RBX
@@ -107,29 +106,40 @@ bool pesieve::util::is_64bit_code(BYTE *loadedData, size_t loadedSize)
 		{ prolog64_7_pattern, sizeof(prolog64_7_pattern) }
 	};
 
-	bool pattern_found = false;
-	for (size_t i = 0; i < _countof(patterns); i++) {
+	DWORD pattern_found = CODE_PATTERN_NOT_FOUND;
+	for (DWORD i = 0; i < _countof(patterns); i++) {
 		if (find_pattern(loadedData, loadedSize, patterns[i].ptr, patterns[i].size)) {
-			pattern_found = true;
-			//std::cout << "Found 64bit pattern: " << i << "\n";
+			pattern_found = i;
 			break;
 		}
 	}
 	return pattern_found;
 }
 
-bool pesieve::util::is_code(BYTE *loadedData, size_t loadedSize)
+bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 {
 	if (peconv::is_padding(loadedData, loadedSize, 0)) {
 		return false;
 	}
-	if (is_32bit_code(loadedData, loadedSize)) {
-		return true;
+	DWORD pattern_found = CODE_PATTERN_NOT_FOUND;
+	bool is64 = false;
+
+	bool found = false;
+	if ((pattern_found = is_32bit_code(loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
+		found = true;
 	}
-	if (is_64bit_code(loadedData, loadedSize)) {
-		return true;
+	if (!found) {
+		if ((pattern_found = is_64bit_code(loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
+			found = true;
+			is64 = true;
+		}
 	}
-	return false;
+#ifdef _DEBUG
+	if (found) {
+		std::cout << "Is64: " << is64 << " Pattern ID: " << pattern_found << "\n";
+	}
+#endif
+	return found;
 }
 
 bool pesieve::util::is_executable(DWORD mapping_type, DWORD protection)
