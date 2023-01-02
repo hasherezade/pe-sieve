@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dir_5fseparator_0',['DIR_SEPARATOR',['../results__dumper_8cpp.html#a0920890c442b665b0c6609fa796e9047',1,'results_dumper.cpp']]]
+  ['code_5fpattern_5fnot_5ffound_0',['CODE_PATTERN_NOT_FOUND',['../artefacts__util_8h.html#ac6cc9278d38a850adc0bb455f95dfb9b',1,'artefacts_util.h']]]
 ];
