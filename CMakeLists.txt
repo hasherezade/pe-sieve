@@ -157,6 +157,7 @@ set (utils_hdrs
 	utils/process_reflection.h
 	utils/console_color.h
 	utils/strings_util.h
+	utils/entropy.h
 )
 
 set (params_info_hdrs

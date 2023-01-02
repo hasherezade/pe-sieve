@@ -61,6 +61,9 @@ namespace pesieve {
 			OUT_PADDED(outs, level, "\"protection\" : ");
 			outs << "\"" << std::hex << protection << "\"";
 			outs << ",\n";
+			OUT_PADDED(outs, level, "\"entropy\" : ");
+			outs << "\"" << std::dec << entropy << "\"";
+			outs << ",\n";
 			OUT_PADDED(outs, level, "\"mapping_type\" : ");
 			outs << "\"" << translate_mapping_type(mapping_type) << "\"";
 			if (mapping_type == MEM_IMAGE || mapping_type == MEM_MAPPED) {
@@ -74,6 +77,7 @@ namespace pesieve {
 		bool is_listed_module;
 		bool has_pe;
 		bool has_shellcode;
+		double entropy;
 		DWORD protection;
 		DWORD mapping_type;
 		std::string mapped_name; //if the region is mapped from a file

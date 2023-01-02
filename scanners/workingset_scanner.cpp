@@ -6,6 +6,7 @@
 #include "../utils/path_converter.h"
 #include "../utils/workingset_enum.h"
 #include "../utils/artefacts_util.h"
+#include "../utils/entropy.h"
 
 using namespace pesieve;
 using namespace pesieve::util;
@@ -87,6 +88,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 	WorkingSetScanReport *my_report = new WorkingSetScanReport((HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
 	my_report->has_pe = isScannedAsModule(_memPage) && this->processReport.hasModule(_memPage.region_start);
 	my_report->has_shellcode = true;
+	my_report->entropy = util::ShannonEntropy(_memPage.getLoadedData(), _memPage.getLoadedSize());
 	return my_report;
 }
 
