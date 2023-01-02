@@ -17,7 +17,8 @@ namespace pesieve {
 		ThreadScanReport(DWORD _tid)
 			: ModuleScanReport(0, 0), 
 			tid(_tid), thread_ip(0), protection(0),
-			thread_state(THREAD_STATE_UNKNOWN), thread_wait_reason(0), entropy(0)
+			thread_state(THREAD_STATE_UNKNOWN), thread_wait_reason(0),
+			entropy(0), entropy_filled(false)
 		{
 		}
 
@@ -45,9 +46,11 @@ namespace pesieve {
 			}
 			OUT_PADDED(outs, level, "\"protection\" : ");
 			outs << "\"" << std::hex << protection << "\"";
-			outs << ",\n";
-			OUT_PADDED(outs, level, "\"entropy\" : ");
-			outs << "\"" << std::dec << entropy << "\"";
+			if (entropy_filled) {
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"entropy\" : ");
+				outs << "\"" << std::dec << entropy << "\"";
+			}
 		}
 
 		const virtual bool toJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level &jdetails)
@@ -64,7 +67,8 @@ namespace pesieve {
 		DWORD protection;
 		DWORD thread_state;
 		DWORD thread_wait_reason;
-		float entropy;
+		double entropy;
+		bool entropy_filled;
 	};
 
 	//!  A custom structure keeping a fragment of a thread context

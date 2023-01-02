@@ -77,7 +77,7 @@ namespace pesieve {
 		bool is_listed_module;
 		bool has_pe;
 		bool has_shellcode;
-		float entropy;
+		double entropy;
 		DWORD protection;
 		DWORD mapping_type;
 		std::string mapped_name; //if the region is mapped from a file

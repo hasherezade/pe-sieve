@@ -8,6 +8,8 @@
 #include <dbghelp.h>
 #pragma comment(lib, "dbghelp")
 
+#define ENTROPY_TRESHOLD 1.5
+
 using namespace pesieve;
 
 typedef struct _t_stack_enum_params {
@@ -255,6 +257,7 @@ bool pesieve::ThreadScanner::checkAreaEntropy(ThreadScanReport* my_report)
 {
 	if (!my_report) return false;
 
+	my_report->entropy_filled = false;
 	ULONG_PTR end_va = (ULONG_PTR)my_report->module + my_report->moduleSize;
 	bool isRefl = false; //TODO: fetch it from upper layer
 	MemPageData mem(this->processHandle, isRefl, (ULONG_PTR)my_report->module, end_va);
@@ -262,6 +265,7 @@ bool pesieve::ThreadScanner::checkAreaEntropy(ThreadScanReport* my_report)
 		return false;
 	}
 	my_report->entropy = util::ShannonEntropy(mem.getLoadedData(), mem.getLoadedSize());
+	my_report->entropy_filled = true;
 	return true;
 }
 
@@ -284,8 +288,13 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 	my_report->protection = page_info.AllocationProtect;
 
 	my_report->thread_ip = susp_addr;
-	checkAreaEntropy(my_report);
 	my_report->status = SCAN_SUSPICIOUS;
+	const bool entropyFilled = checkAreaEntropy(my_report);
+#ifndef NO_ENTROPY_CHECK
+	if (entropyFilled && (my_report->entropy < ENTROPY_TRESHOLD)) {
+		my_report->status = SCAN_NOT_SUSPICIOUS;
+	}
+#endif
 	return true;
 }
 
