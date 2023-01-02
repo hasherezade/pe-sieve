@@ -17,7 +17,7 @@ namespace pesieve {
 		ThreadScanReport(DWORD _tid)
 			: ModuleScanReport(0, 0), 
 			tid(_tid), thread_ip(0), protection(0),
-			thread_state(THREAD_STATE_UNKNOWN), thread_wait_reason(0)
+			thread_state(THREAD_STATE_UNKNOWN), thread_wait_reason(0), entropy(0)
 		{
 		}
 
@@ -45,6 +45,9 @@ namespace pesieve {
 			}
 			OUT_PADDED(outs, level, "\"protection\" : ");
 			outs << "\"" << std::hex << protection << "\"";
+			outs << ",\n";
+			OUT_PADDED(outs, level, "\"entropy\" : ");
+			outs << "\"" << std::dec << entropy << "\"";
 		}
 
 		const virtual bool toJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level &jdetails)
@@ -61,6 +64,7 @@ namespace pesieve {
 		DWORD protection;
 		DWORD thread_state;
 		DWORD thread_wait_reason;
+		float entropy;
 	};
 
 	//!  A custom structure keeping a fragment of a thread context
@@ -95,6 +99,7 @@ namespace pesieve {
 		bool resolveAddr(ULONGLONG addr);
 		bool fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThread, OUT thread_ctx& c);
 		size_t enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT thread_ctx& c);
+		bool checkAreaEntropy(ThreadScanReport* my_report);
 		bool reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx& c);
 
 		const util::thread_info& info;

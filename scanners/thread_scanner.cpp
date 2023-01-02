@@ -2,6 +2,8 @@
 #include <peconv.h>
 #include "../utils/process_util.h"
 #include "../utils/ntddk.h"
+#include "../utils/entropy.h"
+#include "mempage_data.h"
 
 #include <dbghelp.h>
 #pragma comment(lib, "dbghelp")
@@ -249,6 +251,20 @@ bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORM
 	return true;
 }
 
+bool pesieve::ThreadScanner::checkAreaEntropy(ThreadScanReport* my_report)
+{
+	if (!my_report) return false;
+
+	ULONG_PTR end_va = (ULONG_PTR)my_report->module + my_report->moduleSize;
+	bool isRefl = false; //TODO: fetch it from upper layer
+	MemPageData mem(this->processHandle, isRefl, (ULONG_PTR)my_report->module, end_va);
+	if (!mem.fillInfo() || !mem.load()) {
+		return false;
+	}
+	my_report->entropy = util::ShannonEntropy(mem.getLoadedData(), mem.getLoadedSize());
+	return true;
+}
+
 bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx  &c)
 {
 	MEMORY_BASIC_INFORMATION page_info = { 0 };
@@ -258,7 +274,6 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 	if (page_info.State & MEM_FREE) {
 		return false;
 	}
-	my_report->status = SCAN_SUSPICIOUS;
 	ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
 	if (this->info.is_extended) {
 		my_report->thread_state = info.ext.state;
@@ -269,6 +284,8 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 	my_report->protection = page_info.AllocationProtect;
 
 	my_report->thread_ip = susp_addr;
+	checkAreaEntropy(my_report);
+	my_report->status = SCAN_SUSPICIOUS;
 	return true;
 }
 
