@@ -11,7 +11,6 @@
 
 using namespace pesieve;
 
-
 size_t print_report(const pesieve::ReportEx& report, const pesieve::t_params args, const t_report_type rtype, char* json_buf, size_t json_buf_size)
 {
 	if (!report.scan_report || rtype == REPORT_NONE) return 0;
@@ -28,8 +27,13 @@ size_t print_report(const pesieve::ReportEx& report, const pesieve::t_params arg
 	return report_len;
 }
 
-PEsieve_report PESIEVE_API_FUNC PESieve_scan_ex(IN const PEsieve_params args, IN const PEsieve_rtype rtype, OUT char* json_buf, IN size_t json_buf_size, OUT size_t* needed_size)
+PEsieve_report PESIEVE_API_FUNC PESieve_scan_ex(IN const PEsieve_params &args, IN const PEsieve_rtype rtype, OUT char* json_buf, IN size_t json_buf_size, OUT size_t* needed_size)
 {
+	if (IsBadReadPtr((LPVOID)&args, sizeof(PEsieve_params)) ) {
+		pesieve::t_report empty = { 0 };
+		empty.errors = 1;
+		return empty;
+	}
 	const pesieve::ReportEx* report = pesieve::scan_and_dump(args);
 	if (report == nullptr) {
 		pesieve::t_report nullrep = { 0 };
@@ -62,7 +66,7 @@ PEsieve_report PESIEVE_API_FUNC PESieve_scan_ex(IN const PEsieve_params args, IN
 	return summary;
 }
 
-PEsieve_report PESIEVE_API_FUNC PESieve_scan(IN const PEsieve_params args)
+PEsieve_report PESIEVE_API_FUNC PESieve_scan(IN const PEsieve_params &args)
 {
 	return PESieve_scan_ex(args, REPORT_NONE, nullptr, 0, nullptr);
 }

@@ -6,7 +6,6 @@
 #pragma once
 
 #include <windows.h>
-#include <pshpack4.h> // ensure 4 byte packing of the structures
 
 #define PARAM_LIST_SEPARATOR ';'
 
@@ -140,4 +139,3 @@ namespace pesieve {
 };
 #endif
 
-#include <poppack.h> //back to the previous structure packing
