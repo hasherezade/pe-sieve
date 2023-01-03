@@ -1,6 +1,8 @@
 <map id="pesieve::WorkingSetScanner::scanExecutableArea" name="pesieve::WorkingSetScanner::scanExecutableArea">
-<area shape="rect" id="node1" title=" " alt="" coords="5,37,193,77"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_mem_page_data.html#a01d3a9dc59b2965fa6defbc4dfda8524" title=" " alt="" coords="245,5,404,45"/>
-<area shape="rect" id="node4" href="$classpesieve_1_1_artefact_scanner.html#a22a0987f597a08fc1f2d96e40b7891b9" title=" " alt="" coords="241,69,408,109"/>
-<area shape="rect" id="node3" href="$classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="456,5,615,45"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,101,193,141"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_mem_page_data.html#a6817c520ee6e8fb641df9602098a3d52" title=" " alt="" coords="245,5,404,45"/>
+<area shape="rect" id="node3" href="$classpesieve_1_1_mem_page_data.html#a8a6928d919b90825ccd6ea0213b53452" title=" " alt="" coords="245,69,404,109"/>
+<area shape="rect" id="node4" href="$classpesieve_1_1_mem_page_data.html#a01d3a9dc59b2965fa6defbc4dfda8524" title=" " alt="" coords="245,133,404,173"/>
+<area shape="rect" id="node6" href="$classpesieve_1_1_artefact_scanner.html#a22a0987f597a08fc1f2d96e40b7891b9" title=" " alt="" coords="241,197,408,237"/>
+<area shape="rect" id="node5" href="$classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="456,133,615,173"/>
 </map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['globalroot_5fname_0',['GLOBALROOT_NAME',['../path__converter_8cpp.html#a6fb2d7449fb3dbc8a7ade1a67ad66c3d',1,'path_converter.cpp']]]
+  ['entropy_5ftreshold_0',['ENTROPY_TRESHOLD',['../thread__scanner_8cpp.html#acaf6cb2ff8299b9b3c55905f936d38a9',1,'thread_scanner.cpp']]]
 ];
