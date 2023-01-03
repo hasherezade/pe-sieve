@@ -259,8 +259,7 @@ bool pesieve::ThreadScanner::checkAreaEntropy(ThreadScanReport* my_report)
 
 	my_report->entropy_filled = false;
 	ULONG_PTR end_va = (ULONG_PTR)my_report->module + my_report->moduleSize;
-	bool isRefl = false; //TODO: fetch it from upper layer
-	MemPageData mem(this->processHandle, isRefl, (ULONG_PTR)my_report->module, end_va);
+	MemPageData mem(this->processHandle, this->isReflection, (ULONG_PTR)my_report->module, end_va);
 	if (!mem.fillInfo() || !mem.load()) {
 		return false;
 	}

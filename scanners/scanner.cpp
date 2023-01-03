@@ -472,7 +472,8 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 	std::vector<thread_info>::iterator itr;
 	for (itr = threads_info.begin(); itr != threads_info.end(); ++itr) {
 		const thread_info &info = *itr;
-		ThreadScanner scanner(this->processHandle, info, pReport.modulesInfo, pReport.exportsMap);
+		
+		ThreadScanner scanner(this->processHandle, this->isReflection, info,  pReport.modulesInfo, pReport.exportsMap);
 		ThreadScanReport* report = scanner.scanRemote();
 		pReport.appendReport(report);
 	}

@@ -89,8 +89,8 @@ namespace pesieve {
 		static bool InitSymbols(HANDLE hProc);
 		static bool FreeSymbols(HANDLE hProc);
 
-		ThreadScanner(HANDLE hProc, const util::thread_info& _info, ModulesInfo& _modulesInfo, peconv::ExportsMapper* _exportsMap)
-			: ProcessFeatureScanner(hProc), 
+		ThreadScanner(HANDLE hProc, bool _isReflection, const util::thread_info& _info, ModulesInfo& _modulesInfo, peconv::ExportsMapper* _exportsMap)
+			: ProcessFeatureScanner(hProc), isReflection(_isReflection),
 			info(_info), modulesInfo(_modulesInfo), exportsMap(_exportsMap)
 		{
 		}
@@ -106,6 +106,7 @@ namespace pesieve {
 		bool checkAreaEntropy(ThreadScanReport* my_report);
 		bool reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx& c);
 
+		bool isReflection;
 		const util::thread_info& info;
 		ModulesInfo& modulesInfo;
 		peconv::ExportsMapper* exportsMap;
