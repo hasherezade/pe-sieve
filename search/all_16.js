@@ -2,7 +2,7 @@ var searchData=
 [
   ['wait_5freason_0',['wait_reason',['../structpesieve_1_1util_1_1__thread__info__ext.html#a389b5fb210ec491e9a7db99db5544928',1,'pesieve::util::_thread_info_ext']]],
   ['wait_5ftime_1',['wait_time',['../structpesieve_1_1util_1_1__thread__info__ext.html#adfe41a5fa3df04475f55ae54bf615e58',1,'pesieve::util::_thread_info_ext']]],
-  ['warning_5fcolor_2',['WARNING_COLOR',['../namespacepesieve.html#a235be9cbc3122c521a38fe7f1a4d68da',1,'pesieve']]],
+  ['warning_5fcolor_2',['WARNING_COLOR',['../namespacepesieve.html#ab34d88fd108f1ee3263bf767be7acd2d',1,'pesieve']]],
   ['workingset_5fenum_2ecpp_3',['workingset_enum.cpp',['../workingset__enum_8cpp.html',1,'']]],
   ['workingset_5fenum_2eh_4',['workingset_enum.h',['../workingset__enum_8h.html',1,'']]],
   ['workingset_5fscanner_2ecpp_5',['workingset_scanner.cpp',['../workingset__scanner_8cpp.html',1,'']]],

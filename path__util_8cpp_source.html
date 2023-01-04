@@ -125,8 +125,8 @@ $(function() {
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1util.html#ac15d9d6947cab96587bbffaf79467d38">   46</a></span>std::string <a class="code hl_function" href="namespacepesieve_1_1util.html#ac15d9d6947cab96587bbffaf79467d38">pesieve::util::get_system_drive</a>()</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>{</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">char</span> buf[MAX_PATH];</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    GetWindowsDirectory(buf, MAX_PATH);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">char</span> buf[<a class="code hl_variable" href="namespacepesieve.html#a1cb84e5f71928d34d7e7169a19964a9c">MAX_PATH</a>];</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    GetWindowsDirectory(buf, <a class="code hl_variable" href="namespacepesieve.html#a1cb84e5f71928d34d7e7169a19964a9c">MAX_PATH</a>);</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    buf[2] = <span class="charliteral">&#39;\0&#39;</span>; <span class="comment">// cut after the drive letter</span></div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">return</span> std::string(buf);</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
@@ -197,6 +197,7 @@ $(function() {
 <div class="ttc" id="anamespacepesieve_1_1util_html_ac15d9d6947cab96587bbffaf79467d38"><div class="ttname"><a href="namespacepesieve_1_1util.html#ac15d9d6947cab96587bbffaf79467d38">pesieve::util::get_system_drive</a></div><div class="ttdeci">std::string get_system_drive()</div><div class="ttdef"><b>Definition:</b> <a href="path__util_8cpp_source.html#l00046">path_util.cpp:46</a></div></div>
 <div class="ttc" id="anamespacepesieve_1_1util_html_ac533b9c8a18228f62223a0042c40f5ae"><div class="ttname"><a href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">pesieve::util::DWORD</a></div><div class="ttdeci">DWORD(__stdcall *_PssCaptureSnapshot)(HANDLE ProcessHandle</div></div>
 <div class="ttc" id="anamespacepesieve_1_1util_html_aee2126a30340b68df975bfe7d91d413c"><div class="ttname"><a href="namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c">pesieve::util::escape_path_separators</a></div><div class="ttdeci">std::string escape_path_separators(std::string path)</div><div class="ttdef"><b>Definition:</b> <a href="path__util_8cpp_source.html#l00027">path_util.cpp:27</a></div></div>
+<div class="ttc" id="anamespacepesieve_html_a1cb84e5f71928d34d7e7169a19964a9c"><div class="ttname"><a href="namespacepesieve.html#a1cb84e5f71928d34d7e7169a19964a9c">pesieve.MAX_PATH</a></div><div class="ttdeci">int MAX_PATH</div><div class="ttdef"><b>Definition:</b> <a href="pesieve_8py_source.html#l00007">pesieve.py:7</a></div></div>
 <div class="ttc" id="apath__util_8cpp_html_ac4c7885386fa3d8b3f506808273bcea3"><div class="ttname"><a href="path__util_8cpp.html#ac4c7885386fa3d8b3f506808273bcea3">get_full_path</a></div><div class="ttdeci">std::string get_full_path(const char *szPath)</div><div class="ttdef"><b>Definition:</b> <a href="path__util_8cpp_source.html#l00054">path_util.cpp:54</a></div></div>
 <div class="ttc" id="apath__util_8h_html"><div class="ttname"><a href="path__util_8h.html">path_util.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

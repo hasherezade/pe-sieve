@@ -1,8 +1,12 @@
 var searchData=
 [
-  ['lastusage_0',['lastUsage',['../structpesieve_1_1_cached_module.html#a33417fcdd4169ac88a7074e94494f2a5',1,'pesieve::CachedModule']]],
-  ['length_1',['length',['../struct___p_a_r_a_m___s_t_r_i_n_g.html#a7996767bb0f2ac6ccfc42d6ddb210bcf',1,'_PARAM_STRING']]],
-  ['loadeddata_2',['loadedData',['../classpesieve_1_1_mem_page_data.html#ad48b7c79dd61011f4b79e1ef9a953f32',1,'pesieve::MemPageData']]],
-  ['loadedsection_3',['loadedSection',['../classpesieve_1_1_pe_section.html#a81b7086cb5282d2a4fbd7f31353d144e',1,'pesieve::PeSection']]],
-  ['loadedsize_4',['loadedSize',['../classpesieve_1_1_mem_page_data.html#acf57eef7b3771d5ab116e8ba4552634c',1,'pesieve::MemPageData::loadedSize()'],['../classpesieve_1_1_pe_section.html#a45e6b2d32b562e2feb8cd5bb33ac6eb2',1,'pesieve::PeSection::loadedSize()']]]
+  ['json_0',['json',['../namespacedemo.html#a1515af587d9def2e478f546e69d890ae',1,'demo']]],
+  ['json_5fbasic_1',['JSON_BASIC',['../classpesieve_1_1t__json__level.html#a7f484683190d800cc75cb42d58d8bce2',1,'pesieve::t_json_level']]],
+  ['json_5fdetails_2',['JSON_DETAILS',['../classpesieve_1_1t__json__level.html#ac6282c052302341ae1d307e1c68b8934',1,'pesieve::t_json_level']]],
+  ['json_5fdetails2_3',['JSON_DETAILS2',['../classpesieve_1_1t__json__level.html#a3786ee532717b37a16568104974c2a2d',1,'pesieve::t_json_level']]],
+  ['json_5flevel_4',['JSON_LEVEL',['../classpesieve_1_1_pe_artefacts.html#adb4622c722afba90a69fc5ff56884ee7',1,'pesieve::PeArtefacts::JSON_LEVEL()'],['../classpesieve_1_1_module_scan_report.html#a4bd715db6b234bb5d299ef39abb11860',1,'pesieve::ModuleScanReport::JSON_LEVEL()']]],
+  ['json_5flvl_5',['json_lvl',['../structt__params.html#a6c0714d6b477b0f6d48a9bcb27d60df6',1,'t_params::json_lvl()'],['../namespacedemo.html#a0f33e043da52b5fc4d36a354563f7ccc',1,'demo.json_lvl()']]],
+  ['json_5flvl_5fcount_6',['JSON_LVL_COUNT',['../classpesieve_1_1t__json__level.html#a1ee2ba9e62b25348e0797d705d795f36',1,'pesieve::t_json_level']]],
+  ['json_5fmax_5fsize_7',['json_max_size',['../namespacedemo.html#acbe434c91aa2d7109df72eea6e6edd9b',1,'demo']]],
+  ['json_5foutput_8',['json_output',['../structt__params.html#a3134e332a7b0bd684b2b1c4eded6b83c',1,'t_params::json_output()'],['../namespacedemo.html#ac51fee34c29c684edf9d8bb6247ce9c6',1,'demo.json_output()']]]
 ];

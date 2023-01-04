@@ -1,4 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,72,31"/>
-<area shape="rect" id="node2" href="$class_p_esieve_params.html" title=" " alt="" coords="120,5,235,31"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,179,96,204"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1t__data__scan__mode.html" title=" " alt="" coords="144,5,324,31"/>
+<area shape="rect" id="node3" href="$classpesieve_1_1t__dotnet__policy.html" title=" " alt="" coords="155,55,313,80"/>
+<area shape="rect" id="node4" href="$classpesieve_1_1t__dump__mode.html" title=" " alt="" coords="158,104,310,129"/>
+<area shape="rect" id="node5" href="$classpesieve_1_1t__iat__scan__mode.html" title=" " alt="" coords="149,153,319,179"/>
+<area shape="rect" id="node6" href="$classpesieve_1_1t__imprec__mode.html" title=" " alt="" coords="155,203,313,228"/>
+<area shape="rect" id="node7" href="$classpesieve_1_1t__json__level.html" title=" " alt="" coords="165,252,303,277"/>
+<area shape="rect" id="node8" href="$classpesieve_1_1t__output__filter.html" title=" " alt="" coords="160,301,308,327"/>
+<area shape="rect" id="node9" href="$classpesieve_1_1t__report__type.html" title=" " alt="" coords="161,351,307,376"/>
 </map>

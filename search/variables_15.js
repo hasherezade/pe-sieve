@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['wait_5freason_0',['wait_reason',['../structpesieve_1_1util_1_1__thread__info__ext.html#a389b5fb210ec491e9a7db99db5544928',1,'pesieve::util::_thread_info_ext']]],
-  ['wait_5ftime_1',['wait_time',['../structpesieve_1_1util_1_1__thread__info__ext.html#adfe41a5fa3df04475f55ae54bf615e58',1,'pesieve::util::_thread_info_ext']]],
-  ['warning_5fcolor_2',['WARNING_COLOR',['../namespacepesieve.html#a235be9cbc3122c521a38fe7f1a4d68da',1,'pesieve']]]
+  ['vaclonehandle_0',['VaCloneHandle',['../structpesieve_1_1util_1_1_p_s_s___v_a___c_l_o_n_e___i_n_f_o_r_m_a_t_i_o_n.html#a8f8977d0c4ec41dcf6232d8e767a220e',1,'pesieve::util::PSS_VA_CLONE_INFORMATION']]],
+  ['vbuf_1',['vBuf',['../classpesieve_1_1_pe_buffer.html#a67edd066093ed4582bc05bffc889c699',1,'pesieve::PeBuffer']]],
+  ['vbufsize_2',['vBufSize',['../classpesieve_1_1_pe_buffer.html#ac2689547ca54cec93077bdc4d5c8661c',1,'pesieve::PeBuffer']]]
 ];

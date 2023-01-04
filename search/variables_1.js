@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['base_0',['base',['../structpesieve_1_1util_1_1__mem__region__info.html#a86e7149f5f4b7cfdf7b6a96823f123fe',1,'pesieve::util::_mem_region_info']]],
-  ['basedir_1',['baseDir',['../classpesieve_1_1_results_dumper.html#af8f198c9be07744d706dc21a59bd3551',1,'pesieve::ResultsDumper']]],
-  ['buffer_2',['buffer',['../struct___p_a_r_a_m___s_t_r_i_n_g.html#a861227dd2c82abcf462fe28d117d9548',1,'_PARAM_STRING']]],
-  ['buffer_3',['Buffer',['../namespacepesieve_1_1util.html#adfb56cf97e3266792ba8cde322dda924',1,'pesieve::util']]],
-  ['bufferlength_4',['BufferLength',['../namespacepesieve_1_1util.html#a8a530016bcf962946b8536574dcc5b4c',1,'pesieve::util']]]
+  ['addrtofunctionva_0',['addrToFunctionVA',['../classpesieve_1_1_i_a_t_block.html#aecd4dd3a9702c22c902fbbc15590425c',1,'pesieve::IATBlock']]],
+  ['alloc_5fbase_1',['alloc_base',['../classpesieve_1_1_mem_page_data.html#a4c0656b24255503c6faa643ec7e9a464',1,'pesieve::MemPageData::alloc_base()'],['../structpesieve_1_1util_1_1__mem__region__info.html#acdb4430af2a19516acd9f83c3a1847a7',1,'pesieve::util::_mem_region_info::alloc_base()']]],
+  ['archmismatch_2',['archMismatch',['../classpesieve_1_1_headers_scan_report.html#a8134d9f880884e091813528e08683672',1,'pesieve::HeadersScanReport']]],
+  ['args_3',['args',['../classpesieve_1_1_process_scanner.html#a64d6658454d4ef1b71102750d1e0f630',1,'pesieve::ProcessScanner::args()'],['../classpesieve_1_1_working_set_scanner.html#af875f213bda0d23cbcb229c1baf5b577',1,'pesieve::WorkingSetScanner::args()']]],
+  ['artefacts_4',['artefacts',['../classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28',1,'pesieve::PeReconstructor::artefacts()'],['../classpesieve_1_1_artefact_scan_report.html#a5c39ea6661e0c5de664c1395b2709612',1,'pesieve::ArtefactScanReport::artefacts()']]],
+  ['artpageptr_5',['artPagePtr',['../classpesieve_1_1_artefact_scanner.html#ac08e85f318d5cb6417022fe475cb7b96',1,'pesieve::ArtefactScanner']]]
 ];
