@@ -130,12 +130,12 @@ def init():
 	pesieve_path = pesieve_dir + os.path.sep + pesieve_dll
 	lib = ctypes.cdll.LoadLibrary(pesieve_path)
 
-def PEsieve_help():
+def PESieve_help():
 	if not lib:
 		init()
 	lib.PESieve_help()
 
-def PEsieve_scan(params: t_params) -> t_report:
+def PESieve_scan(params: t_params) -> t_report:
 	if not lib:
 		init()
 	if (not isinstance(params, t_params)):
