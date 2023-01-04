@@ -148,7 +148,7 @@ def PESieve_scan(params: t_params) -> t_report:
 	report = t_report.from_buffer(pr)
 	return report
 
-def PESieve_scan_ex(params: t_params, rtype: t_report_type, buf_size: int) -> (t_report,str,int):
+def PESieve_scan_ex(params: t_params, rtype: t_report_type, buf_size: int) -> (t_report, str, int):
 	if not lib:
 		init()
 	if (not isinstance(params, t_params)):
