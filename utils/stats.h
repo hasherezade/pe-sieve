@@ -7,18 +7,45 @@ namespace pesieve {
 
     namespace util {
 
+        // Shannon's Entropy calculation based on: https://stackoverflow.com/questions/20965960/shannon-entropy
+        template <typename T>
+        double calcShannonsEntropy(std::map<T, size_t>& histogram, size_t totalSize)
+        {
+            if (!totalSize) return 0;
+            double entropy = 0;
+            for (auto it = histogram.begin(); it != histogram.end(); ++it) {
+                double p_x = (double)it->second / totalSize;
+                if (p_x > 0) entropy -= p_x * log(p_x) / log(2);
+            }
+            return entropy;
+        }
+
+        template <typename T>
+        std::string hexdumpValue(const BYTE* in_buf, const size_t max_size)
+        {
+            std::stringstream ss;
+            for (size_t i = 0; i < max_size; i++) {
+                ss << "\\x" << std::setfill('0') << std::setw(2) << std::hex << (unsigned int)in_buf[i];
+            }
+            return ss.str();
+        }
+
+        template <typename T>
+        T getMostFrequentValue(std::map<T, size_t>& histogram)
+        {
+            T mVal = 0;
+            size_t mFreq = 0;
+            for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
+                if (itr->second > mFreq) {
+                    mFreq = itr->second;
+                    mVal = itr->first;
+                }
+            }
+            return mVal;
+        }
 
         template <typename T>
         struct ChunkStats {
-
-            static std::string hexdump(const BYTE* in_buf, const size_t max_size)
-            {
-                std::stringstream ss;
-                for (size_t i = 0; i < max_size; i++) {
-                    ss << "\\x" << std::setfill('0') << std::setw(2) << std::hex << (unsigned int)in_buf[i];
-                }
-                return ss.str();
-            }
             //
             ChunkStats() 
                 : size(0), offset(0)
@@ -50,27 +77,17 @@ namespace pesieve {
                 OUT_PADDED(outs, level, "\"size\" : ");
                 outs << std::hex << "\"" << size << "\"";
                 
-                T mVal = getMostFrequentValue();
+                T mVal = getMostFrequentValue(histogram);
                 if (mVal) {
                     outs << ",\n";
                     OUT_PADDED(outs, level, "\"most_freq_val\" : ");
-                    outs << std::hex << "\"" << hexdump((BYTE*)&mVal, sizeof(T)) << "\"";
+                    outs << std::hex << "\"" << hexdumpValue<BYTE>((BYTE*)&mVal, sizeof(T)) << "\"";
                 }
-                
+                outs << ",\n";
+                OUT_PADDED(outs, level, "\"entropy\" : ");
+                outs << std::dec << calcShannonsEntropy(histogram, size);
             }
 
-            T getMostFrequentValue()
-            {
-                T mVal = 0;
-                size_t mFreq = 0;
-                for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
-                    if (itr->second > mFreq) {
-                        mFreq = itr->second;
-                        mVal = itr->first;
-                    }
-                }
-                return mVal;
-            }
 
             size_t size;
             size_t offset;
@@ -105,6 +122,9 @@ namespace pesieve {
                 OUT_PADDED(outs, level, "\"entropy\" : ");
                 outs << std::dec << entropy;
                 outs << ",\n";
+                OUT_PADDED(outs, level, "\"most_freq_val\" : ");
+                outs << std::hex << "\"" << hexdumpValue<BYTE>((BYTE*)&mostFreq, sizeof(T)) << "\"";
+                outs << ",\n";
                 // print chunk stats
                 OUT_PADDED(outs, level, "\"biggest_chunk\" : {\n");
                 biggestChunk.fieldsToJSON(outs, level + 1);
@@ -118,6 +138,7 @@ namespace pesieve {
             }
 
             double entropy;
+            T mostFreq;
             ChunkStats<T> biggestChunk;//< biggest continuous chunk (not interrupted by a defined delimiter)
         };
 
@@ -134,10 +155,9 @@ namespace pesieve {
                 if (!data || !elements) return false;
 
                 const T kDelim = 0; // delimiter of continuous chunks
+                ChunkStats<T> currArea(0, elements); //stats for the full area
                 stats.biggestChunk = ChunkStats<T>();
-                stats.entropy = 0; // Shannon's Entropy calculation based on: https://stackoverflow.com/questions/20965960/shannon-entropy
-                std::map<T, size_t> counts;
-                typename std::map<T, size_t>::iterator it;
+                stats.entropy = 0;
                 //
                 ChunkStats<T> currChunk;
                 T lastVal = 0;
@@ -153,15 +173,13 @@ namespace pesieve {
                         // start a new chunk
                         currChunk = ChunkStats<T>(0, dataIndex);
                     }
+                    currArea.append(val);
                     currChunk.append(val);
-                    counts[val]++;
                     lastVal = val;
                 }
                 //
-                for (it = counts.begin(); it != counts.end(); ++it) {
-                    double p_x = (double)it->second / elements;
-                    if (p_x > 0) stats.entropy -= p_x * log(p_x) / log(2);
-                }
+                stats.mostFreq = getMostFrequentValue(currArea.histogram);
+                stats.entropy = calcShannonsEntropy(currArea.histogram, currArea.size);
                 return true;
             }
 
