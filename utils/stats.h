@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <set>
 #include "format_util.h"
 
 namespace pesieve {
@@ -30,8 +31,9 @@ namespace pesieve {
             return ss.str();
         }
 
+        // return the most frequent value
         template <typename T>
-        T getMostFrequentValue(std::map<T, size_t>& histogram)
+        T getMostFrequentValue(IN std::map<T, size_t>& histogram)
         {
             T mVal = 0;
             size_t mFreq = 0;
@@ -44,21 +46,43 @@ namespace pesieve {
             return mVal;
         }
 
+        // return the number of occurrencies
+        template <typename T>
+        size_t getMostFrequentValues(IN std::map<T, size_t>& histogram, OUT std::set<T> &values)
+        {
+            // find the highest frequency:
+            size_t mFreq = 0;
+            for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
+                if (itr->second > mFreq) {
+                    mFreq = itr->second;
+                }
+            }
+            if (!mFreq) return mFreq;
+            // find all the values matching this frequency
+            for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
+                if (itr->second == mFreq) {
+                    values.insert(itr->first);
+                }
+            }
+            return mFreq;
+        }
+
         template <typename T>
         struct ChunkStats {
             //
             ChunkStats() 
-                : size(0), offset(0)
+                : size(0), offset(0), entropy(0)
             {
             }
 
             // Copy constructor
             ChunkStats(const ChunkStats& p1)
                 : size(p1.size), offset(p1.offset), histogram(p.histogram.begin(), p.histogram.end())
+                entropy(p1.entropy)
             {
             }
 
-            ChunkStats(size_t _size, size_t _offset)
+            ChunkStats(size_t _offset, size_t _size)
                 : size(_size), offset(_offset)
             {
             }
@@ -77,34 +101,45 @@ namespace pesieve {
                 OUT_PADDED(outs, level, "\"size\" : ");
                 outs << std::hex << "\"" << size << "\"";
                 
-                T mVal = getMostFrequentValue(histogram);
-                if (mVal) {
+                std::set<T> values;
+                size_t freq = getMostFrequentValues(histogram, values);
+                if (freq && values.size()) {
+                    outs << ",\n";
+                    OUT_PADDED(outs, level, "\"most_freq_occurrence\" : ");
+                    outs << std::dec << freq;
+                    outs << ",\n";
+                    OUT_PADDED(outs, level, "\"most_freq_val_count\" : ");
+                    outs << std::dec << values.size();
                     outs << ",\n";
                     OUT_PADDED(outs, level, "\"most_freq_val\" : ");
+                    T mVal = *(values.begin());
                     outs << std::hex << "\"" << hexdumpValue<BYTE>((BYTE*)&mVal, sizeof(T)) << "\"";
                 }
                 outs << ",\n";
                 OUT_PADDED(outs, level, "\"entropy\" : ");
-                outs << std::dec << calcShannonEntropy(histogram, size);
+                outs << std::dec << entropy;
             }
 
+            void summarize()
+            {
+                entropy = calcShannonEntropy(histogram, size);
+            }
 
+            double entropy;
             size_t size;
             size_t offset;
-            T lastVal;
             std::map<T, size_t> histogram;
         };
 
         template <typename T>
         struct AreaStats {
-            AreaStats() 
-                : entropy(0)
+            AreaStats()
             {
             }
 
             // Copy constructor
             AreaStats(const AreaStats& p1)
-                : entropy(p1.entropy), biggestChunk(p1.biggestChunk)
+                : currArea(p1.currArea), biggestChunk(p1.biggestChunk)
             {
             }
 
@@ -119,12 +154,10 @@ namespace pesieve {
 
             const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
             {
-                OUT_PADDED(outs, level, "\"entropy\" : ");
-                outs << std::dec << entropy;
-                outs << ",\n";
-                OUT_PADDED(outs, level, "\"most_freq_val\" : ");
-                outs << std::hex << "\"" << hexdumpValue<BYTE>((BYTE*)&mostFreq, sizeof(T)) << "\"";
-                outs << ",\n";
+                OUT_PADDED(outs, level, "\"full_area\" : {\n");
+                currArea.fieldsToJSON(outs, level + 1);
+                outs << "\n";
+                OUT_PADDED(outs, level, "},\n");
                 // print chunk stats
                 OUT_PADDED(outs, level, "\"biggest_chunk\" : {\n");
                 biggestChunk.fieldsToJSON(outs, level + 1);
@@ -134,11 +167,16 @@ namespace pesieve {
 
             bool isFilled()
             {
-                return (entropy && biggestChunk.size);
+                return (currArea.size != 0) ? true : false;
             }
 
-            double entropy;
-            T mostFreq;
+            void summarize()
+            {
+                currArea.summarize();
+                biggestChunk.summarize();
+            }
+
+            ChunkStats<T> currArea; // stats from the whole area
             ChunkStats<T> biggestChunk;//< biggest continuous chunk (not interrupted by a defined delimiter)
         };
 
@@ -148,6 +186,7 @@ namespace pesieve {
             AreaStatsCalculator(T _data[], size_t _elements)
                 :data(_data), elements(_elements)
             {
+                stats.currArea = ChunkStats<T>(0, elements);
             }
 
             bool fill()
@@ -155,31 +194,28 @@ namespace pesieve {
                 if (!data || !elements) return false;
 
                 const T kDelim = 0; // delimiter of continuous chunks
-                ChunkStats<T> currArea(0, elements); //stats for the full area
                 stats.biggestChunk = ChunkStats<T>();
-                stats.entropy = 0;
                 //
                 ChunkStats<T> currChunk;
                 T lastVal = 0;
                 for (size_t dataIndex = 0; dataIndex < elements; ++dataIndex) {
                     const T val = data[dataIndex];
+                    stats.currArea.append(val);
+
                     if (val == kDelim) {
                         if (currChunk.size > stats.biggestChunk.size) { // delimiter found, finish the chunk
                             stats.biggestChunk = currChunk;
                         }
-                        currChunk = ChunkStats<T>(0, dataIndex);
+                        currChunk = ChunkStats<T>(dataIndex, 0);
                     }
                     if (lastVal == kDelim && val != kDelim) {
                         // start a new chunk
-                        currChunk = ChunkStats<T>(0, dataIndex);
+                        currChunk = ChunkStats<T>(dataIndex, 0);
                     }
-                    currArea.append(val);
                     currChunk.append(val);
                     lastVal = val;
                 }
-                //
-                stats.mostFreq = getMostFrequentValue(currArea.histogram);
-                stats.entropy = calcShannonEntropy(currArea.histogram, currArea.size);
+                stats.summarize();
                 return true;
             }
 

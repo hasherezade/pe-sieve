@@ -273,7 +273,7 @@ bool pesieve::ThreadScanner::calcAreaStats(ThreadScanReport* my_report)
 
 bool pesieve::ThreadScanner::isSuspiciousByStats(ThreadScanReport* my_report)
 {
-	if (my_report->stats.entropy < ENTROPY_TRESHOLD) {
+	if (my_report->stats.currArea.entropy < ENTROPY_TRESHOLD) {
 		return false;
 	}
 	return true;
