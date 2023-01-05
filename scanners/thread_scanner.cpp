@@ -264,14 +264,16 @@ bool pesieve::ThreadScanner::calcAreaStats(ThreadScanReport* my_report)
 		return false;
 	}
 	util::AreaStatsCalculator<BYTE> statsCalc(mem.getLoadedData(), mem.getLoadedSize());
-	my_report->entropy_filled = statsCalc.fill();
-	my_report->entropy = statsCalc.stats.entropy;
-	return true;
+	if (statsCalc.fill()) {
+		my_report->stats = statsCalc.stats;
+		return true;
+	}
+	return false;
 }
 
 bool pesieve::ThreadScanner::isSuspiciousByStats(ThreadScanReport* my_report)
 {
-	if (my_report->entropy < ENTROPY_TRESHOLD) {
+	if (my_report->stats.entropy < ENTROPY_TRESHOLD) {
 		return false;
 	}
 	return true;

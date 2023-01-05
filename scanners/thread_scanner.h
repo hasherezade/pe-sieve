@@ -4,6 +4,7 @@
 
 #include "module_scanner.h"
 #include "../utils/threads_util.h"
+#include "../utils/stats.h"
 
 namespace pesieve {
 
@@ -17,8 +18,7 @@ namespace pesieve {
 		ThreadScanReport(DWORD _tid)
 			: ModuleScanReport(0, 0), 
 			tid(_tid), thread_ip(0), protection(0),
-			thread_state(THREAD_STATE_UNKNOWN), thread_wait_reason(0),
-			entropy(0), entropy_filled(false)
+			thread_state(THREAD_STATE_UNKNOWN), thread_wait_reason(0)
 		{
 		}
 
@@ -46,10 +46,9 @@ namespace pesieve {
 			}
 			OUT_PADDED(outs, level, "\"protection\" : ");
 			outs << "\"" << std::hex << protection << "\"";
-			if (entropy_filled) {
+			if (stats.isFilled()) {
 				outs << ",\n";
-				OUT_PADDED(outs, level, "\"entropy\" : ");
-				outs << "\"" << std::dec << entropy << "\"";
+				stats.toJSON(outs, level);
 			}
 		}
 
@@ -67,7 +66,7 @@ namespace pesieve {
 		DWORD protection;
 		DWORD thread_state;
 		DWORD thread_wait_reason;
-		double entropy;
+		util::AreaStats<BYTE> stats;
 		bool entropy_filled;
 	};
 
