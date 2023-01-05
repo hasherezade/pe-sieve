@@ -4,6 +4,8 @@
 #include <set>
 #include "format_util.h"
 
+#define ENTROPY_TRESHOLD 1.5
+
 namespace pesieve {
 
     namespace util {

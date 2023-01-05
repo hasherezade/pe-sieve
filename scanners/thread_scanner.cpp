@@ -8,8 +8,6 @@
 #include <dbghelp.h>
 #pragma comment(lib, "dbghelp")
 
-#define ENTROPY_TRESHOLD 1.5
-
 using namespace pesieve;
 
 typedef struct _t_stack_enum_params {
