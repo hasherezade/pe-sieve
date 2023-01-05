@@ -2,7 +2,7 @@
 #include <peconv.h>
 #include "../utils/process_util.h"
 #include "../utils/ntddk.h"
-#include "../utils/entropy.h"
+#include "../utils/stats.h"
 #include "mempage_data.h"
 
 #include <dbghelp.h>
@@ -253,7 +253,7 @@ bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORM
 	return true;
 }
 
-bool pesieve::ThreadScanner::checkAreaEntropy(ThreadScanReport* my_report)
+bool pesieve::ThreadScanner::calcAreaStats(ThreadScanReport* my_report)
 {
 	if (!my_report) return false;
 
@@ -265,6 +265,14 @@ bool pesieve::ThreadScanner::checkAreaEntropy(ThreadScanReport* my_report)
 	}
 	my_report->entropy = util::ShannonEntropy(mem.getLoadedData(), mem.getLoadedSize());
 	my_report->entropy_filled = true;
+	return true;
+}
+
+bool pesieve::ThreadScanner::isSuspiciousByStats(ThreadScanReport* my_report)
+{
+	if (my_report->entropy < ENTROPY_TRESHOLD) {
+		return false;
+	}
 	return true;
 }
 
@@ -288,9 +296,9 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 
 	my_report->thread_ip = susp_addr;
 	my_report->status = SCAN_SUSPICIOUS;
-	const bool entropyFilled = checkAreaEntropy(my_report);
+	const bool statsFilled = calcAreaStats(my_report);
 #ifndef NO_ENTROPY_CHECK
-	if (entropyFilled && (my_report->entropy < ENTROPY_TRESHOLD)) {
+	if (statsFilled && !isSuspiciousByStats(my_report)){
 		my_report->status = SCAN_NOT_SUSPICIOUS;
 	}
 #endif

@@ -6,7 +6,7 @@
 #include "../utils/path_converter.h"
 #include "../utils/workingset_enum.h"
 #include "../utils/artefacts_util.h"
-#include "../utils/entropy.h"
+#include "../utils/stats.h"
 
 using namespace pesieve;
 using namespace pesieve::util;

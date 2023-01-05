@@ -103,7 +103,8 @@ namespace pesieve {
 		bool resolveAddr(ULONGLONG addr);
 		bool fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThread, OUT thread_ctx& c);
 		size_t enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT thread_ctx& c);
-		bool checkAreaEntropy(ThreadScanReport* my_report);
+		bool calcAreaStats(ThreadScanReport* my_report);
+		bool isSuspiciousByStats(ThreadScanReport* my_report);
 		bool reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx& c);
 
 		bool isReflection;
