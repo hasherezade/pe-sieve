@@ -9,7 +9,7 @@ namespace pesieve {
 
         // Shannon's Entropy calculation based on: https://stackoverflow.com/questions/20965960/shannon-entropy
         template <typename T>
-        double calcShannonsEntropy(std::map<T, size_t>& histogram, size_t totalSize)
+        double calcShannonEntropy(std::map<T, size_t>& histogram, size_t totalSize)
         {
             if (!totalSize) return 0;
             double entropy = 0;
@@ -85,7 +85,7 @@ namespace pesieve {
                 }
                 outs << ",\n";
                 OUT_PADDED(outs, level, "\"entropy\" : ");
-                outs << std::dec << calcShannonsEntropy(histogram, size);
+                outs << std::dec << calcShannonEntropy(histogram, size);
             }
 
 
@@ -179,7 +179,7 @@ namespace pesieve {
                 }
                 //
                 stats.mostFreq = getMostFrequentValue(currArea.histogram);
-                stats.entropy = calcShannonsEntropy(currArea.histogram, currArea.size);
+                stats.entropy = calcShannonEntropy(currArea.histogram, currArea.size);
                 return true;
             }
 
