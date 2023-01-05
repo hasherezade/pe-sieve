@@ -88,7 +88,11 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 	WorkingSetScanReport *my_report = new WorkingSetScanReport((HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
 	my_report->has_pe = isScannedAsModule(_memPage) && this->processReport.hasModule(_memPage.region_start);
 	my_report->has_shellcode = true;
-	my_report->entropy = util::ShannonEntropy(_memPage.getLoadedData(), _memPage.getLoadedSize());
+
+	util::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(), _memPage.getLoadedSize());
+	if (statsCalc.fill()) {
+		my_report->entropy = statsCalc.stats.entropy;
+	}
 	return my_report;
 }
 
@@ -199,7 +203,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanRemote()
 		if (!isScannedAsModule(memPage)) {
 			scanImg(memPage);
 		}
-		const size_t region_size = (memPage.region_end) ? (memPage.region_end - memPage.region_start) : 0;
+		const size_t region_size = (memPage.region_end) ? size_t(memPage.region_end - memPage.region_start) : 0;
 		if (this->processReport.hasModuleContaining(memPage.region_start, region_size)) {
 			// the area was already scanned
 			return nullptr;

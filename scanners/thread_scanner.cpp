@@ -263,8 +263,9 @@ bool pesieve::ThreadScanner::calcAreaStats(ThreadScanReport* my_report)
 	if (!mem.fillInfo() || !mem.load()) {
 		return false;
 	}
-	my_report->entropy = util::ShannonEntropy(mem.getLoadedData(), mem.getLoadedSize());
-	my_report->entropy_filled = true;
+	util::AreaStatsCalculator<BYTE> statsCalc(mem.getLoadedData(), mem.getLoadedSize());
+	my_report->entropy_filled = statsCalc.fill();
+	my_report->entropy = statsCalc.stats.entropy;
 	return true;
 }
 
