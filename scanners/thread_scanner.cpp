@@ -355,6 +355,19 @@ bool should_scan(const util::thread_info& info)
 	return false;
 }
 
+std::string ThreadScanReport::translate_wait_reason(DWORD reson)
+{
+	switch (reson) {
+		case DelayExecution: return "DelayExecution";
+		case Suspended: return "Suspended";
+		case Executive: return "Executive";
+		case UserRequest: return "UserRequest";
+		case WrUserRequest: return "WrUserRequest";
+	}
+	return "other";
+}
+
+
 ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 {
 	HANDLE hThread = OpenThread(

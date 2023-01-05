@@ -40,7 +40,7 @@ namespace pesieve {
 
 				if (thread_state == THREAD_STATE_WAITING) {
 					OUT_PADDED(outs, level, "\"thread_wait_reason\" : ");
-					outs << std::dec << thread_wait_reason;
+					outs << "\"" << translate_wait_reason(thread_wait_reason) << "\"";
 					outs << ",\n";
 				}
 			}
@@ -68,6 +68,9 @@ namespace pesieve {
 		DWORD thread_wait_reason;
 		util::AreaStats<BYTE> stats;
 		bool entropy_filled;
+
+	protected:
+		static std::string translate_wait_reason(DWORD reson);
 	};
 
 	//!  A custom structure keeping a fragment of a thread context
