@@ -11,6 +11,7 @@
 
 #include "../utils/format_util.h"
 #include "../utils/workingset_enum.h"
+#include "../utils/stats.h"
 #include "process_feature_scanner.h"
 #include "process_details.h"
 
@@ -61,9 +62,6 @@ namespace pesieve {
 			OUT_PADDED(outs, level, "\"protection\" : ");
 			outs << "\"" << std::hex << protection << "\"";
 			outs << ",\n";
-			OUT_PADDED(outs, level, "\"entropy\" : ");
-			outs << "\"" << std::dec << entropy << "\"";
-			outs << ",\n";
 			OUT_PADDED(outs, level, "\"mapping_type\" : ");
 			outs << "\"" << translate_mapping_type(mapping_type) << "\"";
 			if (mapping_type == MEM_IMAGE || mapping_type == MEM_MAPPED) {
@@ -71,13 +69,17 @@ namespace pesieve {
 				OUT_PADDED(outs, level, "\"mapped_name\" : ");
 				outs << "\"" << pesieve::util::escape_path_separators(mapped_name) << "\"";
 			}
+			if (stats.isFilled()) {
+				outs << ",\n";
+				stats.toJSON(outs, level);
+			}
 		}
 
 		bool is_executable;
 		bool is_listed_module;
 		bool has_pe;
 		bool has_shellcode;
-		double entropy;
+		util::AreaStats<BYTE> stats;
 		DWORD protection;
 		DWORD mapping_type;
 		std::string mapped_name; //if the region is mapped from a file

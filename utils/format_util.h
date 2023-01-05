@@ -6,6 +6,7 @@
 #include <set>
 #include <sstream>
 #include <iomanip>
+#include <iostream>
 
 #include "strings_util.h"
 

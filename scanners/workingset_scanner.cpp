@@ -91,7 +91,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 
 	util::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(), _memPage.getLoadedSize());
 	if (statsCalc.fill()) {
-		my_report->entropy = statsCalc.stats.entropy;
+		my_report->stats = statsCalc.stats;
 	}
 	return my_report;
 }
