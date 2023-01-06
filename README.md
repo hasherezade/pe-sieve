@@ -16,16 +16,24 @@
 
 [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?original_referer=https://github.com/hasherezade/pe-sieve&text=%23PEsieve%3A+an+open-source+process+scanner%2C+detecting+and+dumping+malicious+implants:%20https://github.com/hasherezade/pe-sieve)
 
-❓ [FAQ - Frequently Asked Questions](https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ)
-
-📖 [Read Wiki](https://github.com/hasherezade/pe-sieve/wiki)
-
-📦 Uses library: [libPEConv](https://github.com/hasherezade/libpeconv.git)
+## Intro
 
 <b>PE-sieve</b> is a tool that helps to detect malware running on the system, as well as to collect the potentially malicious material for further analysis. Recognizes and dumps variety of implants within the scanned process: replaced/injected PEs, shellcodes, hooks, and other in-memory patches.<br/>
 Detects inline hooks, Process Hollowing, Process Doppelgänging, Reflective DLL Injection, etc.
 
 PE-sieve is meant to be a **light-weight engine** dedicated to scan **a single process** at the time. It can be built as an EXE or as a DLL. The DLL version exposes [a simple API](https://github.com/hasherezade/pe-sieve/wiki/5.-API) and can be easily integrated with other applications.
+
+📦 Uses library: [libPEConv](https://github.com/hasherezade/libpeconv.git)
+
+## Help
+
+❓ [FAQ - Frequently Asked Questions](https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ)
+
+📖 [Read Wiki](https://github.com/hasherezade/pe-sieve/wiki)
+
+🤔 Do you have any question that was not included in the [FAQ](https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ)? Join [Discussions](https://github.com/hasherezade/pe-sieve/discussions)!
+
+
 
 ## PE-sieve tools family
 
