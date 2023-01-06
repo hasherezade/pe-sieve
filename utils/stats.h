@@ -6,6 +6,9 @@
 
 #define ENTROPY_TRESHOLD 1.5
 
+#define IS_ENDLINE(c) (c == 0x0A || c == 0xD)
+#define IS_PRINTABLE(c) ((c >= 0x20 && c < 0x7f) || IS_ENDLINE(c))
+
 namespace pesieve {
 
     namespace util {
@@ -70,22 +73,38 @@ namespace pesieve {
         }
 
         template <typename T>
+        bool isAllPrintable(IN std::map<T, size_t>& histogram)
+        {
+            if (!histogram.size()) return false;
+
+            bool is_printable = true;
+            for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
+                T val = itr->first;
+                if (val && !IS_PRINTABLE(val)) {
+                    is_printable = false;
+                    break;
+                }
+            }
+            return is_printable;
+        }
+
+        template <typename T>
         struct ChunkStats {
             //
             ChunkStats() 
-                : size(0), offset(0), entropy(0)
+                : size(0), offset(0), entropy(0), is_printable(false)
             {
             }
 
             // Copy constructor
             ChunkStats(const ChunkStats& p1)
                 : size(p1.size), offset(p1.offset), histogram(p.histogram.begin(), p.histogram.end())
-                entropy(p1.entropy)
+                entropy(p1.entropy), is_printable(p1.is_printable)
             {
             }
 
             ChunkStats(size_t _offset, size_t _size)
-                : size(_size), offset(_offset)
+                : size(_size), offset(_offset), is_printable(false)
             {
             }
 
@@ -102,7 +121,10 @@ namespace pesieve {
                 outs << ",\n";
                 OUT_PADDED(outs, level, "\"size\" : ");
                 outs << std::hex << "\"" << size << "\"";
-                
+                outs << ",\n";
+                OUT_PADDED(outs, level, "\"is_printable\" : ");
+                outs << std::dec << is_printable;
+
                 std::set<T> values;
                 size_t freq = getMostFrequentValues(histogram, values);
                 if (freq && values.size()) {
@@ -125,11 +147,13 @@ namespace pesieve {
             void summarize()
             {
                 entropy = calcShannonEntropy(histogram, size);
+                is_printable = isAllPrintable(histogram);
             }
 
             double entropy;
             size_t size;
             size_t offset;
+            bool is_printable;
             std::map<T, size_t> histogram;
         };
 
