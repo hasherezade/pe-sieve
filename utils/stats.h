@@ -212,10 +212,9 @@ namespace pesieve {
             AreaStatsCalculator(T _data[], size_t _elements)
                 :data(_data), elements(_elements)
             {
-                stats.currArea = ChunkStats<T>(0, elements);
             }
 
-            bool fill()
+            bool fill(AreaStats<T> &stats)
             {
                 if (!data || !elements) return false;
 
@@ -244,8 +243,6 @@ namespace pesieve {
                 stats.summarize();
                 return true;
             }
-
-            AreaStats<T> stats;
 
         private:
             T *data;

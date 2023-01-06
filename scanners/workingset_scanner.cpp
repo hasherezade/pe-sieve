@@ -82,18 +82,26 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 		// failed to load memory page
 		return nullptr;
 	}
+	//report about shellcode:
+	ULONGLONG region_start = _memPage.region_start;
+	const size_t region_size = size_t(_memPage.region_end - region_start);
+	WorkingSetScanReport* my_report = new WorkingSetScanReport((HMODULE)region_start, region_size, SCAN_NOT_SUSPICIOUS);
+	if (!my_report) {
+		return nullptr;
+	}
 	BYTE mFreqVal = 0;
 	double entropy = 0;
-	bool isStatFilled = false;
 	util::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(), _memPage.getLoadedSize());
-	if (statsCalc.fill()) {
-		isStatFilled = true;
-		mFreqVal = util::getMostFrequentValue<BYTE>(statsCalc.stats.currArea.histogram);
-		entropy = statsCalc.stats.currArea.entropy;
+	// fill the stats directly in the report
+	if (statsCalc.fill(my_report->stats)) {
+		mFreqVal = util::getMostFrequentValue<BYTE>(my_report->stats.currArea.histogram);
+		entropy = my_report->stats.currArea.entropy;
 	}
 	const bool code = isCode(_memPage); // check for shellcode patterns
 	bool isDetected = code || (mFreqVal != 0 && entropy > ENTROPY_TRESHOLD);
 	if (!isDetected) {
+		// do not keep reports for not suspicious areas
+		delete my_report;
 		return nullptr;
 	}
 #ifdef _DEBUG
@@ -101,15 +109,9 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 		std::cout << "Most freq value: " << std::hex << (UINT)mFreqVal << " IsCode: " << code << " Entropy: " << entropy << "\n";
 	}
 #endif
-	//report about shellcode:
-	ULONGLONG region_start = _memPage.region_start;
-	const size_t region_size = size_t (_memPage.region_end - region_start);
-	WorkingSetScanReport *my_report = new WorkingSetScanReport((HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
+	my_report->status = SCAN_SUSPICIOUS;
 	my_report->has_pe = isScannedAsModule(_memPage) && this->processReport.hasModule(_memPage.region_start);
-	my_report->has_shellcode = true;
-	if (isStatFilled) {
-		my_report->stats = statsCalc.stats;
-	}
+	my_report->has_shellcode = code;
 	return my_report;
 }
 

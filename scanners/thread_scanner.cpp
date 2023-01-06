@@ -262,8 +262,7 @@ bool pesieve::ThreadScanner::calcAreaStats(ThreadScanReport* my_report)
 		return false;
 	}
 	util::AreaStatsCalculator<BYTE> statsCalc(mem.getLoadedData(), mem.getLoadedSize());
-	if (statsCalc.fill()) {
-		my_report->stats = statsCalc.stats;
+	if (statsCalc.fill(my_report->stats)) {
 		return true;
 	}
 	return false;
