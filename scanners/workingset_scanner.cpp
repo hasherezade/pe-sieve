@@ -96,16 +96,14 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 	if (!my_report) {
 		return nullptr;
 	}
-	BYTE mFreqVal = 0;
-	double entropy = 0;
+	bool has_sus_stats = false;
 	util::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(), _memPage.getLoadedSize());
 	// fill the stats directly in the report
 	if (statsCalc.fill(my_report->stats)) {
-		mFreqVal = util::getMostFrequentValue<BYTE>(my_report->stats.currArea.histogram);
-		entropy = my_report->stats.currArea.entropy;
+		has_sus_stats = isSuspiciousByStats(my_report);
 	}
 	const bool code = isCode(_memPage); // check for shellcode patterns
-	bool isDetected = code || isSuspiciousByStats(my_report);
+	const bool isDetected = code || has_sus_stats;
 	if (!isDetected) {
 		// do not keep reports for not suspicious areas
 		delete my_report;
