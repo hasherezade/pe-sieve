@@ -141,7 +141,7 @@ set (utils_srcs
 	utils/process_reflection.cpp
 	utils/console_color.cpp
 	utils/strings_util.cpp
-	utils/stats.cpp
+	utils/stats_analyzer.cpp
 )
 
 set (utils_hdrs
@@ -159,6 +159,7 @@ set (utils_hdrs
 	utils/console_color.h
 	utils/strings_util.h
 	utils/stats.h
+	utils/stats_analyzer.h
 )
 
 set (params_info_hdrs

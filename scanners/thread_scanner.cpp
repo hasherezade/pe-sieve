@@ -2,7 +2,7 @@
 #include <peconv.h>
 #include "../utils/process_util.h"
 #include "../utils/ntddk.h"
-#include "../utils/stats.h"
+#include "../utils/stats_analyzer.h"
 #include "mempage_data.h"
 
 #include <dbghelp.h>
@@ -270,10 +270,8 @@ bool pesieve::ThreadScanner::calcAreaStats(ThreadScanReport* my_report)
 
 bool pesieve::ThreadScanner::isSuspiciousByStats(ThreadScanReport* my_report)
 {
-	if (my_report->stats.currArea.entropy < ENTROPY_TRESHOLD) {
-		return false;
-	}
-	return true;
+	if (!my_report) return false;
+	return util::isSuspicious(my_report->stats, my_report->area_info);
 }
 
 bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx  &c)

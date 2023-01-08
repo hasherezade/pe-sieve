@@ -11,7 +11,7 @@
 
 #include "../utils/format_util.h"
 #include "../utils/workingset_enum.h"
-#include "../utils/stats.h"
+#include "../utils/stats_analyzer.h"
 #include "process_feature_scanner.h"
 #include "process_details.h"
 
@@ -72,6 +72,8 @@ namespace pesieve {
 			if (stats.isFilled()) {
 				outs << ",\n";
 				stats.toJSON(outs, level);
+				outs << ",\n";
+				area_info.toJSON(outs, level);
 			}
 		}
 
@@ -80,6 +82,7 @@ namespace pesieve {
 		bool has_pe;
 		bool has_shellcode;
 		util::AreaStats<BYTE> stats;
+		util::AreaInfo area_info;
 		DWORD protection;
 		DWORD mapping_type;
 		std::string mapped_name; //if the region is mapped from a file
@@ -120,6 +123,7 @@ namespace pesieve {
 		bool isPotentiallyExecutable(MemPageData &memPageData, const t_data_scan_mode &mode);
 		bool isCode(MemPageData &memPageData);
 		WorkingSetScanReport* scanExecutableArea(MemPageData &memPageData);
+		bool isSuspiciousByStats(WorkingSetScanReport* my_report);
 
 		const process_details pDetails;
 		const util::mem_region_info memRegion;

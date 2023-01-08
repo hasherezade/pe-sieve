@@ -4,7 +4,7 @@
 
 #include "module_scanner.h"
 #include "../utils/threads_util.h"
-#include "../utils/stats.h"
+#include "../utils/stats_analyzer.h"
 
 namespace pesieve {
 
@@ -49,6 +49,8 @@ namespace pesieve {
 			if (stats.isFilled()) {
 				outs << ",\n";
 				stats.toJSON(outs, level);
+				outs << ",\n";
+				area_info.toJSON(outs, level);
 			}
 		}
 
@@ -67,6 +69,7 @@ namespace pesieve {
 		DWORD thread_state;
 		DWORD thread_wait_reason;
 		util::AreaStats<BYTE> stats;
+		util::AreaInfo area_info;
 		bool entropy_filled;
 
 	protected:

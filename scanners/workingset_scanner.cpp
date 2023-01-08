@@ -6,7 +6,7 @@
 #include "../utils/path_converter.h"
 #include "../utils/workingset_enum.h"
 #include "../utils/artefacts_util.h"
-#include "../utils/stats.h"
+#include "../utils/stats_analyzer.h"
 
 using namespace pesieve;
 using namespace pesieve::util;
@@ -60,6 +60,13 @@ bool pesieve::WorkingSetScanner::isPotentiallyExecutable(MemPageData &memPage, c
 	return false;
 }
 
+bool pesieve::WorkingSetScanner::isSuspiciousByStats(WorkingSetScanReport* my_report)
+{
+	if (!my_report) return false;
+
+	return util::isSuspicious(my_report->stats, my_report->area_info);
+}
+
 WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData &_memPage)
 {
 	if (!_memPage.load()) {
@@ -98,7 +105,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 		entropy = my_report->stats.currArea.entropy;
 	}
 	const bool code = isCode(_memPage); // check for shellcode patterns
-	bool isDetected = code || (mFreqVal != 0 && entropy > ENTROPY_TRESHOLD);
+	bool isDetected = code || isSuspiciousByStats(my_report);
 	if (!isDetected) {
 		// do not keep reports for not suspicious areas
 		delete my_report;

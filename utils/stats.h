@@ -4,8 +4,6 @@
 #include <set>
 #include "format_util.h"
 
-#define ENTROPY_TRESHOLD 1.5
-
 #define IS_ENDLINE(c) (c == 0x0A || c == 0xD)
 #define IS_PRINTABLE(c) ((c >= 0x20 && c < 0x7f) || IS_ENDLINE(c))
 
@@ -38,7 +36,7 @@ namespace pesieve {
 
         // return the most frequent value
         template <typename T>
-        T getMostFrequentValue(IN std::map<T, size_t>& histogram)
+        T getMostFrequentValue(IN const std::map<T, size_t>& histogram)
         {
             T mVal = 0;
             size_t mFreq = 0;
@@ -191,7 +189,7 @@ namespace pesieve {
                 OUT_PADDED(outs, level, "}");
             }
 
-            bool isFilled()
+            bool isFilled() const
             {
                 return (currArea.size != 0) ? true : false;
             }
