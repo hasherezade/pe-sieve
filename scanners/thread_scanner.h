@@ -94,8 +94,8 @@ namespace pesieve {
 		static bool InitSymbols(HANDLE hProc);
 		static bool FreeSymbols(HANDLE hProc);
 
-		ThreadScanner(HANDLE hProc, bool _isReflection, const util::thread_info& _info, ModulesInfo& _modulesInfo, peconv::ExportsMapper* _exportsMap)
-			: ProcessFeatureScanner(hProc), isReflection(_isReflection),
+		ThreadScanner(HANDLE hProc, bool _isReflection, const util::thread_info& _info, ModulesInfo& _modulesInfo, peconv::ExportsMapper* _exportsMap, pesieve::t_params _args)
+			: ProcessFeatureScanner(hProc), isReflection(_isReflection), args(_args),
 			info(_info), modulesInfo(_modulesInfo), exportsMap(_exportsMap)
 		{
 		}
@@ -116,6 +116,8 @@ namespace pesieve {
 		const util::thread_info& info;
 		ModulesInfo& modulesInfo;
 		peconv::ExportsMapper* exportsMap;
+
+		pesieve::t_params args;
 	};
 
 }; //namespace pesieve

@@ -294,12 +294,12 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 
 	my_report->thread_ip = susp_addr;
 	my_report->status = SCAN_SUSPICIOUS;
-	const bool statsFilled = calcAreaStats(my_report);
-#ifndef NO_ENTROPY_CHECK
-	if (statsFilled && !isSuspiciousByStats(my_report)){
-		my_report->status = SCAN_NOT_SUSPICIOUS;
+	if (this->args.stats) {
+		const bool statsFilled = calcAreaStats(my_report);
+		if (statsFilled && !isSuspiciousByStats(my_report)) {
+			my_report->status = SCAN_NOT_SUSPICIOUS;
+		}
 	}
-#endif
 	return true;
 }
 

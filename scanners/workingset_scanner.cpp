@@ -97,10 +97,12 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 		return nullptr;
 	}
 	bool has_sus_stats = false;
-	util::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(), _memPage.getLoadedSize());
-	// fill the stats directly in the report
-	if (statsCalc.fill(my_report->stats)) {
-		has_sus_stats = isSuspiciousByStats(my_report);
+	if (this->args.stats) {
+		util::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(), _memPage.getLoadedSize());
+		// fill the stats directly in the report
+		if (statsCalc.fill(my_report->stats)) {
+			has_sus_stats = isSuspiciousByStats(my_report);
+		}
 	}
 	const bool code = isCode(_memPage); // check for shellcode patterns
 	const bool isDetected = code || has_sus_stats;
