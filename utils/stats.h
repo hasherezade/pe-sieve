@@ -180,13 +180,14 @@ namespace pesieve {
         template <typename T>
         struct AreaStats {
             AreaStats()
-                : biggestChunk(nullptr)
+                : biggestChunkIndex(0)
             {
             }
 
             // Copy constructor
             AreaStats(const AreaStats& p1)
-                : currArea(p1.currArea), biggestChunk(p1.biggestChunk)
+                : currArea(p1.currArea), 
+                chunks(p1.chunks.begin(), p1.chunks.end()), biggestChunkIndex(p1.biggestChunkIndex)
             {
             }
 
@@ -208,11 +209,11 @@ namespace pesieve {
                 currArea.fieldsToJSON(outs, level + 1);
                 outs << "\n";
                 OUT_PADDED(outs, level, "}");
-                if (biggestChunk) {
+                if (chunks.size() && biggestChunkIndex < chunks.size()) {
                     outs << ",\n";
                     // print chunk stats
                     OUT_PADDED(outs, level, "\"biggest_chunk\" : {\n");
-                    biggestChunk->fieldsToJSON(outs, level + 1);
+                    chunks[biggestChunkIndex].fieldsToJSON(outs, level + 1);
                     outs << "\n";
                     OUT_PADDED(outs, level, "}");
                 }
@@ -232,8 +233,8 @@ namespace pesieve {
             }
 
             ChunkStats<T> currArea; // stats from the whole area
-            ChunkStats<T> *biggestChunk;//< biggest continuous chunk (not interrupted by a defined delimiter)
             std::vector< ChunkStats<T> > chunks;//< all chunks found in the area
+            size_t biggestChunkIndex;
         };
 
         template <typename T>
@@ -249,7 +250,7 @@ namespace pesieve {
                 if (!data || !elements) return false;
 
                 const T kDelim = 0; // delimiter of continuous chunks
-                stats.biggestChunk = nullptr;
+                //stats.biggestChunk = nullptr;
                 //
                 ChunkStats<T> currChunk;
                 size_t biggestChunkSize = 0;
@@ -258,14 +259,17 @@ namespace pesieve {
                     const T val = data[dataIndex];
                     stats.currArea.append(val);
 
-                    if (val == kDelim) {
-                        if (currChunk.size > biggestChunkSize) { // delimiter found, finish the chunk
+                    if (val == kDelim) { // delimiter found, finish the chunk
+                        if (currChunk.size > 1) { // process chunks biffer than 1 byte
                             size_t index = stats.chunks.size();
                             currChunk.summarize();
                             stats.chunks.push_back(currChunk);
-                            // set current chunk as the biggest
-                            biggestChunkSize = currChunk.size;
-                            stats.biggestChunk = &stats.chunks.at(index);
+
+                            if (currChunk.size > biggestChunkSize) {
+                                // set current chunk as the biggest
+                                biggestChunkSize = currChunk.size;
+                                stats.biggestChunkIndex = index;
+                            }
                         }
                         currChunk = ChunkStats<T>(dataIndex, 0);
                     }
