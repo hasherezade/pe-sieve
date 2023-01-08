@@ -2,10 +2,13 @@
 
 #include <map>
 #include <set>
+#include <vector>
 #include "format_util.h"
 
 #define IS_ENDLINE(c) (c == 0x0A || c == 0xD)
 #define IS_PRINTABLE(c) ((c >= 0x20 && c < 0x7f) || IS_ENDLINE(c))
+
+#define SCAN_STRINGS
 
 namespace pesieve {
 
@@ -90,26 +93,41 @@ namespace pesieve {
         struct ChunkStats {
             //
             ChunkStats() 
-                : size(0), offset(0), entropy(0), is_printable(false)
+                : size(0), offset(0), entropy(0), longestStr(0), prevVal(0)
             {
             }
 
             // Copy constructor
             ChunkStats(const ChunkStats& p1)
-                : size(p1.size), offset(p1.offset), histogram(p.histogram.begin(), p.histogram.end())
-                entropy(p1.entropy), is_printable(p1.is_printable)
+                : size(p1.size), offset(p1.offset), histogram(p1.histogram.begin(), p1.histogram.end()),
+                entropy(p1.entropy), longestStr(p1.longestStr), lastStr(p1.lastStr), prevVal(p1.prevVal)
             {
             }
 
             ChunkStats(size_t _offset, size_t _size)
-                : size(_size), offset(_offset), is_printable(false)
+                : size(_size), offset(_offset), entropy(0), longestStr(0), prevVal(0)
             {
             }
 
             void append(T val)
             {
+#ifdef SCAN_STRINGS
+                if (IS_PRINTABLE(val)) {
+                    if (prevVal && IS_PRINTABLE(prevVal)) {
+                        lastStr += char(val);
+                    }
+                }
+                else if (!val) {
+                    if (lastStr.length() > longestStr) {
+                        longestStr = lastStr.length();
+                        //std::cout << "-----> lastStr:" << lastStr << "\n";
+                    }
+                    lastStr.clear();
+                }
+#endif // SCAN_STRINGS
                 size++;
                 histogram[val]++;
+                prevVal = val;
             }
 
             const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
@@ -119,10 +137,11 @@ namespace pesieve {
                 outs << ",\n";
                 OUT_PADDED(outs, level, "\"size\" : ");
                 outs << std::hex << "\"" << size << "\"";
+#ifdef SCAN_STRINGS
                 outs << ",\n";
-                OUT_PADDED(outs, level, "\"is_printable\" : ");
-                outs << std::dec << is_printable;
-
+                OUT_PADDED(outs, level, "\"longest_str\" : ");
+                outs << std::dec << longestStr;
+#endif // SCAN_STRINGS
                 std::set<T> values;
                 size_t freq = getMostFrequentValues(histogram, values);
                 if (freq && values.size()) {
@@ -145,19 +164,23 @@ namespace pesieve {
             void summarize()
             {
                 entropy = calcShannonEntropy(histogram, size);
-                is_printable = isAllPrintable(histogram);
+                //is_printable = isAllPrintable(histogram);
             }
 
             double entropy;
             size_t size;
             size_t offset;
-            bool is_printable;
+            //bool is_printable;
+            T prevVal;
+            size_t longestStr; // the longest ASCII string in the chunk
+            std::string lastStr;
             std::map<T, size_t> histogram;
         };
 
         template <typename T>
         struct AreaStats {
             AreaStats()
+                : biggestChunk(nullptr)
             {
             }
 
@@ -178,15 +201,24 @@ namespace pesieve {
 
             const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
             {
+                OUT_PADDED(outs, level, "\"chunks_count\" : ");
+                outs << std::dec << chunks.size();
+                outs << ",\n";
                 OUT_PADDED(outs, level, "\"full_area\" : {\n");
                 currArea.fieldsToJSON(outs, level + 1);
                 outs << "\n";
-                OUT_PADDED(outs, level, "},\n");
-                // print chunk stats
-                OUT_PADDED(outs, level, "\"biggest_chunk\" : {\n");
-                biggestChunk.fieldsToJSON(outs, level + 1);
-                outs << "\n";
                 OUT_PADDED(outs, level, "}");
+                if (biggestChunk) {
+                    outs << ",\n";
+                    // print chunk stats
+                    OUT_PADDED(outs, level, "\"biggest_chunk\" : {\n");
+                    biggestChunk->fieldsToJSON(outs, level + 1);
+                    outs << "\n";
+                    OUT_PADDED(outs, level, "}");
+                }
+                else {
+                    outs << "\n";
+                }
             }
 
             bool isFilled() const
@@ -197,11 +229,11 @@ namespace pesieve {
             void summarize()
             {
                 currArea.summarize();
-                biggestChunk.summarize();
             }
 
             ChunkStats<T> currArea; // stats from the whole area
-            ChunkStats<T> biggestChunk;//< biggest continuous chunk (not interrupted by a defined delimiter)
+            ChunkStats<T> *biggestChunk;//< biggest continuous chunk (not interrupted by a defined delimiter)
+            std::vector< ChunkStats<T> > chunks;//< all chunks found in the area
         };
 
         template <typename T>
@@ -217,17 +249,23 @@ namespace pesieve {
                 if (!data || !elements) return false;
 
                 const T kDelim = 0; // delimiter of continuous chunks
-                stats.biggestChunk = ChunkStats<T>();
+                stats.biggestChunk = nullptr;
                 //
                 ChunkStats<T> currChunk;
+                size_t biggestChunkSize = 0;
                 T lastVal = 0;
                 for (size_t dataIndex = 0; dataIndex < elements; ++dataIndex) {
                     const T val = data[dataIndex];
                     stats.currArea.append(val);
 
                     if (val == kDelim) {
-                        if (currChunk.size > stats.biggestChunk.size) { // delimiter found, finish the chunk
-                            stats.biggestChunk = currChunk;
+                        if (currChunk.size > biggestChunkSize) { // delimiter found, finish the chunk
+                            size_t index = stats.chunks.size();
+                            currChunk.summarize();
+                            stats.chunks.push_back(currChunk);
+                            // set current chunk as the biggest
+                            biggestChunkSize = currChunk.size;
+                            stats.biggestChunk = &stats.chunks.at(index);
                         }
                         currChunk = ChunkStats<T>(dataIndex, 0);
                     }
