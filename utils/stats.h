@@ -105,8 +105,9 @@ namespace pesieve {
 
             // Copy constructor
             ChunkStats(const ChunkStats& p1)
-                : size(p1.size), offset(p1.offset), histogram(p1.histogram.begin(), p1.histogram.end()),
-                entropy(p1.entropy), longestStr(p1.longestStr), lastStr(p1.lastStr), prevVal(p1.prevVal), stringsCount(p1.stringsCount)
+                : size(p1.size), offset(p1.offset), 
+                entropy(p1.entropy), longestStr(p1.longestStr), lastStr(p1.lastStr), prevVal(p1.prevVal), stringsCount(p1.stringsCount),
+                histogram(p1.histogram)
 #ifdef _KEEP_STR
                 , allStrings(p1.allStrings)
 #endif //_KEEP_STR

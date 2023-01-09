@@ -40,7 +40,7 @@ struct Buffer
 };
 
 
-void printHistogram(ChunkStats<BYTE> currArea, std::stringstream& outs)
+void printHistogram(ChunkStats<BYTE> &currArea, std::stringstream& outs)
 {
     for (auto itr = currArea.histogram.begin(); itr != currArea.histogram.end(); ++itr) {
         outs << std::hex << std::setfill('0') << std::setw(2) << (UINT)itr->first
@@ -50,7 +50,7 @@ void printHistogram(ChunkStats<BYTE> currArea, std::stringstream& outs)
     }
 }
 
-void printStrings(ChunkStats<BYTE> currArea, std::stringstream& outs)
+void printStrings(ChunkStats<BYTE> &currArea, std::stringstream& outs)
 {
 #ifdef _KEEP_STR
     outs << "Strings: "  << currArea.allStrings.size() << "\n";
@@ -89,6 +89,14 @@ int main(size_t argc, char* argv[])
     printStrings(stats.currArea, outs);
     outs << "---\n";
 
+    AreaInfo info;
+    if (isSuspicious(stats, info)) {
+        outs << "Suspicious!\n";
+    }
+    else {
+        outs << "NOT Suspicious!\n";
+    }
+    info.toJSON(outs, 0);
     std::cout << outs.str();
     return 0;
 }
