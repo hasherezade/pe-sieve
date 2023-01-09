@@ -107,7 +107,8 @@ namespace pesieve {
             ChunkStats(const ChunkStats& p1)
                 : size(p1.size), offset(p1.offset), 
                 entropy(p1.entropy), longestStr(p1.longestStr), lastStr(p1.lastStr), prevVal(p1.prevVal), stringsCount(p1.stringsCount),
-                histogram(p1.histogram)
+                histogram(p1.histogram),
+                frequencies(p1.frequencies)
 #ifdef _KEEP_STR
                 , allStrings(p1.allStrings)
 #endif //_KEEP_STR
@@ -179,6 +180,10 @@ namespace pesieve {
             void summarize()
             {
                 entropy = calcShannonEntropy(histogram, size);
+
+                for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
+                    frequencies[itr->second] = itr->first;
+                }
             }
 
             double entropy;
@@ -191,6 +196,7 @@ namespace pesieve {
             std::string lastStr;
             size_t stringsCount;
             std::map<T, size_t> histogram;
+            std::map<size_t, T> frequencies;
 #ifdef _KEEP_STR
             std::vector< std::string > allStrings;
 #endif

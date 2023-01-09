@@ -11,7 +11,7 @@ namespace pesieve {
             AreaInfo()
                 : fullAreaObfuscated(false),
                 fullAreaEncrypted(false),
-                containsEncryptedBlocks(false)
+                possibleCode(false)
             {
             }
 
@@ -19,7 +19,7 @@ namespace pesieve {
             AreaInfo(const AreaInfo& p1)
                 : fullAreaObfuscated(p1.fullAreaObfuscated),
                 fullAreaEncrypted(p1.fullAreaEncrypted),
-                containsEncryptedBlocks(p1.containsEncryptedBlocks)
+                possibleCode(p1.possibleCode)
             {
             }
 
@@ -42,13 +42,13 @@ namespace pesieve {
                 outs << std::dec << fullAreaEncrypted;
                 outs << ",\n";
 
-                OUT_PADDED(outs, level, "\"has_encrypted_blocks\" : ");
-                outs << std::dec << containsEncryptedBlocks;
+                OUT_PADDED(outs, level, "\"possible_code\" : ");
+                outs << std::dec << possibleCode;
             }
 
             bool fullAreaObfuscated;
             bool fullAreaEncrypted;
-            bool containsEncryptedBlocks;
+            bool possibleCode;
         };
 
         bool isSuspicious(IN const AreaStats<BYTE>& stats, OUT AreaInfo& info);
