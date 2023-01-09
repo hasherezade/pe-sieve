@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <map>
 #include <set>
 #include <vector>
@@ -93,19 +94,22 @@ namespace pesieve {
         struct ChunkStats {
             //
             ChunkStats() 
-                : size(0), offset(0), entropy(0), longestStr(0), prevVal(0)
+                : size(0), offset(0), entropy(0), longestStr(0), prevVal(0), stringsCount(0)
+            {
+            }
+
+            ChunkStats(size_t _offset, size_t _size)
+                : size(_size), offset(_offset), entropy(0), longestStr(0), prevVal(0), stringsCount(0)
             {
             }
 
             // Copy constructor
             ChunkStats(const ChunkStats& p1)
                 : size(p1.size), offset(p1.offset), histogram(p1.histogram.begin(), p1.histogram.end()),
-                entropy(p1.entropy), longestStr(p1.longestStr), lastStr(p1.lastStr), prevVal(p1.prevVal)
-            {
-            }
-
-            ChunkStats(size_t _offset, size_t _size)
-                : size(_size), offset(_offset), entropy(0), longestStr(0), prevVal(0)
+                entropy(p1.entropy), longestStr(p1.longestStr), lastStr(p1.lastStr), prevVal(p1.prevVal), stringsCount(p1.stringsCount)
+#ifdef _KEEP_STR
+                , allStrings(p1.allStrings)
+#endif //_KEEP_STR
             {
             }
 
@@ -113,15 +117,19 @@ namespace pesieve {
             {
 #ifdef SCAN_STRINGS
                 if (IS_PRINTABLE(val)) {
-                    if (prevVal && IS_PRINTABLE(prevVal)) {
-                        lastStr += char(val);
-                    }
+                    lastStr += char(val);
                 }
                 else {
                     if (val == 0) { //clean ending
+                        if (lastStr.length()) {
+                            stringsCount++;
+                        }
                         if (lastStr.length() > longestStr) {
                             longestStr = lastStr.length();
-                            //std::cout << "-----> lastStr:" << lastStr << "\n";
+#ifdef _KEEP_STR
+                            allStrings.push_back(lastStr);
+#endif //_KEEP_STR
+                            //std::cout << "-----> lastStr:" << lastStr  << "\n";
                         }
                     }
                     lastStr.clear();
@@ -141,9 +149,13 @@ namespace pesieve {
                 outs << std::hex << "\"" << size << "\"";
 #ifdef SCAN_STRINGS
                 outs << ",\n";
-                OUT_PADDED(outs, level, "\"longest_str\" : ");
+                OUT_PADDED(outs, level, "\"str_count\" : ");
+                outs << std::dec << stringsCount;
+                outs << ",\n";
+                OUT_PADDED(outs, level, "\"str_longest_len\" : ");
                 outs << std::dec << longestStr;
 #endif // SCAN_STRINGS
+
                 std::set<T> values;
                 size_t freq = getMostFrequentValues(histogram, values);
                 if (freq && values.size()) {
@@ -174,7 +186,11 @@ namespace pesieve {
 
             T prevVal;
             size_t longestStr; // the longest ASCII string in the chunk
+#ifdef _KEEP_STR
+            std::vector< std::string > allStrings;
+#endif
             std::string lastStr;
+            size_t stringsCount;
             std::map<T, size_t> histogram;
         };
 
