@@ -117,10 +117,12 @@ namespace pesieve {
                         lastStr += char(val);
                     }
                 }
-                else if (!val) {
-                    if (lastStr.length() > longestStr) {
-                        longestStr = lastStr.length();
-                        //std::cout << "-----> lastStr:" << lastStr << "\n";
+                else {
+                    if (val == 0) { //clean ending
+                        if (lastStr.length() > longestStr) {
+                            longestStr = lastStr.length();
+                            //std::cout << "-----> lastStr:" << lastStr << "\n";
+                        }
                     }
                     lastStr.clear();
                 }
@@ -179,14 +181,12 @@ namespace pesieve {
         template <typename T>
         struct AreaStats {
             AreaStats()
-                //: biggestChunkIndex(0)
             {
             }
 
             // Copy constructor
             AreaStats(const AreaStats& p1)
-                : currArea(p1.currArea)//, 
-                //(p1.chunks.begin(), p1.chunks.end()), biggestChunkIndex(p1.biggestChunkIndex)
+                : currArea(p1.currArea)
             {
             }
 
@@ -201,24 +201,10 @@ namespace pesieve {
 
             const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
             {
-                /*OUT_PADDED(outs, level, "\"chunks_count\" : ");
-                outs << std::dec << chunks.size();
-                outs << ",\n";*/
                 OUT_PADDED(outs, level, "\"full_area\" : {\n");
                 currArea.fieldsToJSON(outs, level + 1);
                 outs << "\n";
                 OUT_PADDED(outs, level, "}");
-                /*if (chunks.size() && biggestChunkIndex < chunks.size()) {
-                    outs << ",\n";
-                    // print chunk stats
-                    OUT_PADDED(outs, level, "\"biggest_chunk\" : {\n");
-                    chunks[biggestChunkIndex].fieldsToJSON(outs, level + 1);
-                    outs << "\n";
-                    OUT_PADDED(outs, level, "}");
-                }
-                else {
-                    outs << "\n";
-                }*/
             }
 
             bool isFilled() const
@@ -232,8 +218,6 @@ namespace pesieve {
             }
 
             ChunkStats<T> currArea; // stats from the whole area
-            //std::vector< ChunkStats<T> > chunks;//< all chunks found in the area
-            //size_t biggestChunkIndex;
         };
 
         template <typename T>
@@ -248,37 +232,10 @@ namespace pesieve {
             {
                 if (!data || !elements) return false;
 
-                const T kDelim = 0; // delimiter of continuous chunks
-                //stats.biggestChunk = nullptr;
-                //
-                //ChunkStats<T> currChunk;
-                // biggestChunkSize = 0;
                 T lastVal = 0;
                 for (size_t dataIndex = 0; dataIndex < elements; ++dataIndex) {
                     const T val = data[dataIndex];
                     stats.currArea.append(val);
-
-                    /*if (val == kDelim) { // delimiter found, finish the chunk
-                        if (currChunk.size > 1) { // process chunks biffer than 1 byte
-                            size_t index = stats.chunks.size();
-                            currChunk.summarize();
-                            stats.chunks.push_back(currChunk);
-
-                            if (currChunk.size > biggestChunkSize) {
-                                // set current chunk as the biggest
-                                biggestChunkSize = currChunk.size;
-                                stats.biggestChunkIndex = index;
-                            }
-                        }
-                        currChunk = ChunkStats<T>(dataIndex, 0);
-                    }
-                    if (lastVal == kDelim && val != kDelim) {
-                        // start a new chunk
-                        currChunk = ChunkStats<T>(dataIndex, 0);
-                    }
-                    currChunk.append(val);
-                    lastVal = val;
-                */
                 }
                 stats.summarize();
                 return true;
