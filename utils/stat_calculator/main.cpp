@@ -1,5 +1,8 @@
 #include <windows.h>
 #include <iostream>
+
+#define _KEEP_STR
+#include "../stats.h"
 #include "../stats_analyzer.h"
 
 using namespace pesieve::util;
@@ -47,6 +50,17 @@ void printHistogram(ChunkStats<BYTE> currArea, std::stringstream& outs)
     }
 }
 
+void printStrings(ChunkStats<BYTE> currArea, std::stringstream& outs)
+{
+#ifdef _KEEP_STR
+    outs << "Strings: "  << currArea.allStrings.size() << "\n";
+    for (auto itr = currArea.allStrings.begin(); itr != currArea.allStrings.end(); ++itr) {
+        const std::string str = *itr;
+        outs << str << "\n";
+    }
+#endif
+}
+
 int main(size_t argc, char* argv[])
 {
     if (argc < 2) {
@@ -68,9 +82,13 @@ int main(size_t argc, char* argv[])
     }
     std::stringstream outs;
     stats.toJSON(outs, 0);
-    outs << "\n";
+    outs << "---\n";
     printHistogram(stats.currArea, outs);
-    std::cout << outs.str();
 
+    outs << "---\n";
+    printStrings(stats.currArea, outs);
+    outs << "---\n";
+
+    std::cout << outs.str();
     return 0;
 }
