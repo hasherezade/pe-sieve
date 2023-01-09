@@ -186,12 +186,13 @@ namespace pesieve {
 
             T prevVal;
             size_t longestStr; // the longest ASCII string in the chunk
-#ifdef _KEEP_STR
-            std::vector< std::string > allStrings;
-#endif
+
             std::string lastStr;
             size_t stringsCount;
             std::map<T, size_t> histogram;
+#ifdef _KEEP_STR
+            std::vector< std::string > allStrings;
+#endif
         };
 
         template <typename T>
