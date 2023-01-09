@@ -164,13 +164,12 @@ namespace pesieve {
             void summarize()
             {
                 entropy = calcShannonEntropy(histogram, size);
-                //is_printable = isAllPrintable(histogram);
             }
 
             double entropy;
             size_t size;
             size_t offset;
-            //bool is_printable;
+
             T prevVal;
             size_t longestStr; // the longest ASCII string in the chunk
             std::string lastStr;
@@ -180,14 +179,14 @@ namespace pesieve {
         template <typename T>
         struct AreaStats {
             AreaStats()
-                : biggestChunkIndex(0)
+                //: biggestChunkIndex(0)
             {
             }
 
             // Copy constructor
             AreaStats(const AreaStats& p1)
-                : currArea(p1.currArea), 
-                chunks(p1.chunks.begin(), p1.chunks.end()), biggestChunkIndex(p1.biggestChunkIndex)
+                : currArea(p1.currArea)//, 
+                //(p1.chunks.begin(), p1.chunks.end()), biggestChunkIndex(p1.biggestChunkIndex)
             {
             }
 
@@ -202,14 +201,14 @@ namespace pesieve {
 
             const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
             {
-                OUT_PADDED(outs, level, "\"chunks_count\" : ");
+                /*OUT_PADDED(outs, level, "\"chunks_count\" : ");
                 outs << std::dec << chunks.size();
-                outs << ",\n";
+                outs << ",\n";*/
                 OUT_PADDED(outs, level, "\"full_area\" : {\n");
                 currArea.fieldsToJSON(outs, level + 1);
                 outs << "\n";
                 OUT_PADDED(outs, level, "}");
-                if (chunks.size() && biggestChunkIndex < chunks.size()) {
+                /*if (chunks.size() && biggestChunkIndex < chunks.size()) {
                     outs << ",\n";
                     // print chunk stats
                     OUT_PADDED(outs, level, "\"biggest_chunk\" : {\n");
@@ -219,7 +218,7 @@ namespace pesieve {
                 }
                 else {
                     outs << "\n";
-                }
+                }*/
             }
 
             bool isFilled() const
@@ -233,8 +232,8 @@ namespace pesieve {
             }
 
             ChunkStats<T> currArea; // stats from the whole area
-            std::vector< ChunkStats<T> > chunks;//< all chunks found in the area
-            size_t biggestChunkIndex;
+            //std::vector< ChunkStats<T> > chunks;//< all chunks found in the area
+            //size_t biggestChunkIndex;
         };
 
         template <typename T>
@@ -252,14 +251,14 @@ namespace pesieve {
                 const T kDelim = 0; // delimiter of continuous chunks
                 //stats.biggestChunk = nullptr;
                 //
-                ChunkStats<T> currChunk;
-                size_t biggestChunkSize = 0;
+                //ChunkStats<T> currChunk;
+                // biggestChunkSize = 0;
                 T lastVal = 0;
                 for (size_t dataIndex = 0; dataIndex < elements; ++dataIndex) {
                     const T val = data[dataIndex];
                     stats.currArea.append(val);
 
-                    if (val == kDelim) { // delimiter found, finish the chunk
+                    /*if (val == kDelim) { // delimiter found, finish the chunk
                         if (currChunk.size > 1) { // process chunks biffer than 1 byte
                             size_t index = stats.chunks.size();
                             currChunk.summarize();
@@ -279,6 +278,7 @@ namespace pesieve {
                     }
                     currChunk.append(val);
                     lastVal = val;
+                */
                 }
                 stats.summarize();
                 return true;

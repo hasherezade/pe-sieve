@@ -16,7 +16,7 @@ bool pesieve::util::isSuspicious(IN const AreaStats<BYTE>& stats, OUT AreaInfo& 
 
 	info.fullAreaObfuscated = (mFreqVal != 0 && entropy > ENTROPY_CODE_TRESHOLD); // possible XOR obfuscation, or block cipher
 	info.fullAreaEncrypted = entropy > ENTROPY_ENC_TRESHOLD; // strong encryption
-
+	/*
 	for (auto itr = stats.chunks.begin(); itr != stats.chunks.end(); itr++) {
 		const ChunkStats<BYTE> chunk = *itr;
 		if (chunk.entropy > ENTROPY_ENC_TRESHOLD) {
@@ -25,7 +25,7 @@ bool pesieve::util::isSuspicious(IN const AreaStats<BYTE>& stats, OUT AreaInfo& 
 
 		}
 	}
-
+	*/
 	const bool isEnc = (info.fullAreaEncrypted) ||
 		(info.fullAreaObfuscated && info.containsEncryptedBlocks);
 
