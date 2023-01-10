@@ -1,7 +1,7 @@
 #include "stats_analyzer.h"
 
 #define ENTROPY_DATA_TRESHOLD 1.5
-#define ENTROPY_CODE_TRESHOLD 5.5
+#define ENTROPY_CODE_TRESHOLD ENTROPY_DATA_TRESHOLD
 #define ENTROPY_ENC_TRESHOLD 6.0
 #define ENTROPY_STRONG_ENC_TRESHOLD 7.0
 using namespace pesieve::util;
@@ -42,15 +42,18 @@ bool pesieve::util::isSuspicious(IN const AreaStats<BYTE>& stats, OUT AreaInfo& 
 		}
 	}
 	if (entropy > ENTROPY_CODE_TRESHOLD) { // possible code
+		size_t points = 0;
 
-		if (getValRatio(stats, 0xFF) > 0.02 
-			&& getValRatio(stats, 0x8B) > 0.02)
-		{
+		if (getValRatio(stats, 0xFF) > 0.02) points++;
+		if (getValRatio(stats, 0x8B) > 0.02) points++;
+		if (getValRatio(stats, 0xCC) > 0.001) points++;
+		if (getValRatio(stats, 0x48) > 0.02) points++; // for x64
+		//std::cout << "POINTS: " << points << "\n";
+		if (points > 1) {
 			info.possibleCode = true;
 		}
 	}
 	const bool isEnc = (info.fullAreaEncrypted) ||
-		(info.fullAreaObfuscated && info.possibleCode);
-
+		info.fullAreaObfuscated || info.possibleCode;
 	return isEnc;
 }
