@@ -6,9 +6,21 @@
 #define ENTROPY_STRONG_ENC_TRESHOLD 7.0
 using namespace pesieve::util;
 
+
+double getValRatio(IN const AreaStats<BYTE>& stats, BYTE val)
+{
+	auto val_itr = stats.currArea.histogram.find(val);
+	double ratio = 0;
+	if (val_itr != stats.currArea.histogram.end()) {
+		ratio = ((double)val_itr->second / (double)stats.currArea.size);
+		//std::cout << "Val : " << std::hex << (UINT) val << " RATIO: " << ratio << "\n";
+	}
+	return ratio;
+}
+
 bool pesieve::util::isSuspicious(IN const AreaStats<BYTE>& stats, OUT AreaInfo& info)
 {
-	if (!stats.isFilled()) {
+	if (!stats.isFilled() || !stats.currArea.size) {
 		return false;
 	}
 
@@ -16,11 +28,24 @@ bool pesieve::util::isSuspicious(IN const AreaStats<BYTE>& stats, OUT AreaInfo& 
 	double entropy = stats.currArea.entropy;
 
 	info.fullAreaObfuscated = (mFreqVal != 0 && entropy > ENTROPY_DATA_TRESHOLD); // possible XOR obfuscation, or block cipher
-	info.fullAreaEncrypted = (entropy > ENTROPY_STRONG_ENC_TRESHOLD) || (mFreqVal != 0 && entropy > ENTROPY_ENC_TRESHOLD); // strong encryption
+	info.fullAreaEncrypted = (entropy > ENTROPY_STRONG_ENC_TRESHOLD);// strong encryption
+	if (mFreqVal != 0 && entropy > ENTROPY_ENC_TRESHOLD) {
+		if (stats.currArea.frequencies.size() > 1) {
+			auto fItr = stats.currArea.frequencies.begin(); // first one
+			auto eItr = stats.currArea.frequencies.rbegin(); // last one
+			// most common - least common ratio
+			double diff = ((double)(eItr->first - fItr->first)) / (double)stats.currArea.size;
+			//std::cout << "RATIO : " << fItr->first << " VS " << eItr->first << " DIFF: " << diff << "\n";
+			if (diff < 0.01) {
+				info.fullAreaEncrypted = true;
+			}
+		}
+	}
 	if (entropy > ENTROPY_CODE_TRESHOLD) { // possible code
-		double ff_ratio = ((double)stats.currArea.histogram.at(0xFF) / (double)stats.currArea.size);
-		double cc_ratio = ((double)stats.currArea.histogram.at(0xCC) / (double)stats.currArea.size);
-		if (ff_ratio > 0.01 && cc_ratio > 0.001) {
+
+		if (getValRatio(stats, 0xFF) > 0.02 
+			&& getValRatio(stats, 0x8B) > 0.02)
+		{
 			info.possibleCode = true;
 		}
 	}

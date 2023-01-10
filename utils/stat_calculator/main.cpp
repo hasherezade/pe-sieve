@@ -72,6 +72,8 @@ struct Buffer
 
 void printHistogram(ChunkStats<BYTE> &currArea, std::stringstream& outs)
 {
+    if (!currArea.size) return;
+
     outs << "Counts:\n";
     for (auto itr = currArea.histogram.begin(); itr != currArea.histogram.end(); ++itr) {
         outs << std::hex << std::setfill('0') << std::setw(2) << (UINT)itr->first
@@ -84,12 +86,21 @@ void printHistogram(ChunkStats<BYTE> &currArea, std::stringstream& outs)
 
 void printFrequencies(ChunkStats<BYTE>& currArea, std::stringstream& outs)
 {
-    outs << "Frequencies:\n";
-    for (auto itr = currArea.frequencies.begin(); itr != currArea.frequencies.end(); ++itr) {
-        outs << std::hex << std::setfill('0') << std::setw(2) << (UINT)itr->second
-            << " : " << IS_PRINTABLE(itr->second)
-            << " : " << std::dec << std::setfill(' ') << std::setw(5) << itr->first
-            << " : " << (double)itr->first / (double)currArea.size << "\n";
+    if (!currArea.size) return;
+
+    size_t max = 10;
+    outs << "Top "<< max <<" Frequencies:\n";
+    size_t i = 0;
+    for (auto itr1 = currArea.frequencies.rbegin(); itr1 != currArea.frequencies.rend() && i < max; ++itr1, ++i) {
+        std::set<BYTE> vals = itr1->second;
+        size_t counter = itr1->first;
+        for (auto itr2 = vals.begin(); itr2 != vals.end(); ++itr2) {
+            const BYTE val = *itr2;
+            outs << std::hex << std::setfill('0') << std::setw(2) << (UINT)val
+                << " : " << IS_PRINTABLE(val)
+                << " : " << std::dec << std::setfill(' ') << std::setw(5) << counter
+                << " : " << (double)counter / (double)currArea.size << "\n";
+        }
     }
 }
 
@@ -125,8 +136,10 @@ int main(size_t argc, char* argv[])
     std::stringstream outs;
     stats.toJSON(outs, 0);
     outs << "---\n";
-    printFrequencies(stats.currArea, outs);
+    printHistogram(stats.currArea, outs);
+    outs << "\n---\n";
 
+    printFrequencies(stats.currArea, outs);
     outs << "\n---\n";
     printStrings(stats.currArea, outs);
     outs << "\n---\n";
@@ -141,6 +154,7 @@ int main(size_t argc, char* argv[])
     info.toJSON(outs, 0);
     outs << "---\n";
     std::cout << outs.str();
+    std::cout << "Distinct frequencies: " << stats.currArea.frequencies.size() << "\n";
     std::cout << "Real start: " << buf.real_start << "\n";
     std::cout << "Real end: " << buf.real_end << "\n";
     std::cout << "Padding: " << buf.padding << " = 0x" << std::hex << buf.padding << "\n";

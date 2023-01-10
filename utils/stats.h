@@ -182,7 +182,9 @@ namespace pesieve {
                 entropy = calcShannonEntropy(histogram, size);
 
                 for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
-                    frequencies[itr->second] = itr->first;
+                    const size_t count = itr->second;
+                    const  T val = itr->first;
+                    frequencies[count].insert(val);
                 }
             }
 
@@ -196,7 +198,7 @@ namespace pesieve {
             std::string lastStr;
             size_t stringsCount;
             std::map<T, size_t> histogram;
-            std::map<size_t, T> frequencies;
+            std::map<size_t, std::set< T >>  frequencies;
 #ifdef _KEEP_STR
             std::vector< std::string > allStrings;
 #endif
