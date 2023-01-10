@@ -4,15 +4,24 @@
 #define _KEEP_STR
 #include "../stats.h"
 #include "../stats_analyzer.h"
+#include "../basic_buffer.h"
 
 using namespace pesieve::util;
 
-struct Buffer
+struct FileBuffer : public BasicBuffer
 {
-    Buffer()
-        : data(nullptr), data_size(0),
-        real_start(0), real_end(0), padding(0)
+    FileBuffer()
+        : BasicBuffer()
     {
+    }
+
+    ~FileBuffer()
+    {
+        if (this->isFilled()) {
+            free(data);
+            data = nullptr;
+            data_size = 0;
+        }
     }
 
     bool load(char* filename)
@@ -26,7 +35,7 @@ struct Buffer
         fseek(fp, 0, SEEK_END);
         size_t file_size = ftell(fp);
         fseek(fp, 0, SEEK_SET);
-
+        //TODO: different alloc
         data = (BYTE*)calloc(file_size, sizeof(BYTE));
         if (data) {
             data_size = fread(data, sizeof(BYTE), file_size, fp);
@@ -39,36 +48,8 @@ struct Buffer
         return false;
     }
 
-    void trim()
-    {
-        if (!data) return;
 
-        real_start = 0;
-        real_end = 0;
-        padding = 0;
-        for (size_t i = 0; i < data_size; i++, padding++) {
-            if (data[i] != 0) {
-                real_start = i;
-                break;
-            }
-        }
-
-        for (size_t i = data_size; i != 0; i--, padding++) {
-            if (data[i - 1] != 0) {
-                real_end = i;
-                break;
-            }
-        }
-    }
-
-    BYTE* data;
-    size_t data_size;
-
-    size_t real_start;
-    size_t real_end;
-    size_t padding;
 };
-
 
 void printHistogram(ChunkStats<BYTE> &currArea, std::stringstream& outs)
 {
@@ -121,7 +102,7 @@ int main(size_t argc, char* argv[])
         std::cout << "Supply a file to be analyzed!\n";
         return 0;
     }
-    Buffer buf;
+    FileBuffer buf;
     if (!buf.load(argv[1])) {
         std::cout << "Failed loading the file!\n";
         return 0;
@@ -129,7 +110,7 @@ int main(size_t argc, char* argv[])
     
     std::cout << "Ready!\n";
     AreaStats<BYTE> stats;
-    AreaStatsCalculator<BYTE> calc(buf.data + buf.real_start, buf.data_size - buf.padding);
+    AreaStatsCalculator<BYTE> calc((BYTE*)buf.getData(true), buf.getDataSize(true));
     if (calc.fill(stats)) {
         std::cout << "Stats filled!\n";
     }

@@ -160,6 +160,8 @@ set (utils_hdrs
 	utils/strings_util.h
 	utils/stats.h
 	utils/stats_analyzer.h
+	utils/basic_buffer.h
+	utils/data_buffer.h
 )
 
 set (params_info_hdrs
