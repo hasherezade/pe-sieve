@@ -116,8 +116,8 @@ int main(size_t argc, char* argv[])
     }
     std::stringstream outs;
     stats.toJSON(outs, 0);
-    outs << "---\n";
-    printHistogram(stats.currArea, outs);
+    //outs << "---\n";
+    //printHistogram(stats.currArea, outs);
     outs << "\n---\n";
 
     printFrequencies(stats.currArea, outs);

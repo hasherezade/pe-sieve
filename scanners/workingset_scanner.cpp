@@ -97,6 +97,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 	if (!my_report) {
 		return nullptr;
 	}
+	bool code = false;
 	bool has_sus_stats = false;
 	if (this->args.stats) {
 		const bool noPadding = true;
@@ -104,9 +105,12 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 		// fill the stats directly in the report
 		if (statsCalc.fill(my_report->stats)) {
 			has_sus_stats = isSuspiciousByStats(my_report);
+			code = my_report->area_info.possibleCode;
 		}
 	}
-	const bool code = isCode(_memPage); // check for shellcode patterns
+	else {
+		code = isCode(_memPage); // check for shellcode patterns
+	}
 	const bool isDetected = code || has_sus_stats;
 	if (!isDetected) {
 		// do not keep reports for not suspicious areas
