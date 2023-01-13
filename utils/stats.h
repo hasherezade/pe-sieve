@@ -115,31 +115,40 @@ namespace pesieve {
             {
             }
 
-            void append(T val)
+            void appendVal(T val)
             {
 #ifdef SCAN_STRINGS
-                if (IS_PRINTABLE(val)) {
+                const bool isPrint = IS_PRINTABLE(val);
+                if (isPrint){
                     lastStr += char(val);
                 }
                 else {
                     if (val == 0) { //clean ending
-                        if (lastStr.length()) {
-                            stringsCount++;
-                        }
-                        if (lastStr.length() > longestStr) {
-                            longestStr = lastStr.length();
-#ifdef _KEEP_STR
-                            allStrings.push_back(lastStr);
-#endif //_KEEP_STR
-                            //std::cout << "-----> lastStr:" << lastStr  << "\n";
-                        }
+                        finishLastStr();
                     }
                     lastStr.clear();
                 }
+
 #endif // SCAN_STRINGS
                 size++;
                 histogram[val]++;
                 prevVal = val;
+            }
+
+            void finishLastStr()
+            {
+                if (!lastStr.length()) {
+                    return;
+                }
+                stringsCount++;
+#ifdef _KEEP_STR
+                allStrings.push_back(lastStr);
+#endif //_KEEP_STR
+                //std::cout << "-----> lastStr:" << lastStr << "\n";
+                if (lastStr.length() > longestStr) {
+                    longestStr = lastStr.length();
+                }
+                lastStr.clear();
             }
 
             const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
@@ -180,6 +189,7 @@ namespace pesieve {
             void summarize()
             {
                 entropy = calcShannonEntropy(histogram, size);
+                finishLastStr();
 
                 for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
                     const size_t count = itr->second;
@@ -261,7 +271,7 @@ namespace pesieve {
                 T lastVal = 0;
                 for (size_t dataIndex = 0; dataIndex < elements; ++dataIndex) {
                     const T val = data[dataIndex];
-                    stats.currArea.append(val);
+                    stats.currArea.appendVal(val);
                 }
                 stats.summarize();
                 return true;
