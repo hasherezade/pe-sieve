@@ -2,27 +2,82 @@
 
 #include "stats.h"
 
+#define CODE_RULE "possible_code"
+
 namespace pesieve {
 
     namespace util {
 
-        struct AreaInfo
+        //---
+
+        class RuleMatcher
         {
-            AreaInfo()
-                : fullAreaObfuscated(false),
-                fullAreaEncrypted(false),
-                possibleCode(false),
-                possibleText(false)
+        public:
+            RuleMatcher(std::string _name)
+                : name(_name), matched(false)
             {
             }
 
-            // Copy constructor
-            AreaInfo(const AreaInfo& p1)
-                : fullAreaObfuscated(p1.fullAreaObfuscated),
-                fullAreaEncrypted(p1.fullAreaEncrypted),
-                possibleCode(p1.possibleCode),
-                possibleText(p1.possibleText)
+            bool isMatching(IN const AreaStats<BYTE>& stats)
             {
+                matched = _isMatching(stats);
+                return matched;
+            }
+            
+            bool isMatched()
+            {
+                return matched;
+            }
+
+            std::string name;
+
+        protected:
+
+            virtual bool _isMatching(IN const AreaStats<BYTE>& stats) = 0;
+
+            bool matched;
+        };
+        //---
+
+        struct AreaInfo
+        {
+            AreaInfo()
+            {
+                _fillMatchers();
+            }
+
+            // Copy constructor
+            /*AreaInfo(const AreaInfo& p1)
+            {
+            }*/
+
+            ~AreaInfo()
+            {
+                _clearMatchers();
+            }
+
+            void _fillMatchers();
+
+            void _clearMatchers()
+            {
+                for (auto itr = matchers.begin(); itr != matchers.end(); ++itr) {
+                    RuleMatcher* m = *itr;
+                    if (!m) continue;
+                    delete m;
+                }
+                matchers.clear();
+            }
+
+            bool hasMatchAt(const std::string& ruleName)
+            {
+                for (auto itr = matchers.begin(); itr != matchers.end(); ++itr) {
+                    RuleMatcher* m = *itr;
+                    if (!m) continue;
+                    if (m->name  == ruleName) {
+                        return m->isMatched();
+                    }
+                }
+                return false;
             }
 
             const virtual bool toJSON(std::stringstream& outs, size_t level)
@@ -36,26 +91,20 @@ namespace pesieve {
 
             const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
             {
-                OUT_PADDED(outs, level, "\"is_full_obfuscated\" : ");
-                outs << std::dec << fullAreaObfuscated;
-                outs << ",\n";
-
-                OUT_PADDED(outs, level, "\"is_full_encrypted\" : ");
-                outs << std::dec << fullAreaEncrypted;
-                outs << ",\n";
-
-                OUT_PADDED(outs, level, "\"possible_code\" : ");
-                outs << std::dec << possibleCode;
-                outs << ",\n";
-
-                OUT_PADDED(outs, level, "\"possible_text\" : ");
-                outs << std::dec << possibleText;
+                size_t matched = 0;
+                for (auto itr = matchers.begin(); itr != matchers.end(); ++itr) {
+                    RuleMatcher* m = *itr;
+                    if (!m || !m->isMatched()) continue;
+                    if (matched > 0) {
+                        outs << ",\n";
+                    }
+                    matched++;
+                    OUT_PADDED(outs, level, "\"" + m->name + "\" : ");
+                    outs << std::dec << true;
+                }
             }
 
-            bool fullAreaObfuscated;
-            bool fullAreaEncrypted;
-            bool possibleCode;
-            bool possibleText;
+            std::vector< RuleMatcher*> matchers;
         };
 
         bool isSuspicious(IN const AreaStats<BYTE>& stats, OUT AreaInfo& info);

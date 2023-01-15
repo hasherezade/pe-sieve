@@ -4,8 +4,8 @@
 #define ENTROPY_CODE_TRESHOLD ENTROPY_DATA_TRESHOLD
 #define ENTROPY_ENC_TRESHOLD 6.0
 #define ENTROPY_STRONG_ENC_TRESHOLD 7.0
-using namespace pesieve::util;
 
+using namespace pesieve::util;
 
 double getValRatio(IN const AreaStats<BYTE>& stats, BYTE val)
 {
@@ -45,55 +45,128 @@ size_t checkRatios(IN const AreaStats<BYTE>& stats, IN std::map<BYTE, double> &r
 	return points;
 }
 
+//---
+class CodeMatcher : public RuleMatcher
+{
+	public:
+	CodeMatcher()
+		: RuleMatcher(CODE_RULE) {}
+
+	virtual bool _isMatching(IN const AreaStats<BYTE>& stats)
+	{
+		double entropy = stats.currArea.entropy;
+		if (entropy > ENTROPY_CODE_TRESHOLD) { // possible code
+			size_t codePoints = 0;
+			std::map<BYTE, double> ratios;
+			ratios[0x00] = 0.1;
+			ratios[0xFF] = 0.02;
+			ratios[0x8B] = 0.02;
+			ratios[0xCC] = 0.01;
+			ratios[0x48] = 0.02;
+			ratios[0xE8] = 0.01;
+			ratios[0x0F] = 0.01;
+
+			codePoints += checkRatios(stats, ratios);
+			//std::cout << "---->>> CODE points: " << codePoints << "\n";
+			if (codePoints >= (ratios.size() / 2 + 1)) {
+				return true;
+			}
+		}
+		return false;
+	}
+};
+
+
+class ObfuscatedMatcher : public RuleMatcher
+{
+public:
+	ObfuscatedMatcher()
+		: RuleMatcher("is_full_obfuscated") {}
+
+	virtual bool _isMatching(IN const AreaStats<BYTE>& stats)
+	{
+		const BYTE mFreqVal = getMostFrequentValue<BYTE>(stats.currArea.histogram);
+		double entropy = stats.currArea.entropy;
+
+		bool fullAreaObfuscated = (mFreqVal != 0 && entropy > ENTROPY_DATA_TRESHOLD); // possible XOR obfuscation, or block cipher
+		if (fullAreaObfuscated) { 
+			// filter out texts:
+			const double printRatio = getPrintableRatio(stats);
+			if (printRatio > 0.8) {
+				fullAreaObfuscated = false;
+			}
+		}
+		return fullAreaObfuscated;
+	}
+};
+
+
+class EncryptedMatcher : public RuleMatcher
+{
+public:
+	EncryptedMatcher()
+		: RuleMatcher("is_full_encrypted") {}
+
+	virtual bool _isMatching(IN const AreaStats<BYTE>& stats)
+	{
+		double entropy = stats.currArea.entropy;
+		const BYTE mFreqVal = getMostFrequentValue<BYTE>(stats.currArea.histogram);
+		bool fullAreaEncrypted = (entropy > ENTROPY_STRONG_ENC_TRESHOLD);// strong encryption
+		if (mFreqVal != 0 && entropy > ENTROPY_ENC_TRESHOLD) {
+			if (stats.currArea.frequencies.size() > 1) {
+				auto fItr = stats.currArea.frequencies.begin(); // first one
+				auto eItr = stats.currArea.frequencies.rbegin(); // last one
+				// most common - least common ratio
+				double diff = ((double)(eItr->first - fItr->first)) / (double)stats.currArea.size;
+				//std::cout << "RATIO : " << fItr->first << " VS " << eItr->first << " DIFF: " << diff << "\n";
+				if (diff < 0.01) {
+					fullAreaEncrypted = true;
+				}
+			}
+		}
+		return fullAreaEncrypted;
+	}
+};
+
+class TextMatcher : public RuleMatcher
+{
+public:
+	TextMatcher()
+		: RuleMatcher("possible_text") {}
+
+	virtual bool _isMatching(IN const AreaStats<BYTE>& stats)
+	{
+		bool possibleText = false;
+		const double printRatio = getPrintableRatio(stats);
+		if (printRatio > 0.8) {
+			possibleText = true;
+		}
+		return possibleText;
+	}
+};
+//--
+
+void AreaInfo::_fillMatchers()
+{
+	this->matchers.push_back(new CodeMatcher());
+	//this->matchers.push_back(new TextMatcher());
+	this->matchers.push_back(new EncryptedMatcher());
+	this->matchers.push_back(new ObfuscatedMatcher());
+}
+
 bool pesieve::util::isSuspicious(IN const AreaStats<BYTE>& stats, OUT AreaInfo& info)
 {
 	if (!stats.isFilled() || !stats.currArea.size) {
 		return false;
 	}
 
-	const BYTE mFreqVal = util::getMostFrequentValue<BYTE>(stats.currArea.histogram);
-	double entropy = stats.currArea.entropy;
-
-	info.fullAreaObfuscated = (mFreqVal != 0 && entropy > ENTROPY_DATA_TRESHOLD); // possible XOR obfuscation, or block cipher
-	info.fullAreaEncrypted = (entropy > ENTROPY_STRONG_ENC_TRESHOLD);// strong encryption
-	if (mFreqVal != 0 && entropy > ENTROPY_ENC_TRESHOLD) {
-		if (stats.currArea.frequencies.size() > 1) {
-			auto fItr = stats.currArea.frequencies.begin(); // first one
-			auto eItr = stats.currArea.frequencies.rbegin(); // last one
-			// most common - least common ratio
-			double diff = ((double)(eItr->first - fItr->first)) / (double)stats.currArea.size;
-			//std::cout << "RATIO : " << fItr->first << " VS " << eItr->first << " DIFF: " << diff << "\n";
-			if (diff < 0.01) {
-				info.fullAreaEncrypted = true;
-			}
+	size_t matched = 0;
+	for (auto itr = info.matchers.begin(); itr != info.matchers.end(); ++itr) {
+		RuleMatcher* m = *itr;
+		if (!m) continue;
+		if (m->isMatching(stats)) {
+			matched++;
 		}
 	}
-
-	if (entropy > ENTROPY_CODE_TRESHOLD) { // possible code
-		size_t codePoints = 0;
-		std::map<BYTE, double> ratios;
-		ratios[0x00] = 0.1;
-		ratios[0xFF] = 0.02;
-		ratios[0x8B] = 0.02;
-		ratios[0xCC] = 0.01;
-		ratios[0x48] = 0.02;
-		ratios[0xE8] = 0.01;
-		ratios[0x0F] = 0.01;
-
-		codePoints += checkRatios(stats, ratios);
-		//std::cout << "---->>> CODE points: " << codePoints << "\n";
-		if (codePoints >= (ratios.size() / 2 + 1)) {
-			info.possibleCode = true;
-		}
-	}
-
-	const double printRatio = getPrintableRatio(stats);
-	if (printRatio > 0.8) {
-		info.possibleText = true;
-		info.fullAreaObfuscated = false;
-	}
-	//std::cout << "PRINT RATIO : " << std::dec << printRatio << "\n";
-	const bool isEnc = (info.fullAreaEncrypted) ||
-		info.fullAreaObfuscated || info.possibleCode;
-	return isEnc;
+	return (matched > 0) ? true : false;
 }

@@ -105,7 +105,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 		// fill the stats directly in the report
 		if (statsCalc.fill(my_report->stats)) {
 			has_sus_stats = isSuspiciousByStats(my_report);
-			code = my_report->area_info.possibleCode;
+			code = my_report->area_info.hasMatchAt(CODE_RULE);
 		}
 	}
 	else {
