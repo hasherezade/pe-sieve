@@ -85,7 +85,7 @@ public:
 
 	virtual bool _isMatching(IN const AreaStats<BYTE>& stats)
 	{
-		const BYTE mFreqVal = getMostFrequentValue<BYTE>(stats.currArea.histogram);
+		const BYTE mFreqVal = getMostFrequentValue<BYTE>(stats.currArea.frequencies);
 		double entropy = stats.currArea.entropy;
 
 		bool fullAreaObfuscated = (mFreqVal != 0 && entropy > ENTROPY_DATA_TRESHOLD); // possible XOR obfuscation, or block cipher
@@ -110,7 +110,7 @@ public:
 	virtual bool _isMatching(IN const AreaStats<BYTE>& stats)
 	{
 		double entropy = stats.currArea.entropy;
-		const BYTE mFreqVal = getMostFrequentValue<BYTE>(stats.currArea.histogram);
+		const BYTE mFreqVal = getMostFrequentValue<BYTE>(stats.currArea.frequencies);
 		bool fullAreaEncrypted = (entropy > ENTROPY_STRONG_ENC_TRESHOLD);// strong encryption
 		if (mFreqVal != 0 && entropy > ENTROPY_ENC_TRESHOLD) {
 			if (stats.currArea.frequencies.size() > 1) {
@@ -144,27 +144,39 @@ public:
 		return possibleText;
 	}
 };
-//--
 
-void AreaInfo::_fillMatchers()
+//---
+
+pesieve::util::RuleMatchersSet::RuleMatchersSet()
 {
-	this->matchers.push_back(new CodeMatcher());
+	matchers.push_back(new CodeMatcher());
 	//this->matchers.push_back(new TextMatcher());
-	this->matchers.push_back(new EncryptedMatcher());
-	this->matchers.push_back(new ObfuscatedMatcher());
+	matchers.push_back(new EncryptedMatcher());
+	matchers.push_back(new ObfuscatedMatcher());
 }
 
-bool pesieve::util::isSuspicious(IN const AreaStats<BYTE>& stats, OUT AreaInfo& info)
+pesieve::util::RuleMatchersSet::~RuleMatchersSet()
+{
+	for (auto itr = matchers.begin(); itr != matchers.end(); ++itr) {
+		RuleMatcher* m = *itr;
+		if (!m) continue;
+		delete m;
+	}
+	matchers.clear();
+}
+
+bool pesieve::util::isSuspicious(IN const AreaStats<BYTE>& stats, IN RuleMatchersSet& matchersSet, OUT AreaInfo& info)
 {
 	if (!stats.isFilled() || !stats.currArea.size) {
 		return false;
 	}
 
 	size_t matched = 0;
-	for (auto itr = info.matchers.begin(); itr != info.matchers.end(); ++itr) {
+	for (auto itr = matchersSet.matchers.begin(); itr != matchersSet.matchers.end(); ++itr) {
 		RuleMatcher* m = *itr;
 		if (!m) continue;
 		if (m->isMatching(stats)) {
+			info.matchedRules.push_back(m->name);
 			matched++;
 		}
 	}

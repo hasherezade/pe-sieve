@@ -40,37 +40,29 @@ namespace pesieve {
 
         // return the most frequent value
         template <typename T>
-        T getMostFrequentValue(IN const std::map<T, size_t>& histogram)
+        T getMostFrequentValue(IN std::map<size_t, std::set< T >> frequencies)
         {
-            T mVal = 0;
-            size_t mFreq = 0;
-            for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
-                if (itr->second > mFreq) {
-                    mFreq = itr->second;
-                    mVal = itr->first;
-                }
+            auto itr = frequencies.rbegin();
+            if (itr == frequencies.rend()) {
+                return 0;
             }
+            auto setItr = itr->second.begin();
+            T mVal = *setItr;
             return mVal;
         }
 
         // return the number of occurrencies
         template <typename T>
-        size_t getMostFrequentValues(IN std::map<T, size_t>& histogram, OUT std::set<T> &values)
+        size_t getMostFrequentValues(IN std::map<size_t, std::set< T >> frequencies, OUT std::set<T> &values)
         {
+            auto itr = frequencies.rbegin();
+            if (itr == frequencies.rend()) {
+                return 0;
+            }
+
             // find the highest frequency:
-            size_t mFreq = 0;
-            for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
-                if (itr->second > mFreq) {
-                    mFreq = itr->second;
-                }
-            }
-            if (!mFreq) return mFreq;
-            // find all the values matching this frequency
-            for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
-                if (itr->second == mFreq) {
-                    values.insert(itr->first);
-                }
-            }
+            size_t mFreq = itr->first;
+            values.insert(itr->second.begin(), itr->second.end());
             return mFreq;
         }
 
@@ -168,13 +160,13 @@ namespace pesieve {
 #endif // SCAN_STRINGS
 
                 std::set<T> values;
-                size_t freq = getMostFrequentValues(histogram, values);
+                size_t freq = getMostFrequentValues<T>(frequencies, values);
                 if (freq && values.size()) {
                     outs << ",\n";
                     OUT_PADDED(outs, level, "\"most_freq_occurrence\" : ");
                     outs << std::dec << freq;
                     outs << ",\n";
-                    OUT_PADDED(outs, level, "\"most_freq_val_count\" : ");
+                    OUT_PADDED(outs, level, "\"most_freq_vals_count\" : ");
                     outs << std::dec << values.size();
                     outs << ",\n";
                     OUT_PADDED(outs, level, "\"most_freq_val\" : ");

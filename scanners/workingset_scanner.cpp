@@ -65,7 +65,8 @@ bool pesieve::WorkingSetScanner::isSuspiciousByStats(WorkingSetScanReport* my_re
 {
 	if (!my_report) return false;
 
-	return util::isSuspicious(my_report->stats, my_report->area_info);
+	pesieve::util::RuleMatchersSet matchersSet;
+	return util::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
 }
 
 WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData &_memPage)

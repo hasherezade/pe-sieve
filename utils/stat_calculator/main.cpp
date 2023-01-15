@@ -116,8 +116,8 @@ int main(size_t argc, char* argv[])
     }
     std::stringstream outs;
     stats.toJSON(outs, 0);
-    //outs << "---\n";
-    //printHistogram(stats.currArea, outs);
+    outs << "---\n";
+    printHistogram(stats.currArea, outs);
     outs << "\n---\n";
 
     printFrequencies(stats.currArea, outs);
@@ -126,7 +126,8 @@ int main(size_t argc, char* argv[])
     outs << "\n---\n";
 
     AreaInfo info;
-    if (isSuspicious(stats, info)) {
+    RuleMatchersSet matcherSet;
+    if (isSuspicious(stats, matcherSet, info)) {
         outs << "Suspicious!\n";
     }
     else {

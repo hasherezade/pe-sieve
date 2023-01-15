@@ -271,7 +271,9 @@ bool pesieve::ThreadScanner::calcAreaStats(ThreadScanReport* my_report)
 bool pesieve::ThreadScanner::isSuspiciousByStats(ThreadScanReport* my_report)
 {
 	if (!my_report) return false;
-	return util::isSuspicious(my_report->stats, my_report->area_info);
+
+	pesieve::util::RuleMatchersSet matchersSet;
+	return util::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
 }
 
 bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx  &c)

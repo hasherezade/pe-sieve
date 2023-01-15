@@ -37,44 +37,35 @@ namespace pesieve {
 
             bool matched;
         };
+
+
+        struct RuleMatchersSet
+        {
+            RuleMatchersSet();
+            ~RuleMatchersSet();
+
+            std::vector< RuleMatcher*> matchers;
+        };
         //---
 
         struct AreaInfo
         {
             AreaInfo()
             {
-                _fillMatchers();
             }
 
             // Copy constructor
-            /*AreaInfo(const AreaInfo& p1)
+            AreaInfo(const AreaInfo& p1)
+                : matchedRules(p1.matchedRules)
             {
-            }*/
-
-            ~AreaInfo()
-            {
-                _clearMatchers();
-            }
-
-            void _fillMatchers();
-
-            void _clearMatchers()
-            {
-                for (auto itr = matchers.begin(); itr != matchers.end(); ++itr) {
-                    RuleMatcher* m = *itr;
-                    if (!m) continue;
-                    delete m;
-                }
-                matchers.clear();
             }
 
             bool hasMatchAt(const std::string& ruleName)
             {
-                for (auto itr = matchers.begin(); itr != matchers.end(); ++itr) {
-                    RuleMatcher* m = *itr;
-                    if (!m) continue;
-                    if (m->name  == ruleName) {
-                        return m->isMatched();
+                for (auto itr = matchedRules.begin(); itr != matchedRules.end(); ++itr) {
+                    std::string name = *itr;
+                    if (name == ruleName) {
+                        return true;
                     }
                 }
                 return false;
@@ -91,23 +82,22 @@ namespace pesieve {
 
             const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
             {
-                size_t matched = 0;
-                for (auto itr = matchers.begin(); itr != matchers.end(); ++itr) {
-                    RuleMatcher* m = *itr;
-                    if (!m || !m->isMatched()) continue;
-                    if (matched > 0) {
+                size_t count = 0;
+                for (auto itr = matchedRules.begin(); itr != matchedRules.end(); ++itr) {
+                    std::string ruleName = *itr;
+                    if (count > 0) {
                         outs << ",\n";
                     }
-                    matched++;
-                    OUT_PADDED(outs, level, "\"" + m->name + "\" : ");
+                    count++;
+                    OUT_PADDED(outs, level, "\"" + ruleName + "\" : ");
                     outs << std::dec << true;
                 }
             }
 
-            std::vector< RuleMatcher*> matchers;
+            std::vector<std::string> matchedRules;
         };
 
-        bool isSuspicious(IN const AreaStats<BYTE>& stats, OUT AreaInfo& info);
+        bool isSuspicious(IN const AreaStats<BYTE>& stats, IN RuleMatchersSet& matchersSet, OUT AreaInfo& info);
 
     } //namespace util
 
