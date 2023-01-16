@@ -262,7 +262,9 @@ bool pesieve::ThreadScanner::calcAreaStats(ThreadScanReport* my_report)
 		return false;
 	}
 	util::AreaStatsCalculator<BYTE> statsCalc(mem.getLoadedData(), mem.getLoadedSize());
-	if (statsCalc.fill(my_report->stats)) {
+	std::set<std::string> searchesStrings;
+	searchesStrings.insert("D$");
+	if (statsCalc.fill(my_report->stats, searchesStrings)) {
 		return true;
 	}
 	return false;

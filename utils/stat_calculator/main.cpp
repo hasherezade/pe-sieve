@@ -111,7 +111,9 @@ int main(size_t argc, char* argv[])
     std::cout << "Ready!\n";
     AreaStats<BYTE> stats;
     AreaStatsCalculator<BYTE> calc((BYTE*)buf.getData(true), buf.getDataSize(true));
-    if (calc.fill(stats)) {
+    std::set<std::string> searchesStrings;
+    searchesStrings.insert("D$");
+    if (calc.fill(stats, searchesStrings)) {
         std::cout << "Stats filled!\n";
     }
     std::stringstream outs;

@@ -55,22 +55,24 @@ class CodeMatcher : public RuleMatcher
 	virtual bool _isMatching(IN const AreaStats<BYTE>& stats)
 	{
 		double entropy = stats.currArea.entropy;
-		if (entropy > ENTROPY_CODE_TRESHOLD) { // possible code
-			size_t codePoints = 0;
-			std::map<BYTE, double> ratios;
-			ratios[0x00] = 0.1;
-			ratios[0xFF] = 0.02;
-			ratios[0x8B] = 0.02;
-			ratios[0xCC] = 0.01;
-			ratios[0x48] = 0.02;
-			ratios[0xE8] = 0.01;
-			ratios[0x0F] = 0.01;
+		if (entropy < ENTROPY_CODE_TRESHOLD) return false;
+		if (stats.currArea.foundStrings.size() == 0) return false;
 
-			codePoints += checkRatios(stats, ratios);
-			//std::cout << "---->>> CODE points: " << codePoints << "\n";
-			if (codePoints >= (ratios.size() / 2 + 1)) {
-				return true;
-			}
+		// possible code
+		size_t codePoints = 0;
+		std::map<BYTE, double> ratios;
+		ratios[0x00] = 0.1;
+		ratios[0xFF] = 0.02;
+		ratios[0x8B] = 0.02;
+		ratios[0xCC] = 0.01;
+		ratios[0x48] = 0.02;
+		ratios[0xE8] = 0.01;
+		ratios[0x0F] = 0.01;
+
+		codePoints += checkRatios(stats, ratios);
+		//std::cout << "---->>> CODE points: " << codePoints << "\n";
+		if (codePoints >= (ratios.size() / 2 + 1)) {
+			return true;
 		}
 		return false;
 	}
@@ -151,8 +153,8 @@ pesieve::util::RuleMatchersSet::RuleMatchersSet()
 {
 	matchers.push_back(new CodeMatcher());
 	//this->matchers.push_back(new TextMatcher());
-	matchers.push_back(new EncryptedMatcher());
-	matchers.push_back(new ObfuscatedMatcher());
+	//matchers.push_back(new EncryptedMatcher());
+	//matchers.push_back(new ObfuscatedMatcher());
 }
 
 pesieve::util::RuleMatchersSet::~RuleMatchersSet()

@@ -86,25 +86,35 @@ namespace pesieve {
         struct ChunkStats {
             //
             ChunkStats() 
-                : size(0), offset(0), entropy(0), longestStr(0), prevVal(0), stringsCount(0)
+                : size(0), offset(0), entropy(0), longestStr(0), prevVal(0),
+                stringsCount(0), cleanStringsCount(0)
             {
             }
 
             ChunkStats(size_t _offset, size_t _size)
-                : size(_size), offset(_offset), entropy(0), longestStr(0), prevVal(0), stringsCount(0)
+                : size(_size), offset(_offset), entropy(0), longestStr(0), prevVal(0),
+                stringsCount(0), cleanStringsCount(0)
             {
             }
 
             // Copy constructor
             ChunkStats(const ChunkStats& p1)
                 : size(p1.size), offset(p1.offset), 
-                entropy(p1.entropy), longestStr(p1.longestStr), lastStr(p1.lastStr), prevVal(p1.prevVal), stringsCount(p1.stringsCount),
+                entropy(p1.entropy), longestStr(p1.longestStr), lastStr(p1.lastStr), prevVal(p1.prevVal), 
+                stringsCount(p1.stringsCount), cleanStringsCount(p1.cleanStringsCount)
                 histogram(p1.histogram),
-                frequencies(p1.frequencies)
+                frequencies(p1.frequencies), 
+                searchesStrings(p1.searchesStrings), foundStrings(p1.foundStrings)
+
 #ifdef _KEEP_STR
                 , allStrings(p1.allStrings)
 #endif //_KEEP_STR
             {
+            }
+
+            void setSearchedStrings(std::set<std::string>& _searchesStrings)
+            {
+                searchesStrings = _searchesStrings;
             }
 
             void appendVal(T val)
@@ -115,9 +125,8 @@ namespace pesieve {
                     lastStr += char(val);
                 }
                 else {
-                    if (val == 0) { //clean ending
-                        finishLastStr();
-                    }
+                    const bool isClean = (val == 0) ? true : false; //terminated cleanly?
+                    finishLastStr(isClean);
                     lastStr.clear();
                 }
 
@@ -127,12 +136,21 @@ namespace pesieve {
                 prevVal = val;
             }
 
-            void finishLastStr()
+            void finishLastStr(bool isClean)
             {
-                if (!lastStr.length()) {
+                if (lastStr.length() < 2) {
                     return;
                 }
                 stringsCount++;
+                if (isClean) cleanStringsCount++;
+
+                for (auto itr = searchesStrings.begin(); itr != searchesStrings.end(); ++itr) {
+                    const std::string s = *itr;
+                    if (lastStr.find(s) != std::string::npos) {
+                        foundStrings[lastStr]++; // the current string contains searched string
+                    }
+                }
+
 #ifdef _KEEP_STR
                 allStrings.push_back(lastStr);
 #endif //_KEEP_STR
@@ -154,6 +172,11 @@ namespace pesieve {
                 outs << ",\n";
                 OUT_PADDED(outs, level, "\"str_count\" : ");
                 outs << std::dec << stringsCount;
+                if (searchesStrings.size()) {
+                    outs << ",\n";
+                    OUT_PADDED(outs, level, "\"found_str_ratio\" : ");
+                    outs << std::dec << (float)foundStrings.size() / (float)searchesStrings.size();
+                }
                 outs << ",\n";
                 OUT_PADDED(outs, level, "\"str_longest_len\" : ");
                 outs << std::dec << longestStr;
@@ -181,7 +204,7 @@ namespace pesieve {
             void summarize()
             {
                 entropy = calcShannonEntropy(histogram, size);
-                finishLastStr();
+                finishLastStr(true);
 
                 for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
                     const size_t count = itr->second;
@@ -199,8 +222,12 @@ namespace pesieve {
 
             std::string lastStr;
             size_t stringsCount;
+            size_t cleanStringsCount;
             std::map<T, size_t> histogram;
             std::map<size_t, std::set< T >>  frequencies;
+            std::set<std::string> searchesStrings;
+
+            std::map<std::string, size_t> foundStrings;
 #ifdef _KEEP_STR
             std::vector< std::string > allStrings;
 #endif
@@ -217,6 +244,7 @@ namespace pesieve {
                 : currArea(p1.currArea)
             {
             }
+
 
             const virtual bool toJSON(std::stringstream& outs, size_t level)
             {
@@ -246,6 +274,7 @@ namespace pesieve {
             }
 
             ChunkStats<T> currArea; // stats from the whole area
+
         };
 
         template <typename T>
@@ -256,9 +285,11 @@ namespace pesieve {
             {
             }
 
-            bool fill(AreaStats<T> &stats)
+            bool fill(AreaStats<T> &stats, std::set<std::string> &searchesStrings)
             {
                 if (!data || !elements) return false;
+
+                stats.currArea.setSearchedStrings(searchesStrings);
 
                 T lastVal = 0;
                 for (size_t dataIndex = 0; dataIndex < elements; ++dataIndex) {

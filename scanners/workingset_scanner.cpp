@@ -104,7 +104,9 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 		const bool noPadding = true;
 		util::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(noPadding), _memPage.getLoadedSize(noPadding));
 		// fill the stats directly in the report
-		if (statsCalc.fill(my_report->stats)) {
+		std::set<std::string> searchesStrings;
+		searchesStrings.insert("D$");
+		if (statsCalc.fill(my_report->stats, searchesStrings)) {
 			has_sus_stats = isSuspiciousByStats(my_report);
 			code = my_report->area_info.hasMatchAt(CODE_RULE);
 		}
