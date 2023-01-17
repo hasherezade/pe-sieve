@@ -8,6 +8,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 set (srcs
 	../stats.h
 	../stats_analyzer.h
+	../std_dev_calc.h
 )
 
 set (hdrs
