@@ -262,9 +262,9 @@ bool pesieve::ThreadScanner::calcAreaStats(ThreadScanReport* my_report)
 		return false;
 	}
 	util::AreaStatsCalculator<BYTE> statsCalc(mem.getLoadedData(), mem.getLoadedSize());
-	std::set<std::string> searchesStrings;
-	searchesStrings.insert("D$");
-	if (statsCalc.fill(my_report->stats, searchesStrings)) {
+	util::StatsSettings settings;
+	util::fillCodeStrings(settings.searchedStrings);
+	if (statsCalc.fill(my_report->stats, settings)) {
 		return true;
 	}
 	return false;
@@ -274,7 +274,7 @@ bool pesieve::ThreadScanner::isSuspiciousByStats(ThreadScanReport* my_report)
 {
 	if (!my_report) return false;
 
-	pesieve::util::RuleMatchersSet matchersSet;
+	pesieve::util::RuleMatchersSet matchersSet(util::RULE_CODE | util::RULE_ENCRYPTED);
 	return util::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
 }
 

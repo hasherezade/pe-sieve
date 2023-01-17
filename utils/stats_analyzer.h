@@ -8,7 +8,17 @@ namespace pesieve {
 
     namespace util {
 
+        size_t fillCodeStrings(OUT std::set<std::string>& codeStrings);
+
         //---
+
+        enum RuleType
+        {
+            RULE_CODE = 1,
+            RULE_TEXT = 2,
+            RULE_OBFUSCATED = 4,
+            RULE_ENCRYPTED = 8
+        };
 
         class RuleMatcher
         {
@@ -41,8 +51,27 @@ namespace pesieve {
 
         struct RuleMatchersSet
         {
-            RuleMatchersSet();
-            ~RuleMatchersSet();
+            RuleMatchersSet(DWORD ruleTypes)
+            {
+                initRules(ruleTypes);
+            }
+
+            ~RuleMatchersSet()
+            {
+                deleteMatchers();
+            }
+
+            void initRules(DWORD ruleTypes);
+
+            void deleteMatchers()
+            {
+                for (auto itr = matchers.begin(); itr != matchers.end(); ++itr) {
+                    RuleMatcher* m = *itr;
+                    if (!m) continue;
+                    delete m;
+                }
+                matchers.clear();
+            }
 
             std::vector< RuleMatcher*> matchers;
         };

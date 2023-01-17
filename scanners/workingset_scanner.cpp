@@ -65,7 +65,7 @@ bool pesieve::WorkingSetScanner::isSuspiciousByStats(WorkingSetScanReport* my_re
 {
 	if (!my_report) return false;
 
-	pesieve::util::RuleMatchersSet matchersSet;
+	pesieve::util::RuleMatchersSet matchersSet(util::RULE_CODE | util::RULE_ENCRYPTED | util::RULE_OBFUSCATED);
 	return util::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
 }
 
@@ -98,17 +98,20 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 	if (!my_report) {
 		return nullptr;
 	}
-	bool code = false;
+	bool code = false;//isCode(_memPage); // check for shellcode patterns
 	bool has_sus_stats = false;
 	if (this->args.stats) {
 		const bool noPadding = true;
 		util::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(noPadding), _memPage.getLoadedSize(noPadding));
 		// fill the stats directly in the report
-		std::set<std::string> searchesStrings;
-		searchesStrings.insert("D$");
-		if (statsCalc.fill(my_report->stats, searchesStrings)) {
+		util::StatsSettings settings;
+		util::fillCodeStrings(settings.searchedStrings);
+
+		if (statsCalc.fill(my_report->stats, settings)) {
 			has_sus_stats = isSuspiciousByStats(my_report);
-			code = my_report->area_info.hasMatchAt(CODE_RULE);
+			if (my_report->area_info.hasMatchAt(CODE_RULE)) {
+				code = isCode(_memPage); // check for shellcode patterns only if the preliminary analysis passed
+			}
 		}
 	}
 	else {

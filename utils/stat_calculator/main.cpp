@@ -2,6 +2,7 @@
 #include <iostream>
 
 #define _KEEP_STR
+
 #include "../stats.h"
 #include "../stats_analyzer.h"
 #include "../basic_buffer.h"
@@ -111,19 +112,23 @@ int main(size_t argc, char* argv[])
     std::cout << "Ready!\n";
     AreaStats<BYTE> stats;
     AreaStatsCalculator<BYTE> calc((BYTE*)buf.getData(true), buf.getDataSize(true));
-    std::set<std::string> searchesStrings;
-    searchesStrings.insert("D$");
-    if (calc.fill(stats, searchesStrings)) {
+    // fill the stats directly in the report
+    StatsSettings settings;
+    fillCodeStrings(settings.searchedStrings);
+    std::cout << "Searched strings count: " << settings.searchedStrings.size() << "\n";
+
+    if (calc.fill(stats, settings)) {
         std::cout << "Stats filled!\n";
     }
     std::stringstream outs;
     stats.toJSON(outs, 0);
     outs << "---\n";
-    printHistogram(stats.currArea, outs);
-    outs << "\n---\n";
+    //printHistogram(stats.currArea, outs);
+    //outs << "\n---\n";
 
     printFrequencies(stats.currArea, outs);
     outs << "\n---\n";
+    
     printStrings(stats.currArea, outs);
     outs << "\n---\n";
 

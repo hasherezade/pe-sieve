@@ -82,6 +82,40 @@ namespace pesieve {
             return is_printable;
         }
 
+        //----
+
+        // defines what type of stats should be collected
+        class StatsSettings
+        {
+        public:
+            StatsSettings()
+            {
+            }
+
+            // Copy constructor
+            StatsSettings(const StatsSettings& p1)
+                : searchedStrings(p1.searchedStrings)
+            {
+            }
+
+            std::string hasSarchedSubstring(std::string& lastStr)
+            {
+                for (auto itr = searchedStrings.begin(); itr != searchedStrings.end(); ++itr) {
+                    const std::string s = *itr;
+                    if (lastStr.find(s) != std::string::npos && s.length()) {
+                        //std::cout << "[+] KEY for string: " << lastStr << " found: " << s << "\n";
+                        return s; // the current string contains searched string
+                    }
+                }
+                //std::cout << "[-] KEY for string: " << lastStr << " NOT found!\n";
+                return "";
+            }
+
+            std::set<std::string> searchedStrings;
+        };
+
+        //----
+
         template <typename T>
         struct ChunkStats {
             //
@@ -104,7 +138,7 @@ namespace pesieve {
                 stringsCount(p1.stringsCount), cleanStringsCount(p1.cleanStringsCount)
                 histogram(p1.histogram),
                 frequencies(p1.frequencies), 
-                searchesStrings(p1.searchesStrings), foundStrings(p1.foundStrings)
+                settings(p1.settings), foundStrings(p1.foundStrings)
 
 #ifdef _KEEP_STR
                 , allStrings(p1.allStrings)
@@ -112,9 +146,9 @@ namespace pesieve {
             {
             }
 
-            void setSearchedStrings(std::set<std::string>& _searchesStrings)
+            void fillSettings(StatsSettings &_settings)
             {
-                searchesStrings = _searchesStrings;
+                settings = _settings;
             }
 
             void appendVal(T val)
@@ -144,11 +178,9 @@ namespace pesieve {
                 stringsCount++;
                 if (isClean) cleanStringsCount++;
 
-                for (auto itr = searchesStrings.begin(); itr != searchesStrings.end(); ++itr) {
-                    const std::string s = *itr;
-                    if (lastStr.find(s) != std::string::npos) {
-                        foundStrings[lastStr]++; // the current string contains searched string
-                    }
+                std::string key = settings.hasSarchedSubstring(lastStr);
+                if (key.length()) {
+                    foundStrings[key]++; // the current string contains searched string
                 }
 
 #ifdef _KEEP_STR
@@ -172,10 +204,10 @@ namespace pesieve {
                 outs << ",\n";
                 OUT_PADDED(outs, level, "\"str_count\" : ");
                 outs << std::dec << stringsCount;
-                if (searchesStrings.size()) {
+                if (foundStrings.size()) {
                     outs << ",\n";
-                    OUT_PADDED(outs, level, "\"found_str_ratio\" : ");
-                    outs << std::dec << (float)foundStrings.size() / (float)searchesStrings.size();
+                    OUT_PADDED(outs, level, "\"found_str_count\" : ");
+                    outs << std::dec << (float)foundStrings.size();
                 }
                 outs << ",\n";
                 OUT_PADDED(outs, level, "\"str_longest_len\" : ");
@@ -225,7 +257,7 @@ namespace pesieve {
             size_t cleanStringsCount;
             std::map<T, size_t> histogram;
             std::map<size_t, std::set< T >>  frequencies;
-            std::set<std::string> searchesStrings;
+            StatsSettings settings;
 
             std::map<std::string, size_t> foundStrings;
 #ifdef _KEEP_STR
@@ -245,6 +277,10 @@ namespace pesieve {
             {
             }
 
+            void fillSettings(StatsSettings& _settings)
+            {
+                currArea.fillSettings(_settings);
+            }
 
             const virtual bool toJSON(std::stringstream& outs, size_t level)
             {
@@ -277,6 +313,7 @@ namespace pesieve {
 
         };
 
+
         template <typename T>
         class AreaStatsCalculator {
         public:
@@ -285,11 +322,11 @@ namespace pesieve {
             {
             }
 
-            bool fill(AreaStats<T> &stats, std::set<std::string> &searchesStrings)
+            bool fill(AreaStats<T> &stats, StatsSettings &settings)
             {
                 if (!data || !elements) return false;
 
-                stats.currArea.setSearchedStrings(searchesStrings);
+                stats.fillSettings(settings);
 
                 T lastVal = 0;
                 for (size_t dataIndex = 0; dataIndex < elements; ++dataIndex) {

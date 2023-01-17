@@ -18,6 +18,7 @@ set (rsrc
 #put your resources here
 )
 
+add_definitions( -DDISPLAY_STATS )
 add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} main.cpp )
 
 INSTALL( TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX} COMPONENT ${PROJECT_NAME} )

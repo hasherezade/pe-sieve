@@ -1,10 +1,11 @@
 #include "stats_analyzer.h"
 
-#define ENTROPY_DATA_TRESHOLD 1.5
+#define ENTROPY_DATA_TRESHOLD 3.0
 #define ENTROPY_CODE_TRESHOLD ENTROPY_DATA_TRESHOLD
 #define ENTROPY_ENC_TRESHOLD 6.0
 #define ENTROPY_STRONG_ENC_TRESHOLD 7.0
 
+//#define DISPLAY_STATS
 using namespace pesieve::util;
 
 double getValRatio(IN const AreaStats<BYTE>& stats, BYTE val)
@@ -38,11 +39,52 @@ size_t checkRatios(IN const AreaStats<BYTE>& stats, IN std::map<BYTE, double> &r
 	size_t points = 0;
 
 	for (auto itr = ratios.begin(); itr != ratios.end(); ++itr) {
-		if (getValRatio(stats, itr->first) >= itr->second) {
+		BYTE val = itr->first;
+		double currRatio = getValRatio(stats, val);
+		if (currRatio >= itr->second) {
+#ifdef DISPLAY_STATS
+			std::cout << "[+] OK " << std::hex << (UINT)val <<  std::dec << " : " << currRatio << "\n";
+#endif
 			points++;
 		}
 	}
 	return points;
+}
+
+size_t countFoundStrings(IN const AreaStats<BYTE>& stats, IN std::set<std::string> neededStrings, IN size_t minOccurrence)
+{
+	size_t totalCount = 0;
+	if (!stats.currArea.foundStrings.size()) {
+		return 0;
+	}
+	for (auto itr = neededStrings.begin(); itr != neededStrings.end(); ++itr)
+	{
+		const std::string& codeStr = *itr;
+		auto found = stats.currArea.foundStrings.find(codeStr);
+		if (found == stats.currArea.foundStrings.end()) {
+			continue;
+		}
+		size_t currCount = found->second;
+		if (currCount >= minOccurrence) {
+			totalCount++;
+		}
+	}
+	return totalCount;
+}
+
+//--
+
+size_t pesieve::util::fillCodeStrings(OUT std::set<std::string>& codeStrings)
+{
+	codeStrings.insert("WVS");
+	codeStrings.insert("SVW");
+	codeStrings.insert("D$");
+	codeStrings.insert("AQ");
+	codeStrings.insert("AX");
+	codeStrings.insert("UWV");
+	codeStrings.insert("[^_]");
+	codeStrings.insert("ZX[]");
+	return codeStrings.size();
 }
 
 //---
@@ -54,27 +96,57 @@ class CodeMatcher : public RuleMatcher
 
 	virtual bool _isMatching(IN const AreaStats<BYTE>& stats)
 	{
+		const size_t kMinCodePoints = 2;
+		const size_t kMinStrPoints = 2;
+
 		double entropy = stats.currArea.entropy;
 		if (entropy < ENTROPY_CODE_TRESHOLD) return false;
-		if (stats.currArea.foundStrings.size() == 0) return false;
 
+#ifdef DISPLAY_STATS
+		std::cout << "FOUND strings: " << stats.currArea.foundStrings.size() << "\n";
+
+		for (auto itr = stats.currArea.foundStrings.begin(); itr != stats.currArea.foundStrings.end(); ++itr)
+		{
+			const std::string& codeStr = itr->first;
+			size_t count = itr->second;
+			std::cout << "---->>> FOUND Str " << codeStr << " count: " << count << "\n";
+		}
+#endif
+		std::set<std::string> codeStrings;
+		fillCodeStrings(codeStrings);
+
+		size_t strPoints = countFoundStrings(stats, codeStrings, 1);
+#ifdef DISPLAY_STATS
+		std::cout << "---->>> STR points: " << strPoints << "\n";
+#endif
+		if (codeStrings.size() && !strPoints){
+			return false;
+		}
 		// possible code
-		size_t codePoints = 0;
+		size_t ratiosPoints = 0;
 		std::map<BYTE, double> ratios;
 		ratios[0x00] = 0.1;
-		ratios[0xFF] = 0.02;
+		ratios[0x0F] = 0.01;
+		ratios[0x48] = 0.02;
 		ratios[0x8B] = 0.02;
 		ratios[0xCC] = 0.01;
-		ratios[0x48] = 0.02;
 		ratios[0xE8] = 0.01;
-		ratios[0x0F] = 0.01;
+		ratios[0xFF] = 0.02;
 
-		codePoints += checkRatios(stats, ratios);
-		//std::cout << "---->>> CODE points: " << codePoints << "\n";
-		if (codePoints >= (ratios.size() / 2 + 1)) {
+		ratiosPoints += checkRatios(stats, ratios);
+#ifdef DISPLAY_STATS
+		std::cout << "---->>> CODE points: " << ratiosPoints << "\n";
+#endif
+		if (ratiosPoints < kMinCodePoints) {
+			return false;
+		}
+		if (ratiosPoints >= (ratios.size() / 2 + 1)) {
 			return true;
 		}
-		return false;
+		if (strPoints < kMinStrPoints) {
+			return false;
+		}
+		return true;
 	}
 };
 
@@ -149,22 +221,20 @@ public:
 
 //---
 
-pesieve::util::RuleMatchersSet::RuleMatchersSet()
+void pesieve::util::RuleMatchersSet::initRules(DWORD ruleTypes)
 {
-	matchers.push_back(new CodeMatcher());
-	//this->matchers.push_back(new TextMatcher());
-	//matchers.push_back(new EncryptedMatcher());
-	//matchers.push_back(new ObfuscatedMatcher());
-}
-
-pesieve::util::RuleMatchersSet::~RuleMatchersSet()
-{
-	for (auto itr = matchers.begin(); itr != matchers.end(); ++itr) {
-		RuleMatcher* m = *itr;
-		if (!m) continue;
-		delete m;
+	if (ruleTypes & RuleType::RULE_CODE) {
+		matchers.push_back(new CodeMatcher());
 	}
-	matchers.clear();
+	if (ruleTypes & RuleType::RULE_TEXT) {
+		this->matchers.push_back(new TextMatcher());
+	}
+	if (ruleTypes & RuleType::RULE_ENCRYPTED) {
+		matchers.push_back(new EncryptedMatcher());
+	}
+	if (ruleTypes & RuleType::RULE_OBFUSCATED) {
+		matchers.push_back(new ObfuscatedMatcher());
+	}
 }
 
 bool pesieve::util::isSuspicious(IN const AreaStats<BYTE>& stats, IN RuleMatchersSet& matchersSet, OUT AreaInfo& info)
