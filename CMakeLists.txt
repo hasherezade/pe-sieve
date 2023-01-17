@@ -141,7 +141,16 @@ set (utils_srcs
 	utils/process_reflection.cpp
 	utils/console_color.cpp
 	utils/strings_util.cpp
-	utils/stats_analyzer.cpp
+)
+
+set (stats_srcs
+	stats/stats_analyzer.cpp
+)
+
+set (stats_hdrs
+	stats/stats.h
+	stats/stats_analyzer.h
+	stats/std_dev_calc.h
 )
 
 set (utils_hdrs
@@ -158,8 +167,6 @@ set (utils_hdrs
 	utils/process_reflection.h
 	utils/console_color.h
 	utils/strings_util.h
-	utils/stats.h
-	utils/stats_analyzer.h
 	utils/basic_buffer.h
 	utils/data_buffer.h
 )
@@ -180,6 +187,7 @@ set (srcs
 	${postprocessors_srcs}
 	${imprec_srcs}
 	${utils_srcs}
+	${stats_srcs}
 )
 
 set (hdrs
@@ -191,6 +199,7 @@ set (hdrs
 	${postprocessors_hdrs}
 	${imprec_hdrs}
 	${utils_hdrs}
+	${stats_hdrs}
 )
 
 set (rsrc
@@ -206,6 +215,9 @@ SOURCE_GROUP("Header Files\\scanners" FILES ${scanners_hdrs} )
 
 SOURCE_GROUP("Source Files\\utils" FILES ${utils_srcs} )
 SOURCE_GROUP("Header Files\\utils" FILES ${utils_hdrs} )
+
+SOURCE_GROUP("Source Files\\stats" FILES ${stats_srcs} )
+SOURCE_GROUP("Header Files\\stats" FILES ${stats_hdrs} )
 
 SOURCE_GROUP("Source Files\\params_info" FILES ${params_info_srcs} )
 SOURCE_GROUP("Header Files\\params_info" FILES ${params_info_hdrs} )

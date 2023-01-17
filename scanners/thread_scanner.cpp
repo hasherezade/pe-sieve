@@ -2,7 +2,7 @@
 #include <peconv.h>
 #include "../utils/process_util.h"
 #include "../utils/ntddk.h"
-#include "../utils/stats_analyzer.h"
+#include "../stats/stats_analyzer.h"
 #include "mempage_data.h"
 
 #include <dbghelp.h>
@@ -261,9 +261,9 @@ bool pesieve::ThreadScanner::calcAreaStats(ThreadScanReport* my_report)
 	if (!mem.fillInfo() || !mem.load()) {
 		return false;
 	}
-	util::AreaStatsCalculator<BYTE> statsCalc(mem.getLoadedData(), mem.getLoadedSize());
-	util::StatsSettings settings;
-	util::fillCodeStrings(settings.searchedStrings);
+	stats::AreaStatsCalculator<BYTE> statsCalc(mem.getLoadedData(), mem.getLoadedSize());
+	stats::StatsSettings settings;
+	stats::fillCodeStrings(settings.searchedStrings);
 	if (statsCalc.fill(my_report->stats, settings)) {
 		return true;
 	}
@@ -274,8 +274,8 @@ bool pesieve::ThreadScanner::isSuspiciousByStats(ThreadScanReport* my_report)
 {
 	if (!my_report) return false;
 
-	pesieve::util::RuleMatchersSet matchersSet(util::RULE_CODE | util::RULE_ENCRYPTED);
-	return util::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
+	pesieve::stats::RuleMatchersSet matchersSet(stats::RULE_CODE | stats::RULE_ENCRYPTED);
+	return stats::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
 }
 
 bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx  &c)

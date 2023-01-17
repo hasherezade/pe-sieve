@@ -1,12 +1,13 @@
 #pragma once
 
 #include "stats.h"
+#include "std_dev_calc.h"
 
 #define CODE_RULE "possible_code"
 
 namespace pesieve {
 
-    namespace util {
+    namespace stats {
 
         size_t fillCodeStrings(OUT std::set<std::string>& codeStrings);
 

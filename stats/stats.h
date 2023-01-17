@@ -4,7 +4,7 @@
 #include <map>
 #include <set>
 #include <vector>
-#include "format_util.h"
+#include "../utils/format_util.h"
 
 #define IS_ENDLINE(c) (c == 0x0A || c == 0xD)
 #define IS_PRINTABLE(c) ((c >= 0x20 && c < 0x7f) || IS_ENDLINE(c))
@@ -13,7 +13,7 @@
 
 namespace pesieve {
 
-    namespace util {
+    namespace stats {
 
         // Shannon's Entropy calculation based on: https://stackoverflow.com/questions/20965960/shannon-entropy
         template <typename T>

@@ -6,7 +6,7 @@
 #define ENTROPY_STRONG_ENC_TRESHOLD 7.0
 
 //#define DISPLAY_STATS
-using namespace pesieve::util;
+using namespace pesieve::stats;
 
 double getValRatio(IN const AreaStats<BYTE>& stats, BYTE val)
 {
@@ -74,7 +74,7 @@ size_t countFoundStrings(IN const AreaStats<BYTE>& stats, IN std::set<std::strin
 
 //--
 
-size_t pesieve::util::fillCodeStrings(OUT std::set<std::string>& codeStrings)
+size_t pesieve::stats::fillCodeStrings(OUT std::set<std::string>& codeStrings)
 {
 	codeStrings.insert("WVS");
 	codeStrings.insert("SVW");
@@ -221,7 +221,7 @@ public:
 
 //---
 
-void pesieve::util::RuleMatchersSet::initRules(DWORD ruleTypes)
+void pesieve::stats::RuleMatchersSet::initRules(DWORD ruleTypes)
 {
 	if (ruleTypes & RuleType::RULE_CODE) {
 		matchers.push_back(new CodeMatcher());
@@ -237,7 +237,7 @@ void pesieve::util::RuleMatchersSet::initRules(DWORD ruleTypes)
 	}
 }
 
-bool pesieve::util::isSuspicious(IN const AreaStats<BYTE>& stats, IN RuleMatchersSet& matchersSet, OUT AreaInfo& info)
+bool pesieve::stats::isSuspicious(IN const AreaStats<BYTE>& stats, IN RuleMatchersSet& matchersSet, OUT AreaInfo& info)
 {
 	if (!stats.isFilled() || !stats.currArea.size) {
 		return false;

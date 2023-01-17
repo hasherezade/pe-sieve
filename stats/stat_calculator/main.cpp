@@ -3,12 +3,13 @@
 
 #define _KEEP_STR
 
+#include "../../utils/basic_buffer.h"
 #include "../stats.h"
 #include "../stats_analyzer.h"
-#include "../basic_buffer.h"
 #include "../std_dev_calc.h"
 
 using namespace pesieve::util;
+using namespace pesieve::stats;
 
 struct FileBuffer : public BasicBuffer
 {

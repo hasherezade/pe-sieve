@@ -11,7 +11,7 @@
 
 #include "../utils/format_util.h"
 #include "../utils/workingset_enum.h"
-#include "../utils/stats_analyzer.h"
+#include "../stats/stats_analyzer.h"
 #include "process_feature_scanner.h"
 #include "process_details.h"
 
@@ -81,8 +81,8 @@ namespace pesieve {
 		bool is_listed_module;
 		bool has_pe;
 		bool has_shellcode;
-		util::AreaStats<BYTE> stats;
-		util::AreaInfo area_info;
+		stats::AreaStats<BYTE> stats;
+		stats::AreaInfo area_info;
 		DWORD protection;
 		DWORD mapping_type;
 		std::string mapped_name; //if the region is mapped from a file

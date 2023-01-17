@@ -4,7 +4,7 @@
 
 #include "module_scanner.h"
 #include "../utils/threads_util.h"
-#include "../utils/stats_analyzer.h"
+#include "../stats/stats_analyzer.h"
 
 namespace pesieve {
 
@@ -68,8 +68,8 @@ namespace pesieve {
 		DWORD protection;
 		DWORD thread_state;
 		DWORD thread_wait_reason;
-		util::AreaStats<BYTE> stats;
-		util::AreaInfo area_info;
+		stats::AreaStats<BYTE> stats;
+		stats::AreaInfo area_info;
 		bool entropy_filled;
 
 	protected:

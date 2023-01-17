@@ -6,7 +6,7 @@
 #include "../utils/path_converter.h"
 #include "../utils/workingset_enum.h"
 #include "../utils/artefacts_util.h"
-#include "../utils/stats_analyzer.h"
+#include "../stats/stats_analyzer.h"
 
 using namespace pesieve;
 using namespace pesieve::util;
@@ -65,8 +65,8 @@ bool pesieve::WorkingSetScanner::isSuspiciousByStats(WorkingSetScanReport* my_re
 {
 	if (!my_report) return false;
 
-	pesieve::util::RuleMatchersSet matchersSet(util::RULE_CODE | util::RULE_ENCRYPTED | util::RULE_OBFUSCATED);
-	return util::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
+	pesieve::stats::RuleMatchersSet matchersSet(stats::RULE_CODE | stats::RULE_ENCRYPTED | stats::RULE_OBFUSCATED);
+	return stats::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
 }
 
 WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData &_memPage)
@@ -102,10 +102,10 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 	bool has_sus_stats = false;
 	if (this->args.stats) {
 		const bool noPadding = true;
-		util::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(noPadding), _memPage.getLoadedSize(noPadding));
+		stats::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(noPadding), _memPage.getLoadedSize(noPadding));
 		// fill the stats directly in the report
-		util::StatsSettings settings;
-		util::fillCodeStrings(settings.searchedStrings);
+		stats::StatsSettings settings;
+		stats::fillCodeStrings(settings.searchedStrings);
 
 		if (statsCalc.fill(my_report->stats, settings)) {
 			has_sus_stats = isSuspiciousByStats(my_report);

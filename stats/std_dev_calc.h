@@ -1,5 +1,7 @@
 #pragma once
 
+#include <windows.h>
+#include <iostream>
 #include <map>
 
 class StdDeviationCalc
@@ -15,6 +17,7 @@ public:
         : mean(0), population(_population)
     {
         max = _max;
+        mean = calcMean();
     }
 
     double calcSum()
@@ -39,7 +42,6 @@ public:
     {
         if (max == 0) return 0;
 
-        mean = calcMean();
         double temp = 0;
         for (auto itr = population.begin(); itr != population.end(); ++itr)
         {
@@ -52,7 +54,6 @@ public:
     double calcSampleVariance()
     {
         if ((max - 1) == 0) return 0;
-        mean = calcMean();
 
         double temp = 0;
         for (auto itr = population.begin(); itr != population.end(); ++itr)
@@ -75,9 +76,9 @@ public:
 
     void printAll()
     {
-        std::cout << "sum:\t\t\t: " << calcSum() << "\n";
+        std::cout << "Counts Sum:\t\t\t: " << calcSum() << "\n";
         std::cout << "Total Numbers\t\t\t: " << max << "\n";
-        std::cout << "Mean\t\t\t\t: " << calcMean() << "\n";
+        std::cout << "Mean\t\t\t\t: " << mean << "\n";
         std::cout << "Population Variance\t\t: " << calcVariance() <<"\n";
         std::cout << "Sample variance\t\t\t: " << calcSampleVariance() << "\n";
         std::cout << "Population Standard Deviation\t: " << GetStandardDeviation() << "\n";
