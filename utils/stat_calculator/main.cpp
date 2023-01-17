@@ -133,7 +133,7 @@ int main(size_t argc, char* argv[])
     outs << "\n---\n";
 
     AreaInfo info;
-    RuleMatchersSet matcherSet;
+    RuleMatchersSet matcherSet(RULE_CODE | RULE_ENCRYPTED | RULE_OBFUSCATED);
     if (isSuspicious(stats, matcherSet, info)) {
         outs << "Suspicious!\n";
     }
