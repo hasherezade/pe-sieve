@@ -9,16 +9,9 @@ class StdDeviationCalc
 private:
 
     size_t max;
-    std::map<BYTE, size_t> &population;
+    const std::map<BYTE, size_t> &population;
     double mean;
-
-public:
-    StdDeviationCalc(std::map<BYTE, size_t>& _population, size_t _max)
-        : mean(0), population(_population)
-    {
-        max = _max;
-        mean = calcMean();
-    }
+    double sum;
 
     double calcSum()
     {
@@ -37,6 +30,18 @@ public:
         double sum = calcSum();
         return (sum / max);
     }
+
+public:
+    StdDeviationCalc(const std::map<BYTE, size_t>& _population, size_t _max)
+        : mean(0), population(_population)
+    {
+        max = _max;
+        mean = calcMean();
+    }
+
+    double getSum() { return sum; }
+
+    double getMean() { return mean; }
 
     double calcVariance()
     {

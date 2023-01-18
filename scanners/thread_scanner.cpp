@@ -274,7 +274,7 @@ bool pesieve::ThreadScanner::isSuspiciousByStats(ThreadScanReport* my_report)
 {
 	if (!my_report) return false;
 
-	pesieve::stats::RuleMatchersSet matchersSet(stats::RULE_CODE | stats::RULE_ENCRYPTED);
+	pesieve::stats::RuleMatchersSet matchersSet(stats::RULE_CODE | stats::RULE_OBFUSCATED);
 	return stats::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
 }
 

@@ -65,7 +65,7 @@ bool pesieve::WorkingSetScanner::isSuspiciousByStats(WorkingSetScanReport* my_re
 {
 	if (!my_report) return false;
 
-	pesieve::stats::RuleMatchersSet matchersSet(stats::RULE_CODE | stats::RULE_ENCRYPTED | stats::RULE_OBFUSCATED);
+	pesieve::stats::RuleMatchersSet matchersSet(stats::RULE_CODE | stats::RULE_OBFUSCATED);
 	return stats::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
 }
 

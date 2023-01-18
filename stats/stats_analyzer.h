@@ -1,7 +1,6 @@
 #pragma once
 
 #include "stats.h"
-#include "std_dev_calc.h"
 
 #define CODE_RULE "possible_code"
 
@@ -126,6 +125,10 @@ namespace pesieve {
 
             std::vector<std::string> matchedRules;
         };
+
+
+        size_t valuesNotBelowMean(IN const ChunkStats<BYTE>& currArea, double mean);
+
 
         bool isSuspicious(IN const AreaStats<BYTE>& stats, IN RuleMatchersSet& matchersSet, OUT AreaInfo& info);
 

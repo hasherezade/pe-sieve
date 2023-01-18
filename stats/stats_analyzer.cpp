@@ -1,9 +1,13 @@
 #include "stats_analyzer.h"
 
+#include "std_dev_calc.h"
+
 #define ENTROPY_DATA_TRESHOLD 3.0
 #define ENTROPY_CODE_TRESHOLD ENTROPY_DATA_TRESHOLD
 #define ENTROPY_ENC_TRESHOLD 6.0
 #define ENTROPY_STRONG_ENC_TRESHOLD 7.0
+
+#define CHARSET_SIZE 0xFF
 
 //#define DISPLAY_STATS
 using namespace pesieve::stats;
@@ -70,6 +74,40 @@ size_t countFoundStrings(IN const AreaStats<BYTE>& stats, IN std::set<std::strin
 		}
 	}
 	return totalCount;
+}
+
+size_t fetchPeakValues(IN const ChunkStats<BYTE>& currArea, IN double stdDev, OUT std::set<BYTE>& peaks)
+{
+	if (!currArea.size) return 0;
+
+	size_t peaksCount = 0;
+	size_t peakVal = currArea.frequencies.rbegin()->first;
+	size_t i = 0;
+	for (auto itr1 = currArea.frequencies.rbegin(); itr1 != currArea.frequencies.rend(); ++itr1, ++i) {
+		size_t counter = itr1->first;
+		double diff = (double)peakVal - (double)counter;
+		if (diff > (3 * stdDev)) break;
+
+		std::set<BYTE> vals = itr1->second;
+		peaksCount += vals.size();
+		peaks.insert(vals.begin(), vals.end());
+	}
+	return peaksCount;
+}
+
+size_t pesieve::stats::valuesNotBelowMean(IN const ChunkStats<BYTE>& currArea, double mean)
+{
+	size_t valsCount = 0;
+	for (auto itr1 = currArea.frequencies.rbegin(); itr1 != currArea.frequencies.rend(); ++itr1) {
+		double counter = itr1->first;
+		if (counter >= mean) {
+			valsCount += itr1->second.size();
+		}
+		else {
+			break;
+		}
+	}
+	return valsCount;
 }
 
 //--
@@ -161,16 +199,46 @@ public:
 	{
 		const BYTE mFreqVal = getMostFrequentValue<BYTE>(stats.currArea.frequencies);
 		double entropy = stats.currArea.entropy;
+		const size_t populationSize = stats.currArea.histogram.size();
 
-		bool fullAreaObfuscated = (mFreqVal != 0 && entropy > ENTROPY_DATA_TRESHOLD); // possible XOR obfuscation, or block cipher
-		if (fullAreaObfuscated) { 
-			// filter out texts:
-			const double printRatio = getPrintableRatio(stats);
-			if (printRatio > 0.8) {
-				fullAreaObfuscated = false;
-			}
+		if (populationSize < (CHARSET_SIZE / 3)) {
+			return false;
 		}
-		return fullAreaObfuscated;
+
+		bool entropyT = (mFreqVal != 0 && entropy > ENTROPY_DATA_TRESHOLD); // possible XOR obfuscation, or block cipher
+		if (!entropyT) {
+			return false;
+		}
+
+		StdDeviationCalc dev(stats.currArea.histogram, populationSize);
+		const double mean = dev.getMean();
+		const size_t nB = valuesNotBelowMean(stats.currArea, mean);
+		const double nBRatio = (double)nB / (double)populationSize;
+		if (nBRatio < 0.17) {
+			return false;
+		}
+		if (nBRatio > 0.5) {
+			return true;
+		}
+
+		// filter out texts:
+		const double printRatio = getPrintableRatio(stats);
+		if (printRatio > 0.8) {
+			return false;
+		}
+		/*const size_t topVal = stats.currArea.frequencies.rbegin()->first;
+		const size_t bottomVal = stats.currArea.frequencies.begin()->first;
+		double diff = topVal - bottomVal;
+		*/
+		double stDev = dev.calcSampleStandardDeviation();
+
+		std::set<BYTE>peaks;
+		size_t peaksCount = fetchPeakValues(stats.currArea, stDev, peaks);
+		if (peaks.find(0) == peaks.end()) {
+			// 0 is not among the peaks:
+			return true;
+		}
+		return false;
 	}
 };
 

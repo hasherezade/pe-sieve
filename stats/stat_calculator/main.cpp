@@ -90,6 +90,25 @@ void printFrequencies(ChunkStats<BYTE>& currArea,  std::stringstream& outs, size
     }
 }
 
+size_t fetchPeakValues(ChunkStats<BYTE>& currArea, std::set<BYTE> peaks, double stdDev)
+{
+    if (!currArea.size) return 0;
+
+    size_t peaksCount = 0;
+    size_t peakVal = currArea.frequencies.rbegin()->first;
+    size_t i = 0;
+    for (auto itr1 = currArea.frequencies.rbegin(); itr1 != currArea.frequencies.rend(); ++itr1, ++i) {
+        size_t counter = itr1->first;
+        double diff = (double)peakVal - (double)counter;
+        if (diff > (3 * stdDev)) break;
+
+        std::set<BYTE> vals = itr1->second;
+        peaksCount += vals.size();
+        peaks.insert(vals.begin(), vals.end());
+    }
+    return peaksCount;
+}
+
 size_t printPeakValues(ChunkStats<BYTE>& currArea, std::stringstream& outs, double stdDev)
 {
     if (!currArea.size) return 0;
@@ -178,10 +197,10 @@ int main(size_t argc, char* argv[])
     size_t bottomVal = stats.currArea.frequencies.begin()->first;
     double diff = topVal - bottomVal;
     double stDev = dev.calcSampleStandardDeviation();
-
+    size_t populationSize = (double)stats.currArea.histogram.size();
     size_t peaks = printPeakValues(stats.currArea, outs, stDev);
     outs << "Peaks count: " << peaks << "\n";
-    outs << "Peaks ratio: " <<(double) peaks / (double)stats.currArea.histogram.size() << "\n";
+    outs << "Peaks ratio: " <<(double) peaks / populationSize << "\n";
     outs << "---\n";
 
     info.toJSON(outs, 0);
@@ -189,9 +208,12 @@ int main(size_t argc, char* argv[])
     std::cout << outs.str();
 
     dev.printAll();
+
     std::cout << "Top - Bottom diff\t: " << diff << " in std dev: " << diff/ stDev << "\n";
     //std::cout << "Sample Standard Deviation ratio\t: " << stDev / stats.currArea.size << "\n";
     std::cout << "---\n";
+    size_t nB = valuesNotBelowMean(stats.currArea, dev.getMean());
+    std::cout << "values Not Below Mean: " << nB  << " Ratio: " << (double)nB / populationSize << "\n";
     std::cout << "Char diversity: " << (double)stats.currArea.histogram.size() / (double)255 << "\n";
     std::cout << "Highest freq: " << stats.currArea.frequencies.rbegin()->first << "\n";
     std::cout << "Lowest freq: " << stats.currArea.frequencies.begin()->first << "\n";
