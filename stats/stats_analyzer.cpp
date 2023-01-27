@@ -76,7 +76,7 @@ size_t countFoundStrings(IN const AreaStats<BYTE>& stats, IN std::set<std::strin
 	return totalCount;
 }
 
-size_t fetchPeakValues(IN const ChunkStats<BYTE>& currArea, IN double stdDev, OUT std::set<BYTE>& peaks)
+size_t fetchPeakValues(IN const ChunkStats<BYTE>& currArea, IN double stdDev, int devCount, OUT std::set<BYTE>& peaks)
 {
 	if (!currArea.size) return 0;
 
@@ -86,7 +86,7 @@ size_t fetchPeakValues(IN const ChunkStats<BYTE>& currArea, IN double stdDev, OU
 	for (auto itr1 = currArea.frequencies.rbegin(); itr1 != currArea.frequencies.rend(); ++itr1, ++i) {
 		size_t counter = itr1->first;
 		double diff = (double)peakVal - (double)counter;
-		if (diff > (3 * stdDev)) break;
+		if (diff > (devCount * stdDev)) break;
 
 		std::set<BYTE> vals = itr1->second;
 		peaksCount += vals.size();
@@ -193,10 +193,11 @@ class ObfuscatedMatcher : public RuleMatcher
 {
 public:
 	ObfuscatedMatcher()
-		: RuleMatcher("is_full_obfuscated") {}
+		: RuleMatcher("possible_obfuscated") {}
 
 	virtual bool _isMatching(IN const AreaStats<BYTE>& stats)
 	{
+		const double kMinNBRatio = 0.17;
 		const BYTE mFreqVal = getMostFrequentValue<BYTE>(stats.currArea.frequencies);
 		double entropy = stats.currArea.entropy;
 		const size_t populationSize = stats.currArea.histogram.size();
@@ -204,9 +205,8 @@ public:
 		if (populationSize < (CHARSET_SIZE / 3)) {
 			return false;
 		}
-
 		bool entropyT = (mFreqVal != 0 && entropy > ENTROPY_DATA_TRESHOLD); // possible XOR obfuscation, or block cipher
-		if (!entropyT) {
+		if (!entropyT) {;
 			return false;
 		}
 
@@ -214,16 +214,13 @@ public:
 		const double mean = dev.getMean();
 		const size_t nB = valuesNotBelowMean(stats.currArea, mean);
 		const double nBRatio = (double)nB / (double)populationSize;
-		if (nBRatio < 0.17) {
-			return false;
-		}
 		if (nBRatio > 0.5) {
-			return true;
+			return true; // possible strong encryption
 		}
 
 		// filter out texts:
 		const double printRatio = getPrintableRatio(stats);
-		if (printRatio > 0.8) {
+		if (nBRatio >= kMinNBRatio && printRatio > 0.8) {
 			return false;
 		}
 		/*const size_t topVal = stats.currArea.frequencies.rbegin()->first;
@@ -233,17 +230,20 @@ public:
 		double stDev = dev.calcSampleStandardDeviation();
 
 		std::set<BYTE>peaks;
-		size_t peaksCount = fetchPeakValues(stats.currArea, stDev, peaks);
+		size_t peaksCount = fetchPeakValues(stats.currArea, stDev, 2, peaks);
 		double peaksRatio = (double)peaksCount / (double)populationSize;
-		if (peaksRatio > 0.4) {
+		if (peaksRatio > 0.4) { // possible strong encryption
 			return true;
 		}
 		if (peaks.find(0) == peaks.end()) {
 			// 0 is not among the peaks:
 			return true;
 		}
+		if (nBRatio < kMinNBRatio) {
+			return false;
+		}
 #ifdef DISPLAY_STATS
-		std::cout << "0 is among peaks. All peaks: \n";
+		std::cout << "All peaks: \n";
 		for (auto itr = peaks.begin(); itr != peaks.end(); itr++) {
 			std::cout << std::hex << (UINT)*itr << " ";
 		}
@@ -258,7 +258,7 @@ class EncryptedMatcher : public RuleMatcher
 {
 public:
 	EncryptedMatcher()
-		: RuleMatcher("is_full_encrypted") {}
+		: RuleMatcher("possible_encrypted") {}
 
 	virtual bool _isMatching(IN const AreaStats<BYTE>& stats)
 	{
