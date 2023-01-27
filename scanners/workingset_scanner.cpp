@@ -40,7 +40,7 @@ bool pesieve::WorkingSetScanner::isCode(IN MemPageData &_memPage, OUT WorkingSet
 
 			has_sus_stats = stats::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
 
-			if (my_report->area_info.hasMatchAt(CODE_RULE)) {
+			if (has_sus_stats) {
 				// check for shellcode patterns only if the preliminary analysis passed
 				code = is_code(_memPage.getLoadedData(noPadding), _memPage.getLoadedSize(noPadding));
 			}
