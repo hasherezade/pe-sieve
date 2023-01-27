@@ -86,11 +86,19 @@ namespace pesieve {
 		REPORT_ALL           ///< output all available reports
 	} t_report_type;
 
+	typedef enum {
+		STATS_NONE = 0,     ///< do not use stats
+		STATS_CODE = 1,     ///< use stats for code detection
+		STATS_OBFUSCATED = 2,  ///< use stats for obfuscated areas detection
+		STATS_ALL           ///< use stats to detect both code and obfuscated areas
+	} t_stat_rules;
+
 	//!  A wrapper for a dynamically allocated string.
 	typedef struct _PARAM_STRING {
 		ULONG length;
 		char* buffer;
 	} PARAM_STRING;
+
 
 	//!  Input parameters for PE-sieve, defining the configuration.
 	typedef struct {
@@ -109,7 +117,7 @@ namespace pesieve {
 		bool json_output;       ///< display the final summary as the JSON report
 		bool make_reflection;   ///< operate on a process reflection rather than on the live process (this allows i.e. to force-read inaccessible pages)
 		bool use_cache;         ///< enable cache for the scanned modules
-		bool stats;             ///< use statistic for memory analysis
+		t_stat_rules stats;             ///< use statistic for memory analysis
 		t_json_level json_lvl;  ///< level of the details of the JSON report
 		char output_dir[MAX_PATH + 1];  ///< the root directory where the output should be saved (default: current directory)
 		PARAM_STRING modules_ignored; ///< a list of modules that will not be scanned, separated by PARAM_LIST_SEPARATOR

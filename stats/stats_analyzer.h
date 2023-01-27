@@ -14,6 +14,7 @@ namespace pesieve {
 
         enum RuleType
         {
+            RULE_NONE = 0,
             RULE_CODE = 1,
             RULE_TEXT = 2,
             RULE_OBFUSCATED = 4,
@@ -128,7 +129,6 @@ namespace pesieve {
 
 
         size_t valuesNotBelowMean(IN const ChunkStats<BYTE>& currArea, double mean);
-
 
         bool isSuspicious(IN const AreaStats<BYTE>& stats, IN RuleMatchersSet& matchersSet, OUT AreaInfo& info);
 

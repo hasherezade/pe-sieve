@@ -234,10 +234,21 @@ public:
 
 		std::set<BYTE>peaks;
 		size_t peaksCount = fetchPeakValues(stats.currArea, stDev, peaks);
+		double peaksRatio = (double)peaksCount / (double)populationSize;
+		if (peaksRatio > 0.4) {
+			return true;
+		}
 		if (peaks.find(0) == peaks.end()) {
 			// 0 is not among the peaks:
 			return true;
 		}
+#ifdef DISPLAY_STATS
+		std::cout << "0 is among peaks. All peaks: \n";
+		for (auto itr = peaks.begin(); itr != peaks.end(); itr++) {
+			std::cout << std::hex << (UINT)*itr << " ";
+		}
+		std::cout << "\n";
+#endif
 		return false;
 	}
 };
@@ -322,3 +333,4 @@ bool pesieve::stats::isSuspicious(IN const AreaStats<BYTE>& stats, IN RuleMatche
 	}
 	return (matched > 0) ? true : false;
 }
+

@@ -151,6 +151,7 @@ set (stats_hdrs
 	stats/stats.h
 	stats/stats_analyzer.h
 	stats/std_dev_calc.h
+	stats/args_converter.h
 )
 
 set (utils_hdrs

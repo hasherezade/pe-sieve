@@ -7,9 +7,11 @@
 #include "../utils/workingset_enum.h"
 #include "../utils/artefacts_util.h"
 #include "../stats/stats_analyzer.h"
+#include "../stats/args_converter.h"
 
 using namespace pesieve;
 using namespace pesieve::util;
+
 
 bool pesieve::WorkingSetScanner::isCode(IN MemPageData &_memPage, OUT WorkingSetScanReport* my_report)
 {
@@ -22,14 +24,16 @@ bool pesieve::WorkingSetScanner::isCode(IN MemPageData &_memPage, OUT WorkingSet
 	bool code = false;
 	bool has_sus_stats = false;
 
-	if (this->args.stats && my_report) {
+	if ((this->args.stats != t_stat_rules::STATS_NONE) && my_report) {
 		const bool noPadding = true;
 		stats::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(noPadding), _memPage.getLoadedSize(noPadding));
 
 		// fill default settings
 		stats::StatsSettings settings;
 		stats::fillCodeStrings(settings.searchedStrings);
-		pesieve::stats::RuleMatchersSet matchersSet(stats::RULE_CODE | stats::RULE_OBFUSCATED | stats::RULE_ENCRYPTED);
+
+		int rules = stats::argsToRules(this->args.stats);
+		pesieve::stats::RuleMatchersSet matchersSet(rules);
 
 		// fill the stats directly in the report
 		if (statsCalc.fill(my_report->stats, settings)) {

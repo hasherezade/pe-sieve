@@ -3,6 +3,8 @@
 #include "../utils/process_util.h"
 #include "../utils/ntddk.h"
 #include "../stats/stats_analyzer.h"
+#include "../stats/args_converter.h"
+
 #include "mempage_data.h"
 
 #include <dbghelp.h>
@@ -184,7 +186,6 @@ bool pesieve::ThreadScanner::fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThrea
 			c.rbp = ctx.Rbp;
 			c.is64b = true;
 
-
 #else
 			c.rip = ctx.Eip;
 			c.rsp = ctx.Esp;
@@ -274,7 +275,9 @@ bool pesieve::ThreadScanner::isSuspiciousByStats(ThreadScanReport* my_report)
 {
 	if (!my_report) return false;
 
-	pesieve::stats::RuleMatchersSet matchersSet(stats::RULE_CODE | stats::RULE_OBFUSCATED | stats::RULE_ENCRYPTED);
+	const int rules = stats::argsToRules(this->args.stats);
+
+	pesieve::stats::RuleMatchersSet matchersSet(rules);
 	return stats::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
 }
 
@@ -298,7 +301,7 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 
 	my_report->thread_ip = susp_addr;
 	my_report->status = SCAN_SUSPICIOUS;
-	if (this->args.stats) {
+	if (this->args.stats != pesieve::STATS_NONE) {
 		const bool statsFilled = calcAreaStats(my_report);
 		if (statsFilled && !isSuspiciousByStats(my_report)) {
 			my_report->status = SCAN_NOT_SUSPICIOUS;
