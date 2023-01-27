@@ -96,10 +96,7 @@ bool pesieve::MemPageData::isRealMapping()
 	bool is_same = false;
 	if (this->load()) {
 		size_t r_size = GetFileSize(file, 0);
-		size_t smaller_size = this->loadedSize > r_size ? r_size : this->loadedSize;
-		if (::memcmp(this->loadedData, rawData, smaller_size) == 0) {
-			is_same = true;
-		}
+		is_same = this->loadedData.isDataContained(rawData, r_size);
 	}
 	else {
 #ifdef _DEBUG
@@ -123,13 +120,11 @@ bool pesieve::MemPageData::_loadRemote()
 	if (region_size == 0) {
 		return false;
 	}
-	loadedData = peconv::alloc_aligned(region_size, PAGE_READWRITE);
-	if (loadedData == nullptr) {
+	if (!loadedData.allocData(region_size)) {
 		return false;
 	}
-	this->loadedSize = region_size;
 	const bool can_force_access = is_process_refl ? true : false;
-	const size_t size_read = peconv::read_remote_region(this->processHandle, (BYTE*)this->start_va, loadedData, loadedSize, can_force_access);
+	const size_t size_read = peconv::read_remote_region(this->processHandle, (BYTE*)this->start_va, loadedData.data, loadedData.getDataSize(), can_force_access);
 	if (size_read == 0) {
 		_freeRemote();
 #ifdef _DEBUG
@@ -137,6 +132,7 @@ bool pesieve::MemPageData::_loadRemote()
 #endif
 		return false;
 	}
+	loadedData.trim();
 	return true;
 }
 

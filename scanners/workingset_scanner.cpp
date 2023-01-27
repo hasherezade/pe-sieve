@@ -6,7 +6,7 @@
 #include "../utils/path_converter.h"
 #include "../utils/workingset_enum.h"
 #include "../utils/artefacts_util.h"
-#include "../utils/stats_analyzer.h"
+#include "../stats/stats_analyzer.h"
 
 using namespace pesieve;
 using namespace pesieve::util;
@@ -16,7 +16,8 @@ bool pesieve::WorkingSetScanner::isCode(MemPageData &memPage)
 	if (!memPage.load()) {
 		return false;
 	}
-	return is_code(memPage.getLoadedData(), memPage.getLoadedSize());
+	const bool noPadding = true;
+	return is_code(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding));
 }
 
 bool pesieve::WorkingSetScanner::isExecutable(MemPageData &memPage)
@@ -64,7 +65,8 @@ bool pesieve::WorkingSetScanner::isSuspiciousByStats(WorkingSetScanReport* my_re
 {
 	if (!my_report) return false;
 
-	return util::isSuspicious(my_report->stats, my_report->area_info);
+	pesieve::stats::RuleMatchersSet matchersSet(stats::RULE_CODE | stats::RULE_OBFUSCATED);
+	return stats::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
 }
 
 WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData &_memPage)
@@ -96,15 +98,25 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 	if (!my_report) {
 		return nullptr;
 	}
+	bool code = false;//isCode(_memPage); // check for shellcode patterns
 	bool has_sus_stats = false;
 	if (this->args.stats) {
-		util::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(), _memPage.getLoadedSize());
+		const bool noPadding = true;
+		stats::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(noPadding), _memPage.getLoadedSize(noPadding));
 		// fill the stats directly in the report
-		if (statsCalc.fill(my_report->stats)) {
+		stats::StatsSettings settings;
+		stats::fillCodeStrings(settings.searchedStrings);
+
+		if (statsCalc.fill(my_report->stats, settings)) {
 			has_sus_stats = isSuspiciousByStats(my_report);
+			if (my_report->area_info.hasMatchAt(CODE_RULE)) {
+				code = isCode(_memPage); // check for shellcode patterns only if the preliminary analysis passed
+			}
 		}
 	}
-	const bool code = isCode(_memPage); // check for shellcode patterns
+	else {
+		code = isCode(_memPage); // check for shellcode patterns
+	}
 	const bool isDetected = code || has_sus_stats;
 	if (!isDetected) {
 		// do not keep reports for not suspicious areas

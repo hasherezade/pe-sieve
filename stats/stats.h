@@ -1,9 +1,10 @@
 #pragma once
 
+#include <string>
 #include <map>
 #include <set>
 #include <vector>
-#include "format_util.h"
+#include "../utils/format_util.h"
 
 #define IS_ENDLINE(c) (c == 0x0A || c == 0xD)
 #define IS_PRINTABLE(c) ((c >= 0x20 && c < 0x7f) || IS_ENDLINE(c))
@@ -12,7 +13,7 @@
 
 namespace pesieve {
 
-    namespace util {
+    namespace stats {
 
         // Shannon's Entropy calculation based on: https://stackoverflow.com/questions/20965960/shannon-entropy
         template <typename T>
@@ -39,37 +40,29 @@ namespace pesieve {
 
         // return the most frequent value
         template <typename T>
-        T getMostFrequentValue(IN const std::map<T, size_t>& histogram)
+        T getMostFrequentValue(IN std::map<size_t, std::set< T >> frequencies)
         {
-            T mVal = 0;
-            size_t mFreq = 0;
-            for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
-                if (itr->second > mFreq) {
-                    mFreq = itr->second;
-                    mVal = itr->first;
-                }
+            auto itr = frequencies.rbegin();
+            if (itr == frequencies.rend()) {
+                return 0;
             }
+            auto setItr = itr->second.begin();
+            T mVal = *setItr;
             return mVal;
         }
 
         // return the number of occurrencies
         template <typename T>
-        size_t getMostFrequentValues(IN std::map<T, size_t>& histogram, OUT std::set<T> &values)
+        size_t getMostFrequentValues(IN std::map<size_t, std::set< T >> frequencies, OUT std::set<T> &values)
         {
+            auto itr = frequencies.rbegin();
+            if (itr == frequencies.rend()) {
+                return 0;
+            }
+
             // find the highest frequency:
-            size_t mFreq = 0;
-            for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
-                if (itr->second > mFreq) {
-                    mFreq = itr->second;
-                }
-            }
-            if (!mFreq) return mFreq;
-            // find all the values matching this frequency
-            for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
-                if (itr->second == mFreq) {
-                    values.insert(itr->first);
-                }
-            }
+            size_t mFreq = itr->first;
+            values.insert(itr->second.begin(), itr->second.end());
             return mFreq;
         }
 
@@ -89,45 +82,115 @@ namespace pesieve {
             return is_printable;
         }
 
+        //----
+
+        // defines what type of stats should be collected
+        class StatsSettings
+        {
+        public:
+            StatsSettings()
+            {
+            }
+
+            // Copy constructor
+            StatsSettings(const StatsSettings& p1)
+                : searchedStrings(p1.searchedStrings)
+            {
+            }
+
+            std::string hasSarchedSubstring(std::string& lastStr)
+            {
+                for (auto itr = searchedStrings.begin(); itr != searchedStrings.end(); ++itr) {
+                    const std::string s = *itr;
+                    if (lastStr.find(s) != std::string::npos && s.length()) {
+                        //std::cout << "[+] KEY for string: " << lastStr << " found: " << s << "\n";
+                        return s; // the current string contains searched string
+                    }
+                }
+                //std::cout << "[-] KEY for string: " << lastStr << " NOT found!\n";
+                return "";
+            }
+
+            std::set<std::string> searchedStrings;
+        };
+
+        //----
+
         template <typename T>
         struct ChunkStats {
             //
             ChunkStats() 
-                : size(0), offset(0), entropy(0), longestStr(0), prevVal(0)
+                : size(0), offset(0), entropy(0), longestStr(0), prevVal(0),
+                stringsCount(0), cleanStringsCount(0)
+            {
+            }
+
+            ChunkStats(size_t _offset, size_t _size)
+                : size(_size), offset(_offset), entropy(0), longestStr(0), prevVal(0),
+                stringsCount(0), cleanStringsCount(0)
             {
             }
 
             // Copy constructor
             ChunkStats(const ChunkStats& p1)
-                : size(p1.size), offset(p1.offset), histogram(p1.histogram.begin(), p1.histogram.end()),
-                entropy(p1.entropy), longestStr(p1.longestStr), lastStr(p1.lastStr), prevVal(p1.prevVal)
+                : size(p1.size), offset(p1.offset), 
+                entropy(p1.entropy), longestStr(p1.longestStr), lastStr(p1.lastStr), prevVal(p1.prevVal), 
+                stringsCount(p1.stringsCount), cleanStringsCount(p1.cleanStringsCount)
+                histogram(p1.histogram),
+                frequencies(p1.frequencies), 
+                settings(p1.settings), foundStrings(p1.foundStrings)
+
+#ifdef _KEEP_STR
+                , allStrings(p1.allStrings)
+#endif //_KEEP_STR
             {
             }
 
-            ChunkStats(size_t _offset, size_t _size)
-                : size(_size), offset(_offset), entropy(0), longestStr(0), prevVal(0)
+            void fillSettings(StatsSettings &_settings)
             {
+                settings = _settings;
             }
 
-            void append(T val)
+            void appendVal(T val)
             {
 #ifdef SCAN_STRINGS
-                if (IS_PRINTABLE(val)) {
-                    if (prevVal && IS_PRINTABLE(prevVal)) {
-                        lastStr += char(val);
-                    }
+                const bool isPrint = IS_PRINTABLE(val);
+                if (isPrint){
+                    lastStr += char(val);
                 }
-                else if (!val) {
-                    if (lastStr.length() > longestStr) {
-                        longestStr = lastStr.length();
-                        //std::cout << "-----> lastStr:" << lastStr << "\n";
-                    }
+                else {
+                    const bool isClean = (val == 0) ? true : false; //terminated cleanly?
+                    finishLastStr(isClean);
                     lastStr.clear();
                 }
+
 #endif // SCAN_STRINGS
                 size++;
                 histogram[val]++;
                 prevVal = val;
+            }
+
+            void finishLastStr(bool isClean)
+            {
+                if (lastStr.length() < 2) {
+                    return;
+                }
+                stringsCount++;
+                if (isClean) cleanStringsCount++;
+
+                std::string key = settings.hasSarchedSubstring(lastStr);
+                if (key.length()) {
+                    foundStrings[key]++; // the current string contains searched string
+                }
+
+#ifdef _KEEP_STR
+                allStrings.push_back(lastStr);
+#endif //_KEEP_STR
+                //std::cout << "-----> lastStr:" << lastStr << "\n";
+                if (lastStr.length() > longestStr) {
+                    longestStr = lastStr.length();
+                }
+                lastStr.clear();
             }
 
             const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
@@ -139,17 +202,26 @@ namespace pesieve {
                 outs << std::hex << "\"" << size << "\"";
 #ifdef SCAN_STRINGS
                 outs << ",\n";
-                OUT_PADDED(outs, level, "\"longest_str\" : ");
+                OUT_PADDED(outs, level, "\"str_count\" : ");
+                outs << std::dec << stringsCount;
+                if (foundStrings.size()) {
+                    outs << ",\n";
+                    OUT_PADDED(outs, level, "\"found_str_count\" : ");
+                    outs << std::dec << (float)foundStrings.size();
+                }
+                outs << ",\n";
+                OUT_PADDED(outs, level, "\"str_longest_len\" : ");
                 outs << std::dec << longestStr;
 #endif // SCAN_STRINGS
+
                 std::set<T> values;
-                size_t freq = getMostFrequentValues(histogram, values);
+                size_t freq = getMostFrequentValues<T>(frequencies, values);
                 if (freq && values.size()) {
                     outs << ",\n";
                     OUT_PADDED(outs, level, "\"most_freq_occurrence\" : ");
                     outs << std::dec << freq;
                     outs << ",\n";
-                    OUT_PADDED(outs, level, "\"most_freq_val_count\" : ");
+                    OUT_PADDED(outs, level, "\"most_freq_vals_count\" : ");
                     outs << std::dec << values.size();
                     outs << ",\n";
                     OUT_PADDED(outs, level, "\"most_freq_val\" : ");
@@ -164,31 +236,50 @@ namespace pesieve {
             void summarize()
             {
                 entropy = calcShannonEntropy(histogram, size);
-                //is_printable = isAllPrintable(histogram);
+                finishLastStr(true);
+
+                for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
+                    const size_t count = itr->second;
+                    const  T val = itr->first;
+                    frequencies[count].insert(val);
+                }
             }
 
             double entropy;
             size_t size;
             size_t offset;
-            //bool is_printable;
+
             T prevVal;
             size_t longestStr; // the longest ASCII string in the chunk
+
             std::string lastStr;
+            size_t stringsCount;
+            size_t cleanStringsCount;
             std::map<T, size_t> histogram;
+            std::map<size_t, std::set< T >>  frequencies;
+            StatsSettings settings;
+
+            std::map<std::string, size_t> foundStrings;
+#ifdef _KEEP_STR
+            std::vector< std::string > allStrings;
+#endif
         };
 
         template <typename T>
         struct AreaStats {
             AreaStats()
-                : biggestChunkIndex(0)
             {
             }
 
             // Copy constructor
             AreaStats(const AreaStats& p1)
-                : currArea(p1.currArea), 
-                chunks(p1.chunks.begin(), p1.chunks.end()), biggestChunkIndex(p1.biggestChunkIndex)
+                : currArea(p1.currArea)
             {
+            }
+
+            void fillSettings(StatsSettings& _settings)
+            {
+                currArea.fillSettings(_settings);
             }
 
             const virtual bool toJSON(std::stringstream& outs, size_t level)
@@ -202,24 +293,10 @@ namespace pesieve {
 
             const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
             {
-                OUT_PADDED(outs, level, "\"chunks_count\" : ");
-                outs << std::dec << chunks.size();
-                outs << ",\n";
                 OUT_PADDED(outs, level, "\"full_area\" : {\n");
                 currArea.fieldsToJSON(outs, level + 1);
                 outs << "\n";
                 OUT_PADDED(outs, level, "}");
-                if (chunks.size() && biggestChunkIndex < chunks.size()) {
-                    outs << ",\n";
-                    // print chunk stats
-                    OUT_PADDED(outs, level, "\"biggest_chunk\" : {\n");
-                    chunks[biggestChunkIndex].fieldsToJSON(outs, level + 1);
-                    outs << "\n";
-                    OUT_PADDED(outs, level, "}");
-                }
-                else {
-                    outs << "\n";
-                }
             }
 
             bool isFilled() const
@@ -233,9 +310,9 @@ namespace pesieve {
             }
 
             ChunkStats<T> currArea; // stats from the whole area
-            std::vector< ChunkStats<T> > chunks;//< all chunks found in the area
-            size_t biggestChunkIndex;
+
         };
+
 
         template <typename T>
         class AreaStatsCalculator {
@@ -245,40 +322,16 @@ namespace pesieve {
             {
             }
 
-            bool fill(AreaStats<T> &stats)
+            bool fill(AreaStats<T> &stats, StatsSettings &settings)
             {
                 if (!data || !elements) return false;
 
-                const T kDelim = 0; // delimiter of continuous chunks
-                //stats.biggestChunk = nullptr;
-                //
-                ChunkStats<T> currChunk;
-                size_t biggestChunkSize = 0;
+                stats.fillSettings(settings);
+
                 T lastVal = 0;
                 for (size_t dataIndex = 0; dataIndex < elements; ++dataIndex) {
                     const T val = data[dataIndex];
-                    stats.currArea.append(val);
-
-                    if (val == kDelim) { // delimiter found, finish the chunk
-                        if (currChunk.size > 1) { // process chunks biffer than 1 byte
-                            size_t index = stats.chunks.size();
-                            currChunk.summarize();
-                            stats.chunks.push_back(currChunk);
-
-                            if (currChunk.size > biggestChunkSize) {
-                                // set current chunk as the biggest
-                                biggestChunkSize = currChunk.size;
-                                stats.biggestChunkIndex = index;
-                            }
-                        }
-                        currChunk = ChunkStats<T>(dataIndex, 0);
-                    }
-                    if (lastVal == kDelim && val != kDelim) {
-                        // start a new chunk
-                        currChunk = ChunkStats<T>(dataIndex, 0);
-                    }
-                    currChunk.append(val);
-                    lastVal = val;
+                    stats.currArea.appendVal(val);
                 }
                 stats.summarize();
                 return true;
