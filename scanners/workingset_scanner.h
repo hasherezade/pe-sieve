@@ -121,9 +121,8 @@ namespace pesieve {
 
 		bool isExecutable(MemPageData &memPageData);
 		bool isPotentiallyExecutable(MemPageData &memPageData, const t_data_scan_mode &mode);
-		bool isCode(MemPageData &memPageData);
+		bool isCode(IN MemPageData &memPageData, OUT WorkingSetScanReport* my_report);
 		WorkingSetScanReport* scanExecutableArea(MemPageData &memPageData);
-		bool isSuspiciousByStats(WorkingSetScanReport* my_report);
 
 		const process_details pDetails;
 		const util::mem_region_info memRegion;
