@@ -200,33 +200,21 @@ namespace pesieve {
                 outs << ",\n";
                 OUT_PADDED(outs, level, "\"size\" : ");
                 outs << std::hex << "\"" << size << "\"";
-#ifdef SCAN_STRINGS
                 outs << ",\n";
-                OUT_PADDED(outs, level, "\"str_count\" : ");
-                outs << std::dec << stringsCount;
-                if (foundStrings.size()) {
-                    outs << ",\n";
-                    OUT_PADDED(outs, level, "\"found_str_count\" : ");
-                    outs << std::dec << (float)foundStrings.size();
-                }
-                outs << ",\n";
-                OUT_PADDED(outs, level, "\"str_longest_len\" : ");
-                outs << std::dec << longestStr;
-#endif // SCAN_STRINGS
-
+                OUT_PADDED(outs, level, "\"charset_size\" : ");
+                outs << std::dec << histogram.size();
+                
                 std::set<T> values;
                 size_t freq = getMostFrequentValues<T>(frequencies, values);
                 if (freq && values.size()) {
                     outs << ",\n";
-                    OUT_PADDED(outs, level, "\"most_freq_occurrence\" : ");
-                    outs << std::dec << freq;
-                    outs << ",\n";
-                    OUT_PADDED(outs, level, "\"most_freq_vals_count\" : ");
-                    outs << std::dec << values.size();
-                    outs << ",\n";
-                    OUT_PADDED(outs, level, "\"most_freq_val\" : ");
-                    T mVal = *(values.begin());
-                    outs << std::hex << "\"" << hexdumpValue<BYTE>((BYTE*)&mVal, sizeof(T)) << "\"";
+                    OUT_PADDED(outs, level, "\"most_freq_vals\" : ");
+                    outs << std::hex << "\"";
+                    for (auto itr = values.begin(); itr != values.end(); ++itr) {
+                        T mVal = *itr;
+                        outs << hexdumpValue<BYTE>((BYTE*)&mVal, sizeof(T));
+                    }
+                    outs << "\"";
                 }
                 outs << ",\n";
                 OUT_PADDED(outs, level, "\"entropy\" : ");
