@@ -201,7 +201,10 @@ namespace pesieve {
 			size_t getScore() const
 			{
 				size_t score = 0;
-				if (sec_hdr) score += 3;
+				if (sec_hdr) {
+					score++;
+					if (sec_count > 1) score += 2;
+				}
 				if (nt_file_hdr) score += 2;
 				if (dos_hdr) score++;
 				return score;

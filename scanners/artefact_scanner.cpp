@@ -810,7 +810,7 @@ PeArtefacts* pesieve::ArtefactScanner::findArtefacts(MemPageData &_memPage, size
 			aMap.sec_hdr = nullptr;
 		}
 		bestMapping = (bestMapping < aMap) ? aMap : bestMapping;
-
+		
 		//do not continue the search if no artefacts found:
 		if (!aMap.foundAny()) break;
 
@@ -823,6 +823,9 @@ PeArtefacts* pesieve::ArtefactScanner::findArtefacts(MemPageData &_memPage, size
 		if (sec_offset != INVALID_OFFSET && sec_offset > min_offset) {
 			min_offset = sec_offset;
 		}
+	}
+	if (bestMapping.getScore() <= 1) {
+		return nullptr; // too low score
 	}
 	//use the best found set of artefacts:
 	return generateArtefacts(bestMapping);
