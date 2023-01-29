@@ -25,12 +25,15 @@ bool pesieve::WorkingSetScanner::isCode(IN MemPageData &_memPage, OUT WorkingSet
 	bool code = false;
 	bool has_sus_stats = false;
 
-	if (stats_enabled && this->args.stats_exclude) {
+	if (stats_enabled && this->args.detecton_filter == t_detection_filter::DF_PATTERNS_ONLY) {
 		// first check if the code was detected by patterns
 		code = is_code(_memPage.getLoadedData(noPadding), _memPage.getLoadedSize(noPadding));
 	}
-
-	if (stats_enabled && my_report) {
+	bool check_stats = stats_enabled;
+	if (this->args.detecton_filter == t_detection_filter::DF_PATTERNS_ONLY && !code) {
+		check_stats = false;
+	}
+	if (check_stats && my_report) {
 		const bool noPadding = true;
 		stats::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(noPadding), _memPage.getLoadedSize(noPadding));
 
@@ -45,18 +48,27 @@ bool pesieve::WorkingSetScanner::isCode(IN MemPageData &_memPage, OUT WorkingSet
 		if (statsCalc.fill(my_report->stats, settings)) {
 
 			has_sus_stats = stats::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
-			if (this->args.stats_exclude) {
-				if (code) {
-					// anything that was detected by patterns is excluded:
-					has_sus_stats = false;
-				}
+			if (this->args.detecton_filter == t_detection_filter::DF_PATTERNS_ONLY && code) {
+				// detected by code patterns, but not by stats:
+				has_sus_stats = !has_sus_stats;
 			}
-			else {
-				if (has_sus_stats) {
+			if (has_sus_stats) {
+				if (this->args.detecton_filter == t_detection_filter::DF_STATS_ONLY ||
+					this->args.detecton_filter == t_detection_filter::DF_BOTH_ONLY)
+				{
 					// check for shellcode patterns only if the preliminary analysis passed
 					code = is_code(_memPage.getLoadedData(noPadding), _memPage.getLoadedSize(noPadding));
+
+					if (this->args.detecton_filter == t_detection_filter::DF_STATS_ONLY && code) {
+						has_sus_stats = false;
+					}
+
+					if (this->args.detecton_filter == t_detection_filter::DF_BOTH_ONLY && !code) {
+						has_sus_stats = false;
+					}
 				}
 			}
+
 		}
 	}
 	else {

@@ -94,6 +94,13 @@ namespace pesieve {
 		STATS_ALL           ///< use stats to detect both code and obfuscated areas
 	} t_stat_rules;
 
+	typedef enum {
+		DF_NONE = 0,     ///< do not use exclusions
+		DF_PATTERNS_ONLY = 1,     ///< shellcode detected by patterns, not detected by stats
+		DF_STATS_ONLY = 2,  ///< shellcode detected by stats, not detected by patterns
+		DF_BOTH_ONLY = 3, ///< shellcode detected by both stats and patterns simultanously
+	} t_detection_filter;
+
 	//!  A wrapper for a dynamically allocated string.
 	typedef struct _PARAM_STRING {
 		ULONG length;
@@ -119,7 +126,7 @@ namespace pesieve {
 		bool make_reflection;   ///< operate on a process reflection rather than on the live process (this allows i.e. to force-read inaccessible pages)
 		bool use_cache;         ///< enable cache for the scanned modules
 		t_stat_rules stats;             ///< use statistic for memory analysis
-		bool stats_exclude; ///< exclude shellcodes that match the rules by the statistics (for tests only)
+		t_detection_filter detecton_filter; ///< exclude shellcodes that match the rules by the statistics (for tests only)
 		t_json_level json_lvl;  ///< level of the details of the JSON report
 		char output_dir[MAX_PATH + 1];  ///< the root directory where the output should be saved (default: current directory)
 		PARAM_STRING modules_ignored; ///< a list of modules that will not be scanned, separated by PARAM_LIST_SEPARATOR
