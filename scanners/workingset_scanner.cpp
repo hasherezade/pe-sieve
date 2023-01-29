@@ -18,12 +18,19 @@ bool pesieve::WorkingSetScanner::isCode(IN MemPageData &_memPage, OUT WorkingSet
 	if (!_memPage.load()) {
 		return false;
 	}
+	const bool stats_enabled = (this->args.stats != t_stat_rules::STATS_NONE);
+
 	const bool noPadding = true;
 	// initialize:
 	bool code = false;
 	bool has_sus_stats = false;
 
-	if ((this->args.stats != t_stat_rules::STATS_NONE) && my_report) {
+	if (stats_enabled && this->args.stats_exclude) {
+		// first check if the code was detected by patterns
+		code = is_code(_memPage.getLoadedData(noPadding), _memPage.getLoadedSize(noPadding));
+	}
+
+	if (stats_enabled && my_report) {
 		const bool noPadding = true;
 		stats::AreaStatsCalculator<BYTE> statsCalc(_memPage.getLoadedData(noPadding), _memPage.getLoadedSize(noPadding));
 
@@ -38,10 +45,17 @@ bool pesieve::WorkingSetScanner::isCode(IN MemPageData &_memPage, OUT WorkingSet
 		if (statsCalc.fill(my_report->stats, settings)) {
 
 			has_sus_stats = stats::isSuspicious(my_report->stats, matchersSet, my_report->area_info);
-
-			if (has_sus_stats) {
-				// check for shellcode patterns only if the preliminary analysis passed
-				code = is_code(_memPage.getLoadedData(noPadding), _memPage.getLoadedSize(noPadding));
+			if (this->args.stats_exclude) {
+				if (code) {
+					// anything that was detected by patterns is excluded:
+					has_sus_stats = false;
+				}
+			}
+			else {
+				if (has_sus_stats) {
+					// check for shellcode patterns only if the preliminary analysis passed
+					code = is_code(_memPage.getLoadedData(noPadding), _memPage.getLoadedSize(noPadding));
+				}
 			}
 		}
 	}

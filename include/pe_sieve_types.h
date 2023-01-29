@@ -119,6 +119,7 @@ namespace pesieve {
 		bool make_reflection;   ///< operate on a process reflection rather than on the live process (this allows i.e. to force-read inaccessible pages)
 		bool use_cache;         ///< enable cache for the scanned modules
 		t_stat_rules stats;             ///< use statistic for memory analysis
+		bool stats_exclude; ///< exclude shellcodes that match the rules by the statistics (for tests only)
 		t_json_level json_lvl;  ///< level of the details of the JSON report
 		char output_dir[MAX_PATH + 1];  ///< the root directory where the output should be saved (default: current directory)
 		PARAM_STRING modules_ignored; ///< a list of modules that will not be scanned, separated by PARAM_LIST_SEPARATOR
