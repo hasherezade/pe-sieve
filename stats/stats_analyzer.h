@@ -127,8 +127,11 @@ namespace pesieve {
             std::vector<std::string> matchedRules;
         };
 
+        size_t fetchPeakValues(IN const ChunkStats<BYTE>& currArea, IN double stdDev, int devCount, OUT std::set<BYTE>& peaks);
 
         size_t valuesNotBelowMean(IN const ChunkStats<BYTE>& currArea, double mean);
+
+        double getPrintableRatio(IN const AreaStats<BYTE>& stats);
 
         bool isSuspicious(IN const AreaStats<BYTE>& stats, IN RuleMatchersSet& matchersSet, OUT AreaInfo& info);
 

@@ -19,7 +19,9 @@ namespace pesieve {
 			case t_stat_rules::STATS_CODE:
 				rules = stats::RULE_CODE; break;
 			case t_stat_rules::STATS_OBFUSCATED:
-				rules = stats::RULE_OBFUSCATED | stats::RULE_ENCRYPTED; break;
+				rules = stats::RULE_OBFUSCATED; break;
+			case t_stat_rules::STATS_ENCRYPTED:
+				rules = stats::RULE_ENCRYPTED; break;
 			}
 			return rules;
 		}

@@ -23,7 +23,7 @@ double getValRatio(IN const AreaStats<BYTE>& stats, BYTE val)
 	return ratio;
 }
 
-double getPrintableRatio(IN const AreaStats<BYTE>& stats)
+double pesieve::stats::getPrintableRatio(IN const AreaStats<BYTE>& stats)
 {
 	if (!stats.currArea.size) return 0;
 	size_t total_size = 0;
@@ -76,7 +76,7 @@ size_t countFoundStrings(IN const AreaStats<BYTE>& stats, IN std::set<std::strin
 	return totalCount;
 }
 
-size_t fetchPeakValues(IN const ChunkStats<BYTE>& currArea, IN double stdDev, int devCount, OUT std::set<BYTE>& peaks)
+size_t pesieve::stats::fetchPeakValues(IN const ChunkStats<BYTE>& currArea, IN double stdDev, int devCount, OUT std::set<BYTE>& peaks)
 {
 	if (!currArea.size) return 0;
 
@@ -220,15 +220,20 @@ public:
 
 		// filter out texts:
 		const double printRatio = getPrintableRatio(stats);
-		if (nBRatio >= kMinNBRatio && printRatio > 0.8) {
+		if (printRatio > 0.8) {
 			return false;
 		}
-		/*const size_t topVal = stats.currArea.frequencies.rbegin()->first;
+		if (entropy < ENTROPY_ENC_TRESHOLD && printRatio > 0.6) {
+			return false;
+		}
+		double stDev = dev.calcSampleStandardDeviation();
+		/*
+		const size_t topVal = stats.currArea.frequencies.rbegin()->first;
 		const size_t bottomVal = stats.currArea.frequencies.begin()->first;
 		double diff = topVal - bottomVal;
-		*/
-		double stDev = dev.calcSampleStandardDeviation();
 
+		double valSpread = diff / stDev;
+		*/
 		std::set<BYTE>peaks;
 		size_t peaksCount = fetchPeakValues(stats.currArea, stDev, 2, peaks);
 		double peaksRatio = (double)peaksCount / (double)populationSize;

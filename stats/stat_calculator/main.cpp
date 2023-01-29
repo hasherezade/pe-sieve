@@ -208,6 +208,7 @@ int main(size_t argc, char* argv[])
     std::cout << outs.str();
 
     dev.printAll();
+    double printRatio = pesieve::stats::getPrintableRatio(stats);
 
     std::cout << "Top - Bottom diff\t: " << diff << " in std dev: " << diff/ stDev << "\n";
     //std::cout << "Sample Standard Deviation ratio\t: " << stDev / stats.currArea.size << "\n";
@@ -221,5 +222,6 @@ int main(size_t argc, char* argv[])
     std::cout << "Real start: " << buf.real_start << "\n";
     std::cout << "Real end: " << buf.real_end << "\n";
     std::cout << "Padding: " << buf.padding << " = 0x" << std::hex << buf.padding << "\n";
+    std::cout << "printable Ratio: " << printRatio << "\n";
     return 0;
 }

@@ -90,6 +90,7 @@ namespace pesieve {
 		STATS_NONE = 0,     ///< do not use stats
 		STATS_CODE = 1,     ///< use stats for code detection
 		STATS_OBFUSCATED = 2,  ///< use stats for obfuscated areas detection
+		STATS_ENCRYPTED = 3, ///< use stats for encrypted areas detection
 		STATS_ALL           ///< use stats to detect both code and obfuscated areas
 	} t_stat_rules;
 

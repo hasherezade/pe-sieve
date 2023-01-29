@@ -19,7 +19,6 @@ bool pesieve::WorkingSetScanner::isCode(IN MemPageData &_memPage, OUT WorkingSet
 		return false;
 	}
 	const bool noPadding = true;
-
 	// initialize:
 	bool code = false;
 	bool has_sus_stats = false;
