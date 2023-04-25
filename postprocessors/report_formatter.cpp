@@ -81,7 +81,7 @@ std::string pesieve::report_to_json(const pesieve::ReportEx& report, const t_rep
 
 	size_t level = 1;
 	std::stringstream stream;
-	const bool has_dumps = (report.dump_report->countDumped() > 0) ? true : false;
+	const bool has_dumps = (report.dump_report && report.dump_report->countDumped() > 0) ? true : false;
 	stream << "{\n";
 	if (rtype == REPORT_ALL || rtype == REPORT_SCANNED) {
 		OUT_PADDED(stream, level, "\"scan_report\" :\n");
