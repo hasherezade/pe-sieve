@@ -6,7 +6,7 @@ namespace pesieve {
     namespace util {
 
         // from: https://stackoverflow.com/questions/20965960/shannon-entropy
-        template <typename T> static float ShannonEntropy(T data[], size_t elements)
+        template <typename T> static double ShannonEntropy(T data[], size_t elements)
         {
             double entropy = 0;
             std::map<T, size_t> counts;
