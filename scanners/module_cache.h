@@ -67,7 +67,7 @@ namespace pesieve
 
 			memcpy(moduleData, _moduleData, _moduleSize);
 			moduleSize = _moduleSize;
-			lastUsage = GetTickCount64();
+			lastUsage = GetTickCount();
 		}
 
 		BYTE* mapFromCached(size_t &mappedSize) const
@@ -90,7 +90,7 @@ namespace pesieve
 		
 		BYTE* moduleData;
 		size_t moduleSize;
-		ULONGLONG lastUsage;
+		DWORD lastUsage;
 	};
 
 
@@ -125,7 +125,7 @@ namespace pesieve
 				CachedModule* cached = itr->second;
 				if (!cached) return nullptr;
 				
-				cached->lastUsage = GetTickCount64();
+				cached->lastUsage = GetTickCount();
 				return cached->mapFromCached(mappedSize);
 			}
 			return nullptr;
@@ -143,8 +143,8 @@ namespace pesieve
 
 		bool _deleteLeastRecent()
 		{
-			ULONGLONG lTimestamp = 0;
-			ULONGLONG gTimestamp = 0;
+			DWORD lTimestamp = 0;
+			DWORD gTimestamp = 0;
 			std::map<std::string, CachedModule*>::iterator foundItr = cachedModules.end();
 
 			std::map<std::string, CachedModule*>::iterator itr;
