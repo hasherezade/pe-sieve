@@ -41,7 +41,6 @@ PEsieve_report PESIEVE_API_FUNC PESieve_scan_ex(IN const PEsieve_params &args, I
 		nullrep.errors = pesieve::ERROR_SCAN_FAILURE;
 		return nullrep;
 	}
-	size_t report_size = 0;
 	pesieve::t_report summary = report->scan_report->generateSummary();
 	//check the pointers:
 	if (json_buf) {
@@ -56,12 +55,11 @@ PEsieve_report PESIEVE_API_FUNC PESieve_scan_ex(IN const PEsieve_params &args, I
 
 	//print the report (only if any valid output buffer was passed)
 	if (json_buf || needed_size) {
-		report_size = print_report(*report, args, rtype, json_buf, json_buf_size);
+		const size_t report_size = print_report(*report, args, rtype, json_buf, json_buf_size);
 		if (needed_size) {
 			*needed_size = report_size;
 		}
 	}
-
 	delete report;
 	return summary;
 }
