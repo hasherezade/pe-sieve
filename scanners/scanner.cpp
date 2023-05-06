@@ -244,7 +244,7 @@ ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 	}
 
 	// throw error only if none of the scans was successful
-	if (!modulesScanned && !iatsScanned && !regionsScanned) {
+	if (!modulesScanned && !iatsScanned && !regionsScanned && !threadsScanned) {
 		throw std::runtime_error(errorsStr.str());
 	}
 	//post-process hooks
