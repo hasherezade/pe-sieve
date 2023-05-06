@@ -6,11 +6,10 @@ var searchData=
   ['headerbuffer_3',['headerBuffer',['../classpesieve_1_1_remote_module_data.html#a601a27ff576179474ff6270d4bdbc87f',1,'pesieve::RemoteModuleData']]],
   ['hfile_4',['hFile',['../namespacepesieve_1_1util.html#abbfc80ee34aa4b5e1dfa78c1537fe405',1,'pesieve::util']]],
   ['hilighted_5fcolor_5',['HILIGHTED_COLOR',['../namespacepesieve.html#a1eba647f3f36f78d8280a93989228576',1,'pesieve']]],
-  ['hmodsmax_6',['hModsMax',['../classpesieve_1_1_process_scanner.html#a20d04b847fa4073708935a09b7ce8b6b',1,'pesieve::ProcessScanner']]],
-  ['hooked_5ffunc_7',['hooked_func',['../classpesieve_1_1_patch_list_1_1_patch.html#a4aa1cbe33dae22e9e11bcbaf2e78331f',1,'pesieve::PatchList::Patch']]],
-  ['hooktargetmodname_8',['hookTargetModName',['../classpesieve_1_1_patch_list_1_1_patch.html#a539b13c352084f0c62380fd35f388d83',1,'pesieve::PatchList::Patch']]],
-  ['hooktargetmodule_9',['hookTargetModule',['../classpesieve_1_1_patch_list_1_1_patch.html#acec7a5d8080e88233a3df43d8baf22b5',1,'pesieve::PatchList::Patch']]],
-  ['hooktargetva_10',['hookTargetVA',['../classpesieve_1_1_patch_list_1_1_patch.html#a88a970b68970e94884d5f4e2efd80359',1,'pesieve::PatchList::Patch']]],
-  ['hprocess_11',['hProcess',['../struct__t__stack__enum__params.html#a657834de8b3a9b7525907db521be6552',1,'_t_stack_enum_params']]],
-  ['hthread_12',['hThread',['../struct__t__stack__enum__params.html#af39d9900e3d580fea3a16440f979bcef',1,'_t_stack_enum_params']]]
+  ['hooked_5ffunc_6',['hooked_func',['../classpesieve_1_1_patch_list_1_1_patch.html#a4aa1cbe33dae22e9e11bcbaf2e78331f',1,'pesieve::PatchList::Patch']]],
+  ['hooktargetmodname_7',['hookTargetModName',['../classpesieve_1_1_patch_list_1_1_patch.html#a539b13c352084f0c62380fd35f388d83',1,'pesieve::PatchList::Patch']]],
+  ['hooktargetmodule_8',['hookTargetModule',['../classpesieve_1_1_patch_list_1_1_patch.html#acec7a5d8080e88233a3df43d8baf22b5',1,'pesieve::PatchList::Patch']]],
+  ['hooktargetva_9',['hookTargetVA',['../classpesieve_1_1_patch_list_1_1_patch.html#a88a970b68970e94884d5f4e2efd80359',1,'pesieve::PatchList::Patch']]],
+  ['hprocess_10',['hProcess',['../struct__t__stack__enum__params.html#a657834de8b3a9b7525907db521be6552',1,'_t_stack_enum_params']]],
+  ['hthread_11',['hThread',['../struct__t__stack__enum__params.html#af39d9900e3d580fea3a16440f979bcef',1,'_t_stack_enum_params']]]
 ];
