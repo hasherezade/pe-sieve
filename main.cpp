@@ -46,7 +46,6 @@ void free_params(t_params &args)
 
 int main(int argc, char *argv[])
 {
-	bool info_req = false;
 	t_params args = { 0 };
 
 	PEsieveParams uParams(PESIEVE_VERSION_STR);
