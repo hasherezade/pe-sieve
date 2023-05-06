@@ -324,7 +324,7 @@ $(function() {
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    }</div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <span class="comment">// throw error only if none of the scans was successful</span></div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordflow">if</span> (!modulesScanned &amp;&amp; !iatsScanned &amp;&amp; !regionsScanned) {</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordflow">if</span> (!modulesScanned &amp;&amp; !iatsScanned &amp;&amp; !regionsScanned &amp;&amp; !threadsScanned) {</div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        <span class="keywordflow">throw</span> std::runtime_error(errorsStr.str());</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    }</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="comment">//post-process hooks</span></div>
