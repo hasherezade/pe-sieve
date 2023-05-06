@@ -50,7 +50,6 @@ namespace pesieve {
 		HANDLE processHandle;
 		bool isDEP;
 		const bool isReflection;
-		size_t hModsMax;
 		pesieve::t_params args;
 
 		std::set<std::string> ignoredModules;
