@@ -379,7 +379,7 @@ void pesieve::ResultsDumper::makeAndJoinDirectories(std::stringstream& stream)
 	}
 }
 
-std::string pesieve::ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, std::string fname, const std::string &default_extension)
+std::string pesieve::ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, const std::string &fname, const std::string &default_extension)
 {
 	std::stringstream stream;
 	makeAndJoinDirectories(stream);
@@ -393,7 +393,7 @@ std::string pesieve::ResultsDumper::makeModuleDumpPath(ULONGLONG modBaseAddr, st
 	return stream.str();
 }
 
-std::string pesieve::ResultsDumper::makeOutPath(std::string fname, const std::string& default_extension)
+std::string pesieve::ResultsDumper::makeOutPath(const std::string &fname, const std::string& default_extension)
 {
 	std::stringstream stream;
 	makeAndJoinDirectories(stream);

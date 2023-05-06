@@ -48,7 +48,7 @@ namespace pesieve {
 };
 
 
-bool pesieve::util::make_minidump(DWORD pid, std::string out_file)
+bool pesieve::util::make_minidump(DWORD pid, const std::string &out_file)
 {
 	if (!load_MiniDumpWriteDump()) return false;
 

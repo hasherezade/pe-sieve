@@ -5,6 +5,6 @@
 namespace pesieve {
 	namespace util {
 
-		bool make_minidump(DWORD pid, std::string out_file);
+		bool make_minidump(DWORD pid, const std::string &out_file);
 	};
 };
