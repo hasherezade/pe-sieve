@@ -33,8 +33,6 @@ PE-sieve is meant to be a **light-weight engine** dedicated to scan **a single p
 
 🤔 Do you have any question that was not included in the [FAQ](https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ)? Join [Discussions](https://github.com/hasherezade/pe-sieve/discussions)!
 
-
-
 ## PE-sieve tools family
 
 There are few other tools that use PE-sieve as an engine, but focus on some specific usecases. They offer additional features and filters on the top of its base.
