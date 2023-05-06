@@ -98,15 +98,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa4c6543c10ea9e04174a6bf1ba60d5f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2abd1f120baa9a7afad41c1bd809906"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_results_dumper.html#af2abd1f120baa9a7afad41c1bd809906">getOutputDir</a> ()</td></tr>
 <tr class="separator:af2abd1f120baa9a7afad41c1bd809906"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7eb61d510081fbdaf90594182ddc2feb"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_results_dumper.html#a7eb61d510081fbdaf90594182ddc2feb">makeOutPath</a> (std::string fname, const std::string &amp;defaultExtension=&quot;&quot;)</td></tr>
-<tr class="separator:a7eb61d510081fbdaf90594182ddc2feb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae590d2a796c3e4e66785223a3cfdb48"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_results_dumper.html#aae590d2a796c3e4e66785223a3cfdb48">makeOutPath</a> (const std::string &amp;fname, const std::string &amp;defaultExtension=&quot;&quot;)</td></tr>
+<tr class="separator:aae590d2a796c3e4e66785223a3cfdb48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:ac79b1165530a90cfe03beb6b69db2e41"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_results_dumper.html#ac79b1165530a90cfe03beb6b69db2e41">dumpModule</a> (IN HANDLE processHandle, IN <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> isRefl, IN const <a class="el" href="classpesieve_1_1_modules_info.html">ModulesInfo</a> &amp;modulesInfo, IN <a class="el" href="classpesieve_1_1_module_scan_report.html">ModuleScanReport</a> *modReport, IN const peconv::ExportsMapper *exportsMap, IN const <a class="el" href="classpesieve_1_1t__dump__mode.html">pesieve::t_dump_mode</a> dump_mode, IN const <a class="el" href="classpesieve_1_1t__imprec__mode.html">pesieve::t_imprec_mode</a> imprec_mode, OUT <a class="el" href="classpesieve_1_1_process_dump_report.html">ProcessDumpReport</a> &amp;dumpReport)</td></tr>
 <tr class="separator:ac79b1165530a90cfe03beb6b69db2e41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a036c085f3d96b90831512c3a595ba072"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_results_dumper.html#a036c085f3d96b90831512c3a595ba072">makeModuleDumpPath</a> (ULONGLONG modBaseAddr, std::string fname, const std::string &amp;defaultExtension)</td></tr>
-<tr class="separator:a036c085f3d96b90831512c3a595ba072"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00565456b461f2e766979b3b3775996c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_results_dumper.html#a00565456b461f2e766979b3b3775996c">makeModuleDumpPath</a> (ULONGLONG modBaseAddr, const std::string &amp;fname, const std::string &amp;defaultExtension)</td></tr>
+<tr class="separator:a00565456b461f2e766979b3b3775996c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0530341a87284f2c065bc14ecbdef41d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_results_dumper.html#a0530341a87284f2c065bc14ecbdef41d">makeDirName</a> (const DWORD process_id)</td></tr>
 <tr class="separator:a0530341a87284f2c065bc14ecbdef41d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80b1f13b3c6c00ab4dc325addf09d8d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_results_dumper.html#a80b1f13b3c6c00ab4dc325addf09d8d5">makeAndJoinDirectories</a> (std::stringstream &amp;name_stream)</td></tr>
@@ -298,7 +298,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" href="classpesieve_1_1_process_scan_report.html#a7b36b5cf6979968d1c3d590b6875d89c" title=" " alt="" coords="215,5,403,46"/>
 <area shape="rect" href="classpesieve_1_1_process_scan_report.html#a0611939155d7d2de69941e7e00390848" title=" " alt="" coords="215,71,403,111"/>
 <area shape="rect" href="classpesieve_1_1_results_dumper.html#a0530341a87284f2c065bc14ecbdef41d" title=" " alt="" coords="228,136,390,177"/>
-<area shape="rect" href="classpesieve_1_1_results_dumper.html#a7eb61d510081fbdaf90594182ddc2feb" title=" " alt="" coords="228,201,390,242"/>
+<area shape="rect" href="classpesieve_1_1_results_dumper.html#aae590d2a796c3e4e66785223a3cfdb48" title=" " alt="" coords="228,201,390,242"/>
 <area shape="rect" href="classpesieve_1_1_process_scan_report.html#a1269fd73204b2b9171466ac32bc03252" title=" " alt="" coords="215,267,403,307"/>
 <area shape="rect" href="classpesieve_1_1_process_scan_report.html#a493399a015b35b5be092366256d90aad" title=" " alt="" coords="451,43,639,83"/>
 <area shape="rect" href="namespacepesieve.html#acbbeace832fb77bc16027b0371cf55d9" title=" " alt="" coords="466,108,624,133"/>
@@ -534,8 +534,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a036c085f3d96b90831512c3a595ba072" name="a036c085f3d96b90831512c3a595ba072"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a036c085f3d96b90831512c3a595ba072">&#9670;&#160;</a></span>makeModuleDumpPath()</h2>
+<a id="a00565456b461f2e766979b3b3775996c" name="a00565456b461f2e766979b3b3775996c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00565456b461f2e766979b3b3775996c">&#9670;&#160;</a></span>makeModuleDumpPath()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -552,7 +552,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>fname</em>, </td>
         </tr>
         <tr>
@@ -586,8 +586,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a7eb61d510081fbdaf90594182ddc2feb" name="a7eb61d510081fbdaf90594182ddc2feb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7eb61d510081fbdaf90594182ddc2feb">&#9670;&#160;</a></span>makeOutPath()</h2>
+<a id="aae590d2a796c3e4e66785223a3cfdb48" name="aae590d2a796c3e4e66785223a3cfdb48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae590d2a796c3e4e66785223a3cfdb48">&#9670;&#160;</a></span>makeOutPath()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -595,7 +595,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">std::string pesieve::ResultsDumper::makeOutPath </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>fname</em>, </td>
         </tr>
         <tr>
