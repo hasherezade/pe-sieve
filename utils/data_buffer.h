@@ -15,7 +15,7 @@ namespace pesieve {
 
             ~ByteBuffer()
             {
-                free();
+                freeBuffer();
             }
 
             bool isValidPtr(BYTE * field_bgn, size_t field_size)
@@ -32,9 +32,9 @@ namespace pesieve {
                 return false;
             }
 
-            bool allocData(size_t size)
+            bool allocBuffer(size_t size)
             {
-                free();
+                freeBuffer();
                 data = peconv::alloc_aligned(size, PAGE_READWRITE);
                 if (data == nullptr) {
                     return false;
@@ -44,7 +44,7 @@ namespace pesieve {
                 return true;
             }
 
-            void free()
+            void freeBuffer()
             {
                 if (!data) {
                     data_size = 0;

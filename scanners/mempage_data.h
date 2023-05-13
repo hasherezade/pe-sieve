@@ -78,7 +78,7 @@ namespace pesieve {
 
 		void _freeRemote()
 		{
-			loadedData.free();
+			loadedData.freeBuffer();
 		}
 
 		util::ByteBuffer loadedData;

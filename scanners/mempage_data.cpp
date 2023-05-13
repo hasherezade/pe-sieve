@@ -120,7 +120,7 @@ bool pesieve::MemPageData::_loadRemote()
 	if (region_size == 0) {
 		return false;
 	}
-	if (!loadedData.allocData(region_size)) {
+	if (!loadedData.allocBuffer(region_size)) {
 		return false;
 	}
 	const bool can_force_access = is_process_refl ? true : false;
