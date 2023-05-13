@@ -824,6 +824,9 @@ PeArtefacts* pesieve::ArtefactScanner::findArtefacts(MemPageData &_memPage, size
 			min_offset = sec_offset;
 		}
 	}
+	if (bestMapping.getScore() <= 1) {
+		return nullptr; // too low score	
+	}
 	//use the best found set of artefacts:
 	return generateArtefacts(bestMapping);
 }
