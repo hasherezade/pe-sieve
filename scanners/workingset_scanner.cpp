@@ -16,7 +16,8 @@ bool pesieve::WorkingSetScanner::isCode(MemPageData &memPage)
 	if (!memPage.load()) {
 		return false;
 	}
-	return is_code(memPage.getLoadedData(), memPage.getLoadedSize());
+	const bool noPadding = true;
+	return is_code(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding));
 }
 
 bool pesieve::WorkingSetScanner::isExecutable(MemPageData &memPage)

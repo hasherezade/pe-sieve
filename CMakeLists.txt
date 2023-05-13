@@ -158,6 +158,8 @@ set (utils_hdrs
 	utils/console_color.h
 	utils/strings_util.h
 	utils/entropy.h
+	utils/basic_buffer.h
+	utils/data_buffer.h
 )
 
 set (params_info_hdrs
