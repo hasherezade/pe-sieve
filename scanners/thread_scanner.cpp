@@ -263,7 +263,8 @@ bool pesieve::ThreadScanner::checkAreaEntropy(ThreadScanReport* my_report)
 	if (!mem.fillInfo() || !mem.load()) {
 		return false;
 	}
-	my_report->entropy = util::ShannonEntropy(mem.getLoadedData(), mem.getLoadedSize());
+	const bool noPadding = true;
+	my_report->entropy = util::ShannonEntropy(mem.getLoadedData(noPadding), mem.getLoadedSize(noPadding));
 	my_report->entropy_filled = true;
 	return true;
 }
