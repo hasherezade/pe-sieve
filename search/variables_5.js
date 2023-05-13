@@ -1,7 +1,7 @@
 var searchData=
 [
   ['endrva_0',['endRva',['../classpesieve_1_1_patch_list_1_1_patch.html#a76e4354724d121ee95a9d52a1803174f',1,'pesieve::PatchList::Patch']]],
-  ['entropy_1',['entropy',['../classpesieve_1_1_thread_scan_report.html#aa55221c04d7bdf9d98692f768a6e7743',1,'pesieve::ThreadScanReport::entropy()'],['../classpesieve_1_1_working_set_scan_report.html#a6dea9490eb4fbc5dad032e1a35736d10',1,'pesieve::WorkingSetScanReport::entropy()']]],
+  ['entropy_1',['entropy',['../classpesieve_1_1_thread_scan_report.html#aa55221c04d7bdf9d98692f768a6e7743',1,'pesieve::ThreadScanReport']]],
   ['entropy_5ffilled_2',['entropy_filled',['../classpesieve_1_1_thread_scan_report.html#a6a870fdaa4dace1da9248be4d68b6c3c',1,'pesieve::ThreadScanReport']]],
   ['epmodified_3',['epModified',['../classpesieve_1_1_headers_scan_report.html#a8598cb43a88cbeae687cd88e5020715f',1,'pesieve::HeadersScanReport']]],
   ['error_5fcolor_4',['ERROR_COLOR',['../namespacepesieve.html#a890e7a246cf910c9add107f4e56a381a',1,'pesieve']]],

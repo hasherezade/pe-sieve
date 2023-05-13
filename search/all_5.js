@@ -1,7 +1,7 @@
 var searchData=
 [
   ['endrva_0',['endRva',['../classpesieve_1_1_patch_list_1_1_patch.html#a76e4354724d121ee95a9d52a1803174f',1,'pesieve::PatchList::Patch']]],
-  ['entropy_1',['entropy',['../classpesieve_1_1_thread_scan_report.html#aa55221c04d7bdf9d98692f768a6e7743',1,'pesieve::ThreadScanReport::entropy()'],['../classpesieve_1_1_working_set_scan_report.html#a6dea9490eb4fbc5dad032e1a35736d10',1,'pesieve::WorkingSetScanReport::entropy()']]],
+  ['entropy_1',['entropy',['../classpesieve_1_1_thread_scan_report.html#aa55221c04d7bdf9d98692f768a6e7743',1,'pesieve::ThreadScanReport']]],
   ['entropy_2eh_2',['entropy.h',['../entropy_8h.html',1,'']]],
   ['entropy_5ffilled_3',['entropy_filled',['../classpesieve_1_1_thread_scan_report.html#a6a870fdaa4dace1da9248be4d68b6c3c',1,'pesieve::ThreadScanReport']]],
   ['entropy_5ftreshold_4',['ENTROPY_TRESHOLD',['../thread__scanner_8cpp.html#acaf6cb2ff8299b9b3c55905f936d38a9',1,'thread_scanner.cpp']]],
@@ -11,7 +11,7 @@ var searchData=
   ['enumstackframes_8',['enumStackFrames',['../classpesieve_1_1_thread_scanner.html#a4a318c7b1fc4314e86c4f89e56ec1b4d',1,'pesieve::ThreadScanner']]],
   ['epmodified_9',['epModified',['../classpesieve_1_1_headers_scan_report.html#a8598cb43a88cbeae687cd88e5020715f',1,'pesieve::HeadersScanReport']]],
   ['error_5fcolor_10',['ERROR_COLOR',['../namespacepesieve.html#a890e7a246cf910c9add107f4e56a381a',1,'pesieve']]],
-  ['error_5fscan_5ffailure_11',['ERROR_SCAN_FAILURE',['../namespacepesieve.html#a267e690d8ed5004a62be6a7ce04f7617',1,'pesieve.ERROR_SCAN_FAILURE()'],['../pe__sieve__types_8h.html#a87242425d02cf0e4f321ee488630ae5d',1,'ERROR_SCAN_FAILURE():&#160;pe_sieve_types.h']]],
+  ['error_5fscan_5ffailure_11',['ERROR_SCAN_FAILURE',['../pe__sieve__types_8h.html#a87242425d02cf0e4f321ee488630ae5d',1,'ERROR_SCAN_FAILURE():&#160;pe_sieve_types.h'],['../namespacepesieve.html#a267e690d8ed5004a62be6a7ce04f7617',1,'pesieve.ERROR_SCAN_FAILURE()']]],
   ['errors_12',['errors',['../structt__report.html#a45916763f69b37148c5120c70ef0b08b',1,'t_report']]],
   ['errorscount_13',['errorsCount',['../classpesieve_1_1_process_scan_report.html#a7e3ec7b7c894b6fa0f572a2367955ef4',1,'pesieve::ProcessScanReport']]],
   ['escape_5fpath_5fseparators_14',['escape_path_separators',['../namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c',1,'pesieve::util']]],
