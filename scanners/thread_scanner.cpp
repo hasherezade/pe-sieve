@@ -8,7 +8,7 @@
 #include <dbghelp.h>
 #pragma comment(lib, "dbghelp")
 
-#define ENTROPY_TRESHOLD 1.5
+#define ENTROPY_TRESHOLD 3.1
 
 using namespace pesieve;
 
