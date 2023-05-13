@@ -4,7 +4,7 @@
 
 #include <peconv.h>
 
-#include "../utils/data_buffer.h"
+#include "../utils/byte_buffer.h"
 
 namespace pesieve {
 
