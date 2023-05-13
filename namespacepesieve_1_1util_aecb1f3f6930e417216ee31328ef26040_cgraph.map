@@ -1,6 +1,8 @@
 <map id="pesieve::util::calc_sec_hdrs_offset" name="pesieve::util::calc_sec_hdrs_offset">
 <area shape="rect" id="node1" title=" " alt="" coords="5,39,126,79"/>
 <area shape="rect" id="node2" href="$namespacepesieve_1_1util.html#a64072c72d2a3391e021c9f1d6eb60e97" title=" " alt="" coords="174,39,293,79"/>
-<area shape="rect" id="node3" href="$classpesieve_1_1_mem_page_data.html#a6817c520ee6e8fb641df9602098a3d52" title=" " alt="" coords="341,5,499,46"/>
-<area shape="rect" id="node4" href="$classpesieve_1_1_mem_page_data.html#a8a6928d919b90825ccd6ea0213b53452" title=" " alt="" coords="341,71,499,111"/>
+<area shape="rect" id="node3" href="$classpesieve_1_1_mem_page_data.html#a62761b9f793afc9190c4be58dc7b471d" title=" " alt="" coords="341,5,499,46"/>
+<area shape="rect" id="node5" href="$classpesieve_1_1_mem_page_data.html#a0b5482b81c1ae223a960a4255cf9a1c0" title=" " alt="" coords="341,71,499,111"/>
+<area shape="rect" id="node4" href="$structpesieve_1_1util_1_1_basic_buffer.html#a91acd86ee6eb1b8086c383f75ec1d043" title=" " alt="" coords="547,5,710,46"/>
+<area shape="rect" id="node6" href="$structpesieve_1_1util_1_1_basic_buffer.html#a10ee7db37f2f9e7404dae2ad17a02207" title=" " alt="" coords="547,71,710,111"/>
 </map>

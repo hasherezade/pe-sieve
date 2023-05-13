@@ -1,15 +1,10 @@
 var searchData=
 [
-  ['malformedheaderreport_0',['MalformedHeaderReport',['../classpesieve_1_1_malformed_header_report.html',1,'pesieve']]],
-  ['mappingscanner_1',['MappingScanner',['../classpesieve_1_1_mapping_scanner.html',1,'pesieve']]],
-  ['mappingscanreport_2',['MappingScanReport',['../classpesieve_1_1_mapping_scan_report.html',1,'pesieve']]],
-  ['mempagedata_3',['MemPageData',['../classpesieve_1_1_mem_page_data.html',1,'pesieve']]],
-  ['moduledata_4',['ModuleData',['../classpesieve_1_1_module_data.html',1,'pesieve']]],
-  ['moduledumpreport_5',['ModuleDumpReport',['../classpesieve_1_1_module_dump_report.html',1,'pesieve']]],
-  ['modulescache_6',['ModulesCache',['../classpesieve_1_1_modules_cache.html',1,'pesieve']]],
-  ['modulescanner_7',['ModuleScanner',['../classpesieve_1_1_module_scanner.html',1,'pesieve']]],
-  ['modulescanreport_8',['ModuleScanReport',['../classpesieve_1_1_module_scan_report.html',1,'pesieve']]],
-  ['modulesinfo_9',['ModulesInfo',['../classpesieve_1_1_modules_info.html',1,'pesieve']]],
-  ['mutex_10',['Mutex',['../structpesieve_1_1util_1_1_mutex.html',1,'pesieve::util']]],
-  ['mutexlocker_11',['MutexLocker',['../structpesieve_1_1util_1_1_mutex_locker.html',1,'pesieve::util']]]
+  ['iatblock_0',['IATBlock',['../classpesieve_1_1_i_a_t_block.html',1,'pesieve']]],
+  ['iatscanner_1',['IATScanner',['../classpesieve_1_1_i_a_t_scanner.html',1,'pesieve']]],
+  ['iatscanreport_2',['IATScanReport',['../classpesieve_1_1_i_a_t_scan_report.html',1,'pesieve']]],
+  ['iatthunksseries_3',['IATThunksSeries',['../classpesieve_1_1_i_a_t_thunks_series.html',1,'pesieve']]],
+  ['iatthunksseriesptrcompare_4',['IATThunksSeriesPtrCompare',['../structpesieve_1_1_i_a_t_thunks_series_ptr_compare.html',1,'pesieve']]],
+  ['importtablebuffer_5',['ImportTableBuffer',['../classpesieve_1_1_import_table_buffer.html',1,'pesieve']]],
+  ['impreconstructor_6',['ImpReconstructor',['../classpesieve_1_1_imp_reconstructor.html',1,'pesieve']]]
 ];

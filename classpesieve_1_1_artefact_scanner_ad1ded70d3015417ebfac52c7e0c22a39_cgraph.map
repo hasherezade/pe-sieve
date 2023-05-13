@@ -1,5 +1,7 @@
 <map id="pesieve::ArtefactScanner::findDosHdrByPatterns" name="pesieve::ArtefactScanner::findDosHdrByPatterns">
 <area shape="rect" id="node1" title=" " alt="" coords="5,39,172,79"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_mem_page_data.html#a6817c520ee6e8fb641df9602098a3d52" title=" " alt="" coords="220,5,378,46"/>
-<area shape="rect" id="node3" href="$classpesieve_1_1_mem_page_data.html#aa2d9e7295a7b0f82d3492850f3e8dca1" title=" " alt="" coords="220,71,378,111"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_mem_page_data.html#a62761b9f793afc9190c4be58dc7b471d" title=" " alt="" coords="220,5,378,46"/>
+<area shape="rect" id="node4" href="$classpesieve_1_1_mem_page_data.html#aa2d9e7295a7b0f82d3492850f3e8dca1" title=" " alt="" coords="220,71,378,111"/>
+<area shape="rect" id="node3" href="$structpesieve_1_1util_1_1_basic_buffer.html#a91acd86ee6eb1b8086c383f75ec1d043" title=" " alt="" coords="426,5,588,46"/>
+<area shape="rect" id="node5" href="$structpesieve_1_1util_1_1_byte_buffer.html#a7a2f937740d14222bbaf70bb28865fe9" title=" " alt="" coords="430,71,585,111"/>
 </map>

@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['demo_2epy_0',['demo.py',['../demo_8py.html',1,'']]],
-  ['dll_5fmain_2ecpp_1',['dll_main.cpp',['../dll__main_8cpp.html',1,'']]],
-  ['dump_5freport_2ecpp_2',['dump_report.cpp',['../dump__report_8cpp.html',1,'']]],
-  ['dump_5freport_2eh_3',['dump_report.h',['../dump__report_8h.html',1,'']]]
+  ['code_5fscanner_2ecpp_0',['code_scanner.cpp',['../code__scanner_8cpp.html',1,'']]],
+  ['code_5fscanner_2eh_1',['code_scanner.h',['../code__scanner_8h.html',1,'']]],
+  ['color_5fscheme_2eh_2',['color_scheme.h',['../color__scheme_8h.html',1,'']]],
+  ['console_5fcolor_2ecpp_3',['console_color.cpp',['../console__color_8cpp.html',1,'']]],
+  ['console_5fcolor_2eh_4',['console_color.h',['../console__color_8h.html',1,'']]]
 ];

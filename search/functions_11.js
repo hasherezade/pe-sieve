@@ -17,5 +17,5 @@ var searchData=
   ['translate_5fjson_5flevel_14',['translate_json_level',['../namespacepesieve.html#aaf607f48cf768a8df296c8a97b521dd4',1,'pesieve']]],
   ['translate_5fmapping_5ftype_15',['translate_mapping_type',['../classpesieve_1_1_working_set_scan_report.html#a6fbdc9666d6eb78801d4ecb6e7cd6182',1,'pesieve::WorkingSetScanReport']]],
   ['translate_5fout_5ffilter_16',['translate_out_filter',['../namespacepesieve.html#abe5f652e94b13f6f140330db727bd36b',1,'pesieve']]],
-  ['trim_17',['trim',['../namespacepesieve_1_1util.html#a41a7f0400a783c1055880e61fc23b10e',1,'pesieve::util']]]
+  ['trim_17',['trim',['../structpesieve_1_1util_1_1_basic_buffer.html#a008e1e5e5ec5a294813c2ecbbde1b383',1,'pesieve::util::BasicBuffer::trim()'],['../namespacepesieve_1_1util.html#a41a7f0400a783c1055880e61fc23b10e',1,'pesieve::util::trim()']]]
 ];

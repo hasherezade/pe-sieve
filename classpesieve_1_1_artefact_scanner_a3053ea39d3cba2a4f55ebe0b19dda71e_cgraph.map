@@ -1,8 +1,10 @@
 <map id="pesieve::ArtefactScanner::calcImageSize" name="pesieve::ArtefactScanner::calcImageSize">
-<area shape="rect" id="node1" title=" " alt="" coords="5,87,172,128"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_artefact_scanner.html#aeedfc8d641b324dd3eb203313731292f" title=" " alt="" coords="220,22,386,63"/>
-<area shape="rect" id="node5" href="$classpesieve_1_1_mem_page_data.html#a6817c520ee6e8fb641df9602098a3d52" title=" " alt="" coords="224,87,382,128"/>
-<area shape="rect" id="node6" href="$classpesieve_1_1_mem_page_data.html#a8a6928d919b90825ccd6ea0213b53452" title=" " alt="" coords="224,153,382,193"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,109,172,149"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_artefact_scanner.html#aeedfc8d641b324dd3eb203313731292f" title=" " alt="" coords="220,43,386,84"/>
+<area shape="rect" id="node5" href="$classpesieve_1_1_mem_page_data.html#a62761b9f793afc9190c4be58dc7b471d" title=" " alt="" coords="224,109,382,149"/>
+<area shape="rect" id="node7" href="$classpesieve_1_1_mem_page_data.html#a0b5482b81c1ae223a960a4255cf9a1c0" title=" " alt="" coords="224,174,382,215"/>
 <area shape="rect" id="node3" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="445,5,589,31"/>
 <area shape="rect" id="node4" href="$namespacepesieve.html#ab6eb75407c454f07ae7910a1d8b7c826" title=" " alt="" coords="434,55,599,80"/>
+<area shape="rect" id="node6" href="$structpesieve_1_1util_1_1_basic_buffer.html#a91acd86ee6eb1b8086c383f75ec1d043" title=" " alt="" coords="436,109,598,149"/>
+<area shape="rect" id="node8" href="$structpesieve_1_1util_1_1_basic_buffer.html#a10ee7db37f2f9e7404dae2ad17a02207" title=" " alt="" coords="436,174,598,215"/>
 </map>

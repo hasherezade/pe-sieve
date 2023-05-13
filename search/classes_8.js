@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['scannedmodule_0',['ScannedModule',['../classpesieve_1_1_scanned_module.html',1,'pesieve']]],
-  ['skippedmodulereport_1',['SkippedModuleReport',['../classpesieve_1_1_skipped_module_report.html',1,'pesieve']]]
+  ['remotemoduledata_0',['RemoteModuleData',['../classpesieve_1_1_remote_module_data.html',1,'pesieve']]],
+  ['reportex_1',['ReportEx',['../classpesieve_1_1_report_ex.html',1,'pesieve']]],
+  ['resultsdumper_2',['ResultsDumper',['../classpesieve_1_1_results_dumper.html',1,'pesieve']]]
 ];
