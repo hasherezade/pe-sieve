@@ -127,6 +127,15 @@ set (postprocessors_srcs
 	postprocessors/pe_reconstructor.cpp
 )
 
+set (stats_srcs
+	stats/entropy.h
+)
+
+set (stats_hdrs
+	stats/entropy.h
+	stats/stats.h
+)
+
 set (utils_srcs
 	utils/format_util.cpp
 	utils/process_util.cpp
@@ -157,7 +166,6 @@ set (utils_hdrs
 	utils/process_reflection.h
 	utils/console_color.h
 	utils/strings_util.h
-	utils/entropy.h
 	utils/byte_buffer.h
 )
 
@@ -177,6 +185,7 @@ set (srcs
 	${postprocessors_srcs}
 	${imprec_srcs}
 	${utils_srcs}
+	${stats_srcs}
 )
 
 set (hdrs
@@ -188,6 +197,7 @@ set (hdrs
 	${postprocessors_hdrs}
 	${imprec_hdrs}
 	${utils_hdrs}
+	${stats_hdrs}
 )
 
 set (rsrc
@@ -203,6 +213,9 @@ SOURCE_GROUP("Header Files\\scanners" FILES ${scanners_hdrs} )
 
 SOURCE_GROUP("Source Files\\utils" FILES ${utils_srcs} )
 SOURCE_GROUP("Header Files\\utils" FILES ${utils_hdrs} )
+
+SOURCE_GROUP("Source Files\\stats" FILES ${stats_srcs} )
+SOURCE_GROUP("Header Files\\stats" FILES ${stats_hdrs} )
 
 SOURCE_GROUP("Source Files\\params_info" FILES ${params_info_srcs} )
 SOURCE_GROUP("Header Files\\params_info" FILES ${params_info_hdrs} )

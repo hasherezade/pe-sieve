@@ -2,7 +2,7 @@
 #include <peconv.h>
 #include "../utils/process_util.h"
 #include "../utils/ntddk.h"
-#include "../utils/entropy.h"
+#include "../stats/stats.h"
 #include "mempage_data.h"
 
 #include <dbghelp.h>
