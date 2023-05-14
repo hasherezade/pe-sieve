@@ -12,8 +12,10 @@ var searchData=
   ['appendseries_9',['appendSeries',['../classpesieve_1_1_i_a_t_block.html#ad04adea5ebdf1d0d71a0f3d0de007378',1,'pesieve::IATBlock']]],
   ['appendtomoduleslist_10',['appendToModulesList',['../classpesieve_1_1_modules_info.html#aadb41407ab2be96844c8a7fbd13151c0',1,'pesieve::ModulesInfo']]],
   ['appendtotype_11',['appendToType',['../classpesieve_1_1_process_scan_report.html#ac3cd73b44ba0c30368cdadf25746b55f',1,'pesieve::ProcessScanReport']]],
-  ['artefactscanner_12',['ArtefactScanner',['../classpesieve_1_1_artefact_scanner.html#a41348cc568589edb9ae52469e703ac1a',1,'pesieve::ArtefactScanner']]],
-  ['artefactscanreport_13',['ArtefactScanReport',['../classpesieve_1_1_artefact_scan_report.html#a7b5bcce8a8ee6021209e398e0ff76e4e',1,'pesieve::ArtefactScanReport']]],
-  ['artefactsmapping_14',['ArtefactsMapping',['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#afb39709e61943f4af01c9241d89bc6b6',1,'pesieve::ArtefactScanner::ArtefactsMapping']]],
-  ['autoswichifwow64mapping_15',['autoswichIfWow64Mapping',['../classpesieve_1_1_module_data.html#a0e5b040296a73e447b0fad8d4bee319c',1,'pesieve::ModuleData']]]
+  ['areastats_12',['AreaStats',['../structpesieve_1_1_area_stats.html#a86769f2d43e7528aa0e65467cdeaed09',1,'pesieve::AreaStats::AreaStats()'],['../structpesieve_1_1_area_stats.html#ae7eef9a3720222e5a13fc8ab93d293bd',1,'pesieve::AreaStats::AreaStats(const AreaStats &amp;p1)']]],
+  ['areastatscalculator_13',['AreaStatsCalculator',['../classpesieve_1_1_area_stats_calculator.html#af2364d0850bed529cbc2367cad78fa46',1,'pesieve::AreaStatsCalculator']]],
+  ['artefactscanner_14',['ArtefactScanner',['../classpesieve_1_1_artefact_scanner.html#a41348cc568589edb9ae52469e703ac1a',1,'pesieve::ArtefactScanner']]],
+  ['artefactscanreport_15',['ArtefactScanReport',['../classpesieve_1_1_artefact_scan_report.html#a7b5bcce8a8ee6021209e398e0ff76e4e',1,'pesieve::ArtefactScanReport']]],
+  ['artefactsmapping_16',['ArtefactsMapping',['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#afb39709e61943f4af01c9241d89bc6b6',1,'pesieve::ArtefactScanner::ArtefactsMapping']]],
+  ['autoswichifwow64mapping_17',['autoswichIfWow64Mapping',['../classpesieve_1_1_module_data.html#a0e5b040296a73e447b0fad8d4bee319c',1,'pesieve::ModuleData']]]
 ];

@@ -1,5 +1,8 @@
 <map id="pesieve::ThreadScanReport::fieldsToJSON" name="pesieve::ThreadScanReport::fieldsToJSON">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,186,46"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="234,5,416,46"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,69,186,110"/>
+<area shape="rect" id="node2" href="$classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="234,8,416,49"/>
+<area shape="rect" id="node4" href="$structpesieve_1_1_area_stats.html#a3005dfc8cd36c15290a724a29ee09a63" title=" " alt="" coords="468,71,598,111"/>
+<area shape="rect" id="node5" href="$structpesieve_1_1_area_stats.html#a4b99b7ffbfb0d51c7e5055eb3db76249" title=" " alt="" coords="260,127,390,167"/>
 <area shape="rect" id="node3" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="464,5,601,46"/>
+<area shape="rect" id="node6" href="$structpesieve_1_1_area_stats.html#a3e0f057e07fa1f338727435c693ebacf" title=" " alt="" coords="468,136,598,177"/>
 </map>
