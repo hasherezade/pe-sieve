@@ -44,8 +44,9 @@ namespace pesieve {
                 }
             }
             
-            size_t getStartOffset() const
+            size_t getStartOffset(bool trimmed) const
             {
+                if (!trimmed) return 0;
                 if (!data || real_start >= data_size) return 0;
                 return real_start;
             }

@@ -69,14 +69,14 @@ namespace pesieve {
 
         bool fill(AreaStats& stats)
         {
-            const bool skipEmpty = true;
-            const size_t data_size = buffer.getDataSize(skipEmpty);
-            const BYTE* data_buf = buffer.getData(skipEmpty);
+            const bool skipPadding = true;
+            const size_t data_size = buffer.getDataSize(skipPadding);
+            const BYTE* data_buf = buffer.getData(skipPadding);
             if (!data_size || !data_buf) {
                 return false;
             }
             stats.area_size = data_size;
-            stats.area_start = buffer.getStartOffset();
+            stats.area_start = buffer.getStartOffset(skipPadding);
             stats.entropy = util::ShannonEntropy(data_buf, data_size);
             return true;
         }
