@@ -163,7 +163,7 @@ bool pesieve::ThreadScanner::fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThrea
 	if (is_wow64) {
 		WOW64_CONTEXT ctx = { 0 };
 		ctx.ContextFlags = CONTEXT_INTEGER | CONTEXT_CONTROL;
-		if (Wow64GetThreadContext(hThread, &ctx)) {
+		if (pesieve::util::wow64_get_thread_context(hThread, &ctx)) {
 			is_ok = true;
 
 			c.rip = ctx.Eip;

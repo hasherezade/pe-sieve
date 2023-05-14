@@ -8,11 +8,16 @@ namespace pesieve {
 		BOOL(WINAPI *g_IsWow64Process)(IN HANDLE, OUT PBOOL) = nullptr;
 		BOOL(WINAPI *g_Wow64DisableWow64FsRedirection) (OUT PVOID* OldValue) = nullptr;
 		BOOL(WINAPI *g_Wow64RevertWow64FsRedirection) (IN PVOID OldValue) = nullptr;
+		BOOL(WINAPI *g_Wow64GetThreadContext)(IN HANDLE hThread, IN OUT PWOW64_CONTEXT lpContext) = nullptr;
 
 		HMODULE get_kernel32_hndl()
 		{
-			if (g_kernel32Hndl == nullptr) {
-				g_kernel32Hndl = LoadLibraryA("kernel32.dll");
+			const char kernel32_dll[] = "kernel32.dll";
+			if (!g_kernel32Hndl) {
+				g_kernel32Hndl = GetModuleHandleA(kernel32_dll);
+			}
+			if (!g_kernel32Hndl) {
+				g_kernel32Hndl = LoadLibraryA(kernel32_dll);
 			}
 			return g_kernel32Hndl;
 		}
@@ -63,6 +68,24 @@ bool pesieve::util::is_process_64bit(IN HANDLE process)
 	}
 	// the system is 64 bit, and the process runs NOT as Wow64, so it is 64 bit
 	return true;
+}
+
+BOOL pesieve::util::wow64_get_thread_context(IN HANDLE hThread, IN OUT PWOW64_CONTEXT lpContext)
+{
+#ifdef _WIN64
+	if (!g_Wow64GetThreadContext) {
+		HMODULE kernelLib = get_kernel32_hndl();
+		if (!kernelLib) return FALSE;
+
+		FARPROC procPtr = GetProcAddress(get_kernel32_hndl(), "Wow64GetThreadContext");
+		if (!procPtr) return FALSE;
+
+		g_Wow64GetThreadContext = (BOOL(WINAPI*)(IN HANDLE, IN OUT PWOW64_CONTEXT))procPtr;
+	}
+	return g_Wow64GetThreadContext(hThread, lpContext);
+#else
+	return FALSE;
+#endif
 }
 
 BOOL pesieve::util::wow64_disable_fs_redirection(OUT PVOID* OldValue)
