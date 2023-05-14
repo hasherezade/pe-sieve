@@ -35,12 +35,12 @@ namespace pesieve {
 			outs << ",\n";
 			if (thread_state != THREAD_STATE_UNKNOWN) {
 				OUT_PADDED(outs, level, "\"thread_state\" : ");
-				outs << std::dec << thread_state;
+				outs << "\"" << translate_thread_state(thread_state) << "\"";
 				outs << ",\n";
 
 				if (thread_state == THREAD_STATE_WAITING) {
 					OUT_PADDED(outs, level, "\"thread_wait_reason\" : ");
-					outs << std::dec << thread_wait_reason;
+					outs << "\"" << translate_wait_reason(thread_wait_reason) << "\"";
 					outs << ",\n";
 				}
 			}
@@ -67,6 +67,10 @@ namespace pesieve {
 		DWORD thread_state;
 		DWORD thread_wait_reason;
 		AreaStats stats;
+
+	protected:
+		static std::string translate_thread_state(DWORD thread_state);
+		static std::string translate_wait_reason(DWORD thread_wait_reason);
 	};
 
 	//!  A custom structure keeping a fragment of a thread context

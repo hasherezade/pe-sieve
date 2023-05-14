@@ -87,6 +87,43 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 	return STATUS_UNSUCCESSFUL;
 }
 
+//---
+
+std::string ThreadScanReport::translate_wait_reason(DWORD thread_wait_reason)
+{
+	switch (thread_wait_reason) {
+		case DelayExecution: return "DelayExecution";
+		case Suspended: return "Suspended";
+		case Executive: return "Executive";
+		case UserRequest: return "UserRequest";
+		case WrUserRequest: return "WrUserRequest";
+	}
+	std::stringstream ss;
+	ss << "Other: " << std::dec << thread_wait_reason;
+	return ss.str();
+}
+
+std::string ThreadScanReport::translate_thread_state(DWORD thread_state)
+{
+	switch (thread_state) {
+		case Initialized: return "Initialized";
+		case Ready: return "Ready";
+		case Running: return "Running";
+		case Standby: return "Standby";
+		case Terminated: return "Terminated";
+		case Waiting: return "Waiting";
+		case Transition: return "Transition";
+		case DeferredReady: return "DeferredReady";
+		case GateWaitObsolete: return "GateWaitObsolete";
+		case WaitingForProcessInSwap: return "WaitingForProcessInSwap";
+	}
+	std::stringstream ss;
+	ss << "Other: " << std::dec << thread_state;
+	return ss.str();
+}
+
+//---
+
 size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT thread_ctx& c)
 {
 	// do it in a new thread to prevent stucking...
