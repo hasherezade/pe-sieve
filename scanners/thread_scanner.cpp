@@ -9,7 +9,7 @@
 #pragma comment(lib, "dbghelp")
 
 #define ENTROPY_TRESHOLD 3.1
-
+//#define NO_ENTROPY_CHECK
 using namespace pesieve;
 
 typedef struct _t_stack_enum_params {
@@ -262,8 +262,7 @@ bool pesieve::ThreadScanner::fillAreaStats(ThreadScanReport* my_report)
 	if (!mem.fillInfo() || !mem.load()) {
 		return false;
 	}
-	const bool noPadding = true;
-	AreaStatsCalculator calc(mem.getLoadedData(noPadding), mem.getLoadedSize(noPadding));
+	AreaStatsCalculator calc(mem.loadedData);
 	return calc.fill(my_report->stats);
 }
 

@@ -73,6 +73,8 @@ namespace pesieve {
 		// checks if the memory area is mapped 1-to-1 from the file on the disk
 		bool isRealMapping();
 
+		util::ByteBuffer loadedData;
+
 	protected:
 		bool _loadRemote();
 
@@ -80,8 +82,6 @@ namespace pesieve {
 		{
 			loadedData.freeBuffer();
 		}
-
-		util::ByteBuffer loadedData;
 
 		bool is_info_filled;
 		const bool is_process_refl;

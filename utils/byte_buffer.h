@@ -43,8 +43,14 @@ namespace pesieve {
                     }
                 }
             }
+            
+            size_t getStartOffset() const
+            {
+                if (!data || real_start >= data_size) return 0;
+                return real_start;
+            }
 
-            size_t getDataSize(bool trimmed = false)
+            size_t getDataSize(bool trimmed = false) const
             {
                 if (!data || !data_size) return 0;
 
@@ -54,7 +60,7 @@ namespace pesieve {
                 return data_size;
             }
 
-            const BYTE* getData(bool trimmed = false)
+            const BYTE* getData(bool trimmed = false) const
             {
                 if (!data || !data_size) return nullptr;
 
@@ -66,11 +72,12 @@ namespace pesieve {
 
             BYTE* data;
 
+        protected:
+
             size_t real_start;
             size_t real_end;
             size_t padding;
 
-        protected:
             size_t data_size;
         };
 

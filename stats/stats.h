@@ -1,18 +1,21 @@
 #pragma once
 
 #include "entropy.h"
+#include "../utils/byte_buffer.h"
 
 namespace pesieve {
 
     struct AreaStats {
         AreaStats()
-            : area_size(0), entropy(0.0)
+            : area_size(0), area_start(0),
+            entropy(0.0)
         {
         }
 
         // Copy constructor
         AreaStats(const AreaStats& p1)
-            : entropy(p1.entropy), area_size(p1.area_size)
+            :  area_size(p1.area_size), area_start(p1.area_start),
+            entropy(p1.entropy)
         {
         }
 
@@ -28,46 +31,58 @@ namespace pesieve {
             return true;
         }
 
-
         bool isFilled() const
         {
             return area_size > 0 ? true : false;
         }
 
         double entropy;
-        size_t area_size;
 
     protected:
 
         const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
         {
+            OUT_PADDED(outs, level, "\"area_start\" : ");
+            outs << "\"" << std::hex << area_start << "\"";
+            outs << ",\n";
             OUT_PADDED(outs, level, "\"area_size\" : ");
             outs << "\"" << std::hex << area_size << "\"";
             outs << ",\n";
             OUT_PADDED(outs, level, "\"entropy\" : ");
             outs << std::dec << entropy;
         }
+
+        size_t area_size;
+        size_t area_start;
+
+        friend class AreaStatsCalculator;
+
     }; // AreaStats
 
 
     class AreaStatsCalculator {
     public:
-        AreaStatsCalculator(BYTE _data[], size_t _elements)
-            :data(_data), elements(_elements)
+        AreaStatsCalculator(const util::ByteBuffer& _buffer)
+            : buffer(_buffer)
         {
         }
 
         bool fill(AreaStats& stats)
         {
-            if (!data || !elements) return false;
-            stats.area_size = elements;
-            stats.entropy = util::ShannonEntropy(data, elements);
+            const bool skipEmpty = true;
+            const size_t data_size = buffer.getDataSize(skipEmpty);
+            const BYTE* data_buf = buffer.getData(skipEmpty);
+            if (!data_size || !data_buf) {
+                return false;
+            }
+            stats.area_size = data_size;
+            stats.area_start = buffer.getStartOffset();
+            stats.entropy = util::ShannonEntropy(data_buf, data_size);
             return true;
         }
 
     private:
-        BYTE* data;
-        size_t  elements;
+        const util::ByteBuffer& buffer;
     };
 
 }; //pesieve
