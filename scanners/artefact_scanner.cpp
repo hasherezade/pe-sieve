@@ -15,8 +15,8 @@ namespace pesieve {
 		{
 			if (!field) return INVALID_OFFSET;
 
-			BYTE* loadedData = memPage.getLoadedData();
-			size_t loadedSize = memPage.getLoadedSize();
+			const BYTE* loadedData = memPage.getLoadedData();
+			const size_t loadedSize = memPage.getLoadedSize();
 			if (!peconv::validate_ptr(loadedData, loadedSize, field, sizeof(BYTE))) {
 				return INVALID_OFFSET;
 			}
@@ -233,7 +233,10 @@ size_t pesieve::ArtefactScanner::calcImageSize(MemPageData &memPage, IMAGE_SECTI
 
 IMAGE_DOS_HEADER* pesieve::ArtefactScanner::findDosHdrByPatterns(MemPageData &memPage, const size_t start_offset, size_t hdrs_offset)
 {
-	BYTE *search_ptr = memPage.getLoadedData() + start_offset;
+	BYTE* data = memPage.getLoadedData();
+	if (!data) return nullptr;
+
+	BYTE *search_ptr = data + start_offset;
 	BYTE *max_search = search_ptr + hdrs_offset;
 
 	size_t max_search_size = max_search - search_ptr;
