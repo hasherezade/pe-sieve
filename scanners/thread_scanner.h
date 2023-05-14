@@ -4,6 +4,7 @@
 
 #include "module_scanner.h"
 #include "../utils/threads_util.h"
+#include "../stats/stats.h"
 
 namespace pesieve {
 
@@ -17,8 +18,7 @@ namespace pesieve {
 		ThreadScanReport(DWORD _tid)
 			: ModuleScanReport(0, 0), 
 			tid(_tid), thread_ip(0), protection(0),
-			thread_state(THREAD_STATE_UNKNOWN), thread_wait_reason(0),
-			entropy(0), entropy_filled(false)
+			thread_state(THREAD_STATE_UNKNOWN), thread_wait_reason(0)
 		{
 		}
 
@@ -46,10 +46,9 @@ namespace pesieve {
 			}
 			OUT_PADDED(outs, level, "\"protection\" : ");
 			outs << "\"" << std::hex << protection << "\"";
-			if (entropy_filled) {
+			if (stats.isFilled()) {
 				outs << ",\n";
-				OUT_PADDED(outs, level, "\"entropy\" : ");
-				outs << "\"" << std::dec << entropy << "\"";
+				stats.toJSON(outs, level);
 			}
 		}
 
@@ -67,8 +66,7 @@ namespace pesieve {
 		DWORD protection;
 		DWORD thread_state;
 		DWORD thread_wait_reason;
-		double entropy;
-		bool entropy_filled;
+		AreaStats stats;
 	};
 
 	//!  A custom structure keeping a fragment of a thread context
@@ -103,7 +101,7 @@ namespace pesieve {
 		bool resolveAddr(ULONGLONG addr);
 		bool fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThread, OUT thread_ctx& c);
 		size_t enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT thread_ctx& c);
-		bool checkAreaEntropy(ThreadScanReport* my_report);
+		bool fillAreaStats(ThreadScanReport* my_report);
 		bool reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx& c);
 
 		bool isReflection;

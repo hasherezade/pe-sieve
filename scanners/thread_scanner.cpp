@@ -253,20 +253,18 @@ bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORM
 	return true;
 }
 
-bool pesieve::ThreadScanner::checkAreaEntropy(ThreadScanReport* my_report)
+bool pesieve::ThreadScanner::fillAreaStats(ThreadScanReport* my_report)
 {
 	if (!my_report) return false;
 
-	my_report->entropy_filled = false;
 	ULONG_PTR end_va = (ULONG_PTR)my_report->module + my_report->moduleSize;
 	MemPageData mem(this->processHandle, this->isReflection, (ULONG_PTR)my_report->module, end_va);
 	if (!mem.fillInfo() || !mem.load()) {
 		return false;
 	}
 	const bool noPadding = true;
-	my_report->entropy = util::ShannonEntropy(mem.getLoadedData(noPadding), mem.getLoadedSize(noPadding));
-	my_report->entropy_filled = true;
-	return true;
+	AreaStatsCalculator calc(mem.getLoadedData(noPadding), mem.getLoadedSize(noPadding));
+	return calc.fill(my_report->stats);
 }
 
 bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx  &c)
@@ -289,9 +287,9 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 
 	my_report->thread_ip = susp_addr;
 	my_report->status = SCAN_SUSPICIOUS;
-	const bool entropyFilled = checkAreaEntropy(my_report);
+	const bool isStatFilled = fillAreaStats(my_report);
 #ifndef NO_ENTROPY_CHECK
-	if (entropyFilled && (my_report->entropy < ENTROPY_TRESHOLD)) {
+	if (isStatFilled && (my_report->stats.entropy < ENTROPY_TRESHOLD)) {
 		my_report->status = SCAN_NOT_SUSPICIOUS;
 	}
 #endif
