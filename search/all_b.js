@@ -25,5 +25,6 @@ var searchData=
   ['loadremote_22',['loadRemote',['../classpesieve_1_1_pe_section.html#a2431e70802f32bfec22c3bf23a7a79d2',1,'pesieve::PeSection']]],
   ['lock_23',['Lock',['../structpesieve_1_1util_1_1_mutex.html#a1d253302cb2cda6c5ea0b76192cd9e2f',1,'pesieve::util::Mutex']]],
   ['long_5fpath_5fprefix_24',['LONG_PATH_PREFIX',['../path__converter_8cpp.html#a10ada049714deddcb7c882a173f62999',1,'path_converter.cpp']]],
-  ['ltrim_25',['ltrim',['../namespacepesieve_1_1util.html#a0436803ad7df590457409147fa98fb1e',1,'pesieve::util']]]
+  ['lpcontext_25',['lpContext',['../namespacepesieve_1_1util.html#a474e517f22ad667eca359f745537886b',1,'pesieve::util']]],
+  ['ltrim_26',['ltrim',['../namespacepesieve_1_1util.html#a0436803ad7df590457409147fa98fb1e',1,'pesieve::util']]]
 ];
