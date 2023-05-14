@@ -8,7 +8,7 @@
 #include <dbghelp.h>
 #pragma comment(lib, "dbghelp")
 
-#define ENTROPY_TRESHOLD 3.1
+#define ENTROPY_TRESHOLD 3.0
 //#define NO_ENTROPY_CHECK
 using namespace pesieve;
 
