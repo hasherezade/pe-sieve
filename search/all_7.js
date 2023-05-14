@@ -64,6 +64,6 @@ var searchData=
   ['getscore_61',['getScore',['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#a52b2ef410b25eabdc0ce57aa85776ea7',1,'pesieve::ArtefactScanner::ArtefactsMapping']]],
   ['getsize_62',['getSize',['../classpesieve_1_1_scanned_module.html#a85e250d1c645cccf3dbad500841a9a0b',1,'pesieve::ScannedModule']]],
   ['getstart_63',['getStart',['../classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef',1,'pesieve::ScannedModule']]],
-  ['getstartoffset_64',['getStartOffset',['../structpesieve_1_1util_1_1_basic_buffer.html#a8148a0c888b6dca2bd3d4d00a6f860ee',1,'pesieve::util::BasicBuffer']]],
+  ['getstartoffset_64',['getStartOffset',['../structpesieve_1_1util_1_1_basic_buffer.html#ad9b00fbd2200ffe7508c708434206a34',1,'pesieve::util::BasicBuffer']]],
   ['globalroot_5fname_65',['GLOBALROOT_NAME',['../path__converter_8cpp.html#a6fb2d7449fb3dbc8a7ade1a67ad66c3d',1,'path_converter.cpp']]]
 ];

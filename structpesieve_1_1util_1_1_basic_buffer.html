@@ -103,8 +103,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a62c880c7daca719d983e9fc638518fca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a008e1e5e5ec5a294813c2ecbbde1b383"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1util_1_1_basic_buffer.html#a008e1e5e5ec5a294813c2ecbbde1b383">trim</a> ()</td></tr>
 <tr class="separator:a008e1e5e5ec5a294813c2ecbbde1b383"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8148a0c888b6dca2bd3d4d00a6f860ee"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1util_1_1_basic_buffer.html#a8148a0c888b6dca2bd3d4d00a6f860ee">getStartOffset</a> () const</td></tr>
-<tr class="separator:a8148a0c888b6dca2bd3d4d00a6f860ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9b00fbd2200ffe7508c708434206a34"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1util_1_1_basic_buffer.html#ad9b00fbd2200ffe7508c708434206a34">getStartOffset</a> (<a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> trimmed) const</td></tr>
+<tr class="separator:ad9b00fbd2200ffe7508c708434206a34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a88d2e0541a73ab2f90addf8ea2acb2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2">getDataSize</a> (<a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> trimmed=false) const</td></tr>
 <tr class="separator:a1a88d2e0541a73ab2f90addf8ea2acb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a644bab878da80328bd1e4c9d22027456"><td class="memItemLeft" align="right" valign="top">const BYTE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456">getData</a> (<a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> trimmed=false) const</td></tr>
@@ -182,7 +182,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="byte__buffer_8h_source.html#l00063">63</a> of file <a class="el" href="byte__buffer_8h_source.html">byte_buffer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="byte__buffer_8h_source.html#l00064">64</a> of file <a class="el" href="byte__buffer_8h_source.html">byte_buffer.h</a>.</p>
 
 </div>
 </div>
@@ -210,12 +210,12 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="byte__buffer_8h_source.html#l00053">53</a> of file <a class="el" href="byte__buffer_8h_source.html">byte_buffer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="byte__buffer_8h_source.html#l00054">54</a> of file <a class="el" href="byte__buffer_8h_source.html">byte_buffer.h</a>.</p>
 
 </div>
 </div>
-<a id="a8148a0c888b6dca2bd3d4d00a6f860ee" name="a8148a0c888b6dca2bd3d4d00a6f860ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8148a0c888b6dca2bd3d4d00a6f860ee">&#9670;&#160;</a></span>getStartOffset()</h2>
+<a id="ad9b00fbd2200ffe7508c708434206a34" name="ad9b00fbd2200ffe7508c708434206a34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9b00fbd2200ffe7508c708434206a34">&#9670;&#160;</a></span>getStartOffset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -226,7 +226,8 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">size_t pesieve::util::BasicBuffer::getStartOffset </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td>
+          <td class="paramname"><em>trimmed</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -308,7 +309,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="byte__buffer_8h_source.html#l00073">73</a> of file <a class="el" href="byte__buffer_8h_source.html">byte_buffer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="byte__buffer_8h_source.html#l00074">74</a> of file <a class="el" href="byte__buffer_8h_source.html">byte_buffer.h</a>.</p>
 
 </div>
 </div>
@@ -332,7 +333,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="byte__buffer_8h_source.html#l00081">81</a> of file <a class="el" href="byte__buffer_8h_source.html">byte_buffer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="byte__buffer_8h_source.html#l00082">82</a> of file <a class="el" href="byte__buffer_8h_source.html">byte_buffer.h</a>.</p>
 
 </div>
 </div>
@@ -356,7 +357,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="byte__buffer_8h_source.html#l00079">79</a> of file <a class="el" href="byte__buffer_8h_source.html">byte_buffer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="byte__buffer_8h_source.html#l00080">80</a> of file <a class="el" href="byte__buffer_8h_source.html">byte_buffer.h</a>.</p>
 
 </div>
 </div>
@@ -380,7 +381,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="byte__buffer_8h_source.html#l00078">78</a> of file <a class="el" href="byte__buffer_8h_source.html">byte_buffer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="byte__buffer_8h_source.html#l00079">79</a> of file <a class="el" href="byte__buffer_8h_source.html">byte_buffer.h</a>.</p>
 
 </div>
 </div>
@@ -404,7 +405,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="byte__buffer_8h_source.html#l00077">77</a> of file <a class="el" href="byte__buffer_8h_source.html">byte_buffer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="byte__buffer_8h_source.html#l00078">78</a> of file <a class="el" href="byte__buffer_8h_source.html">byte_buffer.h</a>.</p>
 
 </div>
 </div>
