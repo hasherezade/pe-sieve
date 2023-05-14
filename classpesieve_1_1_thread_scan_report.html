@@ -79,6 +79,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="classpesieve_1_1_thread_scan_report-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pesieve::ThreadScanReport Class Reference</div></div>
 </div><!--header-->
@@ -153,6 +154,13 @@ Static Public Attributes</h2></td></tr>
 <tr class="inherit_header pub_static_attribs_classpesieve_1_1_module_scan_report"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classpesieve_1_1_module_scan_report')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classpesieve_1_1_module_scan_report.html">pesieve::ModuleScanReport</a></td></tr>
 <tr class="memitem:a4bd715db6b234bb5d299ef39abb11860 inherit pub_static_attribs_classpesieve_1_1_module_scan_report"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_scan_report.html#a4bd715db6b234bb5d299ef39abb11860">JSON_LEVEL</a> = 1</td></tr>
 <tr class="separator:a4bd715db6b234bb5d299ef39abb11860 inherit pub_static_attribs_classpesieve_1_1_module_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:af30839203957e838bc299232e05ab735"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_thread_scan_report.html#af30839203957e838bc299232e05ab735">translate_thread_state</a> (DWORD <a class="el" href="classpesieve_1_1_thread_scan_report.html#aa4cc4cdcfd7be649a00dd57d46b70317">thread_state</a>)</td></tr>
+<tr class="separator:af30839203957e838bc299232e05ab735"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d190b1f19a3a9fe2c81cd18abb6a72f"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_thread_scan_report.html#a6d190b1f19a3a9fe2c81cd18abb6a72f">translate_wait_reason</a> (DWORD <a class="el" href="classpesieve_1_1_thread_scan_report.html#acfe24bd84475b4de990f163e131a99e4">thread_wait_reason</a>)</td></tr>
+<tr class="separator:a6d190b1f19a3a9fe2c81cd18abb6a72f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -243,10 +251,12 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_thread_scan_report_a55f35dcaff1d2c423b6425c75f9074ab_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scan_report_a55f35dcaff1d2c423b6425c75f9074ab_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_thread_scan_report_a55f35dcaff1d2c423b6425c75f9074ab_cgraph" id="aclasspesieve_1_1_thread_scan_report_a55f35dcaff1d2c423b6425c75f9074ab_cgraph">
-<area shape="rect" title=" " alt="" coords="5,69,186,110"/>
-<area shape="rect" href="classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="234,8,416,49"/>
+<area shape="rect" title=" " alt="" coords="5,125,186,166"/>
+<area shape="rect" href="classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="234,7,416,47"/>
 <area shape="rect" href="structpesieve_1_1_area_stats.html#a3005dfc8cd36c15290a724a29ee09a63" title=" " alt="" coords="468,71,598,111"/>
-<area shape="rect" href="structpesieve_1_1_area_stats.html#a4b99b7ffbfb0d51c7e5055eb3db76249" title=" " alt="" coords="260,127,390,167"/>
+<area shape="rect" href="structpesieve_1_1_area_stats.html#a4b99b7ffbfb0d51c7e5055eb3db76249" title=" " alt="" coords="260,125,390,166"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#af30839203957e838bc299232e05ab735" title=" " alt="" coords="235,191,415,231"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#a6d190b1f19a3a9fe2c81cd18abb6a72f" title=" " alt="" coords="235,256,415,297"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="464,5,601,46"/>
 <area shape="rect" href="structpesieve_1_1_area_stats.html#a3e0f057e07fa1f338727435c693ebacf" title=" " alt="" coords="468,136,598,177"/>
 </map>
@@ -302,15 +312,73 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_thread_scan_report_af00f4e4ed6eb563a6e55c651e1bb552f_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scan_report_af00f4e4ed6eb563a6e55c651e1bb552f_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_thread_scan_report_af00f4e4ed6eb563a6e55c651e1bb552f_cgraph" id="aclasspesieve_1_1_thread_scan_report_af00f4e4ed6eb563a6e55c651e1bb552f_cgraph">
-<area shape="rect" title=" " alt="" coords="5,69,186,110"/>
-<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#a55f35dcaff1d2c423b6425c75f9074ab" title=" " alt="" coords="234,69,414,110"/>
-<area shape="rect" href="classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="462,8,644,49"/>
+<area shape="rect" title=" " alt="" coords="5,125,186,166"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#a55f35dcaff1d2c423b6425c75f9074ab" title=" " alt="" coords="234,125,414,166"/>
+<area shape="rect" href="classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="462,7,644,47"/>
 <area shape="rect" href="structpesieve_1_1_area_stats.html#a3005dfc8cd36c15290a724a29ee09a63" title=" " alt="" coords="696,71,826,111"/>
-<area shape="rect" href="structpesieve_1_1_area_stats.html#a4b99b7ffbfb0d51c7e5055eb3db76249" title=" " alt="" coords="488,127,618,167"/>
+<area shape="rect" href="structpesieve_1_1_area_stats.html#a4b99b7ffbfb0d51c7e5055eb3db76249" title=" " alt="" coords="488,125,618,166"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#af30839203957e838bc299232e05ab735" title=" " alt="" coords="463,191,643,231"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#a6d190b1f19a3a9fe2c81cd18abb6a72f" title=" " alt="" coords="463,256,643,297"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="692,5,830,46"/>
 <area shape="rect" href="structpesieve_1_1_area_stats.html#a3e0f057e07fa1f338727435c693ebacf" title=" " alt="" coords="696,136,826,177"/>
 </map>
 </div>
+
+</div>
+</div>
+<a id="af30839203957e838bc299232e05ab735" name="af30839203957e838bc299232e05ab735"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af30839203957e838bc299232e05ab735">&#9670;&#160;</a></span>translate_thread_state()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string ThreadScanReport::translate_thread_state </td>
+          <td>(</td>
+          <td class="paramtype">DWORD&#160;</td>
+          <td class="paramname"><em>thread_state</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00106">106</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a6d190b1f19a3a9fe2c81cd18abb6a72f" name="a6d190b1f19a3a9fe2c81cd18abb6a72f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d190b1f19a3a9fe2c81cd18abb6a72f">&#9670;&#160;</a></span>translate_wait_reason()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string ThreadScanReport::translate_wait_reason </td>
+          <td>(</td>
+          <td class="paramtype">DWORD&#160;</td>
+          <td class="paramname"><em>thread_wait_reason</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00092">92</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 
 </div>
 </div>
@@ -459,8 +527,9 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>scanners/<a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a></li>
+<li>scanners/<a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
