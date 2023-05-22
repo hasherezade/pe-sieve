@@ -3,8 +3,20 @@
 import ctypes
 import os
 
+PESIEVE_MIN_VER = 0x030600 # minimal version of the PE-sieve DLL to work with this wrapper
+PESIEVE_MAX_VER = 0x030600 # maximal version of the PE-sieve DLL to work with this wrapper
+
 ERROR_SCAN_FAILURE = -1
 MAX_PATH =  260
+
+def version_to_str(version_val):
+    major = (version_val >> 24) & 0xFF
+    minor = (version_val >> 16) & 0xFF
+    patch = (version_val >> 8) & 0xFF
+    build = version_val & 0xFF 
+    return f"{major}.{minor}.{patch}.{build}"
+
+###
 
 class t_output_filter(ctypes.c_int):
 	OUT_FULL = 0
@@ -132,7 +144,10 @@ def init():
 	pesieve_path = pesieve_dir + os.path.sep + pesieve_dll
 	lib = ctypes.cdll.LoadLibrary(pesieve_path)
 	PESieve_version = ctypes.cast(lib.PESieve_version, ctypes.POINTER(ctypes.c_uint32)).contents.value
-
+	if (PESieve_version < PESIEVE_MIN_VER or PESieve_version > PESIEVE_MAX_VER):
+		dll_version_str = version_to_str(PESieve_version)
+		exception_msg = f"Version mismatch: the PE-sieve.dll version ({dll_version_str}) doesn't match the bindings version"
+		raise Exception(exception_msg)
 
 def PESieve_help():
 	if not lib:
