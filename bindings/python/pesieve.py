@@ -114,9 +114,11 @@ class t_report(ctypes.Structure):
 	]
 
 lib = None
+PESieve_version = None
 
 def init():
 	global lib
+	global PESieve_version
 	ptr_size = ctypes.sizeof(ctypes.c_voidp)
 	if ptr_size == 4:
 		pesieve_dll = "pe-sieve32.dll"
@@ -129,6 +131,8 @@ def init():
 		pesieve_dir = os.path.abspath(os.getcwd())
 	pesieve_path = pesieve_dir + os.path.sep + pesieve_dll
 	lib = ctypes.cdll.LoadLibrary(pesieve_path)
+	PESieve_version = ctypes.cast(lib.PESieve_version, ctypes.POINTER(ctypes.c_uint32)).contents.value
+
 
 def PESieve_help():
 	if not lib:
