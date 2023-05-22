@@ -1,5 +1,7 @@
 <map id="pesieve::ProcessScanReport::countHdrsReplaced" name="pesieve::ProcessScanReport::countHdrsReplaced">
-<area shape="rect" id="node1" title=" " alt="" coords="5,39,194,79"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63" title=" " alt="" coords="245,5,428,46"/>
-<area shape="rect" id="node3" href="$classpesieve_1_1_headers_scan_report.html#af04c1c2f3d532acf4bd980f23422f134" title=" " alt="" coords="242,71,431,111"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,194,79"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63" title=" " alt="" coords="245,5,428,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,43,230,38,231,43,194,48"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_headers_scan_report.html#af04c1c2f3d532acf4bd980f23422f134" title=" " alt="" coords="242,71,431,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="194,69,227,74,227,79,194,74"/>
 </map>

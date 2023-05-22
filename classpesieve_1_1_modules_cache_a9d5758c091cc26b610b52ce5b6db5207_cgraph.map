@@ -1,7 +1,11 @@
 <map id="pesieve::ModulesCache::loadCached" name="pesieve::ModulesCache::loadCached">
-<area shape="rect" id="node1" title=" " alt="" coords="5,39,164,79"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_modules_cache.html#a307eb472ff63b68b58c20990ed206864" title=" " alt="" coords="212,5,370,46"/>
-<area shape="rect" id="node4" href="$classpesieve_1_1_modules_cache.html#a7a9aacf20afa87dc50740e562150c90e" title=" " alt="" coords="212,71,370,111"/>
-<area shape="rect" id="node3" href="$structpesieve_1_1_cached_module.html#a8794ef18c90ac2540faf837fe04edd6d" title=" " alt="" coords="418,5,576,46"/>
-<area shape="rect" id="node5" href="$classpesieve_1_1_modules_cache.html#ac4ec15561c2e37bdf6fc201140334b3d" title=" " alt="" coords="418,71,576,111"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,164,79"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_modules_cache.html#a307eb472ff63b68b58c20990ed206864" title=" " alt="" coords="212,5,370,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,44,196,38,197,43,164,49"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_modules_cache.html#a7a9aacf20afa87dc50740e562150c90e" title=" " alt="" coords="212,71,370,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="164,69,197,74,196,79,164,74"/>
+<area shape="rect" id="Node000003" href="$structpesieve_1_1_cached_module.html#a8794ef18c90ac2540faf837fe04edd6d" title=" " alt="" coords="418,5,576,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="370,23,403,23,403,28,370,28"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_modules_cache.html#ac4ec15561c2e37bdf6fc201140334b3d" title=" " alt="" coords="418,71,576,111"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="370,88,403,88,403,94,370,94"/>
 </map>

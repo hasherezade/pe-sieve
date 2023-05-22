@@ -1,4 +1,5 @@
 <map id="pesieve.t_report" name="pesieve.t_report">
-<area shape="rect" id="node1" title=" " alt="" coords="6,79,120,105"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,121,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="6,79,120,105"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,121,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="66,46,66,79,60,79,60,46"/>
 </map>

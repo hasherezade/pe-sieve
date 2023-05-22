@@ -1,7 +1,7 @@
 var searchData=
 [
   ['addrtofunctionva_0',['addrToFunctionVA',['../classpesieve_1_1_i_a_t_block.html#aecd4dd3a9702c22c902fbbc15590425c',1,'pesieve::IATBlock']]],
-  ['alloc_5fbase_1',['alloc_base',['../classpesieve_1_1_mem_page_data.html#a4c0656b24255503c6faa643ec7e9a464',1,'pesieve::MemPageData::alloc_base()'],['../structpesieve_1_1util_1_1__mem__region__info.html#acdb4430af2a19516acd9f83c3a1847a7',1,'pesieve::util::_mem_region_info::alloc_base()']]],
+  ['alloc_5fbase_1',['alloc_base',['../classpesieve_1_1_mem_page_data.html#a4c0656b24255503c6faa643ec7e9a464',1,'pesieve::MemPageData::alloc_base'],['../structpesieve_1_1util_1_1__mem__region__info.html#acdb4430af2a19516acd9f83c3a1847a7',1,'pesieve::util::_mem_region_info::alloc_base']]],
   ['alloc_5fstrparam_2',['alloc_strparam',['../params_8h.html#aacaafdd14dacc8a889b91f87d1cff43e',1,'params.h']]],
   ['allocbuffer_3',['allocBuffer',['../classpesieve_1_1_pe_buffer.html#a449b249560082a0d379d726a184bb790',1,'pesieve::PeBuffer::allocBuffer()'],['../structpesieve_1_1util_1_1_byte_buffer.html#a646d32c5b3803d7ed425b7e9424b986a',1,'pesieve::util::ByteBuffer::allocBuffer()']]],
   ['allocdesciptors_4',['allocDesciptors',['../classpesieve_1_1_import_table_buffer.html#adc8c45704dbab903b08ab0bdaeef513b',1,'pesieve::ImportTableBuffer']]],
@@ -18,11 +18,11 @@ var searchData=
   ['area_5fsize_15',['area_size',['../structpesieve_1_1_area_stats.html#a7d4be9e25d4e790df3be8d52bf752775',1,'pesieve::AreaStats']]],
   ['area_5fstart_16',['area_start',['../structpesieve_1_1_area_stats.html#aaf26a572ab489a031816bdec466426eb',1,'pesieve::AreaStats']]],
   ['areastats_17',['AreaStats',['../structpesieve_1_1_area_stats.html#ae7eef9a3720222e5a13fc8ab93d293bd',1,'pesieve::AreaStats::AreaStats(const AreaStats &amp;p1)'],['../structpesieve_1_1_area_stats.html#a86769f2d43e7528aa0e65467cdeaed09',1,'pesieve::AreaStats::AreaStats()'],['../structpesieve_1_1_area_stats.html',1,'pesieve::AreaStats']]],
-  ['areastatscalculator_18',['AreaStatsCalculator',['../classpesieve_1_1_area_stats_calculator.html#af2364d0850bed529cbc2367cad78fa46',1,'pesieve::AreaStatsCalculator::AreaStatsCalculator()'],['../structpesieve_1_1_area_stats.html#ad3fb201275a1152dea2643154804f0a0',1,'pesieve::AreaStats::AreaStatsCalculator()'],['../classpesieve_1_1_area_stats_calculator.html',1,'pesieve::AreaStatsCalculator']]],
-  ['args_19',['args',['../classpesieve_1_1_process_scanner.html#a64d6658454d4ef1b71102750d1e0f630',1,'pesieve::ProcessScanner::args()'],['../classpesieve_1_1_working_set_scanner.html#af875f213bda0d23cbcb229c1baf5b577',1,'pesieve::WorkingSetScanner::args()']]],
+  ['areastatscalculator_18',['AreaStatsCalculator',['../classpesieve_1_1_area_stats_calculator.html#af2364d0850bed529cbc2367cad78fa46',1,'pesieve::AreaStatsCalculator::AreaStatsCalculator()'],['../structpesieve_1_1_area_stats.html#ad3fb201275a1152dea2643154804f0a0',1,'pesieve::AreaStats::AreaStatsCalculator'],['../classpesieve_1_1_area_stats_calculator.html',1,'pesieve::AreaStatsCalculator']]],
+  ['args_19',['args',['../classpesieve_1_1_process_scanner.html#a64d6658454d4ef1b71102750d1e0f630',1,'pesieve::ProcessScanner::args'],['../classpesieve_1_1_working_set_scanner.html#af875f213bda0d23cbcb229c1baf5b577',1,'pesieve::WorkingSetScanner::args']]],
   ['artefact_5fscanner_2ecpp_20',['artefact_scanner.cpp',['../artefact__scanner_8cpp.html',1,'']]],
   ['artefact_5fscanner_2eh_21',['artefact_scanner.h',['../artefact__scanner_8h.html',1,'']]],
-  ['artefacts_22',['artefacts',['../classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28',1,'pesieve::PeReconstructor::artefacts()'],['../classpesieve_1_1_artefact_scan_report.html#a5c39ea6661e0c5de664c1395b2709612',1,'pesieve::ArtefactScanReport::artefacts()']]],
+  ['artefacts_22',['artefacts',['../classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28',1,'pesieve::PeReconstructor::artefacts'],['../classpesieve_1_1_artefact_scan_report.html#a5c39ea6661e0c5de664c1395b2709612',1,'pesieve::ArtefactScanReport::artefacts']]],
   ['artefacts_5futil_2ecpp_23',['artefacts_util.cpp',['../artefacts__util_8cpp.html',1,'']]],
   ['artefacts_5futil_2eh_24',['artefacts_util.h',['../artefacts__util_8h.html',1,'']]],
   ['artefactscanner_25',['ArtefactScanner',['../classpesieve_1_1_artefact_scanner.html#a41348cc568589edb9ae52469e703ac1a',1,'pesieve::ArtefactScanner::ArtefactScanner()'],['../classpesieve_1_1_artefact_scanner.html',1,'pesieve::ArtefactScanner']]],

@@ -1,7 +1,19 @@
 <map id="pesieve::ThreadScanner::fillAreaStats" name="pesieve::ThreadScanner::fillAreaStats">
-<area shape="rect" id="node1" title=" " alt="" coords="5,71,166,111"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_area_stats_calculator.html#ac2a977346c02ebf967c2c005aa5c7ada" title=" " alt="" coords="214,71,402,111"/>
-<area shape="rect" id="node3" href="$structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="450,5,612,46"/>
-<area shape="rect" id="node4" href="$structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2" title=" " alt="" coords="450,71,612,111"/>
-<area shape="rect" id="node5" href="$structpesieve_1_1util_1_1_basic_buffer.html#ad9b00fbd2200ffe7508c708434206a34" title=" " alt="" coords="450,136,612,177"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,136,166,177"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_area_stats_calculator.html#ac2a977346c02ebf967c2c005aa5c7ada" title=" " alt="" coords="214,71,402,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,133,221,114,223,119,158,138"/>
+<area shape="rect" id="Node000006" href="$classpesieve_1_1_mem_page_data.html#a59ed1087d268c1742139c7240ab5854f" title=" " alt="" coords="229,136,387,177"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="166,154,214,154,214,159,166,159"/>
+<area shape="rect" id="Node000007" href="$classpesieve_1_1_mem_page_data.html#a01d3a9dc59b2965fa6defbc4dfda8524" title=" " alt="" coords="229,201,387,242"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="158,175,223,194,221,199,156,180"/>
+<area shape="rect" id="Node000003" href="$structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="450,5,612,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="379,68,444,48,446,53,380,73"/>
+<area shape="rect" id="Node000004" href="$structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2" title=" " alt="" coords="450,71,612,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="402,88,435,88,435,94,402,94"/>
+<area shape="rect" id="Node000005" href="$structpesieve_1_1util_1_1_basic_buffer.html#ad9b00fbd2200ffe7508c708434206a34" title=" " alt="" coords="450,136,612,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="380,109,446,129,444,134,379,114"/>
+<area shape="rect" id="Node000008" href="$classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="452,201,610,242"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="388,219,437,219,437,224,388,224"/>
+<area shape="rect" id="Node000009" href="$structpesieve_1_1util_1_1_basic_buffer.html#a62c880c7daca719d983e9fc638518fca" title=" " alt="" coords="450,267,612,307"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="380,240,446,259,444,264,379,245"/>
 </map>

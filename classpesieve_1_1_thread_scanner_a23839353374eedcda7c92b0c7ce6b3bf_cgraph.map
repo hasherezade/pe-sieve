@@ -1,5 +1,8 @@
 <map id="pesieve::ThreadScanner::scanRemote" name="pesieve::ThreadScanner::scanRemote">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,166,46"/>
-<area shape="rect" id="node2" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="356,13,449,39"/>
-<area shape="rect" id="node3" href="$thread__scanner_8cpp.html#a3eb916f7fcf3c80b86f8e9bb3601f963" title=" " alt="" coords="214,38,308,64"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,166,46"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="356,13,449,39"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,23,342,23,342,28,166,28"/>
+<area shape="rect" id="Node000003" href="$thread__scanner_8cpp.html#a3eb916f7fcf3c80b86f8e9bb3601f963" title=" " alt="" coords="214,38,308,64"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,35,199,39,198,45,166,40"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="308,40,341,34,342,39,309,45"/>
 </map>

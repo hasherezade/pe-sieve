@@ -1,8 +1,13 @@
 <map id="pesieve::ResultsDumper::makeAndJoinDirectories" name="pesieve::ResultsDumper::makeAndJoinDirectories">
-<area shape="rect" id="node1" title=" " alt="" coords="5,35,174,75"/>
-<area shape="rect" id="node2" href="$namespacepesieve.html#ae7c522acc84b373982b219f51b481fbf" title=" " alt="" coords="222,42,386,68"/>
-<area shape="rect" id="node3" href="$namespacepesieve_1_1util.html#a04f5ff8195f6fd23668379fbd46879dc" title=" " alt="" coords="434,35,565,75"/>
-<area shape="rect" id="node4" href="$namespacepesieve_1_1util.html#a036fbfe4f5d7a5f1753979caf378d70d" title=" " alt="" coords="613,5,723,46"/>
-<area shape="rect" id="node6" href="$path__util_8cpp.html#ac4c7885386fa3d8b3f506808273bcea3" title=" " alt="" coords="620,70,716,96"/>
-<area shape="rect" id="node5" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="771,13,915,39"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,174,75"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#ae7c522acc84b373982b219f51b481fbf" title=" " alt="" coords="222,42,386,68"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,52,207,52,207,58,174,58"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#a04f5ff8195f6fd23668379fbd46879dc" title=" " alt="" coords="434,35,565,75"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="387,52,419,52,419,58,387,58"/>
+<area shape="rect" id="Node000004" href="$namespacepesieve_1_1util.html#a036fbfe4f5d7a5f1753979caf378d70d" title=" " alt="" coords="613,5,723,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="565,41,598,35,599,40,566,46"/>
+<area shape="rect" id="Node000006" href="$path__util_8cpp.html#ac4c7885386fa3d8b3f506808273bcea3" title=" " alt="" coords="620,70,716,96"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="566,63,606,70,605,75,565,69"/>
+<area shape="rect" id="Node000005" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="771,13,915,39"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="723,23,756,23,756,28,723,28"/>
 </map>

@@ -3,7 +3,7 @@ var searchData=
   ['_5fanalyze_0',['_analyze',['../classpesieve_1_1_patch_analyzer.html#a007d3b67b87c69d6aa377bc51fcbb784',1,'pesieve::PatchAnalyzer']]],
   ['_5fanalyzerelocated_1',['_analyzeRelocated',['../classpesieve_1_1_patch_analyzer.html#a1904d926a1218925ec597ae2f60e91ae',1,'pesieve::PatchAnalyzer']]],
   ['_5fdeleteleastrecent_2',['_deleteLeastRecent',['../classpesieve_1_1_modules_cache.html#ac4ec15561c2e37bdf6fc201140334b3d',1,'pesieve::ModulesCache']]],
-  ['_5ffields_5f_3',['_fields_',['../classpesieve_1_1_p_a_r_a_m___s_t_r_i_n_g.html#a28d924cfd30e022fbd1187019d90699b',1,'pesieve.PARAM_STRING._fields_()'],['../classpesieve_1_1t__params.html#a5480797d5877ddf51fd636065eac37fb',1,'pesieve.t_params._fields_()'],['../classpesieve_1_1t__report.html#a9691b0cc3624030ab9d804add313b905',1,'pesieve.t_report._fields_()']]],
+  ['_5ffields_5f_3',['_fields_',['../classpesieve_1_1_p_a_r_a_m___s_t_r_i_n_g.html#a28d924cfd30e022fbd1187019d90699b',1,'pesieve.PARAM_STRING._fields_'],['../classpesieve_1_1t__params.html#a5480797d5877ddf51fd636065eac37fb',1,'pesieve.t_params._fields_'],['../classpesieve_1_1t__report.html#a9691b0cc3624030ab9d804add313b905',1,'pesieve.t_report._fields_']]],
   ['_5ffinddoshdrbypatterns_4',['_findDosHdrByPatterns',['../classpesieve_1_1_artefact_scanner.html#a78dc948deda8d9429d937b1493c13241',1,'pesieve::ArtefactScanner']]],
   ['_5ffindmzoffset_5',['_findMZoffset',['../classpesieve_1_1_artefact_scanner.html#a329bb70c52e3bdd604edcaeab149cbcc',1,'pesieve::ArtefactScanner']]],
   ['_5ffindsecbypatterns_6',['_findSecByPatterns',['../classpesieve_1_1_artefact_scanner.html#afdbcd0834b36386858195c9c681042f1',1,'pesieve::ArtefactScanner']]],

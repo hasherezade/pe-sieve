@@ -1,4 +1,5 @@
 <map id="pesieve::ProcessScanReport::countResultsPerType" name="pesieve::ProcessScanReport::countResultsPerType">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,194,46"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63" title=" " alt="" coords="242,5,424,46"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,194,46"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63" title=" " alt="" coords="242,5,424,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,23,227,23,227,28,194,28"/>
 </map>

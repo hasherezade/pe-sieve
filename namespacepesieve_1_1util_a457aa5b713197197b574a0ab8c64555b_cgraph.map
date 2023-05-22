@@ -1,5 +1,7 @@
 <map id="pesieve::util::load_MiniDumpWriteDump" name="pesieve::util::load_MiniDumpWriteDump">
-<area shape="rect" id="node1" title=" " alt="" coords="5,23,156,64"/>
-<area shape="rect" id="node2" href="$namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="210,5,342,31"/>
-<area shape="rect" id="node3" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="204,55,348,80"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,156,64"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="210,5,342,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,31,195,26,196,31,157,36"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="204,55,348,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="157,50,189,54,189,60,156,55"/>
 </map>

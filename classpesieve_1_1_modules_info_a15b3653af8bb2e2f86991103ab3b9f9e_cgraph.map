@@ -1,4 +1,7 @@
 <map id="pesieve::ModulesInfo::findModuleContaining" name="pesieve::ModulesInfo::findModuleContaining">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,156,46"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="204,5,369,46"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,156,79"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_scanned_module.html#a3dac9e8d9d1fc99d7893abcb99a0957e" title=" " alt="" coords="204,5,369,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,44,189,39,189,44,157,49"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="204,71,369,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="157,68,189,73,189,79,156,73"/>
 </map>

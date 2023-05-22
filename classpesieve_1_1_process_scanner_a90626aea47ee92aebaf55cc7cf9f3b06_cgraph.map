@@ -1,4 +1,5 @@
 <map id="pesieve::ProcessScanner::resolveHooksTargets" name="pesieve::ProcessScanner::resolveHooksTargets">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,174,46"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_hook_target_resolver.html#a51fc6092d397fbb7c414853d703ed064" title="Resolves all the hooks collected within the given set of reports." alt="" coords="222,5,413,46"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,174,46"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_hook_target_resolver.html#a51fc6092d397fbb7c414853d703ed064" title="Resolves all the hooks collected within the given set of reports." alt="" coords="222,5,413,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,23,207,23,207,28,174,28"/>
 </map>

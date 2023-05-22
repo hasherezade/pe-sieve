@@ -1,4 +1,5 @@
 <map id="pesieve.PESieve_scan" name="pesieve.PESieve_scan">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,160,31"/>
-<area shape="rect" id="node2" href="$namespacepesieve.html#ae3d0016e97b1fca6d179cdd7d03c04d7" title=" " alt="" coords="208,5,294,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,160,31"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#a2053c41480ba617357fa427bc8252c64" title=" " alt="" coords="208,5,294,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,16,193,16,193,21,160,21"/>
 </map>

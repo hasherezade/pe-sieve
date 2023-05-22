@@ -1,5 +1,7 @@
 <map id="pesieve::ThreadScanner::reportSuspiciousAddr" name="pesieve::ThreadScanner::reportSuspiciousAddr">
-<area shape="rect" id="node1" title=" " alt="" coords="5,23,166,64"/>
-<area shape="rect" id="node2" href="$thread__scanner_8cpp.html#a7b9ade21d4de016d2a048bf6cc42dbc0" title=" " alt="" coords="214,5,333,31"/>
-<area shape="rect" id="node3" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="227,55,320,80"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,166,64"/>
+<area shape="rect" id="Node000002" href="$thread__scanner_8cpp.html#a7b9ade21d4de016d2a048bf6cc42dbc0" title=" " alt="" coords="214,5,333,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,30,199,26,199,31,166,35"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="227,55,320,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,51,212,57,212,62,166,56"/>
 </map>

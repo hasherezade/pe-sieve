@@ -1,5 +1,7 @@
 <map id="pesieve::util::wow64_revert_fs_redirection" name="pesieve::util::wow64_revert_fs_redirection">
-<area shape="rect" id="node1" title=" " alt="" coords="5,27,152,68"/>
-<area shape="rect" id="node2" href="$namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="200,5,332,31"/>
-<area shape="rect" id="node3" href="$namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="209,55,323,96"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,27,152,68"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="200,5,332,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,33,185,28,186,33,153,39"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="209,55,323,96"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="153,56,195,62,194,68,152,61"/>
 </map>

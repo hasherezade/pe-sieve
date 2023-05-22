@@ -1,4 +1,5 @@
 <map id="pesieve.t_dotnet_policy" name="pesieve.t_dotnet_policy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,79,162,105"/>
-<area shape="rect" id="node2" title=" " alt="" coords="38,5,129,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,162,105"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="38,5,129,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,46,86,79,81,79,81,46"/>
 </map>

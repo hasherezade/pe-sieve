@@ -21,7 +21,7 @@ var searchData=
   ['pe_5fnot_5ffound_18',['PE_NOT_FOUND',['../artefact__scanner_8h.html#a65c124f8908a936f95abd087ce9e65a3',1,'artefact_scanner.h']]],
   ['pesieve_5fapi_19',['PESIEVE_API',['../pe__sieve__api_8h.html#ac572addbdbbff59edebf2e26544482e5',1,'pe_sieve_api.h']]],
   ['pesieve_5fapi_5ffunc_20',['PESIEVE_API_FUNC',['../pe__sieve__api_8h.html#af8a670441ca96827a2997727a85d9ca3',1,'pe_sieve_api.h']]],
-  ['pesieve_5fexports_21',['PESIEVE_EXPORTS',['../dll__main_8cpp.html#afe01093004e99bce7bb71653685e31a9',1,'PESIEVE_EXPORTS():&#160;dll_main.cpp'],['../pe__sieve__api_8cpp.html#afe01093004e99bce7bb71653685e31a9',1,'PESIEVE_EXPORTS():&#160;pe_sieve_api.cpp']]],
+  ['pesieve_5fexports_21',['PESIEVE_EXPORTS',['../dll__main_8cpp.html#afe01093004e99bce7bb71653685e31a9',1,'PESIEVE_EXPORTS:&#160;dll_main.cpp'],['../pe__sieve__api_8cpp.html#afe01093004e99bce7bb71653685e31a9',1,'PESIEVE_EXPORTS:&#160;pe_sieve_api.cpp']]],
   ['pesieve_5fmajor_5fversion_22',['PESIEVE_MAJOR_VERSION',['../pe__sieve__ver__short_8h.html#a438266f22a2b5359707aa7f76f38f69b',1,'pe_sieve_ver_short.h']]],
   ['pesieve_5fmicro_5fversion_23',['PESIEVE_MICRO_VERSION',['../pe__sieve__ver__short_8h.html#aa9b440c88301877c02e092306a39a7fc',1,'pe_sieve_ver_short.h']]],
   ['pesieve_5fminor_5fversion_24',['PESIEVE_MINOR_VERSION',['../pe__sieve__ver__short_8h.html#a24158745816b473d50f2a3582e2cb4cb',1,'pe_sieve_ver_short.h']]],

@@ -1,4 +1,5 @@
 <map id="pesieve::CodeScanReport::countInaccessibleSections" name="pesieve::CodeScanReport::countInaccessibleSections">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,189,46"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_code_scan_report.html#a1d1e5ff35f794df92f75c4ac33355b9d" title=" " alt="" coords="237,5,411,46"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,189,46"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_code_scan_report.html#a1d1e5ff35f794df92f75c4ac33355b9d" title=" " alt="" coords="237,5,411,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="189,23,222,23,222,28,189,28"/>
 </map>

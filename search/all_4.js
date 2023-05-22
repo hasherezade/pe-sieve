@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['data_0',['data',['../namespacedemo.html#abbc354a54bcd9a7e6c7f58948270c87d',1,'demo.data()'],['../structt__params.html#adb8f772d0dde5e680f7efbd0497851dd',1,'t_params::data()'],['../structpesieve_1_1util_1_1_basic_buffer.html#abec53c477a3cea3414f4a4c00463a339',1,'pesieve::util::BasicBuffer::data()']]],
+  ['data_0',['data',['../namespacedemo.html#abbc354a54bcd9a7e6c7f58948270c87d',1,'demo.data'],['../structt__params.html#adb8f772d0dde5e680f7efbd0497851dd',1,'t_params::data'],['../structpesieve_1_1util_1_1_basic_buffer.html#abec53c477a3cea3414f4a4c00463a339',1,'pesieve::util::BasicBuffer::data']]],
   ['data_5fsize_1',['data_size',['../structpesieve_1_1util_1_1_basic_buffer.html#ab78ba82b670c907d1af7abc964068e91',1,'pesieve::util::BasicBuffer']]],
   ['deleteall_2',['deleteAll',['../classpesieve_1_1_modules_info.html#aa160b8015f8a72dd202fa8d910317cec',1,'pesieve::ModulesInfo']]],
   ['deletecache_3',['deleteCache',['../classpesieve_1_1_modules_cache.html#a93ef9057d536ccd0cf4b49973f4db531',1,'pesieve::ModulesCache']]],
@@ -18,9 +18,9 @@ var searchData=
   ['dllmain_15',['DllMain',['../dll__main_8cpp.html#a6e0a130e32f5b8205bff7d07ba8ba8f0',1,'dll_main.cpp']]],
   ['dos_5fhdr_16',['dos_hdr',['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#ae3f50215455e56b7c5edd7e6bdebd729',1,'pesieve::ArtefactScanner::ArtefactsMapping']]],
   ['doshdrmodified_17',['dosHdrModified',['../classpesieve_1_1_headers_scan_report.html#a512279afadee34e4a1602ee041a0df57',1,'pesieve::HeadersScanReport']]],
-  ['dotnet_5fpolicy_18',['dotnet_policy',['../namespacedemo.html#a0ff69f1715e1c697798d9395707799be',1,'demo.dotnet_policy()'],['../structt__params.html#a2316146a50ad9315b1a8323f272b1a11',1,'t_params::dotnet_policy()']]],
+  ['dotnet_5fpolicy_18',['dotnet_policy',['../namespacedemo.html#a0ff69f1715e1c697798d9395707799be',1,'demo.dotnet_policy'],['../structt__params.html#a2316146a50ad9315b1a8323f272b1a11',1,'t_params::dotnet_policy']]],
   ['droppebase_19',['dropPeBase',['../classpesieve_1_1_pe_artefacts.html#a87c67e9f227167cc9cec40210d94523c',1,'pesieve::PeArtefacts']]],
-  ['dump_5fmode_20',['dump_mode',['../namespacedemo.html#a9996097b28d5325876347887ab47a663',1,'demo.dump_mode()'],['../structt__params.html#a1eeec0767e0ab3d0be17222036fc198a',1,'t_params::dump_mode()']]],
+  ['dump_5fmode_20',['dump_mode',['../namespacedemo.html#a9996097b28d5325876347887ab47a663',1,'demo.dump_mode'],['../structt__params.html#a1eeec0767e0ab3d0be17222036fc198a',1,'t_params::dump_mode']]],
   ['dump_5fmode_5fto_5fid_21',['dump_mode_to_id',['../namespacepesieve.html#aa786572017841ec3f1130d9ef075f5d3',1,'pesieve']]],
   ['dump_5freport_22',['dump_report',['../classpesieve_1_1_report_ex.html#a69ab643d4ed2e161c6787ea539ee36a5',1,'pesieve::ReportEx']]],
   ['dump_5freport_2ecpp_23',['dump_report.cpp',['../dump__report_8cpp.html',1,'']]],

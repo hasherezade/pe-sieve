@@ -1,5 +1,7 @@
 <map id="pesieve::PeSection::PeSection" name="pesieve::PeSection::PeSection">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,138,46"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_pe_section.html#ae0525b58e8fd1eb8426d5eb2ebe1d278" title=" " alt="" coords="186,5,318,46"/>
-<area shape="rect" id="node3" href="$classpesieve_1_1_pe_section.html#a7981814c58c2cd54408e59452458bc65" title=" " alt="" coords="366,5,498,46"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,138,46"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_pe_section.html#ae0525b58e8fd1eb8426d5eb2ebe1d278" title=" " alt="" coords="186,5,318,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,23,171,23,171,28,138,28"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_pe_section.html#a7981814c58c2cd54408e59452458bc65" title=" " alt="" coords="366,5,498,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="318,23,351,23,351,28,318,28"/>
 </map>

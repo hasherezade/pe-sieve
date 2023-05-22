@@ -1,5 +1,7 @@
 <map id="pesieve::ImportTableBuffer::setTableInPe" name="pesieve::ImportTableBuffer::setTableInPe">
-<area shape="rect" id="node1" title=" " alt="" coords="5,39,181,79"/>
-<area shape="rect" id="node2" href="$classpesieve_1_1_import_table_buffer.html#ac764cef92e023697554b7bf8d8fc196c" title=" " alt="" coords="229,5,404,46"/>
-<area shape="rect" id="node3" href="$classpesieve_1_1_import_table_buffer.html#a8d87acf5448974c56bc1653910b50baf" title=" " alt="" coords="229,71,404,111"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,181,79"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_import_table_buffer.html#ac764cef92e023697554b7bf8d8fc196c" title=" " alt="" coords="229,5,404,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,43,214,38,214,44,181,49"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_import_table_buffer.html#a8d87acf5448974c56bc1653910b50baf" title=" " alt="" coords="229,71,404,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="181,69,214,74,214,79,181,74"/>
 </map>
