@@ -19,7 +19,7 @@ BYTE* pesieve::ModulesCache::loadCached(LPSTR szModName, size_t& module_size)
 		size_t currCntr = usageBeforeCounter[szModName]++;
 		const size_t cachedModulesCntr = cachedModules.size();
 		const bool is_cache_available = cachedModulesCntr < MaxCachedModules;
-		if (raw_buf && currCntr >= MinUsageCntr && is_cache_available) {
+		if (currCntr >= MinUsageCntr && is_cache_available) {
 			bool is_cached = false;
 			CachedModule* mod_cache = new(std::nothrow) CachedModule(raw_buf, raw_size);
 			if (mod_cache) {

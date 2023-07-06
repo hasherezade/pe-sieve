@@ -13,7 +13,7 @@ def version_to_str(version_val):
     major = (version_val >> 24) & 0xFF
     minor = (version_val >> 16) & 0xFF
     patch = (version_val >> 8) & 0xFF
-    build = version_val & 0xFF 
+    build = version_val & 0xFF
     return f"{major}.{minor}.{patch}.{build}"
 
 ###

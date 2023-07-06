@@ -306,7 +306,6 @@ bool pesieve::ArtefactScanner::_validateSecRegions(MemPageData &memPage, LPVOID 
 	}
 	IMAGE_SECTION_HEADER* curr_sec = (IMAGE_SECTION_HEADER*)sec_hdr;
 
-	bool fetched_any = false;
 	for (size_t i = 0; i < sec_count; i++, curr_sec++) {
 		if (curr_sec->VirtualAddress == 0) continue;
 
