@@ -189,6 +189,12 @@ Functions</h2></td></tr>
 <tr class="separator:ac5c9c8728b3429b9499eb8e0978e33d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69c919572a8df0c8395143487c620994"><td class="memItemLeft" align="right" valign="top">IMAGE_SECTION_HEADER *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html#a69c919572a8df0c8395143487c620994">get_first_section</a> (BYTE *loadedData, size_t loadedSize, IMAGE_SECTION_HEADER *hdr_ptr)</td></tr>
 <tr class="separator:a69c919572a8df0c8395143487c620994"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9acf8f50082f8dd1b31aa1737b6cfad1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a9acf8f50082f8dd1b31aa1737b6cfad1"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html#a9acf8f50082f8dd1b31aa1737b6cfad1">generateHistogram</a> (IN T buffer[], IN size_t bufferSize, OUT std::map&lt; T, size_t &gt; &amp;counts)</td></tr>
+<tr class="separator:a9acf8f50082f8dd1b31aa1737b6cfad1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b22c5f3da5a40263f7e1998be3b6238"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a0b22c5f3da5a40263f7e1998be3b6238"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html#a0b22c5f3da5a40263f7e1998be3b6238">calcShannonEntropy</a> (std::map&lt; T, size_t &gt; &amp;histogram, size_t totalSize)</td></tr>
+<tr class="separator:a0b22c5f3da5a40263f7e1998be3b6238"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a1dac61a6a85886543fe742b091caf1"><td class="memItemLeft" align="right" valign="top">BYTE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html#a9a1dac61a6a85886543fe742b091caf1">find_pattern</a> (BYTE *buffer, size_t buf_size, BYTE *pattern_buf, size_t pattern_size, size_t max_iter=0)</td></tr>
 <tr class="separator:a9a1dac61a6a85886543fe742b091caf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3715b857c00273cf45245fd98a8549ed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html#a3715b857c00273cf45245fd98a8549ed">is_32bit_code</a> (BYTE *loadedData, size_t loadedSize)</td></tr>
@@ -779,6 +785,38 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a0b22c5f3da5a40263f7e1998be3b6238" name="a0b22c5f3da5a40263f7e1998be3b6238"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b22c5f3da5a40263f7e1998be3b6238">&#9670;&#160;</a></span>calcShannonEntropy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double pesieve::util::calcShannonEntropy </td>
+          <td>(</td>
+          <td class="paramtype">std::map&lt; T, size_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>histogram</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>totalSize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="entropy_8h_source.html#l00021">21</a> of file <a class="el" href="entropy_8h_source.html">entropy.h</a>.</p>
+
+</div>
+</div>
 <a id="a64ce3f5b7b242c0d602ad4dfc21a8083" name="a64ce3f5b7b242c0d602ad4dfc21a8083"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a64ce3f5b7b242c0d602ad4dfc21a8083">&#9670;&#160;</a></span>can_make_process_reflection()</h2>
 
@@ -1366,6 +1404,44 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="artefacts__util_8cpp_source.html#l00008">8</a> of file <a class="el" href="artefacts__util_8cpp_source.html">artefacts_util.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a9acf8f50082f8dd1b31aa1737b6cfad1" name="a9acf8f50082f8dd1b31aa1737b6cfad1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9acf8f50082f8dd1b31aa1737b6cfad1">&#9670;&#160;</a></span>generateHistogram()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t pesieve::util::generateHistogram </td>
+          <td>(</td>
+          <td class="paramtype">IN T&#160;</td>
+          <td class="paramname"><em>buffer</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IN size_t&#160;</td>
+          <td class="paramname"><em>bufferSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OUT std::map&lt; T, size_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>counts</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="entropy_8h_source.html#l00008">8</a> of file <a class="el" href="entropy_8h_source.html">entropy.h</a>.</p>
 
 </div>
 </div>
