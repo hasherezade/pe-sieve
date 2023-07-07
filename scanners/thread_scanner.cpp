@@ -300,7 +300,7 @@ bool pesieve::ThreadScanner::fillAreaStats(ThreadScanReport* my_report)
 		return false;
 	}
 	AreaStatsCalculator calc(mem.loadedData);
-	return calc.fill(my_report->stats);
+	return calc.fill(my_report->stats, nullptr);
 }
 
 bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx  &c)

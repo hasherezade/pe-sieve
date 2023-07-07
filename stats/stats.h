@@ -1,23 +1,46 @@
 #pragma once
 
+#include <windows.h>
+
 #include "entropy.h"
 #include "../utils/byte_buffer.h"
 
 namespace pesieve {
 
-    struct AreaStats {
-        AreaStats()
-            : area_size(0), area_start(0),
-            entropy(0.0)
+    //! Settings defining what type of stats should be collected.
+    class StatsSettings {
+    public:
+        StatsSettings() : isFilled(false) {}
+    protected:
+        bool isFilled;
+
+    };
+
+    class AreaStats {
+    public:
+        AreaStats() {}
+
+        void setStartOffset(size_t _area_start)
         {
+            area_start = _area_start;
         }
 
-        // Copy constructor
-        AreaStats(const AreaStats& p1)
-            :  area_size(p1.area_size), area_start(p1.area_start),
-            entropy(p1.entropy)
+        void appendVal(BYTE val)
         {
+            _appendVal(val);
+            area_size++;
         }
+
+        const virtual void fieldsToJSON(std::stringstream& outs, size_t level) = 0;
+
+        bool isFilled() const
+        {
+            return area_size > 0 ? true : false;
+        }
+
+        virtual void summarize() = 0;
+
+        virtual bool fillSettings(StatsSettings* _settings) { return false; }
 
         const virtual bool toJSON(std::stringstream& outs, size_t level)
         {
@@ -31,26 +54,9 @@ namespace pesieve {
             return true;
         }
 
-        bool isFilled() const
-        {
-            return area_size > 0 ? true : false;
-        }
-
-        double entropy;
-
     protected:
-
-        const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
-        {
-            OUT_PADDED(outs, level, "\"area_start\" : ");
-            outs << "\"" << std::hex << area_start << "\"";
-            outs << ",\n";
-            OUT_PADDED(outs, level, "\"area_size\" : ");
-            outs << "\"" << std::hex << area_size << "\"";
-            outs << ",\n";
-            OUT_PADDED(outs, level, "\"entropy\" : ");
-            outs << std::dec << entropy;
-        }
+        
+        virtual void _appendVal(BYTE val) = 0;
 
         size_t area_size;
         size_t area_start;
@@ -67,7 +73,7 @@ namespace pesieve {
         {
         }
 
-        bool fill(AreaStats& stats)
+        bool fill(AreaStats& stats, StatsSettings* settings)
         {
             const bool skipPadding = true;
             const size_t data_size = buffer.getDataSize(skipPadding);
@@ -75,9 +81,15 @@ namespace pesieve {
             if (!data_size || !data_buf) {
                 return false;
             }
-            stats.area_size = data_size;
-            stats.area_start = buffer.getStartOffset(skipPadding);
-            stats.entropy = util::ShannonEntropy(data_buf, data_size);
+           
+            stats.fillSettings(settings);
+            stats.setStartOffset(buffer.getStartOffset(skipPadding));
+            BYTE lastVal = 0;
+            for (size_t i = 0; i < data_size; ++i) {
+                const BYTE val = data_buf[i];
+                stats.appendVal(val);
+            }
+            stats.summarize();
             return true;
         }
 

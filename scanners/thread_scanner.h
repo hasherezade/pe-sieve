@@ -5,6 +5,7 @@
 #include "module_scanner.h"
 #include "../utils/threads_util.h"
 #include "../stats/stats.h"
+#include "../stats/entropy_stats.h"
 
 namespace pesieve {
 
@@ -66,7 +67,7 @@ namespace pesieve {
 		DWORD protection;
 		DWORD thread_state;
 		DWORD thread_wait_reason;
-		AreaStats stats;
+		AreaEntropyStats stats;
 
 	protected:
 		static std::string translate_thread_state(DWORD thread_state);
@@ -115,4 +116,3 @@ namespace pesieve {
 	};
 
 }; //namespace pesieve
-
