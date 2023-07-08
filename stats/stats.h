@@ -20,7 +20,10 @@ namespace pesieve {
 
     class AreaStats {
     public:
-        AreaStats() {}
+        AreaStats()
+            : area_start(0), area_size(0)
+        {
+        }
 
         void setStartOffset(size_t _area_start)
         {
