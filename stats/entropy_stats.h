@@ -29,7 +29,7 @@ namespace pesieve {
 
         virtual void summarize()
         {
-            entropy = util::calcShannonEntropy(histogram, area_size);
+            entropy = stats::calcShannonEntropy(histogram, area_size);
         }
 
         std::map<BYTE, size_t> histogram;

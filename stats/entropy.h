@@ -3,7 +3,7 @@
 #include <map>
 namespace pesieve {
 
-    namespace util {
+    namespace stats {
 
         template <typename T> size_t generateHistogram(IN T buffer[], IN size_t bufferSize, OUT std::map<T, size_t> &counts)
         {
@@ -38,7 +38,7 @@ namespace pesieve {
             return calcShannonEntropy<T>(counts, bufferSize);
         }
 
-    }; // namespace util
+    }; // namespace stats
 
 }; //namespace pesieve
 
