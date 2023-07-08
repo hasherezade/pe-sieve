@@ -9,15 +9,14 @@
 
 namespace pesieve {
 
-	//! Settings defining what type of stats should be collected.
-	class StatsSettings {
+	//! Base class for settings defining what type of stats should be collected.
+	struct StatsSettings {
 	public:
-		StatsSettings() : isFilled(false) {}
-	protected:
-		bool isFilled;
-
+		StatsSettings() {}
+		virtual bool isFilled() = 0;
 	};
 
+	//! Base class for the statistics from analyzed buffer.
 	class AreaStats {
 	public:
 		AreaStats()
@@ -60,7 +59,6 @@ namespace pesieve {
 		}
 
 	protected:
-		
 		virtual void _appendVal(BYTE val) = 0;
 
 		size_t area_size;
@@ -71,6 +69,7 @@ namespace pesieve {
 	}; // AreaStats
 
 
+	//! A class responsible for filling in the statistics with the data from the particular buffer.
 	class AreaStatsCalculator {
 	public:
 		AreaStatsCalculator(const util::ByteBuffer& _buffer)
@@ -86,7 +85,6 @@ namespace pesieve {
 			if (!data_size || !data_buf) {
 				return false;
 			}
-		   
 			stats.fillSettings(settings);
 			stats.setStartOffset(buffer.getStartOffset(skipPadding));
 			BYTE lastVal = 0;

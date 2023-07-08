@@ -4,17 +4,20 @@
 #include <iostream>
 #include <string>
 #include <set>
+
 #include "entropy.h"
-#include "../utils/format_util.h"
 #include "stats.h"
+#include "stats_util.h"
+#include "../utils/format_util.h"
 
 namespace pesieve {
 
 	//! Settings defining what type of stats should be collected.
-	class MultiStatsSettings : public StatsSettings
+	struct MultiStatsSettings : public StatsSettings
 	{
 	public:
 		MultiStatsSettings()
+			: StatsSettings()
 		{
 		}
 
@@ -22,6 +25,11 @@ namespace pesieve {
 		MultiStatsSettings(const MultiStatsSettings& p1)
 			: watchedStrings(p1.watchedStrings)
 		{
+		}
+
+		bool isFilled()
+		{
+			return (watchedStrings.size() != 0) ? true : false;
 		}
 
 		//! Searches a given substring among the `watchedStrings`. If the substring found, return the corresponding watched string containing the substring. 
@@ -41,19 +49,18 @@ namespace pesieve {
 		std::set<std::string> watchedStrings;
 	};
 
-	//! Statistics from a block of data
-	template <typename T>
+	//! Statistics from a block of data.
 	struct ChunkStats {
 		//
 		ChunkStats()
 			: size(0), offset(0), entropy(0), longestStr(0), prevVal(0),
-			stringsCount(0), cleanStringsCount(0)
+			stringsCount(0), cleanStringsCount(0), settings(nullptr)
 		{
 		}
 
 		ChunkStats(size_t _offset, size_t _size)
 			: size(_size), offset(_offset), entropy(0), longestStr(0), prevVal(0),
-			stringsCount(0), cleanStringsCount(0)
+			stringsCount(0), cleanStringsCount(0), settings(nullptr)
 		{
 		}
 
@@ -62,14 +69,15 @@ namespace pesieve {
 			: size(p1.size), offset(p1.offset),
 			entropy(p1.entropy), longestStr(p1.longestStr), lastStr(p1.lastStr), prevVal(p1.prevVal),
 			stringsCount(p1.stringsCount), cleanStringsCount(p1.cleanStringsCount)
-			histogram(p1.histogram),
-			frequencies(p1.frequencies),
-			settings(p1.settings), foundStrings(p1.foundStrings)
-
-#ifdef _KEEP_STR
-			, allStrings(p1.allStrings)
-#endif //_KEEP_STR
 		{
+#ifdef _KEEP_STR
+			allStrings = p1.allStrings;
+#endif //_KEEP_STR
+			histogram = p1.histogram;
+			frequencies = p1.frequencies;
+			settings = p1.settings;
+			foundStrings = p1.foundStrings;
+			fillSettings(p1.settings);
 		}
 
 		void fillSettings(MultiStatsSettings* _settings)
@@ -77,7 +85,7 @@ namespace pesieve {
 			settings = _settings;
 		}
 
-		void appendVal(T val)
+		void appendVal(BYTE val)
 		{
 #ifdef SCAN_STRINGS
 			const bool isPrint = IS_PRINTABLE(val);
@@ -131,15 +139,15 @@ namespace pesieve {
 			OUT_PADDED(outs, level, "\"charset_size\" : ");
 			outs << std::dec << histogram.size();
 
-			std::set<T> values;
-			size_t freq = getMostFrequentValues<T>(frequencies, values);
+			std::set<BYTE> values;
+			size_t freq = stats::getMostFrequentValues<BYTE>(frequencies, values);
 			if (freq && values.size()) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"most_freq_vals\" : ");
 				outs << std::hex << "\"";
 				for (auto itr = values.begin(); itr != values.end(); ++itr) {
-					T mVal = *itr;
-					outs << hexdumpValue<BYTE>((BYTE*)&mVal, sizeof(T));
+					BYTE mVal = *itr;
+					outs << stats::hexdumpValue<BYTE>(&mVal, sizeof(BYTE));
 				}
 				outs << "\"";
 			}
@@ -150,12 +158,12 @@ namespace pesieve {
 
 		void summarize()
 		{
-			entropy = util::calcShannonEntropy(histogram, size);
+			entropy = stats::calcShannonEntropy(histogram, size);
 			finishLastStr(true);
 
 			for (auto itr = histogram.begin(); itr != histogram.end(); ++itr) {
 				const size_t count = itr->second;
-				const  T val = itr->first;
+				const  BYTE val = itr->first;
 				frequencies[count].insert(val);
 			}
 		}
@@ -164,14 +172,14 @@ namespace pesieve {
 		size_t size;
 		size_t offset;
 
-		T prevVal;
+		BYTE prevVal;
 		size_t longestStr; // the longest ASCII string in the chunk
 
 		std::string lastStr;
 		size_t stringsCount;
 		size_t cleanStringsCount;
-		std::map<T, size_t> histogram;
-		std::map<size_t, std::set< T >>  frequencies;
+		std::map<BYTE, size_t> histogram;
+		std::map<size_t, std::set<BYTE>>  frequencies;
 
 		MultiStatsSettings *settings;
 
@@ -229,7 +237,7 @@ namespace pesieve {
 			currArea.summarize();
 		}
 
-		ChunkStats<BYTE> currArea; // stats from the whole area
+		ChunkStats currArea; // stats from the whole area
 
 	};
 };

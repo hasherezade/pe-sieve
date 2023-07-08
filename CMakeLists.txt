@@ -128,6 +128,7 @@ set (postprocessors_srcs
 )
 
 set (stats_srcs
+	stats/stats_analyzer.cpp
 )
 
 set (stats_hdrs
@@ -136,6 +137,7 @@ set (stats_hdrs
 	stats/entropy_stats.h
 	stats/multi_stats.h
 	stats/stats_util.h
+	stats/stats_analyzer.h
 )
 
 set (utils_srcs
