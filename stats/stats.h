@@ -1,9 +1,11 @@
 #pragma once
 
 #include <windows.h>
+#include <sstream>
 
 #include "entropy.h"
 #include "../utils/byte_buffer.h"
+#include "../utils/format_util.h"
 
 namespace pesieve {
 
