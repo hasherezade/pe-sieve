@@ -25,6 +25,7 @@ var searchData=
   ['modulescanner_22',['ModuleScanner',['../classpesieve_1_1_module_scanner.html#a89867c3a3b2a85f1fd03f1cb0f2228a6',1,'pesieve::ModuleScanner']]],
   ['modulescanreport_23',['ModuleScanReport',['../classpesieve_1_1_module_scan_report.html#aba72df5058048584c5e50457b2d128a5',1,'pesieve::ModuleScanReport::ModuleScanReport(HMODULE _module, size_t _moduleSize)'],['../classpesieve_1_1_module_scan_report.html#aa4edde8b310c21feb6782b36a6233d16',1,'pesieve::ModuleScanReport::ModuleScanReport(HMODULE _module, size_t _moduleSize, t_scan_status _status)']]],
   ['modulesinfo_24',['ModulesInfo',['../classpesieve_1_1_modules_info.html#a8952a9c60b5483708d9f1b4c3fc211c5',1,'pesieve::ModulesInfo']]],
-  ['mutex_25',['Mutex',['../structpesieve_1_1util_1_1_mutex.html#aa322db8dfa5e6398b1b289c1a19ab66d',1,'pesieve::util::Mutex']]],
-  ['mutexlocker_26',['MutexLocker',['../structpesieve_1_1util_1_1_mutex_locker.html#a1e69757df7bd866696ae1bf6ab3a11d5',1,'pesieve::util::MutexLocker']]]
+  ['multistatssettings_25',['MultiStatsSettings',['../structpesieve_1_1_multi_stats_settings.html#a61c69a7741d8352654078626678da5f7',1,'pesieve::MultiStatsSettings::MultiStatsSettings()'],['../structpesieve_1_1_multi_stats_settings.html#a42c3b2fa7dabd1af5afb8b5b443fa208',1,'pesieve::MultiStatsSettings::MultiStatsSettings(const MultiStatsSettings &amp;p1)']]],
+  ['mutex_26',['Mutex',['../structpesieve_1_1util_1_1_mutex.html#aa322db8dfa5e6398b1b289c1a19ab66d',1,'pesieve::util::Mutex']]],
+  ['mutexlocker_27',['MutexLocker',['../structpesieve_1_1util_1_1_mutex_locker.html#a1e69757df7bd866696ae1bf6ab3a11d5',1,'pesieve::util::MutexLocker']]]
 ];

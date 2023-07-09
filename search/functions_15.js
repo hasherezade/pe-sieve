@@ -24,6 +24,7 @@ var searchData=
   ['_7eprocessscanreport_21',['~ProcessScanReport',['../classpesieve_1_1_process_scan_report.html#a008b5e3596c77be7ecaa1373ee02b432',1,'pesieve::ProcessScanReport']]],
   ['_7eremotemoduledata_22',['~RemoteModuleData',['../classpesieve_1_1_remote_module_data.html#a31309be42d854497766a0ac879fc5528',1,'pesieve::RemoteModuleData']]],
   ['_7ereportex_23',['~ReportEx',['../classpesieve_1_1_report_ex.html#a85c5168710b9d9c32eac2de241d6f282',1,'pesieve::ReportEx']]],
-  ['_7escannedmodule_24',['~ScannedModule',['../classpesieve_1_1_scanned_module.html#a34b8bb37bb347662772d4df56c53eecd',1,'pesieve::ScannedModule']]],
-  ['_7eworkingsetscanner_25',['~WorkingSetScanner',['../classpesieve_1_1_working_set_scanner.html#a11a9a3166d095e19d9319d4d6d653713',1,'pesieve::WorkingSetScanner']]]
+  ['_7erulematchersset_24',['~RuleMatchersSet',['../structpesieve_1_1_rule_matchers_set.html#a746123a69dfc09350f110b30fbb99810',1,'pesieve::RuleMatchersSet']]],
+  ['_7escannedmodule_25',['~ScannedModule',['../classpesieve_1_1_scanned_module.html#a34b8bb37bb347662772d4df56c53eecd',1,'pesieve::ScannedModule']]],
+  ['_7eworkingsetscanner_26',['~WorkingSetScanner',['../classpesieve_1_1_working_set_scanner.html#a11a9a3166d095e19d9319d4d6d653713',1,'pesieve::WorkingSetScanner']]]
 ];

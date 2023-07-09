@@ -84,6 +84,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
+<tr class="memitem:namespacepesieve_1_1stats"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1stats.html">stats</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacepesieve_1_1util"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html">util</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -94,9 +96,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1__thread__ctx.html">_thread_ctx</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A custom structure keeping a fragment of a thread context.  <a href="structpesieve_1_1__thread__ctx.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1_area_stats.html">AreaStats</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_area_entropy_stats.html">AreaEntropyStats</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1_area_info.html">AreaInfo</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_area_multi_stats.html">AreaMultiStats</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_area_stats.html">AreaStats</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for the statistics from analyzed buffer.  <a href="classpesieve_1_1_area_stats.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_area_stats_calculator.html">AreaStatsCalculator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class responsible for filling in the statistics with the data from the particular buffer.  <a href="classpesieve_1_1_area_stats_calculator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_artefact_scanner.html">ArtefactScanner</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A scanner for detection of artefacts related to PE implants in the process workingset.  <a href="classpesieve_1_1_artefact_scanner.html#details">More...</a><br /></td></tr>
@@ -106,11 +116,18 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1_cached_module.html">CachedModule</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1_chunk_stats.html">ChunkStats</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Statistics from a block of data.  <a href="structpesieve_1_1_chunk_stats.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_code_matcher.html">CodeMatcher</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_code_scanner.html">CodeScanner</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A scanner for detection of patches in the code.  <a href="classpesieve_1_1_code_scanner.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_code_scan_report.html">CodeScanReport</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A report from the code scan, generated by <a class="el" href="classpesieve_1_1_code_scanner.html" title="A scanner for detection of patches in the code.">CodeScanner</a>.  <a href="classpesieve_1_1_code_scan_report.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_encrypted_matcher.html">EncryptedMatcher</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_headers_scanner.html">HeadersScanner</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A scanner for detection of PE header's modifications.  <a href="classpesieve_1_1_headers_scanner.html#details">More...</a><br /></td></tr>
@@ -162,6 +179,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_modules_info.html">ModulesInfo</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A container of all the process modules that were scanned.  <a href="classpesieve_1_1_modules_info.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1_multi_stats_settings.html">MultiStatsSettings</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Settings defining what type of stats should be collected.  <a href="structpesieve_1_1_multi_stats_settings.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_obfuscated_matcher.html">ObfuscatedMatcher</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_p_a_r_a_m___s_t_r_i_n_g.html">PARAM_STRING</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_patch_analyzer.html">PatchAnalyzer</a></td></tr>
@@ -199,10 +221,17 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_results_dumper.html">ResultsDumper</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_rule_matcher.html">RuleMatcher</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1_rule_matchers_set.html">RuleMatchersSet</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_scanned_module.html">ScannedModule</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a basic info about the scanned module, such as its base offset, size, and the status.  <a href="classpesieve_1_1_scanned_module.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_skipped_module_report.html">SkippedModuleReport</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1_stats_settings.html">StatsSettings</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for settings defining what type of stats should be collected.  <a href="structpesieve_1_1_stats_settings.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1t__data__scan__mode.html">t_data_scan_mode</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -225,6 +254,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1t__report.html">t_report</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1t__report__type.html">t_report_type</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_text_matcher.html">TextMatcher</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_thread_scanner.html">ThreadScanner</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -295,6 +326,14 @@ Functions</h2></td></tr>
 <tr class="separator:a25051f18fcbda226158853368aee27d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf607f48cf768a8df296c8a97b521dd4"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#aaf607f48cf768a8df296c8a97b521dd4">translate_json_level</a> (const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;mode)</td></tr>
 <tr class="separator:aaf607f48cf768a8df296c8a97b521dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2604c4d3851fe9b11beb3f8c9d7fd48"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#af2604c4d3851fe9b11beb3f8c9d7fd48">translate_shellc_mode</a> (const pesieve::t_shellc_mode &amp;mode)</td></tr>
+<tr class="separator:af2604c4d3851fe9b11beb3f8c9d7fd48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a175ef72c9fd6303f190d564e65d9614a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a175ef72c9fd6303f190d564e65d9614a">shellc_mode_mode_to_id</a> (const pesieve::t_shellc_mode &amp;mode)</td></tr>
+<tr class="separator:a175ef72c9fd6303f190d564e65d9614a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79edbd80c621191d70f87cc77b33cb72"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a79edbd80c621191d70f87cc77b33cb72">translate_obfusc_mode</a> (const pesieve::t_obfusc_mode &amp;mode)</td></tr>
+<tr class="separator:a79edbd80c621191d70f87cc77b33cb72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a914c325458590c0d42abc0cfb5b55069"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a914c325458590c0d42abc0cfb5b55069">obfusc_mode_mode_to_id</a> (const pesieve::t_obfusc_mode &amp;mode)</td></tr>
+<tr class="separator:a914c325458590c0d42abc0cfb5b55069"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa786572017841ec3f1130d9ef075f5d3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#aa786572017841ec3f1130d9ef075f5d3">dump_mode_to_id</a> (const DWORD dump_mode)</td></tr>
 <tr class="separator:aa786572017841ec3f1130d9ef075f5d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a09f14ac6ece5c4181a1fcb3a8071a0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a4a09f14ac6ece5c4181a1fcb3a8071a0">imprec_mode_to_id</a> (const <a class="el" href="classpesieve_1_1t__imprec__mode.html">pesieve::t_imprec_mode</a> imprec_mode)</td></tr>
@@ -372,6 +411,12 @@ Functions</h2></td></tr>
 <tr class="separator:acbbeace832fb77bc16027b0371cf55d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15a9583f5de3d091bffbee68e712d8d6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a15a9583f5de3d091bffbee68e712d8d6">validate_param_str</a> (<a class="el" href="classpesieve_1_1_p_a_r_a_m___s_t_r_i_n_g.html">PARAM_STRING</a> &amp;strparam)</td></tr>
 <tr class="separator:a15a9583f5de3d091bffbee68e712d8d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a169ec97afb0aab13e1b69e98d6e5b9dc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a169ec97afb0aab13e1b69e98d6e5b9dc">getValRatio</a> (IN const <a class="el" href="classpesieve_1_1_area_multi_stats.html">AreaMultiStats</a> &amp;stats, BYTE val)</td></tr>
+<tr class="separator:a169ec97afb0aab13e1b69e98d6e5b9dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fd824d6b6952365f9a987cd2dde58c4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a5fd824d6b6952365f9a987cd2dde58c4">checkRatios</a> (IN const <a class="el" href="classpesieve_1_1_area_multi_stats.html">AreaMultiStats</a> &amp;stats, IN std::map&lt; BYTE, double &gt; &amp;ratios)</td></tr>
+<tr class="separator:a5fd824d6b6952365f9a987cd2dde58c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd6e2f6a7418d9dc85b4c720110bf304"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#afd6e2f6a7418d9dc85b4c720110bf304">countFoundStrings</a> (IN const <a class="el" href="classpesieve_1_1_area_multi_stats.html">AreaMultiStats</a> &amp;stats, IN std::set&lt; std::string &gt; neededStrings, IN size_t minOccurrence)</td></tr>
+<tr class="separator:afd6e2f6a7418d9dc85b4c720110bf304"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -580,6 +625,46 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a5fd824d6b6952365f9a987cd2dde58c4" name="a5fd824d6b6952365f9a987cd2dde58c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fd824d6b6952365f9a987cd2dde58c4">&#9670;&#160;</a></span>checkRatios()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t pesieve::checkRatios </td>
+          <td>(</td>
+          <td class="paramtype">IN const <a class="el" href="classpesieve_1_1_area_multi_stats.html">AreaMultiStats</a> &amp;&#160;</td>
+          <td class="paramname"><em>stats</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IN std::map&lt; BYTE, double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>ratios</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="stats__analyzer_8cpp_source.html#l00042">42</a> of file <a class="el" href="stats__analyzer_8cpp_source.html">stats_analyzer.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespacepesieve_a5fd824d6b6952365f9a987cd2dde58c4_cgraph.png" border="0" usemap="#anamespacepesieve_a5fd824d6b6952365f9a987cd2dde58c4_cgraph" alt=""/></div>
+<map name="anamespacepesieve_a5fd824d6b6952365f9a987cd2dde58c4_cgraph" id="anamespacepesieve_a5fd824d6b6952365f9a987cd2dde58c4_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,150,31"/>
+<area shape="rect" href="namespacepesieve.html#a169ec97afb0aab13e1b69e98d6e5b9dc" title=" " alt="" coords="198,5,337,31"/>
+<area shape="poly" title=" " alt="" coords="150,16,183,16,183,21,150,21"/>
+</map>
+</div>
+
+</div>
+</div>
 <a id="abec7483e4e33334bee68b5b0ca95483a" name="abec7483e4e33334bee68b5b0ca95483a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abec7483e4e33334bee68b5b0ca95483a">&#9670;&#160;</a></span>convert_to_peconv_dump_mode()</h2>
 
@@ -597,6 +682,42 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="results__dumper_8cpp_source.html#l00071">71</a> of file <a class="el" href="results__dumper_8cpp_source.html">results_dumper.cpp</a>.</p>
+
+</div>
+</div>
+<a id="afd6e2f6a7418d9dc85b4c720110bf304" name="afd6e2f6a7418d9dc85b4c720110bf304"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd6e2f6a7418d9dc85b4c720110bf304">&#9670;&#160;</a></span>countFoundStrings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t pesieve::countFoundStrings </td>
+          <td>(</td>
+          <td class="paramtype">IN const <a class="el" href="classpesieve_1_1_area_multi_stats.html">AreaMultiStats</a> &amp;&#160;</td>
+          <td class="paramname"><em>stats</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IN std::set&lt; std::string &gt;&#160;</td>
+          <td class="paramname"><em>neededStrings</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IN size_t&#160;</td>
+          <td class="paramname"><em>minOccurrence</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="stats__analyzer_8cpp_source.html#l00059">59</a> of file <a class="el" href="stats__analyzer_8cpp_source.html">stats_analyzer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1140,6 +1261,36 @@ template&lt;typename FIELD_T &gt; </div>
 
 </div>
 </div>
+<a id="a169ec97afb0aab13e1b69e98d6e5b9dc" name="a169ec97afb0aab13e1b69e98d6e5b9dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a169ec97afb0aab13e1b69e98d6e5b9dc">&#9670;&#160;</a></span>getValRatio()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double pesieve::getValRatio </td>
+          <td>(</td>
+          <td class="paramtype">IN const <a class="el" href="classpesieve_1_1_area_multi_stats.html">AreaMultiStats</a> &amp;&#160;</td>
+          <td class="paramname"><em>stats</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BYTE&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="stats__analyzer_8cpp_source.html#l00016">16</a> of file <a class="el" href="stats__analyzer_8cpp_source.html">stats_analyzer.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a4a09f14ac6ece5c4181a1fcb3a8071a0" name="a4a09f14ac6ece5c4181a1fcb3a8071a0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4a09f14ac6ece5c4181a1fcb3a8071a0">&#9670;&#160;</a></span>imprec_mode_to_id()</h2>
 
@@ -1550,6 +1701,26 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="507,23,539,23,539,28,507,28"/>
 </map>
 </div>
+
+</div>
+</div>
+<a id="a914c325458590c0d42abc0cfb5b55069" name="a914c325458590c0d42abc0cfb5b55069"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a914c325458590c0d42abc0cfb5b55069">&#9670;&#160;</a></span>obfusc_mode_mode_to_id()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pesieve::obfusc_mode_mode_to_id </td>
+          <td>(</td>
+          <td class="paramtype">const pesieve::t_obfusc_mode &amp;&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="pe__sieve__params__info_8cpp_source.html#l00186">186</a> of file <a class="el" href="pe__sieve__params__info_8cpp_source.html">pe_sieve_params_info.cpp</a>.</p>
 
 </div>
 </div>
@@ -2101,6 +2272,26 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a175ef72c9fd6303f190d564e65d9614a" name="a175ef72c9fd6303f190d564e65d9614a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a175ef72c9fd6303f190d564e65d9614a">&#9670;&#160;</a></span>shellc_mode_mode_to_id()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pesieve::shellc_mode_mode_to_id </td>
+          <td>(</td>
+          <td class="paramtype">const pesieve::t_shellc_mode &amp;&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="pe__sieve__params__info_8cpp_source.html#l00139">139</a> of file <a class="el" href="pe__sieve__params__info_8cpp_source.html">pe_sieve_params_info.cpp</a>.</p>
+
+</div>
+</div>
 <a id="ab28bfe1ca7dd95f63741ac0089f5343a" name="ab28bfe1ca7dd95f63741ac0089f5343a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab28bfe1ca7dd95f63741ac0089f5343a">&#9670;&#160;</a></span>shift_artefacts()</h2>
 
@@ -2215,7 +2406,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__params__info_8cpp_source.html#l00139">139</a> of file <a class="el" href="pe__sieve__params__info_8cpp_source.html">pe_sieve_params_info.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__params__info_8cpp_source.html#l00200">200</a> of file <a class="el" href="pe__sieve__params__info_8cpp_source.html">pe_sieve_params_info.cpp</a>.</p>
 
 </div>
 </div>
@@ -2259,6 +2450,26 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a79edbd80c621191d70f87cc77b33cb72" name="a79edbd80c621191d70f87cc77b33cb72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79edbd80c621191d70f87cc77b33cb72">&#9670;&#160;</a></span>translate_obfusc_mode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pesieve::translate_obfusc_mode </td>
+          <td>(</td>
+          <td class="paramtype">const pesieve::t_obfusc_mode &amp;&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="pe__sieve__params__info_8cpp_source.html#l00171">171</a> of file <a class="el" href="pe__sieve__params__info_8cpp_source.html">pe_sieve_params_info.cpp</a>.</p>
+
+</div>
+</div>
 <a id="abe5f652e94b13f6f140330db727bd36b" name="abe5f652e94b13f6f140330db727bd36b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abe5f652e94b13f6f140330db727bd36b">&#9670;&#160;</a></span>translate_out_filter()</h2>
 
@@ -2276,6 +2487,26 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="pe__sieve__params__info_8cpp_source.html#l00037">37</a> of file <a class="el" href="pe__sieve__params__info_8cpp_source.html">pe_sieve_params_info.cpp</a>.</p>
+
+</div>
+</div>
+<a id="af2604c4d3851fe9b11beb3f8c9d7fd48" name="af2604c4d3851fe9b11beb3f8c9d7fd48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2604c4d3851fe9b11beb3f8c9d7fd48">&#9670;&#160;</a></span>translate_shellc_mode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pesieve::translate_shellc_mode </td>
+          <td>(</td>
+          <td class="paramtype">const pesieve::t_shellc_mode &amp;&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="pe__sieve__params__info_8cpp_source.html#l00154">154</a> of file <a class="el" href="pe__sieve__params__info_8cpp_source.html">pe_sieve_params_info.cpp</a>.</p>
 
 </div>
 </div>

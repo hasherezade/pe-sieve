@@ -1,0 +1,7 @@
+<map id="pesieve::AreaStats::toJSON" name="pesieve::AreaStats::toJSON">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,136,79"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_area_stats.html#adc1a4f731a6c8ca166aeb98890bbb01f" title=" " alt="" coords="184,5,314,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,44,168,38,169,43,137,49"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_area_stats.html#a3005dfc8cd36c15290a724a29ee09a63" title=" " alt="" coords="184,71,314,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="137,68,169,74,168,79,136,73"/>
+</map>

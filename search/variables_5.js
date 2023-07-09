@@ -1,7 +1,7 @@
 var searchData=
 [
   ['endrva_0',['endRva',['../classpesieve_1_1_patch_list_1_1_patch.html#a76e4354724d121ee95a9d52a1803174f',1,'pesieve::PatchList::Patch']]],
-  ['entropy_1',['entropy',['../structpesieve_1_1_area_stats.html#ad62d613bf732fc822c1ede7e41210a7c',1,'pesieve::AreaStats']]],
+  ['entropy_1',['entropy',['../classpesieve_1_1_area_entropy_stats.html#a82df077a940d6870308d72ba39cbeec2',1,'pesieve::AreaEntropyStats::entropy'],['../structpesieve_1_1_chunk_stats.html#a01f6863702f4dd075086ec44772b751e',1,'pesieve::ChunkStats::entropy']]],
   ['epmodified_2',['epModified',['../classpesieve_1_1_headers_scan_report.html#a8598cb43a88cbeae687cd88e5020715f',1,'pesieve::HeadersScanReport']]],
   ['error_5fcolor_3',['ERROR_COLOR',['../namespacepesieve.html#a890e7a246cf910c9add107f4e56a381a',1,'pesieve']]],
   ['error_5fscan_5ffailure_4',['ERROR_SCAN_FAILURE',['../namespacepesieve.html#a267e690d8ed5004a62be6a7ce04f7617',1,'pesieve.ERROR_SCAN_FAILURE'],['../pe__sieve__types_8h.html#a87242425d02cf0e4f321ee488630ae5d',1,'ERROR_SCAN_FAILURE:&#160;pe_sieve_types.h']]],

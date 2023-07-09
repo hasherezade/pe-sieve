@@ -27,5 +27,7 @@ var searchData=
   ['resolvetarget_24',['resolveTarget',['../classpesieve_1_1_hook_target_resolver.html#a608ca9968909fbbb18a07af866ea47b1',1,'pesieve::HookTargetResolver']]],
   ['resultsdumper_25',['ResultsDumper',['../classpesieve_1_1_results_dumper.html#a84cedbc87af0ee8b72f06fd7c6cb9b5a',1,'pesieve::ResultsDumper']]],
   ['rtrim_26',['rtrim',['../namespacepesieve_1_1util.html#a31052004d33cccf72236cd5bd451fa91',1,'pesieve::util']]],
-  ['rvatova_27',['rvaToVa',['../classpesieve_1_1_module_data.html#a1227c638b7039f75d3bf31b61fe13bf9',1,'pesieve::ModuleData']]]
+  ['rulematcher_27',['RuleMatcher',['../classpesieve_1_1_rule_matcher.html#a977717986c584a95b87ffd73da2e8905',1,'pesieve::RuleMatcher']]],
+  ['rulematchersset_28',['RuleMatchersSet',['../structpesieve_1_1_rule_matchers_set.html#aff5025d1a45e27e0f98cb4da745b3ff8',1,'pesieve::RuleMatchersSet']]],
+  ['rvatova_29',['rvaToVa',['../classpesieve_1_1_module_data.html#a1227c638b7039f75d3bf31b61fe13bf9',1,'pesieve::ModuleData']]]
 ];

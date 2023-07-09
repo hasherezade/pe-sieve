@@ -1,9 +1,0 @@
-<map id="pesieve::AreaStatsCalculator::fill" name="pesieve::AreaStatsCalculator::fill">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,71,194,111"/>
-<area shape="rect" id="Node000002" href="$structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="242,5,404,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,68,236,48,237,53,172,73"/>
-<area shape="rect" id="Node000003" href="$structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2" title=" " alt="" coords="242,71,404,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="194,88,227,88,227,94,194,94"/>
-<area shape="rect" id="Node000004" href="$structpesieve_1_1util_1_1_basic_buffer.html#ad9b00fbd2200ffe7508c708434206a34" title=" " alt="" coords="242,136,404,177"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="172,109,237,129,236,134,171,114"/>
-</map>

@@ -81,16 +81,24 @@ $(function() {
   <div class="headertitle"><div class="title">stats.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="entropy_8h_source.html">entropy.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;windows.h&gt;</code><br />
+<code>#include &lt;sstream&gt;</code><br />
+<code>#include &quot;<a class="el" href="entropy_8h_source.html">entropy.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="byte__buffer_8h_source.html">../utils/byte_buffer.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="format__util_8h_source.html">../utils/format_util.h</a>&quot;</code><br />
 </div>
 <p><a href="stats_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1_area_stats.html">pesieve::AreaStats</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpesieve_1_1_stats_settings.html">pesieve::StatsSettings</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for settings defining what type of stats should be collected.  <a href="structpesieve_1_1_stats_settings.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_area_stats.html">pesieve::AreaStats</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for the statistics from analyzed buffer.  <a href="classpesieve_1_1_area_stats.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_area_stats_calculator.html">pesieve::AreaStatsCalculator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class responsible for filling in the statistics with the data from the particular buffer.  <a href="classpesieve_1_1_area_stats_calculator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>

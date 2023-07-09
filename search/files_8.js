@@ -12,5 +12,6 @@ var searchData=
   ['module_5fscan_5freport_2eh_9',['module_scan_report.h',['../module__scan__report_8h.html',1,'']]],
   ['module_5fscanner_2eh_10',['module_scanner.h',['../module__scanner_8h.html',1,'']]],
   ['modules_5fenum_2ecpp_11',['modules_enum.cpp',['../modules__enum_8cpp.html',1,'']]],
-  ['modules_5fenum_2eh_12',['modules_enum.h',['../modules__enum_8h.html',1,'']]]
+  ['modules_5fenum_2eh_12',['modules_enum.h',['../modules__enum_8h.html',1,'']]],
+  ['multi_5fstats_2eh_13',['multi_stats.h',['../multi__stats_8h.html',1,'']]]
 ];
