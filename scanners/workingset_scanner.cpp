@@ -10,13 +10,51 @@
 using namespace pesieve;
 using namespace pesieve::util;
 
-bool pesieve::WorkingSetScanner::isCode(MemPageData &memPage)
+bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT WorkingSetScanReport* my_report)
 {
 	if (!memPage.load()) {
 		return false;
 	}
+
 	const bool noPadding = true;
-	return is_code(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding));
+
+	bool isByStats = true;
+	bool isByPatterns = true;
+
+	bool code = false;
+	bool obfuscated = false;
+	if (isByPatterns) {
+		if (is_code(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding))) {
+			code = true;
+		}
+	}
+#ifdef CALC_PAGE_STATS
+	if (isByStats) {
+		
+		// fill default settings
+		MultiStatsSettings settings;
+		stats::fillCodeStrings(settings.watchedStrings);
+
+		AreaStatsCalculator calc(memPage.loadedData);
+		if (calc.fill(my_report->stats, &settings)) {
+
+			pesieve::RuleMatchersSet codeMatcher(RuleMatcher::RULE_CODE);
+			if (codeMatcher.findMatches(my_report->stats, my_report->area_info)){
+				code = true;
+			}
+
+			pesieve::RuleMatchersSet obfMatcher(RuleMatcher::RULE_OBFUSCATED | RuleMatcher::RULE_ENCRYPTED);
+			if (obfMatcher.findMatches(my_report->stats, my_report->area_info)) {
+				obfuscated = true;
+			}
+		}
+	}
+#endif
+	my_report->has_shellcode = code;
+	if (code || obfuscated) {
+		my_report->status = SCAN_SUSPICIOUS;
+	}
+	return true;
 }
 
 bool pesieve::WorkingSetScanner::isExecutable(MemPageData &memPage)
@@ -78,20 +116,29 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 		// not a PE file, and we are not interested in shellcode, so just finish it here
 		return nullptr;
 	}
-	if (!isCode(_memPage)) {
+	/*if (!isCode(_memPage)) {
 		// shellcode patterns not found
 		return nullptr;
-	}
+	}*/
+
 	//report about shellcode:
 	ULONGLONG region_start = _memPage.region_start;
-	const size_t region_size = size_t (_memPage.region_end - region_start);
-	WorkingSetScanReport *my_report = new WorkingSetScanReport((HMODULE)region_start, region_size, SCAN_SUSPICIOUS);
+	const size_t region_size = size_t(_memPage.region_end - region_start);
+	WorkingSetScanReport* my_report = new WorkingSetScanReport((HMODULE)region_start, region_size, SCAN_NOT_SUSPICIOUS);
+	if (!my_report) {
+		return nullptr;
+	}
+	
+	if (!checkAreaContent(_memPage, my_report)) { // check for shellcode patterns & stats
+		my_report->status = SCAN_ERROR;
+	}
+	const bool isDetected = (my_report->status == SCAN_NOT_SUSPICIOUS) ? false : true;
+	if (!isDetected) {
+		// do not keep reports for not suspicious areas
+		delete my_report;
+		return nullptr;
+	}
 	my_report->has_pe = isScannedAsModule(_memPage) && this->processReport.hasModule(_memPage.region_start);
-	my_report->has_shellcode = true;
-#ifdef CALC_PAGE_STATS
-	AreaStatsCalculator calc(_memPage.loadedData);
-	calc.fill(my_report->stats);
-#endif
 	return my_report;
 }
 

@@ -12,135 +12,142 @@
 
 namespace pesieve {
 
-    namespace stats {
+	namespace stats {
 
-        size_t fillCodeStrings(OUT std::set<std::string>& codeStrings);
+		size_t fillCodeStrings(OUT std::set<std::string>& codeStrings);
 
-        //---
+		size_t fetchPeakValues(IN const ChunkStats& currArea, IN double stdDev, int devCount, OUT std::set<BYTE>& peaks);
 
-        enum RuleType
-        {
-            RULE_NONE = 0,
-            RULE_CODE = 1,
-            RULE_TEXT = 2,
-            RULE_OBFUSCATED = 4,
-            RULE_ENCRYPTED = 8
-        };
+		size_t valuesNotBelowMean(IN const ChunkStats& currArea, double mean);
 
-        class RuleMatcher
-        {
-        public:
-            RuleMatcher(std::string _name)
-                : name(_name), matched(false)
-            {
-            }
+		double getPrintableRatio(IN const AreaMultiStats& stats);
 
-            bool isMatching(IN const AreaMultiStats& stats)
-            {
-                matched = _isMatching(stats);
-                return matched;
-            }
-            
-            bool isMatched()
-            {
-                return matched;
-            }
+	}; //namespace stats
 
-            std::string name;
+	//---
 
-        protected:
+	class RuleMatcher
+	{
+	public:
 
-            virtual bool _isMatching(IN const AreaMultiStats& stats) = 0;
+		enum RuleType
+		{
+			RULE_NONE = 0,
+			RULE_CODE = 1,
+			RULE_TEXT = 2,
+			RULE_OBFUSCATED = 4,
+			RULE_ENCRYPTED = 8
+		};
 
-            bool matched;
-        };
+		RuleMatcher(std::string _name)
+			: name(_name), matched(false)
+		{
+		}
 
+		bool isMatching(IN const AreaMultiStats& stats)
+		{
+			matched = _isMatching(stats);
+			return matched;
+		}
 
-        struct RuleMatchersSet
-        {
-            RuleMatchersSet(DWORD ruleTypes)
-            {
-                initRules(ruleTypes);
-            }
+		bool isMatched()
+		{
+			return matched;
+		}
 
-            ~RuleMatchersSet()
-            {
-                deleteMatchers();
-            }
+		std::string name;
 
-            void initRules(DWORD ruleTypes);
+	protected:
 
-            void deleteMatchers()
-            {
-                for (auto itr = matchers.begin(); itr != matchers.end(); ++itr) {
-                    RuleMatcher* m = *itr;
-                    if (!m) continue;
-                    delete m;
-                }
-                matchers.clear();
-            }
+		virtual bool _isMatching(IN const AreaMultiStats& stats) = 0;
 
-            std::vector< RuleMatcher*> matchers;
-        };
-        //---
+		bool matched;
+	};
 
-        struct AreaInfo
-        {
-            AreaInfo()
-            {
-            }
+	//---
 
-            // Copy constructor
-            AreaInfo(const AreaInfo& p1)
-                : matchedRules(p1.matchedRules)
-            {
-            }
+	struct AreaInfo
+	{
+		AreaInfo()
+		{
+		}
 
-            bool hasMatchAt(const std::string& ruleName)
-            {
-                for (auto itr = matchedRules.begin(); itr != matchedRules.end(); ++itr) {
-                    std::string name = *itr;
-                    if (name == ruleName) {
-                        return true;
-                    }
-                }
-                return false;
-            }
+		// Copy constructor
+		AreaInfo(const AreaInfo& p1)
+			: matchedRules(p1.matchedRules)
+		{
+		}
 
-            const virtual bool toJSON(std::stringstream& outs, size_t level)
-            {
-                OUT_PADDED(outs, level, "\"area_info\" : {\n");
-                fieldsToJSON(outs, level + 1);
-                outs << "\n";
-                OUT_PADDED(outs, level, "}");
-                return true;
-            }
+		bool hasMatchAt(const std::string& ruleName)
+		{
+			for (auto itr = matchedRules.begin(); itr != matchedRules.end(); ++itr) {
+				std::string name = *itr;
+				if (name == ruleName) {
+					return true;
+				}
+			}
+			return false;
+		}
 
-            const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
-            {
-                size_t count = 0;
-                for (auto itr = matchedRules.begin(); itr != matchedRules.end(); ++itr) {
-                    std::string ruleName = *itr;
-                    if (count > 0) {
-                        outs << ",\n";
-                    }
-                    count++;
-                    OUT_PADDED(outs, level, "\"" + ruleName + "\" : ");
-                    outs << std::dec << true;
-                }
-            }
+		bool hasAnyMatch()
+		{
+			return (matchedRules.size()) != 0 ? true : false;
+		}
 
-            std::vector<std::string> matchedRules;
-        };
+		const virtual bool toJSON(std::stringstream& outs, size_t level)
+		{
+			OUT_PADDED(outs, level, "\"stats_verdict\" : {\n");
+			fieldsToJSON(outs, level + 1);
+			outs << "\n";
+			OUT_PADDED(outs, level, "}");
+			return true;
+		}
 
-        size_t fetchPeakValues(IN const ChunkStats& currArea, IN double stdDev, int devCount, OUT std::set<BYTE>& peaks);
+		const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
+		{
+			size_t count = 0;
+			for (auto itr = matchedRules.begin(); itr != matchedRules.end(); ++itr) {
+				std::string ruleName = *itr;
+				if (count > 0) {
+					outs << ",\n";
+				}
+				count++;
+				OUT_PADDED(outs, level, "\"" + ruleName + "\" : ");
+				outs << std::dec << true;
+			}
+		}
 
-        size_t valuesNotBelowMean(IN const ChunkStats& currArea, double mean);
+		std::vector<std::string> matchedRules;
+	};
 
-        double getPrintableRatio(IN const AreaMultiStats& stats);
+	//
+	struct RuleMatchersSet
+	{
+		RuleMatchersSet(DWORD ruleTypes)
+		{
+			initRules(ruleTypes);
+		}
 
-        bool isSuspicious(IN const AreaMultiStats& stats, IN RuleMatchersSet& matchersSet, OUT AreaInfo& info);
+		~RuleMatchersSet()
+		{
+			deleteMatchers();
+		}
 
-    } //namespace util
+		void initRules(DWORD ruleTypes);
+
+		size_t findMatches(IN const AreaMultiStats& stats, OUT AreaInfo& info);
+
+		void deleteMatchers()
+		{
+			for (auto itr = matchers.begin(); itr != matchers.end(); ++itr) {
+				RuleMatcher* m = *itr;
+				if (!m) continue;
+				delete m;
+			}
+			matchers.clear();
+		}
+
+		std::vector< RuleMatcher* > matchers;
+	};
 
 }; // namespace pesieve

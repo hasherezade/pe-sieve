@@ -9,11 +9,6 @@
 
 #define CHARSET_SIZE 0xFF
 
-#define IS_ENDLINE(c) (c == 0x0A || c == 0xD)
-#define IS_PRINTABLE(c) ((c >= 0x20 && c < 0x7f) || IS_ENDLINE(c))
-
-//#define DISPLAY_STATS
-
 namespace pesieve {
 
 	using namespace pesieve::stats;
@@ -146,7 +141,9 @@ namespace pesieve {
 	{
 	public:
 		CodeMatcher()
-			: RuleMatcher(CODE_RULE) {}
+			: RuleMatcher(CODE_RULE)
+		{
+		}
 
 		virtual bool _isMatching(IN const AreaMultiStats& stats)
 		{
@@ -324,28 +321,29 @@ namespace pesieve {
 
 	void RuleMatchersSet::initRules(DWORD ruleTypes)
 	{
-		if (ruleTypes & RuleType::RULE_CODE) {
+		if (ruleTypes & RuleMatcher::RULE_CODE) {
 			matchers.push_back(new CodeMatcher());
 		}
-		if (ruleTypes & RuleType::RULE_TEXT) {
+		if (ruleTypes & RuleMatcher::RULE_TEXT) {
 			this->matchers.push_back(new TextMatcher());
 		}
-		if (ruleTypes & RuleType::RULE_ENCRYPTED) {
+		if (ruleTypes & RuleMatcher::RULE_ENCRYPTED) {
 			matchers.push_back(new EncryptedMatcher());
 		}
-		if (ruleTypes & RuleType::RULE_OBFUSCATED) {
+		if (ruleTypes & RuleMatcher::RULE_OBFUSCATED) {
 			matchers.push_back(new ObfuscatedMatcher());
 		}
 	}
 
-	bool pesieve::stats::isSuspicious(IN const AreaMultiStats& stats, IN RuleMatchersSet& matchersSet, OUT AreaInfo& info)
+	size_t RuleMatchersSet::findMatches(IN const AreaMultiStats& stats, OUT AreaInfo& info)
 	{
-		if (!stats.isFilled() || !stats.currArea.size) {
+		if (!stats.isFilled()) {
+			std::cout << "Stat not filled!\n";
 			return false;
 		}
 
 		size_t matched = 0;
-		for (auto itr = matchersSet.matchers.begin(); itr != matchersSet.matchers.end(); ++itr) {
+		for (auto itr = matchers.begin(); itr != matchers.end(); ++itr) {
 			RuleMatcher* m = *itr;
 			if (!m) continue;
 			if (m->isMatching(stats)) {
@@ -353,7 +351,7 @@ namespace pesieve {
 				matched++;
 			}
 		}
-		return (matched > 0) ? true : false;
+		return matched;
 	}
 
 }; //namespace pesieve

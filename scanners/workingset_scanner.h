@@ -14,8 +14,10 @@
 #include "process_feature_scanner.h"
 #include "process_details.h"
 
+#define CALC_PAGE_STATS
 #ifdef CALC_PAGE_STATS
-#include "../stats/stats.h"
+#include "../stats/multi_stats.h"
+#include "../stats/stats_analyzer.h"
 #endif
 
 namespace pesieve {
@@ -76,6 +78,10 @@ namespace pesieve {
 			if (stats.isFilled()) {
 				outs << ",\n";
 				stats.toJSON(outs, level);
+				if (area_info.hasAnyMatch()) {
+					outs << ",\n";
+					area_info.toJSON(outs, level);
+				}
 			}
 #endif
 		}
@@ -85,7 +91,8 @@ namespace pesieve {
 		bool has_pe;
 		bool has_shellcode;
 #ifdef CALC_PAGE_STATS
-		AreaStats stats;
+		AreaMultiStats stats;
+		AreaInfo area_info;
 #endif
 		DWORD protection;
 		DWORD mapping_type;
@@ -125,7 +132,7 @@ namespace pesieve {
 
 		bool isExecutable(MemPageData &memPageData);
 		bool isPotentiallyExecutable(MemPageData &memPageData, const t_data_scan_mode &mode);
-		bool isCode(MemPageData &memPageData);
+		bool checkAreaContent(IN MemPageData& _memPage, OUT WorkingSetScanReport* my_report);
 		WorkingSetScanReport* scanExecutableArea(MemPageData &memPageData);
 
 		const process_details pDetails;

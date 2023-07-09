@@ -87,7 +87,12 @@ namespace pesieve {
 
 		void appendVal(BYTE val)
 		{
-#ifdef SCAN_STRINGS
+
+			size++;
+			histogram[val]++;
+			prevVal = val;
+
+			// scan strings:
 			const bool isPrint = IS_PRINTABLE(val);
 			if (isPrint) {
 				lastStr += char(val);
@@ -97,11 +102,6 @@ namespace pesieve {
 				finishLastStr(isClean);
 				lastStr.clear();
 			}
-
-#endif // SCAN_STRINGS
-			size++;
-			histogram[val]++;
-			prevVal = val;
 		}
 
 		void finishLastStr(bool isClean)
@@ -210,15 +210,6 @@ namespace pesieve {
 			return true;
 		}
 
-		const virtual bool toJSON(std::stringstream& outs, size_t level)
-		{
-			OUT_PADDED(outs, level, "\"stats\" : {\n");
-			fieldsToJSON(outs, level + 1);
-			outs << "\n";
-			OUT_PADDED(outs, level, "}");
-			return true;
-		}
-
 		const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
 		{
 			OUT_PADDED(outs, level, "\"full_area\" : {\n");
@@ -236,8 +227,14 @@ namespace pesieve {
 		{
 			currArea.summarize();
 		}
-
+		
 		ChunkStats currArea; // stats from the whole area
+
+	protected:
+		void _appendVal(BYTE val)
+		{
+			currArea.appendVal(val);
+		}
 
 	};
 };
