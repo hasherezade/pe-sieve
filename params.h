@@ -122,8 +122,15 @@ public:
 		}
 
 		//PARAM_OBFUSCATED
-		this->addParam(new BoolParam(PARAM_OBFUSCATED, false));
-		this->setInfo(PARAM_OBFUSCATED, "Detect encrypted content, and possible obfuscated shellcodes.");
+		enumParam = new EnumParam(PARAM_OBFUSCATED, "obfusc_mode", false);
+		if (enumParam) {
+			this->addParam(enumParam);
+			this->setInfo(PARAM_OBFUSCATED, "Detect encrypted content, and possible obfuscated shellcodes.");
+			for (size_t i = 0; i < OBFUSC_COUNT; i++) {
+				t_obfusc_mode mode = (t_obfusc_mode)(i);
+				enumParam->addEnumValue(mode, obfusc_mode_mode_to_id(mode), translate_obfusc_mode(mode));
+			}
+		}
 
 		//PARAM_THREADS
 		this->addParam(new BoolParam(PARAM_THREADS, false));
@@ -251,7 +258,7 @@ public:
 
 		copyVal<BoolParam>(PARAM_MINIDUMP, ps.minidump);
 		copyVal<EnumParam>(PARAM_SHELLCODE, ps.shellcode);
-		copyVal<BoolParam>(PARAM_OBFUSCATED, ps.obfuscated);
+		copyVal<EnumParam>(PARAM_OBFUSCATED, ps.obfuscated);
 		copyVal<BoolParam>(PARAM_THREADS, ps.threads);
 		copyVal<BoolParam>(PARAM_REFLECTION, ps.make_reflection);
 

@@ -51,8 +51,12 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 				code = true;
 			}
 
-			if (!code && this->args.obfuscated) {
-				pesieve::RuleMatchersSet obfMatcher(RuleMatcher::RULE_OBFUSCATED | RuleMatcher::RULE_ENCRYPTED);
+			if (!code && (this->args.obfuscated != OBFUSC_NONE)) {
+				int rules = 0;
+				if (this->args.obfuscated == OBFUSC_ANY) rules = RuleMatcher::RULE_OBFUSCATED | RuleMatcher::RULE_ENCRYPTED;
+				if (this->args.obfuscated == OBFUSC_STRONG_ENC) rules = RuleMatcher::RULE_ENCRYPTED;
+				if (this->args.obfuscated == OBFUSC_WEAK_ENC) rules = RuleMatcher::RULE_OBFUSCATED;
+				pesieve::RuleMatchersSet obfMatcher(rules);
 				if (obfMatcher.findMatches(my_report->stats, my_report->area_info)) {
 					obfuscated = true;
 				}
@@ -63,7 +67,7 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 	
 	my_report->has_shellcode = code;
 
-	if ( (this->args.obfuscated && obfuscated) || ((this->args.shellcode != SHELLC_NONE) && code) ){
+	if ( (this->args.obfuscated != OBFUSC_NONE && obfuscated) || ((this->args.shellcode != SHELLC_NONE) && code) ){
 		my_report->status = SCAN_SUSPICIOUS;
 		my_report->data_cache = memPage.loadedData;
 	}
@@ -125,7 +129,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 			return my_report1;
 		}
 	}
-	if ((this->args.shellcode == SHELLC_NONE) && !this->args.obfuscated) {
+	if ((this->args.shellcode == SHELLC_NONE) && (this->args.obfuscated == OBFUSC_NONE)) {
 		// not a PE file, and we are not interested in shellcode or obfuscated contents, so just finish it here
 		return nullptr;
 	}
