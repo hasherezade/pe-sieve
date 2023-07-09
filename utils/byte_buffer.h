@@ -1,5 +1,6 @@
 #pragma once
 #include <windows.h>
+#include <peconv.h>
 
 namespace pesieve {
 
@@ -91,9 +92,21 @@ namespace pesieve {
             {
             }
 
+            // Copy constructor
+            ByteBuffer(const ByteBuffer& p1)
+                : BasicBuffer()
+            {
+                copy(p1);
+            }
+
             ~ByteBuffer()
             {
                 freeBuffer();
+            }
+
+            virtual ByteBuffer& operator=(const ByteBuffer&p1) {
+                this->copy(p1);
+                return *this;
             }
 
             bool isValidPtr(BYTE * field_bgn, size_t field_size)
@@ -133,6 +146,20 @@ namespace pesieve {
                 data = nullptr;
                 data_size = 0;
                 padding = 0;
+            }
+
+        protected:
+
+            bool copy(const ByteBuffer& p1)
+            {
+                if (!allocBuffer(p1.data_size)) {
+                    return false;
+                }
+                ::memcpy(this->data, p1.data, this->data_size);
+                this->real_start = p1.real_start;
+                this->real_end = p1.real_end;
+                this->padding = p1.padding;
+                return true;
             }
 
         };

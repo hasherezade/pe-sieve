@@ -136,6 +136,67 @@ std::string pesieve::translate_json_level(const pesieve::t_json_level &mode)
 	return "undefined";
 }
 
+std::string pesieve::shellc_mode_mode_to_id(const pesieve::t_shellc_mode& mode)
+{
+	switch (mode) {
+	case pesieve::SHELLC_PATTERNS:
+		return "P";
+	case pesieve::SHELLC_STATS:
+		return "S";
+	case pesieve::SHELLC_PATTERNS_OR_STATS:
+		return "A";
+	case pesieve::SHELLC_PATTERNS_AND_STATS:
+		return "B";
+	}
+	return "N";
+}
+
+std::string pesieve::translate_shellc_mode(const pesieve::t_shellc_mode& mode)
+{
+	switch (mode) {
+	case pesieve::SHELLC_NONE:
+		return "none: do not detect shellcodes";
+	case pesieve::SHELLC_PATTERNS:
+		return "detect shellcodes by patterns";
+	case pesieve::SHELLC_STATS:
+		return "detect shellcodes by stats";
+	case pesieve::SHELLC_PATTERNS_OR_STATS:
+		return "detect shellcodes by patterns or stats (any match)";
+	case pesieve::SHELLC_PATTERNS_AND_STATS:
+		return "detect shellcodes by patterns and stats (both match)";
+	}
+	return "undefined";
+}
+
+std::string pesieve::translate_obfusc_mode(const pesieve::t_obfusc_mode& mode)
+{
+	switch (mode) {
+	case pesieve::OBFUSC_NONE:
+		return "none: do not detect obfuscated areas";
+	case pesieve::OBFUSC_STRONG_ENC:
+		return "detect areas possibly encrypted with strong encryption";
+	case pesieve::OBFUSC_WEAK_ENC:
+		return "detect areas possibly encrypted with weak encryption (lower entropy, possible XOR patterns)";
+	case pesieve::OBFUSC_ANY:
+		return "detect any: possible strong or weak encryption";
+	}
+	return "undefined";
+}
+
+std::string pesieve::obfusc_mode_mode_to_id(const pesieve::t_obfusc_mode& mode)
+{
+	switch (mode) {
+	case pesieve::OBFUSC_STRONG_ENC:
+		return "S";
+	case pesieve::OBFUSC_WEAK_ENC:
+		return "W";
+	case pesieve::OBFUSC_ANY:
+		return "A";
+	}
+	return "N";
+}
+
+
 std::string pesieve::translate_iat_scan_mode(const pesieve::t_iat_scan_mode mode)
 {
 	switch (mode) {

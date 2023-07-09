@@ -1,88 +1,105 @@
 #pragma once
 
+#include <windows.h>
+#include <sstream>
+
 #include "entropy.h"
 #include "../utils/byte_buffer.h"
+#include "../utils/format_util.h"
 
 namespace pesieve {
 
-    struct AreaStats {
-        AreaStats()
-            : area_size(0), area_start(0),
-            entropy(0.0)
-        {
-        }
+	//! Base class for settings defining what type of stats should be collected.
+	struct StatsSettings {
+	public:
+		StatsSettings() {}
+		virtual bool isFilled() = 0;
+	};
 
-        // Copy constructor
-        AreaStats(const AreaStats& p1)
-            :  area_size(p1.area_size), area_start(p1.area_start),
-            entropy(p1.entropy)
-        {
-        }
+	//! Base class for the statistics from analyzed buffer.
+	class AreaStats {
+	public:
+		AreaStats()
+			: area_start(0), area_size(0)
+		{
+		}
 
-        const virtual bool toJSON(std::stringstream& outs, size_t level)
-        {
-            if (!isFilled()) {
-                return false;
-            }
-            OUT_PADDED(outs, level, "\"stats\" : {\n");
-            fieldsToJSON(outs, level + 1);
-            outs << "\n";
-            OUT_PADDED(outs, level, "}");
-            return true;
-        }
+		void setStartOffset(size_t _area_start)
+		{
+			area_start = _area_start;
+		}
 
-        bool isFilled() const
-        {
-            return area_size > 0 ? true : false;
-        }
+		void appendVal(BYTE val)
+		{
+			_appendVal(val);
+			area_size++;
+		}
 
-        double entropy;
+		const virtual void fieldsToJSON(std::stringstream& outs, size_t level) = 0;
 
-    protected:
+		bool isFilled() const
+		{
+			return area_size > 0 ? true : false;
+		}
 
-        const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
-        {
-            OUT_PADDED(outs, level, "\"area_start\" : ");
-            outs << "\"" << std::hex << area_start << "\"";
-            outs << ",\n";
-            OUT_PADDED(outs, level, "\"area_size\" : ");
-            outs << "\"" << std::hex << area_size << "\"";
-            outs << ",\n";
-            OUT_PADDED(outs, level, "\"entropy\" : ");
-            outs << std::dec << entropy;
-        }
+		virtual void summarize() = 0;
 
-        size_t area_size;
-        size_t area_start;
+		virtual bool fillSettings(StatsSettings* _settings) { return false; }
 
-        friend class AreaStatsCalculator;
+		const virtual bool toJSON(std::stringstream& outs, size_t level)
+		{
+			if (!isFilled()) {
+				return false;
+			}
+			OUT_PADDED(outs, level, "\"stats\" : {\n");
+			fieldsToJSON(outs, level + 1);
+			outs << "\n";
+			OUT_PADDED(outs, level, "}");
+			return true;
+		}
 
-    }; // AreaStats
+	protected:
+		virtual void _appendVal(BYTE val) = 0;
+
+		size_t area_size;
+		size_t area_start;
+
+		friend class AreaStatsCalculator;
+
+	}; // AreaStats
 
 
-    class AreaStatsCalculator {
-    public:
-        AreaStatsCalculator(const util::ByteBuffer& _buffer)
-            : buffer(_buffer)
-        {
-        }
+	//! A class responsible for filling in the statistics with the data from the particular buffer.
+	class AreaStatsCalculator {
+	public:
+		AreaStatsCalculator(const util::ByteBuffer& _buffer)
+			: buffer(_buffer)
+		{
+		}
 
-        bool fill(AreaStats& stats)
-        {
-            const bool skipPadding = true;
-            const size_t data_size = buffer.getDataSize(skipPadding);
-            const BYTE* data_buf = buffer.getData(skipPadding);
-            if (!data_size || !data_buf) {
-                return false;
-            }
-            stats.area_size = data_size;
-            stats.area_start = buffer.getStartOffset(skipPadding);
-            stats.entropy = util::ShannonEntropy(data_buf, data_size);
-            return true;
-        }
+		bool fill(AreaStats& stats, StatsSettings* settings)
+		{
+			const bool skipPadding = true;
+			const size_t data_size = buffer.getDataSize(skipPadding);
+			const BYTE* data_buf = buffer.getData(skipPadding);
+			if (!data_size || !data_buf) {
+				return false;
+			}
+			if (!stats.fillSettings(settings)) {
+				std::cerr << "Settings initialization failed!\n";
+			}
+			stats.setStartOffset(buffer.getStartOffset(skipPadding));
+			BYTE lastVal = 0;
+			for (size_t i = 0; i < data_size; ++i) {
+				const BYTE val = data_buf[i];
+				stats.appendVal(val);
+			}
+			stats.summarize();
+			return true;
+		}
 
-    private:
-        const util::ByteBuffer& buffer;
-    };
+	private:
+		const util::ByteBuffer& buffer;
+	};
 
 }; //pesieve

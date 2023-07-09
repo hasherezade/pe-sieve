@@ -209,6 +209,24 @@ pesieve::ProcessDumpReport* pesieve::ResultsDumper::dumpDetectedModules(
 	return dumpReport;
 }
 
+bool pesieve::ResultsDumper::fillModuleCopy(IN ModuleScanReport* mod, IN OUT PeBuffer& module_buf)
+{
+	if (!mod) return false;
+
+	bool filled = false;
+
+	// first try to use cache:
+	WorkingSetScanReport* wsReport = dynamic_cast<WorkingSetScanReport*>(mod);
+	if (wsReport && wsReport->data_cache.isFilled()) {
+		filled = module_buf.fillFromBuffer((ULONGLONG)mod->module, wsReport->data_cache);
+	}
+	// if no cache, or loading from cache failed, read from the process memory:
+	if (!filled) {
+		filled = module_buf.readRemote((ULONGLONG)mod->module, mod->moduleSize);
+	}
+	return filled;
+}
+
 bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 	IN bool isRefl,
 	IN const ModulesInfo &modulesInfo,
@@ -234,7 +252,7 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 	ArtefactScanReport* artefactReport = dynamic_cast<ArtefactScanReport*>(mod);
 	if (artefactReport) {
 		payload_ext = get_payload_ext(*artefactReport);
-		//whenever the artefactReport is available, use it to reconstruct a PE
+		// whenever the artefactReport is available, use it to reconstruct a PE
 		if (artefactReport->has_shellcode) {
 			dump_shellcode = true;
 		}
@@ -252,7 +270,7 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 	}
 	// if it is not an artefact report, or reconstructing by artefacts failed, read it from the memory:
 	if (!artefactReport || is_corrupt_pe) {
-		module_buf.readRemote((ULONGLONG)mod->module, mod->moduleSize);
+		fillModuleCopy(mod, module_buf);
 	}
 	//if no extension selected yet, do it now:
 	if (payload_ext.length() == 0) {
@@ -309,7 +327,8 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 		if (dump_shellcode) {
 			payload_ext = "shc";
 		}
-		module_buf.readRemote((ULONGLONG)mod->module, mod->moduleSize);
+
+		fillModuleCopy(mod, module_buf);
 
 		modDumpReport = new ModuleDumpReport(module_buf.getModuleBase(), module_buf.getBufferSize());
 		dumpReport.appendReport(modDumpReport);

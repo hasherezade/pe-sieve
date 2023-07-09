@@ -28,6 +28,23 @@ namespace pesieve {
 	} t_output_filter;
 
 	typedef enum {
+		SHELLC_NONE = 0,           ///< do not detect shellcode
+		SHELLC_PATTERNS,           ///< detect shellcodes by patterns
+		SHELLC_STATS,              ///< detect shellcodes by stats
+		SHELLC_PATTERNS_OR_STATS, ///< detect shellcodes by patterns or stats (any match)
+		SHELLC_PATTERNS_AND_STATS, ///< detect shellcodes by patterns and stats (both match)
+		SHELLC_COUNT
+	} t_shellc_mode;
+
+	typedef enum {
+		OBFUSC_NONE = 0,            ///< do not detect obfuscated contents
+		OBFUSC_STRONG_ENC,          ///< detect areas possibly encrypted with strong encryption
+		OBFUSC_WEAK_ENC,            ///< detect areas possibly encrypted with weak encryption (lower entropy, possible XOR patterns)
+		OBFUSC_ANY,                 ///< detect both: possible strong or weak encryption
+		OBFUSC_COUNT
+	} t_obfusc_mode;
+
+	typedef enum {
 		PE_IMPREC_NONE = 0, ///< do not try to recover imports
 		PE_IMPREC_AUTO,     ///< try to autodetect the most suitable mode
 		PE_IMPREC_UNERASE,  ///< recover erased parts of the partialy damaged import table
@@ -99,8 +116,9 @@ namespace pesieve {
 		t_imprec_mode imprec_mode;  ///< import recovery mode
 		bool quiet;                 ///<do not print log on the stdout
 		t_output_filter out_filter; ///< level of details of the created output material
-		bool no_hooks;           ///< don't scan for hooks
-		bool shellcode;         ///< detect shellcode implants
+		bool no_hooks;            ///< don't scan for hooks
+		t_shellc_mode shellcode;  ///< detect shellcode implants
+		t_obfusc_mode obfuscated;        ///< detect encrypted or obfuscated content (possible encrypted shellcodes)
 		bool threads;           ///< scan threads
 		t_iat_scan_mode iat;    ///< detect IAT hooking
 		t_data_scan_mode data;  ///< should scan non-executable pages?

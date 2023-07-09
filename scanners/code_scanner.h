@@ -13,7 +13,6 @@ namespace pesieve {
 	class CodeScanReport : public ModuleScanReport
 	{
 	public:
-		
 		typedef enum section_status {
 			SECTION_SCAN_ERR = -1,
 			SECTION_NOT_MODIFIED = 0,

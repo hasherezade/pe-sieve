@@ -39,6 +39,22 @@ bool pesieve::PeBuffer::readRemote(ULONGLONG module_base, size_t pe_vsize)
 	return _readRemote(module_base, pe_vsize);
 }
 
+bool pesieve::PeBuffer::fillFromBuffer(ULONGLONG module_base, util::ByteBuffer& data_cache)
+{
+	size_t cached_size = data_cache.getDataSize();
+	if (!cached_size) {
+		return false;
+	}
+	if (!allocBuffer(cached_size)) {
+		return false;
+	}
+	this->moduleBase = module_base;
+	this->relocBase = module_base; //by default set the same as module base
+
+	::memcpy(this->vBuf, data_cache.getData(), cached_size);
+	return true;
+}
+
 bool  pesieve::PeBuffer::_readRemote(const ULONGLONG module_base, size_t pe_vsize)
 {
 	if (pe_vsize == 0) {

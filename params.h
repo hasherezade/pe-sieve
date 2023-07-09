@@ -12,6 +12,7 @@ using namespace pesieve;
 //scan options:
 #define PARAM_PID "pid"
 #define PARAM_SHELLCODE "shellc"
+#define PARAM_OBFUSCATED "obfusc"
 #define PARAM_THREADS "threads"
 #define PARAM_DATA "data"
 #define PARAM_IAT "iat"
@@ -110,8 +111,26 @@ public:
 		this->setInfo(PARAM_MINIDUMP, "Create a minidump of the full suspicious process.");
 
 		//PARAM_SHELLCODE
-		this->addParam(new BoolParam(PARAM_SHELLCODE, false));
-		this->setInfo(PARAM_SHELLCODE, "Detect shellcode implants (by patterns). ");
+		enumParam = new EnumParam(PARAM_SHELLCODE, "shellc_mode", false);
+		if (enumParam) {
+			this->addParam(enumParam);
+			this->setInfo(PARAM_SHELLCODE, "Detect shellcode implants (by patterns or statistics). ");
+			for (size_t i = 0; i < SHELLC_COUNT; i++) {
+				t_shellc_mode mode = (t_shellc_mode)(i);
+				enumParam->addEnumValue(mode, shellc_mode_mode_to_id(mode), translate_shellc_mode(mode));
+			}
+		}
+
+		//PARAM_OBFUSCATED
+		enumParam = new EnumParam(PARAM_OBFUSCATED, "obfusc_mode", false);
+		if (enumParam) {
+			this->addParam(enumParam);
+			this->setInfo(PARAM_OBFUSCATED, "Detect encrypted content, and possible obfuscated shellcodes.");
+			for (size_t i = 0; i < OBFUSC_COUNT; i++) {
+				t_obfusc_mode mode = (t_obfusc_mode)(i);
+				enumParam->addEnumValue(mode, obfusc_mode_mode_to_id(mode), translate_obfusc_mode(mode));
+			}
+		}
 
 		//PARAM_THREADS
 		this->addParam(new BoolParam(PARAM_THREADS, false));
@@ -190,6 +209,7 @@ public:
 		this->addParamToGroup(PARAM_DATA, str_group);
 		this->addParamToGroup(PARAM_IAT, str_group);
 		this->addParamToGroup(PARAM_SHELLCODE, str_group);
+		this->addParamToGroup(PARAM_OBFUSCATED, str_group);
 		this->addParamToGroup(PARAM_THREADS, str_group);
 
 		str_group = "4. dump options";
@@ -237,7 +257,8 @@ public:
 		copyVal<EnumParam>(PARAM_JSON_LVL, ps.json_lvl);
 
 		copyVal<BoolParam>(PARAM_MINIDUMP, ps.minidump);
-		copyVal<BoolParam>(PARAM_SHELLCODE, ps.shellcode);
+		copyVal<EnumParam>(PARAM_SHELLCODE, ps.shellcode);
+		copyVal<EnumParam>(PARAM_OBFUSCATED, ps.obfuscated);
 		copyVal<BoolParam>(PARAM_THREADS, ps.threads);
 		copyVal<BoolParam>(PARAM_REFLECTION, ps.make_reflection);
 

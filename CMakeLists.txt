@@ -128,12 +128,16 @@ set (postprocessors_srcs
 )
 
 set (stats_srcs
-	stats/entropy.h
+	stats/stats_analyzer.cpp
 )
 
 set (stats_hdrs
 	stats/entropy.h
 	stats/stats.h
+	stats/entropy_stats.h
+	stats/multi_stats.h
+	stats/stats_util.h
+	stats/stats_analyzer.h
 )
 
 set (utils_srcs

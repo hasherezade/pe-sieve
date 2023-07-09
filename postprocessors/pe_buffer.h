@@ -1,6 +1,7 @@
 #pragma once
 
 #include <peconv.h>
+#include "../utils/byte_buffer.h"
 
 namespace pesieve {
 
@@ -41,6 +42,9 @@ namespace pesieve {
 
 		// Reads content from the remote process into a buffer. Automatically allocates sutiable buffer.
 		bool readRemote(ULONGLONG module_base, size_t pe_vsize);
+
+		// Fill the content from the cached buffer.
+		bool fillFromBuffer(ULONGLONG module_base, util::ByteBuffer& data_cache);
 
 		// Resizes internal buffer into a new size.
 		// The internal buffer must be non empty.
