@@ -90,6 +90,7 @@ namespace pesieve {
 		bool is_listed_module;
 		bool has_pe;
 		bool has_shellcode;
+		util::ByteBuffer data_cache;
 #ifdef CALC_PAGE_STATS
 		AreaMultiStats stats;
 		AreaInfo area_info;

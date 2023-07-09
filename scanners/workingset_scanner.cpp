@@ -53,6 +53,7 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 	my_report->has_shellcode = code;
 	if (code || obfuscated) {
 		my_report->status = SCAN_SUSPICIOUS;
+		my_report->data_cache = memPage.loadedData;
 	}
 	return true;
 }
@@ -116,10 +117,6 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 		// not a PE file, and we are not interested in shellcode, so just finish it here
 		return nullptr;
 	}
-	/*if (!isCode(_memPage)) {
-		// shellcode patterns not found
-		return nullptr;
-	}*/
 
 	//report about shellcode:
 	ULONGLONG region_start = _memPage.region_start;
@@ -132,8 +129,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 	if (!checkAreaContent(_memPage, my_report)) { // check for shellcode patterns & stats
 		my_report->status = SCAN_ERROR;
 	}
-	const bool isDetected = (my_report->status == SCAN_NOT_SUSPICIOUS) ? false : true;
-	if (!isDetected) {
+	if (my_report->status == SCAN_NOT_SUSPICIOUS) {
 		// do not keep reports for not suspicious areas
 		delete my_report;
 		return nullptr;

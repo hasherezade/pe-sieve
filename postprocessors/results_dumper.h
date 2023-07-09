@@ -4,6 +4,7 @@
 
 #include "report_formatter.h"
 #include "dump_report.h"
+#include "pe_buffer.h"
 
 namespace pesieve {
 
@@ -62,6 +63,8 @@ namespace pesieve {
 		std::string makeDirName(const DWORD process_id);
 
 		void makeAndJoinDirectories(std::stringstream& name_stream);
+
+		bool fillModuleCopy(IN ModuleScanReport* mod, IN OUT PeBuffer& module_buf);
 
 		std::string dumpDir; // dump directory
 		std::string baseDir; // base directory
