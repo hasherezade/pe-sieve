@@ -12,6 +12,7 @@ using namespace pesieve;
 //scan options:
 #define PARAM_PID "pid"
 #define PARAM_SHELLCODE "shellc"
+#define PARAM_OBFUSCATED "obfusc"
 #define PARAM_THREADS "threads"
 #define PARAM_DATA "data"
 #define PARAM_IAT "iat"
@@ -113,6 +114,10 @@ public:
 		this->addParam(new BoolParam(PARAM_SHELLCODE, false));
 		this->setInfo(PARAM_SHELLCODE, "Detect shellcode implants (by patterns). ");
 
+		//PARAM_OBFUSCATED
+		this->addParam(new BoolParam(PARAM_OBFUSCATED, false));
+		this->setInfo(PARAM_OBFUSCATED, "Detect encrypted or obfuscated content (possible encrypted shellcodes).");
+
 		//PARAM_THREADS
 		this->addParam(new BoolParam(PARAM_THREADS, false));
 		this->setInfo(PARAM_THREADS, "Scan threads' callstack. Detect shellcodes, incl. 'sleeping beacons'.");
@@ -190,6 +195,7 @@ public:
 		this->addParamToGroup(PARAM_DATA, str_group);
 		this->addParamToGroup(PARAM_IAT, str_group);
 		this->addParamToGroup(PARAM_SHELLCODE, str_group);
+		this->addParamToGroup(PARAM_OBFUSCATED, str_group);
 		this->addParamToGroup(PARAM_THREADS, str_group);
 
 		str_group = "4. dump options";
@@ -238,6 +244,7 @@ public:
 
 		copyVal<BoolParam>(PARAM_MINIDUMP, ps.minidump);
 		copyVal<BoolParam>(PARAM_SHELLCODE, ps.shellcode);
+		copyVal<BoolParam>(PARAM_OBFUSCATED, ps.obfuscated);
 		copyVal<BoolParam>(PARAM_THREADS, ps.threads);
 		copyVal<BoolParam>(PARAM_REFLECTION, ps.make_reflection);
 

@@ -29,23 +29,26 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 		}
 	}
 #ifdef CALC_PAGE_STATS
-	if (isByStats) {
+	if (isByStats || this->args.obfuscated) {
 		
 		// fill default settings
 		MultiStatsSettings settings;
-		stats::fillCodeStrings(settings.watchedStrings);
-
+		if (this->args.shellcode) {
+			stats::fillCodeStrings(settings.watchedStrings);
+		}
 		AreaStatsCalculator calc(memPage.loadedData);
 		if (calc.fill(my_report->stats, &settings)) {
-
-			pesieve::RuleMatchersSet codeMatcher(RuleMatcher::RULE_CODE);
-			if (codeMatcher.findMatches(my_report->stats, my_report->area_info)){
-				code = true;
+			if (this->args.shellcode) {
+				pesieve::RuleMatchersSet codeMatcher(RuleMatcher::RULE_CODE);
+				if (codeMatcher.findMatches(my_report->stats, my_report->area_info)) {
+					code = true;
+				}
 			}
-
-			pesieve::RuleMatchersSet obfMatcher(RuleMatcher::RULE_OBFUSCATED | RuleMatcher::RULE_ENCRYPTED);
-			if (obfMatcher.findMatches(my_report->stats, my_report->area_info)) {
-				obfuscated = true;
+			if (this->args.obfuscated) {
+				pesieve::RuleMatchersSet obfMatcher(RuleMatcher::RULE_OBFUSCATED | RuleMatcher::RULE_ENCRYPTED);
+				if (obfMatcher.findMatches(my_report->stats, my_report->area_info)) {
+					obfuscated = true;
+				}
 			}
 		}
 	}
@@ -113,8 +116,8 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 			return my_report1;
 		}
 	}
-	if (!this->args.shellcode) {
-		// not a PE file, and we are not interested in shellcode, so just finish it here
+	if (!this->args.shellcode && !this->args.obfuscated) {
+		// not a PE file, and we are not interested in shellcode or obfuscated contents, so just finish it here
 		return nullptr;
 	}
 

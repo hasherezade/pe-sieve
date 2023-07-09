@@ -101,6 +101,7 @@ namespace pesieve {
 		t_output_filter out_filter; ///< level of details of the created output material
 		bool no_hooks;           ///< don't scan for hooks
 		bool shellcode;         ///< detect shellcode implants
+		bool obfuscated;        ///< detect encrypted or obfuscated content (possible encrypted shellcodes)
 		bool threads;           ///< scan threads
 		t_iat_scan_mode iat;    ///< detect IAT hooking
 		t_data_scan_mode data;  ///< should scan non-executable pages?
