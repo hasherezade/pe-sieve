@@ -18,14 +18,22 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 
 	const bool noPadding = true;
 
-	bool isByStats = true;
-	bool isByPatterns = true;
+	bool isByStats = (this->args.shellcode == SHELLC_STATS) || (this->args.shellcode == SHELLC_PATTERNS_OR_STATS) || (this->args.shellcode == SHELLC_PATTERNS_AND_STATS);
+	bool isByPatterns = (this->args.shellcode == SHELLC_PATTERNS) || (this->args.shellcode == SHELLC_PATTERNS_OR_STATS) || (this->args.shellcode == SHELLC_PATTERNS_AND_STATS);
 
 	bool code = false;
 	bool obfuscated = false;
 	if (isByPatterns) {
 		if (is_code(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding))) {
 			code = true;
+			if (this->args.shellcode == SHELLC_PATTERNS_OR_STATS) {
+				isByStats = false; // condition satisfied, no more checks required
+			}
+		}
+		else {
+			if (this->args.shellcode == SHELLC_PATTERNS_AND_STATS) {
+				isByStats = false; // condition NOT satisfied, no more checks required
+			}
 		}
 	}
 #ifdef CALC_PAGE_STATS
@@ -33,18 +41,17 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 		
 		// fill default settings
 		MultiStatsSettings settings;
-		if (this->args.shellcode) {
-			stats::fillCodeStrings(settings.watchedStrings);
-		}
+		stats::fillCodeStrings(settings.watchedStrings);
+
 		AreaStatsCalculator calc(memPage.loadedData);
 		if (calc.fill(my_report->stats, &settings)) {
-			if (this->args.shellcode) {
-				pesieve::RuleMatchersSet codeMatcher(RuleMatcher::RULE_CODE);
-				if (codeMatcher.findMatches(my_report->stats, my_report->area_info)) {
-					code = true;
-				}
+
+			pesieve::RuleMatchersSet codeMatcher(RuleMatcher::RULE_CODE);
+			if (codeMatcher.findMatches(my_report->stats, my_report->area_info)) {
+				code = true;
 			}
-			if (this->args.obfuscated) {
+
+			if (!code && this->args.obfuscated) {
 				pesieve::RuleMatchersSet obfMatcher(RuleMatcher::RULE_OBFUSCATED | RuleMatcher::RULE_ENCRYPTED);
 				if (obfMatcher.findMatches(my_report->stats, my_report->area_info)) {
 					obfuscated = true;
@@ -53,8 +60,10 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 		}
 	}
 #endif
+	
 	my_report->has_shellcode = code;
-	if (code || obfuscated) {
+
+	if ( (this->args.obfuscated && obfuscated) || ((this->args.shellcode != SHELLC_NONE) && code) ){
 		my_report->status = SCAN_SUSPICIOUS;
 		my_report->data_cache = memPage.loadedData;
 	}
@@ -116,7 +125,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 			return my_report1;
 		}
 	}
-	if (!this->args.shellcode && !this->args.obfuscated) {
+	if ((this->args.shellcode == SHELLC_NONE) && !this->args.obfuscated) {
 		// not a PE file, and we are not interested in shellcode or obfuscated contents, so just finish it here
 		return nullptr;
 	}

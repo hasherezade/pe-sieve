@@ -111,12 +111,19 @@ public:
 		this->setInfo(PARAM_MINIDUMP, "Create a minidump of the full suspicious process.");
 
 		//PARAM_SHELLCODE
-		this->addParam(new BoolParam(PARAM_SHELLCODE, false));
-		this->setInfo(PARAM_SHELLCODE, "Detect shellcode implants (by patterns). ");
+		enumParam = new EnumParam(PARAM_SHELLCODE, "shellc_mode", false);
+		if (enumParam) {
+			this->addParam(enumParam);
+			this->setInfo(PARAM_SHELLCODE, "Detect shellcode implants (by patterns or statistics). ");
+			for (size_t i = 0; i < SHELLC_COUNT; i++) {
+				t_shellc_mode mode = (t_shellc_mode)(i);
+				enumParam->addEnumValue(mode, shellc_mode_mode_to_id(mode), translate_shellc_mode(mode));
+			}
+		}
 
 		//PARAM_OBFUSCATED
 		this->addParam(new BoolParam(PARAM_OBFUSCATED, false));
-		this->setInfo(PARAM_OBFUSCATED, "Detect encrypted or obfuscated content (possible encrypted shellcodes).");
+		this->setInfo(PARAM_OBFUSCATED, "Detect encrypted content, and possible obfuscated shellcodes.");
 
 		//PARAM_THREADS
 		this->addParam(new BoolParam(PARAM_THREADS, false));
@@ -243,7 +250,7 @@ public:
 		copyVal<EnumParam>(PARAM_JSON_LVL, ps.json_lvl);
 
 		copyVal<BoolParam>(PARAM_MINIDUMP, ps.minidump);
-		copyVal<BoolParam>(PARAM_SHELLCODE, ps.shellcode);
+		copyVal<EnumParam>(PARAM_SHELLCODE, ps.shellcode);
 		copyVal<BoolParam>(PARAM_OBFUSCATED, ps.obfuscated);
 		copyVal<BoolParam>(PARAM_THREADS, ps.threads);
 		copyVal<BoolParam>(PARAM_REFLECTION, ps.make_reflection);
