@@ -50,6 +50,11 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 			if (codeMatcher.findMatches(my_report->stats, my_report->area_info)) {
 				code = true;
 			}
+			else {
+				if (this->args.shellcode == SHELLC_PATTERNS_AND_STATS) {
+					code = false; //nullify the previous detection, because both should match
+				}
+			}
 
 			if (!code && (this->args.obfuscated != OBFUSC_NONE)) {
 				int rules = 0;
