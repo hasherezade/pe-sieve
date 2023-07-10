@@ -55,9 +55,9 @@ var searchData=
   ['getnamessize_52',['getNamesSize',['../classpesieve_1_1_import_table_buffer.html#a8d87acf5448974c56bc1653910b50baf',1,'pesieve::ImportTableBuffer']]],
   ['getnamesspaceat_53',['getNamesSpaceAt',['../classpesieve_1_1_import_table_buffer.html#aa78d88d703ca0ef232e58667f3274019',1,'pesieve::ImportTableBuffer']]],
   ['getoutputdir_54',['getOutputDir',['../classpesieve_1_1_results_dumper.html#af2abd1f120baa9a7afad41c1bd809906',1,'pesieve::ResultsDumper']]],
-  ['getpid_55',['getPid',['../classpesieve_1_1_process_dump_report.html#a99fa36a6e0301b236fe2c1a45bd1a9b6',1,'pesieve::ProcessDumpReport::getPid()'],['../classpesieve_1_1_process_scan_report.html#a7b36b5cf6979968d1c3d590b6875d89c',1,'pesieve::ProcessScanReport::getPid()']]],
+  ['getpid_55',['getPid',['../classpesieve_1_1_process_scan_report.html#a7b36b5cf6979968d1c3d590b6875d89c',1,'pesieve::ProcessScanReport::getPid()'],['../classpesieve_1_1_process_dump_report.html#a99fa36a6e0301b236fe2c1a45bd1a9b6',1,'pesieve::ProcessDumpReport::getPid()']]],
   ['getprintableratio_56',['getPrintableRatio',['../namespacepesieve_1_1stats.html#a515c497f74da9c58bd5b3f82b08804ba',1,'pesieve::stats']]],
-  ['getrelocbase_57',['getRelocBase',['../classpesieve_1_1_pe_buffer.html#ae99ec359990b0970823db53e9bc9fb48',1,'pesieve::PeBuffer::getRelocBase()'],['../classpesieve_1_1_module_scan_report.html#a21091979535aba437b6e3cb97cfca6d3',1,'pesieve::ModuleScanReport::getRelocBase()'],['../classpesieve_1_1_code_scan_report.html#a471546dfdd863a43fc68d7738877cc3c',1,'pesieve::CodeScanReport::getRelocBase()']]],
+  ['getrelocbase_57',['getRelocBase',['../classpesieve_1_1_module_scan_report.html#a21091979535aba437b6e3cb97cfca6d3',1,'pesieve::ModuleScanReport::getRelocBase()'],['../classpesieve_1_1_code_scan_report.html#a471546dfdd863a43fc68d7738877cc3c',1,'pesieve::CodeScanReport::getRelocBase()'],['../classpesieve_1_1_pe_buffer.html#ae99ec359990b0970823db53e9bc9fb48',1,'pesieve::PeBuffer::getRelocBase()']]],
   ['getremotesectionva_58',['getRemoteSectionVa',['../classpesieve_1_1_remote_module_data.html#acf38553702d88269f9d753cc5e22d111',1,'pesieve::RemoteModuleData']]],
   ['getreporttype_59',['getReportType',['../classpesieve_1_1_process_scan_report.html#aac59d32a60ad030d364e13f0d132c8d6',1,'pesieve::ProcessScanReport']]],
   ['getrva_60',['getRVA',['../classpesieve_1_1_import_table_buffer.html#a730569793768c25f659be15cc31d15e5',1,'pesieve::ImportTableBuffer']]],
@@ -65,9 +65,8 @@ var searchData=
   ['getscannedsize_62',['getScannedSize',['../classpesieve_1_1_modules_info.html#a236e04f935fda2030075a99bdf8d290d',1,'pesieve::ModulesInfo::getScannedSize()'],['../classpesieve_1_1_process_scan_report.html#abcee5755b04e776e8010958c2a020144',1,'pesieve::ProcessScanReport::getScannedSize()']]],
   ['getscore_63',['getScore',['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#a52b2ef410b25eabdc0ce57aa85776ea7',1,'pesieve::ArtefactScanner::ArtefactsMapping']]],
   ['getsize_64',['getSize',['../classpesieve_1_1_scanned_module.html#a85e250d1c645cccf3dbad500841a9a0b',1,'pesieve::ScannedModule']]],
-  ['getstandarddeviation_65',['GetStandardDeviation',['../classpesieve_1_1stats_1_1_std_deviation_calc.html#a5cd9b08306844d9b7e647f5d9f4eaf7e',1,'pesieve::stats::StdDeviationCalc']]],
-  ['getstart_66',['getStart',['../classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef',1,'pesieve::ScannedModule']]],
-  ['getstartoffset_67',['getStartOffset',['../structpesieve_1_1util_1_1_basic_buffer.html#ad9b00fbd2200ffe7508c708434206a34',1,'pesieve::util::BasicBuffer']]],
-  ['getsum_68',['getSum',['../classpesieve_1_1stats_1_1_std_deviation_calc.html#aee38b9d143ec3da0804f3d40a528e469',1,'pesieve::stats::StdDeviationCalc']]],
-  ['getvalratio_69',['getValRatio',['../namespacepesieve.html#a169ec97afb0aab13e1b69e98d6e5b9dc',1,'pesieve']]]
+  ['getstart_65',['getStart',['../classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef',1,'pesieve::ScannedModule']]],
+  ['getstartoffset_66',['getStartOffset',['../structpesieve_1_1util_1_1_basic_buffer.html#ad9b00fbd2200ffe7508c708434206a34',1,'pesieve::util::BasicBuffer']]],
+  ['getsum_67',['getSum',['../classpesieve_1_1stats_1_1_std_deviation_calc.html#aee38b9d143ec3da0804f3d40a528e469',1,'pesieve::stats::StdDeviationCalc']]],
+  ['getvalratio_68',['getValRatio',['../namespacepesieve.html#a169ec97afb0aab13e1b69e98d6e5b9dc',1,'pesieve']]]
 ];
