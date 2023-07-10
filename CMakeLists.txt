@@ -138,6 +138,7 @@ set (stats_hdrs
 	stats/multi_stats.h
 	stats/stats_util.h
 	stats/stats_analyzer.h
+	stats/std_dev_calc.h
 )
 
 set (utils_srcs

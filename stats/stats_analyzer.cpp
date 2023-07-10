@@ -220,7 +220,6 @@ namespace pesieve {
 			}
 			bool entropyT = (mFreqVal != 0 && entropy > ENTROPY_DATA_TRESHOLD); // possible XOR obfuscation, or block cipher
 			if (!entropyT) {
-				;
 				return false;
 			}
 
