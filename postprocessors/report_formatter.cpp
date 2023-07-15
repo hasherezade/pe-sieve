@@ -38,7 +38,7 @@ std::string pesieve::scan_report_to_string(const ProcessScanReport &process_repo
 
 std::string pesieve::scan_report_to_json(
 	const ProcessScanReport &process_report,
-	ProcessScanReport::t_report_filter filter,																															
+	ProcessScanReport::t_report_filter filter,
 	const pesieve::t_json_level &jdetails,
 	size_t start_level
 )
