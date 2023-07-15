@@ -85,7 +85,7 @@ namespace pesieve {
 			if (!data_size || !data_buf) {
 				return false;
 			}
-			if (!stats.fillSettings(settings)) {
+			if (settings && !stats.fillSettings(settings)) {
 				std::cerr << "Settings initialization failed!\n";
 			}
 			stats.setStartOffset(buffer.getStartOffset(skipPadding));
