@@ -162,7 +162,7 @@ $(function() {
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            <span class="keywordflow">if</span> (!data_size || !data_buf) {</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            }</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            <span class="keywordflow">if</span> (!stats.<a class="code hl_function" href="classpesieve_1_1_area_stats.html#a7285129021224b3b7e9796b69b2020e2">fillSettings</a>(settings)) {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            <span class="keywordflow">if</span> (settings &amp;&amp; !stats.<a class="code hl_function" href="classpesieve_1_1_area_stats.html#a7285129021224b3b7e9796b69b2020e2">fillSettings</a>(settings)) {</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                std::cerr &lt;&lt; <span class="stringliteral">&quot;Settings initialization failed!\n&quot;</span>;</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            }</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            stats.<a class="code hl_function" href="classpesieve_1_1_area_stats.html#a6e47c28d9cbf35abe43481e21185808b">setStartOffset</a>(buffer.<a class="code hl_function" href="structpesieve_1_1util_1_1_basic_buffer.html#ad9b00fbd2200ffe7508c708434206a34">getStartOffset</a>(skipPadding));</div>
