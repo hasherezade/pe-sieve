@@ -9,6 +9,7 @@
 #include "stats.h"
 #include "stats_util.h"
 #include "../utils/format_util.h"
+#include "../utils/path_util.h"
 
 namespace pesieve {
 
@@ -147,7 +148,7 @@ namespace pesieve {
 				outs << std::hex << "\"";
 				for (auto itr = values.begin(); itr != values.end(); ++itr) {
 					BYTE mVal = *itr;
-					outs << stats::hexdumpValue<BYTE>(&mVal, sizeof(BYTE));
+					outs << util::escape_path_separators(stats::hexdumpValue<BYTE>(&mVal, sizeof(BYTE)));
 				}
 				outs << "\"";
 			}
