@@ -89,6 +89,13 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 				pesieve::RuleMatchersSet obfMatcher(rules);
 				if (obfMatcher.findMatches(my_report->stats, my_report->area_info)) {
 					obfuscated = true;
+					// filter out cache:
+					if (memPage.mapping_type == MEM_MAPPED // mapped memory
+						&& !util::is_executable(memPage.mapping_type, memPage.protection) // non executable page
+						&& memPage.loadMappedName()) //named
+					{
+						obfuscated = false;
+					}
 				}
 			}
 		}
