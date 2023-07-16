@@ -176,10 +176,12 @@ set (utils_hdrs
 
 set (params_info_hdrs
 	params_info/pe_sieve_params_info.h
+	params_info/params_dump.h
 )
 
 set (params_info_srcs
 	params_info/pe_sieve_params_info.cpp
+	params_info/params_dump.cpp
 )
 
 set (srcs

@@ -110,7 +110,7 @@ namespace pesieve {
 	} PARAM_STRING;
 
 	//!  Input parameters for PE-sieve, defining the configuration.
-	typedef struct {
+	typedef struct params {
 		DWORD pid;                 ///< the PID of the process to be scanned
 		t_dotnet_policy dotnet_policy; ///< policy for scanning .NET modules
 		t_imprec_mode imprec_mode;  ///< import recovery mode
@@ -133,11 +133,12 @@ namespace pesieve {
 	} t_params;
 
 	//!  Final summary about the scanned process.
-	typedef struct {
+	typedef struct report {
 		DWORD pid;              ///< pid of the process that was scanned
 		bool is_managed;        ///< is process managed (.NET)
 		bool is_64bit;          ///< is process 64 bit
 		bool is_reflection;     ///< was the scan performed on process reflection
+		t_params *used_params;   ///< parameters used for the scan
 		DWORD scanned;          ///< number of all scanned modules
 		DWORD suspicious;       ///< general summary of suspicious
 		DWORD replaced;         ///< PE file replaced in memory (probably hollowed)

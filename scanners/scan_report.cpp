@@ -9,6 +9,7 @@
 #include "thread_scanner.h"
 
 #include "../utils/format_util.h"
+#include "../params_info/params_dump.h"
 
 using namespace pesieve;
 using namespace pesieve::util;
@@ -155,6 +156,7 @@ pesieve::t_report pesieve::ProcessScanReport::generateSummary() const
 	summary.is_64bit = this->is64bit;
 	summary.is_managed = this->isManaged;
 	summary.is_reflection = this->isReflection;
+	summary.used_params = this->usedParams;
 	summary.errors = static_cast<DWORD>(this->errorsCount);
 	summary.skipped = static_cast<DWORD>(this->reportsByType[REPORT_SKIPPED_SCAN].size());
 	summary.scanned = static_cast<DWORD>(this->reportsByType[REPORT_HEADERS_SCAN].size());
@@ -229,6 +231,10 @@ const bool pesieve::ProcessScanReport::toJSON(
 	stream << escape_path_separators(this->mainImagePath) << "\",\n";
 	OUT_PADDED(stream, level, "\"used_reflection\" : ");
 	stream << std::dec << report.is_reflection << ",\n";
+	if (report.used_params) {
+		params_to_JSON(*report.used_params, stream, level);
+		stream << ",\n";
+	}
 	OUT_PADDED(stream, level, "\"scanned\" : \n");
 	OUT_PADDED(stream, level, "{\n");
 	//stream << " {\n";
