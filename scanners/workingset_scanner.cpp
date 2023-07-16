@@ -10,6 +10,35 @@
 using namespace pesieve;
 using namespace pesieve::util;
 
+namespace pesieve {
+
+	bool is_by_stats(const t_shellc_mode& shellc_mode)
+	{
+		switch (shellc_mode) {
+		case  SHELLC_STATS:
+		case  SHELLC_PATTERNS_OR_STATS:
+		case SHELLC_PATTERNS_AND_STATS:
+		case SHELLC_PATTERNS_NOT_STATS:
+		case SHELLC_STATS_NOT_PATTERNS:
+			return true;
+		}
+		return false;
+	}
+
+	bool is_by_patterns(const t_shellc_mode& shellc_mode)
+	{
+		switch (shellc_mode) {
+		case  SHELLC_PATTERNS:
+		case  SHELLC_PATTERNS_OR_STATS:
+		case SHELLC_PATTERNS_AND_STATS:
+		case SHELLC_PATTERNS_NOT_STATS:
+		case SHELLC_STATS_NOT_PATTERNS:
+			return true;
+		}
+		return false;
+	}
+};
+
 bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT WorkingSetScanReport* my_report)
 {
 	if (!memPage.load()) {
@@ -18,13 +47,17 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 
 	const bool noPadding = true;
 
-	bool isByStats = (this->args.shellcode == SHELLC_STATS) || (this->args.shellcode == SHELLC_PATTERNS_OR_STATS) || (this->args.shellcode == SHELLC_PATTERNS_AND_STATS);
-	bool isByPatterns = (this->args.shellcode == SHELLC_PATTERNS) || (this->args.shellcode == SHELLC_PATTERNS_OR_STATS) || (this->args.shellcode == SHELLC_PATTERNS_AND_STATS);
+	bool isByStats = is_by_stats(this->args.shellcode);
+	bool isByPatterns = is_by_patterns(this->args.shellcode);
 
 	bool code = false;
+	bool codeS = false;
+	bool codeP = false;
+
 	bool obfuscated = false;
 	if (isByPatterns) {
 		if (is_code(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding))) {
+			codeP = true;
 			code = true;
 			if (this->args.shellcode == SHELLC_PATTERNS_OR_STATS) {
 				isByStats = false; // condition satisfied, no more checks required
@@ -48,12 +81,8 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 
 			pesieve::RuleMatchersSet codeMatcher(RuleMatcher::RULE_CODE);
 			if (codeMatcher.findMatches(my_report->stats, my_report->area_info)) {
+				codeS = true;
 				code = true;
-			}
-			else {
-				if (this->args.shellcode == SHELLC_PATTERNS_AND_STATS) {
-					code = false; //nullify the previous detection, because both should match
-				}
 			}
 
 			if (!code && (this->args.obfuscated != OBFUSC_NONE)) {
@@ -69,7 +98,18 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 		}
 	}
 #endif
-	
+	if (this->args.shellcode == SHELLC_PATTERNS_AND_STATS) {
+		code = (codeP && codeS);
+	}
+	if (this->args.shellcode == SHELLC_PATTERNS_OR_STATS) {
+		code = (codeP || codeS);
+	}
+	else if (this->args.shellcode == SHELLC_PATTERNS_NOT_STATS) {
+		code = (codeP && !codeS);
+	} 
+	else if (this->args.shellcode == SHELLC_STATS_NOT_PATTERNS) {
+		code = (codeS && !codeP);
+	}
 	my_report->has_shellcode = code;
 
 	if ( (this->args.obfuscated != OBFUSC_NONE && obfuscated) || ((this->args.shellcode != SHELLC_NONE) && code) ){

@@ -147,6 +147,10 @@ std::string pesieve::shellc_mode_mode_to_id(const pesieve::t_shellc_mode& mode)
 		return "A";
 	case pesieve::SHELLC_PATTERNS_AND_STATS:
 		return "B";
+	case pesieve::SHELLC_PATTERNS_NOT_STATS:
+		return "PO";
+	case pesieve::SHELLC_STATS_NOT_PATTERNS:
+		return "SO";
 	}
 	return "N";
 }
@@ -164,6 +168,10 @@ std::string pesieve::translate_shellc_mode(const pesieve::t_shellc_mode& mode)
 		return "detect shellcodes by patterns or stats (any match)";
 	case pesieve::SHELLC_PATTERNS_AND_STATS:
 		return "detect shellcodes by patterns and stats (both match)";
+	case pesieve::SHELLC_PATTERNS_NOT_STATS:
+		return "patterns and NOT stats";
+	case pesieve::SHELLC_STATS_NOT_PATTERNS:
+		return "stats and NOT patterns";
 	}
 	return "undefined";
 }

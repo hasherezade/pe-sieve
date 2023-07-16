@@ -33,6 +33,8 @@ namespace pesieve {
 		SHELLC_STATS,              ///< detect shellcodes by stats
 		SHELLC_PATTERNS_OR_STATS, ///< detect shellcodes by patterns or stats (any match)
 		SHELLC_PATTERNS_AND_STATS, ///< detect shellcodes by patterns and stats (both match)
+		SHELLC_STATS_NOT_PATTERNS,
+		SHELLC_PATTERNS_NOT_STATS,
 		SHELLC_COUNT
 	} t_shellc_mode;
 
