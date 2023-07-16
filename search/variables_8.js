@@ -2,7 +2,7 @@ var searchData=
 [
   ['has_5fpe_0',['has_pe',['../classpesieve_1_1_working_set_scan_report.html#aa07022105bbf1530e5fe9f7b0f9c4b71',1,'pesieve::WorkingSetScanReport']]],
   ['has_5fshellcode_1',['has_shellcode',['../classpesieve_1_1_working_set_scan_report.html#aae424b26aea4d4149da47f74a033b2e6',1,'pesieve::WorkingSetScanReport']]],
-  ['hdr_5fmod_2',['hdr_mod',['../structt__report.html#a2136a8c5a16a54bbd30393727808ff3b',1,'t_report']]],
+  ['hdr_5fmod_2',['hdr_mod',['../structreport.html#a87d7a61161d8ca92757893e667c320bb',1,'report']]],
   ['headerbuffer_3',['headerBuffer',['../classpesieve_1_1_remote_module_data.html#a601a27ff576179474ff6270d4bdbc87f',1,'pesieve::RemoteModuleData']]],
   ['hfile_4',['hFile',['../namespacepesieve_1_1util.html#abbfc80ee34aa4b5e1dfa78c1537fe405',1,'pesieve::util']]],
   ['hilighted_5fcolor_5',['HILIGHTED_COLOR',['../namespacepesieve.html#a1eba647f3f36f78d8280a93989228576',1,'pesieve']]],

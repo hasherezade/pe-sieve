@@ -1,5 +1,9 @@
 <map id="pesieve::ProcessScanReport::toJSON" name="pesieve::ProcessScanReport::toJSON">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,194,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="242,5,379,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,23,227,23,227,28,194,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,194,75"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="261,5,399,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,40,246,34,247,39,194,46"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve.html#ad6fc2f3cb7faad855bcfd618b480fa97" title=" " alt="" coords="242,70,418,96"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="194,64,227,68,227,73,194,69"/>
+<area shape="rect" id="Node000004" href="$namespacepesieve.html#a8cef9035da700c25213df64d11fecad5" title=" " alt="" coords="466,63,618,103"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="418,80,451,80,451,86,418,86"/>
 </map>

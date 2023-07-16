@@ -2,7 +2,7 @@ var searchData=
 [
   ['padding_0',['padding',['../structpesieve_1_1util_1_1_basic_buffer.html#ad5657f78b2180b5108e98124221038fd',1,'pesieve::util::BasicBuffer']]],
   ['params_1',['params',['../namespacedemo.html#a2abe40a1128014a270b50c4e2a4c3d22',1,'demo']]],
-  ['patched_2',['patched',['../structt__report.html#aee5bc0034029f85e0153488664b9e9f9',1,'t_report']]],
+  ['patched_2',['patched',['../structreport.html#a4f5d5e2a80f9380241ec608f97d0bc6e',1,'report']]],
   ['patchedcode_3',['patchedCode',['../classpesieve_1_1_patch_analyzer.html#a6129a18c4f9cd277f6287487b1eabaed',1,'pesieve::PatchAnalyzer']]],
   ['patches_4',['patches',['../classpesieve_1_1_patch_list.html#a710aedad5735be4dd469bfd044b42205',1,'pesieve::PatchList']]],
   ['patcheslist_5',['patchesList',['../classpesieve_1_1_code_scan_report.html#a5f8a3a7e32ccea7994926dd5d9dd6db5',1,'pesieve::CodeScanReport']]],
@@ -45,7 +45,7 @@ var searchData=
   ['pesieve_5fmin_5fver_42',['PESIEVE_MIN_VER',['../namespacepesieve.html#a96ecbddb71934bfb5bdf81c6e6410d1b',1,'pesieve']]],
   ['pesieve_5furl_43',['PESIEVE_URL',['../namespacepesieve.html#a44d993e40920cc6d127f21c540d75ab2',1,'pesieve']]],
   ['pesieve_5fversion_44',['PESieve_version',['../namespacepesieve.html#a909ddb0a64bdb58430cc192a985408ab',1,'pesieve.PESieve_version'],['../pe__sieve__api_8h.html#a6be0480c25b378dc8d39dd55aa3ac372',1,'PESieve_version:&#160;pe_sieve_api.h'],['../pe__sieve__api_8cpp.html#a6be0480c25b378dc8d39dd55aa3ac372',1,'PESieve_version:&#160;pe_sieve_api.cpp']]],
-  ['pid_45',['pid',['../classpesieve_1_1_process_scan_report.html#a4ff2814953f08eb5a0850a2584bfd465',1,'pesieve::ProcessScanReport::pid'],['../structt__params.html#a421196aa446c8265cb60ee9e3d1ae3de',1,'t_params::pid'],['../structt__report.html#a86a05a2872f073f1904ae57ac3f84144',1,'t_report::pid'],['../classpesieve_1_1_process_dump_report.html#a36c35f1e8ae57b581b744a37d6be1475',1,'pesieve::ProcessDumpReport::pid'],['../namespacedemo.html#a185d3a2bf599ae1d9ff64af0a8e112de',1,'demo.pid']]],
+  ['pid_45',['pid',['../classpesieve_1_1_process_scan_report.html#a4ff2814953f08eb5a0850a2584bfd465',1,'pesieve::ProcessScanReport::pid'],['../structparams.html#a6002713892aecb1e58747924e456b4ac',1,'params::pid'],['../structreport.html#ae6521af7111d98e3fa8e3c7e31aa3f9f',1,'report::pid'],['../classpesieve_1_1_process_dump_report.html#a36c35f1e8ae57b581b744a37d6be1475',1,'pesieve::ProcessDumpReport::pid'],['../namespacedemo.html#a185d3a2bf599ae1d9ff64af0a8e112de',1,'demo.pid']]],
   ['prevmempage_46',['prevMemPage',['../classpesieve_1_1_artefact_scanner.html#a91c29ad889c673db831026d20021d9ef',1,'pesieve::ArtefactScanner']]],
   ['prevval_47',['prevVal',['../structpesieve_1_1_chunk_stats.html#a5b737ecce1ce51f1b93002ac479b2058',1,'pesieve::ChunkStats']]],
   ['processhandle_48',['processHandle',['../classpesieve_1_1_process_scanner.html#a57ea4a0721aa70d5b10ba0fd0b6ab9ae',1,'pesieve::ProcessScanner::processHandle'],['../classpesieve_1_1_process_feature_scanner.html#a46f463f3d04c8748d6a7d36cd6b40256',1,'pesieve::ProcessFeatureScanner::processHandle'],['../classpesieve_1_1_remote_module_data.html#a9b7a0af420fd8278c27e97baf181c292',1,'pesieve::RemoteModuleData::processHandle'],['../classpesieve_1_1_module_data.html#adbe2cdc797965b522a78c795c6b14e33',1,'pesieve::ModuleData::processHandle'],['../classpesieve_1_1_mem_page_data.html#a53c7d7c2e157e4976fc9ac69d42e7b31',1,'pesieve::MemPageData::processHandle']]],

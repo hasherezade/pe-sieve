@@ -95,12 +95,12 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a38a7c5d0933d4e53528f4a8589a0f7ed"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pe__sieve__api_8cpp.html#a38a7c5d0933d4e53528f4a8589a0f7ed">print_report</a> (const <a class="el" href="classpesieve_1_1_report_ex.html">pesieve::ReportEx</a> &amp;report, const <a class="el" href="classpesieve_1_1t__params.html">pesieve::t_params</a> args, const <a class="el" href="classpesieve_1_1t__report__type.html">t_report_type</a> rtype, char *json_buf, size_t json_buf_size)</td></tr>
+<tr class="memitem:a38a7c5d0933d4e53528f4a8589a0f7ed"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pe__sieve__api_8cpp.html#a38a7c5d0933d4e53528f4a8589a0f7ed">print_report</a> (const <a class="el" href="classpesieve_1_1_report_ex.html">pesieve::ReportEx</a> &amp;<a class="el" href="structreport.html">report</a>, const <a class="el" href="classpesieve_1_1t__params.html">pesieve::t_params</a> args, const <a class="el" href="classpesieve_1_1t__report__type.html">t_report_type</a> rtype, char *json_buf, size_t json_buf_size)</td></tr>
 <tr class="separator:a38a7c5d0933d4e53528f4a8589a0f7ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5ff4b4b18f55c344f1b946b9d9eb47b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__api_8h.html#ab9c9b0bb96563edfc03236f9b522dd91">PEsieve_report</a> <a class="el" href="pe__sieve__api_8h.html#af8a670441ca96827a2997727a85d9ca3">PESIEVE_API_FUNC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pe__sieve__api_8cpp.html#ab5ff4b4b18f55c344f1b946b9d9eb47b">PESieve_scan_ex</a> (IN const <a class="el" href="pe__sieve__api_8h.html#a6fd416fe2fa8efb29be1fd09956cbf31">PEsieve_params</a> &amp;args, IN const <a class="el" href="pe__sieve__api_8h.html#a318ffb82c89dcbe1c7914790a2b0df41">PEsieve_rtype</a> rtype, OUT char *json_buf, IN size_t json_buf_size, OUT size_t *needed_size)</td></tr>
 <tr class="separator:ab5ff4b4b18f55c344f1b946b9d9eb47b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73a78415de92b2741cfadf2587ba2f85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__api_8h.html#ab9c9b0bb96563edfc03236f9b522dd91">PEsieve_report</a> <a class="el" href="pe__sieve__api_8h.html#af8a670441ca96827a2997727a85d9ca3">PESIEVE_API_FUNC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pe__sieve__api_8cpp.html#a73a78415de92b2741cfadf2587ba2f85">PESieve_scan</a> (IN const <a class="el" href="pe__sieve__api_8h.html#a6fd416fe2fa8efb29be1fd09956cbf31">PEsieve_params</a> &amp;args)</td></tr>
-<tr class="memdesc:a73a78415de92b2741cfadf2587ba2f85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a PE-sieve scan with a supplied set of parameters (defined as a structure <a class="el" href="structt__params.html" title="Input parameters for PE-sieve, defining the configuration.">t_params</a>). Returns a summary of the scan in a variable of type <a class="el" href="structt__report.html" title="Final summary about the scanned process.">t_report</a>.  <br /></td></tr>
+<tr class="memdesc:a73a78415de92b2741cfadf2587ba2f85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a PE-sieve scan with a supplied set of parameters (defined as a structure t_params). Returns a summary of the scan in a variable of type t_report.  <br /></td></tr>
 <tr class="separator:a73a78415de92b2741cfadf2587ba2f85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa092db8bd00f4bbda08c9b6a6663624"><td class="memItemLeft" align="right" valign="top">void <a class="el" href="pe__sieve__api_8h.html#af8a670441ca96827a2997727a85d9ca3">PESIEVE_API_FUNC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pe__sieve__api_8cpp.html#aaa092db8bd00f4bbda08c9b6a6663624">PESieve_help</a> (void)</td></tr>
 <tr class="memdesc:aaa092db8bd00f4bbda08c9b6a6663624"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shows a MessageBox with the informations about PE-sieve.  <br /></td></tr>
@@ -193,7 +193,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Performs a PE-sieve scan with a supplied set of parameters (defined as a structure <a class="el" href="structt__params.html" title="Input parameters for PE-sieve, defining the configuration.">t_params</a>). Returns a summary of the scan in a variable of type <a class="el" href="structt__report.html" title="Final summary about the scanned process.">t_report</a>. </p>
+<p>Performs a PE-sieve scan with a supplied set of parameters (defined as a structure t_params). Returns a summary of the scan in a variable of type t_report. </p>
 
 <p class="definition">Definition at line <a class="el" href="pe__sieve__api_8cpp_source.html#l00067">67</a> of file <a class="el" href="pe__sieve__api_8cpp_source.html">pe_sieve_api.cpp</a>.</p>
 <div class="dynheader">
@@ -579,11 +579,15 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="295,69,330,75,329,80,294,74"/>
 <area shape="rect" href="classpesieve_1_1_process_dump_report.html#a02c2ea00dee5a50a7053bfa9baa43e47" title=" " alt="" coords="534,5,727,46"/>
 <area shape="poly" title=" " alt="" coords="487,23,519,23,519,28,487,28"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="775,39,912,79"/>
-<area shape="poly" title=" " alt="" coords="727,38,760,43,759,49,727,43"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="794,9,932,50"/>
+<area shape="poly" title=" " alt="" coords="727,25,779,26,779,31,727,30"/>
 <area shape="rect" href="classpesieve_1_1_process_scan_report.html#a1269fd73204b2b9171466ac32bc03252" title=" " alt="" coords="536,71,725,111"/>
 <area shape="poly" title=" " alt="" coords="485,88,521,88,521,94,485,94"/>
-<area shape="poly" title=" " alt="" coords="725,74,760,69,760,74,726,79"/>
+<area shape="poly" title=" " alt="" coords="710,67,779,49,781,54,711,73"/>
+<area shape="rect" href="namespacepesieve.html#ad6fc2f3cb7faad855bcfd618b480fa97" title=" " alt="" coords="775,78,951,104"/>
+<area shape="poly" title=" " alt="" coords="725,88,760,88,760,94,725,94"/>
+<area shape="rect" href="namespacepesieve.html#a8cef9035da700c25213df64d11fecad5" title=" " alt="" coords="999,71,1151,111"/>
+<area shape="poly" title=" " alt="" coords="951,88,984,88,984,94,951,94"/>
 </map>
 </div>
 

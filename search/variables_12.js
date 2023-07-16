@@ -1,7 +1,7 @@
 var searchData=
 [
   ['scan_5freport_0',['scan_report',['../classpesieve_1_1_report_ex.html#a5296eb351710f7570665fd7f54e6679f',1,'pesieve::ReportEx']]],
-  ['scanned_1',['scanned',['../structt__report.html#a4e2765f66dd30e689b064962a9c533bc',1,'t_report']]],
+  ['scanned_1',['scanned',['../structreport.html#a341523afe8a966c5c558be2605c0a39f',1,'report']]],
   ['sec_5fcount_2',['sec_count',['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#a818d4a81fa2f58dd4d624ea44501b553',1,'pesieve::ArtefactScanner::ArtefactsMapping']]],
   ['sec_5fhdr_3',['sec_hdr',['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#a5b65cbe2339d8e1224804b9219b9db0a',1,'pesieve::ArtefactScanner::ArtefactsMapping']]],
   ['seccount_4',['secCount',['../classpesieve_1_1_pe_artefacts.html#ab7df443a45b2f2cf6bb0af36b2f4c5fd',1,'pesieve::PeArtefacts']]],
@@ -10,9 +10,9 @@ var searchData=
   ['sectionrva_7',['sectionRVA',['../classpesieve_1_1_patch_analyzer.html#a34eb7c1430a1851749e5e096e9a2dbfa',1,'pesieve::PatchAnalyzer']]],
   ['sectiontoresult_8',['sectionToResult',['../classpesieve_1_1_code_scan_report.html#ade146d4d6dff33f669825e68d2d035da',1,'pesieve::CodeScanReport']]],
   ['settings_9',['settings',['../structpesieve_1_1_chunk_stats.html#a1268301237205e183a7fd2d097c70397',1,'pesieve::ChunkStats']]],
-  ['shellcode_10',['shellcode',['../namespacedemo.html#a6cdb502544cf88590852419885d95c92',1,'demo.shellcode'],['../structt__params.html#a928d35532e6a69b6ce8a9749d7a3461a',1,'t_params::shellcode']]],
+  ['shellcode_10',['shellcode',['../namespacedemo.html#a6cdb502544cf88590852419885d95c92',1,'demo.shellcode'],['../structparams.html#a5063529cd6e6950334929d22164d3868',1,'params::shellcode']]],
   ['size_11',['size',['../structpesieve_1_1_chunk_stats.html#a1a99134b17150d91a46a5a3a669063bc',1,'pesieve::ChunkStats::size'],['../structpesieve_1_1t__pattern.html#adcacd3ece43241726f6c8f1c05dff150',1,'pesieve::t_pattern::size'],['../structpesieve_1_1util_1_1__mem__region__info.html#a5b8ade2cf0b8931e4f81b98ae2bfdac5',1,'pesieve::util::_mem_region_info::size']]],
-  ['skipped_12',['skipped',['../structt__report.html#aa8b7ccd280287ebc6a2adb185beb531a',1,'t_report']]],
+  ['skipped_12',['skipped',['../structreport.html#aa49ebcf3170fe05413a02a2af0ef5d9b',1,'report']]],
   ['snapshothandle_13',['SnapshotHandle',['../namespacepesieve_1_1util.html#a6af9e73116d4d74647d319a492b721b0',1,'pesieve::util']]],
   ['stack_5fframe_14',['stack_frame',['../struct__t__stack__enum__params.html#afd374d69c557b225099cff673e6ab6d7',1,'_t_stack_enum_params']]],
   ['start_15',['start',['../classpesieve_1_1_scanned_module.html#a1257d00fc075f58c68a2f2f3ee2580c3',1,'pesieve::ScannedModule']]],
@@ -28,6 +28,6 @@ var searchData=
   ['stop_5fva_25',['stop_va',['../classpesieve_1_1_mem_page_data.html#a7c151bd819b2444eb7e93c92fcd4f8ce',1,'pesieve::MemPageData']]],
   ['storedfunc_26',['storedFunc',['../classpesieve_1_1_i_a_t_scan_report.html#a7a631d5a508e52d214764f5d25490b2e',1,'pesieve::IATScanReport']]],
   ['stringscount_27',['stringsCount',['../structpesieve_1_1_chunk_stats.html#a41e1a3748f347a69f1db454cb3dd2651',1,'pesieve::ChunkStats']]],
-  ['suspicious_28',['suspicious',['../structt__report.html#a822d97e839761f50f8d0377d139cbf2f',1,'t_report']]],
+  ['suspicious_28',['suspicious',['../structreport.html#a5ee5e4dbcf6777455b2b32b1529d4980',1,'report']]],
   ['szmodname_29',['szModName',['../classpesieve_1_1_module_data.html#ab7463bd2db1ce6343e1be66600c48cd8',1,'pesieve::ModuleData']]]
 ];

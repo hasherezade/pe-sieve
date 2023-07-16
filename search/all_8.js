@@ -12,7 +12,7 @@ var searchData=
   ['hassectionhdrs_9',['hasSectionHdrs',['../classpesieve_1_1_pe_artefacts.html#a19961a28022c5d2e0616d0d3510f12ef',1,'pesieve::PeArtefacts']]],
   ['hasshellcode_10',['hasShellcode',['../classpesieve_1_1_artefact_scanner.html#a22afe7bbf01e096fa32c6c44e7ddbb0a',1,'pesieve::ArtefactScanner']]],
   ['haswatchedsubstring_11',['hasWatchedSubstring',['../structpesieve_1_1_multi_stats_settings.html#a3e718c8a7a6d70c36c27b399ef5af9ca',1,'pesieve::MultiStatsSettings']]],
-  ['hdr_5fmod_12',['hdr_mod',['../structt__report.html#a2136a8c5a16a54bbd30393727808ff3b',1,'t_report']]],
+  ['hdr_5fmod_12',['hdr_mod',['../structreport.html#a87d7a61161d8ca92757893e667c320bb',1,'report']]],
   ['headerbuffer_13',['headerBuffer',['../classpesieve_1_1_remote_module_data.html#a601a27ff576179474ff6270d4bdbc87f',1,'pesieve::RemoteModuleData']]],
   ['headers_5fscanner_2ecpp_14',['headers_scanner.cpp',['../headers__scanner_8cpp.html',1,'']]],
   ['headers_5fscanner_2eh_15',['headers_scanner.h',['../headers__scanner_8h.html',1,'']]],
