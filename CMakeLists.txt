@@ -282,6 +282,7 @@ set (used_libs
 	psapi.lib
 	ntdll.lib
 	shlwapi
+	imagehlp
 )
 
 # dependencies
