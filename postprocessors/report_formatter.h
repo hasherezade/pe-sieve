@@ -14,5 +14,5 @@ namespace pesieve {
 
 	std::string report_to_json(const pesieve::ReportEx& report, const t_report_type rtype, ProcessScanReport::t_report_filter filter, const pesieve::t_json_level& jdetails, size_t start_level=0);
 
-}; // namespace pesieve														   
+}; // namespace pesieve
 
