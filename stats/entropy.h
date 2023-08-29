@@ -25,7 +25,7 @@ namespace pesieve {
 			double entropy = 0;
 			for (auto it = histogram.begin(); it != histogram.end(); ++it) {
 				double p_x = (double)it->second / totalSize;
-				if (p_x > 0) entropy -= p_x * log(p_x) / log(2);
+				if (p_x > 0) entropy -= p_x * log(p_x) / log((double)2);
 			}
 			return entropy;
 		}
