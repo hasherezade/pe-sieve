@@ -3,8 +3,8 @@
 import ctypes
 import os
 
-PESIEVE_MIN_VER = 0x030600 # minimal version of the PE-sieve DLL to work with this wrapper
-PESIEVE_MAX_VER = 0x030600 # maximal version of the PE-sieve DLL to work with this wrapper
+PESIEVE_MIN_VER = 0x030800 # minimal version of the PE-sieve DLL to work with this wrapper
+PESIEVE_MAX_VER = 0x030800 # maximal version of the PE-sieve DLL to work with this wrapper
 
 ERROR_SCAN_FAILURE = -1
 MAX_PATH =  260
@@ -23,7 +23,22 @@ class t_output_filter(ctypes.c_int):
 	OUT_NO_DUMPS = 1
 	OUT_NO_DIR = 2
 	OUT_FILTERS_COUNT = 3
-
+    
+class t_shellc_mode(ctypes.c_int):
+	SHELLC_NONE = 0
+	SHELLC_PATTERNS = 1
+	SHELLC_STATS = 2
+	SHELLC_PATTERNS_OR_STATS = 3
+	SHELLC_PATTERNS_AND_STATS = 4
+	SHELLC_COUNT = 5
+    
+class t_obfusc_mode(ctypes.c_int):
+	OBFUSC_NONE = 0
+	OBFUSC_STRONG_ENC = 1
+	OBFUSC_WEAK_ENC = 2
+	OBFUSC_ANY = 3
+	OBFUSC_COUNT = 4
+    
 class t_imprec_mode(ctypes.c_int):
 	PE_IMPREC_NONE = 0
 	PE_IMPREC_AUTO = 1
@@ -90,7 +105,8 @@ class t_params(ctypes.Structure):
 		('quiet', ctypes.c_bool),
 		('out_filter', t_output_filter),
 		('no_hooks', ctypes.c_bool),
-		('shellcode', ctypes.c_bool),
+		('shellcode', t_shellc_mode),
+		('obfuscated', t_obfusc_mode),
 		('threads', ctypes.c_bool),
 		('iat', t_iat_scan_mode),
 		('data', t_data_scan_mode),
