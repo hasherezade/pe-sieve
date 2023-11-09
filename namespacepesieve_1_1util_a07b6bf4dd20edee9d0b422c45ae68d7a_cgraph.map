@@ -1,7 +1,7 @@
 <map id="pesieve::util::fetch_threads_info" name="pesieve::util::fetch_threads_info">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,23,130,64"/>
 <area shape="rect" id="Node000002" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="214,5,308,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,33,200,23,200,29,131,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,33,199,24,200,29,131,38"/>
 <area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#a31ce9e0299d60a275b024faa3e45ef62" title=" " alt="" coords="178,55,344,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="131,49,163,53,162,58,130,54"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="131,49,162,53,162,58,130,54"/>
 </map>

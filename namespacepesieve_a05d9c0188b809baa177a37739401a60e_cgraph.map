@@ -1,7 +1,7 @@
 <map id="pesieve.PESieve_help" name="pesieve.PESieve_help">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,156,31"/>
 <area shape="rect" id="Node000002" href="$namespacepesieve.html#a2053c41480ba617357fa427bc8252c64" title=" " alt="" coords="204,5,290,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,16,189,16,189,21,156,21"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,16,188,16,188,21,156,21"/>
 <area shape="rect" id="Node000003" href="$namespacepesieve.html#a5bc445e48dd401d29d9caaeb1dd8753e" title=" " alt="" coords="338,5,489,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="290,16,323,16,323,21,290,21"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="290,16,322,16,322,21,290,21"/>
 </map>

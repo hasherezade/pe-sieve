@@ -1,11 +1,11 @@
 <map id="pesieve::util::is_process_wow64" name="pesieve::util::is_process_wow64">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,27,164,68"/>
 <area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="212,5,344,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,33,197,28,198,33,164,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,33,196,28,197,33,164,38"/>
 <area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="221,55,335,96"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,56,207,63,206,68,164,62"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,56,206,62,206,68,164,62"/>
 <area shape="rect" id="Node000004" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="392,63,497,88"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="335,73,377,73,377,78,335,78"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="335,73,376,73,376,78,335,78"/>
 <area shape="rect" id="Node000005" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="545,55,719,96"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="498,73,531,73,531,78,498,78"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="498,73,530,73,530,78,498,78"/>
 </map>

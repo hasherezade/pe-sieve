@@ -1,9 +1,9 @@
 <map id="PESieve_scan" name="PESieve_scan">
 <area shape="rect" id="Node000001" title="Performs a PE&#45;sieve scan with a supplied set of parameters (defined as a structure t_params)...." alt="" coords="5,5,112,31"/>
 <area shape="rect" id="Node000002" href="$namespacepesieve.html#abf1ea9906614a0fac7fd24715abb1bb3" title=" " alt="" coords="160,5,334,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,16,145,16,145,21,112,21"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,16,144,16,144,21,112,21"/>
 <area shape="rect" id="Node000003" href="$namespacepesieve.html#a2053c41480ba617357fa427bc8252c64" title=" " alt="" coords="382,5,468,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="334,16,367,16,367,21,334,21"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="334,16,366,16,366,21,334,21"/>
 <area shape="rect" id="Node000004" href="$namespacepesieve.html#a5bc445e48dd401d29d9caaeb1dd8753e" title=" " alt="" coords="516,5,668,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="469,16,502,16,502,21,469,21"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="469,16,501,16,501,21,469,21"/>
 </map>
