@@ -11,7 +11,6 @@ var searchData=
   ['use_5fprocess_5fsnapshot_8',['USE_PROCESS_SNAPSHOT',['../process__reflection_8h.html#af73b804b0cab1a4f9089edf8d5119afa',1,'process_reflection.h']]],
   ['use_5frtl_5fprocess_5freflection_9',['USE_RTL_PROCESS_REFLECTION',['../process__reflection_8h.html#a993613298a5db34e41e07004f1a43dca',1,'process_reflection.h']]],
   ['usecache_10',['useCache',['../classpesieve_1_1_module_data.html#add3ec24357fc53606f9d379b871ae82a',1,'pesieve::ModuleData']]],
-  ['used_5fparams_11',['used_params',['../structreport.html#a7a9c547327efb24c07ae41bd1e7b6a88',1,'report']]],
-  ['usedparams_12',['usedParams',['../classpesieve_1_1_process_scan_report.html#a4fd157d1e0f2b39e103eb8e40fab68ba',1,'pesieve::ProcessScanReport']]],
-  ['userstreamparam_13',['UserStreamParam',['../namespacepesieve_1_1util.html#a3947a66776a314e29f3b8996698add6e',1,'pesieve::util']]]
+  ['usedparams_11',['usedParams',['../classpesieve_1_1_process_scan_report.html#a4fd157d1e0f2b39e103eb8e40fab68ba',1,'pesieve::ProcessScanReport']]],
+  ['userstreamparam_12',['UserStreamParam',['../namespacepesieve_1_1util.html#a3947a66776a314e29f3b8996698add6e',1,'pesieve::util']]]
 ];
