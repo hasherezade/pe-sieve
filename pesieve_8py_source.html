@@ -88,8 +88,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">import</span> ctypes</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> os</div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespacepesieve.html#a96ecbddb71934bfb5bdf81c6e6410d1b">    6</a></span>PESIEVE_MIN_VER = 0x030600 <span class="comment"># minimal version of the PE-sieve DLL to work with this wrapper</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacepesieve.html#aa49edaed56fbdafac80aaa7e7774a602">    7</a></span>PESIEVE_MAX_VER = 0x030600 <span class="comment"># maximal version of the PE-sieve DLL to work with this wrapper</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespacepesieve.html#a96ecbddb71934bfb5bdf81c6e6410d1b">    6</a></span>PESIEVE_MIN_VER = 0x030800 <span class="comment"># minimal version of the PE-sieve DLL to work with this wrapper</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacepesieve.html#aa49edaed56fbdafac80aaa7e7774a602">    7</a></span>PESIEVE_MAX_VER = 0x030800 <span class="comment"># maximal version of the PE-sieve DLL to work with this wrapper</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespacepesieve.html#a267e690d8ed5004a62be6a7ce04f7617">    9</a></span>ERROR_SCAN_FAILURE = -1</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespacepesieve.html#a1cb84e5f71928d34d7e7169a19964a9c">   10</a></span>MAX_PATH =  260</div>
@@ -111,212 +111,234 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__output__filter.html#a761b477c34fe837c5d9802caea5289ef">   23</a></span>    OUT_NO_DUMPS = 1</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__output__filter.html#a50e538381feb5b398f8466ee4ee267db">   24</a></span>    OUT_NO_DIR = 2</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__output__filter.html#a09f632278c43059100fbfee5ccbf7272">   25</a></span>    OUT_FILTERS_COUNT = 3</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    </div>
 </div>
 <div class="foldopen" id="foldopen00027" data-start="" data-end="">
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html">   27</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__imprec__mode.html">t_imprec_mode</a>(ctypes.c_int):</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html#a9cdddc178c695fca9e204ca702c0547d">   28</a></span>    PE_IMPREC_NONE = 0</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html#a9015a5852436e65c44d90515751a4126">   29</a></span>    PE_IMPREC_AUTO = 1</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html#a75dfb2ed517ea1ed1f78eb43e4642f4c">   30</a></span>    PE_IMPREC_UNERASE = 2</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html#a8f4e6b32be350f25538cc27a711ca948">   31</a></span>    PE_IMPREC_REBUILD0 = 3</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html#a9cc72242b9a2215d1304c72456e2e802">   32</a></span>    PE_IMPREC_REBUILD1 = 4</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html#a944f41153a3986ad7bf37f7d76041120">   33</a></span>    PE_IMPREC_REBUILD2 = 5</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html#a70f263d5bf601d351f047e5699c66785">   34</a></span>    PE_IMPREC_MODES_COUNT = 6</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__shellc__mode.html">   27</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__shellc__mode.html">t_shellc_mode</a>(ctypes.c_int):</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__shellc__mode.html#a7d4e9c7bdc63e28079f0a663287371aa">   28</a></span>    SHELLC_NONE = 0</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__shellc__mode.html#a4371c512776afe9e6faeac818be15c14">   29</a></span>    SHELLC_PATTERNS = 1</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__shellc__mode.html#a67ddfa30a058f878421d277af59fbf2e">   30</a></span>    SHELLC_STATS = 2</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__shellc__mode.html#a7ed46ef5720148741ee3d9d1f416694a">   31</a></span>    SHELLC_PATTERNS_OR_STATS = 3</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__shellc__mode.html#a16c88cc8e50ca3b6a8e08942d93475f1">   32</a></span>    SHELLC_PATTERNS_AND_STATS = 4</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__shellc__mode.html#abb24e6cbf35bbad15709d7b7c4d21c71">   33</a></span>    SHELLC_COUNT = 5</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    </div>
 </div>
-<div class="foldopen" id="foldopen00036" data-start="" data-end="">
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dump__mode.html">   36</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__dump__mode.html">t_dump_mode</a>(ctypes.c_int):</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dump__mode.html#ab37639ac675f18ce47c81a2168763439">   37</a></span>    PE_DUMP_AUTO = 0</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dump__mode.html#a8b240999c8f0b591428a273f76e9df57">   38</a></span>    PE_DUMP_VIRTUAL = 1</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dump__mode.html#a145b7beef4c06f1579a24525eae81491">   39</a></span>    PE_DUMP_UNMAP = 2</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dump__mode.html#aebfd7000c1e2b08c6564eccab41a9741">   40</a></span>    PE_DUMP_REALIGN = 3</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dump__mode.html#ad2dd848d187670203c87e78ece0c53e0">   41</a></span>    PE_DUMP_MODES_COUNT = 4</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="foldopen" id="foldopen00035" data-start="" data-end="">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__obfusc__mode.html">   35</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__obfusc__mode.html">t_obfusc_mode</a>(ctypes.c_int):</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__obfusc__mode.html#ada0506d8cdf9eb1d88968d9c5ca1111d">   36</a></span>    OBFUSC_NONE = 0</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__obfusc__mode.html#a190bf3aa247ea579afe0db7c379ca5ce">   37</a></span>    OBFUSC_STRONG_ENC = 1</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__obfusc__mode.html#af993183caed734dac89aadedb1e8996c">   38</a></span>    OBFUSC_WEAK_ENC = 2</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__obfusc__mode.html#a5535c188e08b294a9dc08b7623e9c086">   39</a></span>    OBFUSC_ANY = 3</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__obfusc__mode.html#adc3012359ae8c6d67a83595cdec939f0">   40</a></span>    OBFUSC_COUNT = 4</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    </div>
 </div>
-<div class="foldopen" id="foldopen00043" data-start="" data-end="">
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__iat__scan__mode.html">   43</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__iat__scan__mode.html">t_iat_scan_mode</a>(ctypes.c_int):</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__iat__scan__mode.html#a57b55721f5d8c7b7876a8f203a6b67e0">   44</a></span>    PE_IATS_NONE = 0</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__iat__scan__mode.html#a56973ade8fea93b248a11fd6e11cc503">   45</a></span>    PE_IATS_CLEAN_SYS_FILTERED = 1</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__iat__scan__mode.html#a22d71bcd4176be35f7a1878b6eceb855">   46</a></span>    PE_IATS_ALL_SYS_FILTERED = 2</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__iat__scan__mode.html#a7ba5df374ce8a1b9450d2396ed8b56b8">   47</a></span>    PE_IATS_UNFILTERED = 3</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__iat__scan__mode.html#ab49da33c69e7d72f6080a63ca5eebf32">   48</a></span>    PE_IATS_MODES_COUNT = 4</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="foldopen" id="foldopen00042" data-start="" data-end="">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html">   42</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__imprec__mode.html">t_imprec_mode</a>(ctypes.c_int):</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html#a9cdddc178c695fca9e204ca702c0547d">   43</a></span>    PE_IMPREC_NONE = 0</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html#a9015a5852436e65c44d90515751a4126">   44</a></span>    PE_IMPREC_AUTO = 1</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html#a75dfb2ed517ea1ed1f78eb43e4642f4c">   45</a></span>    PE_IMPREC_UNERASE = 2</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html#a8f4e6b32be350f25538cc27a711ca948">   46</a></span>    PE_IMPREC_REBUILD0 = 3</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html#a9cc72242b9a2215d1304c72456e2e802">   47</a></span>    PE_IMPREC_REBUILD1 = 4</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html#a944f41153a3986ad7bf37f7d76041120">   48</a></span>    PE_IMPREC_REBUILD2 = 5</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__imprec__mode.html#a70f263d5bf601d351f047e5699c66785">   49</a></span>    PE_IMPREC_MODES_COUNT = 6</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 </div>
-<div class="foldopen" id="foldopen00050" data-start="" data-end="">
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dotnet__policy.html">   50</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__dotnet__policy.html">t_dotnet_policy</a>(ctypes.c_int):</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dotnet__policy.html#a7ec039b126671947049406e050bf7bff">   51</a></span>    PE_DNET_NONE = 0</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dotnet__policy.html#a47b527d74f9c397dfc55e812e3d7bfe1">   52</a></span>    PE_DNET_SKIP_MAPPING = 1</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dotnet__policy.html#a2282e282e57b4f280b6f74561e074092">   53</a></span>    PE_DNET_SKIP_SHC = 2</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dotnet__policy.html#adae2783c14c64597b239eb40b5296df2">   54</a></span>    PE_DNET_SKIP_HOOKS = 3</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dotnet__policy.html#a7a2320ff743bd167f8032551dd1d8b9e">   55</a></span>    PE_DNET_SKIP_ALL = 4</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dotnet__policy.html#a3afdaa82ed858cd130148667e793465a">   56</a></span>    PE_DNET_COUNT = 5</div>
+<div class="foldopen" id="foldopen00051" data-start="" data-end="">
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dump__mode.html">   51</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__dump__mode.html">t_dump_mode</a>(ctypes.c_int):</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dump__mode.html#ab37639ac675f18ce47c81a2168763439">   52</a></span>    PE_DUMP_AUTO = 0</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dump__mode.html#a8b240999c8f0b591428a273f76e9df57">   53</a></span>    PE_DUMP_VIRTUAL = 1</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dump__mode.html#a145b7beef4c06f1579a24525eae81491">   54</a></span>    PE_DUMP_UNMAP = 2</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dump__mode.html#aebfd7000c1e2b08c6564eccab41a9741">   55</a></span>    PE_DUMP_REALIGN = 3</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dump__mode.html#ad2dd848d187670203c87e78ece0c53e0">   56</a></span>    PE_DUMP_MODES_COUNT = 4</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
 </div>
 <div class="foldopen" id="foldopen00058" data-start="" data-end="">
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html">   58</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__data__scan__mode.html">t_data_scan_mode</a>(ctypes.c_int):</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html#aaf2fa9ebf837b8213eeabe2678ba66e4">   59</a></span>    PE_DATA_NO_SCAN = 0</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html#a5903f314a8132cc90ca108eea9add239">   60</a></span>    PE_DATA_SCAN_DOTNET = 1</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html#afe9d2e4ac0fb9a7a8014b0b751640fbd">   61</a></span>    PE_DATA_SCAN_NO_DEP = 2</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html#a12e0d0026f251a37514471f700ae469e">   62</a></span>    PE_DATA_SCAN_ALWAYS = 3</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html#a7ba0067308a911dfb83696843855632d">   63</a></span>    PE_DATA_SCAN_INACCESSIBLE = 4</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html#a47c86a745c04cb21ebf12cd6cf995b95">   64</a></span>    PE_DATA_SCAN_INACCESSIBLE_ONLY = 5</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html#a7971125716167a1a53cb4b444b368a56">   65</a></span>    PE_DATA_COUNT = 6</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__iat__scan__mode.html">   58</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__iat__scan__mode.html">t_iat_scan_mode</a>(ctypes.c_int):</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__iat__scan__mode.html#a57b55721f5d8c7b7876a8f203a6b67e0">   59</a></span>    PE_IATS_NONE = 0</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__iat__scan__mode.html#a56973ade8fea93b248a11fd6e11cc503">   60</a></span>    PE_IATS_CLEAN_SYS_FILTERED = 1</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__iat__scan__mode.html#a22d71bcd4176be35f7a1878b6eceb855">   61</a></span>    PE_IATS_ALL_SYS_FILTERED = 2</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__iat__scan__mode.html#a7ba5df374ce8a1b9450d2396ed8b56b8">   62</a></span>    PE_IATS_UNFILTERED = 3</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__iat__scan__mode.html#ab49da33c69e7d72f6080a63ca5eebf32">   63</a></span>    PE_IATS_MODES_COUNT = 4</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
 </div>
-<div class="foldopen" id="foldopen00067" data-start="" data-end="">
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__json__level.html">   67</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__json__level.html">t_json_level</a>(ctypes.c_int):</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__json__level.html#a7f484683190d800cc75cb42d58d8bce2">   68</a></span>    JSON_BASIC = 0</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__json__level.html#ac6282c052302341ae1d307e1c68b8934">   69</a></span>    JSON_DETAILS = 1</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__json__level.html#a3786ee532717b37a16568104974c2a2d">   70</a></span>    JSON_DETAILS2 = 2</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__json__level.html#a1ee2ba9e62b25348e0797d705d795f36">   71</a></span>    JSON_LVL_COUNT = 3</div>
+<div class="foldopen" id="foldopen00065" data-start="" data-end="">
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dotnet__policy.html">   65</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__dotnet__policy.html">t_dotnet_policy</a>(ctypes.c_int):</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dotnet__policy.html#a7ec039b126671947049406e050bf7bff">   66</a></span>    PE_DNET_NONE = 0</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dotnet__policy.html#a47b527d74f9c397dfc55e812e3d7bfe1">   67</a></span>    PE_DNET_SKIP_MAPPING = 1</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dotnet__policy.html#a2282e282e57b4f280b6f74561e074092">   68</a></span>    PE_DNET_SKIP_SHC = 2</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dotnet__policy.html#adae2783c14c64597b239eb40b5296df2">   69</a></span>    PE_DNET_SKIP_HOOKS = 3</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dotnet__policy.html#a7a2320ff743bd167f8032551dd1d8b9e">   70</a></span>    PE_DNET_SKIP_ALL = 4</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__dotnet__policy.html#a3afdaa82ed858cd130148667e793465a">   71</a></span>    PE_DNET_COUNT = 5</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
 </div>
 <div class="foldopen" id="foldopen00073" data-start="" data-end="">
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__report__type.html">   73</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__report__type.html">t_report_type</a>(ctypes.c_int):</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__report__type.html#a5e5ae97a231a29dab3433dab0fcb3039">   74</a></span>    REPORT_NONE = 0</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__report__type.html#a33b01a2ea93a8cd6dec70841f1320929">   75</a></span>    REPORT_SCANNED = 1</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__report__type.html#aa4f509edafea0a15a88e59d63c63b63a">   76</a></span>    REPORT_DUMPED = 2</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__report__type.html#a8b022f205ea91eeb55289a593e1394eb">   77</a></span>    REPORT_ALL = 3</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html">   73</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__data__scan__mode.html">t_data_scan_mode</a>(ctypes.c_int):</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html#aaf2fa9ebf837b8213eeabe2678ba66e4">   74</a></span>    PE_DATA_NO_SCAN = 0</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html#a5903f314a8132cc90ca108eea9add239">   75</a></span>    PE_DATA_SCAN_DOTNET = 1</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html#afe9d2e4ac0fb9a7a8014b0b751640fbd">   76</a></span>    PE_DATA_SCAN_NO_DEP = 2</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html#a12e0d0026f251a37514471f700ae469e">   77</a></span>    PE_DATA_SCAN_ALWAYS = 3</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html#a7ba0067308a911dfb83696843855632d">   78</a></span>    PE_DATA_SCAN_INACCESSIBLE = 4</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html#a47c86a745c04cb21ebf12cd6cf995b95">   79</a></span>    PE_DATA_SCAN_INACCESSIBLE_ONLY = 5</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__data__scan__mode.html#a7971125716167a1a53cb4b444b368a56">   80</a></span>    PE_DATA_COUNT = 6</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
 </div>
-<div class="foldopen" id="foldopen00079" data-start="" data-end="">
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classpesieve_1_1_p_a_r_a_m___s_t_r_i_n_g.html">   79</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1_p_a_r_a_m___s_t_r_i_n_g.html">PARAM_STRING</a>(ctypes.Structure):</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="classpesieve_1_1_p_a_r_a_m___s_t_r_i_n_g.html#a28d924cfd30e022fbd1187019d90699b">   80</a></span>    _fields_ = [</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        (<span class="stringliteral">&#39;length&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        (<span class="stringliteral">&#39;buffer&#39;</span>, ctypes.c_char_p)</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    ]</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="foldopen" id="foldopen00082" data-start="" data-end="">
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__json__level.html">   82</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__json__level.html">t_json_level</a>(ctypes.c_int):</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__json__level.html#a7f484683190d800cc75cb42d58d8bce2">   83</a></span>    JSON_BASIC = 0</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__json__level.html#ac6282c052302341ae1d307e1c68b8934">   84</a></span>    JSON_DETAILS = 1</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__json__level.html#a3786ee532717b37a16568104974c2a2d">   85</a></span>    JSON_DETAILS2 = 2</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__json__level.html#a1ee2ba9e62b25348e0797d705d795f36">   86</a></span>    JSON_LVL_COUNT = 3</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
 </div>
-<div class="foldopen" id="foldopen00085" data-start="" data-end="">
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__params.html">   85</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__params.html">t_params</a>(ctypes.Structure):</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__params.html#a5480797d5877ddf51fd636065eac37fb">   86</a></span>    _fields_ = [</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        (<span class="stringliteral">&#39;pid&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        (<span class="stringliteral">&#39;dotnet_policy&#39;</span>, t_dotnet_policy),</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        (<span class="stringliteral">&#39;imprec_mode&#39;</span>, t_imprec_mode),</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        (<span class="stringliteral">&#39;quiet&#39;</span>, ctypes.c_bool),</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        (<span class="stringliteral">&#39;out_filter&#39;</span>, t_output_filter),</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        (<span class="stringliteral">&#39;no_hooks&#39;</span>, ctypes.c_bool),</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        (<span class="stringliteral">&#39;shellcode&#39;</span>, ctypes.c_bool),</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        (<span class="stringliteral">&#39;threads&#39;</span>, ctypes.c_bool),</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        (<span class="stringliteral">&#39;iat&#39;</span>, t_iat_scan_mode),</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        (<span class="stringliteral">&#39;data&#39;</span>, t_data_scan_mode),</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        (<span class="stringliteral">&#39;minidump&#39;</span>, ctypes.c_bool),</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        (<span class="stringliteral">&#39;dump_mode&#39;</span>, t_dump_mode),</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        (<span class="stringliteral">&#39;json_output&#39;</span>, ctypes.c_bool),</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        (<span class="stringliteral">&#39;make_reflection&#39;</span>, ctypes.c_bool),</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        (<span class="stringliteral">&#39;use_cache&#39;</span>, ctypes.c_bool),</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        (<span class="stringliteral">&#39;json_lvl&#39;</span>, t_json_level),</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        (<span class="stringliteral">&#39;output_dir&#39;</span>, ctypes.c_char * (MAX_PATH + 1)),</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        (<span class="stringliteral">&#39;modules_ignored&#39;</span>, PARAM_STRING)</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    ]</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="foldopen" id="foldopen00088" data-start="" data-end="">
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__report__type.html">   88</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__report__type.html">t_report_type</a>(ctypes.c_int):</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__report__type.html#a5e5ae97a231a29dab3433dab0fcb3039">   89</a></span>    REPORT_NONE = 0</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__report__type.html#a33b01a2ea93a8cd6dec70841f1320929">   90</a></span>    REPORT_SCANNED = 1</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__report__type.html#aa4f509edafea0a15a88e59d63c63b63a">   91</a></span>    REPORT_DUMPED = 2</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__report__type.html#a8b022f205ea91eeb55289a593e1394eb">   92</a></span>    REPORT_ALL = 3</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
 </div>
-<div class="foldopen" id="foldopen00107" data-start="" data-end="">
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__report.html">  107</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__report.html">t_report</a>(ctypes.Structure):</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__report.html#a9691b0cc3624030ab9d804add313b905">  108</a></span>    _fields_ = [</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        (<span class="stringliteral">&#39;pid&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        (<span class="stringliteral">&#39;is_managed&#39;</span>, ctypes.c_bool),</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        (<span class="stringliteral">&#39;is_64bit&#39;</span>, ctypes.c_bool),</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        (<span class="stringliteral">&#39;is_reflection&#39;</span>, ctypes.c_bool),</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        (<span class="stringliteral">&#39;scanned&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        (<span class="stringliteral">&#39;suspicious&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        (<span class="stringliteral">&#39;replaced&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        (<span class="stringliteral">&#39;hdr_mod&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        (<span class="stringliteral">&#39;unreachable_file&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        (<span class="stringliteral">&#39;patched&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        (<span class="stringliteral">&#39;iat_hooked&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        (<span class="stringliteral">&#39;implanted&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        (<span class="stringliteral">&#39;implanted_pe&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        (<span class="stringliteral">&#39;implanted_shc&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        (<span class="stringliteral">&#39;other&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        (<span class="stringliteral">&#39;skipped&#39;</span>, ctypes.c_ulong),</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        (<span class="stringliteral">&#39;errors&#39;</span>, ctypes.c_ulong)</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    ]</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="foldopen" id="foldopen00094" data-start="" data-end="">
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="classpesieve_1_1_p_a_r_a_m___s_t_r_i_n_g.html">   94</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1_p_a_r_a_m___s_t_r_i_n_g.html">PARAM_STRING</a>(ctypes.Structure):</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classpesieve_1_1_p_a_r_a_m___s_t_r_i_n_g.html#a28d924cfd30e022fbd1187019d90699b">   95</a></span>    _fields_ = [</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        (<span class="stringliteral">&#39;length&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        (<span class="stringliteral">&#39;buffer&#39;</span>, ctypes.c_char_p)</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    ]</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
 </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="namespacepesieve.html#aca0538d4001454cd1ec5d9c2df390ac8">  128</a></span>lib = <span class="keywordtype">None</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="namespacepesieve.html#a909ddb0a64bdb58430cc192a985408ab">  129</a></span>PESieve_version = <span class="keywordtype">None</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="foldopen" id="foldopen00131" data-start="" data-end="">
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="namespacepesieve.html#a2053c41480ba617357fa427bc8252c64">  131</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacepesieve.html#a2053c41480ba617357fa427bc8252c64">init</a>():</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keyword">global</span> lib</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keyword">global</span> PESieve_version</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    ptr_size = ctypes.sizeof(ctypes.c_voidp)</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keywordflow">if</span> ptr_size == 4:</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        pesieve_dll = <span class="stringliteral">&quot;pe-sieve32.dll&quot;</span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        pesieve_dll = <span class="stringliteral">&quot;pe-sieve64.dll&quot;</span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;PESIEVE_DIR&#39;</span> <span class="keywordflow">in</span> os.environ:</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        pesieve_dir = os.environ.get(<span class="stringliteral">&#39;PESIEVE_DIR&#39;</span>)</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        pesieve_dir = os.path.abspath(os.getcwd())</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    pesieve_path = pesieve_dir + os.path.sep + pesieve_dll</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    lib = ctypes.cdll.LoadLibrary(pesieve_path)</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    PESieve_version = ctypes.cast(lib.PESieve_version, ctypes.POINTER(ctypes.c_uint32)).contents.value</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keywordflow">if</span> (PESieve_version &lt; PESIEVE_MIN_VER <span class="keywordflow">or</span> PESieve_version &gt; PESIEVE_MAX_VER):</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        dll_version_str = <a class="code hl_function" href="namespacepesieve.html#a5bc445e48dd401d29d9caaeb1dd8753e">version_to_str</a>(PESieve_version)</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        exception_msg = f<span class="stringliteral">&quot;Version mismatch: the PE-sieve.dll version ({dll_version_str}) doesn&#39;t match the bindings version&quot;</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        <span class="keywordflow">raise</span> Exception(exception_msg)</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="foldopen" id="foldopen00100" data-start="" data-end="">
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__params.html">  100</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__params.html">t_params</a>(ctypes.Structure):</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__params.html#a5480797d5877ddf51fd636065eac37fb">  101</a></span>    _fields_ = [</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        (<span class="stringliteral">&#39;pid&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        (<span class="stringliteral">&#39;dotnet_policy&#39;</span>, t_dotnet_policy),</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        (<span class="stringliteral">&#39;imprec_mode&#39;</span>, t_imprec_mode),</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        (<span class="stringliteral">&#39;quiet&#39;</span>, ctypes.c_bool),</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        (<span class="stringliteral">&#39;out_filter&#39;</span>, t_output_filter),</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        (<span class="stringliteral">&#39;no_hooks&#39;</span>, ctypes.c_bool),</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        (<span class="stringliteral">&#39;shellcode&#39;</span>, t_shellc_mode),</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        (<span class="stringliteral">&#39;obfuscated&#39;</span>, t_obfusc_mode),</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        (<span class="stringliteral">&#39;threads&#39;</span>, ctypes.c_bool),</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        (<span class="stringliteral">&#39;iat&#39;</span>, t_iat_scan_mode),</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        (<span class="stringliteral">&#39;data&#39;</span>, t_data_scan_mode),</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        (<span class="stringliteral">&#39;minidump&#39;</span>, ctypes.c_bool),</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        (<span class="stringliteral">&#39;dump_mode&#39;</span>, t_dump_mode),</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        (<span class="stringliteral">&#39;json_output&#39;</span>, ctypes.c_bool),</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        (<span class="stringliteral">&#39;make_reflection&#39;</span>, ctypes.c_bool),</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        (<span class="stringliteral">&#39;use_cache&#39;</span>, ctypes.c_bool),</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        (<span class="stringliteral">&#39;json_lvl&#39;</span>, t_json_level),</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        (<span class="stringliteral">&#39;output_dir&#39;</span>, ctypes.c_char * (MAX_PATH + 1)),</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        (<span class="stringliteral">&#39;modules_ignored&#39;</span>, PARAM_STRING)</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    ]</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
 </div>
-<div class="foldopen" id="foldopen00152" data-start="" data-end="">
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="namespacepesieve.html#a05d9c0188b809baa177a37739401a60e">  152</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacepesieve.html#a05d9c0188b809baa177a37739401a60e">PESieve_help</a>():</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> lib:</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        <a class="code hl_function" href="namespacepesieve.html#a2053c41480ba617357fa427bc8252c64">init</a>()</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    lib.PESieve_help()</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="foldopen" id="foldopen00123" data-start="" data-end="">
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__report.html">  123</a></span><span class="keyword">class </span><a class="code hl_class" href="classpesieve_1_1t__report.html">t_report</a>(ctypes.Structure):</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="classpesieve_1_1t__report.html#a9691b0cc3624030ab9d804add313b905">  124</a></span>    _fields_ = [</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        (<span class="stringliteral">&#39;pid&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        (<span class="stringliteral">&#39;is_managed&#39;</span>, ctypes.c_bool),</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        (<span class="stringliteral">&#39;is_64bit&#39;</span>, ctypes.c_bool),</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        (<span class="stringliteral">&#39;is_reflection&#39;</span>, ctypes.c_bool),</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        (<span class="stringliteral">&#39;scanned&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        (<span class="stringliteral">&#39;suspicious&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        (<span class="stringliteral">&#39;replaced&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        (<span class="stringliteral">&#39;hdr_mod&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        (<span class="stringliteral">&#39;unreachable_file&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        (<span class="stringliteral">&#39;patched&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        (<span class="stringliteral">&#39;iat_hooked&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        (<span class="stringliteral">&#39;implanted&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        (<span class="stringliteral">&#39;implanted_pe&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        (<span class="stringliteral">&#39;implanted_shc&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        (<span class="stringliteral">&#39;other&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        (<span class="stringliteral">&#39;skipped&#39;</span>, ctypes.c_ulong),</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        (<span class="stringliteral">&#39;errors&#39;</span>, ctypes.c_ulong)</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    ]</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
 </div>
-<div class="foldopen" id="foldopen00157" data-start="" data-end="">
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno"><a class="line" href="namespacepesieve.html#aeed6ae14ad4cbeebffc252503c14e774">  157</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacepesieve.html#aeed6ae14ad4cbeebffc252503c14e774">PESieve_scan</a>(params: t_params) -&gt; t_report:</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> lib:</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        <a class="code hl_function" href="namespacepesieve.html#a2053c41480ba617357fa427bc8252c64">init</a>()</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keywordflow">if</span> (<span class="keywordflow">not</span> isinstance(params, t_params)):</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        <span class="keywordflow">raise</span> TypeError</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    params_size = ctypes.sizeof(t_params)</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    pp = ctypes.create_string_buffer(bytes(params), params_size)</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    pr = ctypes.create_string_buffer(ctypes.sizeof(t_report))</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    lib.PESieve_scan(pr, pp)</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    report = t_report.from_buffer(pr)</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keywordflow">return</span> report</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="namespacepesieve.html#aca0538d4001454cd1ec5d9c2df390ac8">  144</a></span>lib = <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="namespacepesieve.html#a909ddb0a64bdb58430cc192a985408ab">  145</a></span>PESieve_version = <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="foldopen" id="foldopen00147" data-start="" data-end="">
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="namespacepesieve.html#a2053c41480ba617357fa427bc8252c64">  147</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacepesieve.html#a2053c41480ba617357fa427bc8252c64">init</a>():</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keyword">global</span> lib</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="keyword">global</span> PESieve_version</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    ptr_size = ctypes.sizeof(ctypes.c_voidp)</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="keywordflow">if</span> ptr_size == 4:</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        pesieve_dll = <span class="stringliteral">&quot;pe-sieve32.dll&quot;</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        pesieve_dll = <span class="stringliteral">&quot;pe-sieve64.dll&quot;</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;PESIEVE_DIR&#39;</span> <span class="keywordflow">in</span> os.environ:</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        pesieve_dir = os.environ.get(<span class="stringliteral">&#39;PESIEVE_DIR&#39;</span>)</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        pesieve_dir = os.path.abspath(os.getcwd())</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    pesieve_path = pesieve_dir + os.path.sep + pesieve_dll</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    lib = ctypes.cdll.LoadLibrary(pesieve_path)</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    PESieve_version = ctypes.cast(lib.PESieve_version, ctypes.POINTER(ctypes.c_uint32)).contents.value</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <span class="keywordflow">if</span> (PESieve_version &lt; PESIEVE_MIN_VER <span class="keywordflow">or</span> PESieve_version &gt; PESIEVE_MAX_VER):</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        dll_version_str = <a class="code hl_function" href="namespacepesieve.html#a5bc445e48dd401d29d9caaeb1dd8753e">version_to_str</a>(PESieve_version)</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        exception_msg = f<span class="stringliteral">&quot;Version mismatch: the PE-sieve.dll version ({dll_version_str}) doesn&#39;t match the bindings version&quot;</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        <span class="keywordflow">raise</span> Exception(exception_msg)</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
 </div>
-<div class="foldopen" id="foldopen00170" data-start="" data-end="">
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="namespacepesieve.html#abf1ea9906614a0fac7fd24715abb1bb3">  170</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacepesieve.html#abf1ea9906614a0fac7fd24715abb1bb3">PESieve_scan_ex</a>(params: t_params, rtype: t_report_type, buf_size: int) -&gt; (t_report, str, int):</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> lib:</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        <a class="code hl_function" href="namespacepesieve.html#a2053c41480ba617357fa427bc8252c64">init</a>()</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordflow">if</span> (<span class="keywordflow">not</span> isinstance(params, t_params)):</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        <span class="keywordflow">raise</span> TypeError</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    pp = ctypes.create_string_buffer(bytes(params), ctypes.sizeof(t_params))</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    pr = ctypes.create_string_buffer(ctypes.sizeof(t_report))</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    out_size = ctypes.c_ulong(0)</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    json_buf = ctypes.create_string_buffer(buf_size)</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    lib.PESieve_scan_ex(pr, pp, rtype, json_buf, buf_size, ctypes.byref(out_size))</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    report = t_report.from_buffer(pr)</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="keywordflow">if</span> (out_size.value):</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        json_str = json_buf.value.decode(<span class="stringliteral">&#39;UTF-8&#39;</span>)</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        json_str = <span class="stringliteral">&quot;&quot;</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="keywordflow">return</span> (report, json_str, out_size.value)</div>
+<div class="foldopen" id="foldopen00168" data-start="" data-end="">
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="namespacepesieve.html#a05d9c0188b809baa177a37739401a60e">  168</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacepesieve.html#a05d9c0188b809baa177a37739401a60e">PESieve_help</a>():</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> lib:</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        <a class="code hl_function" href="namespacepesieve.html#a2053c41480ba617357fa427bc8252c64">init</a>()</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    lib.PESieve_help()</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
 </div>
-<div class="ttc" id="aclasspesieve_1_1_p_a_r_a_m___s_t_r_i_n_g_html"><div class="ttname"><a href="classpesieve_1_1_p_a_r_a_m___s_t_r_i_n_g.html">pesieve.PARAM_STRING</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00079">pesieve.py:79</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1t__data__scan__mode_html"><div class="ttname"><a href="classpesieve_1_1t__data__scan__mode.html">pesieve.t_data_scan_mode</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00058">pesieve.py:58</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1t__dotnet__policy_html"><div class="ttname"><a href="classpesieve_1_1t__dotnet__policy.html">pesieve.t_dotnet_policy</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00050">pesieve.py:50</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1t__dump__mode_html"><div class="ttname"><a href="classpesieve_1_1t__dump__mode.html">pesieve.t_dump_mode</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00036">pesieve.py:36</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1t__iat__scan__mode_html"><div class="ttname"><a href="classpesieve_1_1t__iat__scan__mode.html">pesieve.t_iat_scan_mode</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00043">pesieve.py:43</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1t__imprec__mode_html"><div class="ttname"><a href="classpesieve_1_1t__imprec__mode.html">pesieve.t_imprec_mode</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00027">pesieve.py:27</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1t__json__level_html"><div class="ttname"><a href="classpesieve_1_1t__json__level.html">pesieve.t_json_level</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00067">pesieve.py:67</a></div></div>
+<div class="foldopen" id="foldopen00173" data-start="" data-end="">
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="namespacepesieve.html#aeed6ae14ad4cbeebffc252503c14e774">  173</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacepesieve.html#aeed6ae14ad4cbeebffc252503c14e774">PESieve_scan</a>(params: t_params) -&gt; t_report:</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> lib:</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        <a class="code hl_function" href="namespacepesieve.html#a2053c41480ba617357fa427bc8252c64">init</a>()</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keywordflow">if</span> (<span class="keywordflow">not</span> isinstance(params, t_params)):</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        <span class="keywordflow">raise</span> TypeError</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    params_size = ctypes.sizeof(t_params)</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    pp = ctypes.create_string_buffer(bytes(params), params_size)</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    pr = ctypes.create_string_buffer(ctypes.sizeof(t_report))</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    lib.PESieve_scan(pr, pp)</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    report = t_report.from_buffer(pr)</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keywordflow">return</span> report</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
+</div>
+<div class="foldopen" id="foldopen00186" data-start="" data-end="">
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="namespacepesieve.html#abf1ea9906614a0fac7fd24715abb1bb3">  186</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacepesieve.html#abf1ea9906614a0fac7fd24715abb1bb3">PESieve_scan_ex</a>(params: t_params, rtype: t_report_type, buf_size: int) -&gt; (t_report, str, int):</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> lib:</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        <a class="code hl_function" href="namespacepesieve.html#a2053c41480ba617357fa427bc8252c64">init</a>()</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keywordflow">if</span> (<span class="keywordflow">not</span> isinstance(params, t_params)):</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="keywordflow">raise</span> TypeError</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    pp = ctypes.create_string_buffer(bytes(params), ctypes.sizeof(t_params))</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    pr = ctypes.create_string_buffer(ctypes.sizeof(t_report))</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    out_size = ctypes.c_ulong(0)</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    json_buf = ctypes.create_string_buffer(buf_size)</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    lib.PESieve_scan_ex(pr, pp, rtype, json_buf, buf_size, ctypes.byref(out_size))</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    report = t_report.from_buffer(pr)</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <span class="keywordflow">if</span> (out_size.value):</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>        json_str = json_buf.value.decode(<span class="stringliteral">&#39;UTF-8&#39;</span>)</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        json_str = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="keywordflow">return</span> (report, json_str, out_size.value)</div>
+</div>
+<div class="ttc" id="aclasspesieve_1_1_p_a_r_a_m___s_t_r_i_n_g_html"><div class="ttname"><a href="classpesieve_1_1_p_a_r_a_m___s_t_r_i_n_g.html">pesieve.PARAM_STRING</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00094">pesieve.py:94</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1t__data__scan__mode_html"><div class="ttname"><a href="classpesieve_1_1t__data__scan__mode.html">pesieve.t_data_scan_mode</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00073">pesieve.py:73</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1t__dotnet__policy_html"><div class="ttname"><a href="classpesieve_1_1t__dotnet__policy.html">pesieve.t_dotnet_policy</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00065">pesieve.py:65</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1t__dump__mode_html"><div class="ttname"><a href="classpesieve_1_1t__dump__mode.html">pesieve.t_dump_mode</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00051">pesieve.py:51</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1t__iat__scan__mode_html"><div class="ttname"><a href="classpesieve_1_1t__iat__scan__mode.html">pesieve.t_iat_scan_mode</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00058">pesieve.py:58</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1t__imprec__mode_html"><div class="ttname"><a href="classpesieve_1_1t__imprec__mode.html">pesieve.t_imprec_mode</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00042">pesieve.py:42</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1t__json__level_html"><div class="ttname"><a href="classpesieve_1_1t__json__level.html">pesieve.t_json_level</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00082">pesieve.py:82</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1t__obfusc__mode_html"><div class="ttname"><a href="classpesieve_1_1t__obfusc__mode.html">pesieve.t_obfusc_mode</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00035">pesieve.py:35</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1t__output__filter_html"><div class="ttname"><a href="classpesieve_1_1t__output__filter.html">pesieve.t_output_filter</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00021">pesieve.py:21</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1t__params_html"><div class="ttname"><a href="classpesieve_1_1t__params.html">pesieve.t_params</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00085">pesieve.py:85</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1t__report__type_html"><div class="ttname"><a href="classpesieve_1_1t__report__type.html">pesieve.t_report_type</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00073">pesieve.py:73</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1t__report_html"><div class="ttname"><a href="classpesieve_1_1t__report.html">pesieve.t_report</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00107">pesieve.py:107</a></div></div>
-<div class="ttc" id="anamespacepesieve_html_a05d9c0188b809baa177a37739401a60e"><div class="ttname"><a href="namespacepesieve.html#a05d9c0188b809baa177a37739401a60e">pesieve.PESieve_help</a></div><div class="ttdeci">PESieve_help()</div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00152">pesieve.py:152</a></div></div>
-<div class="ttc" id="anamespacepesieve_html_a2053c41480ba617357fa427bc8252c64"><div class="ttname"><a href="namespacepesieve.html#a2053c41480ba617357fa427bc8252c64">pesieve.init</a></div><div class="ttdeci">init()</div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00131">pesieve.py:131</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1t__params_html"><div class="ttname"><a href="classpesieve_1_1t__params.html">pesieve.t_params</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00100">pesieve.py:100</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1t__report__type_html"><div class="ttname"><a href="classpesieve_1_1t__report__type.html">pesieve.t_report_type</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00088">pesieve.py:88</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1t__report_html"><div class="ttname"><a href="classpesieve_1_1t__report.html">pesieve.t_report</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00123">pesieve.py:123</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1t__shellc__mode_html"><div class="ttname"><a href="classpesieve_1_1t__shellc__mode.html">pesieve.t_shellc_mode</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00027">pesieve.py:27</a></div></div>
+<div class="ttc" id="anamespacepesieve_html_a05d9c0188b809baa177a37739401a60e"><div class="ttname"><a href="namespacepesieve.html#a05d9c0188b809baa177a37739401a60e">pesieve.PESieve_help</a></div><div class="ttdeci">PESieve_help()</div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00168">pesieve.py:168</a></div></div>
+<div class="ttc" id="anamespacepesieve_html_a2053c41480ba617357fa427bc8252c64"><div class="ttname"><a href="namespacepesieve.html#a2053c41480ba617357fa427bc8252c64">pesieve.init</a></div><div class="ttdeci">init()</div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00147">pesieve.py:147</a></div></div>
 <div class="ttc" id="anamespacepesieve_html_a5bc445e48dd401d29d9caaeb1dd8753e"><div class="ttname"><a href="namespacepesieve.html#a5bc445e48dd401d29d9caaeb1dd8753e">pesieve.version_to_str</a></div><div class="ttdeci">version_to_str(version_val)</div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00012">pesieve.py:12</a></div></div>
-<div class="ttc" id="anamespacepesieve_html_abf1ea9906614a0fac7fd24715abb1bb3"><div class="ttname"><a href="namespacepesieve.html#abf1ea9906614a0fac7fd24715abb1bb3">pesieve.PESieve_scan_ex</a></div><div class="ttdeci">(t_report, str, int) PESieve_scan_ex(t_params params, t_report_type rtype, int buf_size)</div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00170">pesieve.py:170</a></div></div>
-<div class="ttc" id="anamespacepesieve_html_aeed6ae14ad4cbeebffc252503c14e774"><div class="ttname"><a href="namespacepesieve.html#aeed6ae14ad4cbeebffc252503c14e774">pesieve.PESieve_scan</a></div><div class="ttdeci">t_report PESieve_scan(t_params params)</div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00157">pesieve.py:157</a></div></div>
+<div class="ttc" id="anamespacepesieve_html_abf1ea9906614a0fac7fd24715abb1bb3"><div class="ttname"><a href="namespacepesieve.html#abf1ea9906614a0fac7fd24715abb1bb3">pesieve.PESieve_scan_ex</a></div><div class="ttdeci">(t_report, str, int) PESieve_scan_ex(t_params params, t_report_type rtype, int buf_size)</div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00186">pesieve.py:186</a></div></div>
+<div class="ttc" id="anamespacepesieve_html_aeed6ae14ad4cbeebffc252503c14e774"><div class="ttname"><a href="namespacepesieve.html#aeed6ae14ad4cbeebffc252503c14e774">pesieve.PESieve_scan</a></div><div class="ttdeci">t_report PESieve_scan(t_params params)</div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00173">pesieve.py:173</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
