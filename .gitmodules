@@ -4,3 +4,6 @@
 [submodule "paramkit"]
 	path = paramkit
 	url = https://github.com/hasherezade/paramkit
+[submodule "sig_finder"]
+	path = sig_finder
+	url = https://github.com/hasherezade/sig_finder
