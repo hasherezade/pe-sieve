@@ -1,33 +1,33 @@
 #include "artefacts_util.h"
 #include <peconv.h>
-#include <sig_finder.h>
+
 
 #ifdef _DEBUG
 	#include <iostream>
 #endif
 
-sig_ma::SigFinder signFinder32;
-sig_ma::SigFinder signFinder64;
+sig_ma::SigFinder signFinder;
 bool isSignInit = false;
 
 void initSigFinders()
 {
 	std::cout << "Init signs\n";
 	// 32 bit
-	signFinder32.loadSignature("prolog32_1", "55 8b ec");
-	signFinder32.loadSignature("prolog32_2", "55 89 e5");
-	signFinder32.loadSignature("prolog32_3", "60 89 ec");
+	signFinder.loadSignature("test1", "aa bb cc");
+	signFinder.loadSignature("prolog32_1", "55 8b ec");
+	signFinder.loadSignature("prolog32_2", "55 89 e5");
+	signFinder.loadSignature("prolog32_3", "60 89 ec");
 
 	// 64 bit
-	signFinder64.loadSignature("prolog64_1", "40 53 48 83 ec");
-	signFinder64.loadSignature("prolog64_2", "55 48 8B EC");
-	signFinder64.loadSignature("prolog64_3", "40 55 48 83 EC");
+	signFinder.loadSignature("prolog64_1", "40 53 48 83 ec");
+	signFinder.loadSignature("prolog64_2", "55 48 8B EC");
+	signFinder.loadSignature("prolog64_3", "40 55 48 83 EC");
 
-	signFinder64.loadSignature("prolog64_4", "53 48 81 EC");
-	signFinder64.loadSignature("prolog64_5", "48 83 E4 f0");
-	signFinder64.loadSignature("prolog64_6", "57 48 89 E7");
+	signFinder.loadSignature("prolog64_4", "53 48 81 EC");
+	signFinder.loadSignature("prolog64_5", "48 83 E4 f0");
+	signFinder.loadSignature("prolog64_6", "57 48 89 E7");
 
-	signFinder64.loadSignature("prolog64_7", "48 8B C4 48 89 58 08 4C 89 48 20 4C 89 40 18 48 89 50 10 55 56 57 41 54 41 55 41 56 41 57");
+	signFinder.loadSignature("prolog64_7", "48 8B C4 48 89 58 08 4C 89 48 20 4C 89 40 18 48 89 50 10 55 56 57 41 54 41 55 41 56 41 57");
 	isSignInit = true;
 }
 
@@ -51,10 +51,6 @@ namespace pesieve {
 
 DWORD pesieve::util::is_32bit_code(BYTE* loadedData, size_t loadedSize)
 {
-	if (!isSignInit) {
-		initSigFinders();
-	}
-	/*
 	BYTE prolog32_pattern[] = {
 		0x55, // PUSH EBP
 		0x8b, 0xEC // MOV EBP, ESP
@@ -84,20 +80,27 @@ DWORD pesieve::util::is_32bit_code(BYTE* loadedData, size_t loadedSize)
 			break;
 		}
 	}
-		*/
-	sig_ma::matched matched = signFinder32.getMatching(loadedData, loadedSize, 0, sig_ma::FRONT_TO_BACK);
-	if (matched.signs.size() == 0) {
+	return pattern_found;
+}
+
+
+DWORD pesieve::util::find_by_sigfinder(BYTE* loadedData, size_t loadedSize, sig_ma::SigFinder& signFinder, std::vector< sig_ma::matched >& allMatched, bool stopOnFirstMatch)
+{
+	for (size_t i = 0; i < loadedSize; i++) {
+		sig_ma::matched matched = signFinder.getMatching(loadedData, loadedSize, i, sig_ma::FIXED);
+		if (matched.signs.size()) {
+			allMatched.push_back(matched);
+			if (stopOnFirstMatch) break;
+		}
+	}
+	if (allMatched.size() == 0) {
 		return CODE_PATTERN_NOT_FOUND;
 	}
-	return matched.match_offset;
+	return allMatched.size();
 }
 
 DWORD pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 {
-	if (!isSignInit) {
-		initSigFinders();
-	}
-/*
 	BYTE prolog64_pattern[] = {
 		0x40, 0x53,       // PUSH RBX
 		0x48, 0x83, 0xEC // SUB RSP, <BYTE>
@@ -153,16 +156,31 @@ DWORD pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 			break;
 		}
 	}
-*/
-	sig_ma::matched matched = signFinder64.getMatching(loadedData, loadedSize, 0, sig_ma::FRONT_TO_BACK);
-	if (matched.signs.size() == 0) {
-		return CODE_PATTERN_NOT_FOUND;
-	}
-	return matched.match_offset;
+	return pattern_found;
 }
 
+bool pesieve::util::find_matching_patterns(BYTE* loadedData, size_t loadedSize, std::vector< sig_ma::matched >& allMatched, bool stopOnFirstMatch)
+{
+	if (peconv::is_padding(loadedData, loadedSize, 0)) {
+		return false;
+	}
+	if (!isSignInit) {
+		initSigFinders();
+	}
+	DWORD pattern_found = find_by_sigfinder(loadedData, loadedSize, signFinder, allMatched, stopOnFirstMatch);
+	if (pattern_found != CODE_PATTERN_NOT_FOUND) {
+		return true;
+	}
+	return false;
+}
+
+#define  USE_SIG_FINGER
 bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 {
+#ifdef  USE_SIG_FINGER
+	std::vector< sig_ma::matched > allMatched;
+	return find_matching_patterns(loadedData, loadedSize, allMatched, true);
+#else
 	if (peconv::is_padding(loadedData, loadedSize, 0)) {
 		return false;
 	}
@@ -183,8 +201,9 @@ bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 	if (found) {
 		std::cout << "Is64: " << is64 << " Pattern ID: " << pattern_found << "\n";
 	}
-#endif
+#endif //_DEBUG
 	return found;
+#endif //  USE_SIG_FINGER
 }
 
 bool pesieve::util::is_executable(DWORD mapping_type, DWORD protection)

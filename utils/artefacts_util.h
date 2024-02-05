@@ -1,5 +1,6 @@
 #pragma once
 #include <windows.h>
+#include <sig_finder.h>
 
 #define CODE_PATTERN_NOT_FOUND (-1)
 
@@ -22,11 +23,15 @@ namespace pesieve {
 		*/
 		DWORD is_64bit_code(BYTE *loadedData, size_t loadedSize);
 
+		DWORD find_by_sigfinder(BYTE* loadedData, size_t loadedSize, sig_ma::SigFinder &signFinder, std::vector< sig_ma::matched > &allMatched, bool stopOnFirstMatch = true);
 		/*
 		Scans the buffer searching for any hardcoded code patterns (both 32 and 64 bit).
 		*/
 		bool is_code(BYTE *loadedData, size_t loadedSize);
+		
+		bool find_matching_patterns(BYTE* loadedData, size_t loadedSize, std::vector< sig_ma::matched >& allMatched, bool stopOnFirstMatch = true);
 
+		bool is_code(BYTE* loadedData, size_t loadedSize);
 		bool is_executable(DWORD mapping_type, DWORD protection);
 
 		bool is_readable(DWORD mapping_type, DWORD protection);
