@@ -34,15 +34,22 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 
 # modules:
 set ( M_PARSER "libpeconv/libpeconv" )
+set ( M_SIGFIND "sig_finder" )
 
 # modules paths:
 set (PECONV_DIR "${PROJECT_SOURCE_DIR}/${M_PARSER}" CACHE PATH "PEConv main path")
+set( SIGFIND_DIR "${PROJECT_SOURCE_DIR}/${M_SIGFIND}" CACHE PATH "SigMa main path")
 
 # modules headers:
 include_directories ( ${PECONV_DIR}/include )
+include_directories ( ${SIGFIND_DIR}/include )
+
 # libs
-add_subdirectory (libpeconv/libpeconv)
+add_subdirectory(libpeconv/libpeconv)
 set ( PECONV_LIB $<TARGET_FILE:libpeconv> CACHE PATH "PEConvLib library path" )
+
+add_subdirectory(${M_SIGFIND})
+set ( SIGFIND_LIB $<TARGET_FILE:sig_finder> CACHE PATH "SigFinder library path" )
 
 if( NOT PESIEVE_AS_STATIC_LIB AND NOT PESIEVE_AS_DLL)
 	set ( M_PARAMKIT_LIB "paramkit" )
@@ -279,6 +286,7 @@ endif()
 
 set (used_libs
 	${PECONV_LIB}
+	${SIGFIND_LIB}
 	psapi.lib
 	ntdll.lib
 	shlwapi
@@ -286,7 +294,7 @@ set (used_libs
 )
 
 # dependencies
-add_dependencies(${PROJECT_NAME} libpeconv )
+add_dependencies( ${PROJECT_NAME} libpeconv sig_finder )
 
 if(PESIEVE_AS_STATIC_LIB OR PESIEVE_AS_DLL)
 	include(GNUInstallDirs)
@@ -295,16 +303,12 @@ if(PESIEVE_AS_STATIC_LIB OR PESIEVE_AS_DLL)
 		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 	)
-
 	target_link_libraries ( ${PROJECT_NAME} ${used_libs} )
-
 else()
-
 	# add Paramkit only if build as an exe
 	# dependencies
 	add_dependencies(${PROJECT_NAME} paramkit )
 	target_link_libraries ( ${PROJECT_NAME} ${used_libs} ${PARAMKIT_LIB} )
-
 endif()
 
 if (NOT PESIEVE_AS_STATIC_LIB)
@@ -321,4 +325,3 @@ if (NOT PESIEVE_AS_STATIC_LIB)
 		set_tests_properties(TestRuns PROPERTIES PASS_REGULAR_EXPRESSION "Version:")
 	endif()
 endif()
-
