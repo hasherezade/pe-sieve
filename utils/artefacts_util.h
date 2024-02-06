@@ -1,6 +1,6 @@
 #pragma once
 #include <windows.h>
-
+#include <string>
 
 #define PATTERN_NOT_FOUND (-1)
 
@@ -11,6 +11,7 @@ namespace pesieve {
 			size_t offset;
 			int patternId;
 			int groupId;
+			std::string name;
 		} t_pattern_matched;
 
 		/*

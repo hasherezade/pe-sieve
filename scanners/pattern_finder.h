@@ -48,12 +48,19 @@ namespace pesieve {
 	protected:
 		const virtual void fieldToJSON(std::stringstream& outs, size_t level, util::t_pattern_matched &m)
 		{
-			OUT_PADDED(outs, level, "\"pattern\" : ");
-			outs << std::dec << m.patternId;
-			outs << ",\n";
-			OUT_PADDED(outs, level, "\"group\" : ");
-			outs << std::dec << m.groupId ;
-			outs << ",\n";
+			if (m.name.length()) {
+				OUT_PADDED(outs, level, "\"name\" : ");
+				outs << "\"" <<  m.name << "\"";
+				outs << ",\n";
+			}
+			else {
+				OUT_PADDED(outs, level, "\"pattern\" : ");
+				outs << std::dec << m.patternId;
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"group\" : ");
+				outs << std::dec << m.groupId;
+				outs << ",\n";
+			}
 			OUT_PADDED(outs, level, "\"offsets\" : [ ");
 			outs << std::hex << "\"" << m.offset << "\"";
 			outs << " ]\n";
@@ -63,7 +70,7 @@ namespace pesieve {
 		std::vector<util::t_pattern_matched> matches;
 
 	}; // AreaStats
-	sig_ma::matched_set find_matching_patterns(BYTE* loadedData, size_t loadedSize, bool stopOnFirstMatch = true);
+	sig_ma::matched_set find_matching_patterns(const BYTE* loadedData, size_t loadedSize, bool stopOnFirstMatch = true);
 
 	bool fill_matching(const BYTE* loadedData, size_t loadedSize, MatchesInfo& _matchesInfo);
 };
