@@ -1,34 +1,9 @@
 #include "artefacts_util.h"
 #include <peconv.h>
 
-
 #ifdef _DEBUG
 	#include <iostream>
 #endif
-
-sig_ma::SigFinder signFinder;
-bool isSignInit = false;
-
-void initSigFinders()
-{
-	std::cout << "Init signs\n";
-	// 32 bit
-	signFinder.loadSignature("prolog32_1", "55 8b ec");
-	signFinder.loadSignature("prolog32_2", "55 89 e5");
-	signFinder.loadSignature("prolog32_3", "60 89 ec");
-
-	// 64 bit
-	signFinder.loadSignature("prolog64_1", "40 53 48 83 ec");
-	signFinder.loadSignature("prolog64_2", "55 48 8B EC");
-	signFinder.loadSignature("prolog64_3", "40 55 48 83 EC");
-
-	signFinder.loadSignature("prolog64_4", "53 48 81 EC");
-	signFinder.loadSignature("prolog64_5", "48 83 E4 f0");
-	signFinder.loadSignature("prolog64_6", "57 48 89 E7");
-
-	signFinder.loadSignature("prolog64_7", "48 8B C4 48 89 58 08 4C 89 48 20 4C 89 40 18 48 89 50 10 55 56 57 41 54 41 55 41 56 41 57");
-	isSignInit = true;
-}
 
 BYTE* pesieve::util::find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size, size_t max_iter)
 {
@@ -42,13 +17,29 @@ BYTE* pesieve::util::find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_b
 }
 
 namespace pesieve {
-	typedef struct {
+	typedef struct _t_pattern {
 		BYTE *ptr;
 		size_t size;
 	} t_pattern;
+
 };
 
-DWORD pesieve::util::is_32bit_code(BYTE* loadedData, size_t loadedSize)
+pesieve::util::t_pattern_matched find_single_pattern(BYTE* loadedData, size_t loadedSize, pesieve::t_pattern patterns[], const size_t patterns_count)
+{
+	pesieve::util::t_pattern_matched matched = { 0 };
+	matched.offset = CODE_PATTERN_NOT_FOUND;
+	for (DWORD i = 0; i < patterns_count; i++) {
+		BYTE* found_ptr = pesieve::util::find_pattern(loadedData, loadedSize, patterns[i].ptr, patterns[i].size);
+		if (found_ptr) {
+			matched.patternId = i;
+			matched.offset = found_ptr - loadedData;
+			break;
+		}
+	}
+	return matched;
+}
+
+pesieve::util::t_pattern_matched pesieve::util::find_32bit_code(BYTE* loadedData, size_t loadedSize)
 {
 	BYTE prolog32_pattern[] = {
 		0x55, // PUSH EBP
@@ -65,24 +56,17 @@ DWORD pesieve::util::is_32bit_code(BYTE* loadedData, size_t loadedSize)
 		0x89, 0xE5 // MOV EBP, ESP
 	};
 
-
 	t_pattern patterns[] = {
 		{ prolog32_pattern,   sizeof(prolog32_pattern) },
 		{ prolog32_2_pattern, sizeof(prolog32_2_pattern) },
 		{ prolog32_3_pattern, sizeof(prolog32_3_pattern) }
 	};
-
-	DWORD pattern_found = CODE_PATTERN_NOT_FOUND;
-	for (DWORD i = 0; i < _countof(patterns); i++) {
-		if (find_pattern(loadedData, loadedSize, patterns[i].ptr, patterns[i].size)) {
-			pattern_found = i;
-			break;
-		}
-	}
-	return pattern_found;
+	t_pattern_matched matched = find_single_pattern(loadedData, loadedSize, patterns, _countof(patterns));
+	matched.groupId = 32;
+	return matched;
 }
 
-DWORD pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
+pesieve::util::t_pattern_matched pesieve::util::find_64bit_code(BYTE* loadedData, size_t loadedSize)
 {
 	BYTE prolog64_pattern[] = {
 		0x40, 0x53,       // PUSH RBX
@@ -132,30 +116,13 @@ DWORD pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 		{ prolog64_7_pattern, sizeof(prolog64_7_pattern) }
 	};
 
-	DWORD pattern_found = CODE_PATTERN_NOT_FOUND;
-	for (DWORD i = 0; i < _countof(patterns); i++) {
-		if (find_pattern(loadedData, loadedSize, patterns[i].ptr, patterns[i].size)) {
-			pattern_found = i;
-			break;
-		}
-	}
-	return pattern_found;
+	t_pattern_matched matched = find_single_pattern(loadedData, loadedSize, patterns, _countof(patterns));
+	matched.groupId = 64;
+	return matched;
 }
 
 
-
-sig_ma::matched_set pesieve::util::find_matching_patterns(BYTE* loadedData, size_t loadedSize, bool stopOnFirstMatch)
-{
-	if (peconv::is_padding(loadedData, loadedSize, 0)) {
-		return sig_ma::matched_set();
-	}
-	if (!isSignInit) {
-		initSigFinders();
-	}
-	return signFinder.getMatching(loadedData, loadedSize, 0, sig_ma::FRONT_TO_BACK, stopOnFirstMatch);
-}
-
-#define  USE_SIG_FINDER
+//#define  USE_SIG_FINDER
 bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 {
 #ifdef  USE_SIG_FINDER
@@ -168,12 +135,14 @@ bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 	DWORD pattern_found = CODE_PATTERN_NOT_FOUND;
 	bool is64 = false;
 
+	pesieve::util::t_pattern_matched matched = find_32bit_code(loadedData, loadedSize);
 	bool found = false;
-	if ((pattern_found = is_32bit_code(loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
+	if (matched.offset != CODE_PATTERN_NOT_FOUND) {
 		found = true;
 	}
 	if (!found) {
-		if ((pattern_found = is_64bit_code(loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
+		matched = find_64bit_code(loadedData, loadedSize);
+			if (matched.offset != CODE_PATTERN_NOT_FOUND) {
 			found = true;
 			is64 = true;
 		}

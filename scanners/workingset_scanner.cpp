@@ -6,6 +6,7 @@
 #include "../utils/path_converter.h"
 #include "../utils/workingset_enum.h"
 #include "../utils/artefacts_util.h"
+#include "pattern_finder.h"
 
 using namespace pesieve;
 using namespace pesieve::util;

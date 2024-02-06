@@ -67,6 +67,7 @@ set (scanners_srcs
 	scanners/headers_scanner.cpp
 	scanners/code_scanner.cpp
 	scanners/workingset_scanner.cpp
+	scanners/pattern_finder.cpp
 	scanners/artefact_scanner.cpp
 	scanners/iat_scanner.cpp
 	scanners/scanner.cpp
@@ -88,6 +89,7 @@ set (scanners_hdrs
 	scanners/code_scanner.h
 	scanners/module_scanner.h
 	scanners/workingset_scanner.h
+	scanners/pattern_finder.h
 	scanners/artefact_scanner.h
 	scanners/iat_scanner.h
 	scanners/scanner.h

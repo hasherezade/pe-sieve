@@ -165,8 +165,8 @@ namespace pesieve {
 				this->is64bit = peconv::is64bit(peBuffer.vBuf);
 			}
 			else {
-				const DWORD found_pattern = pesieve::util::is_64bit_code(peBuffer.vBuf, peBuffer.vBufSize);
-				this->is64bit = (found_pattern != CODE_PATTERN_NOT_FOUND);
+				pesieve::util::t_pattern_matched match = pesieve::util::find_64bit_code(peBuffer.vBuf, peBuffer.vBufSize);
+				this->is64bit = (match.offset != CODE_PATTERN_NOT_FOUND);
 			}
 			collectMainIatData();
 		}
