@@ -5,6 +5,10 @@
 	#include <iostream>
 #endif
 
+#ifdef  USE_SIG_FINDER
+#include "../scanners/pattern_finder.h"
+#endif
+
 size_t pesieve::util::find_pattern(const BYTE *buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size, size_t max_iter)
 {
 	for (size_t i = 0; (i + pattern_size) < buf_size; i++) {
@@ -120,12 +124,10 @@ pesieve::util::t_pattern_matched pesieve::util::find_64bit_code(const BYTE* load
 	return matched;
 }
 
-
-//#define  USE_SIG_FINDER
 bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 {
 #ifdef  USE_SIG_FINDER
-	sig_ma::matched_set allMatched = find_matching_patterns(loadedData, loadedSize, false);
+	sig_ma::matched_set allMatched = find_matching_patterns(loadedData, loadedSize, true);
 	return allMatched.size() > 0 ? true : false;
 #else
 	if (peconv::is_padding(loadedData, loadedSize, 0)) {
