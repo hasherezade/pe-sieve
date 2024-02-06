@@ -22,9 +22,7 @@ namespace pesieve {
 		{
 			int id = m.patternId;
 			if (m.name.length()) {
-				CRC32 crc;
-				crc.Update(m.name.c_str(), m.name.length());
-				id = crc.GetValue();
+				id = util::calcCRC32(m.name.c_str(), m.name.length());
 			}
 			auto found = this->matches.find(id);
 			if (found == this->matches.end()) {

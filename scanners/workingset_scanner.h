@@ -36,6 +36,7 @@ namespace pesieve {
 			has_pe = false; //not a PE file
 			has_shellcode = true;
 			mapping_type = 0;
+			checksum = 0;
 		}
 
 		const virtual bool toJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
@@ -50,16 +51,21 @@ namespace pesieve {
 		const virtual void fieldsToJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
 		{
 			ModuleScanReport::_toJSON(outs, level);
+			if (this->checksum) {
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"checksum\" : ");
+				outs << "\"" << std::hex << checksum << "\"";
+			}
 			outs << ",\n";
 			OUT_PADDED(outs, level, "\"has_pe\" : ");
 			outs << std::dec << has_pe;
 			outs << ",\n";
 			OUT_PADDED(outs, level, "\"has_shellcode\" : ");
 			outs << std::dec << has_shellcode;
-			//if (matched_patterns.size()) {
+			if (matched_patterns.size()) {
 				outs << ",\n";
 				matched_patterns.toJSON(outs, level);
-			//}
+			}
 			if (!is_executable) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"is_executable\" : ");
@@ -97,6 +103,7 @@ namespace pesieve {
 		bool has_shellcode;
 		util::ByteBuffer data_cache;
 		MatchesInfo matched_patterns;
+		int checksum;
 #ifdef CALC_PAGE_STATS
 		AreaMultiStats stats;
 		AreaInfo area_info;

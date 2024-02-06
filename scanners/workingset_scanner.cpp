@@ -111,9 +111,12 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 	}
 	my_report->has_shellcode = code;
 
-	if ( (this->args.obfuscated != OBFUSC_NONE && obfuscated) || ((this->args.shellcode != SHELLC_NONE) && code) ){
+	if ( (this->args.obfuscated != OBFUSC_NONE && obfuscated) || ((this->args.shellcode != SHELLC_NONE) && code) ) {
 		my_report->status = SCAN_SUSPICIOUS;
 		my_report->data_cache = memPage.loadedData;
+#ifdef CALC_CHECKSUM
+		my_report->checksum = util::calcCRC32(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding));
+#endif //CALC_CHECKSUM
 	}
 	return true;
 }

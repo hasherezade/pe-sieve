@@ -36,13 +36,13 @@ sig_ma::matched_set pesieve::find_matching_patterns(const BYTE* loadedData, size
 	return signFinder.getMatching(loadedData, loadedSize, 0, sig_ma::FRONT_TO_BACK, stopOnFirstMatch);
 }
 
-#define  USE_SIG_FINDER
+//#define  USE_SIG_FINDER
 bool pesieve::fill_matching(const BYTE* loadedData, size_t loadedSize, size_t startOffset, MatchesInfo& _matchesInfo)
 {
 	if (!loadedData || !loadedSize) return false;
 
 #ifdef  USE_SIG_FINDER
-	sig_ma::matched_set allMatched = find_matching_patterns(loadedData, loadedSize, false);
+	sig_ma::matched_set allMatched = find_matching_patterns(loadedData, loadedSize, true);
 	for (auto itr = allMatched.matchedSigns.begin(); itr != allMatched.matchedSigns.end(); ++itr) {
 		const sig_ma::matched match = *itr;
 
@@ -63,12 +63,12 @@ bool pesieve::fill_matching(const BYTE* loadedData, size_t loadedSize, size_t st
 
 	pesieve::util::t_pattern_matched matched = util::find_32bit_code(loadedData, loadedSize);
 	bool found = false;
-	if (matched.offset != PATTERN_NOT_FOUND) {
+	if (matched.offsets.size() != 0) {
 		found = true;
 	}
 	if (!found) {
 		matched = util::find_64bit_code(loadedData, loadedSize);
-		if (matched.offset != PATTERN_NOT_FOUND) {
+		if (matched.offsets.size() != 0) {
 			found = true;
 			is64 = true;
 		}
