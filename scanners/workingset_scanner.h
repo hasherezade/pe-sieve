@@ -13,6 +13,7 @@
 #include "../utils/workingset_enum.h"
 #include "process_feature_scanner.h"
 #include "process_details.h"
+#include "pattern_finder.h"
 
 #define CALC_PAGE_STATS
 #ifdef CALC_PAGE_STATS
@@ -35,7 +36,6 @@ namespace pesieve {
 			has_pe = false; //not a PE file
 			has_shellcode = true;
 			mapping_type = 0;
-			matched_patterns = 0;
 		}
 
 		const virtual bool toJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
@@ -56,11 +56,10 @@ namespace pesieve {
 			outs << ",\n";
 			OUT_PADDED(outs, level, "\"has_shellcode\" : ");
 			outs << std::dec << has_shellcode;
-			if (matched_patterns) {
+			//if (matched_patterns.size()) {
 				outs << ",\n";
-				OUT_PADDED(outs, level, "\"matched_patterns\" : ");
-				outs << std::dec << matched_patterns;
-			}
+				matched_patterns.toJSON(outs, level);
+			//}
 			if (!is_executable) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"is_executable\" : ");
@@ -97,7 +96,7 @@ namespace pesieve {
 		bool has_pe;
 		bool has_shellcode;
 		util::ByteBuffer data_cache;
-		size_t matched_patterns;
+		MatchesInfo matched_patterns;
 #ifdef CALC_PAGE_STATS
 		AreaMultiStats stats;
 		AreaInfo area_info;

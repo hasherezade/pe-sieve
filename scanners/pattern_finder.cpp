@@ -35,3 +35,38 @@ sig_ma::matched_set pesieve::find_matching_patterns(BYTE* loadedData, size_t loa
 	}
 	return signFinder.getMatching(loadedData, loadedSize, 0, sig_ma::FRONT_TO_BACK, stopOnFirstMatch);
 }
+
+//#define  USE_SIG_FINDER
+bool pesieve::fill_matching(const BYTE* loadedData, size_t loadedSize, MatchesInfo& _matchesInfo)
+{
+#ifdef  USE_SIG_FINDER
+	sig_ma::matched_set allMatched = find_matching_patterns(loadedData, loadedSize, false);
+	return allMatched.size() > 0 ? true : false;
+#else
+	if (!loadedSize || peconv::is_padding(loadedData, loadedSize, 0)) {
+		return false;
+	}
+
+	bool is64 = false;
+
+	pesieve::util::t_pattern_matched matched = util::find_32bit_code(loadedData, loadedSize);
+	bool found = false;
+	if (matched.offset != PATTERN_NOT_FOUND) {
+		found = true;
+	}
+	if (!found) {
+		matched = util::find_64bit_code(loadedData, loadedSize);
+		if (matched.offset != PATTERN_NOT_FOUND) {
+			found = true;
+			is64 = true;
+		}
+	}
+	_matchesInfo.appendMatch(matched);
+#ifdef _DEBUG
+	if (found) {
+		std::cout << "Is64: " << is64 << " Pattern ID: " << pattern_found << "\n";
+	}
+#endif //_DEBUG
+	return found;
+#endif //  USE_SIG_FINGER
+}

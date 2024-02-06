@@ -278,10 +278,11 @@ IMAGE_DOS_HEADER* pesieve::ArtefactScanner::_findDosHdrByPatterns(BYTE *search_p
 	IMAGE_DOS_HEADER *dos_ptr = nullptr;
 	for (size_t i = 0; i < patterns_count; i++) {
 		BYTE *pattern = stub_patterns[i];
-		stub_ptr = find_pattern(search_ptr, max_search_size, pattern, pattern_size);
-		if (!stub_ptr) {
+		size_t offset = find_pattern(search_ptr, max_search_size, pattern, pattern_size);
+		if (offset == PATTERN_NOT_FOUND) {
 			continue;
 		}
+		stub_ptr = offset + search_ptr;
 		size_t offset_to_bgn = sizeof(IMAGE_DOS_HEADER);
 		if ((ULONG_PTR)stub_ptr < offset_to_bgn) {
 			return nullptr;
@@ -379,8 +380,10 @@ BYTE* pesieve::ArtefactScanner::_findSecByPatterns(BYTE *search_ptr, const size_
 	const DWORD charact = IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_EXECUTE;
 	//find sections table
 	char sec_name[] = ".text";
-	BYTE *hdr_ptr = find_pattern(search_ptr, max_search_size, (BYTE*)sec_name, strlen(sec_name));
-	if (hdr_ptr) {
+	size_t offset = find_pattern(search_ptr, max_search_size, (BYTE*)sec_name, strlen(sec_name));
+	BYTE* hdr_ptr = nullptr;
+	if (offset != PATTERN_NOT_FOUND) {
+		hdr_ptr = search_ptr + offset;
 		// if the section was found by name, check if it has valid characteristics:
 		if (is_valid_section(search_ptr, max_search_size, hdr_ptr, charact)) {
 			return hdr_ptr;
@@ -409,10 +412,11 @@ BYTE* pesieve::ArtefactScanner::_findSecByPatterns(BYTE *search_ptr, const size_
 	for (size_t i = 0; i < patterns_count; i++) {
 		BYTE *sec_ending = charact_patterns[i];
 		const size_t sec_ending_size = pattern_size;
-		hdr_ptr = find_pattern(search_ptr, max_search_size, sec_ending, sec_ending_size);
-		if (!hdr_ptr) {
+		size_t offset = find_pattern(search_ptr, max_search_size, (BYTE*)sec_name, strlen(sec_name));
+		if (offset == PATTERN_NOT_FOUND) {
 			continue;
 		}
+		BYTE* hdr_ptr = search_ptr + offset;
 		size_t offset_to_bgn = sizeof(IMAGE_SECTION_HEADER) - sec_ending_size;
 		hdr_ptr -= offset_to_bgn;
 		if (!peconv::validate_ptr(search_ptr, max_search_size, hdr_ptr, sizeof(IMAGE_SECTION_HEADER))) {
@@ -533,8 +537,9 @@ IMAGE_FILE_HEADER* pesieve::ArtefactScanner::findNtFileHdr(MemPageData &memPage,
 	BYTE *arch_ptr = nullptr;
 	size_t my_arch = 0;
 	for (my_arch = ARCH_32B; my_arch < ARCHS_COUNT; my_arch++) {
-		arch_ptr = find_pattern(search_ptr, search_size, (BYTE*)&archs[my_arch], sizeof(WORD), max_iter);
-		if (arch_ptr) {
+		size_t offset = find_pattern(search_ptr, search_size, (BYTE*)&archs[my_arch], sizeof(WORD), max_iter);
+		if (offset != PATTERN_NOT_FOUND) {
+			arch_ptr = offset + search_ptr;
 			break;
 		}
 	}
