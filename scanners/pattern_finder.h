@@ -7,9 +7,10 @@
 #include "../utils/byte_buffer.h"
 #include "../utils/format_util.h"
 #include "../utils/artefacts_util.h"
+#include "../utils/crc32.h"
 
 namespace pesieve {
-
+	
 	//! Base class for the matched patterns.
 	class MatchesInfo {
 	public:
@@ -19,7 +20,19 @@ namespace pesieve {
 
 		void appendMatch(util::t_pattern_matched& m)
 		{
-			this->matches.push_back(m);
+			int id = m.patternId;
+			if (m.name.length()) {
+				CRC32 crc;
+				crc.Update(m.name.c_str(), m.name.length());
+				id = crc.GetValue();
+			}
+			auto found = this->matches.find(id);
+			if (found == this->matches.end()) {
+				this->matches[id] = m;
+				return;
+			}
+			util::t_pattern_matched& found_m = found->second;
+			found_m.offsets.insert(m.offsets.begin(),m.offsets.end());
 		}
 
 		size_t size()
@@ -33,7 +46,7 @@ namespace pesieve {
 			size_t i = 0;
 			for (auto itr = matches.begin(); itr != matches.end(); ++itr, ++i) {
 				OUT_PADDED(outs, level, "{\n");
-				util::t_pattern_matched& m = *itr;
+				util::t_pattern_matched& m = itr->second;
 				fieldToJSON(outs, level + 1, m);
 				OUT_PADDED(outs, level, "}");
 				if (i < (matches.size() - 1)) {
@@ -62,15 +75,21 @@ namespace pesieve {
 				outs << ",\n";
 			}
 			OUT_PADDED(outs, level, "\"offsets\" : [ ");
-			outs << std::hex << "\"" << m.offset << "\"";
+			size_t oI = 0;
+			for (auto itr = m.offsets.begin(); itr != m.offsets.end(); ++itr, ++oI) {
+				outs << std::hex << "\"" << *itr << "\"";
+				if (oI < (m.offsets.size() - 1)) {
+					outs << ", ";
+				}
+			}
 			outs << " ]\n";
-
 		}
 
-		std::vector<util::t_pattern_matched> matches;
+		std::map<DWORD, util::t_pattern_matched> matches;
+
 
 	}; // AreaStats
 	sig_ma::matched_set find_matching_patterns(const BYTE* loadedData, size_t loadedSize, bool stopOnFirstMatch = true);
 
-	bool fill_matching(const BYTE* loadedData, size_t loadedSize, MatchesInfo& _matchesInfo);
+	bool fill_matching(const BYTE* loadedData, size_t loadedSize, size_t startOffset, MatchesInfo& _matchesInfo);
 };

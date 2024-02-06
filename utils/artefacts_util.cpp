@@ -26,13 +26,12 @@ namespace pesieve {
 
 pesieve::util::t_pattern_matched find_single_pattern(const BYTE* loadedData, size_t loadedSize, pesieve::t_pattern patterns[], const size_t patterns_count)
 {
-	pesieve::util::t_pattern_matched matched = { 0 };
-	matched.offset = PATTERN_NOT_FOUND;
+	pesieve::util::t_pattern_matched matched;
 	for (DWORD i = 0; i < patterns_count; i++) {
 		size_t offset = pesieve::util::find_pattern(loadedData, loadedSize, patterns[i].ptr, patterns[i].size);
 		if (offset != PATTERN_NOT_FOUND) {
 			matched.patternId = i;
-			matched.offset = offset;
+			matched.offsets.insert(offset);
 			break;
 		}
 	}
@@ -137,12 +136,12 @@ bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 
 	pesieve::util::t_pattern_matched matched = find_32bit_code(loadedData, loadedSize);
 	bool found = false;
-	if (matched.offset != PATTERN_NOT_FOUND) {
+	if (matched.offsets.size() != 0) {
 		found = true;
 	}
 	if (!found) {
 		matched = find_64bit_code(loadedData, loadedSize);
-			if (matched.offset != PATTERN_NOT_FOUND) {
+			if (matched.offsets.size() != 0) {
 			found = true;
 			is64 = true;
 		}

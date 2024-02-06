@@ -1,14 +1,14 @@
 #pragma once
 #include <windows.h>
 #include <string>
+#include <set>
 
 #define PATTERN_NOT_FOUND (-1)
 
 namespace pesieve {
 	namespace util {
-
 		typedef struct _t_pattern_matched {
-			size_t offset;
+			std::set<size_t> offsets;
 			int patternId;
 			int groupId;
 			std::string name;

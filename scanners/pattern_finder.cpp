@@ -27,7 +27,7 @@ void initSigFinders()
 
 sig_ma::matched_set pesieve::find_matching_patterns(const BYTE* loadedData, size_t loadedSize, bool stopOnFirstMatch)
 {
-	if (peconv::is_padding(loadedData, loadedSize, 0)) {
+	if (!loadedSize || peconv::is_padding(loadedData, loadedSize, 0)) {
 		return sig_ma::matched_set();
 	}
 	if (!isSignInit) {
@@ -37,10 +37,12 @@ sig_ma::matched_set pesieve::find_matching_patterns(const BYTE* loadedData, size
 }
 
 #define  USE_SIG_FINDER
-bool pesieve::fill_matching(const BYTE* loadedData, size_t loadedSize, MatchesInfo& _matchesInfo)
+bool pesieve::fill_matching(const BYTE* loadedData, size_t loadedSize, size_t startOffset, MatchesInfo& _matchesInfo)
 {
+	if (!loadedData || !loadedSize) return false;
+
 #ifdef  USE_SIG_FINDER
-	sig_ma::matched_set allMatched = find_matching_patterns(loadedData, loadedSize, true);
+	sig_ma::matched_set allMatched = find_matching_patterns(loadedData, loadedSize, false);
 	for (auto itr = allMatched.matchedSigns.begin(); itr != allMatched.matchedSigns.end(); ++itr) {
 		const sig_ma::matched match = *itr;
 
@@ -48,17 +50,14 @@ bool pesieve::fill_matching(const BYTE* loadedData, size_t loadedSize, MatchesIn
 			sig_ma::PckrSign* sign = *mItr;
 			if (!sign) continue;
 
-			pesieve::util::t_pattern_matched m = { 0 };
-			m.offset = match.match_offset;
+			pesieve::util::t_pattern_matched m;
+			m.offsets.insert(match.match_offset + startOffset);
 			m.name = sign->getName();
 			_matchesInfo.appendMatch(m);
 		}
 	}
 	return allMatched.size() > 0 ? true : false;
 #else
-	if (!loadedSize || peconv::is_padding(loadedData, loadedSize, 0)) {
-		return false;
-	}
 
 	bool is64 = false;
 

@@ -166,7 +166,7 @@ namespace pesieve {
 			}
 			else {
 				pesieve::util::t_pattern_matched match = pesieve::util::find_64bit_code(peBuffer.vBuf, peBuffer.vBufSize);
-				this->is64bit = (match.offset != PATTERN_NOT_FOUND);
+				this->is64bit = (match.offsets.size() != 0 ? true : false);
 			}
 			collectMainIatData();
 		}
