@@ -13,7 +13,6 @@ void initSigFinders()
 {
 	std::cout << "Init signs\n";
 	// 32 bit
-	signFinder.loadSignature("test1", "aa bb cc");
 	signFinder.loadSignature("prolog32_1", "55 8b ec");
 	signFinder.loadSignature("prolog32_2", "55 89 e5");
 	signFinder.loadSignature("prolog32_3", "60 89 ec");
@@ -83,22 +82,6 @@ DWORD pesieve::util::is_32bit_code(BYTE* loadedData, size_t loadedSize)
 	return pattern_found;
 }
 
-
-DWORD pesieve::util::find_by_sigfinder(BYTE* loadedData, size_t loadedSize, sig_ma::SigFinder& signFinder, std::vector< sig_ma::matched >& allMatched, bool stopOnFirstMatch)
-{
-	for (size_t i = 0; i < loadedSize; i++) {
-		sig_ma::matched matched = signFinder.getMatching(loadedData, loadedSize, i, sig_ma::FIXED);
-		if (matched.signs.size()) {
-			allMatched.push_back(matched);
-			if (stopOnFirstMatch) break;
-		}
-	}
-	if (allMatched.size() == 0) {
-		return CODE_PATTERN_NOT_FOUND;
-	}
-	return allMatched.size();
-}
-
 DWORD pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 {
 	BYTE prolog64_pattern[] = {
@@ -159,27 +142,25 @@ DWORD pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 	return pattern_found;
 }
 
-bool pesieve::util::find_matching_patterns(BYTE* loadedData, size_t loadedSize, std::vector< sig_ma::matched >& allMatched, bool stopOnFirstMatch)
+
+
+sig_ma::matched_set pesieve::util::find_matching_patterns(BYTE* loadedData, size_t loadedSize, bool stopOnFirstMatch)
 {
 	if (peconv::is_padding(loadedData, loadedSize, 0)) {
-		return false;
+		return sig_ma::matched_set();
 	}
 	if (!isSignInit) {
 		initSigFinders();
 	}
-	DWORD pattern_found = find_by_sigfinder(loadedData, loadedSize, signFinder, allMatched, stopOnFirstMatch);
-	if (pattern_found != CODE_PATTERN_NOT_FOUND) {
-		return true;
-	}
-	return false;
+	return signFinder.getMatching(loadedData, loadedSize, 0, sig_ma::FRONT_TO_BACK, stopOnFirstMatch);
 }
 
-#define  USE_SIG_FINGER
+#define  USE_SIG_FINDER
 bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 {
-#ifdef  USE_SIG_FINGER
-	std::vector< sig_ma::matched > allMatched;
-	return find_matching_patterns(loadedData, loadedSize, allMatched, true);
+#ifdef  USE_SIG_FINDER
+	sig_ma::matched_set allMatched = find_matching_patterns(loadedData, loadedSize, false);
+	return allMatched.size() > 0 ? true : false;
 #else
 	if (peconv::is_padding(loadedData, loadedSize, 0)) {
 		return false;
