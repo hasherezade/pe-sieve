@@ -6,6 +6,8 @@
 	#include <iostream>
 #endif
 
+using namespace SigTree;
+
 BYTE* pesieve::util::find_pattern(BYTE* buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size, size_t max_iter)
 {
 	for (size_t i = 0; (i + pattern_size) < buf_size; i++) {
@@ -36,9 +38,9 @@ bool init_32_patterns(Node* rootN)
 		0x89, 0xE5 // MOV EBP, ESP
 	};
 
-	Node::addPattern(rootN, prolog32_pattern, sizeof(prolog32_pattern));
-	Node::addPattern(rootN, prolog32_2_pattern, sizeof(prolog32_2_pattern));
-	Node::addPattern(rootN, prolog32_3_pattern, sizeof(prolog32_3_pattern));
+	Node::addPattern(rootN, "prolog32_1", prolog32_pattern, sizeof(prolog32_pattern));
+	Node::addPattern(rootN, "prolog32_2", prolog32_2_pattern, sizeof(prolog32_2_pattern));
+	Node::addPattern(rootN, "prolog32_3", prolog32_3_pattern, sizeof(prolog32_3_pattern));
 	return true;
 }
 
@@ -84,27 +86,28 @@ bool init_64_patterns(Node* rootN64)
 		 0x41, 0x57 // PUSH R15
 	};
 
-	Node::addPattern(rootN64, prolog64_pattern, sizeof(prolog64_pattern));
-	Node::addPattern(rootN64, prolog64_2_pattern, sizeof(prolog64_2_pattern));
-	Node::addPattern(rootN64, prolog64_3_pattern, sizeof(prolog64_3_pattern));
-	Node::addPattern(rootN64, prolog64_4_pattern, sizeof(prolog64_4_pattern));
-	Node::addPattern(rootN64, prolog64_5_pattern, sizeof(prolog64_5_pattern));
-	Node::addPattern(rootN64, prolog64_6_pattern, sizeof(prolog64_6_pattern));
-	Node::addPattern(rootN64, prolog64_7_pattern, sizeof(prolog64_7_pattern));
+	Node::addPattern(rootN64, "prolog64_1", prolog64_pattern, sizeof(prolog64_pattern));
+	Node::addPattern(rootN64, "prolog64_2", prolog64_2_pattern, sizeof(prolog64_2_pattern));
+	Node::addPattern(rootN64, "prolog64_3", prolog64_3_pattern, sizeof(prolog64_3_pattern));
+	Node::addPattern(rootN64, "prolog64_4", prolog64_4_pattern, sizeof(prolog64_4_pattern));
+	Node::addPattern(rootN64, "prolog64_5", prolog64_5_pattern, sizeof(prolog64_5_pattern));
+	Node::addPattern(rootN64, "prolog64_6", prolog64_6_pattern, sizeof(prolog64_6_pattern));
+	Node::addPattern(rootN64, "prolog64_7", prolog64_7_pattern, sizeof(prolog64_7_pattern));
 	return true;
 }
 
-DWORD search_till_pattern(Node* rootN, const BYTE* loadedData, size_t loadedSize)
+size_t search_till_pattern(Node* rootN, const BYTE* loadedData, size_t loadedSize)
 {
 	if (rootN && loadedData) {
 		for (size_t i = 0; i < loadedSize; i++) {
-			if (rootN->isMatching(loadedData + i, loadedSize - i)) return i;
+			Match m = rootN->getMatching(loadedData + i, loadedSize - i);
+			if (m.sign) return (m.offset + i);
 		}
 	}
 	return CODE_PATTERN_NOT_FOUND;
 }
 
-DWORD pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
+size_t pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 {
 	static Node *rootN32 = nullptr;
 	if (!rootN32) {
@@ -114,8 +117,9 @@ DWORD pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 	return search_till_pattern(rootN32, loadedData, loadedSize);
 }
 
-DWORD pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
+size_t pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 {
+
 	static Node* rootN64 = nullptr;
 	if (!rootN64) {
 		rootN64 = new Node();
@@ -129,17 +133,25 @@ bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 	if (peconv::is_padding(loadedData, loadedSize, 0)) {
 		return false;
 	}
+	size_t pattern_found = CODE_PATTERN_NOT_FOUND;
+	bool is64 = false;
 
-	static Node* rootN = nullptr;
-	if (!rootN) {
-		rootN = new Node();
-		init_32_patterns(rootN);
-		init_64_patterns(rootN);
+	bool found = false;
+	if ((pattern_found = is_32bit_code(loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
+		found = true;
 	}
-	if ((search_till_pattern(rootN, loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
-		return true;
+	if (!found) {
+		if ((pattern_found = is_64bit_code(loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
+			found = true;
+			is64 = true;
+		}
 	}
-	return false;
+#ifdef _DEBUG
+	if (found) {
+		std::cout << "Is64: " << is64 << " Pattern ID: " << pattern_found << "\n";
+	}
+#endif
+	return found;
 }
 
 bool pesieve::util::is_executable(DWORD mapping_type, DWORD protection)
