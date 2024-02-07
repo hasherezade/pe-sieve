@@ -22,8 +22,8 @@ bool init_32_patterns(Node* rootN)
 	if (!rootN) return false;
 
 	BYTE prolog32_pattern[] = {
-	0x55, // PUSH EBP
-	0x8b, 0xEC // MOV EBP, ESP
+		0x55, // PUSH EBP
+		0x8b, 0xEC // MOV EBP, ESP
 	};
 
 	BYTE prolog32_2_pattern[] = {
@@ -94,6 +94,16 @@ bool init_64_patterns(Node* rootN64)
 	return true;
 }
 
+DWORD search_till_pattern(Node* rootN, const BYTE* loadedData, size_t loadedSize)
+{
+	if (rootN && loadedData) {
+		for (size_t i = 0; i < loadedSize; i++) {
+			if (rootN->isMatching(loadedData + i, loadedSize - i)) return i;
+		}
+	}
+	return CODE_PATTERN_NOT_FOUND;
+}
+
 DWORD pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 {
 	static Node *rootN32 = nullptr;
@@ -101,11 +111,7 @@ DWORD pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 		rootN32 = new Node();
 		init_32_patterns(rootN32);
 	}
-
-	for (size_t i = 0; i < loadedSize; i++) {
-		if (rootN32->isMatching(loadedData + i, loadedSize - i)) return 32;
-	}
-	return CODE_PATTERN_NOT_FOUND;
+	return search_till_pattern(rootN32, loadedData, loadedSize);
 }
 
 DWORD pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
@@ -116,10 +122,7 @@ DWORD pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 		rootN64 = new Node();
 		init_64_patterns(rootN64);
 	}
-	for (size_t i = 0; i < loadedSize; i++) {
-		if (rootN64->isMatching(loadedData + i, loadedSize - i)) return 64;
-	}
-	return CODE_PATTERN_NOT_FOUND;
+	return search_till_pattern(rootN64, loadedData, loadedSize);
 }
 
 bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
