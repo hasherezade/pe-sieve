@@ -116,7 +116,6 @@ DWORD pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 
 DWORD pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 {
-
 	static Node* rootN64 = nullptr;
 	if (!rootN64) {
 		rootN64 = new Node();
@@ -130,25 +129,17 @@ bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 	if (peconv::is_padding(loadedData, loadedSize, 0)) {
 		return false;
 	}
-	DWORD pattern_found = CODE_PATTERN_NOT_FOUND;
-	bool is64 = false;
 
-	bool found = false;
-	if ((pattern_found = is_32bit_code(loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
-		found = true;
+	static Node* rootN = nullptr;
+	if (!rootN) {
+		rootN = new Node();
+		init_32_patterns(rootN);
+		init_64_patterns(rootN);
 	}
-	if (!found) {
-		if ((pattern_found = is_64bit_code(loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
-			found = true;
-			is64 = true;
-		}
+	if ((search_till_pattern(rootN, loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
+		return true;
 	}
-#ifdef _DEBUG
-	if (found) {
-		std::cout << "Is64: " << is64 << " Pattern ID: " << pattern_found << "\n";
-	}
-#endif
-	return found;
+	return false;
 }
 
 bool pesieve::util::is_executable(DWORD mapping_type, DWORD protection)
