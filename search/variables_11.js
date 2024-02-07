@@ -14,7 +14,7 @@ var searchData=
   ['region_5fend_11',['region_end',['../classpesieve_1_1_mem_page_data.html#a2c5096bc0354ff2ba1e77b72978b46d0',1,'pesieve::MemPageData']]],
   ['region_5fstart_12',['region_start',['../classpesieve_1_1_mem_page_data.html#ac0d51e421ea1f5489c2538a9475b8a6e',1,'pesieve::MemPageData']]],
   ['regionstart_13',['regionStart',['../classpesieve_1_1_pe_artefacts.html#ace73d07e94c6cbb1367b8734a11e66d7',1,'pesieve::PeArtefacts']]],
-  ['relocbase_14',['relocbase',['../classpesieve_1_1_pe_buffer.html#af82f09c9cf7265dd990b5fe299864838',1,'pesieve::PeBuffer::relocBase'],['../classpesieve_1_1_code_scan_report.html#a00859bb5571d96ddc13130bc23eac9f3',1,'pesieve::CodeScanReport::relocBase']]],
+  ['relocbase_14',['relocBase',['../classpesieve_1_1_pe_buffer.html#af82f09c9cf7265dd990b5fe299864838',1,'pesieve::PeBuffer::relocBase'],['../classpesieve_1_1_code_scan_report.html#a00859bb5571d96ddc13130bc23eac9f3',1,'pesieve::CodeScanReport::relocBase']]],
   ['relocs_15',['relocs',['../classpesieve_1_1_patch_analyzer.html#a449f7bb45cab966c6cad9032275cbb5e',1,'pesieve::PatchAnalyzer']]],
   ['remotemoddata_16',['remoteModData',['../classpesieve_1_1_module_scanner.html#a78ff1c135f070ab0d6e0ad3870604f90',1,'pesieve::ModuleScanner']]],
   ['replaced_17',['replaced',['../structreport.html#aae8b1ebdd28c6b82ce2f09d92061a149',1,'report']]],

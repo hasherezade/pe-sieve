@@ -1,0 +1,11 @@
+<map id="search_till_pattern" name="search_till_pattern">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,78,133,104"/>
+<area shape="rect" id="Node000002" href="$classpattern__tree_1_1_node.html#acb5ef908b6adf185bf97bce475d9764c" title=" " alt="" coords="181,71,308,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,88,165,88,165,94,133,94"/>
+<area shape="rect" id="Node000003" href="$classpattern__tree_1_1_node.html#a653df52abca73405b317fafd3ef5e18f" title=" " alt="" coords="356,5,483,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="300,68,348,49,350,54,302,73"/>
+<area shape="rect" id="Node000004" href="$classpattern__tree_1_1_node.html#aa52d90dffcff0cd46de3aa8fd38219f0" title=" " alt="" coords="356,71,483,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="308,88,341,88,341,94,308,94"/>
+<area shape="rect" id="Node000005" href="$classpattern__tree_1_1_node.html#a19c84cc7faff002876c76a60c2149886" title=" " alt="" coords="356,136,483,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="302,109,350,128,348,133,300,114"/>
+</map>

@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['cachedmodule_0',['cachedmodule',['../structpesieve_1_1_cached_module.html#a2cd314d43d01e963c686a7539dba63ad',1,'pesieve::CachedModule::CachedModule(BYTE *_moduleData, size_t _moduleSize)'],['../structpesieve_1_1_cached_module.html#aef70beecaef69d2a5c496a5a21d66fe7',1,'pesieve::CachedModule::CachedModule()']]],
+  ['cachedmodule_0',['CachedModule',['../structpesieve_1_1_cached_module.html#aef70beecaef69d2a5c496a5a21d66fe7',1,'pesieve::CachedModule::CachedModule()'],['../structpesieve_1_1_cached_module.html#a2cd314d43d01e963c686a7539dba63ad',1,'pesieve::CachedModule::CachedModule(BYTE *_moduleData, size_t _moduleSize)']]],
   ['calc_5fimport_5ftable_5fsize_1',['calc_import_table_size',['../namespacepesieve.html#a4d1d1873647d21ede441e3ce38a764fb',1,'pesieve']]],
   ['calc_5fnt_5fhdr_5foffset_2',['calc_nt_hdr_offset',['../namespacepesieve_1_1util.html#a6e736e5db7d1f169e282ed0f56411884',1,'pesieve::util']]],
   ['calc_5foffset_3',['calc_offset',['../namespacepesieve_1_1util.html#a64072c72d2a3391e021c9f1d6eb60e97',1,'pesieve::util']]],
   ['calc_5fsec_5fhdrs_5foffset_4',['calc_sec_hdrs_offset',['../namespacepesieve_1_1util.html#aecb1f3f6930e417216ee31328ef26040',1,'pesieve::util']]],
   ['calcimagesize_5',['calcImageSize',['../classpesieve_1_1_artefact_scanner.html#a3053ea39d3cba2a4f55ebe0b19dda71e',1,'pesieve::ArtefactScanner']]],
-  ['calcimgsize_6',['calcimgsize',['../classpesieve_1_1_artefact_scanner.html#aeedfc8d641b324dd3eb203313731292f',1,'pesieve::ArtefactScanner::calcImgSize()'],['../classpesieve_1_1_remote_module_data.html#a2566f869e49becd1a75b1e3d11fbff10',1,'pesieve::RemoteModuleData::calcImgSize()']]],
+  ['calcimgsize_6',['calcImgSize',['../classpesieve_1_1_artefact_scanner.html#aeedfc8d641b324dd3eb203313731292f',1,'pesieve::ArtefactScanner::calcImgSize()'],['../classpesieve_1_1_remote_module_data.html#a2566f869e49becd1a75b1e3d11fbff10',1,'pesieve::RemoteModuleData::calcImgSize()']]],
   ['calcpebase_7',['calcPeBase',['../classpesieve_1_1_artefact_scanner.html#a5cdaf77ef7c8a8b0fe53a6348b60429a',1,'pesieve::ArtefactScanner']]],
   ['calcpopulationstandarddeviation_8',['calcPopulationStandardDeviation',['../classpesieve_1_1stats_1_1_std_deviation_calc.html#a6976fb57cf15e91b0a7bbc32cecf630b',1,'pesieve::stats::StdDeviationCalc']]],
   ['calcpopulationvariance_9',['calcPopulationVariance',['../classpesieve_1_1stats_1_1_std_deviation_calc.html#a9f202693560eb2b081bff47d0753214d',1,'pesieve::stats::StdDeviationCalc']]],
@@ -19,7 +19,7 @@ var searchData=
   ['checkareacontent_16',['checkAreaContent',['../classpesieve_1_1_working_set_scanner.html#a6f48a79a9fd5f288883d28fe63f4b60b',1,'pesieve::WorkingSetScanner']]],
   ['checkforhookedexports_17',['checkForHookedExports',['../classpesieve_1_1_patch_list.html#a05382a8d3308b2b73072ce3f74e51df7',1,'pesieve::PatchList']]],
   ['checkratios_18',['checkRatios',['../namespacepesieve.html#a5fd824d6b6952365f9a987cd2dde58c4',1,'pesieve']]],
-  ['chunkstats_19',['chunkstats',['../structpesieve_1_1_chunk_stats.html#a0d293c1c710b49b08b4385f4bf12f693',1,'pesieve::ChunkStats::ChunkStats()'],['../structpesieve_1_1_chunk_stats.html#a8faa551d12ce0ef9385011166fca6e22',1,'pesieve::ChunkStats::ChunkStats(size_t _offset, size_t _size)'],['../structpesieve_1_1_chunk_stats.html#ac43e6564353e25b0ba67943f22dddede',1,'pesieve::ChunkStats::ChunkStats(const ChunkStats &amp;p1)']]],
+  ['chunkstats_19',['ChunkStats',['../structpesieve_1_1_chunk_stats.html#a0d293c1c710b49b08b4385f4bf12f693',1,'pesieve::ChunkStats::ChunkStats()'],['../structpesieve_1_1_chunk_stats.html#a8faa551d12ce0ef9385011166fca6e22',1,'pesieve::ChunkStats::ChunkStats(size_t _offset, size_t _size)'],['../structpesieve_1_1_chunk_stats.html#ac43e6564353e25b0ba67943f22dddede',1,'pesieve::ChunkStats::ChunkStats(const ChunkStats &amp;p1)']]],
   ['codematcher_20',['CodeMatcher',['../classpesieve_1_1_code_matcher.html#a1749ece281191d85895ac9b48f065ebd',1,'pesieve::CodeMatcher']]],
   ['codescanner_21',['CodeScanner',['../classpesieve_1_1_code_scanner.html#af8c8ca15cb6b4bae485d4f8f1d0b6c76',1,'pesieve::CodeScanner']]],
   ['codescanreport_22',['CodeScanReport',['../classpesieve_1_1_code_scan_report.html#ad4d34efd2729c1e2353e25de992fcfb0',1,'pesieve::CodeScanReport']]],

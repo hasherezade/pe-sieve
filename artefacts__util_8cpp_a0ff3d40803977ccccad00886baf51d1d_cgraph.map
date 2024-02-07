@@ -1,0 +1,11 @@
+<map id="init_64_patterns" name="init_64_patterns">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,46,119,72"/>
+<area shape="rect" id="Node000002" href="$classpattern__tree_1_1_node.html#a79de5735ac9af4dc3f31cdddc2666113" title=" " alt="" coords="167,39,294,79"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,56,151,56,151,62,119,62"/>
+<area shape="rect" id="Node000003" href="$classpattern__tree_1_1_node.html#a57fc6e693b9cc2dda6f439e96cd75a4b" title=" " alt="" coords="342,39,469,79"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="294,56,327,56,327,62,294,62"/>
+<area shape="rect" id="Node000004" href="$classpattern__tree_1_1_node.html#a653df52abca73405b317fafd3ef5e18f" title=" " alt="" coords="517,5,645,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="469,44,502,38,503,43,470,49"/>
+<area shape="rect" id="Node000005" href="$classpattern__tree_1_1_node.html#afb85bf7c6f6354f3eea5887b2d8f3536" title=" " alt="" coords="517,71,645,111"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="470,68,503,74,502,79,469,73"/>
+</map>

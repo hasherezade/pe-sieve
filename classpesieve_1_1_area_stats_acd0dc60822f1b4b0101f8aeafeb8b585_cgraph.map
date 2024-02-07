@@ -1,9 +1,5 @@
 <map id="pesieve::AreaStats::appendVal" name="pesieve::AreaStats::appendVal">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,136,75"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,136,46"/>
 <area shape="rect" id="Node000002" href="$classpesieve_1_1_area_stats.html#a35f114aa7bb17d6f04f6c9a5c28d458b" title=" " alt="" coords="184,5,314,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,42,168,36,169,42,137,47"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="196,70,302,96"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="137,63,181,70,180,75,136,68"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="362,63,535,103"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="302,80,346,80,346,86,302,86"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,23,168,23,168,28,136,28"/>
 </map>
