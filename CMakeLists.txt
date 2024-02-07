@@ -168,6 +168,7 @@ set (utils_hdrs
 	utils/workingset_enum.h
 	utils/modules_enum.h
 	utils/artefacts_util.h
+	utils/pattern_tree.h
 	utils/process_reflection.h
 	utils/console_color.h
 	utils/strings_util.h
