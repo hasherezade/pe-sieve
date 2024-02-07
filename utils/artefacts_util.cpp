@@ -125,22 +125,20 @@ size_t search_all_matches(Node* rootN, const BYTE* loadedData, size_t loadedSize
 
 size_t pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 {
-	static Node *rootN32 = nullptr;
-	if (!rootN32) {
-		rootN32 = new Node();
-		init_32_patterns(rootN32);
+	static Node rootN;
+	if(rootN.isEnd()) {
+		init_32_patterns(&rootN);
 	}
-	return search_till_pattern(rootN32, loadedData, loadedSize);
+	return search_till_pattern(&rootN, loadedData, loadedSize);
 }
 
 size_t pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 {
-	static Node* rootN64 = nullptr;
-	if (!rootN64) {
-		rootN64 = new Node();
-		init_64_patterns(rootN64);
+	static Node rootN;
+	if (rootN.isEnd()) {
+		init_64_patterns(&rootN);
 	}
-	return search_till_pattern(rootN64, loadedData, loadedSize);
+	return search_till_pattern(&rootN, loadedData, loadedSize);
 }
 
 bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
@@ -149,14 +147,13 @@ bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 		return false;
 	}
 
-	static Node* rootN = nullptr;
-	if (!rootN) {
-		rootN = new Node();
-		init_32_patterns(rootN);
-		init_64_patterns(rootN);
+	static Node rootN;
+	if (rootN.isEnd()) {
+		init_32_patterns(&rootN);
+		init_64_patterns(&rootN);
 	}
 
-	if ((search_till_pattern(rootN, loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
+	if ((search_till_pattern(&rootN, loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
 		return true;
 	}
 	return false;

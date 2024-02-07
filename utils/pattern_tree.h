@@ -79,6 +79,18 @@ namespace pattern_tree {
 		{
 		}
 
+		~Node()
+		{
+			for (auto itr = immediates.begin(); itr != immediates.end(); ++itr) {
+				Node* next = itr->second;
+				delete next;
+			}
+			immediates.clear();
+			if (sign) {
+				delete sign;
+			}
+		}
+
 		Node* getNode(BYTE _val)
 		{
 			auto found = immediates.find(_val);
