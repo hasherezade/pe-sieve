@@ -13,14 +13,14 @@ namespace pesieve {
 		BYTE* find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size, size_t max_iter = 0);
 
 		/*
-		Scans the buffer searching for the hardcoded 32-bit code patterns. If found, returns the patten ID, otherwise returns CODE_PATTERN_NOT_FOUND
+		Scans the buffer searching for the hardcoded 32-bit code patterns. If found, returns the match offset, otherwise returns CODE_PATTERN_NOT_FOUND
 		*/
-		DWORD is_32bit_code(BYTE *loadedData, size_t loadedSize);
+		size_t is_32bit_code(BYTE *loadedData, size_t loadedSize);
 
 		/*
-		Scans the buffer searching for the hardcoded 64-bit code patterns. If found, returns the patten ID, otherwise returns CODE_PATTERN_NOT_FOUND
+		Scans the buffer searching for the hardcoded 64-bit code patterns. If found, returns the match offset, otherwise returns CODE_PATTERN_NOT_FOUND
 		*/
-		DWORD is_64bit_code(BYTE *loadedData, size_t loadedSize);
+		size_t is_64bit_code(BYTE *loadedData, size_t loadedSize);
 
 		/*
 		Scans the buffer searching for any hardcoded code patterns (both 32 and 64 bit).

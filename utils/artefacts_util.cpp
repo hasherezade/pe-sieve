@@ -1,11 +1,14 @@
 #include "artefacts_util.h"
 #include <peconv.h>
+#include "pattern_tree.h"
 
 #ifdef _DEBUG
 	#include <iostream>
 #endif
 
-BYTE* pesieve::util::find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size, size_t max_iter)
+using namespace pattern_tree;
+
+BYTE* pesieve::util::find_pattern(BYTE* buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size, size_t max_iter)
 {
 	for (size_t i = 0; (i + pattern_size) < buf_size; i++) {
 		if (max_iter != 0 && i > max_iter) break;
@@ -16,15 +19,10 @@ BYTE* pesieve::util::find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_b
 	return nullptr;
 }
 
-namespace pesieve {
-	typedef struct {
-		BYTE *ptr;
-		size_t size;
-	} t_pattern;
-};
-
-DWORD pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
+bool init_32_patterns(Node* rootN)
 {
+	if (!rootN) return false;
+
 	BYTE prolog32_pattern[] = {
 		0x55, // PUSH EBP
 		0x8b, 0xEC // MOV EBP, ESP
@@ -40,24 +38,16 @@ DWORD pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 		0x89, 0xE5 // MOV EBP, ESP
 	};
 
-	t_pattern patterns[] = {
-		{ prolog32_pattern,   sizeof(prolog32_pattern) },
-		{ prolog32_2_pattern, sizeof(prolog32_2_pattern) },
-		{ prolog32_3_pattern, sizeof(prolog32_3_pattern) }
-	};
-
-	DWORD pattern_found = CODE_PATTERN_NOT_FOUND;
-	for (DWORD i = 0; i < _countof(patterns); i++) {
-		if (find_pattern(loadedData, loadedSize, patterns[i].ptr, patterns[i].size)) {
-			pattern_found = i;
-			break;
-		}
-	}
-	return pattern_found;
+	Node::addPattern(rootN, "prolog32_1", prolog32_pattern, sizeof(prolog32_pattern));
+	Node::addPattern(rootN, "prolog32_2", prolog32_2_pattern, sizeof(prolog32_2_pattern));
+	Node::addPattern(rootN, "prolog32_3", prolog32_3_pattern, sizeof(prolog32_3_pattern));
+	return true;
 }
 
-DWORD pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
+bool init_64_patterns(Node* rootN64)
 {
+	if (!rootN64) return false;
+
 	BYTE prolog64_pattern[] = {
 		0x40, 0x53,       // PUSH RBX
 		0x48, 0x83, 0xEC // SUB RSP, <BYTE>
@@ -96,24 +86,61 @@ DWORD pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 		 0x41, 0x57 // PUSH R15
 	};
 
-	t_pattern patterns[] = {
-		{ prolog64_pattern,   sizeof(prolog64_pattern) },
-		{ prolog64_2_pattern, sizeof(prolog64_2_pattern) },
-		{ prolog64_3_pattern, sizeof(prolog64_3_pattern) },
-		{ prolog64_4_pattern, sizeof(prolog64_4_pattern) },
-		{ prolog64_5_pattern, sizeof(prolog64_5_pattern) },
-		{ prolog64_6_pattern, sizeof(prolog64_6_pattern) },
-		{ prolog64_7_pattern, sizeof(prolog64_7_pattern) }
-	};
+	Node::addPattern(rootN64, "prolog64_1", prolog64_pattern, sizeof(prolog64_pattern));
+	Node::addPattern(rootN64, "prolog64_2", prolog64_2_pattern, sizeof(prolog64_2_pattern));
+	Node::addPattern(rootN64, "prolog64_3", prolog64_3_pattern, sizeof(prolog64_3_pattern));
+	Node::addPattern(rootN64, "prolog64_4", prolog64_4_pattern, sizeof(prolog64_4_pattern));
+	Node::addPattern(rootN64, "prolog64_5", prolog64_5_pattern, sizeof(prolog64_5_pattern));
+	Node::addPattern(rootN64, "prolog64_6", prolog64_6_pattern, sizeof(prolog64_6_pattern));
+	Node::addPattern(rootN64, "prolog64_7", prolog64_7_pattern, sizeof(prolog64_7_pattern));
+	return true;
+}
 
-	DWORD pattern_found = CODE_PATTERN_NOT_FOUND;
-	for (DWORD i = 0; i < _countof(patterns); i++) {
-		if (find_pattern(loadedData, loadedSize, patterns[i].ptr, patterns[i].size)) {
-			pattern_found = i;
-			break;
+size_t search_till_pattern(Node* rootN, const BYTE* loadedData, size_t loadedSize)
+{
+	if (rootN && loadedData) {
+		for (size_t i = 0; i < loadedSize; i++) {
+			Match m = rootN->getMatching(loadedData + i, loadedSize - i);
+			if (m.sign) return (m.offset + i);
 		}
 	}
-	return pattern_found;
+	return CODE_PATTERN_NOT_FOUND;
+}
+
+size_t search_all_matches(Node* rootN, const BYTE* loadedData, size_t loadedSize, std::vector<Match>& matches)
+{
+	size_t found = 0;
+	if (rootN && loadedData) {
+		for (size_t i = 0; i < loadedSize; i++) {
+			Match m = rootN->getMatching(loadedData + i, loadedSize - i);
+			if (m.sign) {
+				matches.push_back(m);
+				found++;
+			}
+		}
+	}
+	return found;
+}
+
+
+size_t pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
+{
+	static Node *rootN32 = nullptr;
+	if (!rootN32) {
+		rootN32 = new Node();
+		init_32_patterns(rootN32);
+	}
+	return search_till_pattern(rootN32, loadedData, loadedSize);
+}
+
+size_t pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
+{
+	static Node* rootN64 = nullptr;
+	if (!rootN64) {
+		rootN64 = new Node();
+		init_64_patterns(rootN64);
+	}
+	return search_till_pattern(rootN64, loadedData, loadedSize);
 }
 
 bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
@@ -121,25 +148,18 @@ bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 	if (peconv::is_padding(loadedData, loadedSize, 0)) {
 		return false;
 	}
-	DWORD pattern_found = CODE_PATTERN_NOT_FOUND;
-	bool is64 = false;
 
-	bool found = false;
-	if ((pattern_found = is_32bit_code(loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
-		found = true;
+	static Node* rootN = nullptr;
+	if (!rootN) {
+		rootN = new Node();
+		init_32_patterns(rootN);
+		init_64_patterns(rootN);
 	}
-	if (!found) {
-		if ((pattern_found = is_64bit_code(loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
-			found = true;
-			is64 = true;
-		}
+
+	if ((search_till_pattern(rootN, loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
+		return true;
 	}
-#ifdef _DEBUG
-	if (found) {
-		std::cout << "Is64: " << is64 << " Pattern ID: " << pattern_found << "\n";
-	}
-#endif
-	return found;
+	return false;
 }
 
 bool pesieve::util::is_executable(DWORD mapping_type, DWORD protection)
