@@ -5,7 +5,7 @@
 #include <string>
 #include <map>
 
-namespace SigTree {
+namespace pattern_tree {
 
 	class Signature
 	{
