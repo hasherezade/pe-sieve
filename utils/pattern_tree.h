@@ -37,7 +37,8 @@ namespace pattern_tree {
 			: offset(_offset), sign(_sign)
 		{
 		}
-		Match(Match& _match) // copy constructor
+
+		Match(const Match& _match) // copy constructor
 		{
 			offset = _match.offset;
 			sign = _match.sign;
@@ -144,4 +145,4 @@ namespace pattern_tree {
 		std::map<BYTE, Node*> immediates;
 	};
 
-}; //namespace SigTree
+}; //namespace pattern_tree
