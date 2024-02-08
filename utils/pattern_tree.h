@@ -185,9 +185,9 @@ namespace pattern_tree {
 		}
 
 #define SEARCH_BACK
-		Match getMatching(const BYTE* data, size_t data_size)
+		size_t getMatching(const BYTE* data, size_t data_size, std::vector<Match> &matches, bool stopOnFirst)
 		{
-			Match results;
+			size_t processed = 0;
 			//
 			ShortList<Node*> level;
 			level.push_back(this);
@@ -198,14 +198,17 @@ namespace pattern_tree {
 
 			for (size_t i = 0; i < data_size; i++)
 			{
-				results.offset = i; // processed bytes
+				processed = i; // processed bytes
 				level2_ptr->clear();
 				for (size_t k = 0; k < level1_ptr->size(); k++) {
 					Node * curr = level1_ptr->at(k);
 					if (curr->isSign()) {
-						results.offset = i - curr->sign->size();
-						results.sign = curr->sign;
-						return results;
+						size_t match_start = i - curr->sign->size();
+						Match m(match_start, curr->sign);
+						matches.push_back(m);
+						if (stopOnFirst) {
+							return match_start;
+						}
 					}
 					Node* prev = curr;
 					curr = prev->getNode(data[i]);
@@ -235,7 +238,7 @@ namespace pattern_tree {
 				level1_ptr = level2_ptr;
 				level2_ptr = tmp;
 			}
-			return results;
+			return processed;
 		}
 
 		bool isEnd()
@@ -262,15 +265,9 @@ namespace pattern_tree {
 			return 0;
 		}
 		size_t counter = 0;
-		for (size_t i = 0; i < loadedSize; i++) {
-			Match m = rootN.getMatching(loadedData + i, loadedSize - i);
-			size_t processed = m.offset + i;
-			i = processed;
-			if (m.sign) {
-				m.offset = processed;
-				allMatches.push_back(m);
-				counter++;
-			}
+		rootN.getMatching(loadedData, loadedSize, allMatches, false);
+		if (allMatches.size()) {
+			counter += allMatches.size();
 		}
 		return counter;
 	}
@@ -281,15 +278,11 @@ namespace pattern_tree {
 		if (!loadedData || !loadedSize) {
 			return empty;
 		}
-		size_t counter = 0;
-		for (size_t i = 0; i < loadedSize; i++) {
-			Match m = rootN.getMatching(loadedData + i, loadedSize - i);
-			size_t processed = m.offset + i;
-			i = processed;
-			if (m.sign) {
-				m.offset = processed;
-				return m;
-			}
+		std::vector<Match> allMatches;
+		rootN.getMatching(loadedData, loadedSize, allMatches, true);
+		if (allMatches.size()) {
+			auto itr = allMatches.begin();
+			return *itr;
 		}
 		return empty;
 	}
