@@ -96,32 +96,14 @@ bool init_64_patterns(Node* rootN64)
 	return true;
 }
 
-size_t search_till_pattern(Node* rootN, const BYTE* loadedData, size_t loadedSize)
+size_t search_till_pattern(Node& rootN, const BYTE* loadedData, size_t loadedSize)
 {
-	if (rootN && loadedData) {
-		for (size_t i = 0; i < loadedSize; i++) {
-			Match m = rootN->getMatching(loadedData + i, loadedSize - i);
-			if (m.sign) return (m.offset + i);
-		}
+	Match m = pattern_tree::find_first_match(rootN, loadedData, loadedSize);
+	if (!m.sign) {
+		return CODE_PATTERN_NOT_FOUND;
 	}
-	return CODE_PATTERN_NOT_FOUND;
+	return m.offset;
 }
-
-size_t search_all_matches(Node* rootN, const BYTE* loadedData, size_t loadedSize, std::vector<Match>& matches)
-{
-	size_t found = 0;
-	if (rootN && loadedData) {
-		for (size_t i = 0; i < loadedSize; i++) {
-			Match m = rootN->getMatching(loadedData + i, loadedSize - i);
-			if (m.sign) {
-				matches.push_back(m);
-				found++;
-			}
-		}
-	}
-	return found;
-}
-
 
 size_t pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 {
@@ -129,7 +111,7 @@ size_t pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 	if(rootN.isEnd()) {
 		init_32_patterns(&rootN);
 	}
-	return search_till_pattern(&rootN, loadedData, loadedSize);
+	return search_till_pattern(rootN, loadedData, loadedSize);
 }
 
 size_t pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
@@ -138,7 +120,7 @@ size_t pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 	if (rootN.isEnd()) {
 		init_64_patterns(&rootN);
 	}
-	return search_till_pattern(&rootN, loadedData, loadedSize);
+	return search_till_pattern(rootN, loadedData, loadedSize);
 }
 
 bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
@@ -153,7 +135,7 @@ bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 		init_64_patterns(&rootN);
 	}
 
-	if ((search_till_pattern(&rootN, loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
+	if ((search_till_pattern(rootN, loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
 		return true;
 	}
 	return false;

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <vector>
 
 namespace pattern_tree {
 
@@ -20,16 +21,23 @@ namespace pattern_tree {
 			this->pattern_size = _pattern_size;
 		}
 
+		size_t size()
+		{
+			return pattern_size;
+		}
+
+		std::string name;
+
+	protected:
 		size_t pattern_size;
 		BYTE* pattern;
-		std::string name;
 	};
 
 	class Match
 	{
 	public:
 		Match()
-			: offset(-1), sign(nullptr)
+			: offset(0), sign(nullptr)
 		{
 		}
 
@@ -46,6 +54,60 @@ namespace pattern_tree {
 
 		size_t offset;
 		Signature* sign;
+	};
+
+	template<class Element> class ShortList
+	{
+	public:
+		ShortList()
+			: elCount(0)
+		{
+		}
+
+		bool push_back(Element n)
+		{
+			if (elCount >= _countof(list)) {
+				return false;
+			}
+			if (find(n)) {
+				return true;
+			}
+			list[elCount] = n;
+			elCount++;
+			return true;
+		}
+
+		Element at(size_t i)
+		{
+			if (i < _countof(list)) {
+				return list[i];
+			}
+			return nullptr;
+		}
+
+		Element find(Element& searched)
+		{
+			for (size_t i = 0; i < elCount; i++) {
+				if (list[i] == searched) {
+					return list[i];
+				}
+			}
+			return nullptr;
+		}
+
+		void clear()
+		{
+			elCount = 0;
+		}
+
+		size_t size()
+		{
+			return elCount;
+		}
+
+	protected:
+		size_t elCount;
+		Element list[100];
 	};
 
 	class Node
@@ -122,22 +184,61 @@ namespace pattern_tree {
 			}
 		}
 
-		Match getMatching(const BYTE* data, size_t data_size)
+#define SEARCH_BACK
+		size_t getMatching(const BYTE* data, size_t data_size, std::vector<Match> &matches, bool stopOnFirst)
 		{
-			Match empty;
-			Node* curr = this;
+			size_t processed = 0;
+			//
+			ShortList<Node*> level;
+			level.push_back(this);
+			ShortList<Node*> level2;
+
+			auto level1_ptr = &level;
+			auto level2_ptr = &level2;
+
 			for (size_t i = 0; i < data_size; i++)
 			{
-				if (curr->iSign()) {
-					const size_t match_start = i - curr->sign->pattern_size;
-					return Match(match_start, curr->sign);
+				processed = i; // processed bytes
+				level2_ptr->clear();
+				for (size_t k = 0; k < level1_ptr->size(); k++) {
+					Node * curr = level1_ptr->at(k);
+					if (curr->isSign()) {
+						size_t match_start = i - curr->sign->size();
+						Match m(match_start, curr->sign);
+						matches.push_back(m);
+						if (stopOnFirst) {
+							return match_start;
+						}
+					}
+					Node* prev = curr;
+					curr = prev->getNode(data[i]);
+					if (curr) {
+						level2_ptr->push_back(curr);
+					}
+#ifdef SEARCH_BACK
+					if (prev != this) {
+						// the current value may also be a beginning of a new pattern:
+						Node* start = this->getNode(data[i]);
+						if (start) {
+							level2_ptr->push_back(start);
+						}
+					}
+#endif
 				}
-				if (curr->isEnd()) return empty;
-				BYTE val = data[i];
-				curr = curr->getNode(val);
-				if (!curr) return empty;
+				if (!level2_ptr->size()) {
+#ifdef SEARCH_BACK
+					// restart search from the beginning
+					level2_ptr->push_back(this);
+#else
+					return results;
+#endif //SEARCH_BACK
+				}
+				//swap:
+				auto tmp = level1_ptr;
+				level1_ptr = level2_ptr;
+				level2_ptr = tmp;
 			}
-			return empty;
+			return processed;
 		}
 
 		bool isEnd()
@@ -145,7 +246,7 @@ namespace pattern_tree {
 			return this->immediates.size() ? false : true;
 		}
 
-		bool iSign()
+		bool isSign()
 		{
 			return sign ? true : false;
 		}
@@ -156,5 +257,34 @@ namespace pattern_tree {
 		size_t level;
 		std::map<BYTE, Node*> immediates;
 	};
+
+
+	inline size_t find_all_matches(Node& rootN, const BYTE* loadedData, size_t loadedSize, std::vector<Match> &allMatches)
+	{
+		if (!loadedData || !loadedSize) {
+			return 0;
+		}
+		size_t counter = 0;
+		rootN.getMatching(loadedData, loadedSize, allMatches, false);
+		if (allMatches.size()) {
+			counter += allMatches.size();
+		}
+		return counter;
+	}
+
+	inline Match find_first_match(Node& rootN, const BYTE* loadedData, size_t loadedSize)
+	{
+		Match empty;
+		if (!loadedData || !loadedSize) {
+			return empty;
+		}
+		std::vector<Match> allMatches;
+		rootN.getMatching(loadedData, loadedSize, allMatches, true);
+		if (allMatches.size()) {
+			auto itr = allMatches.begin();
+			return *itr;
+		}
+		return empty;
+	}
 
 }; //namespace pattern_tree
