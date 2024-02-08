@@ -116,8 +116,9 @@ namespace pattern_tree {
 
 		static bool addPattern(Node* rootN, const char* _name, const BYTE* pattern, size_t pattern_size)
 		{
-			if (!rootN || !pattern) return false;
-
+			if (!rootN || !pattern || !pattern_size) {
+				return false;
+			}
 			Node* next = rootN;
 			for (size_t i = 0; i < pattern_size; i++) {
 				next = next->addNext(pattern[i]);
@@ -125,6 +126,11 @@ namespace pattern_tree {
 			}
 			next->sign = new Signature(_name, pattern, pattern_size);
 			return true;
+		}
+
+		static bool addTextPattern(Node* rootN, const char* pattern1)
+		{
+			return Node::addPattern(rootN, pattern1, (const BYTE*)pattern1, strlen(pattern1));
 		}
 
 		//---
