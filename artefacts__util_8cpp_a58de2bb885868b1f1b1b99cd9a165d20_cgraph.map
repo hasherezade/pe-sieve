@@ -1,0 +1,19 @@
+<map id="search_till_pattern" name="search_till_pattern">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,144,133,169"/>
+<area shape="rect" id="Node000002" href="$namespacepattern__tree.html#ae8edfa04b03ac5e12e4a3ef197a89588" title=" " alt="" coords="181,136,297,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,154,165,154,165,159,133,159"/>
+<area shape="rect" id="Node000003" href="$classpattern__tree_1_1_node.html#ad6e4739a934e46ace4978561216217e6" title=" " alt="" coords="345,136,472,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="297,154,330,154,330,159,297,159"/>
+<area shape="rect" id="Node000004" href="$classpattern__tree_1_1_short_list.html#a3e8545a7f1a0a922728f31d1e6ec3a64" title=" " alt="" coords="521,5,671,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="428,134,468,96,519,57,528,51,531,56,522,61,472,100,431,138"/>
+<area shape="rect" id="Node000005" href="$classpattern__tree_1_1_node.html#a653df52abca73405b317fafd3ef5e18f" title=" " alt="" coords="532,71,660,111"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="468,133,520,114,522,119,470,138"/>
+<area shape="rect" id="Node000006" href="$classpattern__tree_1_1_node.html#ab7c19ec37d1a1cef7e9e6d77871aa072" title=" " alt="" coords="532,136,660,177"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="473,154,517,154,517,159,473,159"/>
+<area shape="rect" id="Node000007" href="$classpattern__tree_1_1_short_list.html#a5ab67d3d6d93a755b193f14e4e1a97f4" title=" " alt="" coords="521,201,671,242"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="470,175,522,193,520,198,468,180"/>
+<area shape="rect" id="Node000009" href="$classpattern__tree_1_1_signature.html#aea803313490231e06c0440fb6b88c744" title=" " alt="" coords="520,267,672,307"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="431,175,472,213,522,251,531,257,528,261,519,256,468,217,428,179"/>
+<area shape="rect" id="Node000008" href="$classpattern__tree_1_1_short_list.html#ad8d87179b07baa1771f5df698f1f7aa3" title=" " alt="" coords="720,201,869,242"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="671,219,705,219,705,224,671,224"/>
+</map>

@@ -1,9 +1,0 @@
-<map id="pattern_tree::Node::getMatching" name="pattern_tree::Node::getMatching">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,71,133,111"/>
-<area shape="rect" id="Node000002" href="$classpattern__tree_1_1_node.html#a653df52abca73405b317fafd3ef5e18f" title=" " alt="" coords="181,5,308,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,68,173,49,175,54,126,73"/>
-<area shape="rect" id="Node000003" href="$classpattern__tree_1_1_node.html#aa52d90dffcff0cd46de3aa8fd38219f0" title=" " alt="" coords="181,71,308,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="133,88,165,88,165,94,133,94"/>
-<area shape="rect" id="Node000004" href="$classpattern__tree_1_1_node.html#a19c84cc7faff002876c76a60c2149886" title=" " alt="" coords="181,136,308,177"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="126,109,175,128,173,133,124,114"/>
-</map>

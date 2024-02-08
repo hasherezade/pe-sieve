@@ -46,7 +46,7 @@ var searchData=
   ['getloadedsize_43',['getLoadedSize',['../classpesieve_1_1_mem_page_data.html#a0b5482b81c1ae223a960a4255cf9a1c0',1,'pesieve::MemPageData']]],
   ['getmappedcached_44',['getMappedCached',['../classpesieve_1_1_modules_cache.html#a307eb472ff63b68b58c20990ed206864',1,'pesieve::ModulesCache']]],
   ['getmappedname_45',['getMappedName',['../classpesieve_1_1_remote_module_data.html#aa7907e6b996cbdbd1b185e8d91f7cbe9',1,'pesieve::RemoteModuleData']]],
-  ['getmatching_46',['getMatching',['../classpattern__tree_1_1_node.html#acb5ef908b6adf185bf97bce475d9764c',1,'pattern_tree::Node']]],
+  ['getmatching_46',['getMatching',['../classpattern__tree_1_1_node.html#ad6e4739a934e46ace4978561216217e6',1,'pattern_tree::Node']]],
   ['getmean_47',['getMean',['../classpesieve_1_1stats_1_1_std_deviation_calc.html#ae1fc3fe50be52247291bfc9a8f5be873',1,'pesieve::stats::StdDeviationCalc']]],
   ['getmodname_48',['getModName',['../classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb',1,'pesieve::ScannedModule']]],
   ['getmoduleat_49',['getModuleAt',['../classpesieve_1_1_modules_info.html#afc43d63a1a592d08d0115b92bff40e55',1,'pesieve::ModulesInfo']]],

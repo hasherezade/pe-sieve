@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structpesieve_1_1_rule_matchers_set.html" title=" " alt="" coords="5,5,178,31"/>
+<area shape="rect" id="Node000000" href="$classpesieve_1_1_rule_matcher.html" title=" " alt="" coords="5,80,151,106"/>
+<area shape="rect" id="Node000001" href="$classpesieve_1_1_code_matcher.html" title=" " alt="" coords="217,5,367,31"/>
+<area shape="poly" id="edge35_Node000000_Node000001" title=" " alt="" coords="121,71,198,40,233,29,235,34,200,45,123,76"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_encrypted_matcher.html" title=" " alt="" coords="204,55,380,80"/>
+<area shape="poly" id="edge36_Node000000_Node000002" title=" " alt="" coords="165,80,203,75,204,81,166,85"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_obfuscated_matcher.html" title=" " alt="" coords="199,104,385,130"/>
+<area shape="poly" id="edge37_Node000000_Node000003" title=" " alt="" coords="166,100,198,104,198,109,166,105"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_text_matcher.html" title=" " alt="" coords="220,153,364,179"/>
+<area shape="poly" id="edge38_Node000000_Node000004" title=" " alt="" coords="123,110,200,140,235,150,234,155,198,145,121,115"/>
 </map>
