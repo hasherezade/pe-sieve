@@ -196,11 +196,9 @@ namespace pattern_tree {
 
 		~Node()
 		{
-			for (auto itr = immediates.begin(); itr != immediates.end(); ++itr) {
-				Node* next = itr->second;
-				delete next;
-			}
-			immediates.clear();
+			_deleteChildren(immediates);
+			_deleteChildren(partials);
+			_deleteChildren(wildcards);
 			if (sign) {
 				delete sign;
 			}
@@ -322,6 +320,9 @@ namespace pattern_tree {
 	protected:
 		Node* _findInChildren(std::map<BYTE, Node*>& children, BYTE _val)
 		{
+			if (!children.size()) {
+				return nullptr;
+			}
 			auto found = children.find(_val);
 			if (found != children.end()) {
 				return found->second;
@@ -344,6 +345,15 @@ namespace pattern_tree {
 			_followMasked(level2_ptr, node, val, MASK_PARTIAL1);
 			_followMasked(level2_ptr, node, val, MASK_PARTIAL2);
 			_followMasked(level2_ptr, node, val, MASK_WILDCARD);
+		}
+
+		void _deleteChildren(std::map<BYTE, Node*>& children)
+		{
+			for (auto itr = children.begin(); itr != children.end(); ++itr) {
+				Node* next = itr->second;
+				delete next;
+			}
+			children.clear();
 		}
 
 		Signature* sign;
