@@ -114,6 +114,9 @@ size_t search_all_matches(Node* rootN, const BYTE* loadedData, size_t loadedSize
 		for (size_t i = 0; i < loadedSize; i++) {
 			Match m = rootN->getMatching(loadedData + i, loadedSize - i);
 			if (m.sign) {
+				size_t found_offset = m.offset + i;
+				m.offset = found_offset;
+				i = found_offset;
 				matches.push_back(m);
 				found++;
 			}
@@ -121,7 +124,6 @@ size_t search_all_matches(Node* rootN, const BYTE* loadedData, size_t loadedSize
 	}
 	return found;
 }
-
 
 size_t pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 {
