@@ -1,0 +1,11 @@
+<map id="pattern_tree::Node::addTextPattern" name="pattern_tree::Node::addTextPattern">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,133,79"/>
+<area shape="rect" id="Node000002" href="$classpattern__tree_1_1_node.html#a79de5735ac9af4dc3f31cdddc2666113" title=" " alt="" coords="181,39,308,79"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,56,165,56,165,62,133,62"/>
+<area shape="rect" id="Node000003" href="$classpattern__tree_1_1_node.html#a57fc6e693b9cc2dda6f439e96cd75a4b" title=" " alt="" coords="356,39,483,79"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="308,56,341,56,341,62,308,62"/>
+<area shape="rect" id="Node000004" href="$classpattern__tree_1_1_node.html#a653df52abca73405b317fafd3ef5e18f" title=" " alt="" coords="531,5,659,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="483,44,516,38,517,43,484,49"/>
+<area shape="rect" id="Node000005" href="$classpattern__tree_1_1_node.html#afb85bf7c6f6354f3eea5887b2d8f3536" title=" " alt="" coords="531,71,659,111"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="484,68,517,74,516,79,483,73"/>
+</map>
