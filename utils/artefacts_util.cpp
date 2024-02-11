@@ -1,12 +1,11 @@
 #include "artefacts_util.h"
 #include <peconv.h>
-#include "pattern_tree.h"
+#include <sig_finder.h>
+using namespace sig_finder;
 
 #ifdef _DEBUG
 	#include <iostream>
 #endif
-
-using namespace pattern_tree;
 
 BYTE* pesieve::util::find_pattern(BYTE* buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size, size_t max_iter)
 {
@@ -38,9 +37,9 @@ bool init_32_patterns(Node* rootN)
 		0x89, 0xE5 // MOV EBP, ESP
 	};
 
-	Node::addPattern(rootN, "prolog32_1", prolog32_pattern, sizeof(prolog32_pattern));
-	Node::addPattern(rootN, "prolog32_2", prolog32_2_pattern, sizeof(prolog32_2_pattern));
-	Node::addPattern(rootN, "prolog32_3", prolog32_3_pattern, sizeof(prolog32_3_pattern));
+	rootN->addPattern("prolog32_1", prolog32_pattern, sizeof(prolog32_pattern));
+	rootN->addPattern("prolog32_2", prolog32_2_pattern, sizeof(prolog32_2_pattern));
+	rootN->addPattern("prolog32_3", prolog32_3_pattern, sizeof(prolog32_3_pattern));
 	return true;
 }
 
@@ -86,19 +85,19 @@ bool init_64_patterns(Node* rootN64)
 		 0x41, 0x57 // PUSH R15
 	};
 
-	Node::addPattern(rootN64, "prolog64_1", prolog64_pattern, sizeof(prolog64_pattern));
-	Node::addPattern(rootN64, "prolog64_2", prolog64_2_pattern, sizeof(prolog64_2_pattern));
-	Node::addPattern(rootN64, "prolog64_3", prolog64_3_pattern, sizeof(prolog64_3_pattern));
-	Node::addPattern(rootN64, "prolog64_4", prolog64_4_pattern, sizeof(prolog64_4_pattern));
-	Node::addPattern(rootN64, "prolog64_5", prolog64_5_pattern, sizeof(prolog64_5_pattern));
-	Node::addPattern(rootN64, "prolog64_6", prolog64_6_pattern, sizeof(prolog64_6_pattern));
-	Node::addPattern(rootN64, "prolog64_7", prolog64_7_pattern, sizeof(prolog64_7_pattern));
+	rootN64->addPattern("prolog64_1", prolog64_pattern, sizeof(prolog64_pattern));
+	rootN64->addPattern("prolog64_2", prolog64_2_pattern, sizeof(prolog64_2_pattern));
+	rootN64->addPattern("prolog64_3", prolog64_3_pattern, sizeof(prolog64_3_pattern));
+	rootN64->addPattern("prolog64_4", prolog64_4_pattern, sizeof(prolog64_4_pattern));
+	rootN64->addPattern("prolog64_5", prolog64_5_pattern, sizeof(prolog64_5_pattern));
+	rootN64->addPattern("prolog64_6", prolog64_6_pattern, sizeof(prolog64_6_pattern));
+	rootN64->addPattern("prolog64_7", prolog64_7_pattern, sizeof(prolog64_7_pattern));
 	return true;
 }
 
-size_t search_till_pattern(Node& rootN, const BYTE* loadedData, size_t loadedSize)
+size_t search_till_pattern(sig_finder::Node& rootN, const BYTE* loadedData, size_t loadedSize)
 {
-	Match m = pattern_tree::find_first_match(rootN, loadedData, loadedSize);
+	Match m = sig_finder::find_first_match(rootN, loadedData, loadedSize);
 	if (!m.sign) {
 		return CODE_PATTERN_NOT_FOUND;
 	}
@@ -107,7 +106,7 @@ size_t search_till_pattern(Node& rootN, const BYTE* loadedData, size_t loadedSiz
 
 size_t pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 {
-	static Node rootN;
+	static sig_finder::Node rootN;
 	if(rootN.isEnd()) {
 		init_32_patterns(&rootN);
 	}
@@ -116,7 +115,7 @@ size_t pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 
 size_t pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 {
-	static Node rootN;
+	static sig_finder::Node rootN;
 	if (rootN.isEnd()) {
 		init_64_patterns(&rootN);
 	}

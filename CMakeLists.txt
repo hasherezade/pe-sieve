@@ -34,15 +34,21 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
 
 # modules:
 set ( M_PARSER "libpeconv/libpeconv" )
+set ( M_SIGFIND "sig_finder/sig_finder" )
 
 # modules paths:
-set (PECONV_DIR "${PROJECT_SOURCE_DIR}/${M_PARSER}" CACHE PATH "PEConv main path")
+set ( PECONV_DIR "${PROJECT_SOURCE_DIR}/${M_PARSER}" CACHE PATH "PEConv main path")
+set ( SIGFIND_DIR "${PROJECT_SOURCE_DIR}/${M_SIGFIND}" CACHE PATH "SigFinder main path")
 
 # modules headers:
 include_directories ( ${PECONV_DIR}/include )
+include_directories ( ${SIGFIND_DIR}/include )
+
 # libs
-add_subdirectory (libpeconv/libpeconv)
+add_subdirectory (${M_PARSER})
 set ( PECONV_LIB $<TARGET_FILE:libpeconv> CACHE PATH "PEConvLib library path" )
+add_subdirectory(${M_SIGFIND})
+set ( SIGFIND_LIB $<TARGET_FILE:sig_finder> CACHE PATH "SigFinder library path" )
 
 if( NOT PESIEVE_AS_STATIC_LIB AND NOT PESIEVE_AS_DLL)
 	set ( M_PARAMKIT_LIB "paramkit" )
@@ -168,7 +174,6 @@ set (utils_hdrs
 	utils/workingset_enum.h
 	utils/modules_enum.h
 	utils/artefacts_util.h
-	utils/pattern_tree.h
 	utils/process_reflection.h
 	utils/console_color.h
 	utils/strings_util.h
@@ -275,11 +280,12 @@ if(PESIEVE_AS_STATIC_LIB OR PESIEVE_AS_DLL)
 	)
 	set_source_files_properties(main.def PROPERTIES HEADER_FILE_ONLY TRUE)
 else()
-	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} pe_sieve_res_icon.rc  main.cpp params.h )
+	add_executable ( ${PROJECT_NAME} ${hdrs} ${srcs} ${rsrc} pe_sieve_res_icon.rc main.cpp params.h )
 endif()
 
 set (used_libs
 	${PECONV_LIB}
+	${SIGFIND_LIB}
 	psapi.lib
 	ntdll.lib
 	shlwapi
@@ -287,7 +293,7 @@ set (used_libs
 )
 
 # dependencies
-add_dependencies(${PROJECT_NAME} libpeconv )
+add_dependencies( ${PROJECT_NAME} libpeconv sig_finder )
 
 if(PESIEVE_AS_STATIC_LIB OR PESIEVE_AS_DLL)
 	include(GNUInstallDirs)
