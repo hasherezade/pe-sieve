@@ -178,6 +178,7 @@ set (utils_hdrs
 	utils/console_color.h
 	utils/strings_util.h
 	utils/byte_buffer.h
+	utils/code_patterns.h
 )
 
 set (params_info_hdrs
