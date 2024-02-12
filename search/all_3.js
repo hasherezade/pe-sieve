@@ -30,7 +30,7 @@ var searchData=
   ['checkratios_27',['checkRatios',['../namespacepesieve.html#a5fd824d6b6952365f9a987cd2dde58c4',1,'pesieve']]],
   ['chunkstats_28',['ChunkStats',['../structpesieve_1_1_chunk_stats.html',1,'pesieve::ChunkStats'],['../structpesieve_1_1_chunk_stats.html#a0d293c1c710b49b08b4385f4bf12f693',1,'pesieve::ChunkStats::ChunkStats()'],['../structpesieve_1_1_chunk_stats.html#a8faa551d12ce0ef9385011166fca6e22',1,'pesieve::ChunkStats::ChunkStats(size_t _offset, size_t _size)'],['../structpesieve_1_1_chunk_stats.html#ac43e6564353e25b0ba67943f22dddede',1,'pesieve::ChunkStats::ChunkStats(const ChunkStats &amp;p1)']]],
   ['cleanstringscount_29',['cleanStringsCount',['../structpesieve_1_1_chunk_stats.html#af9f5a428e5c71557e9d0cb4b54609b32',1,'pesieve::ChunkStats']]],
-  ['code_5fpattern_5fnot_5ffound_30',['CODE_PATTERN_NOT_FOUND',['../artefacts__util_8h.html#ac6cc9278d38a850adc0bb455f95dfb9b',1,'artefacts_util.h']]],
+  ['code_5fpatterns_2eh_30',['code_patterns.h',['../code__patterns_8h.html',1,'']]],
   ['code_5frule_31',['CODE_RULE',['../stats__analyzer_8h.html#a0ad57810a8871b9b8406fdf0d61eea4e',1,'stats_analyzer.h']]],
   ['code_5fscanner_2ecpp_32',['code_scanner.cpp',['../code__scanner_8cpp.html',1,'']]],
   ['code_5fscanner_2eh_33',['code_scanner.h',['../code__scanner_8h.html',1,'']]],

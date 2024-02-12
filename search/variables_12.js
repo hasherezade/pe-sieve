@@ -17,7 +17,7 @@ var searchData=
   ['shellc_5fpatterns_5for_5fstats_14',['SHELLC_PATTERNS_OR_STATS',['../classpesieve_1_1t__shellc__mode.html#a7ed46ef5720148741ee3d9d1f416694a',1,'pesieve::t_shellc_mode']]],
   ['shellc_5fstats_15',['SHELLC_STATS',['../classpesieve_1_1t__shellc__mode.html#a67ddfa30a058f878421d277af59fbf2e',1,'pesieve::t_shellc_mode']]],
   ['shellcode_16',['shellcode',['../structparams.html#a5063529cd6e6950334929d22164d3868',1,'params::shellcode'],['../namespacedemo.html#a6cdb502544cf88590852419885d95c92',1,'demo.shellcode']]],
-  ['size_17',['size',['../structpesieve_1_1_chunk_stats.html#a1a99134b17150d91a46a5a3a669063bc',1,'pesieve::ChunkStats::size'],['../structpesieve_1_1util_1_1__mem__region__info.html#a5b8ade2cf0b8931e4f81b98ae2bfdac5',1,'pesieve::util::_mem_region_info::size']]],
+  ['size_17',['size',['../structpesieve_1_1_chunk_stats.html#a1a99134b17150d91a46a5a3a669063bc',1,'pesieve::ChunkStats::size'],['../structpesieve_1_1__t__pattern.html#a5f8a13e6e7fa8367d83bb9306ccca9d8',1,'pesieve::_t_pattern::size'],['../structpesieve_1_1util_1_1__mem__region__info.html#a5b8ade2cf0b8931e4f81b98ae2bfdac5',1,'pesieve::util::_mem_region_info::size']]],
   ['skipped_18',['skipped',['../structreport.html#aa49ebcf3170fe05413a02a2af0ef5d9b',1,'report']]],
   ['snapshothandle_19',['SnapshotHandle',['../namespacepesieve_1_1util.html#a6af9e73116d4d74647d319a492b721b0',1,'pesieve::util']]],
   ['stack_5fframe_20',['stack_frame',['../struct__t__stack__enum__params.html#afd374d69c557b225099cff673e6ab6d7',1,'_t_stack_enum_params']]],
