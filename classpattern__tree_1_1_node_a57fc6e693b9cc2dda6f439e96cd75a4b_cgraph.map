@@ -1,7 +1,0 @@
-<map id="pattern_tree::Node::addNext" name="pattern_tree::Node::addNext">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,133,79"/>
-<area shape="rect" id="Node000002" href="$classpattern__tree_1_1_node.html#a653df52abca73405b317fafd3ef5e18f" title=" " alt="" coords="181,5,308,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,44,165,38,166,43,134,49"/>
-<area shape="rect" id="Node000003" href="$classpattern__tree_1_1_node.html#afb85bf7c6f6354f3eea5887b2d8f3536" title=" " alt="" coords="181,71,308,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="134,68,166,74,165,79,133,73"/>
-</map>

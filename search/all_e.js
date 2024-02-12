@@ -8,7 +8,7 @@ var searchData=
   ['obfusc_5fweak_5fenc_5',['OBFUSC_WEAK_ENC',['../classpesieve_1_1t__obfusc__mode.html#af993183caed734dac89aadedb1e8996c',1,'pesieve.t_obfusc_mode.OBFUSC_WEAK_ENC'],['../pe__sieve__types_8h.html#ad4b1167f329f8327c38daff92d990bb1ac304add47dbd28cfbe178fa72dab5f7c',1,'OBFUSC_WEAK_ENC:&#160;pe_sieve_types.h']]],
   ['obfuscated_6',['obfuscated',['../structparams.html#aad05679ef2fb5c59c4d59c7881b0e16f',1,'params::obfuscated'],['../namespacedemo.html#ac3217beeaae1221b7c791ca8a1323e3d',1,'demo.obfuscated']]],
   ['obfuscatedmatcher_7',['ObfuscatedMatcher',['../classpesieve_1_1_obfuscated_matcher.html',1,'pesieve::ObfuscatedMatcher'],['../classpesieve_1_1_obfuscated_matcher.html#a3714530bae9951055c1ec4e2351c90e4',1,'pesieve::ObfuscatedMatcher::ObfuscatedMatcher()']]],
-  ['offset_8',['offset',['../structpesieve_1_1_chunk_stats.html#a4aee49feff8e9a50d9e8075bcf28cfe6',1,'pesieve::ChunkStats::offset'],['../classpattern__tree_1_1_match.html#a217cc6a53dacbd335d95caba7e0b2a58',1,'pattern_tree::Match::offset']]],
+  ['offset_8',['offset',['../structpesieve_1_1_chunk_stats.html#a4aee49feff8e9a50d9e8075bcf28cfe6',1,'pesieve::ChunkStats']]],
   ['op_5fcall_5fdword_9',['OP_CALL_DWORD',['../classpesieve_1_1_patch_analyzer.html#a9edea5c9889195f81c4a64101e6337acac8cef401ea09e9115585c7f7749a2da1',1,'pesieve::PatchAnalyzer']]],
   ['op_5fjmp_10',['OP_JMP',['../classpesieve_1_1_patch_analyzer.html#a9edea5c9889195f81c4a64101e6337aca8945329e8795ae0a772ff9d3fd75edb3',1,'pesieve::PatchAnalyzer']]],
   ['op_5fjmp_5fvia_5faddr_5fb1_11',['OP_JMP_VIA_ADDR_B1',['../classpesieve_1_1_patch_analyzer.html#a9edea5c9889195f81c4a64101e6337aca7c96268b31d70bed12140faedacdb2d9',1,'pesieve::PatchAnalyzer']]],

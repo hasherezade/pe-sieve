@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['name_0',['name',['../classpesieve_1_1_rule_matcher.html#ae8a27c1719f09e0bae7b50f5df1b1141',1,'pesieve::RuleMatcher::name'],['../classpattern__tree_1_1_signature.html#a97059c32fc3ca2fbf2d3a82abe6479f3',1,'pattern_tree::Signature::name']]],
+  ['name_0',['name',['../classpesieve_1_1_rule_matcher.html#ae8a27c1719f09e0bae7b50f5df1b1141',1,'pesieve::RuleMatcher']]],
   ['no_5fhooks_1',['no_hooks',['../structparams.html#a5c94932d4ed430d54d79962b07df87d8',1,'params::no_hooks'],['../namespacedemo.html#a440ac2a5a4c597dd098dfd9bb180e061',1,'demo.no_hooks']]],
   ['notcovered_2',['notCovered',['../classpesieve_1_1_i_a_t_scan_report.html#ad7d4b8a134b7afd117bbb49c85a0b638',1,'pesieve::IATScanReport']]],
   ['notrecoveredfilename_3',['notRecoveredFileName',['../classpesieve_1_1_module_dump_report.html#a5f5ab3d9bcd02133616bc46a7c074656',1,'pesieve::ModuleDumpReport']]],

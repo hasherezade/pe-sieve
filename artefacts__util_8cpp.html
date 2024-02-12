@@ -84,18 +84,18 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="artefacts__util_8h_source.html">artefacts_util.h</a>&quot;</code><br />
 <code>#include &lt;peconv.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="pattern__tree_8h_source.html">pattern_tree.h</a>&quot;</code><br />
+<code>#include &lt;sig_finder.h&gt;</code><br />
 </div>
 <p><a href="artefacts__util_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aefa2bfa325006cff2d8ee80d05280882" id="r_aefa2bfa325006cff2d8ee80d05280882"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aefa2bfa325006cff2d8ee80d05280882">init_32_patterns</a> (<a class="el" href="classpattern__tree_1_1_node.html">Node</a> *rootN)</td></tr>
+<tr class="memitem:aefa2bfa325006cff2d8ee80d05280882" id="r_aefa2bfa325006cff2d8ee80d05280882"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aefa2bfa325006cff2d8ee80d05280882">init_32_patterns</a> (Node *rootN)</td></tr>
 <tr class="separator:aefa2bfa325006cff2d8ee80d05280882"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ff3d40803977ccccad00886baf51d1d" id="r_a0ff3d40803977ccccad00886baf51d1d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ff3d40803977ccccad00886baf51d1d">init_64_patterns</a> (<a class="el" href="classpattern__tree_1_1_node.html">Node</a> *rootN64)</td></tr>
+<tr class="memitem:a0ff3d40803977ccccad00886baf51d1d" id="r_a0ff3d40803977ccccad00886baf51d1d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ff3d40803977ccccad00886baf51d1d">init_64_patterns</a> (Node *rootN64)</td></tr>
 <tr class="separator:a0ff3d40803977ccccad00886baf51d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58de2bb885868b1f1b1b99cd9a165d20" id="r_a58de2bb885868b1f1b1b99cd9a165d20"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a58de2bb885868b1f1b1b99cd9a165d20">search_till_pattern</a> (<a class="el" href="classpattern__tree_1_1_node.html">Node</a> &amp;rootN, const BYTE *loadedData, size_t loadedSize)</td></tr>
-<tr class="separator:a58de2bb885868b1f1b1b99cd9a165d20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09e1fa06aa4c84a23b896bffc9e678e0" id="r_a09e1fa06aa4c84a23b896bffc9e678e0"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a09e1fa06aa4c84a23b896bffc9e678e0">search_till_pattern</a> (sig_finder::Node &amp;rootN, const BYTE *loadedData, size_t loadedSize)</td></tr>
+<tr class="separator:a09e1fa06aa4c84a23b896bffc9e678e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="aefa2bfa325006cff2d8ee80d05280882" name="aefa2bfa325006cff2d8ee80d05280882"></a>
@@ -107,29 +107,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> init_32_patterns </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpattern__tree_1_1_node.html">Node</a> *</td>          <td class="paramname"><span class="paramname"><em>rootN</em></span></td><td>)</td>
+          <td class="paramtype">Node *</td>          <td class="paramname"><span class="paramname"><em>rootN</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="artefacts__util_8cpp_source.html#l00022">22</a> of file <a class="el" href="artefacts__util_8cpp_source.html">artefacts_util.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="artefacts__util_8cpp_aefa2bfa325006cff2d8ee80d05280882_cgraph.png" border="0" usemap="#aartefacts__util_8cpp_aefa2bfa325006cff2d8ee80d05280882_cgraph" alt=""/></div>
-<map name="aartefacts__util_8cpp_aefa2bfa325006cff2d8ee80d05280882_cgraph" id="aartefacts__util_8cpp_aefa2bfa325006cff2d8ee80d05280882_cgraph">
-<area shape="rect" title=" " alt="" coords="5,46,119,72"/>
-<area shape="rect" href="classpattern__tree_1_1_node.html#a79de5735ac9af4dc3f31cdddc2666113" title=" " alt="" coords="167,39,294,79"/>
-<area shape="poly" title=" " alt="" coords="119,56,151,56,151,62,119,62"/>
-<area shape="rect" href="classpattern__tree_1_1_node.html#a57fc6e693b9cc2dda6f439e96cd75a4b" title=" " alt="" coords="342,39,469,79"/>
-<area shape="poly" title=" " alt="" coords="294,56,327,56,327,62,294,62"/>
-<area shape="rect" href="classpattern__tree_1_1_node.html#a653df52abca73405b317fafd3ef5e18f" title=" " alt="" coords="517,5,645,46"/>
-<area shape="poly" title=" " alt="" coords="469,44,502,38,503,43,470,49"/>
-<area shape="rect" href="classpattern__tree_1_1_node.html#afb85bf7c6f6354f3eea5887b2d8f3536" title=" " alt="" coords="517,71,645,111"/>
-<area shape="poly" title=" " alt="" coords="470,68,503,74,502,79,469,73"/>
-</map>
-</div>
+<p class="definition">Definition at line <a class="el" href="artefacts__util_8cpp_source.html#l00021">21</a> of file <a class="el" href="artefacts__util_8cpp_source.html">artefacts_util.cpp</a>.</p>
 
 </div>
 </div>
@@ -142,34 +126,18 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> init_64_patterns </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpattern__tree_1_1_node.html">Node</a> *</td>          <td class="paramname"><span class="paramname"><em>rootN64</em></span></td><td>)</td>
+          <td class="paramtype">Node *</td>          <td class="paramname"><span class="paramname"><em>rootN64</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="artefacts__util_8cpp_source.html#l00047">47</a> of file <a class="el" href="artefacts__util_8cpp_source.html">artefacts_util.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="artefacts__util_8cpp_a0ff3d40803977ccccad00886baf51d1d_cgraph.png" border="0" usemap="#aartefacts__util_8cpp_a0ff3d40803977ccccad00886baf51d1d_cgraph" alt=""/></div>
-<map name="aartefacts__util_8cpp_a0ff3d40803977ccccad00886baf51d1d_cgraph" id="aartefacts__util_8cpp_a0ff3d40803977ccccad00886baf51d1d_cgraph">
-<area shape="rect" title=" " alt="" coords="5,46,119,72"/>
-<area shape="rect" href="classpattern__tree_1_1_node.html#a79de5735ac9af4dc3f31cdddc2666113" title=" " alt="" coords="167,39,294,79"/>
-<area shape="poly" title=" " alt="" coords="119,56,151,56,151,62,119,62"/>
-<area shape="rect" href="classpattern__tree_1_1_node.html#a57fc6e693b9cc2dda6f439e96cd75a4b" title=" " alt="" coords="342,39,469,79"/>
-<area shape="poly" title=" " alt="" coords="294,56,327,56,327,62,294,62"/>
-<area shape="rect" href="classpattern__tree_1_1_node.html#a653df52abca73405b317fafd3ef5e18f" title=" " alt="" coords="517,5,645,46"/>
-<area shape="poly" title=" " alt="" coords="469,44,502,38,503,43,470,49"/>
-<area shape="rect" href="classpattern__tree_1_1_node.html#afb85bf7c6f6354f3eea5887b2d8f3536" title=" " alt="" coords="517,71,645,111"/>
-<area shape="poly" title=" " alt="" coords="470,68,503,74,502,79,469,73"/>
-</map>
-</div>
+<p class="definition">Definition at line <a class="el" href="artefacts__util_8cpp_source.html#l00046">46</a> of file <a class="el" href="artefacts__util_8cpp_source.html">artefacts_util.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a58de2bb885868b1f1b1b99cd9a165d20" name="a58de2bb885868b1f1b1b99cd9a165d20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58de2bb885868b1f1b1b99cd9a165d20">&#9670;&#160;</a></span>search_till_pattern()</h2>
+<a id="a09e1fa06aa4c84a23b896bffc9e678e0" name="a09e1fa06aa4c84a23b896bffc9e678e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09e1fa06aa4c84a23b896bffc9e678e0">&#9670;&#160;</a></span>search_till_pattern()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,7 +145,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">size_t search_till_pattern </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpattern__tree_1_1_node.html">Node</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>rootN</em>, </span></td>
+          <td class="paramtype">sig_finder::Node &amp;</td>          <td class="paramname"><span class="paramname"><em>rootN</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -192,31 +160,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="artefacts__util_8cpp_source.html#l00099">99</a> of file <a class="el" href="artefacts__util_8cpp_source.html">artefacts_util.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="artefacts__util_8cpp_a58de2bb885868b1f1b1b99cd9a165d20_cgraph.png" border="0" usemap="#aartefacts__util_8cpp_a58de2bb885868b1f1b1b99cd9a165d20_cgraph" alt=""/></div>
-<map name="aartefacts__util_8cpp_a58de2bb885868b1f1b1b99cd9a165d20_cgraph" id="aartefacts__util_8cpp_a58de2bb885868b1f1b1b99cd9a165d20_cgraph">
-<area shape="rect" title=" " alt="" coords="5,144,133,169"/>
-<area shape="rect" href="namespacepattern__tree.html#ae8edfa04b03ac5e12e4a3ef197a89588" title=" " alt="" coords="181,136,297,177"/>
-<area shape="poly" title=" " alt="" coords="133,154,165,154,165,159,133,159"/>
-<area shape="rect" href="classpattern__tree_1_1_node.html#ad6e4739a934e46ace4978561216217e6" title=" " alt="" coords="345,136,472,177"/>
-<area shape="poly" title=" " alt="" coords="297,154,330,154,330,159,297,159"/>
-<area shape="rect" href="classpattern__tree_1_1_short_list.html#a3e8545a7f1a0a922728f31d1e6ec3a64" title=" " alt="" coords="521,5,671,46"/>
-<area shape="poly" title=" " alt="" coords="428,134,468,96,519,57,528,51,531,56,522,61,472,100,431,138"/>
-<area shape="rect" href="classpattern__tree_1_1_node.html#a653df52abca73405b317fafd3ef5e18f" title=" " alt="" coords="532,71,660,111"/>
-<area shape="poly" title=" " alt="" coords="468,133,520,114,522,119,470,138"/>
-<area shape="rect" href="classpattern__tree_1_1_node.html#ab7c19ec37d1a1cef7e9e6d77871aa072" title=" " alt="" coords="532,136,660,177"/>
-<area shape="poly" title=" " alt="" coords="473,154,517,154,517,159,473,159"/>
-<area shape="rect" href="classpattern__tree_1_1_short_list.html#a5ab67d3d6d93a755b193f14e4e1a97f4" title=" " alt="" coords="521,201,671,242"/>
-<area shape="poly" title=" " alt="" coords="470,175,522,193,520,198,468,180"/>
-<area shape="rect" href="classpattern__tree_1_1_signature.html#aea803313490231e06c0440fb6b88c744" title=" " alt="" coords="520,267,672,307"/>
-<area shape="poly" title=" " alt="" coords="431,175,472,213,522,251,531,257,528,261,519,256,468,217,428,179"/>
-<area shape="rect" href="classpattern__tree_1_1_short_list.html#ad8d87179b07baa1771f5df698f1f7aa3" title=" " alt="" coords="720,201,869,242"/>
-<area shape="poly" title=" " alt="" coords="671,219,705,219,705,224,671,224"/>
-</map>
-</div>
+<p class="definition">Definition at line <a class="el" href="artefacts__util_8cpp_source.html#l00098">98</a> of file <a class="el" href="artefacts__util_8cpp_source.html">artefacts_util.cpp</a>.</p>
 
 </div>
 </div>

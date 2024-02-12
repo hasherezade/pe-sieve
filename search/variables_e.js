@@ -6,7 +6,7 @@ var searchData=
   ['obfusc_5fstrong_5fenc_3',['OBFUSC_STRONG_ENC',['../classpesieve_1_1t__obfusc__mode.html#a190bf3aa247ea579afe0db7c379ca5ce',1,'pesieve::t_obfusc_mode']]],
   ['obfusc_5fweak_5fenc_4',['OBFUSC_WEAK_ENC',['../classpesieve_1_1t__obfusc__mode.html#af993183caed734dac89aadedb1e8996c',1,'pesieve::t_obfusc_mode']]],
   ['obfuscated_5',['obfuscated',['../structparams.html#aad05679ef2fb5c59c4d59c7881b0e16f',1,'params::obfuscated'],['../namespacedemo.html#ac3217beeaae1221b7c791ca8a1323e3d',1,'demo.obfuscated']]],
-  ['offset_6',['offset',['../structpesieve_1_1_chunk_stats.html#a4aee49feff8e9a50d9e8075bcf28cfe6',1,'pesieve::ChunkStats::offset'],['../classpattern__tree_1_1_match.html#a217cc6a53dacbd335d95caba7e0b2a58',1,'pattern_tree::Match::offset']]],
+  ['offset_6',['offset',['../structpesieve_1_1_chunk_stats.html#a4aee49feff8e9a50d9e8075bcf28cfe6',1,'pesieve::ChunkStats']]],
   ['orig_5fhndl_7',['orig_hndl',['../structpesieve_1_1util_1_1t__refl__args.html#a4fba52b7e1909cc49e10161166c078e2',1,'pesieve::util::t_refl_args']]],
   ['origartefacts_8',['origArtefacts',['../classpesieve_1_1_pe_reconstructor.html#ab78eb881766488c20e6d8fe25909c3c1',1,'pesieve::PeReconstructor']]],
   ['original_5fmodule_9',['original_module',['../classpesieve_1_1_module_data.html#ae6b6750b6c84f7f14e81b5cfc2f01812',1,'pesieve::ModuleData']]],
