@@ -364,6 +364,17 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 		}
 	}
 
+	pesieve::WorkingSetScanReport* wsScanReport = dynamic_cast<pesieve::WorkingSetScanReport*>(mod);
+	if (wsScanReport) {
+		std::string tags_file = modDumpReport->dumpFileName + ".patterns.tag";
+
+		if (wsScanReport->generateTags(tags_file)) {
+			modDumpReport->patternsFileName = tags_file;
+			modDumpReport->isReportDumped = true;
+		}
+	}
+
+
 	IATScanReport* iatHooksReport = dynamic_cast<IATScanReport*>(mod);
 	if (iatHooksReport) {
 		std::string imports_not_rec_file = modDumpReport->dumpFileName + ".iat_hooks.txt";

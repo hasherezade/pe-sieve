@@ -4,7 +4,7 @@
 #ifdef _DEBUG
 	#include <iostream>
 #endif
-#include <sig_finder.h>
+
 using namespace sig_finder;
 
 sig_finder::Node mainMatcher;
@@ -94,7 +94,7 @@ bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 	return false;
 }
 
-size_t pesieve::util::find_all_patterns(BYTE* loadedData, size_t loadedSize)
+size_t pesieve::util::find_all_patterns(BYTE* loadedData, size_t loadedSize, std::vector<sig_finder::Match>& allMatches)
 {
 	if (peconv::is_padding(loadedData, loadedSize, 0)) {
 		return false;
@@ -103,7 +103,6 @@ size_t pesieve::util::find_all_patterns(BYTE* loadedData, size_t loadedSize)
 		init_32_patterns(&mainMatcher);
 		init_64_patterns(&mainMatcher);
 	}
-	std::vector<sig_finder::Match> allMatches;
 	return sig_finder::find_all_matches(mainMatcher, loadedData, loadedSize, allMatches);
 }
 

@@ -7,6 +7,8 @@
 #include "../utils/workingset_enum.h"
 #include "../utils/artefacts_util.h"
 
+#include <fstream>
+
 using namespace pesieve;
 using namespace pesieve::util;
 
@@ -36,6 +38,41 @@ namespace pesieve {
 	}
 };
 
+
+inline bool match_toTAG(std::ofstream& patch_report, const char delimiter, size_t start_offset, sig_finder::Match match)
+{
+	if (patch_report.is_open() && match.sign) {
+		patch_report << std::hex << match.offset + start_offset;
+		patch_report << delimiter;
+		patch_report << match.sign->name;
+		patch_report << delimiter;
+		patch_report << match.sign->size();
+		patch_report << std::endl;
+		return true;
+	}
+	return false;
+}
+size_t WorkingSetScanReport::generateTags(const std::string& reportPath)
+{
+	if (matched_patterns.size() == 0) {
+		return 0;
+	}
+	std::ofstream patch_report;
+	patch_report.open(reportPath);
+	if (patch_report.is_open() == false) {
+		return 0;
+	}
+	size_t count = 0;
+	for (auto itr = matched_patterns.begin(); itr != matched_patterns.end(); itr++) {
+		sig_finder::Match m = *itr;
+		if (match_toTAG(patch_report, ';', this->match_area_start, m)) count++;
+	}
+	if (patch_report.is_open()) {
+		patch_report.close();
+	}
+	return count;
+}
+
 bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT WorkingSetScanReport* my_report)
 {
 	if (!memPage.load()) {
@@ -52,11 +89,12 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 	bool codeS = false;
 	bool obfuscated = false;
 	if (isByPatterns) {
-		const size_t matches_count = util::find_all_patterns(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding));
+
+		const size_t matches_count = util::find_all_patterns(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding), my_report->matched_patterns);
 		if (matches_count) {
+			my_report->match_area_start = memPage.getStartOffset(noPadding);
 			codeP = true;
 			code = true;
-			my_report->matched_patterns = matches_count;
 			if (this->args.shellcode == SHELLC_PATTERNS_OR_STATS) {
 				isByStats = false; // condition satisfied, no more checks required
 			}

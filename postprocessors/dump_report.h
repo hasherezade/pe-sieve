@@ -37,6 +37,7 @@ namespace pesieve {
 		std::string mode_info;
 		std::string dumpFileName;
 		std::string tagsFileName;
+		std::string patternsFileName;
 		std::string impListFileName;
 		std::string notRecoveredFileName;
 		std::string iatHooksFileName;

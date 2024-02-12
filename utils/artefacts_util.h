@@ -1,5 +1,6 @@
 #pragma once
 #include <windows.h>
+#include <sig_finder.h>
 #define PATTERN_NOT_FOUND (-1)
 
 namespace pesieve {
@@ -26,7 +27,7 @@ namespace pesieve {
 		*/
 		bool is_code(BYTE *loadedData, size_t loadedSize);
 
-		size_t find_all_patterns(BYTE* loadedData, size_t loadedSize);
+		size_t find_all_patterns(BYTE* loadedData, size_t loadedSize, std::vector<sig_finder::Match> &allMatches);
 
 		bool is_executable(DWORD mapping_type, DWORD protection);
 
