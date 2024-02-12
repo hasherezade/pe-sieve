@@ -1,7 +1,7 @@
 #pragma once
 #include <windows.h>
 
-#define CODE_PATTERN_NOT_FOUND (-1)
+#define PATTERN_NOT_FOUND (-1)
 
 namespace pesieve {
 	namespace util {

@@ -99,7 +99,7 @@ size_t search_till_pattern(sig_finder::Node& rootN, const BYTE* loadedData, size
 {
 	Match m = sig_finder::find_first_match(rootN, loadedData, loadedSize);
 	if (!m.sign) {
-		return CODE_PATTERN_NOT_FOUND;
+		return PATTERN_NOT_FOUND;
 	}
 	return m.offset;
 }
@@ -134,7 +134,7 @@ bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 		init_64_patterns(&rootN);
 	}
 
-	if ((search_till_pattern(rootN, loadedData, loadedSize)) != CODE_PATTERN_NOT_FOUND) {
+	if ((search_till_pattern(rootN, loadedData, loadedSize)) != PATTERN_NOT_FOUND) {
 		return true;
 	}
 	return false;
