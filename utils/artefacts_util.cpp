@@ -1,13 +1,13 @@
 #include "artefacts_util.h"
 #include <peconv.h>
-
 #include "code_patterns.h"
-
-using namespace sig_finder;
-
 #ifdef _DEBUG
 	#include <iostream>
 #endif
+#include <sig_finder.h>
+using namespace sig_finder;
+
+sig_finder::Node mainMatcher;
 
 BYTE* pesieve::util::find_pattern(BYTE* buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size, size_t max_iter)
 {
@@ -84,15 +84,27 @@ bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 	if (peconv::is_padding(loadedData, loadedSize, 0)) {
 		return false;
 	}
-	static sig_finder::Node rootN;
-	if (rootN.isEnd()) {
-		init_32_patterns(&rootN);
-		init_64_patterns(&rootN);
+	if (mainMatcher.isEnd()) {
+		init_32_patterns(&mainMatcher);
+		init_64_patterns(&mainMatcher);
 	}
-	if ((search_till_pattern(rootN, loadedData, loadedSize)) != PATTERN_NOT_FOUND) {
+	if ((search_till_pattern(mainMatcher, loadedData, loadedSize)) != PATTERN_NOT_FOUND) {
 		return true;
 	}
 	return false;
+}
+
+size_t pesieve::util::find_all_patterns(BYTE* loadedData, size_t loadedSize)
+{
+	if (peconv::is_padding(loadedData, loadedSize, 0)) {
+		return false;
+	}
+	if (mainMatcher.isEnd()) {
+		init_32_patterns(&mainMatcher);
+		init_64_patterns(&mainMatcher);
+	}
+	std::vector<sig_finder::Match> allMatches;
+	return sig_finder::find_all_matches(mainMatcher, loadedData, loadedSize, allMatches);
 }
 
 bool pesieve::util::is_executable(DWORD mapping_type, DWORD protection)

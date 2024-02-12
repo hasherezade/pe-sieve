@@ -1,6 +1,5 @@
 #pragma once
 #include <windows.h>
-#include <sig_finder.h>
 #define PATTERN_NOT_FOUND (-1)
 
 namespace pesieve {
@@ -26,6 +25,8 @@ namespace pesieve {
 		Scans the buffer searching for any hardcoded code patterns (both 32 and 64 bit).
 		*/
 		bool is_code(BYTE *loadedData, size_t loadedSize);
+
+		size_t find_all_patterns(BYTE* loadedData, size_t loadedSize);
 
 		bool is_executable(DWORD mapping_type, DWORD protection);
 

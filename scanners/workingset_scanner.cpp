@@ -52,9 +52,11 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 	bool codeS = false;
 	bool obfuscated = false;
 	if (isByPatterns) {
-		if (is_code(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding))) {
+		const size_t matches_count = util::find_all_patterns(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding));
+		if (matches_count) {
 			codeP = true;
 			code = true;
+			my_report->matched_patterns = matches_count;
 			if (this->args.shellcode == SHELLC_PATTERNS_OR_STATS) {
 				isByStats = false; // condition satisfied, no more checks required
 			}
