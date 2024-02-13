@@ -81,14 +81,15 @@ size_t pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 
 bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 {
+	static sig_finder::Node rootN;
 	if (peconv::is_padding(loadedData, loadedSize, 0)) {
 		return false;
 	}
-	if (mainMatcher.isEnd()) {
-		init_32_patterns(&mainMatcher);
-		init_64_patterns(&mainMatcher);
+	if (rootN.isEnd()) {
+		init_32_patterns(&rootN);
+		init_64_patterns(&rootN);
 	}
-	if ((search_till_pattern(mainMatcher, loadedData, loadedSize)) != PATTERN_NOT_FOUND) {
+	if ((search_till_pattern(rootN, loadedData, loadedSize)) != PATTERN_NOT_FOUND) {
 		return true;
 	}
 	return false;
@@ -104,6 +105,23 @@ size_t pesieve::util::find_all_patterns(BYTE* loadedData, size_t loadedSize, std
 		init_64_patterns(&mainMatcher);
 	}
 	return sig_finder::find_all_matches(mainMatcher, loadedData, loadedSize, allMatches);
+}
+
+size_t pesieve::util::load_pattern_file(const char* filename)
+{
+	static bool isLoaded = false;
+	if (isLoaded) return 0; // allow to load file only once
+#ifdef USE_ORIGINAL
+	init_32_patterns(&mainMatcher);
+	init_64_patterns(&mainMatcher);
+#endif
+	isLoaded = true;
+	std::vector<Signature*> signatures;
+	Signature::loadFromFile(filename, signatures);
+	if (!mainMatcher.addPatterns(signatures)) {
+		return 0;
+	}
+	return signatures.size();
 }
 
 bool pesieve::util::is_executable(DWORD mapping_type, DWORD protection)

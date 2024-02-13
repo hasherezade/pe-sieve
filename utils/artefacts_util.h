@@ -29,10 +29,13 @@ namespace pesieve {
 
 		size_t find_all_patterns(BYTE* loadedData, size_t loadedSize, std::vector<sig_finder::Match> &allMatches);
 
+		size_t load_pattern_file(const char* filename);
+
 		bool is_executable(DWORD mapping_type, DWORD protection);
 
 		bool is_readable(DWORD mapping_type, DWORD protection);
 
 		bool is_normal_inaccessible(DWORD state, DWORD mapping_type, DWORD protection);
+
 	};
 }

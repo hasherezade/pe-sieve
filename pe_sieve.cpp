@@ -14,6 +14,8 @@
 #include "utils/console_color.h"
 #include "color_scheme.h"
 
+#include "utils/artefacts_util.h"
+
 using namespace pesieve;
 using namespace pesieve::util;
 
@@ -186,7 +188,14 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 	if (!set_debug_privilege()) {
 		if (!args.quiet) std::cerr << "[-] Could not set debug privilege" << std::endl;
 	}
-
+	if (args.pattern_file.length) {
+		size_t loaded = util::load_pattern_file(args.pattern_file.buffer);
+		if (loaded) {
+			//if (!args.quiet)
+				std::cerr << "[+] Pattern file loaded: " << args.pattern_file.buffer << " Signs: " << loaded << std::endl;
+		}
+	}
+	
 	try {
 		orig_proc = open_process(args.pid, args.make_reflection, args.quiet);
 		HANDLE target_proc = orig_proc;

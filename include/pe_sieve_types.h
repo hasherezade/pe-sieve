@@ -130,6 +130,7 @@ namespace pesieve {
 		t_json_level json_lvl;  ///< level of the details of the JSON report
 		char output_dir[MAX_PATH + 1];  ///< the root directory where the output should be saved (default: current directory)
 		PARAM_STRING modules_ignored; ///< a list of modules that will not be scanned, separated by PARAM_LIST_SEPARATOR
+		PARAM_STRING pattern_file; ///< a file with additional patterns for code recognition
 	} t_params;
 
 	//!  Final summary about the scanned process.
