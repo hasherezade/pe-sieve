@@ -9,8 +9,8 @@ namespace pesieve {
 	} t_pattern;
 
 	BYTE prolog32_pattern[] = {
-	0x55, // PUSH EBP
-	0x8b, 0xEC // MOV EBP, ESP
+		0x55, // PUSH EBP
+		0x8b, 0xEC // MOV EBP, ESP
 	};
 
 	BYTE prolog32_2_pattern[] = {
@@ -30,8 +30,8 @@ namespace pesieve {
 	};
 
 	BYTE prolog64_pattern[] = {
-	0x40, 0x53,       // PUSH RBX
-	0x48, 0x83, 0xEC // SUB RSP, <BYTE>
+		0x40, 0x53,       // PUSH RBX
+		0x48, 0x83, 0xEC // SUB RSP, <BYTE>
 	};
 	BYTE prolog64_2_pattern[] = {
 		0x55,            // PUSH RBP
