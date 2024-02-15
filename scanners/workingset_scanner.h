@@ -38,6 +38,7 @@ namespace pesieve {
 			has_shellcode = true;
 			mapping_type = 0;
 			match_area_start = 0;
+			has_patterns = false;
 		}
 
 		const virtual bool toJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
@@ -100,6 +101,7 @@ namespace pesieve {
 		bool is_listed_module;
 		bool has_pe;
 		bool has_shellcode;
+		bool has_patterns;
 		util::ByteBuffer data_cache;
 		std::vector<sig_finder::Match> matched_patterns;
 		size_t match_area_start;

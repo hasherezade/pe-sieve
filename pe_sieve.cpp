@@ -175,6 +175,21 @@ namespace pesieve {
 }; //namespace pesieve
 
 
+namespace pesieve {
+
+	inline bool is_by_patterns(const t_shellc_mode& shellc_mode)
+	{
+		switch (shellc_mode) {
+		case  SHELLC_PATTERNS:
+		case  SHELLC_PATTERNS_OR_STATS:
+		case SHELLC_PATTERNS_AND_STATS:
+			return true;
+		}
+		return false;
+	}
+
+}; // namespace pesieve
+
 pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 {
 	ReportEx *report = new(std::nothrow) ReportEx();
@@ -189,11 +204,14 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 		if (!args.quiet) std::cerr << "[-] Could not set debug privilege" << std::endl;
 	}
 	if (args.pattern_file.length) {
-		size_t loaded = util::load_pattern_file(args.pattern_file.buffer);
+		size_t loaded = matcher::load_pattern_file(args.pattern_file.buffer);
 		if (loaded) {
 			//if (!args.quiet)
 				std::cerr << "[+] Pattern file loaded: " << args.pattern_file.buffer << " Signs: " << loaded << std::endl;
 		}
+	}
+	if (is_by_patterns(args.shellcode)) {
+		matcher::init_shellcode_patterns();
 	}
 	
 	try {
