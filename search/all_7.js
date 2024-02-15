@@ -7,7 +7,7 @@ var searchData=
   ['generatehistogram_4',['generateHistogram',['../namespacepesieve_1_1stats.html#a94bf8a495b6ac2a694e9d8203c9c736f',1,'pesieve::stats']]],
   ['generatelist_5',['generateList',['../classpesieve_1_1_i_a_t_scan_report.html#a7a2690d5018a87fb8207392e72dbdbda',1,'pesieve::IATScanReport']]],
   ['generatesummary_6',['generateSummary',['../classpesieve_1_1_process_scan_report.html#a493399a015b35b5be092366256d90aad',1,'pesieve::ProcessScanReport']]],
-  ['generatetags_7',['generateTags',['../classpesieve_1_1_code_scan_report.html#a45205114e41750adb1c00ed8b96c3f93',1,'pesieve::CodeScanReport']]],
+  ['generatetags_7',['generateTags',['../classpesieve_1_1_code_scan_report.html#a45205114e41750adb1c00ed8b96c3f93',1,'pesieve::CodeScanReport::generateTags()'],['../classpesieve_1_1_working_set_scan_report.html#a809081d28b4ad8824633d7e7b8c8ad7c',1,'pesieve::WorkingSetScanReport::generateTags()']]],
   ['get_5fbuffer_5fspace_5fat_8',['get_buffer_space_at',['../namespacepesieve.html#a284332cf7b83d3878a932657ec99404b',1,'pesieve']]],
   ['get_5fcurrent_5fcolor_9',['get_current_color',['../namespacepesieve_1_1util.html#a3a202097bb77191265159f34903c4ccb',1,'pesieve::util']]],
   ['get_5fdump_5fmode_5fname_10',['get_dump_mode_name',['../namespacepesieve.html#afb544770522131db2e3e0ff29e41b4ed',1,'pesieve']]],
@@ -69,7 +69,7 @@ var searchData=
   ['getscore_66',['getScore',['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#a52b2ef410b25eabdc0ce57aa85776ea7',1,'pesieve::ArtefactScanner::ArtefactsMapping']]],
   ['getsize_67',['getSize',['../classpesieve_1_1_scanned_module.html#a85e250d1c645cccf3dbad500841a9a0b',1,'pesieve::ScannedModule']]],
   ['getstart_68',['getStart',['../classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef',1,'pesieve::ScannedModule']]],
-  ['getstartoffset_69',['getStartOffset',['../structpesieve_1_1util_1_1_basic_buffer.html#ad9b00fbd2200ffe7508c708434206a34',1,'pesieve::util::BasicBuffer']]],
+  ['getstartoffset_69',['getStartOffset',['../classpesieve_1_1_mem_page_data.html#ab8d49149baea1828af255a53386934c6',1,'pesieve::MemPageData::getStartOffset()'],['../structpesieve_1_1util_1_1_basic_buffer.html#ad9b00fbd2200ffe7508c708434206a34',1,'pesieve::util::BasicBuffer::getStartOffset()']]],
   ['getsum_70',['getSum',['../classpesieve_1_1stats_1_1_std_deviation_calc.html#aee38b9d143ec3da0804f3d40a528e469',1,'pesieve::stats::StdDeviationCalc']]],
   ['getvalratio_71',['getValRatio',['../namespacepesieve.html#a169ec97afb0aab13e1b69e98d6e5b9dc',1,'pesieve']]],
   ['globalroot_5fname_72',['GLOBALROOT_NAME',['../path__converter_8cpp.html#a6fb2d7449fb3dbc8a7ade1a67ad66c3d',1,'path_converter.cpp']]]

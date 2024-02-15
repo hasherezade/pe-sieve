@@ -1,0 +1,10 @@
+<map id="pesieve::MemPageData::getStartOffset" name="pesieve::MemPageData::getStartOffset">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,164,46"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="422,13,527,39"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,20,212,19,374,19,407,20,407,25,374,24,212,24,164,25"/>
+<area shape="rect" id="Node000004" href="$structpesieve_1_1util_1_1_basic_buffer.html#ad9b00fbd2200ffe7508c708434206a34" title=" " alt="" coords="212,33,374,74"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="165,34,197,38,196,43,164,39"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="575,5,749,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="528,23,560,23,560,28,528,28"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="374,39,406,33,407,39,375,44"/>
+</map>
