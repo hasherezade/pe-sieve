@@ -38,7 +38,7 @@ namespace pesieve {
 			has_shellcode = true;
 			mapping_type = 0;
 			match_area_start = 0;
-			has_patterns = false;
+			all_matched_count = 0;
 		}
 
 		const virtual bool toJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
@@ -59,10 +59,15 @@ namespace pesieve {
 			outs << ",\n";
 			OUT_PADDED(outs, level, "\"has_shellcode\" : ");
 			outs << std::dec << has_shellcode;
-			if (matched_patterns.size()) {
+			if (all_matched_count) {
 				outs << ",\n";
-				OUT_PADDED(outs, level, "\"matched_patterns\" : ");
-				outs << std::dec << matched_patterns.size();
+				OUT_PADDED(outs, level, "\"patterns_matched\" : ");
+				outs << std::dec << all_matched_count;
+			}
+			if (custom_matched.size()) {
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"custom_matched\" : ");
+				outs << std::dec << custom_matched.size();
 			}
 			if (!is_executable) {
 				outs << ",\n";
@@ -103,7 +108,8 @@ namespace pesieve {
 		bool has_shellcode;
 		bool has_patterns;
 		util::ByteBuffer data_cache;
-		std::vector<sig_finder::Match> matched_patterns;
+		std::vector<sig_finder::Match> custom_matched;
+		size_t all_matched_count;
 		size_t match_area_start;
 #ifdef CALC_PAGE_STATS
 		AreaMultiStats stats;

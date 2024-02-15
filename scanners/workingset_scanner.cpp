@@ -44,7 +44,7 @@ namespace pesieve {
 
 size_t WorkingSetScanReport::generateTags(const std::string& reportPath)
 {
-	if (matched_patterns.size() == 0) {
+	if (this->custom_matched.size() == 0) {
 		return 0;
 	}
 	std::ofstream patch_report;
@@ -53,7 +53,7 @@ size_t WorkingSetScanReport::generateTags(const std::string& reportPath)
 		return 0;
 	}
 	size_t count = 0;
-	for (auto itr = matched_patterns.begin(); itr != matched_patterns.end(); itr++) {
+	for (auto itr = custom_matched.begin(); itr != custom_matched.end(); ++itr) {
 		sig_finder::Match m = *itr;
 		if (match_to_tag(patch_report, ';', this->match_area_start, m)) count++;
 	}
@@ -80,9 +80,13 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 	bool codeS = false;
 	bool obfuscated = false;
 
+	size_t custom_matched_count = 0;
+
 	if (matcher::is_matcher_ready()) {
-		const size_t matches_count = matcher::find_all_patterns(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding), my_report->matched_patterns);
-		if (matches_count) {
+		std::vector<sig_finder::Match> allMatched;
+		my_report->all_matched_count = matcher::find_all_patterns(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding), allMatched);
+		custom_matched_count = matcher::filter_custom(allMatched, my_report->custom_matched);
+		if (my_report->all_matched_count) {
 			my_report->match_area_start = memPage.getStartOffset(noPadding);
 			codeP = true;
 			code = true;
@@ -141,7 +145,7 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 	}
 	my_report->has_shellcode = code;
 
-	if (codeP && this->args.pattern_file.length) {
+	if (custom_matched_count && this->args.pattern_file.length) {
 		my_report->has_patterns = true;
 		my_report->status = SCAN_SUSPICIOUS;
 	}

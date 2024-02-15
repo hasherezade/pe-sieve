@@ -20,6 +20,8 @@ BYTE* pesieve::util::find_pattern(BYTE* buffer, size_t buf_size, BYTE* pattern_b
 
 namespace pesieve {
 
+	std::set<DWORD> HardcodedPatterns;
+
 	size_t init_32_patterns(Node* rootN)
 	{
 		if (!rootN) return 0;
@@ -29,7 +31,11 @@ namespace pesieve {
 		{
 			const t_pattern& pattern = patterns32[i];
 			std::string name = "prolog32_" + std::to_string(i);
-			if (rootN->addPattern(name.c_str(), pattern.ptr, pattern.size)) added++;
+			Signature sign(name, pattern.ptr, pattern.size);
+			if (rootN->addPattern(sign)) {
+				HardcodedPatterns.insert(sign.checksum());
+				added++;
+			}
 		}
 		return added;
 	}
@@ -43,7 +49,11 @@ namespace pesieve {
 		{
 			const t_pattern &pattern = patterns64[i];
 			std::string name = "prolog64_" + std::to_string(i);
-			if (rootN->addPattern(name.c_str(), pattern.ptr, pattern.size)) added++;
+			Signature sign(name, pattern.ptr, pattern.size);
+			if (rootN->addPattern(sign)) {
+				HardcodedPatterns.insert(sign.checksum());
+				added++;
+			}
 		}
 		return added;
 	}
@@ -170,4 +180,21 @@ size_t pesieve::matcher::find_all_patterns(BYTE* loadedData, size_t loadedSize, 
 	}
 	const size_t matches =  sig_finder::find_all_matches(mainMatcher, loadedData, loadedSize, allMatches);
 	return matches;
+}
+
+size_t pesieve::matcher::filter_custom(std::vector<sig_finder::Match>& allMatches, std::vector<sig_finder::Match>& customPatternMatches)
+{
+	size_t customCount = 0;
+	for (auto itr = allMatches.begin(); itr != allMatches.end(); ++itr) {
+		sig_finder::Match m = *itr;
+		if (m.sign) {
+			const DWORD checks = m.sign->checksum();
+			if (HardcodedPatterns.find(checks) != HardcodedPatterns.end()) {
+				continue;
+			}
+			customPatternMatches.push_back(m);
+			customCount++;
+		}
+	}
+	return customCount;
 }

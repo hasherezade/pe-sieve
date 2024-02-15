@@ -46,5 +46,7 @@ namespace pesieve {
 
 		size_t find_all_patterns(BYTE* loadedData, size_t loadedSize, std::vector<sig_finder::Match>& allMatches);
 
+		size_t filter_custom(std::vector<sig_finder::Match>& allMatches, std::vector<sig_finder::Match>& customPatternMatches);
+
 	}; //namespace matcher
 }
