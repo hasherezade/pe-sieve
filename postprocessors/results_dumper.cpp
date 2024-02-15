@@ -359,17 +359,17 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 		std::string tags_file = modDumpReport->dumpFileName + ".tag";
 
 		if (codeScanReport->generateTags(tags_file)) {
-			modDumpReport->tagsFileName = tags_file;
+			modDumpReport->hooksTagFileName = tags_file;
 			modDumpReport->isReportDumped = true;
 		}
 	}
 
 	pesieve::WorkingSetScanReport* wsScanReport = dynamic_cast<pesieve::WorkingSetScanReport*>(mod);
 	if (wsScanReport) {
-		std::string tags_file = modDumpReport->dumpFileName + ".patterns.tag";
+		std::string tags_file = modDumpReport->dumpFileName + ".pattern.tag";
 
 		if (wsScanReport->generateTags(tags_file)) {
-			modDumpReport->patternsFileName = tags_file;
+			modDumpReport->patternsTagFileName = tags_file;
 			modDumpReport->isReportDumped = true;
 		}
 	}

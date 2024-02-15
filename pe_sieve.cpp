@@ -203,11 +203,11 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 	if (!set_debug_privilege()) {
 		if (!args.quiet) std::cerr << "[-] Could not set debug privilege" << std::endl;
 	}
+
 	if (args.pattern_file.length) {
 		size_t loaded = matcher::load_pattern_file(args.pattern_file.buffer);
 		if (loaded) {
-			//if (!args.quiet)
-				std::cerr << "[+] Pattern file loaded: " << args.pattern_file.buffer << " Signs: " << loaded << std::endl;
+			if (!args.quiet) std::cerr << "[+] Pattern file loaded: " << args.pattern_file.buffer << " Signs: " << loaded << std::endl;
 		}
 	}
 	if (is_by_patterns(args.shellcode)) {
@@ -244,8 +244,8 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 		ProcessScanner scanner(target_proc, is_reflection, args);
 		report->scan_report = scanner.scanRemote();
 
-		// dump process
 		if (report->scan_report) {
+			// dump elements from the process:
 			report->dump_report = make_dump(target_proc, is_reflection, args, *report->scan_report);
 		}
 	}
