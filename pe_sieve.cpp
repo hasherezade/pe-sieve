@@ -206,8 +206,9 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 
 	if (args.pattern_file.length) {
 		size_t loaded = matcher::load_pattern_file(args.pattern_file.buffer);
-		if (loaded) {
-			if (!args.quiet) std::cerr << "[+] Pattern file loaded: " << args.pattern_file.buffer << " Signs: " << loaded << std::endl;
+		if (!args.quiet) {
+			if (loaded) std::cout << "[+] Pattern file loaded: " << args.pattern_file.buffer << ", Signs: " << loaded << std::endl;
+			else std::cerr << "[-] Failed to load pattern file: " << args.pattern_file.buffer << std::endl;
 		}
 	}
 	if (is_by_patterns(args.shellcode)) {
