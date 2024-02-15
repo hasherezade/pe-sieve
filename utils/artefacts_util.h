@@ -32,5 +32,19 @@ namespace pesieve {
 		bool is_readable(DWORD mapping_type, DWORD protection);
 
 		bool is_normal_inaccessible(DWORD state, DWORD mapping_type, DWORD protection);
-	};
+	}; // namespace util
+
+	namespace matcher {
+
+		/* using the global matcher */
+
+		bool is_matcher_ready();
+
+		bool init_shellcode_patterns();
+
+		size_t load_pattern_file(const char* filename);
+
+		size_t find_all_patterns(BYTE* loadedData, size_t loadedSize, std::vector<sig_finder::Match>& allMatches);
+
+	}; //namespace matcher
 }

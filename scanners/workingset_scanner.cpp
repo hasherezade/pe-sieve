@@ -7,13 +7,15 @@
 #include "../utils/workingset_enum.h"
 #include "../utils/artefacts_util.h"
 
+#include <fstream>
+
 using namespace pesieve;
 using namespace pesieve::util;
 
 
 namespace pesieve {
 
-	bool is_by_stats(const t_shellc_mode& shellc_mode)
+	inline bool is_by_stats(const t_shellc_mode& shellc_mode)
 	{
 		switch (shellc_mode) {
 		case  SHELLC_STATS:
@@ -23,18 +25,42 @@ namespace pesieve {
 		}
 		return false;
 	}
-
-	bool is_by_patterns(const t_shellc_mode& shellc_mode)
-	{
-		switch (shellc_mode) {
-		case  SHELLC_PATTERNS:
-		case  SHELLC_PATTERNS_OR_STATS:
-		case SHELLC_PATTERNS_AND_STATS:
-			return true;
-		}
-		return false;
-	}
 };
+
+
+inline bool match_toTAG(std::ofstream& patch_report, const char delimiter, size_t start_offset, sig_finder::Match match)
+{
+	if (patch_report.is_open() && match.sign) {
+		patch_report << std::hex << match.offset + start_offset;
+		patch_report << delimiter;
+		patch_report << match.sign->name;
+		patch_report << delimiter;
+		patch_report << match.sign->size();
+		patch_report << std::endl;
+		return true;
+	}
+	return false;
+}
+size_t WorkingSetScanReport::generateTags(const std::string& reportPath)
+{
+	if (matched_patterns.size() == 0) {
+		return 0;
+	}
+	std::ofstream patch_report;
+	patch_report.open(reportPath);
+	if (patch_report.is_open() == false) {
+		return 0;
+	}
+	size_t count = 0;
+	for (auto itr = matched_patterns.begin(); itr != matched_patterns.end(); itr++) {
+		sig_finder::Match m = *itr;
+		if (match_toTAG(patch_report, ';', this->match_area_start, m)) count++;
+	}
+	if (patch_report.is_open()) {
+		patch_report.close();
+	}
+	return count;
+}
 
 bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT WorkingSetScanReport* my_report)
 {
@@ -45,14 +71,16 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 	const bool noPadding = true;
 
 	bool isByStats = is_by_stats(this->args.shellcode);
-	bool isByPatterns = is_by_patterns(this->args.shellcode);
 
 	bool code = false;
 	bool codeP = false;
 	bool codeS = false;
 	bool obfuscated = false;
-	if (isByPatterns) {
-		if (is_code(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding))) {
+
+	if (matcher::is_matcher_ready()) {
+		const size_t matches_count = matcher::find_all_patterns(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding), my_report->matched_patterns);
+		if (matches_count) {
+			my_report->match_area_start = memPage.getStartOffset(noPadding);
 			codeP = true;
 			code = true;
 			if (this->args.shellcode == SHELLC_PATTERNS_OR_STATS) {
@@ -110,8 +138,14 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 	}
 	my_report->has_shellcode = code;
 
+	if (codeP && this->args.pattern_file.length) {
+		my_report->has_patterns = true;
+		my_report->status = SCAN_SUSPICIOUS;
+	}
 	if ( (this->args.obfuscated != OBFUSC_NONE && obfuscated) || ((this->args.shellcode != SHELLC_NONE) && code) ){
 		my_report->status = SCAN_SUSPICIOUS;
+	}
+	if (my_report->status == SCAN_SUSPICIOUS) {
 		my_report->data_cache = memPage.loadedData;
 	}
 	return true;
@@ -172,8 +206,10 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 			return my_report1;
 		}
 	}
-	if ((this->args.shellcode == SHELLC_NONE) && (this->args.obfuscated == OBFUSC_NONE)) {
-		// not a PE file, and we are not interested in shellcode or obfuscated contents, so just finish it here
+	if ((!matcher::is_matcher_ready())
+		&& (this->args.obfuscated == OBFUSC_NONE))
+	{
+		// not a PE file, and we are not interested in patterns or obfuscated contents, so just finish it here
 		return nullptr;
 	}
 

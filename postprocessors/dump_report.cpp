@@ -14,9 +14,13 @@ const bool pesieve::ModuleDumpReport::toJSON(std::stringstream &outs, size_t lev
 		OUT_PADDED(outs, level, "\"dump_file\" : ");
 		outs << "\"" << peconv::get_file_name(dumpFileName) << "\"" << ",\n";
 	}
-	if (tagsFileName.length()) {
+	if (hooksTagFileName.length()) {
 		OUT_PADDED(outs, level, "\"tags_file\" : ");
-		outs << "\"" << peconv::get_file_name(tagsFileName) << "\"" << ",\n";
+		outs << "\"" << peconv::get_file_name(hooksTagFileName) << "\"" << ",\n";
+	}
+	if (patternsTagFileName.length()) {
+		OUT_PADDED(outs, level, "\"pattern_tags_file\" : ");
+		outs << "\"" << peconv::get_file_name(patternsTagFileName) << "\"" << ",\n";
 	}
 	if (impListFileName.length()) {
 		OUT_PADDED(outs, level, "\"imports_file\" : ");

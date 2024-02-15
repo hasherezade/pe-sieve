@@ -1,13 +1,11 @@
 #include "artefacts_util.h"
 #include <peconv.h>
-
 #include "code_patterns.h"
-
-using namespace sig_finder;
-
 #ifdef _DEBUG
 	#include <iostream>
 #endif
+
+using namespace sig_finder;
 
 BYTE* pesieve::util::find_pattern(BYTE* buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size, size_t max_iter)
 {
@@ -81,10 +79,10 @@ size_t pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 
 bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
 {
+	static sig_finder::Node rootN;
 	if (peconv::is_padding(loadedData, loadedSize, 0)) {
 		return false;
 	}
-	static sig_finder::Node rootN;
 	if (rootN.isEnd()) {
 		init_32_patterns(&rootN);
 		init_64_patterns(&rootN);
@@ -126,4 +124,50 @@ bool pesieve::util::is_normal_inaccessible(DWORD state, DWORD mapping_type, DWOR
 		return true;
 	}
 	return false;
+}
+
+// matcher:
+
+sig_finder::Node mainMatcher;
+
+bool pesieve::matcher::is_matcher_ready()
+{
+	return (mainMatcher.isEnd()) ? false : true;
+}
+
+size_t pesieve::matcher::load_pattern_file(const char* filename)
+{
+	static bool isLoaded = false;
+	if (isLoaded) return 0; // allow to load file only once
+
+	isLoaded = true;
+	std::vector<Signature*> signatures;
+	Signature::loadFromFile(filename, signatures);
+	if (!mainMatcher.addPatterns(signatures)) {
+		return 0;
+	}
+	return signatures.size();
+}
+
+bool pesieve::matcher::init_shellcode_patterns()
+{
+	static bool isLoaded = false;
+	if (isLoaded) return false; // allow to load only once
+
+	isLoaded = true;
+	init_32_patterns(&mainMatcher);
+	init_64_patterns(&mainMatcher);
+	return true;
+}
+
+size_t pesieve::matcher::find_all_patterns(BYTE* loadedData, size_t loadedSize, std::vector<sig_finder::Match>& allMatches)
+{
+	if (!is_matcher_ready()) {
+		return false;
+	}
+	if (peconv::is_padding(loadedData, loadedSize, 0)) {
+		return false;
+	}
+	const size_t matches =  sig_finder::find_all_matches(mainMatcher, loadedData, loadedSize, allMatches);
+	return matches;
 }

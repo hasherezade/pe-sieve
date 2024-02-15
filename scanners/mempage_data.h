@@ -30,6 +30,7 @@ namespace pesieve {
 		bool isInfoFilled() { return is_info_filled; }
 		size_t getLoadedSize(bool trimmed = false) { return loadedData.getDataSize(trimmed); }
 		const PBYTE getLoadedData(bool trimmed = false) { return (PBYTE)loadedData.getData(trimmed); }
+		const size_t getStartOffset(bool trimmed = false) { return loadedData.getStartOffset(trimmed); }
 
 		bool validatePtr(const LPVOID field_bgn, size_t field_size)
 		{
