@@ -145,10 +145,6 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 	}
 	my_report->has_shellcode = code;
 
-	if (custom_matched_count && this->args.pattern_file.length) {
-		my_report->has_patterns = true;
-		my_report->status = SCAN_SUSPICIOUS;
-	}
 	if ( (this->args.obfuscated != OBFUSC_NONE && obfuscated) || ((this->args.shellcode != SHELLC_NONE) && code) ){
 		my_report->status = SCAN_SUSPICIOUS;
 	}

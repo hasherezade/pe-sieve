@@ -106,7 +106,7 @@ namespace pesieve {
 		bool is_listed_module;
 		bool has_pe;
 		bool has_shellcode;
-		bool has_patterns;
+
 		util::ByteBuffer data_cache;
 		std::vector<sig_finder::Match> custom_matched;
 		size_t all_matched_count;
