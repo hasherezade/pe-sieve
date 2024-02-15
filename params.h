@@ -30,6 +30,7 @@ using namespace pesieve;
 #define PARAM_JSON_LVL "jlvl"
 #define PARAM_DIR "dir"
 #define PARAM_MINIDUMP "minidmp"
+#define PARAM_PATTERN "pattern"
 
 
 bool alloc_strparam(PARAM_STRING& strparam, ULONG len)
@@ -120,6 +121,9 @@ public:
 				enumParam->addEnumValue(mode, shellc_mode_mode_to_id(mode), translate_shellc_mode(mode));
 			}
 		}
+		
+		this->addParam(new StringParam(PARAM_PATTERN, false));
+		this->setInfo(PARAM_PATTERN, "Set additional shellcode patterns (file in the SIG format).");
 
 		//PARAM_OBFUSCATED
 		enumParam = new EnumParam(PARAM_OBFUSCATED, "obfusc_mode", false);
@@ -211,6 +215,7 @@ public:
 		this->addParamToGroup(PARAM_SHELLCODE, str_group);
 		this->addParamToGroup(PARAM_OBFUSCATED, str_group);
 		this->addParamToGroup(PARAM_THREADS, str_group);
+		this->addParamToGroup(PARAM_PATTERN, str_group);
 
 		str_group = "4. dump options";
 		this->addGroup(new ParamGroup(str_group));
@@ -268,6 +273,7 @@ public:
 		copyVal<EnumParam>(PARAM_DUMP_MODE, ps.dump_mode);
 
 		copyCStr<StringParam>(PARAM_DIR, ps.output_dir, _countof(ps.output_dir));
+		fillStringParam(PARAM_PATTERN, ps.pattern_file);
 	}
 
 	void printBanner()
