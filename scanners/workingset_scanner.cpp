@@ -25,22 +25,23 @@ namespace pesieve {
 		}
 		return false;
 	}
+
+	inline bool match_to_tag(std::ofstream& patch_report, const char delimiter, size_t start_offset, const sig_finder::Match &match)
+	{
+		if (patch_report.is_open() && match.sign) {
+			patch_report << std::hex << match.offset + start_offset;
+			patch_report << delimiter;
+			patch_report << match.sign->name;
+			patch_report << delimiter;
+			patch_report << match.sign->size();
+			patch_report << std::endl;
+			return true;
+		}
+		return false;
+	}
 };
 
 
-inline bool match_toTAG(std::ofstream& patch_report, const char delimiter, size_t start_offset, sig_finder::Match match)
-{
-	if (patch_report.is_open() && match.sign) {
-		patch_report << std::hex << match.offset + start_offset;
-		patch_report << delimiter;
-		patch_report << match.sign->name;
-		patch_report << delimiter;
-		patch_report << match.sign->size();
-		patch_report << std::endl;
-		return true;
-	}
-	return false;
-}
 size_t WorkingSetScanReport::generateTags(const std::string& reportPath)
 {
 	if (matched_patterns.size() == 0) {
@@ -54,13 +55,15 @@ size_t WorkingSetScanReport::generateTags(const std::string& reportPath)
 	size_t count = 0;
 	for (auto itr = matched_patterns.begin(); itr != matched_patterns.end(); itr++) {
 		sig_finder::Match m = *itr;
-		if (match_toTAG(patch_report, ';', this->match_area_start, m)) count++;
+		if (match_to_tag(patch_report, ';', this->match_area_start, m)) count++;
 	}
 	if (patch_report.is_open()) {
 		patch_report.close();
 	}
 	return count;
 }
+
+//---
 
 bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT WorkingSetScanReport* my_report)
 {
