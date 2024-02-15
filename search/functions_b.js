@@ -17,7 +17,7 @@ var searchData=
   ['mapfromcached_14',['mapFromCached',['../structpesieve_1_1_cached_module.html#a8794ef18c90ac2540faf837fe04edd6d',1,'pesieve::CachedModule']]],
   ['mappingscanner_15',['MappingScanner',['../classpesieve_1_1_mapping_scanner.html#a348f81a683064d9e15007d11540151e4',1,'pesieve::MappingScanner']]],
   ['mappingscanreport_16',['MappingScanReport',['../classpesieve_1_1_mapping_scan_report.html#a5e73b6bd1e3de2dfe95dcb51e1bbc996',1,'pesieve::MappingScanReport']]],
-  ['match_5ftotag_17',['match_toTAG',['../workingset__scanner_8cpp.html#a1d20474dcce99a5e4846745c724a1c98',1,'workingset_scanner.cpp']]],
+  ['match_5fto_5ftag_17',['match_to_tag',['../namespacepesieve.html#a6ddb4b260f42d4e8c10413ad81b5537f',1,'pesieve']]],
   ['maxdlllen_18',['maxDllLen',['../classpesieve_1_1_i_a_t_block.html#a385b2a21afd976e4160de8a69bd61e8c',1,'pesieve::IATBlock']]],
   ['mempagedata_19',['MemPageData',['../classpesieve_1_1_mem_page_data.html#a26fde7b75da2faecc8162704d0d65163',1,'pesieve::MemPageData']]],
   ['moduledata_20',['ModuleData',['../classpesieve_1_1_module_data.html#a265979704c14d44a80f50a65a38bd04f',1,'pesieve::ModuleData::ModuleData(HANDLE _processHandle, HMODULE _module, bool _isPEBConnected, bool _useCache)'],['../classpesieve_1_1_module_data.html#aa68a746a51673e00f1585bbf3bc1a771',1,'pesieve::ModuleData::ModuleData(HANDLE _processHandle, HMODULE _module, std::string module_name, bool _useCache)']]],
