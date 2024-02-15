@@ -29,13 +29,12 @@ var searchData=
   ['artefact_5fscanner_2ecpp_26',['artefact_scanner.cpp',['../artefact__scanner_8cpp.html',1,'']]],
   ['artefact_5fscanner_2eh_27',['artefact_scanner.h',['../artefact__scanner_8h.html',1,'']]],
   ['artefacts_28',['artefacts',['../classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28',1,'pesieve::PeReconstructor::artefacts'],['../classpesieve_1_1_artefact_scan_report.html#a5c39ea6661e0c5de664c1395b2709612',1,'pesieve::ArtefactScanReport::artefacts']]],
-  ['artefacts_5futil_20_2d_20copy_2ecpp_29',['artefacts_util - Copy.cpp',['../artefacts__util_01-_01_copy_8cpp.html',1,'']]],
-  ['artefacts_5futil_2ecpp_30',['artefacts_util.cpp',['../artefacts__util_8cpp.html',1,'']]],
-  ['artefacts_5futil_2eh_31',['artefacts_util.h',['../artefacts__util_8h.html',1,'']]],
-  ['artefactscanner_32',['ArtefactScanner',['../classpesieve_1_1_artefact_scanner.html',1,'pesieve::ArtefactScanner'],['../classpesieve_1_1_artefact_scanner.html#a41348cc568589edb9ae52469e703ac1a',1,'pesieve::ArtefactScanner::ArtefactScanner()']]],
-  ['artefactscanreport_33',['ArtefactScanReport',['../classpesieve_1_1_artefact_scan_report.html',1,'pesieve::ArtefactScanReport'],['../classpesieve_1_1_artefact_scan_report.html#a7b5bcce8a8ee6021209e398e0ff76e4e',1,'pesieve::ArtefactScanReport::ArtefactScanReport()']]],
-  ['artefactsmapping_34',['ArtefactsMapping',['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html',1,'pesieve::ArtefactScanner::ArtefactsMapping'],['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#afb39709e61943f4af01c9241d89bc6b6',1,'pesieve::ArtefactScanner::ArtefactsMapping::ArtefactsMapping()']]],
-  ['artpageptr_35',['artPagePtr',['../classpesieve_1_1_artefact_scanner.html#ac08e85f318d5cb6417022fe475cb7b96',1,'pesieve::ArtefactScanner']]],
-  ['autoswichifwow64mapping_36',['autoswichIfWow64Mapping',['../classpesieve_1_1_module_data.html#a0e5b040296a73e447b0fad8d4bee319c',1,'pesieve::ModuleData']]],
-  ['available_20bindings_37',['Available bindings',['../index.html',1,'']]]
+  ['artefacts_5futil_2ecpp_29',['artefacts_util.cpp',['../artefacts__util_8cpp.html',1,'']]],
+  ['artefacts_5futil_2eh_30',['artefacts_util.h',['../artefacts__util_8h.html',1,'']]],
+  ['artefactscanner_31',['ArtefactScanner',['../classpesieve_1_1_artefact_scanner.html',1,'pesieve::ArtefactScanner'],['../classpesieve_1_1_artefact_scanner.html#a41348cc568589edb9ae52469e703ac1a',1,'pesieve::ArtefactScanner::ArtefactScanner()']]],
+  ['artefactscanreport_32',['ArtefactScanReport',['../classpesieve_1_1_artefact_scan_report.html',1,'pesieve::ArtefactScanReport'],['../classpesieve_1_1_artefact_scan_report.html#a7b5bcce8a8ee6021209e398e0ff76e4e',1,'pesieve::ArtefactScanReport::ArtefactScanReport()']]],
+  ['artefactsmapping_33',['ArtefactsMapping',['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html',1,'pesieve::ArtefactScanner::ArtefactsMapping'],['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#afb39709e61943f4af01c9241d89bc6b6',1,'pesieve::ArtefactScanner::ArtefactsMapping::ArtefactsMapping()']]],
+  ['artpageptr_34',['artPagePtr',['../classpesieve_1_1_artefact_scanner.html#ac08e85f318d5cb6417022fe475cb7b96',1,'pesieve::ArtefactScanner']]],
+  ['autoswichifwow64mapping_35',['autoswichIfWow64Mapping',['../classpesieve_1_1_module_data.html#a0e5b040296a73e447b0fad8d4bee319c',1,'pesieve::ModuleData']]],
+  ['available_20bindings_36',['Available bindings',['../index.html',1,'']]]
 ];
