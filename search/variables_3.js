@@ -10,5 +10,6 @@ var searchData=
   ['cleanstringscount_7',['cleanStringsCount',['../structpesieve_1_1_chunk_stats.html#af9f5a428e5c71557e9d0cb4b54609b32',1,'pesieve::ChunkStats']]],
   ['codesize_8',['codeSize',['../classpesieve_1_1_patch_analyzer.html#ab9e470a2c5b4de696cfdabaa8346284e',1,'pesieve::PatchAnalyzer']]],
   ['ctx_9',['ctx',['../struct__t__stack__enum__params.html#ae7d2f75acd71c92407abb34baba79e86',1,'_t_stack_enum_params']]],
-  ['currarea_10',['currArea',['../classpesieve_1_1_area_multi_stats.html#a48c41baba037ab57bcdc92c1428dee5f',1,'pesieve::AreaMultiStats']]]
+  ['currarea_10',['currArea',['../classpesieve_1_1_area_multi_stats.html#a48c41baba037ab57bcdc92c1428dee5f',1,'pesieve::AreaMultiStats']]],
+  ['custom_5fmatched_11',['custom_matched',['../classpesieve_1_1_working_set_scan_report.html#a69078211811766e7b0301c8c99417af4',1,'pesieve::WorkingSetScanReport']]]
 ];

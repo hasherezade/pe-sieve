@@ -62,5 +62,6 @@ var searchData=
   ['countunpackedsections_59',['countUnpackedSections',['../classpesieve_1_1_code_scan_report.html#a13fde9f443f304c019598570f95f98f7',1,'pesieve::CodeScanReport']]],
   ['create_5fdir_5frecursively_60',['create_dir_recursively',['../namespacepesieve_1_1util.html#a04f5ff8195f6fd23668379fbd46879dc',1,'pesieve::util']]],
   ['ctx_61',['ctx',['../struct__t__stack__enum__params.html#ae7d2f75acd71c92407abb34baba79e86',1,'_t_stack_enum_params']]],
-  ['currarea_62',['currArea',['../classpesieve_1_1_area_multi_stats.html#a48c41baba037ab57bcdc92c1428dee5f',1,'pesieve::AreaMultiStats']]]
+  ['currarea_62',['currArea',['../classpesieve_1_1_area_multi_stats.html#a48c41baba037ab57bcdc92c1428dee5f',1,'pesieve::AreaMultiStats']]],
+  ['custom_5fmatched_63',['custom_matched',['../classpesieve_1_1_working_set_scan_report.html#a69078211811766e7b0301c8c99417af4',1,'pesieve::WorkingSetScanReport']]]
 ];
