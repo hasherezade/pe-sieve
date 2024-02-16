@@ -263,67 +263,70 @@ $(function() { codefold.init(0); });
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    isLoaded = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    std::vector&lt;Signature*&gt; signatures;</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    Signature::loadFromFile(filename, signatures);</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="artefacts__util_8cpp.html#ad9007e4acd7313aac42ab638dd3263d6">mainMatcher</a>.addPatterns(signatures)) {</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    }</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keywordflow">return</span> signatures.size();</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>}</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> added = <a class="code hl_variable" href="artefacts__util_8cpp.html#ad9007e4acd7313aac42ab638dd3263d6">mainMatcher</a>.addPatterns(signatures);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="comment">// delete the loaded signatures:</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> itr = signatures.begin(); itr != signatures.end(); ++itr) {</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        Signature* sign = *itr;</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        <span class="keyword">delete</span> sign;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    }</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    <span class="keywordflow">return</span> added;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>}</div>
 </div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
-<div class="foldopen" id="foldopen00162" data-start="{" data-end="}">
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1matcher.html#af2abc59fa1094c4adc610238da632762">  162</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="namespacepesieve_1_1matcher.html#af2abc59fa1094c4adc610238da632762">pesieve::matcher::init_shellcode_patterns</a>()</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>{</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keyword">static</span> <span class="keywordtype">bool</span> isLoaded = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <span class="keywordflow">if</span> (isLoaded) <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// allow to load only once</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    isLoaded = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <a class="code hl_function" href="namespacepesieve.html#a1b4dba41ddf56a7365eefc3cab744572">init_32_patterns</a>(&amp;<a class="code hl_variable" href="artefacts__util_8cpp.html#ad9007e4acd7313aac42ab638dd3263d6">mainMatcher</a>);</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <a class="code hl_function" href="namespacepesieve.html#ae48407b62138601a97bbfb8fa8723fe8">init_64_patterns</a>(&amp;<a class="code hl_variable" href="artefacts__util_8cpp.html#ad9007e4acd7313aac42ab638dd3263d6">mainMatcher</a>);</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>}</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="foldopen" id="foldopen00165" data-start="{" data-end="}">
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1matcher.html#af2abc59fa1094c4adc610238da632762">  165</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="namespacepesieve_1_1matcher.html#af2abc59fa1094c4adc610238da632762">pesieve::matcher::init_shellcode_patterns</a>()</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>{</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="keyword">static</span> <span class="keywordtype">bool</span> isLoaded = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keywordflow">if</span> (isLoaded) <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// allow to load only once</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    isLoaded = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <a class="code hl_function" href="namespacepesieve.html#a1b4dba41ddf56a7365eefc3cab744572">init_32_patterns</a>(&amp;<a class="code hl_variable" href="artefacts__util_8cpp.html#ad9007e4acd7313aac42ab638dd3263d6">mainMatcher</a>);</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <a class="code hl_function" href="namespacepesieve.html#ae48407b62138601a97bbfb8fa8723fe8">init_64_patterns</a>(&amp;<a class="code hl_variable" href="artefacts__util_8cpp.html#ad9007e4acd7313aac42ab638dd3263d6">mainMatcher</a>);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>}</div>
 </div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="foldopen" id="foldopen00173" data-start="{" data-end="}">
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1matcher.html#a24f7803d36d731fc9d461dcc5ef4dfc2">  173</a></span><span class="keywordtype">size_t</span> <a class="code hl_function" href="namespacepesieve_1_1matcher.html#a24f7803d36d731fc9d461dcc5ef4dfc2">pesieve::matcher::find_all_patterns</a>(BYTE* loadedData, <span class="keywordtype">size_t</span> loadedSize, std::vector&lt;sig_finder::Match&gt;&amp; allMatches)</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>{</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacepesieve_1_1matcher.html#a7e2fd79abceff922ed62a858c0fe9702">is_matcher_ready</a>()) {</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    }</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keywordflow">if</span> (peconv::is_padding(loadedData, loadedSize, 0)) {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
+<div class="foldopen" id="foldopen00176" data-start="{" data-end="}">
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1matcher.html#a24f7803d36d731fc9d461dcc5ef4dfc2">  176</a></span><span class="keywordtype">size_t</span> <a class="code hl_function" href="namespacepesieve_1_1matcher.html#a24f7803d36d731fc9d461dcc5ef4dfc2">pesieve::matcher::find_all_patterns</a>(BYTE* loadedData, <span class="keywordtype">size_t</span> loadedSize, std::vector&lt;sig_finder::Match&gt;&amp; allMatches)</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>{</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacepesieve_1_1matcher.html#a7e2fd79abceff922ed62a858c0fe9702">is_matcher_ready</a>()) {</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    }</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> matches =  sig_finder::find_all_matches(<a class="code hl_variable" href="artefacts__util_8cpp.html#ad9007e4acd7313aac42ab638dd3263d6">mainMatcher</a>, loadedData, loadedSize, allMatches);</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="keywordflow">return</span> matches;</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>}</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="keywordflow">if</span> (peconv::is_padding(loadedData, loadedSize, 0)) {</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    }</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> matches =  sig_finder::find_all_matches(<a class="code hl_variable" href="artefacts__util_8cpp.html#ad9007e4acd7313aac42ab638dd3263d6">mainMatcher</a>, loadedData, loadedSize, allMatches);</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keywordflow">return</span> matches;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>}</div>
 </div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
-<div class="foldopen" id="foldopen00185" data-start="{" data-end="}">
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1matcher.html#a3c1a8e735f72a0a674131cc8396efc7e">  185</a></span><span class="keywordtype">size_t</span> <a class="code hl_function" href="namespacepesieve_1_1matcher.html#a3c1a8e735f72a0a674131cc8396efc7e">pesieve::matcher::filter_custom</a>(std::vector&lt;sig_finder::Match&gt;&amp; allMatches, std::vector&lt;sig_finder::Match&gt;&amp; customPatternMatches)</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>{</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="keywordtype">size_t</span> customCount = 0;</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> itr = allMatches.begin(); itr != allMatches.end(); ++itr) {</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        sig_finder::Match m = *itr;</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="keywordflow">if</span> (m.sign) {</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>            <span class="keyword">const</span> DWORD checks = m.sign-&gt;checksum();</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacepesieve.html#afd37518d5bc5a27fc935b3b156f342ea">HardcodedPatterns</a>.find(checks) != <a class="code hl_variable" href="namespacepesieve.html#afd37518d5bc5a27fc935b3b156f342ea">HardcodedPatterns</a>.end()) {</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>            }</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>            customPatternMatches.push_back(m);</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>            customCount++;</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        }</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    }</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="keywordflow">return</span> customCount;</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>}</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
+<div class="foldopen" id="foldopen00188" data-start="{" data-end="}">
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1matcher.html#a3c1a8e735f72a0a674131cc8396efc7e">  188</a></span><span class="keywordtype">size_t</span> <a class="code hl_function" href="namespacepesieve_1_1matcher.html#a3c1a8e735f72a0a674131cc8396efc7e">pesieve::matcher::filter_custom</a>(std::vector&lt;sig_finder::Match&gt;&amp; allMatches, std::vector&lt;sig_finder::Match&gt;&amp; customPatternMatches)</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>{</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="keywordtype">size_t</span> customCount = 0;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> itr = allMatches.begin(); itr != allMatches.end(); ++itr) {</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        sig_finder::Match m = *itr;</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>        <span class="keywordflow">if</span> (m.sign) {</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>            <span class="keyword">const</span> DWORD checks = m.sign-&gt;checksum();</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacepesieve.html#afd37518d5bc5a27fc935b3b156f342ea">HardcodedPatterns</a>.find(checks) != <a class="code hl_variable" href="namespacepesieve.html#afd37518d5bc5a27fc935b3b156f342ea">HardcodedPatterns</a>.end()) {</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>            }</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>            customPatternMatches.push_back(m);</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>            customCount++;</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        }</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    }</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="keywordflow">return</span> customCount;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>}</div>
 </div>
 <div class="ttc" id="aartefacts__util_8cpp_html_ad9007e4acd7313aac42ab638dd3263d6"><div class="ttname"><a href="artefacts__util_8cpp.html#ad9007e4acd7313aac42ab638dd3263d6">mainMatcher</a></div><div class="ttdeci">sig_finder::Node mainMatcher</div><div class="ttdef"><b>Definition</b> <a href="#l00141">artefacts_util.cpp:141</a></div></div>
 <div class="ttc" id="aartefacts__util_8h_html"><div class="ttname"><a href="artefacts__util_8h.html">artefacts_util.h</a></div></div>
 <div class="ttc" id="aartefacts__util_8h_html_ac9cf0f4988dad099cb71d79c118d6adc"><div class="ttname"><a href="artefacts__util_8h.html#ac9cf0f4988dad099cb71d79c118d6adc">PATTERN_NOT_FOUND</a></div><div class="ttdeci">#define PATTERN_NOT_FOUND</div><div class="ttdef"><b>Definition</b> <a href="artefacts__util_8h_source.html#l00004">artefacts_util.h:4</a></div></div>
 <div class="ttc" id="acode__patterns_8h_html"><div class="ttname"><a href="code__patterns_8h.html">code_patterns.h</a></div></div>
 <div class="ttc" id="anamespacepesieve_1_1matcher_html_a1219264b984e5f20ac9931e1b657ecdf"><div class="ttname"><a href="namespacepesieve_1_1matcher.html#a1219264b984e5f20ac9931e1b657ecdf">pesieve::matcher::load_pattern_file</a></div><div class="ttdeci">size_t load_pattern_file(const char *filename)</div><div class="ttdef"><b>Definition</b> <a href="#l00148">artefacts_util.cpp:148</a></div></div>
-<div class="ttc" id="anamespacepesieve_1_1matcher_html_a24f7803d36d731fc9d461dcc5ef4dfc2"><div class="ttname"><a href="namespacepesieve_1_1matcher.html#a24f7803d36d731fc9d461dcc5ef4dfc2">pesieve::matcher::find_all_patterns</a></div><div class="ttdeci">size_t find_all_patterns(BYTE *loadedData, size_t loadedSize, std::vector&lt; sig_finder::Match &gt; &amp;allMatches)</div><div class="ttdef"><b>Definition</b> <a href="#l00173">artefacts_util.cpp:173</a></div></div>
-<div class="ttc" id="anamespacepesieve_1_1matcher_html_a3c1a8e735f72a0a674131cc8396efc7e"><div class="ttname"><a href="namespacepesieve_1_1matcher.html#a3c1a8e735f72a0a674131cc8396efc7e">pesieve::matcher::filter_custom</a></div><div class="ttdeci">size_t filter_custom(std::vector&lt; sig_finder::Match &gt; &amp;allMatches, std::vector&lt; sig_finder::Match &gt; &amp;customPatternMatches)</div><div class="ttdef"><b>Definition</b> <a href="#l00185">artefacts_util.cpp:185</a></div></div>
+<div class="ttc" id="anamespacepesieve_1_1matcher_html_a24f7803d36d731fc9d461dcc5ef4dfc2"><div class="ttname"><a href="namespacepesieve_1_1matcher.html#a24f7803d36d731fc9d461dcc5ef4dfc2">pesieve::matcher::find_all_patterns</a></div><div class="ttdeci">size_t find_all_patterns(BYTE *loadedData, size_t loadedSize, std::vector&lt; sig_finder::Match &gt; &amp;allMatches)</div><div class="ttdef"><b>Definition</b> <a href="#l00176">artefacts_util.cpp:176</a></div></div>
+<div class="ttc" id="anamespacepesieve_1_1matcher_html_a3c1a8e735f72a0a674131cc8396efc7e"><div class="ttname"><a href="namespacepesieve_1_1matcher.html#a3c1a8e735f72a0a674131cc8396efc7e">pesieve::matcher::filter_custom</a></div><div class="ttdeci">size_t filter_custom(std::vector&lt; sig_finder::Match &gt; &amp;allMatches, std::vector&lt; sig_finder::Match &gt; &amp;customPatternMatches)</div><div class="ttdef"><b>Definition</b> <a href="#l00188">artefacts_util.cpp:188</a></div></div>
 <div class="ttc" id="anamespacepesieve_1_1matcher_html_a7e2fd79abceff922ed62a858c0fe9702"><div class="ttname"><a href="namespacepesieve_1_1matcher.html#a7e2fd79abceff922ed62a858c0fe9702">pesieve::matcher::is_matcher_ready</a></div><div class="ttdeci">bool is_matcher_ready()</div><div class="ttdef"><b>Definition</b> <a href="#l00143">artefacts_util.cpp:143</a></div></div>
-<div class="ttc" id="anamespacepesieve_1_1matcher_html_af2abc59fa1094c4adc610238da632762"><div class="ttname"><a href="namespacepesieve_1_1matcher.html#af2abc59fa1094c4adc610238da632762">pesieve::matcher::init_shellcode_patterns</a></div><div class="ttdeci">bool init_shellcode_patterns()</div><div class="ttdef"><b>Definition</b> <a href="#l00162">artefacts_util.cpp:162</a></div></div>
+<div class="ttc" id="anamespacepesieve_1_1matcher_html_af2abc59fa1094c4adc610238da632762"><div class="ttname"><a href="namespacepesieve_1_1matcher.html#af2abc59fa1094c4adc610238da632762">pesieve::matcher::init_shellcode_patterns</a></div><div class="ttdeci">bool init_shellcode_patterns()</div><div class="ttdef"><b>Definition</b> <a href="#l00165">artefacts_util.cpp:165</a></div></div>
 <div class="ttc" id="anamespacepesieve_1_1util_html_a299ca6901f644e1b271bfdc8916a858e"><div class="ttname"><a href="namespacepesieve_1_1util.html#a299ca6901f644e1b271bfdc8916a858e">pesieve::util::is_32bit_code</a></div><div class="ttdeci">size_t is_32bit_code(BYTE *loadedData, size_t loadedSize)</div><div class="ttdef"><b>Definition</b> <a href="#l00072">artefacts_util.cpp:72</a></div></div>
 <div class="ttc" id="anamespacepesieve_1_1util_html_a57e9c1266c247784669f5ea0191e086d"><div class="ttname"><a href="namespacepesieve_1_1util.html#a57e9c1266c247784669f5ea0191e086d">pesieve::util::is_readable</a></div><div class="ttdeci">bool is_readable(DWORD mapping_type, DWORD protection)</div><div class="ttdef"><b>Definition</b> <a href="#l00115">artefacts_util.cpp:115</a></div></div>
 <div class="ttc" id="anamespacepesieve_1_1util_html_a9a1dac61a6a85886543fe742b091caf1"><div class="ttname"><a href="namespacepesieve_1_1util.html#a9a1dac61a6a85886543fe742b091caf1">pesieve::util::find_pattern</a></div><div class="ttdeci">BYTE * find_pattern(BYTE *buffer, size_t buf_size, BYTE *pattern_buf, size_t pattern_size, size_t max_iter=0)</div><div class="ttdef"><b>Definition</b> <a href="#l00010">artefacts_util.cpp:10</a></div></div>
