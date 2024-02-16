@@ -153,10 +153,13 @@ size_t pesieve::matcher::load_pattern_file(const char* filename)
 	isLoaded = true;
 	std::vector<Signature*> signatures;
 	Signature::loadFromFile(filename, signatures);
-	if (!mainMatcher.addPatterns(signatures)) {
-		return 0;
+	const size_t added = mainMatcher.addPatterns(signatures);
+	// delete the loaded signatures:
+	for (auto itr = signatures.begin(); itr != signatures.end(); ++itr) {
+		Signature* sign = *itr;
+		delete sign;
 	}
-	return signatures.size();
+	return added;
 }
 
 bool pesieve::matcher::init_shellcode_patterns()
