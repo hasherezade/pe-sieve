@@ -59,16 +59,6 @@ namespace pesieve {
 			outs << ",\n";
 			OUT_PADDED(outs, level, "\"has_shellcode\" : ");
 			outs << std::dec << has_shellcode;
-			if (all_matched_count) {
-				outs << ",\n";
-				OUT_PADDED(outs, level, "\"patterns_matched\" : ");
-				outs << std::dec << all_matched_count;
-			}
-			if (custom_matched.size()) {
-				outs << ",\n";
-				OUT_PADDED(outs, level, "\"custom_matched\" : ");
-				outs << std::dec << custom_matched.size();
-			}
 			if (!is_executable) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"is_executable\" : ");
@@ -88,6 +78,7 @@ namespace pesieve {
 				OUT_PADDED(outs, level, "\"mapped_name\" : ");
 				outs << "\"" << pesieve::util::escape_path_separators(mapped_name) << "\"";
 			}
+			patternsToJSON(outs, level, jdetails);
 #ifdef CALC_PAGE_STATS
 			if (stats.isFilled()) {
 				outs << ",\n";
@@ -128,6 +119,26 @@ namespace pesieve {
 			case MEM_IMAGE: return "MEM_IMAGE";
 			}
 			return "unknown";
+		}
+		///---
+
+		const void patternsToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails)
+		{
+			if (!all_matched_count) {
+				return;
+			}
+			outs << ",\n";
+			OUT_PADDED(outs, level, "\"patterns\" : {\n");
+			const size_t level2 = level + 1;
+			OUT_PADDED(outs, level2, "\"total_matched\" : ");
+			outs << std::dec << all_matched_count;
+			if (custom_matched.size()) {
+				outs << ",\n";
+				OUT_PADDED(outs, level2, "\"custom_matched\" : ");
+				outs << std::dec << custom_matched.size();
+			}
+			outs << "\n";
+			OUT_PADDED(outs, level, "}");
 		}
 	};
 
