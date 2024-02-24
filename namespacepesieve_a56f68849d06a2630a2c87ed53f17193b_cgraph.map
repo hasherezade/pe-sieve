@@ -1,0 +1,10 @@
+<map id="pesieve::print_scan_time" name="pesieve::print_scan_time">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,170,39"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="386,13,491,39"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="170,20,218,19,338,19,371,20,371,25,338,24,218,24,170,25"/>
+<area shape="rect" id="Node000004" href="$namespacepesieve_1_1util.html#a21f20c3eb878d86563b712df1fb8cebc" title=" " alt="" coords="218,33,338,74"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="170,35,202,40,202,45,170,40"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="539,5,713,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="492,23,524,23,524,28,492,28"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="338,41,370,35,371,40,339,46"/>
+</map>
