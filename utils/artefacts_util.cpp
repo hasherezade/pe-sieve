@@ -30,7 +30,7 @@ namespace pesieve {
 		for (size_t i = 0; i < _countof(patterns32); i++)
 		{
 			const t_pattern& pattern = patterns32[i];
-			std::string name = "prolog32_" + std::to_string(i);
+			std::string name = "prolog32_" + std::to_string((ULONGLONG)i);
 			Signature sign(name, pattern.ptr, pattern.size);
 			if (rootN->addPattern(sign)) {
 				HardcodedPatterns.insert(sign.checksum());
@@ -48,7 +48,7 @@ namespace pesieve {
 		for (size_t i = 0; i < _countof(patterns64); i++)
 		{
 			const t_pattern &pattern = patterns64[i];
-			std::string name = "prolog64_" + std::to_string(i);
+			std::string name = "prolog64_" + std::to_string((ULONGLONG)i);
 			Signature sign(name, pattern.ptr, pattern.size);
 			if (rootN->addPattern(sign)) {
 				HardcodedPatterns.insert(sign.checksum());
