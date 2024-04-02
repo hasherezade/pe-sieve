@@ -309,7 +309,7 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 			curr_dump_mode = peconv::PE_DUMP_VIRTUAL;
 		}
 		modDumpReport->mode_info = get_dump_mode_name(curr_dump_mode);
-		bool iat_not_rebuilt = (imprec_res == ImpReconstructor::IMP_RECOVERY_ERROR) || (imprec_res = ImpReconstructor::IMP_RECOVERY_NOT_APPLICABLE);
+		bool iat_not_rebuilt = (imprec_res == ImpReconstructor::IMP_RECOVERY_ERROR) || (imprec_res == ImpReconstructor::IMP_RECOVERY_NOT_APPLICABLE);
 		if (iat_not_rebuilt || save_imp_report) {
 			std::string imports_file = modDumpReport->dumpFileName + ".imports.txt";
 			if (impRec.printFoundIATs(imports_file)) {
