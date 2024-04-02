@@ -314,8 +314,8 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 	}
 	ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
 	if (this->info.is_extended) {
-		my_report->thread_state = info.ext.state;
-		my_report->thread_wait_reason = info.ext.wait_reason;
+		my_report->thread_state = this->info.ext.state;
+		my_report->thread_wait_reason = this->info.ext.wait_reason;
 	}
 	my_report->module = (HMODULE)base;
 	my_report->moduleSize = page_info.RegionSize;
