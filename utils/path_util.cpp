@@ -45,8 +45,10 @@ std::string pesieve::util::escape_path_separators(std::string path)
 
 std::string pesieve::util::get_system_drive()
 {
-	char buf[MAX_PATH];
-	GetWindowsDirectory(buf, MAX_PATH);
+	char buf[MAX_PATH] = { 0 };
+	if (!GetWindowsDirectoryA(buf, MAX_PATH)) {
+		return "";
+	}
 	buf[2] = '\0'; // cut after the drive letter
 	return std::string(buf);
 }
