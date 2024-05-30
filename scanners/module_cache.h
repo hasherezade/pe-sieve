@@ -99,7 +99,7 @@ namespace pesieve
 	public:
 		
 		static const size_t MinUsageCntr = 2; ///< how many times loading of the module must be requested before the module is added to cache
-		static const size_t MaxCachedModules = 255; ///< how many modules can be stored in the cache at the time
+		//static const size_t MaxCachedModules = 255; ///< how many modules can be stored in the cache at the time
 
 		ModulesCache()
 		{
@@ -131,10 +131,19 @@ namespace pesieve
 			return nullptr;
 		}
 
+		size_t checkFreeMemory();
+
+		bool isCacheAvailable()
+		{
+			size_t perc = checkFreeMemory();
+			const bool is_cache_available = (perc < 50) ? true : false;//cachedModules.size() < MaxCachedModules;
+			return is_cache_available;
+		}
+
 		bool prepareCacheSpace(bool force_free = false)
 		{
 			util::MutexLocker guard(cacheMutex);
-			const bool is_cache_available = cachedModules.size() < MaxCachedModules;
+			const bool is_cache_available = isCacheAvailable();
 			if (is_cache_available && !force_free) {
 				return true;
 			}
