@@ -1,10 +1,5 @@
 <map id="pesieve::checkRatios" name="pesieve::checkRatios">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,150,39"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="385,13,490,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,23,369,23,369,28,150,28"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve.html#a169ec97afb0aab13e1b69e98d6e5b9dc" title=" " alt="" coords="198,38,337,64"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="150,33,183,37,182,42,150,38"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="538,5,712,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="491,23,523,23,523,28,491,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="337,38,369,33,370,38,338,43"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,150,31"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#a169ec97afb0aab13e1b69e98d6e5b9dc" title=" " alt="" coords="198,5,337,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,16,182,16,182,21,150,21"/>
 </map>

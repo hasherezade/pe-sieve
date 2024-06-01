@@ -1,13 +1,7 @@
 <map id="pesieve::ChunkStats::appendVal" name="pesieve::ChunkStats::appendVal">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,146,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="609,34,715,60"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,20,194,19,378,17,562,30,594,34,593,39,561,35,378,23,194,24,146,26"/>
-<area shape="rect" id="Node000004" href="$structpesieve_1_1_chunk_stats.html#a1681aec57fb3e79ef0e9846faed68652" title=" " alt="" coords="194,33,334,74"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="146,33,179,38,178,44,146,39"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="763,27,936,67"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="715,44,747,44,747,50,715,50"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="334,50,594,45,594,51,335,55"/>
-<area shape="rect" id="Node000005" href="$structpesieve_1_1_multi_stats_settings.html#a3e718c8a7a6d70c36c27b399ef5af9ca" title="Searches a given substring among the watchedStrings. If the substring found, return the corresponding..." alt="" coords="382,84,561,125"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="335,68,371,77,370,82,334,73"/>
-<area shape="poly" id="edge6_Node000005_Node000002" title=" " alt="" coords="541,81,602,62,603,67,542,86"/>
+<area shape="rect" id="Node000002" href="$structpesieve_1_1_chunk_stats.html#a1681aec57fb3e79ef0e9846faed68652" title=" " alt="" coords="194,5,334,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,23,178,23,178,28,146,28"/>
+<area shape="rect" id="Node000003" href="$structpesieve_1_1_multi_stats_settings.html#a3e718c8a7a6d70c36c27b399ef5af9ca" title="Searches a given substring among the watchedStrings. If the substring found, return the corresponding..." alt="" coords="382,5,561,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="335,23,366,23,366,28,335,28"/>
 </map>

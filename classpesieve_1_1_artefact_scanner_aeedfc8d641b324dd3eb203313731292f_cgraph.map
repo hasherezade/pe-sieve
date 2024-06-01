@@ -1,12 +1,7 @@
 <map id="pesieve::ArtefactScanner::calcImgSize" name="pesieve::ArtefactScanner::calcImgSize">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,49,172,89"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,172,64"/>
 <area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="230,5,375,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,47,230,33,231,38,173,52"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="433,81,538,107"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="172,71,417,87,417,93,172,77"/>
-<area shape="rect" id="Node000005" href="$namespacepesieve.html#ab6eb75407c454f07ae7910a1d8b7c826" title=" " alt="" coords="220,107,385,132"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="173,86,231,100,230,105,171,91"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="586,74,760,115"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="539,92,571,92,571,97,539,97"/>
-<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="385,105,417,101,418,106,386,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,31,214,26,215,31,172,36"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve.html#ab6eb75407c454f07ae7910a1d8b7c826" title=" " alt="" coords="220,55,385,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="172,50,205,54,204,59,172,55"/>
 </map>

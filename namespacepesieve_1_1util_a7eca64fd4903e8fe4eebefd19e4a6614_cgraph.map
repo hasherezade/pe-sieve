@@ -1,11 +1,7 @@
 <map id="pesieve::util::print_in_color" name="pesieve::util::print_in_color">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,126,71"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#a3a202097bb77191265159f34903c4ccb" title=" " alt="" coords="174,31,287,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,48,158,48,158,54,126,54"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="335,13,440,39"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="287,39,319,34,320,39,288,44"/>
-<area shape="rect" id="Node000005" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="341,62,434,88"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="288,57,326,63,325,68,287,62"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="488,5,662,46"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="441,23,473,23,473,28,441,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,126,46"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#a3a202097bb77191265159f34903c4ccb" title=" " alt="" coords="174,5,287,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,23,158,23,158,28,126,28"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="335,13,428,39"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="287,23,319,23,319,28,287,28"/>
 </map>

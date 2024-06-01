@@ -1,18 +1,11 @@
 <map id="pesieve::AreaMultiStats::summarize" name="pesieve::AreaMultiStats::summarize">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,63,164,103"/>
-<area shape="rect" id="Node000002" href="$structpesieve_1_1_chunk_stats.html#ac68e19c8316bf003c2fbdea739176001" title=" " alt="" coords="212,63,352,103"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,80,196,80,196,86,164,86"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve_1_1stats.html#a4153bb932ccedcc28004bfee48c6c89f" title=" " alt="" coords="588,5,771,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="352,69,400,62,572,37,573,42,400,67,353,74"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="819,96,924,121"/>
-<area shape="poly" id="edge5_Node000002_Node000004" title=" " alt="" coords="352,83,803,103,803,108,352,89"/>
-<area shape="rect" id="Node000006" href="$structpesieve_1_1_chunk_stats.html#a1681aec57fb3e79ef0e9846faed68652" title=" " alt="" coords="400,120,540,161"/>
-<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="352,101,387,112,386,117,350,106"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="731,44,772,62,827,86,825,91,770,67,729,49"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="972,88,1145,129"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="925,106,956,106,956,111,925,111"/>
-<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="541,132,803,111,803,116,541,137"/>
-<area shape="rect" id="Node000007" href="$structpesieve_1_1_multi_stats_settings.html#a3e718c8a7a6d70c36c27b399ef5af9ca" title="Searches a given substring among the watchedStrings. If the substring found, return the corresponding..." alt="" coords="590,171,769,211"/>
-<area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="542,155,579,164,577,169,540,160"/>
-<area shape="poly" id="edge9_Node000007_Node000004" title=" " alt="" coords="729,168,770,150,825,125,827,130,772,155,731,172"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,164,79"/>
+<area shape="rect" id="Node000002" href="$structpesieve_1_1_chunk_stats.html#ac68e19c8316bf003c2fbdea739176001" title=" " alt="" coords="212,39,352,79"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,56,196,56,196,62,164,62"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1stats.html#a4153bb932ccedcc28004bfee48c6c89f" title=" " alt="" coords="400,5,582,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="352,45,384,40,385,45,353,50"/>
+<area shape="rect" id="Node000004" href="$structpesieve_1_1_chunk_stats.html#a1681aec57fb3e79ef0e9846faed68652" title=" " alt="" coords="421,71,561,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="353,67,406,75,406,81,352,72"/>
+<area shape="rect" id="Node000005" href="$structpesieve_1_1_multi_stats_settings.html#a3e718c8a7a6d70c36c27b399ef5af9ca" title="Searches a given substring among the watchedStrings. If the substring found, return the corresponding..." alt="" coords="630,71,810,111"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="562,88,615,88,615,94,562,94"/>
 </map>

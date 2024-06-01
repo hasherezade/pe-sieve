@@ -2,14 +2,8 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,55,146,80"/>
 <area shape="rect" id="Node000002" href="$namespacepesieve.html#a1b4dba41ddf56a7365eefc3cab744572" title=" " alt="" coords="194,5,358,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,51,205,33,206,38,131,57"/>
-<area shape="rect" id="Node000005" href="$namespacepesieve.html#ae48407b62138601a97bbfb8fa8723fe8" title=" " alt="" coords="194,55,358,80"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="146,65,178,65,178,70,146,70"/>
-<area shape="rect" id="Node000006" href="$namespacepesieve.html#a610881f75eb095edddd9001fba5793db" title=" " alt="" coords="210,105,342,145"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="124,78,196,99,194,104,122,84"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="406,55,511,80"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="327,29,394,47,393,53,326,34"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="559,47,733,88"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="512,65,544,65,544,70,512,70"/>
-<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="358,65,391,65,391,70,358,70"/>
-<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="341,102,400,83,402,88,343,107"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve.html#ae48407b62138601a97bbfb8fa8723fe8" title=" " alt="" coords="194,55,358,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="146,65,178,65,178,70,146,70"/>
+<area shape="rect" id="Node000004" href="$namespacepesieve.html#a610881f75eb095edddd9001fba5793db" title=" " alt="" coords="210,105,342,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="124,78,196,99,194,104,122,84"/>
 </map>

@@ -1,15 +1,9 @@
 <map id="pesieve::util::ByteBuffer::ByteBuffer" name="pesieve::util::ByteBuffer::ByteBuffer">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,85,161,126"/>
-<area shape="rect" id="Node000002" href="$structpesieve_1_1util_1_1_byte_buffer.html#a6cc4e0834e6e770db8f2e7e7d6e8dd5c" title=" " alt="" coords="209,56,364,97"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,92,193,87,193,92,161,97"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="640,70,746,96"/>
-<area shape="poly" id="edge7_Node000001_Node000004" title=" " alt="" coords="161,105,209,106,364,106,503,97,625,87,625,92,504,103,364,111,209,111,161,110"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,161,46"/>
+<area shape="rect" id="Node000002" href="$structpesieve_1_1util_1_1_byte_buffer.html#a6cc4e0834e6e770db8f2e7e7d6e8dd5c" title=" " alt="" coords="209,5,364,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,23,193,23,193,28,161,28"/>
 <area shape="rect" id="Node000003" href="$structpesieve_1_1util_1_1_byte_buffer.html#a646d32c5b3803d7ed425b7e9424b986a" title=" " alt="" coords="412,5,567,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="363,54,396,46,397,51,365,60"/>
-<area shape="poly" id="edge6_Node000002_Node000004" title=" " alt="" coords="365,75,625,79,625,85,365,80"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="565,44,631,63,629,68,563,49"/>
-<area shape="rect" id="Node000006" href="$structpesieve_1_1util_1_1_byte_buffer.html#ab61c789fa430d217951c03f5a8dff658" title=" " alt="" coords="615,5,771,46"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="567,23,600,23,600,28,567,28"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="819,63,992,103"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="746,80,803,80,803,86,746,86"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="364,23,396,23,396,28,364,28"/>
+<area shape="rect" id="Node000004" href="$structpesieve_1_1util_1_1_byte_buffer.html#ab61c789fa430d217951c03f5a8dff658" title=" " alt="" coords="615,5,771,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="567,23,600,23,600,28,567,28"/>
 </map>

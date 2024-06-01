@@ -1,9 +1,5 @@
 <map id="pesieve::stats::StdDeviationCalc::calcSampleStandardDeviation" name="pesieve::stats::StdDeviationCalc::calcSampleStandardDeviation">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,233,75"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,233,46"/>
 <area shape="rect" id="Node000002" href="$classpesieve_1_1stats_1_1_std_deviation_calc.html#a2196886ad46cae43b8d86e3e12b99693" title=" " alt="" coords="281,5,462,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="233,39,265,35,265,41,233,44"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="319,70,424,96"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="233,65,303,73,303,78,233,70"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="510,63,683,103"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="424,80,494,80,494,86,424,86"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="233,23,265,23,265,28,233,28"/>
 </map>

@@ -1,10 +1,5 @@
 <map id="pesieve::ProcessScanner::filterDotNetReport" name="pesieve::ProcessScanner::filterDotNetReport">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,174,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="406,13,511,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,23,390,23,390,28,174,28"/>
-<area shape="rect" id="Node000004" href="$scanner_8cpp.html#abe4faa4c4347c0bfc6691847fd84a48f" title=" " alt="" coords="222,38,358,64"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="174,34,207,38,206,43,174,39"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="559,5,733,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="512,23,544,23,544,28,512,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="358,38,391,33,391,38,359,43"/>
+<area shape="rect" id="Node000002" href="$scanner_8cpp.html#abe4faa4c4347c0bfc6691847fd84a48f" title=" " alt="" coords="222,13,358,39"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,23,206,23,206,28,174,28"/>
 </map>

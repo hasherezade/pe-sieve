@@ -1,7 +1,10 @@
 <map id="pesieve::find_import_table_tpl" name="pesieve::find_import_table_tpl">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,141,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="189,13,294,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,23,173,23,173,28,141,28"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="342,5,515,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="295,23,326,23,326,28,295,28"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#a4d1d1873647d21ede441e3ce38a764fb" title=" " alt="" coords="365,5,504,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,20,189,19,317,19,349,20,349,25,317,24,189,24,141,26"/>
+<area shape="rect" id="Node000004" href="$namespacepesieve.html#a9280cf24b5e13effe49604b9896c5745" title=" " alt="" coords="189,33,317,74"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="142,34,174,39,173,44,141,39"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve.html#af856350491a23b4fba1aabf0ffb5ecdb" title=" " alt="" coords="552,5,712,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="505,23,537,23,537,28,505,28"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="317,41,349,36,350,41,318,46"/>
 </map>

@@ -1,9 +1,26 @@
 <map id="pesieve::ProcessScanner::scanForIATHooks" name="pesieve::ProcessScanner::scanForIATHooks">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,174,75"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="260,13,366,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,41,245,32,245,37,175,47"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63" title=" " alt="" coords="222,63,404,103"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="175,63,207,67,206,72,174,68"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="452,5,625,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="366,23,437,23,437,28,366,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,325,174,366"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_process_scan_report.html#a3c0957c36cf674677e5b6610db8703ea" title=" " alt="" coords="222,235,410,275"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,322,248,279,250,284,143,327"/>
+<area shape="rect" id="Node000010" href="$classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63" title=" " alt="" coords="461,299,643,339"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="174,338,446,322,446,328,174,343"/>
+<area shape="rect" id="Node000011" href="$classpesieve_1_1_process_scan_report.html#a3c12c6b6913421538450af514b67a641" title=" " alt="" coords="222,353,410,394"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="174,353,207,357,206,363,174,359"/>
+<area shape="rect" id="Node000012" href="$classpesieve_1_1_i_a_t_scanner.html#ad79968ac6b0cc347c20c436c6d81f7db" title=" " alt="" coords="245,419,387,459"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="135,364,223,403,241,410,239,415,221,408,133,369"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_modules_info.html#aadb41407ab2be96844c8a7fbd13151c0" title=" " alt="" coords="475,136,630,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="366,232,486,181,488,186,368,237"/>
+<area shape="rect" id="Node000008" href="$classpesieve_1_1_process_scan_report.html#ac3cd73b44ba0c30368cdadf25746b55f" title=" " alt="" coords="458,233,646,274"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="411,252,443,252,443,257,411,257"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="394,273,461,292,460,297,393,279"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_scanned_module.html#a85e250d1c645cccf3dbad500841a9a0b" title=" " alt="" coords="706,5,871,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="578,133,629,95,693,57,707,50,710,55,696,61,632,100,581,138"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="706,71,871,111"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="627,133,697,114,698,119,629,138"/>
+<area shape="rect" id="Node000006" href="$classpesieve_1_1_scanned_module.html#ac27ab29a010ac2d3e139f2654c3d0777" title=" " alt="" coords="706,136,871,177"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="630,154,690,154,690,159,630,159"/>
+<area shape="rect" id="Node000007" href="$classpesieve_1_1_scanned_module.html#a1550cf5ee7a95ec2c1c17dc8627ad0bf" title=" " alt="" coords="706,201,871,242"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="629,175,698,194,697,199,627,180"/>
+<area shape="rect" id="Node000009" href="$classpesieve_1_1_process_scan_report.html#aac59d32a60ad030d364e13f0d132c8d6" title=" " alt="" coords="694,267,883,307"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="647,264,679,269,679,274,646,270"/>
 </map>

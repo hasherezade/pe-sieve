@@ -1,9 +1,5 @@
 <map id="pesieve::util::nt_create_file" name="pesieve::util::nt_create_file">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,38,178,64"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="256,13,362,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,38,241,31,241,36,179,44"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve_1_1util.html#a31ce9e0299d60a275b024faa3e45ef62" title=" " alt="" coords="226,62,392,88"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="179,58,211,61,210,67,178,63"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="440,5,613,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="362,23,424,23,424,28,362,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,178,31"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#a31ce9e0299d60a275b024faa3e45ef62" title=" " alt="" coords="226,5,392,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,16,210,16,210,21,178,21"/>
 </map>

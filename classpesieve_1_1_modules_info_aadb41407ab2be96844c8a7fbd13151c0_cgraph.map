@@ -1,7 +1,11 @@
 <map id="pesieve::ModulesInfo::appendToModulesList" name="pesieve::ModulesInfo::appendToModulesList">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,161,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="209,13,314,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,23,193,23,193,28,161,28"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="362,5,535,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="315,23,346,23,346,28,315,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,104,161,145"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_scanned_module.html#a85e250d1c645cccf3dbad500841a9a0b" title=" " alt="" coords="209,5,374,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,101,208,57,222,50,224,55,210,61,123,106"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="209,71,374,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="160,109,193,104,193,109,161,115"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_scanned_module.html#ac27ab29a010ac2d3e139f2654c3d0777" title=" " alt="" coords="209,136,374,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="161,134,193,139,193,144,161,139"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_scanned_module.html#a1550cf5ee7a95ec2c1c17dc8627ad0bf" title=" " alt="" coords="209,201,374,242"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="124,143,210,186,224,192,222,197,208,191,121,147"/>
 </map>

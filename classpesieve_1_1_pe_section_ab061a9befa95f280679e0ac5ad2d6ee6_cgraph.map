@@ -1,12 +1,7 @@
 <map id="pesieve::PeSection::PeSection" name="pesieve::PeSection::PeSection">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,138,75"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="380,13,485,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,47,364,28,364,34,138,52"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_pe_section.html#ae0525b58e8fd1eb8426d5eb2ebe1d278" title=" " alt="" coords="186,63,318,103"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="138,63,171,68,170,73,138,68"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="546,5,720,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="485,23,531,23,531,28,485,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="317,60,374,41,375,46,319,65"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_pe_section.html#a7981814c58c2cd54408e59452458bc65" title=" " alt="" coords="366,63,498,103"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="318,80,351,80,351,86,318,86"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,138,46"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_pe_section.html#ae0525b58e8fd1eb8426d5eb2ebe1d278" title=" " alt="" coords="186,5,318,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,23,170,23,170,28,138,28"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_pe_section.html#a7981814c58c2cd54408e59452458bc65" title=" " alt="" coords="366,5,498,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="318,23,351,23,351,28,318,28"/>
 </map>

@@ -1,9 +1,7 @@
 <map id="pesieve::ModuleData::loadRelocatedFields" name="pesieve::ModuleData::loadRelocatedFields">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,150,64"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,27,150,68"/>
 <area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="198,5,342,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,31,182,27,183,32,150,37"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="217,55,323,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="150,50,202,56,202,62,150,55"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="390,47,563,88"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="323,65,375,65,375,70,323,70"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,34,182,29,183,34,150,39"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_module_data.html#a57fffdfd8f7a26fb3bfa9a827451c660" title=" " alt="" coords="199,55,341,96"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="150,55,184,60,183,66,150,61"/>
 </map>

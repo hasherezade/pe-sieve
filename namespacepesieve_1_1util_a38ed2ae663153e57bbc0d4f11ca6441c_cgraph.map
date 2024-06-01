@@ -1,10 +1,5 @@
 <map id="pesieve::util::_get_system_DEP_policy" name="pesieve::util::_get_system_DEP_policy">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,149,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="364,13,469,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,20,197,19,316,19,349,20,349,25,316,24,197,24,149,26"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve_1_1util.html#af1021608b35c08f8ab69dba2ec27cde2" title=" " alt="" coords="197,33,316,74"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="150,34,181,39,181,45,149,40"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="517,5,691,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="470,23,502,23,502,28,470,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="316,41,348,35,349,40,317,46"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#af1021608b35c08f8ab69dba2ec27cde2" title=" " alt="" coords="197,5,316,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,23,181,23,181,28,149,28"/>
 </map>

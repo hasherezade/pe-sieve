@@ -1,11 +1,7 @@
 <map id="pesieve::util::load_MiniDumpWriteDump" name="pesieve::util::load_MiniDumpWriteDump">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,47,156,88"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,156,64"/>
 <area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="210,5,342,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,46,207,33,208,38,157,51"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,31,194,26,195,31,157,36"/>
 <area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="204,55,348,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="156,65,188,65,188,70,156,70"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="223,104,329,130"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="157,84,209,97,207,102,156,89"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="396,97,569,137"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="329,114,381,114,381,120,329,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="157,50,189,54,188,59,156,55"/>
 </map>

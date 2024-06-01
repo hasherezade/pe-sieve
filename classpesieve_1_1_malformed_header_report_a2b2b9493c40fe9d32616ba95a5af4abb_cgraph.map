@@ -1,12 +1,7 @@
 <map id="pesieve::MalformedHeaderReport::toJSON" name="pesieve::MalformedHeaderReport::toJSON">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,181,75"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,181,46"/>
 <area shape="rect" id="Node000002" href="$classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="229,5,411,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,41,213,37,214,42,181,46"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="475,70,580,96"/>
-<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="181,58,460,76,459,81,181,63"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,23,213,23,213,28,181,28"/>
 <area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="459,5,596,46"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="411,23,443,23,443,28,411,28"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="397,44,465,63,463,68,395,49"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="644,63,818,103"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="581,80,629,80,629,86,581,86"/>
 </map>

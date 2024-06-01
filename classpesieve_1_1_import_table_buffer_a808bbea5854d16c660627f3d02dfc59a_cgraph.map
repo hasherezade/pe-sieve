@@ -1,10 +1,5 @@
 <map id="pesieve::ImportTableBuffer::getDllSpaceAt" name="pesieve::ImportTableBuffer::getDllSpaceAt">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,181,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="406,13,511,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,20,229,19,358,19,391,20,391,25,358,24,229,24,181,25"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve.html#a284332cf7b83d3878a932657ec99404b" title=" " alt="" coords="229,33,358,74"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="181,35,214,40,213,45,181,41"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="559,5,733,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="512,23,544,23,544,28,512,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="358,40,390,34,391,40,359,45"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#a284332cf7b83d3878a932657ec99404b" title=" " alt="" coords="229,5,358,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,23,213,23,213,28,181,28"/>
 </map>

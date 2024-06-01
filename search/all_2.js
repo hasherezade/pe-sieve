@@ -6,10 +6,9 @@ var searchData=
   ['bindings_3',['Available bindings',['../index.html',1,'']]],
   ['bool_4',['BOOL',['../namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c',1,'pesieve::util::BOOL(CALLBACK *_MiniDumpWriteDump)(HANDLE hProcess'],['../namespacepesieve_1_1util.html#a24a78069a922debb11a69d5bb0498ceb',1,'pesieve::util::BOOL(WINAPI *g_IsWow64Process)(IN HANDLE']]],
   ['bool_5',['bool',['../pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0',1,'pe_sieve_types.h']]],
-  ['buffer_6',['buffer',['../struct___p_a_r_a_m___s_t_r_i_n_g.html#a861227dd2c82abcf462fe28d117d9548',1,'_PARAM_STRING']]],
-  ['buffer_7',['Buffer',['../namespacepesieve_1_1util.html#adfb56cf97e3266792ba8cde322dda924',1,'pesieve::util']]],
-  ['buffer_8',['buffer',['../namespacedemo.html#a0b4f91ddb00bef2d18d12ad24d44abc2',1,'demo']]],
-  ['bufferlength_9',['BufferLength',['../namespacepesieve_1_1util.html#a8a530016bcf962946b8536574dcc5b4c',1,'pesieve::util']]],
-  ['byte_5fbuffer_2eh_10',['byte_buffer.h',['../byte__buffer_8h.html',1,'']]],
-  ['bytebuffer_11',['ByteBuffer',['../structpesieve_1_1util_1_1_byte_buffer.html',1,'pesieve::util::ByteBuffer'],['../structpesieve_1_1util_1_1_byte_buffer.html#a3cf218e57ff63963338a1b6322c4a992',1,'pesieve::util::ByteBuffer::ByteBuffer()'],['../structpesieve_1_1util_1_1_byte_buffer.html#a256d6de8f9d387028a2ddd5528e3a5b9',1,'pesieve::util::ByteBuffer::ByteBuffer(const ByteBuffer &amp;p1)']]]
+  ['buffer_6',['Buffer',['../namespacepesieve_1_1util.html#adfb56cf97e3266792ba8cde322dda924',1,'pesieve::util']]],
+  ['buffer_7',['buffer',['../struct___p_a_r_a_m___s_t_r_i_n_g.html#a861227dd2c82abcf462fe28d117d9548',1,'_PARAM_STRING::buffer'],['../namespacedemo.html#a0b4f91ddb00bef2d18d12ad24d44abc2',1,'demo.buffer']]],
+  ['bufferlength_8',['BufferLength',['../namespacepesieve_1_1util.html#a8a530016bcf962946b8536574dcc5b4c',1,'pesieve::util']]],
+  ['byte_5fbuffer_2eh_9',['byte_buffer.h',['../byte__buffer_8h.html',1,'']]],
+  ['bytebuffer_10',['ByteBuffer',['../structpesieve_1_1util_1_1_byte_buffer.html',1,'pesieve::util::ByteBuffer'],['../structpesieve_1_1util_1_1_byte_buffer.html#a3cf218e57ff63963338a1b6322c4a992',1,'pesieve::util::ByteBuffer::ByteBuffer()'],['../structpesieve_1_1util_1_1_byte_buffer.html#a256d6de8f9d387028a2ddd5528e3a5b9',1,'pesieve::util::ByteBuffer::ByteBuffer(const ByteBuffer &amp;p1)']]]
 ];

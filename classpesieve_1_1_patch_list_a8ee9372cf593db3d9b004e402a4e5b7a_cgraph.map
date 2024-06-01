@@ -1,10 +1,5 @@
 <map id="pesieve::PatchList::toTAGs" name="pesieve::PatchList::toTAGs">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,134,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="358,13,463,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,20,182,19,310,19,343,20,343,25,310,24,182,24,134,26"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_patch_list_1_1_patch.html#a9d85af3c5c28cb144451ebf5e5f4e303" title=" " alt="" coords="182,33,310,74"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="134,33,167,38,166,44,134,38"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="511,5,685,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="464,23,496,23,496,28,464,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="310,40,342,35,343,40,311,45"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_patch_list_1_1_patch.html#a9d85af3c5c28cb144451ebf5e5f4e303" title=" " alt="" coords="182,5,310,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,23,166,23,166,28,134,28"/>
 </map>

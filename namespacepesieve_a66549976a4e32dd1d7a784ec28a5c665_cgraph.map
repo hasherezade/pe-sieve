@@ -1,7 +1,7 @@
 <map id="pesieve::dump_report_to_json" name="pesieve::dump_report_to_json">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,150,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="198,13,303,39"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_process_dump_report.html#a02c2ea00dee5a50a7053bfa9baa43e47" title=" " alt="" coords="198,5,390,46"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,23,182,23,182,28,150,28"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="351,5,524,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="304,23,335,23,335,28,304,28"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="438,5,575,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="390,23,422,23,422,28,390,28"/>
 </map>

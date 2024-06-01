@@ -1,9 +1,5 @@
 <map id="pesieve::ArtefactScanner::_findDosHdrByPatterns" name="pesieve::ArtefactScanner::_findDosHdrByPatterns">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,172,75"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="225,13,330,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,39,209,34,210,39,172,45"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve_1_1util.html#a9a1dac61a6a85886543fe742b091caf1" title=" " alt="" coords="220,63,335,103"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="172,65,205,70,204,75,172,70"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="383,5,556,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="330,23,368,23,368,28,330,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,172,46"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#a9a1dac61a6a85886543fe742b091caf1" title=" " alt="" coords="220,5,335,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,23,204,23,204,28,172,28"/>
 </map>

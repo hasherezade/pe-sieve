@@ -1,10 +1,5 @@
 <map id="pesieve::AreaInfo::toJSON" name="pesieve::AreaInfo::toJSON">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,133,75"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,133,46"/>
 <area shape="rect" id="Node000002" href="$structpesieve_1_1_area_info.html#a02325a1ecf474d3e0526f04ca2f6a449" title=" " alt="" coords="181,5,308,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,42,165,36,166,41,134,47"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="356,42,461,68"/>
-<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="133,54,181,55,308,55,341,54,341,60,308,60,181,60,133,59"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="309,34,341,40,340,46,308,40"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="509,35,683,75"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="462,52,494,52,494,58,462,58"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,23,165,23,165,28,133,28"/>
 </map>

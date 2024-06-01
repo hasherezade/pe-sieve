@@ -1,13 +1,7 @@
 <map id="pesieve::ArtefactScanner::_validateSecRegions" name="pesieve::ArtefactScanner::_validateSecRegions">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,172,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="636,34,742,60"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,20,220,19,404,17,589,30,621,34,620,39,588,35,404,23,220,24,172,25"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_mem_page_data.html#a62761b9f793afc9190c4be58dc7b471d" title=" " alt="" coords="220,33,378,74"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="172,34,204,38,204,44,172,39"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="790,27,963,67"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="742,44,774,44,774,50,742,50"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="379,50,621,45,621,51,379,55"/>
-<area shape="rect" id="Node000005" href="$structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="426,84,588,125"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="379,70,412,78,410,84,378,76"/>
-<area shape="poly" id="edge6_Node000005_Node000002" title=" " alt="" coords="573,81,631,62,632,68,575,86"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_mem_page_data.html#a62761b9f793afc9190c4be58dc7b471d" title=" " alt="" coords="220,5,378,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,23,204,23,204,28,172,28"/>
+<area shape="rect" id="Node000003" href="$structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="426,5,588,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="379,23,411,23,411,28,379,28"/>
 </map>

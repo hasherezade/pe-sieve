@@ -1,12 +1,7 @@
 <map id="pesieve::ImportTableBuffer::setTableInPe" name="pesieve::ImportTableBuffer::setTableInPe">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,33,181,74"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="452,13,557,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,30,228,19,278,15,316,15,404,19,437,20,437,25,404,24,316,20,278,20,229,24,169,35"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_import_table_buffer.html#ac764cef92e023697554b7bf8d8fc196c" title=" " alt="" coords="229,33,404,74"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="181,51,213,51,213,56,181,56"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_import_table_buffer.html#a8d87acf5448974c56bc1653910b50baf" title=" " alt="" coords="229,99,404,139"/>
-<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="166,72,230,91,229,96,164,77"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="605,5,779,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="558,23,590,23,590,28,558,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="404,38,436,33,437,38,405,43"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,181,79"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_import_table_buffer.html#ac764cef92e023697554b7bf8d8fc196c" title=" " alt="" coords="229,5,404,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,43,213,38,214,44,181,49"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_import_table_buffer.html#a8d87acf5448974c56bc1653910b50baf" title=" " alt="" coords="229,71,404,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="181,69,214,74,213,79,181,74"/>
 </map>

@@ -1,12 +1,7 @@
 <map id="pesieve::ThreadScanner::reportSuspiciousAddr" name="pesieve::ThreadScanner::reportSuspiciousAddr">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,166,71"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="381,13,486,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,30,213,23,292,19,365,20,365,25,292,24,214,28,167,35"/>
-<area shape="rect" id="Node000004" href="$thread__scanner_8cpp.html#a7b9ade21d4de016d2a048bf6cc42dbc0" title=" " alt="" coords="214,38,333,64"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="166,48,198,48,198,54,166,54"/>
-<area shape="rect" id="Node000005" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="227,88,320,113"/>
-<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="166,69,212,82,211,87,165,74"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="534,5,708,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="487,23,519,23,519,28,487,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="333,39,365,34,366,39,334,44"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,166,64"/>
+<area shape="rect" id="Node000002" href="$thread__scanner_8cpp.html#a7b9ade21d4de016d2a048bf6cc42dbc0" title=" " alt="" coords="214,5,333,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,30,198,26,199,31,166,35"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="227,55,320,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,51,212,57,211,62,166,56"/>
 </map>

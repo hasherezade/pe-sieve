@@ -1,9 +1,5 @@
 <map id="pesieve::util::get_next_commited_region" name="pesieve::util::get_next_commited_region">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,164,64"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="212,5,356,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,31,196,27,197,32,164,36"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="231,55,337,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,50,216,57,216,62,164,56"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="404,47,577,88"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="337,65,389,65,389,70,337,70"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,164,46"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="212,13,356,39"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,23,196,23,196,28,164,28"/>
 </map>

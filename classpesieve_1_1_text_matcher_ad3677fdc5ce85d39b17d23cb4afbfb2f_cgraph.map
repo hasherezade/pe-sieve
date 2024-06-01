@@ -1,10 +1,5 @@
 <map id="pesieve::TextMatcher::_isMatching" name="pesieve::TextMatcher::_isMatching">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,150,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="422,13,527,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,20,198,19,374,19,407,20,407,25,374,24,198,24,150,26"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve_1_1stats.html#a515c497f74da9c58bd5b3f82b08804ba" title=" " alt="" coords="198,33,374,74"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="151,33,182,37,182,42,150,38"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="575,5,749,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="528,23,560,23,560,28,528,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="374,38,406,33,407,38,375,43"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1stats.html#a515c497f74da9c58bd5b3f82b08804ba" title=" " alt="" coords="198,5,374,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,23,182,23,182,28,150,28"/>
 </map>

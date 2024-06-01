@@ -1,14 +1,9 @@
 <map id="pesieve::PeSection::PeSection" name="pesieve::PeSection::PeSection">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,138,75"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="407,13,512,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,47,391,28,392,33,138,53"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_pe_section.html#a2431e70802f32bfec22c3bf23a7a79d2" title=" " alt="" coords="186,63,318,103"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="138,63,171,68,170,73,138,68"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="600,5,774,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="512,23,585,23,585,28,512,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="317,62,365,48,393,41,395,46,367,54,319,67"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_remote_module_data.html#a1b9234ac424ed82767dafb08c80a8163" title=" " alt="" coords="366,63,552,103"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="318,80,350,80,350,86,318,86"/>
-<area shape="rect" id="Node000006" href="$classpesieve_1_1_pe_section.html#a7981814c58c2cd54408e59452458bc65" title=" " alt="" coords="393,128,525,169"/>
-<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="319,101,379,120,377,125,318,106"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,138,79"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_pe_section.html#a2431e70802f32bfec22c3bf23a7a79d2" title=" " alt="" coords="186,39,318,79"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,56,170,56,170,62,138,62"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_remote_module_data.html#a1b9234ac424ed82767dafb08c80a8163" title=" " alt="" coords="366,5,552,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="318,46,350,40,351,46,319,51"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_pe_section.html#a7981814c58c2cd54408e59452458bc65" title=" " alt="" coords="393,71,525,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="319,67,378,76,377,81,318,72"/>
 </map>

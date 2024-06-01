@@ -1,9 +1,5 @@
 <map id="pesieve::WorkingSetScanner::isPotentiallyExecutable" name="pesieve::WorkingSetScanner::isPotentiallyExecutable">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,193,71"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="269,13,374,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,38,253,31,254,36,193,43"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve_1_1util.html#a57e9c1266c247784669f5ea0191e086d" title=" " alt="" coords="241,62,402,88"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="193,58,225,62,225,67,193,64"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="450,5,623,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="374,23,434,23,434,28,374,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,193,46"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#a57e9c1266c247784669f5ea0191e086d" title=" " alt="" coords="241,13,402,39"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,23,225,23,225,28,193,28"/>
 </map>

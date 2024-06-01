@@ -1,9 +1,5 @@
 <map id="pesieve::util::ByteBuffer::allocBuffer" name="pesieve::util::ByteBuffer::allocBuffer">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,161,75"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="234,13,339,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,41,218,33,218,38,161,46"/>
-<area shape="rect" id="Node000004" href="$structpesieve_1_1util_1_1_byte_buffer.html#ab61c789fa430d217951c03f5a8dff658" title=" " alt="" coords="209,63,364,103"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="161,63,193,68,193,73,160,68"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="412,5,585,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="339,23,396,23,396,28,339,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,161,46"/>
+<area shape="rect" id="Node000002" href="$structpesieve_1_1util_1_1_byte_buffer.html#ab61c789fa430d217951c03f5a8dff658" title=" " alt="" coords="209,5,364,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,23,193,23,193,28,161,28"/>
 </map>

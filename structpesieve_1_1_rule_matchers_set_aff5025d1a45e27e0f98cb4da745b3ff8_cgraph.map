@@ -1,10 +1,5 @@
 <map id="pesieve::RuleMatchersSet::RuleMatchersSet" name="pesieve::RuleMatchersSet::RuleMatchersSet">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,178,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="446,13,551,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,20,226,19,398,19,431,20,431,25,398,24,226,24,178,25"/>
-<area shape="rect" id="Node000004" href="$structpesieve_1_1_rule_matchers_set.html#a03ab7c01aeb9a20fceac7cf86c5f7a82" title=" " alt="" coords="226,33,398,74"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="179,34,211,38,210,43,178,39"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="599,5,773,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="552,23,584,23,584,28,552,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="398,38,430,33,431,38,399,43"/>
+<area shape="rect" id="Node000002" href="$structpesieve_1_1_rule_matchers_set.html#a03ab7c01aeb9a20fceac7cf86c5f7a82" title=" " alt="" coords="226,5,398,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,23,210,23,210,28,178,28"/>
 </map>

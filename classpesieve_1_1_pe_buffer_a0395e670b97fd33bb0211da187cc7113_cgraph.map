@@ -1,13 +1,7 @@
 <map id="pesieve::PeBuffer::fillFromBuffer" name="pesieve::PeBuffer::fillFromBuffer">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,25,134,66"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="392,33,497,58"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,22,181,11,263,3,344,11,397,24,396,30,344,16,263,8,182,16,132,27"/>
-<area shape="rect" id="Node000004" href="$structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="182,25,344,66"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="134,43,166,43,166,48,134,48"/>
-<area shape="rect" id="Node000005" href="$structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2" title=" " alt="" coords="182,90,344,131"/>
-<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="133,64,187,83,185,88,131,69"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="545,25,719,66"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="498,43,530,43,530,48,498,48"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="344,43,377,43,377,48,344,48"/>
-<area shape="poly" id="edge6_Node000005_Node000002" title=" " alt="" coords="320,87,392,61,393,67,322,92"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,134,79"/>
+<area shape="rect" id="Node000002" href="$structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="182,5,344,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,45,166,40,167,45,135,51"/>
+<area shape="rect" id="Node000003" href="$structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2" title=" " alt="" coords="182,71,344,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="135,67,167,72,166,78,134,72"/>
 </map>

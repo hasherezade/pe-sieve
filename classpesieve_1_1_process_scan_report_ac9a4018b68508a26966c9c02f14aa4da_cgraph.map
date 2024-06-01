@@ -1,11 +1,7 @@
 <map id="pesieve::ProcessScanReport::countSuspiciousPerType" name="pesieve::ProcessScanReport::countSuspiciousPerType">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,194,75"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_process_scan_report.html#a0ace09b839d1a638f209eed6f70a1187" title=" " alt="" coords="242,35,430,75"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,52,226,52,226,58,194,58"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="517,13,622,39"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="430,41,501,31,502,37,431,46"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63" title=" " alt="" coords="478,63,660,103"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="431,64,463,68,462,73,430,69"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="708,5,882,46"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="622,23,693,23,693,28,622,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,194,46"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_process_scan_report.html#a0ace09b839d1a638f209eed6f70a1187" title=" " alt="" coords="242,5,430,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,23,226,23,226,28,194,28"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63" title=" " alt="" coords="478,5,660,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="430,23,463,23,463,28,430,28"/>
 </map>

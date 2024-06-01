@@ -1,10 +1,5 @@
 <map id="pesieve::util::relative_to_absolute_path" name="pesieve::util::relative_to_absolute_path">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,143,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="393,13,498,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,23,377,23,377,28,143,28"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve_1_1util.html#a970337282940a37076a16db56183c03d" title=" " alt="" coords="191,38,345,64"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="144,32,176,36,175,42,143,37"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="546,5,720,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="499,23,531,23,531,28,499,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="345,37,377,33,378,38,346,43"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#a970337282940a37076a16db56183c03d" title=" " alt="" coords="191,13,345,39"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,23,175,23,175,28,143,28"/>
 </map>

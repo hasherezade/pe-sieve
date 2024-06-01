@@ -1,12 +1,7 @@
 <map id="pesieve::PeArtefacts::toJSON" name="pesieve::PeArtefacts::toJSON">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,147,75"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_pe_artefacts.html#a37bf8c440b943d153a3988314770fb46" title=" " alt="" coords="195,63,336,103"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,63,180,68,179,73,146,68"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="402,13,507,39"/>
-<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="147,47,386,28,387,34,147,52"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="334,60,395,41,396,46,335,65"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_pe_artefacts.html#a09908fcbd1202e8c1de8b9a7b5f0eb0d" title=" " alt="" coords="384,63,525,103"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="336,80,369,80,369,86,336,86"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="573,5,747,46"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="508,23,558,23,558,28,508,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,147,46"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_pe_artefacts.html#a37bf8c440b943d153a3988314770fb46" title=" " alt="" coords="195,5,336,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,23,179,23,179,28,147,28"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_pe_artefacts.html#a09908fcbd1202e8c1de8b9a7b5f0eb0d" title=" " alt="" coords="384,5,525,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="336,23,369,23,369,28,336,28"/>
 </map>

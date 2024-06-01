@@ -1,10 +1,5 @@
 <map id="pesieve::ArtefactScanner::ArtefactsMapping::operator&lt;" name="pesieve::ArtefactScanner::ArtefactsMapping::operator&lt;">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,196,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="479,13,584,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,20,244,19,431,19,464,20,464,25,431,24,244,24,196,25"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#a52b2ef410b25eabdc0ce57aa85776ea7" title=" " alt="" coords="244,33,431,74"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="196,34,228,38,228,43,196,40"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="632,5,806,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="585,23,617,23,617,28,585,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="431,38,463,33,464,38,432,43"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#a52b2ef410b25eabdc0ce57aa85776ea7" title=" " alt="" coords="244,5,431,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,23,228,23,228,28,196,28"/>
 </map>

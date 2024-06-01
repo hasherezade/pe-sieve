@@ -1,10 +1,5 @@
 <map id="pesieve::MemPageData::validatePtr" name="pesieve::MemPageData::validatePtr">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,164,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="415,13,520,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,20,212,19,367,19,400,20,400,25,367,24,212,24,164,25"/>
-<area shape="rect" id="Node000004" href="$structpesieve_1_1util_1_1_byte_buffer.html#a7a2f937740d14222bbaf70bb28865fe9" title=" " alt="" coords="212,33,367,74"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="164,34,197,38,196,44,164,39"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="568,5,742,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="521,23,553,23,553,28,521,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="367,39,399,34,400,39,368,44"/>
+<area shape="rect" id="Node000002" href="$structpesieve_1_1util_1_1_byte_buffer.html#a7a2f937740d14222bbaf70bb28865fe9" title=" " alt="" coords="212,5,367,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,23,196,23,196,28,164,28"/>
 </map>

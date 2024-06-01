@@ -1,15 +1,19 @@
 <map id="pesieve::ProcessScanReport::appendReport" name="pesieve::ProcessScanReport::appendReport">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,71,194,111"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_modules_info.html#aadb41407ab2be96844c8a7fbd13151c0" title=" " alt="" coords="258,5,414,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,68,244,48,245,53,176,73"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_process_scan_report.html#ac3cd73b44ba0c30368cdadf25746b55f" title=" " alt="" coords="242,71,430,111"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="194,88,226,88,226,94,194,94"/>
-<area shape="rect" id="Node000007" href="$classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63" title=" " alt="" coords="245,136,427,177"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="176,109,245,129,244,134,175,114"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="520,13,625,39"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="414,23,504,23,504,28,414,28"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="714,5,888,46"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="625,23,699,23,699,28,625,28"/>
-<area shape="rect" id="Node000006" href="$classpesieve_1_1_process_scan_report.html#aac59d32a60ad030d364e13f0d132c8d6" title=" " alt="" coords="478,71,666,111"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="431,88,463,88,463,94,431,94"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,235,194,275"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_modules_info.html#aadb41407ab2be96844c8a7fbd13151c0" title=" " alt="" coords="258,136,414,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,232,270,181,272,186,151,237"/>
+<area shape="rect" id="Node000007" href="$classpesieve_1_1_process_scan_report.html#ac3cd73b44ba0c30368cdadf25746b55f" title=" " alt="" coords="242,235,430,275"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="194,252,226,252,226,258,194,258"/>
+<area shape="rect" id="Node000009" href="$classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63" title=" " alt="" coords="245,300,427,341"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="176,273,245,293,244,298,175,278"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_scanned_module.html#a85e250d1c645cccf3dbad500841a9a0b" title=" " alt="" coords="490,5,655,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="361,133,413,95,477,57,491,50,493,55,479,61,416,100,364,138"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="490,71,655,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="411,133,480,114,482,119,412,138"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_scanned_module.html#ac27ab29a010ac2d3e139f2654c3d0777" title=" " alt="" coords="490,136,655,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="414,154,474,154,474,159,414,159"/>
+<area shape="rect" id="Node000006" href="$classpesieve_1_1_scanned_module.html#a1550cf5ee7a95ec2c1c17dc8627ad0bf" title=" " alt="" coords="490,201,655,242"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="412,175,482,194,480,199,411,180"/>
+<area shape="rect" id="Node000008" href="$classpesieve_1_1_process_scan_report.html#aac59d32a60ad030d364e13f0d132c8d6" title=" " alt="" coords="478,267,666,307"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="431,265,463,270,462,275,430,270"/>
 </map>

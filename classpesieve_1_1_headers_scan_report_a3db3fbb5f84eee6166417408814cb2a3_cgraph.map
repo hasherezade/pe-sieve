@@ -1,14 +1,9 @@
 <map id="pesieve::HeadersScanReport::fieldsToJSON" name="pesieve::HeadersScanReport::fieldsToJSON">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,63,195,103"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,195,79"/>
 <area shape="rect" id="Node000002" href="$classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="246,5,429,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,60,235,48,236,53,187,65"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="496,70,601,96"/>
-<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="195,80,481,80,481,86,195,86"/>
-<area shape="rect" id="Node000006" href="$classpesieve_1_1_headers_scan_report.html#af04c1c2f3d532acf4bd980f23422f134" title=" " alt="" coords="243,120,432,161"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="187,101,236,113,235,118,186,106"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,43,230,38,231,43,195,48"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_headers_scan_report.html#af04c1c2f3d532acf4bd980f23422f134" title=" " alt="" coords="243,71,432,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="195,69,227,73,227,79,195,74"/>
 <area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="480,5,617,46"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="429,23,464,23,464,28,429,28"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="415,44,485,63,483,68,414,49"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="665,63,839,103"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="602,80,650,80,650,86,602,86"/>
 </map>

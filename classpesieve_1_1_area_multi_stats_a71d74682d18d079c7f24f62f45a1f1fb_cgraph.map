@@ -1,10 +1,5 @@
 <map id="pesieve::AreaMultiStats::fillSettings" name="pesieve::AreaMultiStats::fillSettings">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,164,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="400,13,505,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,20,212,19,352,19,385,20,385,25,352,24,212,24,164,25"/>
-<area shape="rect" id="Node000004" href="$structpesieve_1_1_chunk_stats.html#ab32b372e013ba0d5423875af9b0a512e" title=" " alt="" coords="212,33,352,74"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="164,34,197,39,196,44,164,40"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="553,5,727,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="506,23,538,23,538,28,506,28"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="352,39,384,34,385,39,353,45"/>
+<area shape="rect" id="Node000002" href="$structpesieve_1_1_chunk_stats.html#ab32b372e013ba0d5423875af9b0a512e" title=" " alt="" coords="212,5,352,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,23,196,23,196,28,164,28"/>
 </map>

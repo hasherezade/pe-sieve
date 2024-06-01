@@ -1,9 +1,5 @@
 <map id="pesieve::ThreadScanner::resolveAddr" name="pesieve::ThreadScanner::resolveAddr">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,166,75"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="244,13,349,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,41,228,32,229,38,166,46"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="214,63,379,103"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="166,63,198,67,198,73,166,68"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="427,5,600,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="350,23,412,23,412,28,350,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,166,46"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="214,5,379,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,23,198,23,198,28,166,28"/>
 </map>

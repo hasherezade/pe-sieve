@@ -1,11 +1,7 @@
 <map id="pesieve::PeSection::loadRemote" name="pesieve::PeSection::loadRemote">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,63,138,103"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="226,13,332,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,62,185,48,213,41,215,46,186,54,139,67"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_remote_module_data.html#a1b9234ac424ed82767dafb08c80a8163" title=" " alt="" coords="186,63,372,103"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="138,80,170,80,170,86,138,86"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_pe_section.html#a7981814c58c2cd54408e59452458bc65" title=" " alt="" coords="213,128,345,169"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="139,101,199,120,197,125,137,106"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="420,5,593,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="332,23,404,23,404,28,332,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,138,79"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_remote_module_data.html#a1b9234ac424ed82767dafb08c80a8163" title=" " alt="" coords="186,5,372,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,46,170,40,171,46,139,51"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_pe_section.html#a7981814c58c2cd54408e59452458bc65" title=" " alt="" coords="213,71,345,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="139,67,198,76,197,81,138,72"/>
 </map>

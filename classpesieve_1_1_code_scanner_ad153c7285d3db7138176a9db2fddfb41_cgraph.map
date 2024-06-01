@@ -1,7 +1,9 @@
 <map id="pesieve::CodeScanner::scanRemote" name="pesieve::CodeScanner::scanRemote">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,156,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="204,13,309,39"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,23,188,23,188,28,156,28"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="357,5,530,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="310,23,341,23,341,28,310,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,156,79"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_code_scan_report.html#a70b46a7a133350ab18e15838598b1908" title=" " alt="" coords="204,5,387,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,45,187,40,188,45,156,50"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_patch_list.html#ab6fc10f0853f55604093c1b1d29d60df" title=" " alt="" coords="231,71,360,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="156,68,216,77,216,82,156,73"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_code_scan_report.html#a1d1e5ff35f794df92f75c4ac33355b9d" title=" " alt="" coords="435,5,609,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="387,23,420,23,420,28,387,28"/>
 </map>

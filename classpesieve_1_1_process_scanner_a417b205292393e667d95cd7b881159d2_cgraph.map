@@ -1,12 +1,7 @@
 <map id="pesieve::ProcessScanner::ProcessScanner" name="pesieve::ProcessScanner::ProcessScanner">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,26,174,66"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a913e34d9d79fffb39e16bf153a8d197d" title=" " alt="" coords="452,33,557,59"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,22,221,11,313,3,353,5,405,11,457,25,456,30,403,16,353,10,313,8,222,17,164,27"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve_1_1util.html#a6bf8eed39c860ca4caf8dc081b57529e" title=" " alt="" coords="249,26,377,66"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="174,43,234,43,234,49,174,49"/>
-<area shape="rect" id="Node000005" href="$namespacepesieve.html#a15a9583f5de3d091bffbee68e712d8d6" title=" " alt="" coords="222,90,404,116"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="172,64,246,83,244,89,170,69"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="605,26,779,66"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="558,43,590,43,590,49,558,49"/>
-<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="362,87,403,75,448,61,449,67,405,80,364,92"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,174,75"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#a6bf8eed39c860ca4caf8dc081b57529e" title=" " alt="" coords="249,5,377,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,41,233,33,234,39,175,47"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve.html#a15a9583f5de3d091bffbee68e712d8d6" title=" " alt="" coords="222,70,404,96"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="175,63,207,67,206,72,174,68"/>
 </map>
