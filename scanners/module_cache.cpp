@@ -91,15 +91,18 @@ bool pesieve::ModulesCache::isCacheAvailable(const size_t neededSize)
 	}
 
 #ifdef _DEBUG
-	std::cout << "C: " << std::hex << ppsmemCounter.WorkingSetSize
-		<< "\tP: " << std::hex << ppsmemCounter.PeakWorkingSetSize
-		<< "\tMin: " << minSize
-		<< "\tMax: " << maxSize
-		<< "\tGlobalMem Av Virt: " << std::hex << memStatus.ullAvailVirtual
-		<< std::dec << "\tPerc: " << memStatus.dwMemoryLoad
-		<< std::dec << "  PercPeak: " << percPeak
-		<< " HasFree: " << hasFree
-		<< std::endl;
+	if (!hasFree) {
+		std::cout << "C: " << std::hex << ppsmemCounter.WorkingSetSize
+			<< "\tP: " << std::hex << ppsmemCounter.PeakWorkingSetSize
+			<< "\tMin: " << minSize
+			<< "\tMax: " << maxSize
+			<< "\tGlobalMem Av Virt: " << std::hex << memStatus.ullAvailVirtual
+			<< std::dec << "\tPerc: " << memStatus.dwMemoryLoad
+			<< std::dec << "  PercPeak: " << percPeak
+			<< " HasFree: " << hasFree
+			<< " modulesCount: " << cachedModules.size() 
+			<< std::endl;
+	}
 #endif
 	return hasFree;
 }
