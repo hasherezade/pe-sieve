@@ -33,7 +33,7 @@ bool pesieve::MemPageData::loadModuleName()
 	std::string module_name = RemoteModuleData::getModuleName(processHandle, mod_base);
 	if (module_name.length() == 0) {
 #ifdef _DEBUG
-		std::cerr << "Could not retrieve module name" << std::endl;
+		std::cerr << "Could not retrieve the module name. Base: " << std::hex << mod_base << std::endl;
 #endif
 		return false;
 	}
@@ -49,7 +49,7 @@ bool pesieve::MemPageData::loadMappedName()
 	std::string mapped_filename = RemoteModuleData::getMappedName(this->processHandle, (HMODULE)this->alloc_base);
 	if (mapped_filename.length() == 0) {
 #ifdef _DEBUG
-		std::cerr << "Could not retrieve name" << std::endl;
+		std::cerr << "Could not retrieve the mapped name. Base: " << std::hex << this->alloc_base << std::endl;
 #endif
 		return false;
 	}

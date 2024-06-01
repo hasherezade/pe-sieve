@@ -57,6 +57,9 @@ bool pesieve::ModulesCache::isCacheAvailable(const size_t neededSize)
 	DWORD info = 0;
 
 	if (!GetProcessWorkingSetSizeEx(GetCurrentProcess(), &minSize, &maxSize, &info)) {
+#ifdef _DEBUG
+		std::cout << "GetProcessWorkingSetSizeEx failed!\n";
+#endif
 		return false;
 	}
 
@@ -65,7 +68,7 @@ bool pesieve::ModulesCache::isCacheAvailable(const size_t neededSize)
 
 	if ((info & QUOTA_LIMITS_HARDWS_MAX_DISABLE) == QUOTA_LIMITS_HARDWS_MAX_DISABLE) { // The working set may exceed the maximum working set limit if there is abundant memory
 		if (GlobalMemoryStatusEx(&memStatus)) {
-			if (memStatus.ullAvailVirtual > (neededSize * 2) && (memStatus.dwMemoryLoad < 50)) {
+			if (memStatus.ullAvailVirtual > ((DWORDLONG)neededSize * 2) && (memStatus.dwMemoryLoad < 50)) {
 				hasFree = true;
 			}
 		}
