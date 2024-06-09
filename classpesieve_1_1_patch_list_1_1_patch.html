@@ -110,8 +110,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a60f64ba155cc627195275bd8f244aa2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af34616cf2855636a928dbac68cfae3e0" id="r_af34616cf2855636a928dbac68cfae3e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af34616cf2855636a928dbac68cfae3e0">setEnd</a> (DWORD end_rva)</td></tr>
 <tr class="separator:af34616cf2855636a928dbac68cfae3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf9a2d02e37e69146ebfd20799077542" id="r_adf9a2d02e37e69146ebfd20799077542"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf9a2d02e37e69146ebfd20799077542">setHookTarget</a> (ULONGLONG target_va, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> is_direct=true, <a class="el" href="namespacepesieve.html#a2b1dc083f0bcae84735e71b374c389ef">t_hook_type</a> hook_type=<a class="el" href="namespacepesieve.html#a2b1dc083f0bcae84735e71b374c389efa3ce6a9e364e0bd15f0c7bee26a0729c3">pesieve::HOOK_INLINE</a>)</td></tr>
-<tr class="separator:adf9a2d02e37e69146ebfd20799077542"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ef11444af2c99e07e5db6e97c598734" id="r_a0ef11444af2c99e07e5db6e97c598734"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ef11444af2c99e07e5db6e97c598734">setHookTarget</a> (ULONGLONG target_va, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> is_direct=true, <a class="el" href="namespacepesieve.html#aef1981236931c047e3b21059e717ea64">t_patch_type</a> hook_type=<a class="el" href="namespacepesieve.html#aef1981236931c047e3b21059e717ea64a3ce6a9e364e0bd15f0c7bee26a0729c3">pesieve::HOOK_INLINE</a>)</td></tr>
+<tr class="separator:a0ef11444af2c99e07e5db6e97c598734"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abefc01f22610a8bfa9c06e76323f685f" id="r_abefc01f22610a8bfa9c06e76323f685f"><td class="memItemLeft" align="right" valign="top">ULONGLONG&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abefc01f22610a8bfa9c06e76323f685f">getHookTargetVA</a> ()</td></tr>
 <tr class="separator:abefc01f22610a8bfa9c06e76323f685f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7995c01369861207268c6d18f6ed3934" id="r_a7995c01369861207268c6d18f6ed3934"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7995c01369861207268c6d18f6ed3934">setHookTargetInfo</a> (ULONGLONG targetModuleBase, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> isSuspiocious, std::string targetModuleName)</td></tr>
@@ -138,12 +138,14 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a76e4354724d121ee95a9d52a1803174f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47b26efed7dc555db5b612936a689dca" id="r_a47b26efed7dc555db5b612936a689dca"><td class="memItemLeft" align="right" valign="top">HMODULE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47b26efed7dc555db5b612936a689dca">moduleBase</a></td></tr>
 <tr class="separator:a47b26efed7dc555db5b612936a689dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c6257eea26224f4f6dd396575a4dbdd" id="r_a4c6257eea26224f4f6dd396575a4dbdd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepesieve.html#a2b1dc083f0bcae84735e71b374c389ef">t_hook_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c6257eea26224f4f6dd396575a4dbdd">type</a></td></tr>
-<tr class="separator:a4c6257eea26224f4f6dd396575a4dbdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ef2ffe2fbeb53529a7244135a5a42bc" id="r_a5ef2ffe2fbeb53529a7244135a5a42bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepesieve.html#aef1981236931c047e3b21059e717ea64">t_patch_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ef2ffe2fbeb53529a7244135a5a42bc">type</a></td></tr>
+<tr class="separator:a5ef2ffe2fbeb53529a7244135a5a42bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a917c77f6c3480b170239dd0f060d80f4" id="r_a917c77f6c3480b170239dd0f060d80f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a917c77f6c3480b170239dd0f060d80f4">isDirect</a></td></tr>
 <tr class="separator:a917c77f6c3480b170239dd0f060d80f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88a970b68970e94884d5f4e2efd80359" id="r_a88a970b68970e94884d5f4e2efd80359"><td class="memItemLeft" align="right" valign="top">ULONGLONG&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a88a970b68970e94884d5f4e2efd80359">hookTargetVA</a></td></tr>
 <tr class="separator:a88a970b68970e94884d5f4e2efd80359"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7773378f18a574e91e7dc10f9f9fa7b1" id="r_a7773378f18a574e91e7dc10f9f9fa7b1"><td class="memItemLeft" align="right" valign="top">BYTE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7773378f18a574e91e7dc10f9f9fa7b1">paddingVal</a></td></tr>
+<tr class="separator:a7773378f18a574e91e7dc10f9f9fa7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4aa1cbe33dae22e9e11bcbaf2e78331f" id="r_a4aa1cbe33dae22e9e11bcbaf2e78331f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4aa1cbe33dae22e9e11bcbaf2e78331f">hooked_func</a></td></tr>
 <tr class="separator:a4aa1cbe33dae22e9e11bcbaf2e78331f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acec7a5d8080e88233a3df43d8baf22b5" id="r_acec7a5d8080e88233a3df43d8baf22b5"><td class="memItemLeft" align="right" valign="top">ULONGLONG&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acec7a5d8080e88233a3df43d8baf22b5">hookTargetModule</a></td></tr>
@@ -162,7 +164,7 @@ Friends</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00020">20</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00022">22</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a989253805d2fcbc5fb224d336683bae1" name="a989253805d2fcbc5fb224d336683bae1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a989253805d2fcbc5fb224d336683bae1">&#9670;&#160;</a></span>Patch() <span class="overload">[1/2]</span></h2>
@@ -196,7 +198,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00023">23</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00025">25</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -223,7 +225,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00031">31</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00034">34</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -278,7 +280,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00060">60</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00064">64</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -305,7 +307,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8cpp_source.html#l00115">115</a> of file <a class="el" href="patch__list_8cpp_source.html">patch_list.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8cpp_source.html#l00124">124</a> of file <a class="el" href="patch__list_8cpp_source.html">patch_list.cpp</a>.</p>
 
 </div>
 </div>
@@ -332,12 +334,12 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00048">48</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00052">52</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
-<a id="adf9a2d02e37e69146ebfd20799077542" name="adf9a2d02e37e69146ebfd20799077542"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf9a2d02e37e69146ebfd20799077542">&#9670;&#160;</a></span>setHookTarget()</h2>
+<a id="a0ef11444af2c99e07e5db6e97c598734" name="a0ef11444af2c99e07e5db6e97c598734"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ef11444af2c99e07e5db6e97c598734">&#9670;&#160;</a></span>setHookTarget()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -358,7 +360,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacepesieve.html#a2b1dc083f0bcae84735e71b374c389ef">t_hook_type</a></td>          <td class="paramname"><span class="paramname"><em>hook_type</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacepesieve.html#a2b1dc083f0bcae84735e71b374c389efa3ce6a9e364e0bd15f0c7bee26a0729c3">pesieve::HOOK_INLINE</a></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="namespacepesieve.html#aef1981236931c047e3b21059e717ea64">t_patch_type</a></td>          <td class="paramname"><span class="paramname"><em>hook_type</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="namespacepesieve.html#aef1981236931c047e3b21059e717ea64a3ce6a9e364e0bd15f0c7bee26a0729c3">pesieve::HOOK_INLINE</a></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -368,7 +370,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00053">53</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00057">57</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -404,7 +406,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00065">65</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00069">69</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -432,7 +434,7 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8cpp_source.html#l00067">67</a> of file <a class="el" href="patch__list_8cpp_source.html">patch_list.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8cpp_source.html#l00076">76</a> of file <a class="el" href="patch__list_8cpp_source.html">patch_list.cpp</a>.</p>
 
 </div>
 </div>
@@ -455,7 +457,7 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8cpp_source.html#l00051">51</a> of file <a class="el" href="patch__list_8cpp_source.html">patch_list.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8cpp_source.html#l00060">60</a> of file <a class="el" href="patch__list_8cpp_source.html">patch_list.cpp</a>.</p>
 
 </div>
 </div>
@@ -480,7 +482,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00099">99</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00104">104</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -504,7 +506,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00098">98</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00103">103</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -529,7 +531,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00086">86</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00090">90</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -553,7 +555,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00092">92</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00097">97</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -577,7 +579,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00096">96</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00101">101</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -601,7 +603,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00094">94</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00099">99</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -625,7 +627,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00091">91</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00095">95</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -649,7 +651,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00084">84</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00088">88</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -673,7 +675,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00090">90</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00094">94</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -697,7 +699,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00095">95</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00100">100</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -721,7 +723,31 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00087">87</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00091">91</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+
+</div>
+</div>
+<a id="a7773378f18a574e91e7dc10f9f9fa7b1" name="a7773378f18a574e91e7dc10f9f9fa7b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7773378f18a574e91e7dc10f9f9fa7b1">&#9670;&#160;</a></span>paddingVal</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">BYTE pesieve::PatchList::Patch::paddingVal</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00096">96</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
@@ -745,12 +771,12 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00085">85</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00089">89</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>
-<a id="a4c6257eea26224f4f6dd396575a4dbdd" name="a4c6257eea26224f4f6dd396575a4dbdd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c6257eea26224f4f6dd396575a4dbdd">&#9670;&#160;</a></span>type</h2>
+<a id="a5ef2ffe2fbeb53529a7244135a5a42bc" name="a5ef2ffe2fbeb53529a7244135a5a42bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ef2ffe2fbeb53529a7244135a5a42bc">&#9670;&#160;</a></span>type</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -759,7 +785,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacepesieve.html#a2b1dc083f0bcae84735e71b374c389ef">t_hook_type</a> pesieve::PatchList::Patch::type</td>
+          <td class="memname"><a class="el" href="namespacepesieve.html#aef1981236931c047e3b21059e717ea64">t_patch_type</a> pesieve::PatchList::Patch::type</td>
         </tr>
       </table>
   </td>
@@ -769,7 +795,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00089">89</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00093">93</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
 
 </div>
 </div>

@@ -123,13 +123,15 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3146fac25cb5fa855eb8823b2fa23746" id="r_a3146fac25cb5fa855eb8823b2fa23746"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3146fac25cb5fa855eb8823b2fa23746">PatchAnalyzer</a> (<a class="el" href="classpesieve_1_1_module_data.html">ModuleData</a> &amp;_moduleData, DWORD _sectionRVA, PBYTE patched_code, size_t code_size)</td></tr>
 <tr class="separator:a3146fac25cb5fa855eb8823b2fa23746"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa5972f3199f9323b65fc74b4c713525" id="r_afa5972f3199f9323b65fc74b4c713525"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa5972f3199f9323b65fc74b4c713525">analyze</a> (<a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;patch)</td></tr>
-<tr class="separator:afa5972f3199f9323b65fc74b4c713525"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6ad44c0f19e902244177f051113d5ab" id="r_af6ad44c0f19e902244177f051113d5ab"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6ad44c0f19e902244177f051113d5ab">analyzeHook</a> (<a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;patch)</td></tr>
+<tr class="separator:af6ad44c0f19e902244177f051113d5ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cc8ae713b19e4584186a822fbe41149" id="r_a4cc8ae713b19e4584186a822fbe41149"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cc8ae713b19e4584186a822fbe41149">analyzeOther</a> (<a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;patch)</td></tr>
+<tr class="separator:a4cc8ae713b19e4584186a822fbe41149"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a007d3b67b87c69d6aa377bc51fcbb784" id="r_a007d3b67b87c69d6aa377bc51fcbb784"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a007d3b67b87c69d6aa377bc51fcbb784">_analyze</a> (<a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;patch, PBYTE patch_ptr, ULONGLONG patch_va)</td></tr>
-<tr class="separator:a007d3b67b87c69d6aa377bc51fcbb784"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a001e90cbeba7489104b31f53986c3634" id="r_a001e90cbeba7489104b31f53986c3634"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a001e90cbeba7489104b31f53986c3634">_analyzeHook</a> (<a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;patch, PBYTE patch_ptr, ULONGLONG patch_va)</td></tr>
+<tr class="separator:a001e90cbeba7489104b31f53986c3634"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1904d926a1218925ec597ae2f60e91ae" id="r_a1904d926a1218925ec597ae2f60e91ae"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1904d926a1218925ec597ae2f60e91ae">_analyzeRelocated</a> (<a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;patch, BYTE *patch_ptr)</td></tr>
 <tr class="separator:a1904d926a1218925ec597ae2f60e91ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4eb4b54b83e6e11f043a7f08d09635c4" id="r_a4eb4b54b83e6e11f043a7f08d09635c4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4eb4b54b83e6e11f043a7f08d09635c4">parseJmpViaAddr</a> (<a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;patch, PBYTE patch_ptr, ULONGLONG patch_va)</td></tr>
@@ -252,8 +254,8 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a007d3b67b87c69d6aa377bc51fcbb784" name="a007d3b67b87c69d6aa377bc51fcbb784"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a007d3b67b87c69d6aa377bc51fcbb784">&#9670;&#160;</a></span>_analyze()</h2>
+<a id="a001e90cbeba7489104b31f53986c3634" name="a001e90cbeba7489104b31f53986c3634"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a001e90cbeba7489104b31f53986c3634">&#9670;&#160;</a></span>_analyzeHook()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -262,7 +264,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t pesieve::PatchAnalyzer::_analyze </td>
+          <td class="memname">size_t pesieve::PatchAnalyzer::_analyzeHook </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>patch</em></span>, </td>
         </tr>
@@ -322,21 +324,40 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classpesieve_1_1_patch_analyzer_a1904d926a1218925ec597ae2f60e91ae_cgraph.png" border="0" usemap="#aclasspesieve_1_1_patch_analyzer_a1904d926a1218925ec597ae2f60e91ae_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_patch_analyzer_a1904d926a1218925ec597ae2f60e91ae_cgraph" id="aclasspesieve_1_1_patch_analyzer_a1904d926a1218925ec597ae2f60e91ae_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,161,46"/>
-<area shape="rect" href="classpesieve_1_1_patch_list_1_1_patch.html#adf9a2d02e37e69146ebfd20799077542" title=" " alt="" coords="209,5,362,46"/>
+<area shape="rect" href="classpesieve_1_1_patch_list_1_1_patch.html#a0ef11444af2c99e07e5db6e97c598734" title=" " alt="" coords="209,5,362,46"/>
 <area shape="poly" title=" " alt="" coords="161,23,193,23,193,28,161,28"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="afa5972f3199f9323b65fc74b4c713525" name="afa5972f3199f9323b65fc74b4c713525"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa5972f3199f9323b65fc74b4c713525">&#9670;&#160;</a></span>analyze()</h2>
+<a id="af6ad44c0f19e902244177f051113d5ab" name="af6ad44c0f19e902244177f051113d5ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6ad44c0f19e902244177f051113d5ab">&#9670;&#160;</a></span>analyzeHook()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t pesieve::PatchAnalyzer::analyze </td>
+          <td class="memname">size_t pesieve::PatchAnalyzer::analyzeHook </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>patch</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8cpp_source.html#l00222">222</a> of file <a class="el" href="patch__analyzer_8cpp_source.html">patch_analyzer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a4cc8ae713b19e4584186a822fbe41149" name="a4cc8ae713b19e4584186a822fbe41149"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cc8ae713b19e4584186a822fbe41149">&#9670;&#160;</a></span>analyzeOther()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t pesieve::PatchAnalyzer::analyzeOther </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classpesieve_1_1_patch_list_1_1_patch.html">PatchList::Patch</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>patch</em></span></td><td>)</td>
           <td></td>
@@ -479,7 +500,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classpesieve_1_1_patch_analyzer_a752d635896cee5780eb9aeffed42da68_cgraph.png" border="0" usemap="#aclasspesieve_1_1_patch_analyzer_a752d635896cee5780eb9aeffed42da68_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_patch_analyzer_a752d635896cee5780eb9aeffed42da68_cgraph" id="aclasspesieve_1_1_patch_analyzer_a752d635896cee5780eb9aeffed42da68_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,161,46"/>
-<area shape="rect" href="classpesieve_1_1_patch_list_1_1_patch.html#adf9a2d02e37e69146ebfd20799077542" title=" " alt="" coords="209,5,362,46"/>
+<area shape="rect" href="classpesieve_1_1_patch_list_1_1_patch.html#a0ef11444af2c99e07e5db6e97c598734" title=" " alt="" coords="209,5,362,46"/>
 <area shape="poly" title=" " alt="" coords="161,23,193,23,193,28,161,28"/>
 </map>
 </div>
@@ -525,7 +546,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classpesieve_1_1_patch_analyzer_a4eb4b54b83e6e11f043a7f08d09635c4_cgraph.png" border="0" usemap="#aclasspesieve_1_1_patch_analyzer_a4eb4b54b83e6e11f043a7f08d09635c4_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_patch_analyzer_a4eb4b54b83e6e11f043a7f08d09635c4_cgraph" id="aclasspesieve_1_1_patch_analyzer_a4eb4b54b83e6e11f043a7f08d09635c4_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,161,46"/>
-<area shape="rect" href="classpesieve_1_1_patch_list_1_1_patch.html#adf9a2d02e37e69146ebfd20799077542" title=" " alt="" coords="209,5,362,46"/>
+<area shape="rect" href="classpesieve_1_1_patch_list_1_1_patch.html#a0ef11444af2c99e07e5db6e97c598734" title=" " alt="" coords="209,5,362,46"/>
 <area shape="poly" title=" " alt="" coords="161,23,193,23,193,28,161,28"/>
 </map>
 </div>
@@ -571,7 +592,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classpesieve_1_1_patch_analyzer_a807f0a26116ddaf28c55027736f4cdf6_cgraph.png" border="0" usemap="#aclasspesieve_1_1_patch_analyzer_a807f0a26116ddaf28c55027736f4cdf6_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_patch_analyzer_a807f0a26116ddaf28c55027736f4cdf6_cgraph" id="aclasspesieve_1_1_patch_analyzer_a807f0a26116ddaf28c55027736f4cdf6_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,161,46"/>
-<area shape="rect" href="classpesieve_1_1_patch_list_1_1_patch.html#adf9a2d02e37e69146ebfd20799077542" title=" " alt="" coords="209,5,362,46"/>
+<area shape="rect" href="classpesieve_1_1_patch_list_1_1_patch.html#a0ef11444af2c99e07e5db6e97c598734" title=" " alt="" coords="209,5,362,46"/>
 <area shape="poly" title=" " alt="" coords="161,23,193,23,193,28,161,28"/>
 </map>
 </div>
@@ -612,7 +633,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classpesieve_1_1_patch_analyzer_aa716229494f02dad520aef0329efba75_cgraph.png" border="0" usemap="#aclasspesieve_1_1_patch_analyzer_aa716229494f02dad520aef0329efba75_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_patch_analyzer_aa716229494f02dad520aef0329efba75_cgraph" id="aclasspesieve_1_1_patch_analyzer_aa716229494f02dad520aef0329efba75_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,161,46"/>
-<area shape="rect" href="classpesieve_1_1_patch_list_1_1_patch.html#adf9a2d02e37e69146ebfd20799077542" title=" " alt="" coords="209,5,362,46"/>
+<area shape="rect" href="classpesieve_1_1_patch_list_1_1_patch.html#a0ef11444af2c99e07e5db6e97c598734" title=" " alt="" coords="209,5,362,46"/>
 <area shape="poly" title=" " alt="" coords="161,23,193,23,193,28,161,28"/>
 </map>
 </div>
@@ -658,7 +679,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classpesieve_1_1_patch_analyzer_a05f8b2e1acc8b4333d31815214457fe4_cgraph.png" border="0" usemap="#aclasspesieve_1_1_patch_analyzer_a05f8b2e1acc8b4333d31815214457fe4_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_patch_analyzer_a05f8b2e1acc8b4333d31815214457fe4_cgraph" id="aclasspesieve_1_1_patch_analyzer_a05f8b2e1acc8b4333d31815214457fe4_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,161,46"/>
-<area shape="rect" href="classpesieve_1_1_patch_list_1_1_patch.html#adf9a2d02e37e69146ebfd20799077542" title=" " alt="" coords="209,5,362,46"/>
+<area shape="rect" href="classpesieve_1_1_patch_list_1_1_patch.html#a0ef11444af2c99e07e5db6e97c598734" title=" " alt="" coords="209,5,362,46"/>
 <area shape="poly" title=" " alt="" coords="161,23,193,23,193,28,161,28"/>
 </map>
 </div>
@@ -686,7 +707,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00051">51</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00053">53</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
 
 </div>
 </div>
@@ -710,7 +731,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00046">46</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00048">48</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
 
 </div>
 </div>
@@ -734,7 +755,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00048">48</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00050">50</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
 
 </div>
 </div>
@@ -758,7 +779,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00050">50</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00052">52</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
 
 </div>
 </div>
@@ -782,7 +803,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00053">53</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00055">55</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
 
 </div>
 </div>
@@ -806,7 +827,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00049">49</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="patch__analyzer_8h_source.html#l00051">51</a> of file <a class="el" href="patch__analyzer_8h_source.html">patch_analyzer.h</a>.</p>
 
 </div>
 </div>

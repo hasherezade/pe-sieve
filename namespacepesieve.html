@@ -316,12 +316,17 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a458a4723ce4aa55fd1033f3e36381883aa8e008219c2ccce11f9d85b511f9b5a6">SCAN_SUSPICIOUS</a> = 1
  }</td></tr>
 <tr class="separator:a458a4723ce4aa55fd1033f3e36381883"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b1dc083f0bcae84735e71b374c389ef" id="r_a2b1dc083f0bcae84735e71b374c389ef"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b1dc083f0bcae84735e71b374c389ef">t_hook_type</a> { <a class="el" href="#a2b1dc083f0bcae84735e71b374c389efafddd2a4da73039f369153cc60a2d6983">HOOK_NONE</a>
-, <a class="el" href="#a2b1dc083f0bcae84735e71b374c389efa3ce6a9e364e0bd15f0c7bee26a0729c3">HOOK_INLINE</a>
-, <a class="el" href="#a2b1dc083f0bcae84735e71b374c389efae74f7aeade28da61cce224db03971821">HOOK_ADDR_REPLACEMENT</a>
-, <a class="el" href="#a2b1dc083f0bcae84735e71b374c389efa51b6633f3151608047710392eb6b955c">COUNT_HOOK_TYPES</a>
+<tr class="memitem:aef1981236931c047e3b21059e717ea64" id="r_aef1981236931c047e3b21059e717ea64"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef1981236931c047e3b21059e717ea64">t_patch_type</a> { <br />
+&#160;&#160;<a class="el" href="#aef1981236931c047e3b21059e717ea64a20778da73b2fdf0cd49c2792c8a33296">PATCH_UNKNOWN</a>
+, <a class="el" href="#aef1981236931c047e3b21059e717ea64a3ce6a9e364e0bd15f0c7bee26a0729c3">HOOK_INLINE</a>
+, <a class="el" href="#aef1981236931c047e3b21059e717ea64ae74f7aeade28da61cce224db03971821">HOOK_ADDR_REPLACEMENT</a>
+, <a class="el" href="#aef1981236931c047e3b21059e717ea64ae7c3ea6596304a04976f2c2fd06946d8">PATCH_PADDING</a>
+, <br />
+&#160;&#160;<a class="el" href="#aef1981236931c047e3b21059e717ea64a2cd0ba384183fd20600fd1fb0b7099e4">PATCH_BREAKPOINT</a>
+, <a class="el" href="#aef1981236931c047e3b21059e717ea64a149a04b308455b9c5f5c7359626402f6">COUNT_PATCH_TYPES</a>
+<br />
  }</td></tr>
-<tr class="separator:a2b1dc083f0bcae84735e71b374c389ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:aef1981236931c047e3b21059e717ea64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -605,22 +610,24 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a2b1dc083f0bcae84735e71b374c389ef" name="a2b1dc083f0bcae84735e71b374c389ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b1dc083f0bcae84735e71b374c389ef">&#9670;&#160;</a></span>t_hook_type</h2>
+<a id="aef1981236931c047e3b21059e717ea64" name="aef1981236931c047e3b21059e717ea64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef1981236931c047e3b21059e717ea64">&#9670;&#160;</a></span>t_patch_type</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="#a2b1dc083f0bcae84735e71b374c389ef">pesieve::t_hook_type</a></td>
+          <td class="memname">enum <a class="el" href="#aef1981236931c047e3b21059e717ea64">pesieve::t_patch_type</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2b1dc083f0bcae84735e71b374c389efafddd2a4da73039f369153cc60a2d6983" name="a2b1dc083f0bcae84735e71b374c389efafddd2a4da73039f369153cc60a2d6983"></a>HOOK_NONE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b1dc083f0bcae84735e71b374c389efa3ce6a9e364e0bd15f0c7bee26a0729c3" name="a2b1dc083f0bcae84735e71b374c389efa3ce6a9e364e0bd15f0c7bee26a0729c3"></a>HOOK_INLINE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b1dc083f0bcae84735e71b374c389efae74f7aeade28da61cce224db03971821" name="a2b1dc083f0bcae84735e71b374c389efae74f7aeade28da61cce224db03971821"></a>HOOK_ADDR_REPLACEMENT&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b1dc083f0bcae84735e71b374c389efa51b6633f3151608047710392eb6b955c" name="a2b1dc083f0bcae84735e71b374c389efa51b6633f3151608047710392eb6b955c"></a>COUNT_HOOK_TYPES&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aef1981236931c047e3b21059e717ea64a20778da73b2fdf0cd49c2792c8a33296" name="aef1981236931c047e3b21059e717ea64a20778da73b2fdf0cd49c2792c8a33296"></a>PATCH_UNKNOWN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aef1981236931c047e3b21059e717ea64a3ce6a9e364e0bd15f0c7bee26a0729c3" name="aef1981236931c047e3b21059e717ea64a3ce6a9e364e0bd15f0c7bee26a0729c3"></a>HOOK_INLINE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aef1981236931c047e3b21059e717ea64ae74f7aeade28da61cce224db03971821" name="aef1981236931c047e3b21059e717ea64ae74f7aeade28da61cce224db03971821"></a>HOOK_ADDR_REPLACEMENT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aef1981236931c047e3b21059e717ea64ae7c3ea6596304a04976f2c2fd06946d8" name="aef1981236931c047e3b21059e717ea64ae7c3ea6596304a04976f2c2fd06946d8"></a>PATCH_PADDING&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aef1981236931c047e3b21059e717ea64a2cd0ba384183fd20600fd1fb0b7099e4" name="aef1981236931c047e3b21059e717ea64a2cd0ba384183fd20600fd1fb0b7099e4"></a>PATCH_BREAKPOINT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aef1981236931c047e3b21059e717ea64a149a04b308455b9c5f5c7359626402f6" name="aef1981236931c047e3b21059e717ea64a149a04b308455b9c5f5c7359626402f6"></a>COUNT_PATCH_TYPES&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00011">11</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
@@ -1151,7 +1158,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="code__scanner_8cpp_source.html#l00167">167</a> of file <a class="el" href="code__scanner_8cpp_source.html">code_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="code__scanner_8cpp_source.html#l00168">168</a> of file <a class="el" href="code__scanner_8cpp_source.html">code_scanner.cpp</a>.</p>
 
 </div>
 </div>

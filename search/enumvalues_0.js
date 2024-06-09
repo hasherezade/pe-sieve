@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['count_5fhook_5ftypes_0',['COUNT_HOOK_TYPES',['../namespacepesieve.html#a2b1dc083f0bcae84735e71b374c389efa51b6633f3151608047710392eb6b955c',1,'pesieve']]]
+  ['count_5fpatch_5ftypes_0',['COUNT_PATCH_TYPES',['../namespacepesieve.html#aef1981236931c047e3b21059e717ea64a149a04b308455b9c5f5c7359626402f6',1,'pesieve']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['_5fanalyze_0',['_analyze',['../classpesieve_1_1_patch_analyzer.html#a007d3b67b87c69d6aa377bc51fcbb784',1,'pesieve::PatchAnalyzer']]],
+  ['_5fanalyzehook_0',['_analyzeHook',['../classpesieve_1_1_patch_analyzer.html#a001e90cbeba7489104b31f53986c3634',1,'pesieve::PatchAnalyzer']]],
   ['_5fanalyzerelocated_1',['_analyzeRelocated',['../classpesieve_1_1_patch_analyzer.html#a1904d926a1218925ec597ae2f60e91ae',1,'pesieve::PatchAnalyzer']]],
   ['_5fappendval_2',['_appendVal',['../classpesieve_1_1_area_entropy_stats.html#a747ba5078ce1c5fd1a61567255c4fea7',1,'pesieve::AreaEntropyStats::_appendVal()'],['../classpesieve_1_1_area_multi_stats.html#a1acd0b12dd97d980270b798ed1158f06',1,'pesieve::AreaMultiStats::_appendVal()'],['../classpesieve_1_1_area_stats.html#a35f114aa7bb17d6f04f6c9a5c28d458b',1,'pesieve::AreaStats::_appendVal()']]],
   ['_5fdeleteleastrecent_3',['_deleteLeastRecent',['../classpesieve_1_1_modules_cache.html#ac4ec15561c2e37bdf6fc201140334b3d',1,'pesieve::ModulesCache']]],
