@@ -136,6 +136,7 @@ size_t pesieve::CodeScanner::collectPatches(DWORD section_rva, PBYTE orig_code, 
 			if (currPatch != nullptr) {
 				// close the patch
 				currPatch->setEnd(section_rva + i);
+				analyzer.analyzeOther(*currPatch);
 				currPatch = nullptr;
 			}
 			continue;
@@ -145,11 +146,11 @@ size_t pesieve::CodeScanner::collectPatches(DWORD section_rva, PBYTE orig_code, 
 			currPatch = new(std::nothrow) PatchList::Patch(moduleData.moduleHandle, patchesList.size(), (DWORD) section_rva + i);
 			if (!currPatch) continue;
 			patchesList.insert(currPatch);
-			DWORD parsed_size = (DWORD) analyzer.analyze(*currPatch);
+			DWORD parsed_size = (DWORD) analyzer.analyzeHook(*currPatch);
 			if (parsed_size > 0) {
 				currPatch->setEnd(section_rva + i + parsed_size);
 				currPatch = nullptr; // close this patch
-				i += (parsed_size - 1); //substract 1 because of i++ executed after continue
+				i += (parsed_size - 1); //subtract 1 because of i++ executed after continue
 				continue;
 			}
 		}

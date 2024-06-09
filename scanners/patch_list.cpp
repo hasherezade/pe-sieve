@@ -9,6 +9,15 @@ std::string  pesieve::PatchList::Patch::getFormattedName()
 {
 	std::stringstream stream;
 
+	if (this->type == pesieve::PATCH_PADDING) {
+		stream << "padding:";
+		stream << std::hex << "0x" << (unsigned int)paddingVal;
+		return stream.str();
+	}
+	if (this->type == pesieve::PATCH_BREAKPOINT) {
+		stream << "breakpoint";
+		return stream.str();
+	}
 	if (this->hooked_func.length() > 0) {
 		stream << hooked_func;
 	} else {
@@ -22,7 +31,7 @@ std::string  pesieve::PatchList::Patch::getFormattedName()
 		}
 		stream << id;
 	}
-	if (this->type != pesieve::HOOK_NONE) {
+	if (this->type != pesieve::PATCH_UNKNOWN) {
 		stream << "->";
 		if (this->isDirect) {
 			stream << std::hex << hookTargetVA;
@@ -81,7 +90,7 @@ const bool pesieve::PatchList::Patch::toJSON(std::stringstream &outs, size_t lev
 	}
 	else {
 		outs << ",\n";
-		const bool isHook = (this->type != pesieve::HOOK_NONE);
+		const bool isHook = (this->type == pesieve::HOOK_INLINE || this->type == pesieve::HOOK_ADDR_REPLACEMENT);
 		OUT_PADDED(outs, (level + 1), "\"is_hook\" : ");
 		outs << std::dec << isHook;
 

@@ -9,11 +9,13 @@
 namespace pesieve {
 
 	typedef enum {
-		HOOK_NONE,
+		PATCH_UNKNOWN,
 		HOOK_INLINE,
 		HOOK_ADDR_REPLACEMENT,
-		COUNT_HOOK_TYPES
-	} t_hook_type;
+		PATCH_PADDING,
+		PATCH_BREAKPOINT,
+		COUNT_PATCH_TYPES
+	} t_patch_type;
 
 	class PatchList {
 	public:
@@ -22,9 +24,10 @@ namespace pesieve {
 		public:
 			Patch(HMODULE module_base, size_t patch_id, DWORD start_rva)
 				: moduleBase(module_base), id(patch_id), startRva(start_rva), endRva(start_rva),
-				type(pesieve::HOOK_NONE),
+				type(pesieve::PATCH_UNKNOWN),
 				isDirect(true), 
-				hookTargetVA(0), hookTargetModule(0), isTargetSuspicious(false)
+				hookTargetVA(0), hookTargetModule(0), isTargetSuspicious(false),
+				paddingVal(0)
 			{
 			}
 
@@ -43,6 +46,7 @@ namespace pesieve {
 				hookTargetModule = other.hookTargetModule;
 				isTargetSuspicious = other.isTargetSuspicious;
 				hookTargetModName = other.hookTargetModName;
+				paddingVal = other.paddingVal;
 			}
 
 			void setEnd(DWORD end_rva)
@@ -50,7 +54,7 @@ namespace pesieve {
 				endRva = end_rva;
 			}
 
-			void setHookTarget(ULONGLONG target_va, bool is_direct = true, t_hook_type hook_type = pesieve::HOOK_INLINE)
+			void setHookTarget(ULONGLONG target_va, bool is_direct = true, t_patch_type hook_type = pesieve::HOOK_INLINE)
 			{
 				hookTargetVA = target_va;
 				isDirect = is_direct;
@@ -64,7 +68,7 @@ namespace pesieve {
 
 			bool setHookTargetInfo(ULONGLONG targetModuleBase, bool isSuspiocious, std::string targetModuleName)
 			{
-				if (type == pesieve::HOOK_NONE || targetModuleBase == 0 || targetModuleBase > this->hookTargetVA) {
+				if (type == pesieve::PATCH_UNKNOWN || targetModuleBase == 0 || targetModuleBase > this->hookTargetVA) {
 					return false;
 				}
 				this->hookTargetModule = targetModuleBase;
@@ -86,9 +90,10 @@ namespace pesieve {
 			DWORD endRva;
 			HMODULE moduleBase;
 
-			t_hook_type type;
+			t_patch_type type;
 			bool isDirect;
 			ULONGLONG hookTargetVA;
+			BYTE paddingVal;
 			std::string hooked_func;
 
 			ULONGLONG hookTargetModule;

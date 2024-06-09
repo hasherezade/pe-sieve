@@ -25,10 +25,12 @@ namespace pesieve {
 			moduleData.loadRelocatedFields(relocs);
 		}
 
-		size_t analyze(PatchList::Patch &patch);
+		size_t analyzeHook(PatchList::Patch &patch);
+
+		size_t analyzeOther(PatchList::Patch& patch);
 
 	protected:
-		size_t _analyze(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
+		size_t _analyzeHook(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
 		size_t _analyzeRelocated(PatchList::Patch &patch, BYTE* patch_ptr);
 
 		size_t parseJmpViaAddr(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
