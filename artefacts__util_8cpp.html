@@ -100,6 +100,7 @@ $(function(){ initResizable(false); });
 <div class="textblock"><code>#include &quot;<a class="el" href="artefacts__util_8h_source.html">artefacts_util.h</a>&quot;</code><br />
 <code>#include &lt;peconv.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="code__patterns_8h_source.html">code_patterns.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="custom__mutex_8h_source.html">custom_mutex.h</a>&quot;</code><br />
 </div>
 <p><a href="artefacts__util_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -121,10 +122,30 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:afd37518d5bc5a27fc935b3b156f342ea" id="r_afd37518d5bc5a27fc935b3b156f342ea"><td class="memItemLeft" align="right" valign="top">std::set&lt; DWORD &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#afd37518d5bc5a27fc935b3b156f342ea">pesieve::HardcodedPatterns</a></td></tr>
 <tr class="separator:afd37518d5bc5a27fc935b3b156f342ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7349a31e870d8fe9717470c3b4a0e96" id="r_aa7349a31e870d8fe9717470c3b4a0e96"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpesieve_1_1util_1_1_mutex.html">pesieve::util::Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#aa7349a31e870d8fe9717470c3b4a0e96">pesieve::g_HardcodedPatternsMutex</a></td></tr>
+<tr class="separator:aa7349a31e870d8fe9717470c3b4a0e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9007e4acd7313aac42ab638dd3263d6" id="r_ad9007e4acd7313aac42ab638dd3263d6"><td class="memItemLeft" align="right" valign="top">sig_finder::Node&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9007e4acd7313aac42ab638dd3263d6">mainMatcher</a></td></tr>
 <tr class="separator:ad9007e4acd7313aac42ab638dd3263d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ad404666a99e16e91225e8735d6b164" id="r_a3ad404666a99e16e91225e8735d6b164"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpesieve_1_1util_1_1_mutex.html">pesieve::util::Mutex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ad404666a99e16e91225e8735d6b164">g_mainMatcherMutex</a></td></tr>
+<tr class="separator:a3ad404666a99e16e91225e8735d6b164"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="a3ad404666a99e16e91225e8735d6b164" name="a3ad404666a99e16e91225e8735d6b164"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ad404666a99e16e91225e8735d6b164">&#9670;&#160;</a></span>g_mainMatcherMutex</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpesieve_1_1util_1_1_mutex.html">pesieve::util::Mutex</a> g_mainMatcherMutex</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="artefacts__util_8cpp_source.html#l00146">146</a> of file <a class="el" href="artefacts__util_8cpp_source.html">artefacts_util.cpp</a>.</p>
+
+</div>
+</div>
 <a id="ad9007e4acd7313aac42ab638dd3263d6" name="ad9007e4acd7313aac42ab638dd3263d6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad9007e4acd7313aac42ab638dd3263d6">&#9670;&#160;</a></span>mainMatcher</h2>
 
@@ -137,7 +158,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="artefacts__util_8cpp_source.html#l00141">141</a> of file <a class="el" href="artefacts__util_8cpp_source.html">artefacts_util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="artefacts__util_8cpp_source.html#l00145">145</a> of file <a class="el" href="artefacts__util_8cpp_source.html">artefacts_util.cpp</a>.</p>
 
 </div>
 </div>

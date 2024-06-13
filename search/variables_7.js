@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['g_5fkernel32hndl_0',['g_kernel32Hndl',['../namespacepesieve_1_1util.html#aacb64ab7d443d809726bde821ffd5cdc',1,'pesieve::util']]],
-  ['g_5fsystem32path_1',['g_System32Path',['../path__converter_8cpp.html#ae7c65d5a1eb715d175fb5653863e90c2',1,'path_converter.cpp']]],
-  ['g_5fsyswow64path_2',['g_Syswow64Path',['../path__converter_8cpp.html#a8ad45dd38e2bdd77c4eceb801cb1492e',1,'path_converter.cpp']]]
+  ['g_5fhardcodedpatternsmutex_0',['g_HardcodedPatternsMutex',['../namespacepesieve.html#aa7349a31e870d8fe9717470c3b4a0e96',1,'pesieve']]],
+  ['g_5fkernel32hndl_1',['g_kernel32Hndl',['../namespacepesieve_1_1util.html#aacb64ab7d443d809726bde821ffd5cdc',1,'pesieve::util']]],
+  ['g_5fmainmatchermutex_2',['g_mainMatcherMutex',['../artefacts__util_8cpp.html#a3ad404666a99e16e91225e8735d6b164',1,'artefacts_util.cpp']]],
+  ['g_5fsystem32path_3',['g_System32Path',['../path__converter_8cpp.html#ae7c65d5a1eb715d175fb5653863e90c2',1,'path_converter.cpp']]],
+  ['g_5fsyswow64path_4',['g_Syswow64Path',['../path__converter_8cpp.html#a8ad45dd38e2bdd77c4eceb801cb1492e',1,'path_converter.cpp']]]
 ];
