@@ -91,6 +91,7 @@ $(function(){ initResizable(false); });
 <div id="doc-content">
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -99,16 +100,21 @@ $(function(){ initResizable(false); });
 <div class="contents">
 <div class="textblock"><code>#include &lt;windows.h&gt;</code><br />
 <code>#include &lt;sig_finder.h&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
+<code>#include &quot;<a class="el" href="custom__mutex_8h_source.html">custom_mutex.h</a>&quot;</code><br />
 </div>
 <p><a href="artefacts__util_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_pattern_matcher.html">pesieve::PatternMatcher</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html">pesieve</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html">pesieve::util</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1matcher.html">pesieve::matcher</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -132,16 +138,6 @@ Functions</h2></td></tr>
 <tr class="separator:a57e9c1266c247784669f5ea0191e086d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bc0e707ae1cceda1678bc269f2870ea" id="r_a9bc0e707ae1cceda1678bc269f2870ea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1util.html#a9bc0e707ae1cceda1678bc269f2870ea">pesieve::util::is_normal_inaccessible</a> (<a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> state, <a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> mapping_type, <a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> protection)</td></tr>
 <tr class="separator:a9bc0e707ae1cceda1678bc269f2870ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e2fd79abceff922ed62a858c0fe9702" id="r_a7e2fd79abceff922ed62a858c0fe9702"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1matcher.html#a7e2fd79abceff922ed62a858c0fe9702">pesieve::matcher::is_matcher_ready</a> ()</td></tr>
-<tr class="separator:a7e2fd79abceff922ed62a858c0fe9702"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2abc59fa1094c4adc610238da632762" id="r_af2abc59fa1094c4adc610238da632762"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1matcher.html#af2abc59fa1094c4adc610238da632762">pesieve::matcher::init_shellcode_patterns</a> ()</td></tr>
-<tr class="separator:af2abc59fa1094c4adc610238da632762"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1219264b984e5f20ac9931e1b657ecdf" id="r_a1219264b984e5f20ac9931e1b657ecdf"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1matcher.html#a1219264b984e5f20ac9931e1b657ecdf">pesieve::matcher::load_pattern_file</a> (const char *filename)</td></tr>
-<tr class="separator:a1219264b984e5f20ac9931e1b657ecdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24f7803d36d731fc9d461dcc5ef4dfc2" id="r_a24f7803d36d731fc9d461dcc5ef4dfc2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1matcher.html#a24f7803d36d731fc9d461dcc5ef4dfc2">pesieve::matcher::find_all_patterns</a> (BYTE *loadedData, size_t loadedSize, std::vector&lt; sig_finder::Match &gt; &amp;allMatches)</td></tr>
-<tr class="separator:a24f7803d36d731fc9d461dcc5ef4dfc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c1a8e735f72a0a674131cc8396efc7e" id="r_a3c1a8e735f72a0a674131cc8396efc7e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve_1_1matcher.html#a3c1a8e735f72a0a674131cc8396efc7e">pesieve::matcher::filter_custom</a> (std::vector&lt; sig_finder::Match &gt; &amp;allMatches, std::vector&lt; sig_finder::Match &gt; &amp;customPatternMatches)</td></tr>
-<tr class="separator:a3c1a8e735f72a0a674131cc8396efc7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ac9cf0f4988dad099cb71d79c118d6adc" name="ac9cf0f4988dad099cb71d79c118d6adc"></a>
@@ -156,7 +152,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="artefacts__util_8h_source.html#l00004">4</a> of file <a class="el" href="artefacts__util_8h_source.html">artefacts_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="artefacts__util_8h_source.html#l00006">6</a> of file <a class="el" href="artefacts__util_8h_source.html">artefacts_util.h</a>.</p>
 
 </div>
 </div>

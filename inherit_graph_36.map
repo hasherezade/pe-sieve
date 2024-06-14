@@ -1,3 +1,19 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classpesieve_1_1_process_scanner.html" title="The root scanner, responsible for enumerating all the elements to be scanned within a given process,..." alt="" coords="5,5,174,31"/>
+<area shape="rect" id="Node000000" href="$classpesieve_1_1_process_feature_scanner.html" title="A base class for all the scanners checking appropriate process&#39; features." alt="" coords="5,104,218,130"/>
+<area shape="rect" id="Node000001" href="$classpesieve_1_1_artefact_scanner.html" title="A scanner for detection of artefacts related to PE implants in the process workingset." alt="" coords="276,5,443,31"/>
+<area shape="poly" id="edge27_Node000000_Node000001" title=" " alt="" coords="149,94,203,66,265,40,298,29,300,34,267,45,205,71,151,99"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_mapping_scanner.html" title="A scanner for detection of inconsistencies in mapping. Checks if the mapped file name is different th..." alt="" coords="275,55,444,80"/>
+<area shape="poly" id="edge28_Node000000_Node000002" title=" " alt="" coords="194,98,291,78,292,84,195,103"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_module_scanner.html" title="A base class for all the scanners operating on module data." alt="" coords="278,104,441,130"/>
+<area shape="poly" id="edge29_Node000000_Node000003" title=" " alt="" coords="233,114,278,114,278,120,233,120"/>
+<area shape="rect" id="Node000007" href="$classpesieve_1_1_thread_scanner.html" title=" " alt="" coords="279,153,440,179"/>
+<area shape="poly" id="edge33_Node000000_Node000007" title=" " alt="" coords="195,131,292,150,291,155,194,136"/>
+<area shape="rect" id="Node000008" href="$classpesieve_1_1_working_set_scanner.html" title="A scanner for detection of code implants in the process workingset." alt="" coords="266,203,453,228"/>
+<area shape="poly" id="edge34_Node000000_Node000008" title=" " alt="" coords="151,135,205,163,267,189,300,199,298,205,265,194,203,167,149,140"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_code_scanner.html" title="A scanner for detection of patches in the code." alt="" coords="511,55,661,80"/>
+<area shape="poly" id="edge30_Node000003_Node000004" title=" " alt="" coords="436,97,523,78,524,84,437,103"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_headers_scanner.html" title="A scanner for detection of PE header&#39;s modifications." alt="" coords="501,104,670,130"/>
+<area shape="poly" id="edge31_Node000003_Node000005" title=" " alt="" coords="456,114,501,114,501,120,456,120"/>
+<area shape="rect" id="Node000006" href="$classpesieve_1_1_i_a_t_scanner.html" title="A scanner for detection of IAT hooking." alt="" coords="515,153,656,179"/>
+<area shape="poly" id="edge32_Node000003_Node000006" title=" " alt="" coords="437,131,524,150,523,155,436,136"/>
 </map>
