@@ -19,6 +19,8 @@
 using namespace pesieve;
 using namespace pesieve::util;
 
+pesieve::PatternMatcher g_Matcher;
+
 namespace pesieve {
 	void check_access_denied(DWORD processID)
 	{
@@ -205,14 +207,14 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 	}
 
 	if (args.pattern_file.length) {
-		size_t loaded = matcher::load_pattern_file(args.pattern_file.buffer);
+		size_t loaded = g_Matcher.loadPatternFile(args.pattern_file.buffer);
 		if (!args.quiet) {
 			if (loaded) std::cout << "[+] Pattern file loaded: " << args.pattern_file.buffer << ", Signs: " << loaded << std::endl;
 			else std::cerr << "[-] Failed to load pattern file: " << args.pattern_file.buffer << std::endl;
 		}
 	}
 	if (is_by_patterns(args.shellcode)) {
-		matcher::init_shellcode_patterns();
+		g_Matcher.initShellcodePatterns();
 	}
 	
 	try {

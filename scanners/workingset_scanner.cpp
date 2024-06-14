@@ -12,6 +12,7 @@
 using namespace pesieve;
 using namespace pesieve::util;
 
+extern pesieve::PatternMatcher g_Matcher;
 
 namespace pesieve {
 
@@ -82,10 +83,10 @@ bool pesieve::WorkingSetScanner::checkAreaContent(IN MemPageData& memPage, OUT W
 
 	size_t custom_matched_count = 0;
 
-	if (matcher::is_matcher_ready()) {
+	if (g_Matcher.isReady()) {
 		std::vector<sig_finder::Match> allMatched;
-		my_report->all_matched_count = matcher::find_all_patterns(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding), allMatched);
-		custom_matched_count = matcher::filter_custom(allMatched, my_report->custom_matched);
+		my_report->all_matched_count = g_Matcher.findAllPatterns(memPage.getLoadedData(noPadding), memPage.getLoadedSize(noPadding), allMatched);
+		custom_matched_count = g_Matcher.filterCustom(allMatched, my_report->custom_matched);
 		if (my_report->all_matched_count) {
 			my_report->match_area_start = memPage.getStartOffset(noPadding);
 			codeP = true;
@@ -212,7 +213,7 @@ WorkingSetScanReport* pesieve::WorkingSetScanner::scanExecutableArea(MemPageData
 			return my_report1;
 		}
 	}
-	if ((!matcher::is_matcher_ready())
+	if ((!g_Matcher.isReady())
 		&& (this->args.obfuscated == OBFUSC_NONE))
 	{
 		// not a PE file, and we are not interested in patterns or obfuscated contents, so just finish it here

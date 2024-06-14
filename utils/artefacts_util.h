@@ -1,6 +1,8 @@
 #pragma once
 #include <windows.h>
 #include <sig_finder.h>
+#include <vector>
+#include "custom_mutex.h"
 #define PATTERN_NOT_FOUND (-1)
 
 namespace pesieve {
@@ -10,22 +12,22 @@ namespace pesieve {
 		If the number of iterations is not specified (0) it scans full space, otherwise it takes only max_iter number of steps.
 		Returns the pointer to the found pattern, or nullptr if not found.
 		*/
-		BYTE* find_pattern(BYTE *buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size, size_t max_iter = 0);
+		BYTE* find_pattern(BYTE* buffer, size_t buf_size, BYTE* pattern_buf, size_t pattern_size, size_t max_iter = 0);
 
 		/*
 		Scans the buffer searching for the hardcoded 32-bit code patterns. If found, returns the match offset, otherwise returns CODE_PATTERN_NOT_FOUND
 		*/
-		size_t is_32bit_code(BYTE *loadedData, size_t loadedSize);
+		size_t is_32bit_code(BYTE* loadedData, size_t loadedSize);
 
 		/*
 		Scans the buffer searching for the hardcoded 64-bit code patterns. If found, returns the match offset, otherwise returns CODE_PATTERN_NOT_FOUND
 		*/
-		size_t is_64bit_code(BYTE *loadedData, size_t loadedSize);
+		size_t is_64bit_code(BYTE* loadedData, size_t loadedSize);
 
 		/*
 		Scans the buffer searching for any hardcoded code patterns (both 32 and 64 bit).
 		*/
-		bool is_code(BYTE *loadedData, size_t loadedSize);
+		bool is_code(BYTE* loadedData, size_t loadedSize);
 
 		bool is_executable(DWORD mapping_type, DWORD protection);
 
@@ -34,19 +36,25 @@ namespace pesieve {
 		bool is_normal_inaccessible(DWORD state, DWORD mapping_type, DWORD protection);
 	}; // namespace util
 
-	namespace matcher {
 
-		/* using the global matcher */
+	// matcher:
+	class PatternMatcher
+	{
+	public:
+		bool isReady();
 
-		bool is_matcher_ready();
+		size_t loadPatternFile(const char* filename);
 
-		bool init_shellcode_patterns();
+		bool initShellcodePatterns();
 
-		size_t load_pattern_file(const char* filename);
+		size_t findAllPatterns(BYTE* loadedData, size_t loadedSize, ::std::vector<sig_finder::Match>& allMatches);
 
-		size_t find_all_patterns(BYTE* loadedData, size_t loadedSize, std::vector<sig_finder::Match>& allMatches);
+		size_t filterCustom(::std::vector<sig_finder::Match>& allMatches, ::std::vector<sig_finder::Match>& customPatternMatches);
 
-		size_t filter_custom(std::vector<sig_finder::Match>& allMatches, std::vector<sig_finder::Match>& customPatternMatches);
+	protected:
+		sig_finder::Node mainMatcher;
+		pesieve::util::Mutex mainMatcherMutex;
+	};
 
-	}; //namespace matcher
-}
+
+}; //namespace pesieve 

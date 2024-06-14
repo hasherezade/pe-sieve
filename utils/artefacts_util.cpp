@@ -1,7 +1,6 @@
 #include "artefacts_util.h"
 #include <peconv.h>
 #include "code_patterns.h"
-#include "custom_mutex.h"
 #ifdef _DEBUG
 	#include <iostream>
 #endif
@@ -140,20 +139,18 @@ bool pesieve::util::is_normal_inaccessible(DWORD state, DWORD mapping_type, DWOR
 	return false;
 }
 
+//---
 // matcher:
 
-sig_finder::Node mainMatcher;
-pesieve::util::Mutex g_mainMatcherMutex;
-
-bool pesieve::matcher::is_matcher_ready()
+bool pesieve::PatternMatcher::isReady()
 {
-	util::MutexLocker guard(g_mainMatcherMutex);
+	util::MutexLocker guard(mainMatcherMutex);
 	return (mainMatcher.isEnd()) ? false : true;
 }
 
-size_t pesieve::matcher::load_pattern_file(const char* filename)
+size_t pesieve::PatternMatcher::loadPatternFile(const char* filename)
 {
-	util::MutexLocker guard(g_mainMatcherMutex);
+	util::MutexLocker guard(mainMatcherMutex);
 	static bool isLoaded = false;
 	if (isLoaded) return 0; // allow to load file only once
 
@@ -166,12 +163,13 @@ size_t pesieve::matcher::load_pattern_file(const char* filename)
 		Signature* sign = *itr;
 		delete sign;
 	}
+	std::cout << "Added patterns: " << std::dec << added << "\n";
 	return added;
 }
 
-bool pesieve::matcher::init_shellcode_patterns()
+bool pesieve::PatternMatcher::initShellcodePatterns()
 {
-	util::MutexLocker guard(g_mainMatcherMutex);
+	util::MutexLocker guard(mainMatcherMutex);
 	static bool isLoaded = false;
 	if (isLoaded) return false; // allow to load only once
 
@@ -181,19 +179,19 @@ bool pesieve::matcher::init_shellcode_patterns()
 	return true;
 }
 
-size_t pesieve::matcher::find_all_patterns(BYTE* loadedData, size_t loadedSize, std::vector<sig_finder::Match>& allMatches)
+size_t pesieve::PatternMatcher::findAllPatterns(BYTE* loadedData, size_t loadedSize, std::vector<sig_finder::Match>& allMatches)
 {
-	if (!is_matcher_ready()) {
+	if (!isReady()) {
 		return false;
 	}
 	if (peconv::is_padding(loadedData, loadedSize, 0)) {
 		return false;
 	}
-	const size_t matches =  sig_finder::find_all_matches(mainMatcher, loadedData, loadedSize, allMatches);
+	const size_t matches = sig_finder::find_all_matches(mainMatcher, loadedData, loadedSize, allMatches);
 	return matches;
 }
 
-size_t pesieve::matcher::filter_custom(std::vector<sig_finder::Match>& allMatches, std::vector<sig_finder::Match>& customPatternMatches)
+size_t pesieve::PatternMatcher::filterCustom(std::vector<sig_finder::Match>& allMatches, std::vector<sig_finder::Match>& customPatternMatches)
 {
 	util::MutexLocker guard(g_HardcodedPatternsMutex);
 	size_t customCount = 0;
