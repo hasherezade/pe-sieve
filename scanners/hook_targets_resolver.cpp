@@ -3,17 +3,39 @@
 
 #include "scan_report.h"
 #include "code_scanner.h"
+#include "../utils/process_symbols.h"
 
 using namespace pesieve;
 
 bool pesieve::HookTargetResolver::resolveTarget(PatchList::Patch* currPatch)
 {
 	if (!currPatch) return false;
-
+	
+	const bool useSymbols = true;
 	const ULONGLONG searchedAddr = currPatch->getHookTargetVA();
 	const ScannedModule* foundMod = processReport.getModuleContaining(searchedAddr);
 	if (!foundMod) return false;
 
+	if (useSymbols && hProcess) {
+		CHAR buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME] = { 0 };
+		PSYMBOL_INFO pSymbol = (PSYMBOL_INFO)buffer;
+		pSymbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+		pSymbol->MaxNameLen = MAX_SYM_NAME;
+		DWORD64 Displacement = { 0 };
+
+		if (SymFromAddr(hProcess, searchedAddr, &Displacement, pSymbol)) {
+			std::cout << std::dec << "[" << GetProcessId(hProcess) << "]" << std::hex << searchedAddr << " Sym: " << pSymbol->ModBase << " : " << pSymbol->Name << " disp: " << Displacement
+				<< " Flags: " << pSymbol->Flags << " Tag: " << pSymbol->Tag << std::endl;
+			if (pSymbol->Flags == SYMFLAG_CLR_TOKEN) std::cout << "CLR token!\n";
+			std::stringstream ss;
+			ss << foundMod->getModName() + "." << pSymbol->Name << "+" << std::hex << Displacement;
+			currPatch->setHookTargetInfo(foundMod->getStart(), foundMod->isSuspicious(), ss.str());
+			return true;
+		}
+		else {
+			std::cerr << "Finding symbols failed!\n";
+		}
+	}
 	if (processReport.exportsMap) {
 		const peconv::ExportedFunc* expFunc = processReport.exportsMap->find_export_by_va(searchedAddr);
 		if (expFunc) {

@@ -149,7 +149,7 @@ t_scan_status pesieve::ProcessScanner::scanForHooks(HANDLE processHandle, Module
 
 bool pesieve::ProcessScanner::resolveHooksTargets(ProcessScanReport& process_report)
 {
-	HookTargetResolver hookResolver(process_report);
+	HookTargetResolver hookResolver(process_report, processHandle);
 	std::set<ModuleScanReport*> &code_reports = process_report.reportsByType[ProcessScanReport::REPORT_CODE_SCAN];
 	size_t resolved_count = hookResolver.resolveAllHooks(code_reports);
 	return (resolved_count > 0);
@@ -215,6 +215,10 @@ bool pesieve::ProcessScanner::filterDotNetReport(ProcessScanReport& process_repo
 
 ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 {
+	const bool useSymbols = true;
+	if (useSymbols && !this->symbols.InitSymbols()) {
+		std::cerr << "Failed to initialize symbols!\n";
+	}
 	this->isDEP = is_DEP_enabled(this->processHandle);
 
 	const bool is_64bit = pesieve::util::is_process_64bit(this->processHandle);

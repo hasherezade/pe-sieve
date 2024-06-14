@@ -9,8 +9,8 @@ namespace pesieve {
 	class HookTargetResolver
 	{
 	public:
-		HookTargetResolver(IN ProcessScanReport& process_report)
-			: processReport(process_report)
+		HookTargetResolver(IN ProcessScanReport& process_report, IN HANDLE _hProcess)
+			: processReport(process_report), hProcess(_hProcess)
 		{
 		}
 
@@ -22,6 +22,7 @@ namespace pesieve {
 
 	protected:
 		ProcessScanReport& processReport;
+		HANDLE hProcess;
 	};
 
 }; //namespace pesieve

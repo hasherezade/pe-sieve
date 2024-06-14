@@ -20,8 +20,22 @@ public:
 	bool InitSymbols()
 	{
 		if (!isInit) {
-			SymSetOptions(SYMOPT_UNDNAME | SYMOPT_DEBUG | SYMOPT_INCLUDE_32BIT_MODULES);
-			if (SymInitialize(hProcess, NULL, TRUE)) {
+			DWORD options = SYMOPT_INCLUDE_32BIT_MODULES;
+			SymSetOptions(options | SYMOPT_CASE_INSENSITIVE |
+				SYMOPT_DEBUG |
+				SYMOPT_UNDNAME | SYMOPT_AUTO_PUBLICS | SYMOPT_DEFERRED_LOADS | SYMOPT_OMAP_FIND_NEAREST);
+
+			// Use a predefined symbols search path if _NT_SYMBOL_PATH is not registered
+			const auto ret = ::GetEnvironmentVariable(TEXT("_NT_SYMBOL_PATH"), nullptr, 0);
+			TCHAR* path = nullptr;
+			if (ret == 0 && ::GetLastError() == ERROR_ENVVAR_NOT_FOUND)
+			{
+				std::cout << "Env not found!\n";
+				path = TEXT(".;srv*.\\Symbols*http://msdl.microsoft.com/download/symbols");
+			}
+
+			if (SymInitialize(hProcess, path, TRUE)) {
+				std::cout << "Init ok!\n";
 				isInit = true;
 			}
 		}
