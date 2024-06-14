@@ -1,12 +1,10 @@
 #include "thread_scanner.h"
 #include <peconv.h>
+#include "mempage_data.h"
 #include "../utils/process_util.h"
 #include "../utils/ntddk.h"
 #include "../stats/stats.h"
-#include "mempage_data.h"
-
-#include <dbghelp.h>
-#pragma comment(lib, "dbghelp")
+#include "../utils/process_symbols.h"
 
 #define ENTROPY_TRESHOLD 3.0
 //#define NO_ENTROPY_CHECK
@@ -35,6 +33,7 @@ typedef struct _t_stack_enum_params {
 	}
 } t_stack_enum_params;
 
+//---
 
 DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 {
@@ -59,6 +58,9 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 		while (StackWalk64(IMAGE_FILE_MACHINE_AMD64, args->hProcess, args->hThread, &frame, args->ctx, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL)) {
 			//std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
+#ifdef _DEBUG
+			ProcessSymbolsManager::dumpSymbolInfo(args->hProcess, next_addr);
+#endif
 			args->stack_frame.push_back(next_addr);
 			fetched++;
 		}
@@ -76,6 +78,9 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 
 		while (StackWalk(IMAGE_FILE_MACHINE_I386, args->hProcess, args->hThread, &frame, args->ctx, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL)) {
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
+#ifdef _DEBUG
+			ProcessSymbolsManager::dumpSymbolInfo(args->hProcess, next_addr);
+#endif
 			args->stack_frame.push_back(next_addr);
 			fetched++;
 		}
@@ -330,23 +335,6 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 	}
 #endif
 	return true;
-}
-
-
-bool pesieve::ThreadScanner::InitSymbols(HANDLE hProc)
-{
-	if (SymInitialize(hProc, NULL, TRUE)) {
-		return true;
-	}
-	return false;
-}
-
-bool pesieve::ThreadScanner::FreeSymbols(HANDLE hProc)
-{
-	if (SymCleanup(hProc)) {
-		return true;
-	}
-	return false;
 }
 
 // if extended info given, allow to filter out from the scan basing on the thread state and conditions

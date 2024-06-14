@@ -67,7 +67,7 @@ namespace pesieve {
 };
 
 pesieve::ProcessScanner::ProcessScanner(HANDLE procHndl, bool is_reflection, pesieve::t_params _args)
-	: args(_args), isDEP(false), isReflection(is_reflection)
+	: args(_args), isDEP(false), isReflection(is_reflection), symbols(procHndl)
 {
 	this->processHandle = procHndl;
 	if (validate_param_str(args.modules_ignored)) {
@@ -470,6 +470,11 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 
 size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws exceptions
 {
+	if (!this->symbols.InitSymbols()) {
+		std::cerr << "Failed to initialize symbols!\n";
+		return 0;
+	}
+
 	const DWORD pid = pReport.pid; //original PID, not a reflection!
 
 	const bool is_64bit = pesieve::util::is_process_64bit(this->processHandle);
@@ -494,7 +499,6 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 		}
 	}
 
-	ThreadScanner::InitSymbols(this->processHandle);
 	std::vector<thread_info>::iterator itr;
 	for (itr = threads_info.begin(); itr != threads_info.end(); ++itr) {
 		const thread_info &info = *itr;
@@ -503,8 +507,6 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 		ThreadScanReport* report = scanner.scanRemote();
 		pReport.appendReport(report);
 	}
-	ThreadScanner::FreeSymbols(this->processHandle);
-
 	if (!args.quiet) {
 		const DWORD total_time = GetTickCount() - start_tick;
 		print_scan_time("Threads", total_time);
