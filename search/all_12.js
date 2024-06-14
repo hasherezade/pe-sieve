@@ -104,5 +104,6 @@ var searchData=
   ['summarize_101',['summarize',['../classpesieve_1_1_area_entropy_stats.html#a55525d7498ddf04738ce1fac9332be3f',1,'pesieve::AreaEntropyStats::summarize()'],['../structpesieve_1_1_chunk_stats.html#ac68e19c8316bf003c2fbdea739176001',1,'pesieve::ChunkStats::summarize()'],['../classpesieve_1_1_area_multi_stats.html#adc0566558c7de4604692be9fec9ba0e3',1,'pesieve::AreaMultiStats::summarize()'],['../classpesieve_1_1_area_stats.html#a5b449d535857a37328518f752ab2f610',1,'pesieve::AreaStats::summarize()']]],
   ['suspicious_102',['suspicious',['../structreport.html#a5ee5e4dbcf6777455b2b32b1529d4980',1,'report']]],
   ['switchtowow64path_103',['switchToWow64Path',['../classpesieve_1_1_module_data.html#a2e919f44d71aad97bb40a77086c28e7b',1,'pesieve::ModuleData']]],
-  ['szmodname_104',['szModName',['../classpesieve_1_1_module_data.html#ab7463bd2db1ce6343e1be66600c48cd8',1,'pesieve::ModuleData']]]
+  ['symbols_104',['symbols',['../classpesieve_1_1_process_scanner.html#ac9a6ee9cd3632a5ccd3f03742700959f',1,'pesieve::ProcessScanner']]],
+  ['szmodname_105',['szModName',['../classpesieve_1_1_module_data.html#ab7463bd2db1ce6343e1be66600c48cd8',1,'pesieve::ModuleData']]]
 ];

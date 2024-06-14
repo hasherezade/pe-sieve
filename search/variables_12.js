@@ -35,5 +35,6 @@ var searchData=
   ['storedfunc_32',['storedFunc',['../classpesieve_1_1_i_a_t_scan_report.html#a7a631d5a508e52d214764f5d25490b2e',1,'pesieve::IATScanReport']]],
   ['stringscount_33',['stringsCount',['../structpesieve_1_1_chunk_stats.html#a41e1a3748f347a69f1db454cb3dd2651',1,'pesieve::ChunkStats']]],
   ['suspicious_34',['suspicious',['../structreport.html#a5ee5e4dbcf6777455b2b32b1529d4980',1,'report']]],
-  ['szmodname_35',['szModName',['../classpesieve_1_1_module_data.html#ab7463bd2db1ce6343e1be66600c48cd8',1,'pesieve::ModuleData']]]
+  ['symbols_35',['symbols',['../classpesieve_1_1_process_scanner.html#ac9a6ee9cd3632a5ccd3f03742700959f',1,'pesieve::ProcessScanner']]],
+  ['szmodname_36',['szModName',['../classpesieve_1_1_module_data.html#ab7463bd2db1ce6343e1be66600c48cd8',1,'pesieve::ModuleData']]]
 ];

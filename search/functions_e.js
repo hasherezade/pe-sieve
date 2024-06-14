@@ -31,5 +31,6 @@ var searchData=
   ['processdumpreport_28',['ProcessDumpReport',['../classpesieve_1_1_process_dump_report.html#ad0827416439dc6cc1a105a938244e236',1,'pesieve::ProcessDumpReport']]],
   ['processfeaturescanner_29',['ProcessFeatureScanner',['../classpesieve_1_1_process_feature_scanner.html#adeebfab417cce25451dde92fd6066bc5',1,'pesieve::ProcessFeatureScanner']]],
   ['processscanner_30',['ProcessScanner',['../classpesieve_1_1_process_scanner.html#a417b205292393e667d95cd7b881159d2',1,'pesieve::ProcessScanner']]],
-  ['processscanreport_31',['ProcessScanReport',['../classpesieve_1_1_process_scan_report.html#a2dd00994d97a975dbfbe3b5e6c743552',1,'pesieve::ProcessScanReport']]]
+  ['processscanreport_31',['ProcessScanReport',['../classpesieve_1_1_process_scan_report.html#a2dd00994d97a975dbfbe3b5e6c743552',1,'pesieve::ProcessScanReport']]],
+  ['processsymbolsmanager_32',['ProcessSymbolsManager',['../class_process_symbols_manager.html#a1c3c5d102a2565dc5a4793de5b8c3b89',1,'ProcessSymbolsManager']]]
 ];

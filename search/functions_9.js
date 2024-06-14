@@ -14,7 +14,7 @@ var searchData=
   ['init_5fsyspaths_11',['init_syspaths',['../namespacepesieve_1_1util.html#a7784404ead578981dc824836d8a59797',1,'pesieve::util']]],
   ['initrules_12',['initRules',['../structpesieve_1_1_rule_matchers_set.html#a03ab7c01aeb9a20fceac7cf86c5f7a82',1,'pesieve::RuleMatchersSet']]],
   ['initshellcodepatterns_13',['initShellcodePatterns',['../classpesieve_1_1_pattern_matcher.html#aa9f9be8560dec7e92b87ec382eced7e5',1,'pesieve::PatternMatcher']]],
-  ['initsymbols_14',['InitSymbols',['../classpesieve_1_1_thread_scanner.html#aaa0c60664cd46beec76ecd8105c114bc',1,'pesieve::ThreadScanner']]],
+  ['initsymbols_14',['InitSymbols',['../class_process_symbols_manager.html#ab8184f0e31d588298a94c91473d808b5',1,'ProcessSymbolsManager']]],
   ['insert_15',['insert',['../classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d',1,'pesieve::IATThunksSeries::insert()'],['../classpesieve_1_1_patch_list.html#aba42493625d041b27aac121eec37655f',1,'pesieve::PatchList::insert()']]],
   ['is64bit_16',['is64bit',['../classpesieve_1_1_module_data.html#a57fffdfd8f7a26fb3bfa9a827451c660',1,'pesieve::ModuleData::is64bit()'],['../classpesieve_1_1_remote_module_data.html#a576416e1c402e3b9b8c34cc33bc863d6',1,'pesieve::RemoteModuleData::is64bit()']]],
   ['is64modifier_17',['is64Modifier',['../classpesieve_1_1_patch_analyzer.html#a4c5ab2246b9124276defa70d025f4e73',1,'pesieve::PatchAnalyzer']]],

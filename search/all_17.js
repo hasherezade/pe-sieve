@@ -22,9 +22,10 @@ var searchData=
   ['_7eprocessfeaturescanner_19',['~ProcessFeatureScanner',['../classpesieve_1_1_process_feature_scanner.html#a4c45dedbdd008e2468a7900300bc5d88',1,'pesieve::ProcessFeatureScanner']]],
   ['_7eprocessscanner_20',['~ProcessScanner',['../classpesieve_1_1_process_scanner.html#a03ee14223d5503d0df6aeb7032f39d03',1,'pesieve::ProcessScanner']]],
   ['_7eprocessscanreport_21',['~ProcessScanReport',['../classpesieve_1_1_process_scan_report.html#a008b5e3596c77be7ecaa1373ee02b432',1,'pesieve::ProcessScanReport']]],
-  ['_7eremotemoduledata_22',['~RemoteModuleData',['../classpesieve_1_1_remote_module_data.html#a31309be42d854497766a0ac879fc5528',1,'pesieve::RemoteModuleData']]],
-  ['_7ereportex_23',['~ReportEx',['../classpesieve_1_1_report_ex.html#a85c5168710b9d9c32eac2de241d6f282',1,'pesieve::ReportEx']]],
-  ['_7erulematchersset_24',['~RuleMatchersSet',['../structpesieve_1_1_rule_matchers_set.html#a746123a69dfc09350f110b30fbb99810',1,'pesieve::RuleMatchersSet']]],
-  ['_7escannedmodule_25',['~ScannedModule',['../classpesieve_1_1_scanned_module.html#a34b8bb37bb347662772d4df56c53eecd',1,'pesieve::ScannedModule']]],
-  ['_7eworkingsetscanner_26',['~WorkingSetScanner',['../classpesieve_1_1_working_set_scanner.html#a11a9a3166d095e19d9319d4d6d653713',1,'pesieve::WorkingSetScanner']]]
+  ['_7eprocesssymbolsmanager_22',['~ProcessSymbolsManager',['../class_process_symbols_manager.html#a8c0370174c2618902c2ccf9ff6dcab3f',1,'ProcessSymbolsManager']]],
+  ['_7eremotemoduledata_23',['~RemoteModuleData',['../classpesieve_1_1_remote_module_data.html#a31309be42d854497766a0ac879fc5528',1,'pesieve::RemoteModuleData']]],
+  ['_7ereportex_24',['~ReportEx',['../classpesieve_1_1_report_ex.html#a85c5168710b9d9c32eac2de241d6f282',1,'pesieve::ReportEx']]],
+  ['_7erulematchersset_25',['~RuleMatchersSet',['../structpesieve_1_1_rule_matchers_set.html#a746123a69dfc09350f110b30fbb99810',1,'pesieve::RuleMatchersSet']]],
+  ['_7escannedmodule_26',['~ScannedModule',['../classpesieve_1_1_scanned_module.html#a34b8bb37bb347662772d4df56c53eecd',1,'pesieve::ScannedModule']]],
+  ['_7eworkingsetscanner_27',['~WorkingSetScanner',['../classpesieve_1_1_working_set_scanner.html#a11a9a3166d095e19d9319d4d6d653713',1,'pesieve::WorkingSetScanner']]]
 ];

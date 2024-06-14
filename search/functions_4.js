@@ -17,6 +17,7 @@ var searchData=
   ['dumpjsonreport_14',['dumpJsonReport',['../classpesieve_1_1_results_dumper.html#afa4ee6cbf009cd4e1b6421686bd9ca81',1,'pesieve::ResultsDumper::dumpJsonReport(ProcessScanReport &amp;process_report, const ProcessScanReport::t_report_filter &amp;filter, const pesieve::t_json_level &amp;jdetails)'],['../classpesieve_1_1_results_dumper.html#aa4c6543c10ea9e04174a6bf1ba60d5f7',1,'pesieve::ResultsDumper::dumpJsonReport(ProcessDumpReport &amp;process_report)']]],
   ['dumpmodule_15',['dumpModule',['../classpesieve_1_1_results_dumper.html#ac79b1165530a90cfe03beb6b69db2e41',1,'pesieve::ResultsDumper']]],
   ['dumppetofile_16',['dumpPeToFile',['../classpesieve_1_1_pe_buffer.html#a9032a33069a00aab2264c09172376d7a',1,'pesieve::PeBuffer']]],
-  ['dumptofile_17',['dumpToFile',['../classpesieve_1_1_pe_buffer.html#af917a4a96569cd80a957a44ef7dd2954',1,'pesieve::PeBuffer']]],
-  ['dword_18',['DWORD',['../namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae',1,'pesieve::util']]]
+  ['dumpsymbolinfo_17',['dumpSymbolInfo',['../class_process_symbols_manager.html#acccde42a615125ad6df13936694a1cf8',1,'ProcessSymbolsManager']]],
+  ['dumptofile_18',['dumpToFile',['../classpesieve_1_1_pe_buffer.html#af917a4a96569cd80a957a44ef7dd2954',1,'pesieve::PeBuffer']]],
+  ['dword_19',['DWORD',['../namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae',1,'pesieve::util']]]
 ];
