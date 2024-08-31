@@ -431,12 +431,12 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		return my_report;
 	}
 #ifdef _DEBUG
-	std::cout << " b:" << ctx.is64b << std::hex << " Rip: " << ctx.rip << " Rsp: " << c.rsp;
+	std::cout << " b:" << ctx.is64b << std::hex << " Rip: " << ctx.rip << " Rsp: " << ctx.rsp;
 	if (exit_code != STILL_ACTIVE) 
 		std::cout << " ExitCode: " << exit_code;
 
 	if (ctx.ret_addr != 0) {
-		std::cout << std::hex << " Ret: " << c.ret_addr;
+		std::cout << std::hex << " Ret: " << ctx.ret_addr;
 	}
 	std::cout << "\n";
 #endif
