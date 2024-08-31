@@ -38,13 +38,10 @@ namespace pesieve {
 			bool is_extended;
 			thread_info_ext ext;
 
-			_thread_info()
-				: tid(0), start_addr(0), is_extended(false)
-			{
-			}
-
-			_thread_info(DWORD _tid)
-				: tid(_tid), start_addr(0), is_extended(false)
+			_thread_info(DWORD _tid = 0)
+				: tid(_tid), 
+				start_addr(0),
+				is_extended(false)
 			{
 			}
 			
@@ -58,7 +55,7 @@ namespace pesieve {
 
 		} thread_info;
 
-		bool query_thread_details(IN OUT std::map<DWORD, thread_info>& threads_info);
+		bool query_threads_details(IN OUT std::map<DWORD, thread_info>& threads_info);
 
 		bool fetch_threads_info(IN DWORD pid, OUT std::map<DWORD, thread_info>& threads_info);
 

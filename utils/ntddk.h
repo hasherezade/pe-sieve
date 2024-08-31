@@ -2684,24 +2684,64 @@ typedef enum _PROCESSINFOCLASS {
 //
 // Thread Information Classes
 //
-
-typedef enum _THREADINFOCLASS {
-    ThreadBasicInformation,                            // ??
+typedef enum _THREADINFOCLASS
+{
+    ThreadBasicInformation,
     ThreadTimes,
-    ThreadPriority,                                    // ??
-    ThreadBasePriority,                                // ??
-    ThreadAffinityMask,                                // ??
-    ThreadImpersonationToken,                        // HANDLE
-    ThreadDescriptorTableEntry,                        // ULONG Selector + LDT_ENTRY
-    ThreadEnableAlignmentFaultFixup,                // ??
-    ThreadEventPair,                                // ??
-    ThreadQuerySetWin32StartAddress,                // ??
-    ThreadZeroTlsCell,                                // ??
-    ThreadPerformanceCount,                            // ??
-    ThreadAmILastThread,                            // ??
-    ThreadIdealProcessor,                            // ??
-    ThreadPriorityBoost,                            // ??
-    ThreadSetTlsArrayAddress,                        // ??
+    ThreadPriority,
+    ThreadBasePriority,
+    ThreadAffinityMask,
+    ThreadImpersonationToken, // HANDLE
+    ThreadDescriptorTableEntry, // ULONG Selector + LDT_ENTRY
+    ThreadEnableAlignmentFaultFixup,
+    ThreadEventPair,
+    ThreadQuerySetWin32StartAddress,
+    ThreadZeroTlsCell,
+    ThreadPerformanceCount,
+    ThreadAmILastThread,
+    ThreadIdealProcessor,
+    ThreadPriorityBoost,
+    ThreadSetTlsArrayAddress, //
+    ThreadIsIoPending,
+    ThreadHideFromDebugger,
+    ThreadBreakOnTermination,
+    ThreadSwitchLegacyState,
+    ThreadIsTerminated,
+    ThreadLastSystemCall,
+    ThreadIoPriority,
+    ThreadCycleTime,
+    ThreadPagePriority,
+    ThreadActualBasePriority,
+    ThreadTebInformation,
+    ThreadCSwitchMon,
+    ThreadCSwitchPmu,
+    ThreadWow64Context,
+    ThreadGroupInformation,
+    ThreadUmsInformation,
+    ThreadCounterProfiling,
+    ThreadIdealProcessorEx,
+    ThreadCpuAccountingInformation,
+    ThreadSuspendCount,
+    ThreadHeterogeneousCpuPolicy,
+    ThreadContainerId,
+    ThreadNameInformation,
+    ThreadSelectedCpuSets,
+    ThreadSystemThreadInformation,
+    ThreadActualGroupAffinity,
+    ThreadDynamicCodePolicyInfo,
+    ThreadExplicitCaseSensitivity,
+    ThreadWorkOnBehalfTicket,
+    ThreadSubsystemInformation,
+    ThreadDbgkWerReportActive,
+    ThreadAttachContainer,
+    ThreadManageWritesToExecutableMemory,
+    ThreadPowerThrottlingState,
+    ThreadWorkloadClass,
+    ThreadCreateStateChange,
+    ThreadApplyStateChange,
+    ThreadStrongerBadHandleChecks,
+    ThreadEffectiveIoPriority,
+    ThreadEffectivePagePriority,
     MaxThreadInfoClass
 } THREADINFOCLASS;
 

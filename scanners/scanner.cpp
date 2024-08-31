@@ -497,7 +497,7 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 			return 0;
 		}
 	}
-	if (!pesieve::util::query_thread_details(threads_info)) {
+	if (!pesieve::util::query_threads_details(threads_info)) {
 		if (!args.quiet) {
 			std::cout << "[-] Failed quering thread details." << std::endl;
 		}

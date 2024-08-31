@@ -372,6 +372,7 @@ void pesieve::ThreadScanner::printInfo(const pesieve::util::thread_info& threadi
 	std::cout << std::dec << "TID: " << threadi.tid << "\n";
 	std::cout << std::hex << "\tStart   : ";
 	resolveAddr(threadi.start_addr);
+
 	if (threadi.is_extended) {
 		std::cout << std::hex << "\tSysStart: ";
 		resolveAddr(threadi.ext.sys_start_addr);

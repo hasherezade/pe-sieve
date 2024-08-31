@@ -12,7 +12,7 @@
 namespace pesieve {
 	namespace util {
 
-		bool query_thread_start(IN DWORD tid, OUT ULONGLONG& startAddr)
+		bool query_thread_details(IN DWORD tid, OUT pesieve::util::thread_info& info)
 		{
 			static auto mod = GetModuleHandleA("ntdll.dll");
 			if (!mod) return false;
@@ -24,29 +24,28 @@ namespace pesieve {
 			HANDLE hThread = OpenThread(thAccess, 0, tid);
 			if (!hThread)  return false;
 
+			bool isOk = false;
 			ULONG returnedLen = 0;
-			NTSTATUS status = pNtQueryInformationThread(hThread, ThreadQuerySetWin32StartAddress, &startAddr, sizeof(startAddr), &returnedLen);
-			CloseHandle(hThread);
-
-			if (status != 0 || returnedLen != sizeof(startAddr)) {
-#ifdef _DEBUG
-				std::cerr << "Failed to query thread: " << std::hex << status << "\n";
-#endif
-				return false;
+			LPVOID startAddr = 0;
+			NTSTATUS status = 0;
+			status = pNtQueryInformationThread(hThread, ThreadQuerySetWin32StartAddress, &startAddr, sizeof(LPVOID), &returnedLen);
+			if (status == 0 && returnedLen == sizeof(startAddr)) {
+				info.start_addr = (ULONGLONG)startAddr;
+				isOk = true;
 			}
-			//std::cout << "\tStart: " << std::hex << startAddr;
-			return true;
+			CloseHandle(hThread);
+			return isOk;
 		}
 
 	}; // namespace util
 }; // namespace pesieve
 
 
-bool pesieve::util::query_thread_details(IN OUT std::map<DWORD, pesieve::util::thread_info>& threads_info)
+bool pesieve::util::query_threads_details(IN OUT std::map<DWORD, pesieve::util::thread_info>& threads_info)
 {
 	for (auto itr = threads_info.begin(); itr != threads_info.end(); ++itr) {
 		pesieve::util::thread_info& info = itr->second;
-		if (!query_thread_start(info.tid, info.start_addr)) return false;
+		if (!query_thread_details(info.tid, info)) return false;
 	}
 	return true;
 }
