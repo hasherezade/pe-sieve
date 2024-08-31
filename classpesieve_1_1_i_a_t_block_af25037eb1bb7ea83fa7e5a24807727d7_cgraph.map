@@ -1,7 +1,5 @@
 <map id="pesieve::IATBlock::splitSeries" name="pesieve::IATBlock::splitSeries">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,138,79"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_i_a_t_thunks_series.html#af509419ba489e089ae50e59aee440dcb" title=" " alt="" coords="186,5,359,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,45,170,40,171,45,139,51"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="186,71,359,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="139,67,171,72,170,77,138,72"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,138,46"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="186,5,359,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,23,170,23,170,28,138,28"/>
 </map>

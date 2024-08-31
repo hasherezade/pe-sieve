@@ -1,11 +1,5 @@
 <map id="pesieve::ImpReconstructor::ImpReconstructor" name="pesieve::ImpReconstructor::ImpReconstructor">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,181,96"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac61196967ce64e0ce4ccaaddc99243cc" title=" " alt="" coords="229,33,404,59"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,61,213,57,214,62,181,67"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_pe_buffer.html#a314ac1c88e3eb95becd89ae75c92b67f" title=" " alt="" coords="252,83,381,124"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="181,84,237,91,236,96,181,89"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#ae48407b62138601a97bbfb8fa8723fe8" title=" " alt="" coords="452,5,616,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="404,32,436,28,437,33,405,38"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve.html#a610881f75eb095edddd9001fba5793db" title=" " alt="" coords="469,55,600,96"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="405,55,454,62,453,67,404,61"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,181,46"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_pe_buffer.html#a314ac1c88e3eb95becd89ae75c92b67f" title=" " alt="" coords="229,5,357,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,23,213,23,213,28,181,28"/>
 </map>

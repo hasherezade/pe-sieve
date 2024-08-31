@@ -1,9 +1,7 @@
 <map id="pesieve::IATBlock::makeCoverage" name="pesieve::IATBlock::makeCoverage">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,71,138,111"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="186,5,359,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,68,192,49,194,54,137,73"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#afa77af01bd49d5428a03227b1d2a2283" title=" " alt="" coords="186,71,359,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="138,88,170,88,170,94,138,94"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_i_a_t_thunks_series.html#a18c9c42229cec006c23ee90d6a4a5824" title=" " alt="" coords="186,136,359,177"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="137,109,194,128,192,133,135,114"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,138,79"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_i_a_t_thunks_series.html#afa77af01bd49d5428a03227b1d2a2283" title=" " alt="" coords="186,5,359,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,45,170,40,171,45,139,51"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a18c9c42229cec006c23ee90d6a4a5824" title=" " alt="" coords="186,71,359,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="139,67,171,72,170,77,138,72"/>
 </map>
