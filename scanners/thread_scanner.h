@@ -18,7 +18,8 @@ namespace pesieve {
 
 		ThreadScanReport(DWORD _tid)
 			: ModuleScanReport(0, 0), 
-			tid(_tid), thread_ip(0), protection(0),
+			tid(_tid), 
+			susp_addr(0), protection(0),
 			thread_state(THREAD_STATE_UNKNOWN), thread_wait_reason(0)
 		{
 		}
@@ -31,8 +32,8 @@ namespace pesieve {
 			OUT_PADDED(outs, level, "\"thread_id\" : ");
 			outs << std::dec << tid;
 			outs << ",\n";
-			OUT_PADDED(outs, level, "\"thread_ip\" : ");
-			outs << "\"" << std::hex << thread_ip << "\"";
+			OUT_PADDED(outs, level, "\"susp_addr\" : ");
+			outs << "\"" << std::hex << susp_addr << "\"";
 			outs << ",\n";
 			if (thread_state != THREAD_STATE_UNKNOWN) {
 				OUT_PADDED(outs, level, "\"thread_state\" : ");
@@ -62,8 +63,8 @@ namespace pesieve {
 			return true;
 		}
 
-		ULONGLONG thread_ip;
 		DWORD tid;
+		ULONGLONG susp_addr;
 		DWORD protection;
 		DWORD thread_state;
 		DWORD thread_wait_reason;
@@ -99,11 +100,12 @@ namespace pesieve {
 	protected:
 
 		bool isAddrInShellcode(ULONGLONG addr);
+		void printInfo(const util::thread_info& threadi);
 		bool resolveAddr(ULONGLONG addr);
 		bool fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThread, OUT thread_ctx& c);
 		size_t enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT thread_ctx& c);
 		bool fillAreaStats(ThreadScanReport* my_report);
-		bool reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx& c);
+		bool reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr);
 
 		bool isReflection;
 		const util::thread_info& info;

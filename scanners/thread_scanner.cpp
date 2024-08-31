@@ -255,8 +255,8 @@ bool pesieve::ThreadScanner::isAddrInShellcode(ULONGLONG addr)
 bool pesieve::ThreadScanner::resolveAddr(ULONGLONG addr)
 {
 	bool is_resolved = false;
+	std::cout << std::hex << addr;
 	ScannedModule* mod = modulesInfo.findModuleContaining(addr);
-	std::cout << " > " << std::hex << addr;
 	if (mod) {
 		std::cout << " : " << mod->getModName();
 		is_resolved = true;
@@ -308,7 +308,7 @@ bool pesieve::ThreadScanner::fillAreaStats(ThreadScanReport* my_report)
 	return calc.fill(my_report->stats, nullptr);
 }
 
-bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr, thread_ctx  &c)
+bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr)
 {
 	MEMORY_BASIC_INFORMATION page_info = { 0 };
 	if (!get_page_details(processHandle, (LPVOID)susp_addr, page_info)) {
@@ -326,7 +326,7 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 	my_report->moduleSize = page_info.RegionSize;
 	my_report->protection = page_info.AllocationProtect;
 
-	my_report->thread_ip = susp_addr;
+	my_report->susp_addr = susp_addr;
 	my_report->status = SCAN_SUSPICIOUS;
 	const bool isStatFilled = fillAreaStats(my_report);
 #ifndef NO_ENTROPY_CHECK
@@ -338,7 +338,7 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 }
 
 // if extended info given, allow to filter out from the scan basing on the thread state and conditions
-bool should_scan(const util::thread_info& info)
+bool should_scan_context(const util::thread_info& info)
 {
 	if (!info.is_extended) {
 		return true;
@@ -351,7 +351,7 @@ bool should_scan(const util::thread_info& info)
 		return false;
 	}
 	if (state == Waiting) {
-		if (info.ext.start_addr == 0) {
+		if (info.ext.sys_start_addr == 0) {
 			return true;
 		}
 		if (info.ext.wait_reason == DelayExecution
@@ -367,8 +367,44 @@ bool should_scan(const util::thread_info& info)
 	return false;
 }
 
+void pesieve::ThreadScanner::printInfo(const pesieve::util::thread_info& threadi)
+{
+	std::cout << std::dec << "TID: " << threadi.tid << "\n";
+	std::cout << std::hex << "\tStart   : ";
+	resolveAddr(threadi.start_addr);
+	if (threadi.is_extended) {
+		std::cout << std::hex << "\tSysStart: ";
+		resolveAddr(threadi.ext.sys_start_addr);
+		std::cout << "\tState: " << threadi.ext.state;
+		if (threadi.ext.state == Waiting) {
+			std::cout << " Reason: " << threadi.ext.wait_reason << " Time: " << threadi.ext.wait_time;
+		}
+		std::cout << "\n";
+	}
+	std::cout << "\n";
+}
+
 ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 {
+	ThreadScanReport* my_report = new ThreadScanReport(info.tid);
+	if (!my_report) return nullptr;
+#ifdef _DEBUG
+	printInfo(info);
+#endif
+	bool is_shc = isAddrInShellcode(info.start_addr);
+	if (is_shc) {
+		if (reportSuspiciousAddr(my_report, info.start_addr)) {
+			return my_report;
+		}
+	}
+#ifndef _DEBUG
+	// if NOT compiled in a debug mode, make this check BEFORE scan
+	if (!should_scan_context(info)) {
+		my_report->status = SCAN_NOT_SUSPICIOUS;
+		return my_report;
+	}
+#endif
+	// proceed with detailed checks:
 	HANDLE hThread = OpenThread(
 		THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION | SYNCHRONIZE,
 		FALSE,
@@ -380,29 +416,9 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 #endif
 		return nullptr;
 	}
-#ifdef _DEBUG
-	std::cout << std::dec << "---\nTid: " << info.tid << "\n";
-	if (info.is_extended) {
-		std::cout << " Start: " << std::hex << info.ext.start_addr << std::dec << " State: " << info.ext.state;
-		if (info.ext.state == Waiting) {
-			std::cout << " WaitReason: " << info.ext.wait_reason 
-				<< " WaitTime: " << info.ext.wait_time;
-		}
-		std::cout << "\n";
-		resolveAddr(info.ext.start_addr);
-	}
-#endif
-	ThreadScanReport* my_report = new ThreadScanReport(info.tid);
-#ifndef _DEBUG
-	// if NOT compiled in a debug mode, make this check BEFORE scan
-	if (!should_scan(info)) {
-		CloseHandle(hThread); // close the opened thread
-		my_report->status = SCAN_NOT_SUSPICIOUS;
-		return my_report;
-	}
-#endif
-	thread_ctx c = { 0 };
-	const bool is_ok = fetchThreadCtx(processHandle, hThread, c);
+
+	thread_ctx ctx = { 0 };
+	const bool is_ok = fetchThreadCtx(processHandle, hThread, ctx);
 
 	DWORD exit_code = 0;
 	GetExitCodeThread(hThread, &exit_code);
@@ -414,11 +430,11 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		return my_report;
 	}
 #ifdef _DEBUG
-	std::cout << " b:" << c.is64b << std::hex << " Rip: " << c.rip << " Rsp: " << c.rsp; 
+	std::cout << " b:" << ctx.is64b << std::hex << " Rip: " << ctx.rip << " Rsp: " << c.rsp;
 	if (exit_code != STILL_ACTIVE) 
 		std::cout << " ExitCode: " << exit_code;
 
-	if (c.ret_addr != 0) {
+	if (ctx.ret_addr != 0) {
 		std::cout << std::hex << " Ret: " << c.ret_addr;
 	}
 	std::cout << "\n";
@@ -431,21 +447,22 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 #ifdef _DEBUG
 	// if compiled in a debug mode, make this check AFTER scan
 	// (so that we can see first what was skipped)
-	if (!should_scan(info)) {
+	if (!should_scan_context(info)) {
 		my_report->status = SCAN_NOT_SUSPICIOUS;
 		return my_report;
 	}
 #endif
-	bool is_shc = isAddrInShellcode(c.rip);
+
+	is_shc = isAddrInShellcode(ctx.rip);
 	if (is_shc) {
-		if (reportSuspiciousAddr(my_report, c.rip, c)) {
+		if (reportSuspiciousAddr(my_report, ctx.rip)) {
 			return my_report;
 		}
 	}
-	if ((c.ret_addr != 0) && (c.is_managed == false)) {
-		is_shc = isAddrInShellcode(c.ret_addr);
+	if ((ctx.ret_addr != 0) && (ctx.is_managed == false)) {
+		is_shc = isAddrInShellcode(ctx.ret_addr);
 		if (is_shc) {
-			if (reportSuspiciousAddr(my_report, c.ret_addr, c)) {
+			if (reportSuspiciousAddr(my_report, ctx.ret_addr)) {
 				return my_report;
 			}
 		}

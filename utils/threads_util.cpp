@@ -7,21 +7,51 @@
 
 #ifdef _DEBUG
 #include <iostream>
-
-void print_info(const pesieve::util::thread_info &threadi)
-{
-	std::cout << std::dec << "TID: " << threadi.tid;
-	if (threadi.is_extended) {
-		std::cout << std::hex << " Start: " << threadi.ext.start_addr << " State: " << threadi.ext.state;
-		if (threadi.ext.state == Waiting) {
-			std::cout << " Reason: " << threadi.ext.wait_reason << " Time: " << threadi.ext.wait_time;
-		}
-	}
-	std::cout << "\n";
-}
 #endif
 
-bool pesieve::util::fetch_threads_info(DWORD pid, std::vector<thread_info>& threads_info)
+namespace pesieve {
+	namespace util {
+
+		bool query_thread_start(IN DWORD tid, OUT ULONGLONG& startAddr)
+		{
+			static auto mod = GetModuleHandleA("ntdll.dll");
+			if (!mod) return false;
+
+			static auto pNtQueryInformationThread = reinterpret_cast<decltype(&NtQueryInformationThread)>(GetProcAddress(mod, "NtQueryInformationThread"));
+			if (!pNtQueryInformationThread)  return false;
+
+			DWORD thAccess = THREAD_QUERY_INFORMATION;
+			HANDLE hThread = OpenThread(thAccess, 0, tid);
+			if (!hThread)  return false;
+
+			ULONG returnedLen = 0;
+			NTSTATUS status = pNtQueryInformationThread(hThread, ThreadQuerySetWin32StartAddress, &startAddr, sizeof(startAddr), &returnedLen);
+			CloseHandle(hThread);
+
+			if (status != 0 || returnedLen != sizeof(startAddr)) {
+#ifdef _DEBUG
+				std::cerr << "Failed to query thread: " << std::hex << status << "\n";
+#endif
+				return false;
+			}
+			//std::cout << "\tStart: " << std::hex << startAddr;
+			return true;
+		}
+
+	}; // namespace util
+}; // namespace pesieve
+
+
+bool pesieve::util::query_thread_details(IN OUT std::map<DWORD, pesieve::util::thread_info>& threads_info)
+{
+	for (auto itr = threads_info.begin(); itr != threads_info.end(); ++itr) {
+		pesieve::util::thread_info& info = itr->second;
+		if (!query_thread_start(info.tid, info.start_addr)) return false;
+	}
+	return true;
+}
+
+bool pesieve::util::fetch_threads_info(IN DWORD pid, OUT std::map<DWORD, thread_info>& threads_info)
 {
 	AutoBuffer bBuf;
 
@@ -70,25 +100,25 @@ bool pesieve::util::fetch_threads_info(DWORD pid, std::vector<thread_info>& thre
 		return false;
 	}
 
-	size_t thread_count = info->NumberOfThreads;
+	const size_t thread_count = info->NumberOfThreads;
 	for (size_t i = 0; i < thread_count; i++) {
-		thread_info threadi;
-
-		threadi.tid = MASK_TO_DWORD((ULONGLONG)info->Threads[i].ClientId.UniqueThread);
+		
+		const DWORD tid = MASK_TO_DWORD((ULONGLONG)info->Threads[i].ClientId.UniqueThread);
+		auto itr = threads_info.find(tid);
+		if (itr == threads_info.end()) {
+			threads_info[tid] = thread_info(tid);
+		}
+		thread_info &threadi = threads_info[tid];
 		threadi.is_extended = true;
-		threadi.ext.start_addr = (ULONG_PTR)info->Threads[i].StartAddress;
+		threadi.ext.sys_start_addr = (ULONG_PTR)info->Threads[i].StartAddress;
 		threadi.ext.state = info->Threads[i].ThreadState;
 		threadi.ext.wait_reason = info->Threads[i].WaitReason;
 		threadi.ext.wait_time  = info->Threads[i].WaitTime;
-		threads_info.push_back(threadi);
-#ifdef _DEBUG
-		print_info(threadi);
-#endif
 	}
 	return true;
 }
 
-bool pesieve::util::fetch_threads_by_snapshot(DWORD pid, std::vector<thread_info>& threads_info)
+bool pesieve::util::fetch_threads_by_snapshot(IN DWORD pid, OUT std::map<DWORD, thread_info>& threads_info)
 {
 	HANDLE hThreadSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 	if (hThreadSnapShot == INVALID_HANDLE_VALUE) {
@@ -113,12 +143,11 @@ bool pesieve::util::fetch_threads_by_snapshot(DWORD pid, std::vector<thread_info
 		if (th32.th32OwnerProcessID != pid) {
 			continue;
 		}
-
-		thread_info threadi;
-		threadi.tid = th32.th32ThreadID;
-		threadi.is_extended = false;
-		threads_info.push_back(threadi);
-
+		const DWORD tid = th32.th32ThreadID;
+		auto itr = threads_info.find(tid);
+		if (itr == threads_info.end()) {
+			threads_info[tid] = thread_info(tid);
+		}
 	} while (Thread32Next(hThreadSnapShot, &th32));
 
 	CloseHandle(hThreadSnapShot);

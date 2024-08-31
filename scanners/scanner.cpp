@@ -467,7 +467,6 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 	return counter;
 }
 
-
 size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws exceptions
 {
 	if (!this->symbols.InitSymbols()) {
@@ -487,7 +486,7 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 	}
 	DWORD start_tick = GetTickCount();
 
-	std::vector<thread_info> threads_info;
+	std::map<DWORD, thread_info> threads_info;
 	if (!pesieve::util::fetch_threads_info(pid, threads_info)) { //extended info, but doesn't work on old Windows...
 
 		if (!pesieve::util::fetch_threads_by_snapshot(pid, threads_info)) { // works on old Windows, but gives less data..
@@ -498,10 +497,14 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 			return 0;
 		}
 	}
+	if (!pesieve::util::query_thread_details(threads_info)) {
+		if (!args.quiet) {
+			std::cout << "[-] Failed quering thread details." << std::endl;
+		}
+	}
 
-	std::vector<thread_info>::iterator itr;
-	for (itr = threads_info.begin(); itr != threads_info.end(); ++itr) {
-		const thread_info &info = *itr;
+	for (auto itr = threads_info.begin(); itr != threads_info.end(); ++itr) {
+		const thread_info &info = itr->second;
 		
 		ThreadScanner scanner(this->processHandle, this->isReflection, info,  pReport.modulesInfo, pReport.exportsMap);
 		ThreadScanReport* report = scanner.scanRemote();
