@@ -104,6 +104,8 @@ $(function(){ initResizable(false); });
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a03b1e58c49513071816fd78ac6c47be5" id="r_a03b1e58c49513071816fd78ac6c47be5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a03b1e58c49513071816fd78ac6c47be5">_thread_info</a> ()</td></tr>
 <tr class="separator:a03b1e58c49513071816fd78ac6c47be5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3417095a3e85b9ee90b652c1959017ba" id="r_a3417095a3e85b9ee90b652c1959017ba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3417095a3e85b9ee90b652c1959017ba">_thread_info</a> (<a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> _tid)</td></tr>
+<tr class="separator:a3417095a3e85b9ee90b652c1959017ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a866badc78340688e5b3adf5ce545f147" id="r_a866badc78340688e5b3adf5ce545f147"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a866badc78340688e5b3adf5ce545f147">_thread_info</a> (const <a class="el" href="structpesieve_1_1util_1_1__thread__info.html">_thread_info</a> &amp;other)</td></tr>
 <tr class="separator:a866badc78340688e5b3adf5ce545f147"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -111,6 +113,8 @@ Public Member Functions</h2></td></tr>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a390c3d14815d2aaaf625f9fc16f6f01b" id="r_a390c3d14815d2aaaf625f9fc16f6f01b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a390c3d14815d2aaaf625f9fc16f6f01b">tid</a></td></tr>
 <tr class="separator:a390c3d14815d2aaaf625f9fc16f6f01b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d408cca43d2e48530d63c394755e96b" id="r_a2d408cca43d2e48530d63c394755e96b"><td class="memItemLeft" align="right" valign="top">ULONGLONG&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d408cca43d2e48530d63c394755e96b">start_addr</a></td></tr>
+<tr class="separator:a2d408cca43d2e48530d63c394755e96b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ec77c6fa5aa1dc71802d52afdc37386" id="r_a8ec77c6fa5aa1dc71802d52afdc37386"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ec77c6fa5aa1dc71802d52afdc37386">is_extended</a></td></tr>
 <tr class="separator:a8ec77c6fa5aa1dc71802d52afdc37386"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8f037bcc48e97319145006c5ceef188" id="r_aa8f037bcc48e97319145006c5ceef188"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepesieve_1_1util.html#a1fa6e7833c3c780daa59e9f568a58534">thread_info_ext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8f037bcc48e97319145006c5ceef188">ext</a></td></tr>
@@ -121,7 +125,7 @@ Public Attributes</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="threads__util_8h_source.html#l00034">34</a> of file <a class="el" href="threads__util_8h_source.html">threads_util.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a03b1e58c49513071816fd78ac6c47be5" name="a03b1e58c49513071816fd78ac6c47be5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a03b1e58c49513071816fd78ac6c47be5">&#9670;&#160;</a></span>_thread_info() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a03b1e58c49513071816fd78ac6c47be5">&#9670;&#160;</a></span>_thread_info() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -143,12 +147,39 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="threads__util_8h_source.html#l00040">40</a> of file <a class="el" href="threads__util_8h_source.html">threads_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="threads__util_8h_source.html#l00041">41</a> of file <a class="el" href="threads__util_8h_source.html">threads_util.h</a>.</p>
+
+</div>
+</div>
+<a id="a3417095a3e85b9ee90b652c1959017ba" name="a3417095a3e85b9ee90b652c1959017ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3417095a3e85b9ee90b652c1959017ba">&#9670;&#160;</a></span>_thread_info() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pesieve::util::_thread_info::_thread_info </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a></td>          <td class="paramname"><span class="paramname"><em>_tid</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="threads__util_8h_source.html#l00046">46</a> of file <a class="el" href="threads__util_8h_source.html">threads_util.h</a>.</p>
 
 </div>
 </div>
 <a id="a866badc78340688e5b3adf5ce545f147" name="a866badc78340688e5b3adf5ce545f147"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a866badc78340688e5b3adf5ce545f147">&#9670;&#160;</a></span>_thread_info() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a866badc78340688e5b3adf5ce545f147">&#9670;&#160;</a></span>_thread_info() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -170,7 +201,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="threads__util_8h_source.html#l00046">46</a> of file <a class="el" href="threads__util_8h_source.html">threads_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="threads__util_8h_source.html#l00051">51</a> of file <a class="el" href="threads__util_8h_source.html">threads_util.h</a>.</p>
 
 </div>
 </div>
@@ -187,7 +218,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="threads__util_8h_source.html#l00038">38</a> of file <a class="el" href="threads__util_8h_source.html">threads_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="threads__util_8h_source.html#l00039">39</a> of file <a class="el" href="threads__util_8h_source.html">threads_util.h</a>.</p>
 
 </div>
 </div>
@@ -199,6 +230,22 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::util::_thread_info::is_extended</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="threads__util_8h_source.html#l00038">38</a> of file <a class="el" href="threads__util_8h_source.html">threads_util.h</a>.</p>
+
+</div>
+</div>
+<a id="a2d408cca43d2e48530d63c394755e96b" name="a2d408cca43d2e48530d63c394755e96b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d408cca43d2e48530d63c394755e96b">&#9670;&#160;</a></span>start_addr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ULONGLONG pesieve::util::_thread_info::start_addr</td>
         </tr>
       </table>
 </div><div class="memdoc">

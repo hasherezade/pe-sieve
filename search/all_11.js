@@ -57,7 +57,7 @@ var searchData=
   ['report_5funreachable_5fscan_54',['REPORT_UNREACHABLE_SCAN',['../classpesieve_1_1_process_scan_report.html#a96471984218782869b375015cc93e6c2a43c228690a459c8f0aa30d2a82781619',1,'pesieve::ProcessScanReport']]],
   ['reportex_55',['ReportEx',['../classpesieve_1_1_report_ex.html',1,'pesieve::ReportEx'],['../classpesieve_1_1_report_ex.html#a9e842b1e96f07f59f2939361f57c3e4f',1,'pesieve::ReportEx::ReportEx()']]],
   ['reportsbytype_56',['reportsByType',['../classpesieve_1_1_process_scan_report.html#a85b6e8a39ec43b08a4f534dbd3f0589e',1,'pesieve::ProcessScanReport']]],
-  ['reportsuspiciousaddr_57',['reportSuspiciousAddr',['../classpesieve_1_1_thread_scanner.html#a3afea8f7ac86ffe5b7da0b6c5c467db4',1,'pesieve::ThreadScanner']]],
+  ['reportsuspiciousaddr_57',['reportSuspiciousAddr',['../classpesieve_1_1_thread_scanner.html#a36850edb808d4be733631fa2bcd3b7b4',1,'pesieve::ThreadScanner']]],
   ['resize_58',['resize',['../classpesieve_1_1_scanned_module.html#ac27ab29a010ac2d3e139f2654c3d0777',1,'pesieve::ScannedModule']]],
   ['resizebuffer_59',['resizeBuffer',['../classpesieve_1_1_pe_buffer.html#acb55b77a03b907c954733c0bcedb1999',1,'pesieve::PeBuffer']]],
   ['resizelastsection_60',['resizeLastSection',['../classpesieve_1_1_pe_buffer.html#ac4cadead68e44b5be64edaf80880cbef',1,'pesieve::PeBuffer']]],
