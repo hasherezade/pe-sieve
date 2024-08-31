@@ -180,6 +180,7 @@ set (utils_hdrs
 	utils/byte_buffer.h
 	utils/code_patterns.h
 	utils/custom_mutex.h
+	utils/custom_buffer.h
 	utils/process_symbols.h
 )
 

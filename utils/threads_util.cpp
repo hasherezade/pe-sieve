@@ -3,41 +3,47 @@
 #include <peconv.h>
 #include <tlhelp32.h>
 #include "../utils/ntddk.h"
+#include "custom_buffer.h"
 
 #ifdef _DEBUG
 #include <iostream>
+
+void print_info(const pesieve::util::thread_info &threadi)
+{
+	std::cout << std::dec << "TID: " << threadi.tid;
+	if (threadi.is_extended) {
+		std::cout << std::hex << " Start: " << threadi.ext.start_addr << " State: " << threadi.ext.state;
+		if (threadi.ext.state == Waiting) {
+			std::cout << " Reason: " << threadi.ext.wait_reason << " Time: " << threadi.ext.wait_time;
+		}
+	}
+	std::cout << "\n";
+}
 #endif
 
 bool pesieve::util::fetch_threads_info(DWORD pid, std::vector<thread_info>& threads_info)
 {
-	BYTE* buffer = nullptr;
-	ULONG buffer_size = 0;
-	ULONG ret_len = 0;
+	AutoBuffer bBuf;
 
 	NTSTATUS status = STATUS_UNSUCCESSFUL;
 	while (status != STATUS_SUCCESS) {
-		status = NtQuerySystemInformation(SystemProcessInformation, buffer, buffer_size, &ret_len);
+		ULONG ret_len = 0;
+		status = NtQuerySystemInformation(SystemProcessInformation, bBuf.buf, bBuf.buf_size, &ret_len);
 		if (status == STATUS_INFO_LENGTH_MISMATCH) {
-			free(buffer);
-			buffer = nullptr;
-			buffer_size = 0;
-			buffer = (BYTE*)calloc(ret_len, 1);
-			if (!buffer) {
+			if (!bBuf.alloc(ret_len)) {
 				return false;
 			}
-			buffer_size = ret_len;
 			continue; // try again
 		}
 		break; //other error, or success
 	};
 
 	if (status != STATUS_SUCCESS) {
-		free(buffer);
 		return false;
 	}
 
 	bool found = false;
-	SYSTEM_PROCESS_INFORMATION* info = (SYSTEM_PROCESS_INFORMATION*)buffer;
+	SYSTEM_PROCESS_INFORMATION* info = (SYSTEM_PROCESS_INFORMATION*)bBuf.buf;
 	while (info) {
 		if (info->UniqueProcessId == pid) {
 			found = true;
@@ -55,13 +61,12 @@ bool pesieve::util::fetch_threads_info(DWORD pid, std::vector<thread_info>& thre
 			break;
 		}
 		info = (SYSTEM_PROCESS_INFORMATION*)((ULONG_PTR)info + info->NextEntryOffset);
-		if (!peconv::validate_ptr(buffer, buffer_size, info, sizeof(SYSTEM_PROCESS_INFORMATION))) {
+		if (!peconv::validate_ptr(bBuf.buf, bBuf.buf_size, info, sizeof(SYSTEM_PROCESS_INFORMATION))) {
 			break;
 		}
 	}
 
 	if (!found) {
-		free(buffer);
 		return false;
 	}
 
@@ -76,9 +81,10 @@ bool pesieve::util::fetch_threads_info(DWORD pid, std::vector<thread_info>& thre
 		threadi.ext.wait_reason = info->Threads[i].WaitReason;
 		threadi.ext.wait_time  = info->Threads[i].WaitTime;
 		threads_info.push_back(threadi);
+#ifdef _DEBUG
+		print_info(threadi);
+#endif
 	}
-
-	free(buffer);
 	return true;
 }
 
