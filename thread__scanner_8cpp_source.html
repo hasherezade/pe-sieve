@@ -496,105 +496,106 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    std::cout &lt;&lt; std::dec &lt;&lt; <span class="stringliteral">&quot;TID: &quot;</span> &lt;&lt; threadi.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info.html#a390c3d14815d2aaaf625f9fc16f6f01b">tid</a> &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
 <div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    std::cout &lt;&lt; std::hex &lt;&lt; <span class="stringliteral">&quot;\tStart   : &quot;</span>;</div>
 <div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    resolveAddr(threadi.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info.html#a2d408cca43d2e48530d63c394755e96b">start_addr</a>);</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    <span class="keywordflow">if</span> (threadi.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info.html#a8ec77c6fa5aa1dc71802d52afdc37386">is_extended</a>) {</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>        std::cout &lt;&lt; std::hex &lt;&lt; <span class="stringliteral">&quot;\tSysStart: &quot;</span>;</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>        resolveAddr(threadi.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info.html#aa8f037bcc48e97319145006c5ceef188">ext</a>.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info__ext.html#a015d9ec862bebffabeeea74cc94c6c03">sys_start_addr</a>);</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;\tState: &quot;</span> &lt;&lt; threadi.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info.html#aa8f037bcc48e97319145006c5ceef188">ext</a>.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info__ext.html#a64f10518106ade775aecd7f5c2caaf65">state</a>;</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>        <span class="keywordflow">if</span> (threadi.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info.html#aa8f037bcc48e97319145006c5ceef188">ext</a>.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info__ext.html#a64f10518106ade775aecd7f5c2caaf65">state</a> == Waiting) {</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>            std::cout &lt;&lt; <span class="stringliteral">&quot; Reason: &quot;</span> &lt;&lt; threadi.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info.html#aa8f037bcc48e97319145006c5ceef188">ext</a>.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info__ext.html#a389b5fb210ec491e9a7db99db5544928">wait_reason</a> &lt;&lt; <span class="stringliteral">&quot; Time: &quot;</span> &lt;&lt; threadi.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info.html#aa8f037bcc48e97319145006c5ceef188">ext</a>.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info__ext.html#adfe41a5fa3df04475f55ae54bf615e58">wait_time</a>;</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>        }</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    }</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>}</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span> </div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    <span class="keywordflow">if</span> (threadi.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info.html#a8ec77c6fa5aa1dc71802d52afdc37386">is_extended</a>) {</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>        std::cout &lt;&lt; std::hex &lt;&lt; <span class="stringliteral">&quot;\tSysStart: &quot;</span>;</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>        resolveAddr(threadi.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info.html#aa8f037bcc48e97319145006c5ceef188">ext</a>.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info__ext.html#a015d9ec862bebffabeeea74cc94c6c03">sys_start_addr</a>);</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;\tState: &quot;</span> &lt;&lt; threadi.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info.html#aa8f037bcc48e97319145006c5ceef188">ext</a>.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info__ext.html#a64f10518106ade775aecd7f5c2caaf65">state</a>;</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>        <span class="keywordflow">if</span> (threadi.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info.html#aa8f037bcc48e97319145006c5ceef188">ext</a>.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info__ext.html#a64f10518106ade775aecd7f5c2caaf65">state</a> == Waiting) {</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>            std::cout &lt;&lt; <span class="stringliteral">&quot; Reason: &quot;</span> &lt;&lt; threadi.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info.html#aa8f037bcc48e97319145006c5ceef188">ext</a>.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info__ext.html#a389b5fb210ec491e9a7db99db5544928">wait_reason</a> &lt;&lt; <span class="stringliteral">&quot; Time: &quot;</span> &lt;&lt; threadi.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info.html#aa8f037bcc48e97319145006c5ceef188">ext</a>.<a class="code hl_variable" href="structpesieve_1_1util_1_1__thread__info__ext.html#adfe41a5fa3df04475f55ae54bf615e58">wait_time</a>;</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>        }</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    }</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>}</div>
 </div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
-<div class="foldopen" id="foldopen00387" data-start="{" data-end="}">
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno"><a class="line" href="classpesieve_1_1_thread_scanner.html#a23839353374eedcda7c92b0c7ce6b3bf">  387</a></span><a class="code hl_class" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a>* <a class="code hl_function" href="classpesieve_1_1_thread_scanner.html#a23839353374eedcda7c92b0c7ce6b3bf">pesieve::ThreadScanner::scanRemote</a>()</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>{</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>    <a class="code hl_class" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a>* my_report = <span class="keyword">new</span> <a class="code hl_class" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a>(<a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>.tid);</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    <span class="keywordflow">if</span> (!my_report) <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>    printInfo(<a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>);</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>    <span class="keywordtype">bool</span> is_shc = isAddrInShellcode(<a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>.start_addr);</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>    <span class="keywordflow">if</span> (is_shc) {</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>        <span class="keywordflow">if</span> (reportSuspiciousAddr(my_report, <a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>.start_addr)) {</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>            <span class="keywordflow">return</span> my_report;</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>        }</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>    }</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span><span class="preprocessor">#ifndef _DEBUG</span></div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>    <span class="comment">// if NOT compiled in a debug mode, make this check BEFORE scan</span></div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="thread__scanner_8cpp.html#acde231c42b9527dcc026402dcb8b9d87">should_scan_context</a>(<a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>)) {</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>        my_report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a898214572c7aff1aca29db4a3ec9856d">SCAN_NOT_SUSPICIOUS</a>;</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>        <span class="keywordflow">return</span> my_report;</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    }</div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    <span class="comment">// proceed with detailed checks:</span></div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>    HANDLE hThread = OpenThread(</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>        THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION | SYNCHRONIZE,</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>        FALSE,</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>        <a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>.tid</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>    );</div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>    <span class="keywordflow">if</span> (!hThread) {</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;[-] Could not OpenThread. Error: &quot;</span> &lt;&lt; GetLastError() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>    }</div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span> </div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>    <a class="code hl_struct" href="structpesieve_1_1__thread__ctx.html">thread_ctx</a> ctx = { 0 };</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> is_ok = fetchThreadCtx(processHandle, hThread, ctx);</div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span> </div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>    DWORD exit_code = 0;</div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>    GetExitCodeThread(hThread, &amp;exit_code);</div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>    CloseHandle(hThread);</div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span> </div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>    <span class="keywordflow">if</span> (!is_ok) {</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>        <span class="comment">// could not fetch the thread context and information</span></div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>        my_report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883ab619b7720957ba16403f9eb619bba747">SCAN_ERROR</a>;</div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>        <span class="keywordflow">return</span> my_report;</div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>    }</div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>    std::cout &lt;&lt; <span class="stringliteral">&quot; b:&quot;</span> &lt;&lt; ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a716bf85697898393c93cd8b5389a3aa3">is64b</a> &lt;&lt; std::hex &lt;&lt; <span class="stringliteral">&quot; Rip: &quot;</span> &lt;&lt; ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a6d09a9e7609d65873401328f0d02f751">rip</a> &lt;&lt; <span class="stringliteral">&quot; Rsp: &quot;</span> &lt;&lt; c.rsp;</div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>    <span class="keywordflow">if</span> (exit_code != STILL_ACTIVE) </div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>        std::cout &lt;&lt; <span class="stringliteral">&quot; ExitCode: &quot;</span> &lt;&lt; exit_code;</div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span> </div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>    <span class="keywordflow">if</span> (ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a108366387285507849205dd54a11ab84">ret_addr</a> != 0) {</div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>        std::cout &lt;&lt; std::hex &lt;&lt; <span class="stringliteral">&quot; Ret: &quot;</span> &lt;&lt; c.ret_addr;</div>
-<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>    }</div>
-<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span> </div>
-<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>    <span class="keywordflow">if</span> (exit_code != STILL_ACTIVE) {</div>
-<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>        my_report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a898214572c7aff1aca29db4a3ec9856d">SCAN_NOT_SUSPICIOUS</a>;</div>
-<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>        <span class="keywordflow">return</span> my_report;</div>
-<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>    }</div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>    <span class="comment">// if compiled in a debug mode, make this check AFTER scan</span></div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>    <span class="comment">// (so that we can see first what was skipped)</span></div>
-<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="thread__scanner_8cpp.html#acde231c42b9527dcc026402dcb8b9d87">should_scan_context</a>(<a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>)) {</div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>        my_report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a898214572c7aff1aca29db4a3ec9856d">SCAN_NOT_SUSPICIOUS</a>;</div>
-<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>        <span class="keywordflow">return</span> my_report;</div>
-<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>    }</div>
-<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span> </div>
-<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>    is_shc = isAddrInShellcode(ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a6d09a9e7609d65873401328f0d02f751">rip</a>);</div>
-<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>    <span class="keywordflow">if</span> (is_shc) {</div>
-<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>        <span class="keywordflow">if</span> (reportSuspiciousAddr(my_report, ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a6d09a9e7609d65873401328f0d02f751">rip</a>)) {</div>
-<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>            <span class="keywordflow">return</span> my_report;</div>
-<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>        }</div>
-<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>    }</div>
-<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>    <span class="keywordflow">if</span> ((ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a108366387285507849205dd54a11ab84">ret_addr</a> != 0) &amp;&amp; (ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#ad2dace8b74840657892b0cba69195724">is_managed</a> == <span class="keyword">false</span>)) {</div>
-<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>        is_shc = isAddrInShellcode(ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a108366387285507849205dd54a11ab84">ret_addr</a>);</div>
-<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>        <span class="keywordflow">if</span> (is_shc) {</div>
-<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>            <span class="keywordflow">if</span> (reportSuspiciousAddr(my_report, ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a108366387285507849205dd54a11ab84">ret_addr</a>)) {</div>
-<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>                <span class="keywordflow">return</span> my_report;</div>
-<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>            }</div>
-<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>        }</div>
-<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>    }</div>
-<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>    <span class="keywordflow">return</span> my_report;</div>
-<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span>}</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span> </div>
+<div class="foldopen" id="foldopen00388" data-start="{" data-end="}">
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno"><a class="line" href="classpesieve_1_1_thread_scanner.html#a23839353374eedcda7c92b0c7ce6b3bf">  388</a></span><a class="code hl_class" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a>* <a class="code hl_function" href="classpesieve_1_1_thread_scanner.html#a23839353374eedcda7c92b0c7ce6b3bf">pesieve::ThreadScanner::scanRemote</a>()</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>{</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    <a class="code hl_class" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a>* my_report = <span class="keyword">new</span> <a class="code hl_class" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a>(<a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>.tid);</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    <span class="keywordflow">if</span> (!my_report) <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    printInfo(<a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>);</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>    <span class="keywordtype">bool</span> is_shc = isAddrInShellcode(<a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>.start_addr);</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    <span class="keywordflow">if</span> (is_shc) {</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>        <span class="keywordflow">if</span> (reportSuspiciousAddr(my_report, <a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>.start_addr)) {</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>            <span class="keywordflow">return</span> my_report;</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>        }</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>    }</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span><span class="preprocessor">#ifndef _DEBUG</span></div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>    <span class="comment">// if NOT compiled in a debug mode, make this check BEFORE scan</span></div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="thread__scanner_8cpp.html#acde231c42b9527dcc026402dcb8b9d87">should_scan_context</a>(<a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>)) {</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>        my_report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a898214572c7aff1aca29db4a3ec9856d">SCAN_NOT_SUSPICIOUS</a>;</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>        <span class="keywordflow">return</span> my_report;</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>    }</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>    <span class="comment">// proceed with detailed checks:</span></div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>    HANDLE hThread = OpenThread(</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>        THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION | SYNCHRONIZE,</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>        FALSE,</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>        <a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>.tid</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>    );</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>    <span class="keywordflow">if</span> (!hThread) {</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;[-] Could not OpenThread. Error: &quot;</span> &lt;&lt; GetLastError() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>    }</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span> </div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>    <a class="code hl_struct" href="structpesieve_1_1__thread__ctx.html">thread_ctx</a> ctx = { 0 };</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> is_ok = fetchThreadCtx(processHandle, hThread, ctx);</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span> </div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>    DWORD exit_code = 0;</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>    GetExitCodeThread(hThread, &amp;exit_code);</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>    CloseHandle(hThread);</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span> </div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>    <span class="keywordflow">if</span> (!is_ok) {</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>        <span class="comment">// could not fetch the thread context and information</span></div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>        my_report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883ab619b7720957ba16403f9eb619bba747">SCAN_ERROR</a>;</div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>        <span class="keywordflow">return</span> my_report;</div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>    }</div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>    std::cout &lt;&lt; <span class="stringliteral">&quot; b:&quot;</span> &lt;&lt; ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a716bf85697898393c93cd8b5389a3aa3">is64b</a> &lt;&lt; std::hex &lt;&lt; <span class="stringliteral">&quot; Rip: &quot;</span> &lt;&lt; ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a6d09a9e7609d65873401328f0d02f751">rip</a> &lt;&lt; <span class="stringliteral">&quot; Rsp: &quot;</span> &lt;&lt; c.rsp;</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>    <span class="keywordflow">if</span> (exit_code != STILL_ACTIVE) </div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>        std::cout &lt;&lt; <span class="stringliteral">&quot; ExitCode: &quot;</span> &lt;&lt; exit_code;</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span> </div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>    <span class="keywordflow">if</span> (ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a108366387285507849205dd54a11ab84">ret_addr</a> != 0) {</div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>        std::cout &lt;&lt; std::hex &lt;&lt; <span class="stringliteral">&quot; Ret: &quot;</span> &lt;&lt; c.ret_addr;</div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>    }</div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span> </div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>    <span class="keywordflow">if</span> (exit_code != STILL_ACTIVE) {</div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>        my_report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a898214572c7aff1aca29db4a3ec9856d">SCAN_NOT_SUSPICIOUS</a>;</div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>        <span class="keywordflow">return</span> my_report;</div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>    }</div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>    <span class="comment">// if compiled in a debug mode, make this check AFTER scan</span></div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>    <span class="comment">// (so that we can see first what was skipped)</span></div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="thread__scanner_8cpp.html#acde231c42b9527dcc026402dcb8b9d87">should_scan_context</a>(<a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>)) {</div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>        my_report-&gt;<a class="code hl_variable" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a> = <a class="code hl_enumvalue" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a898214572c7aff1aca29db4a3ec9856d">SCAN_NOT_SUSPICIOUS</a>;</div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>        <span class="keywordflow">return</span> my_report;</div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>    }</div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span> </div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>    is_shc = isAddrInShellcode(ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a6d09a9e7609d65873401328f0d02f751">rip</a>);</div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>    <span class="keywordflow">if</span> (is_shc) {</div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>        <span class="keywordflow">if</span> (reportSuspiciousAddr(my_report, ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a6d09a9e7609d65873401328f0d02f751">rip</a>)) {</div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>            <span class="keywordflow">return</span> my_report;</div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>        }</div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>    }</div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>    <span class="keywordflow">if</span> ((ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a108366387285507849205dd54a11ab84">ret_addr</a> != 0) &amp;&amp; (ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#ad2dace8b74840657892b0cba69195724">is_managed</a> == <span class="keyword">false</span>)) {</div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>        is_shc = isAddrInShellcode(ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a108366387285507849205dd54a11ab84">ret_addr</a>);</div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>        <span class="keywordflow">if</span> (is_shc) {</div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>            <span class="keywordflow">if</span> (reportSuspiciousAddr(my_report, ctx.<a class="code hl_variable" href="structpesieve_1_1__thread__ctx.html#a108366387285507849205dd54a11ab84">ret_addr</a>)) {</div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>                <span class="keywordflow">return</span> my_report;</div>
+<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>            }</div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>        }</div>
+<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>    }</div>
+<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span>    <span class="keywordflow">return</span> my_report;</div>
+<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>}</div>
 </div>
 <div class="ttc" id="aclass_process_symbols_manager_html_acccde42a615125ad6df13936694a1cf8"><div class="ttname"><a href="class_process_symbols_manager.html#acccde42a615125ad6df13936694a1cf8">ProcessSymbolsManager::dumpSymbolInfo</a></div><div class="ttdeci">static bool dumpSymbolInfo(HANDLE hProcess, ULONG_PTR addr)</div><div class="ttdef"><b>Definition</b> <a href="process__symbols_8h_source.html#l00033">process_symbols.h:33</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_area_entropy_stats_html_a82df077a940d6870308d72ba39cbeec2"><div class="ttname"><a href="classpesieve_1_1_area_entropy_stats.html#a82df077a940d6870308d72ba39cbeec2">pesieve::AreaEntropyStats::entropy</a></div><div class="ttdeci">double entropy</div><div class="ttdef"><b>Definition</b> <a href="entropy__stats_8h_source.html#l00036">entropy_stats.h:36</a></div></div>
@@ -617,7 +618,7 @@ $(function(){ initResizable(false); });
 <div class="ttc" id="aclasspesieve_1_1_thread_scan_report_html_aa4cc4cdcfd7be649a00dd57d46b70317"><div class="ttname"><a href="classpesieve_1_1_thread_scan_report.html#aa4cc4cdcfd7be649a00dd57d46b70317">pesieve::ThreadScanReport::thread_state</a></div><div class="ttdeci">DWORD thread_state</div><div class="ttdef"><b>Definition</b> <a href="thread__scanner_8h_source.html#l00069">thread_scanner.h:69</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_thread_scan_report_html_acfe24bd84475b4de990f163e131a99e4"><div class="ttname"><a href="classpesieve_1_1_thread_scan_report.html#acfe24bd84475b4de990f163e131a99e4">pesieve::ThreadScanReport::thread_wait_reason</a></div><div class="ttdeci">DWORD thread_wait_reason</div><div class="ttdef"><b>Definition</b> <a href="thread__scanner_8h_source.html#l00070">thread_scanner.h:70</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_thread_scan_report_html_af30839203957e838bc299232e05ab735"><div class="ttname"><a href="classpesieve_1_1_thread_scan_report.html#af30839203957e838bc299232e05ab735">pesieve::ThreadScanReport::translate_thread_state</a></div><div class="ttdeci">static std::string translate_thread_state(DWORD thread_state)</div><div class="ttdef"><b>Definition</b> <a href="#l00111">thread_scanner.cpp:111</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_thread_scanner_html_a23839353374eedcda7c92b0c7ce6b3bf"><div class="ttname"><a href="classpesieve_1_1_thread_scanner.html#a23839353374eedcda7c92b0c7ce6b3bf">pesieve::ThreadScanner::scanRemote</a></div><div class="ttdeci">virtual ThreadScanReport * scanRemote()</div><div class="ttdef"><b>Definition</b> <a href="#l00387">thread_scanner.cpp:387</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_thread_scanner_html_a23839353374eedcda7c92b0c7ce6b3bf"><div class="ttname"><a href="classpesieve_1_1_thread_scanner.html#a23839353374eedcda7c92b0c7ce6b3bf">pesieve::ThreadScanner::scanRemote</a></div><div class="ttdeci">virtual ThreadScanReport * scanRemote()</div><div class="ttdef"><b>Definition</b> <a href="#l00388">thread_scanner.cpp:388</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_thread_scanner_html_a36850edb808d4be733631fa2bcd3b7b4"><div class="ttname"><a href="classpesieve_1_1_thread_scanner.html#a36850edb808d4be733631fa2bcd3b7b4">pesieve::ThreadScanner::reportSuspiciousAddr</a></div><div class="ttdeci">bool reportSuspiciousAddr(ThreadScanReport *my_report, ULONGLONG susp_addr)</div><div class="ttdef"><b>Definition</b> <a href="#l00311">thread_scanner.cpp:311</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_thread_scanner_html_a4a318c7b1fc4314e86c4f89e56ec1b4d"><div class="ttname"><a href="classpesieve_1_1_thread_scanner.html#a4a318c7b1fc4314e86c4f89e56ec1b4d">pesieve::ThreadScanner::enumStackFrames</a></div><div class="ttdeci">size_t enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT thread_ctx &amp;c)</div><div class="ttdef"><b>Definition</b> <a href="#l00132">thread_scanner.cpp:132</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_thread_scanner_html_a5556239f285cff21f8cf85e282c0bd97"><div class="ttname"><a href="classpesieve_1_1_thread_scanner.html#a5556239f285cff21f8cf85e282c0bd97">pesieve::ThreadScanner::resolveAddr</a></div><div class="ttdeci">bool resolveAddr(ULONGLONG addr)</div><div class="ttdef"><b>Definition</b> <a href="#l00255">thread_scanner.cpp:255</a></div></div>
