@@ -92,6 +92,8 @@ std::string ThreadScanReport::translate_wait_reason(DWORD thread_wait_reason)
 		case Executive: return "Executive";
 		case UserRequest: return "UserRequest";
 		case WrUserRequest: return "WrUserRequest";
+		case WrEventPair: return "WrEventPair";
+		case WrQueue: return "WrQueue";
 	}
 	std::stringstream ss;
 	ss << "Other: " << std::dec << thread_wait_reason;
@@ -129,8 +131,8 @@ size_t pesieve::ThreadScanner::analyzeStackFrames(IN const std::vector<ULONGLONG
 #endif //_SHOW_THREAD_INFO
 	for (auto itr = stack_frame.rbegin();
 		itr != stack_frame.rend() 
-		&& (!cDetails.is_managed && !has_shellcode); // break on first found shellcode, (for now) discontinue analysis if the module is .NET to avoid FP
-		++itr, ++processedCntr)
+		&& (!cDetails.is_managed && !has_shellcode) // break on first found shellcode, (for now) discontinue analysis if the module is .NET to avoid FP
+		;++itr, ++processedCntr)
 	{
 		const ULONGLONG next_return = *itr;
 #ifdef _SHOW_THREAD_INFO
@@ -372,18 +374,7 @@ bool should_scan_context(const util::thread_info& info)
 		return false;
 	}
 	if (state == Waiting) {
-		if (info.ext.sys_start_addr == 0) {
-			return true;
-		}
-		if (info.ext.wait_reason == DelayExecution
-			|| info.ext.wait_reason == Suspended
-			|| info.ext.wait_reason == Executive // the thread is waiting got the scheduler
-			|| info.ext.wait_reason == UserRequest // i.e. WaitForSingleObject/WaitForMultipleObjects
-			|| info.ext.wait_reason == WrUserRequest // i.e. when the thread calls GetMessage
-			)
-		{
-			return true;
-		}
+		return true;
 	}
 	return false;
 }
