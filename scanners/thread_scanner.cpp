@@ -8,6 +8,11 @@
 
 #define ENTROPY_TRESHOLD 3.0
 //#define NO_ENTROPY_CHECK
+
+#ifdef _DEBUG
+#define _SHOW_THREAD_INFO
+#endif
+
 using namespace pesieve;
 
 typedef struct _t_stack_enum_params {
@@ -17,12 +22,10 @@ typedef struct _t_stack_enum_params {
 	LPVOID ctx;
 	const pesieve::ctx_details* cDetails;
 	std::vector<ULONGLONG> stack_frame;
-	ProcessSymbolsManager* symbols;
 
 	_t_stack_enum_params(IN HANDLE _hProcess = NULL, IN HANDLE _hThread = NULL, IN LPVOID _ctx = NULL, IN const pesieve::ctx_details* _cDetails = NULL)
 		: is_ok(false),
-		hProcess(_hProcess), hThread(_hThread), ctx(_ctx), cDetails(_cDetails),
-		symbols(NULL)
+		hProcess(_hProcess), hThread(_hThread), ctx(_ctx), cDetails(_cDetails)
 	{
 	}
 
@@ -37,7 +40,6 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 		return STATUS_INVALID_PARAMETER;
 	}
 	size_t fetched = 0;
-	bool in_shc = false;
 	const pesieve::ctx_details& cDetails = *(args->cDetails);
 #ifdef _WIN64
 	if (cDetails.is64b) {
@@ -51,14 +53,7 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 		frame.AddrFrame.Mode = AddrModeFlat;
 
 		while (StackWalk64(IMAGE_FILE_MACHINE_AMD64, args->hProcess, args->hThread, &frame, args->ctx, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL)) {
-			//std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
-#ifdef _DEBUG
-			if (args->symbols) {
-				args->symbols->dumpSymbolInfo(next_addr);
-			}
-			
-#endif
 			args->stack_frame.push_back(next_addr);
 			fetched++;
 		}
@@ -75,13 +70,8 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 		frame.AddrFrame.Mode = AddrModeFlat;
 
 		while (StackWalk(IMAGE_FILE_MACHINE_I386, args->hProcess, args->hThread, &frame, args->ctx, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL)) {
-			const ULONGLONG next_addr = frame.AddrPC.Offset;
-#ifdef _DEBUG
-			if (args->symbols) {
-				args->symbols->dumpSymbolInfo(next_addr);
-			}
-#endif
-			args->stack_frame.push_back(next_addr);
+			const ULONGLONG next_return = frame.AddrPC.Offset;
+			args->stack_frame.push_back(next_return);
 			fetched++;
 		}
 	}
@@ -134,34 +124,52 @@ size_t pesieve::ThreadScanner::analyzeStackFrames(IN const std::vector<ULONGLONG
 	size_t processedCntr = 0;
 	bool has_shellcode = false;
 	cDetails.is_managed = false;
-
-	for (auto itr = stack_frame.begin(); itr != stack_frame.end(); ++itr, ++processedCntr) {
-		ULONGLONG next_addr = *itr;
-#ifdef _DEBUG
-		printResolvedAddr(next_addr);
-#endif
+#ifdef _SHOW_THREAD_INFO
+	std::cout << "\n" << "Stack frame Size: " << std::dec << stack_frame.size() << "\n===\n";
+#endif //_SHOW_THREAD_INFO
+	for (auto itr = stack_frame.rbegin();
+		itr != stack_frame.rend();
+		++itr, ++processedCntr)
+	{
+		const ULONGLONG next_return = *itr;
+#ifdef _SHOW_THREAD_INFO
+		if (symbols) {
+			symbols->dumpSymbolInfo(next_return);
+		}
+		std::cout << "\t";
+		printResolvedAddr(next_return);
+#endif //_SHOW_THREAD_INFO
 		bool is_curr_shc = false;
-		const ScannedModule* mod = modulesInfo.findModuleContaining(next_addr);
+		const ScannedModule* mod = modulesInfo.findModuleContaining(next_return);
 		const std::string mod_name = mod ? mod->getModName() : "";
 		if (mod_name.length() == 0) {
-			has_shellcode = is_curr_shc = true;
-#ifdef _DEBUG
-			std::cout << std::hex << next_addr << " <=== SHELLCODE\n";
-#endif
+			if (cDetails.is_managed) {
+#ifdef _SHOW_THREAD_INFO
+				std::cout << "\t" << std::hex << next_return << " <=== .NET JIT\n";
+#endif //_SHOW_THREAD_INFO
+			}
+			else {
+				has_shellcode = is_curr_shc = true;
+#ifdef _SHOW_THREAD_INFO
+				std::cout << "\t" << std::hex << next_return << " <=== SHELLCODE\n";
+#endif //_SHOW_THREAD_INFO
+			}
 		}
 		if (!has_shellcode || is_curr_shc) {
 			// store the last address, till the first called shellcode:
-			cDetails.ret_addr = next_addr;
+			cDetails.ret_addr = next_return;
 		}
 		// check if the found shellcode is a .NET JIT:
 		if (mod_name == "clr.dll") {
 			cDetails.is_managed = true;
-#ifdef _DEBUG
-			std::cout << std::hex << next_addr << " <--- .NET\n";
-#endif
-			if (has_shellcode) break;
+#ifdef _SHOW_THREAD_INFO
+			std::cout << "\t" << std::hex << next_return << " <--- .NET\n";
+#endif //_SHOW_THREAD_INFO
 		}
 	}
+#ifdef _SHOW_THREAD_INFO
+	std::cout << "\n===\n";
+#endif //_SHOW_THREAD_INFO
 	return processedCntr;
 }
 
@@ -169,7 +177,6 @@ size_t pesieve::ThreadScanner::fillStackFrameInfo(IN HANDLE hProcess, IN HANDLE 
 {
 	// do it in a new thread to prevent stucking...
 	t_stack_enum_params args(hProcess, hThread, ctx, &cDetails);
-	args.symbols = this->symbols;
 
 	const size_t max_wait = 1000;
 	{
@@ -195,6 +202,9 @@ size_t pesieve::ThreadScanner::fillStackFrameInfo(IN HANDLE hProcess, IN HANDLE 
 	if (!args.is_ok) {
 		return 0;
 	}
+#ifdef _SHOW_THREAD_INFO
+	std::cout << "\n=== TID " << std::dec << GetThreadId(hThread) << " ===\n";
+#endif //_SHOW_THREAD_INFO
 	return analyzeStackFrames(args.stack_frame, cDetails);
 }
 
@@ -382,9 +392,9 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 {
 	ThreadScanReport* my_report = new ThreadScanReport(info.tid);
 	if (!my_report) return nullptr;
-#ifdef _DEBUG
+#ifdef _SHOW_THREAD_INFO
 	printThreadInfo(info);
-#endif
+#endif // _SHOW_THREAD_INFO
 	bool is_shc = isAddrInShellcode(info.start_addr);
 	if (is_shc) {
 		if (reportSuspiciousAddr(my_report, info.start_addr)) {
