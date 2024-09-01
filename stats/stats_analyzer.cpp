@@ -211,7 +211,7 @@ namespace pesieve {
 		virtual bool _isMatching(IN const AreaMultiStats& stats)
 		{
 			const double kMinNBRatio = 0.17;
-			const BYTE mFreqVal = getMostFrequentValue<BYTE>(stats.currArea.frequencies);
+			BYTE mFreqVal = getMostFrequentValue(stats.currArea.frequencies);
 			double entropy = stats.currArea.entropy;
 			const size_t populationSize = stats.currArea.histogram.size();
 
@@ -281,7 +281,7 @@ namespace pesieve {
 		virtual bool _isMatching(IN const AreaMultiStats& stats)
 		{
 			double entropy = stats.currArea.entropy;
-			const BYTE mFreqVal = getMostFrequentValue<BYTE>(stats.currArea.frequencies);
+			const BYTE mFreqVal = getMostFrequentValue(stats.currArea.frequencies);
 			bool fullAreaEncrypted = (entropy > ENTROPY_STRONG_ENC_TRESHOLD);// strong encryption
 			if (mFreqVal != 0 && entropy > ENTROPY_ENC_TRESHOLD) {
 				if (stats.currArea.frequencies.size() > 1) {

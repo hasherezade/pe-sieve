@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <iostream>
 #include <string>
+#include <map>
+#include <set>
 
 namespace pesieve {
 	namespace stats {
@@ -17,9 +19,20 @@ namespace pesieve {
 			return ss.str();
 		}
 
+		template <typename T>
+		std::string hexdumpValues(std::set<T> &values)
+		{
+			std::stringstream outs;
+			for (auto itr = values.begin(); itr != values.end(); ++itr) {
+				T mVal = *itr;
+				outs << stats::hexdumpValue<T>(&mVal, sizeof(T));
+			}
+			return outs.str();
+		}
+
 		// return the most frequent value
 		template <typename T>
-		T getMostFrequentValue(IN std::map<size_t, std::set< T >> frequencies)
+		BYTE getMostFrequentValue(IN const std::map<size_t, std::set< T >>& frequencies)
 		{
 			auto itr = frequencies.rbegin();
 			if (itr == frequencies.rend()) {
@@ -32,16 +45,24 @@ namespace pesieve {
 
 		// return the number of occurrencies
 		template <typename T>
-		size_t getMostFrequentValues(IN std::map<size_t, std::set< T >> frequencies, OUT std::set<T>& values)
+		size_t getMostFrequentValues(IN const std::map<size_t, std::set< T >> &frequencies, OUT std::set<T>& values, IN OPTIONAL size_t top = 0, IN OPTIONAL size_t maxDiff = 0)
 		{
 			auto itr = frequencies.rbegin();
 			if (itr == frequencies.rend()) {
 				return 0;
 			}
-
-			// find the highest frequency:
-			size_t mFreq = itr->first;
-			values.insert(itr->second.begin(), itr->second.end());
+			//the highest frequency
+			const size_t mFreq = itr->first;
+			size_t prev = mFreq;
+			for (size_t i = 0; i < top && itr != frequencies.rend(); ++itr, ++i) {
+				const size_t diff = prev - itr->first;
+#ifdef _DEBUG
+				std::cout << "Freq: " << itr->first << " diff : " << diff << "\n";
+#endif
+				if (diff > maxDiff) break;
+				prev = itr->first;
+				values.insert(itr->second.begin(), itr->second.end());
+			}
 			return mFreq;
 		}
 

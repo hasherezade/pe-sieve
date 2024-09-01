@@ -141,15 +141,12 @@ namespace pesieve {
 			outs << std::dec << histogram.size();
 
 			std::set<BYTE> values;
-			size_t freq = stats::getMostFrequentValues<BYTE>(frequencies, values);
+			size_t freq = stats::getMostFrequentValues(frequencies, values, 16, 8);
 			if (freq && values.size()) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"most_freq_vals\" : ");
 				outs << std::hex << "\"";
-				for (auto itr = values.begin(); itr != values.end(); ++itr) {
-					BYTE mVal = *itr;
-					outs << util::escape_path_separators(stats::hexdumpValue<BYTE>(&mVal, sizeof(BYTE)));
-				}
+				outs << util::escape_path_separators(stats::hexdumpValues(values));
 				outs << "\"";
 			}
 			outs << ",\n";
