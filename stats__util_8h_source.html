@@ -98,78 +98,102 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;windows.h&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacepesieve.html">pesieve</a> {</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keyword">namespace </span>stats {</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="foldopen" id="foldopen00011" data-start="{" data-end="}">
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1stats.html#a235bbf3728c908787cd60810dd2b3d67">   11</a></span>        std::string <a class="code hl_function" href="namespacepesieve_1_1stats.html#a235bbf3728c908787cd60810dd2b3d67">hexdumpValue</a>(<span class="keyword">const</span> BYTE* in_buf, <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_size)</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>            std::stringstream ss;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; max_size; i++) {</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                ss &lt;&lt; <span class="stringliteral">&quot;\\x&quot;</span> &lt;&lt; std::setfill(<span class="charliteral">&#39;0&#39;</span>) &lt;&lt; std::setw(2) &lt;&lt; std::hex &lt;&lt; (<span class="keywordtype">unsigned</span> int)in_buf[i];</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>            }</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            <span class="keywordflow">return</span> ss.str();</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        }</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;set&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacepesieve.html">pesieve</a> {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="keyword">namespace </span>stats {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00013" data-start="{" data-end="}">
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1stats.html#a235bbf3728c908787cd60810dd2b3d67">   13</a></span>        std::string <a class="code hl_function" href="namespacepesieve_1_1stats.html#a235bbf3728c908787cd60810dd2b3d67">hexdumpValue</a>(<span class="keyword">const</span> BYTE* in_buf, <span class="keyword">const</span> <span class="keywordtype">size_t</span> max_size)</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>            std::stringstream ss;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; max_size; i++) {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                ss &lt;&lt; <span class="stringliteral">&quot;\\x&quot;</span> &lt;&lt; std::setfill(<span class="charliteral">&#39;0&#39;</span>) &lt;&lt; std::setw(2) &lt;&lt; std::hex &lt;&lt; (<span class="keywordtype">unsigned</span> int)in_buf[i];</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            }</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            <span class="keywordflow">return</span> ss.str();</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        }</div>
 </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="comment">// return the most frequent value</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1stats.html#acaf0b31abe7aadbf788345dfb87bc7e1">   22</a></span>        T <a class="code hl_function" href="namespacepesieve_1_1stats.html#acaf0b31abe7aadbf788345dfb87bc7e1">getMostFrequentValue</a>(IN std::map&lt;<span class="keywordtype">size_t</span>, std::set&lt; T &gt;&gt; frequencies)</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        {</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            <span class="keyword">auto</span> itr = frequencies.rbegin();</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            <span class="keywordflow">if</span> (itr == frequencies.rend()) {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            }</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>            <span class="keyword">auto</span> setItr = itr-&gt;second.begin();</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            T mVal = *setItr;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            <span class="keywordflow">return</span> mVal;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="}">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1stats.html#ade82e467a4f4e18d203467d3927bd871">   23</a></span>        std::string <a class="code hl_function" href="namespacepesieve_1_1stats.html#ade82e467a4f4e18d203467d3927bd871">hexdumpValues</a>(std::set&lt;T&gt; &amp;values)</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            std::stringstream outs;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> itr = values.begin(); itr != values.end(); ++itr) {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                T mVal = *itr;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                outs &lt;&lt; stats::hexdumpValue&lt;T&gt;(&amp;mVal, <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            <span class="keywordflow">return</span> outs.str();</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        }</div>
 </div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="comment">// return the number of occurrencies</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="comment">// return the most frequent value</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1stats.html#ab3e84c804656b5f9fecddecb3554a767">   35</a></span>        <span class="keywordtype">size_t</span> <a class="code hl_function" href="namespacepesieve_1_1stats.html#ab3e84c804656b5f9fecddecb3554a767">getMostFrequentValues</a>(IN std::map&lt;<span class="keywordtype">size_t</span>, std::set&lt; T &gt;&gt; frequencies, OUT std::set&lt;T&gt;&amp; values)</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1stats.html#adce13b998fffb6e41fc200dd10fb307f">   35</a></span>        BYTE <a class="code hl_function" href="namespacepesieve_1_1stats.html#adce13b998fffb6e41fc200dd10fb307f">getMostFrequentValue</a>(IN <span class="keyword">const</span> std::map&lt;<span class="keywordtype">size_t</span>, std::set&lt; T &gt;&gt;&amp; frequencies)</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        {</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            <span class="keyword">auto</span> itr = frequencies.rbegin();</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            <span class="keywordflow">if</span> (itr == frequencies.rend()) {</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            }</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            <span class="comment">// find the highest frequency:</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            <span class="keywordtype">size_t</span> mFreq = itr-&gt;first;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>            values.insert(itr-&gt;second.begin(), itr-&gt;second.end());</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            <span class="keywordflow">return</span> mFreq;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        }</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            <span class="keyword">auto</span> setItr = itr-&gt;second.begin();</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            T mVal = *setItr;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            <span class="keywordflow">return</span> mVal;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        }</div>
 </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1stats.html#a1f38f630a729f596b4cd2b3eebd36fa2">   49</a></span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="namespacepesieve_1_1stats.html#a1f38f630a729f596b4cd2b3eebd36fa2">isAllPrintable</a>(IN std::map&lt;T, size_t&gt;&amp; histogram)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            <span class="keywordflow">if</span> (!histogram.size()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            <span class="keywordtype">bool</span> is_printable = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> itr = histogram.begin(); itr != histogram.end(); ++itr) {</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                T val = itr-&gt;first;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                <span class="keywordflow">if</span> (val &amp;&amp; !<a class="code hl_define" href="strings__util_8h.html#a1a739e1f368dc1b3b122572eec3d12ab">IS_PRINTABLE</a>(val)) {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                    is_printable = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                }</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            <span class="keywordflow">return</span> is_printable;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="comment">// return the number of occurrencies</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00048" data-start="{" data-end="}">
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1stats.html#a16f97b475c946b6131b2a94754bd1816">   48</a></span>        <span class="keywordtype">size_t</span> <a class="code hl_function" href="namespacepesieve_1_1stats.html#a16f97b475c946b6131b2a94754bd1816">getMostFrequentValues</a>(IN <span class="keyword">const</span> std::map&lt;<span class="keywordtype">size_t</span>, std::set&lt; T &gt;&gt; &amp;frequencies, OUT std::set&lt;T&gt;&amp; values, IN OPTIONAL <span class="keywordtype">size_t</span> top = 0, IN OPTIONAL <span class="keywordtype">size_t</span> maxDiff = 0)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            <span class="keyword">auto</span> itr = frequencies.rbegin();</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            <span class="keywordflow">if</span> (itr == frequencies.rend()) {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            <span class="comment">//the highest frequency</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            <span class="keyword">const</span> <span class="keywordtype">size_t</span> mFreq = itr-&gt;first;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            <span class="keywordtype">size_t</span> prev = mFreq;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; top &amp;&amp; itr != frequencies.rend(); ++itr, ++i) {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                <span class="keyword">const</span> <span class="keywordtype">size_t</span> diff = prev - itr-&gt;first;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                std::cout &lt;&lt; <span class="stringliteral">&quot;Freq: &quot;</span> &lt;&lt; itr-&gt;first &lt;&lt; <span class="stringliteral">&quot; diff : &quot;</span> &lt;&lt; diff &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                <span class="keywordflow">if</span> (diff &gt; maxDiff) <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                prev = itr-&gt;first;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                values.insert(itr-&gt;second.begin(), itr-&gt;second.end());</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            }</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            <span class="keywordflow">return</span> mFreq;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        }</div>
 </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    }; <span class="comment">// namespace stats</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}; <span class="comment">//namespace pesieve</span></div>
-<div class="ttc" id="anamespacepesieve_1_1stats_html_a1f38f630a729f596b4cd2b3eebd36fa2"><div class="ttname"><a href="namespacepesieve_1_1stats.html#a1f38f630a729f596b4cd2b3eebd36fa2">pesieve::stats::isAllPrintable</a></div><div class="ttdeci">bool isAllPrintable(IN std::map&lt; T, size_t &gt; &amp;histogram)</div><div class="ttdef"><b>Definition</b> <a href="#l00049">stats_util.h:49</a></div></div>
-<div class="ttc" id="anamespacepesieve_1_1stats_html_a235bbf3728c908787cd60810dd2b3d67"><div class="ttname"><a href="namespacepesieve_1_1stats.html#a235bbf3728c908787cd60810dd2b3d67">pesieve::stats::hexdumpValue</a></div><div class="ttdeci">std::string hexdumpValue(const BYTE *in_buf, const size_t max_size)</div><div class="ttdef"><b>Definition</b> <a href="#l00011">stats_util.h:11</a></div></div>
-<div class="ttc" id="anamespacepesieve_1_1stats_html_ab3e84c804656b5f9fecddecb3554a767"><div class="ttname"><a href="namespacepesieve_1_1stats.html#ab3e84c804656b5f9fecddecb3554a767">pesieve::stats::getMostFrequentValues</a></div><div class="ttdeci">size_t getMostFrequentValues(IN std::map&lt; size_t, std::set&lt; T &gt; &gt; frequencies, OUT std::set&lt; T &gt; &amp;values)</div><div class="ttdef"><b>Definition</b> <a href="#l00035">stats_util.h:35</a></div></div>
-<div class="ttc" id="anamespacepesieve_1_1stats_html_acaf0b31abe7aadbf788345dfb87bc7e1"><div class="ttname"><a href="namespacepesieve_1_1stats.html#acaf0b31abe7aadbf788345dfb87bc7e1">pesieve::stats::getMostFrequentValue</a></div><div class="ttdeci">T getMostFrequentValue(IN std::map&lt; size_t, std::set&lt; T &gt; &gt; frequencies)</div><div class="ttdef"><b>Definition</b> <a href="#l00022">stats_util.h:22</a></div></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1stats.html#a1f38f630a729f596b4cd2b3eebd36fa2">   70</a></span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="namespacepesieve_1_1stats.html#a1f38f630a729f596b4cd2b3eebd36fa2">isAllPrintable</a>(IN std::map&lt;T, size_t&gt;&amp; histogram)</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>            <span class="keywordflow">if</span> (!histogram.size()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>            <span class="keywordtype">bool</span> is_printable = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> itr = histogram.begin(); itr != histogram.end(); ++itr) {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                T val = itr-&gt;first;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                <span class="keywordflow">if</span> (val &amp;&amp; !<a class="code hl_define" href="strings__util_8h.html#a1a739e1f368dc1b3b122572eec3d12ab">IS_PRINTABLE</a>(val)) {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                    is_printable = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                }</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            }</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            <span class="keywordflow">return</span> is_printable;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        }</div>
+</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    }; <span class="comment">// namespace stats</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>}; <span class="comment">//namespace pesieve</span></div>
+<div class="ttc" id="anamespacepesieve_1_1stats_html_a16f97b475c946b6131b2a94754bd1816"><div class="ttname"><a href="namespacepesieve_1_1stats.html#a16f97b475c946b6131b2a94754bd1816">pesieve::stats::getMostFrequentValues</a></div><div class="ttdeci">size_t getMostFrequentValues(IN const std::map&lt; size_t, std::set&lt; T &gt; &gt; &amp;frequencies, OUT std::set&lt; T &gt; &amp;values, IN OPTIONAL size_t top=0, IN OPTIONAL size_t maxDiff=0)</div><div class="ttdef"><b>Definition</b> <a href="#l00048">stats_util.h:48</a></div></div>
+<div class="ttc" id="anamespacepesieve_1_1stats_html_a1f38f630a729f596b4cd2b3eebd36fa2"><div class="ttname"><a href="namespacepesieve_1_1stats.html#a1f38f630a729f596b4cd2b3eebd36fa2">pesieve::stats::isAllPrintable</a></div><div class="ttdeci">bool isAllPrintable(IN std::map&lt; T, size_t &gt; &amp;histogram)</div><div class="ttdef"><b>Definition</b> <a href="#l00070">stats_util.h:70</a></div></div>
+<div class="ttc" id="anamespacepesieve_1_1stats_html_a235bbf3728c908787cd60810dd2b3d67"><div class="ttname"><a href="namespacepesieve_1_1stats.html#a235bbf3728c908787cd60810dd2b3d67">pesieve::stats::hexdumpValue</a></div><div class="ttdeci">std::string hexdumpValue(const BYTE *in_buf, const size_t max_size)</div><div class="ttdef"><b>Definition</b> <a href="#l00013">stats_util.h:13</a></div></div>
+<div class="ttc" id="anamespacepesieve_1_1stats_html_adce13b998fffb6e41fc200dd10fb307f"><div class="ttname"><a href="namespacepesieve_1_1stats.html#adce13b998fffb6e41fc200dd10fb307f">pesieve::stats::getMostFrequentValue</a></div><div class="ttdeci">BYTE getMostFrequentValue(IN const std::map&lt; size_t, std::set&lt; T &gt; &gt; &amp;frequencies)</div><div class="ttdef"><b>Definition</b> <a href="#l00035">stats_util.h:35</a></div></div>
+<div class="ttc" id="anamespacepesieve_1_1stats_html_ade82e467a4f4e18d203467d3927bd871"><div class="ttname"><a href="namespacepesieve_1_1stats.html#ade82e467a4f4e18d203467d3927bd871">pesieve::stats::hexdumpValues</a></div><div class="ttdeci">std::string hexdumpValues(std::set&lt; T &gt; &amp;values)</div><div class="ttdef"><b>Definition</b> <a href="#l00023">stats_util.h:23</a></div></div>
 <div class="ttc" id="anamespacepesieve_html"><div class="ttname"><a href="namespacepesieve.html">pesieve</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00001">pesieve.py:1</a></div></div>
 <div class="ttc" id="astrings__util_8h_html_a1a739e1f368dc1b3b122572eec3d12ab"><div class="ttname"><a href="strings__util_8h.html#a1a739e1f368dc1b3b122572eec3d12ab">IS_PRINTABLE</a></div><div class="ttdeci">#define IS_PRINTABLE(c)</div><div class="ttdef"><b>Definition</b> <a href="strings__util_8h_source.html#l00008">strings_util.h:8</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

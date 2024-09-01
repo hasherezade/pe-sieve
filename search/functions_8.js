@@ -13,6 +13,7 @@ var searchData=
   ['headersscanner_10',['HeadersScanner',['../classpesieve_1_1_headers_scanner.html#ab4b106badf3fd89166b465feeaddb974',1,'pesieve::HeadersScanner']]],
   ['headersscanreport_11',['HeadersScanReport',['../classpesieve_1_1_headers_scan_report.html#a3c59fc978f4a4e36b7c71ab13502a2f6',1,'pesieve::HeadersScanReport']]],
   ['hexdumpvalue_12',['hexdumpValue',['../namespacepesieve_1_1stats.html#a235bbf3728c908787cd60810dd2b3d67',1,'pesieve::stats']]],
-  ['hookstojson_13',['hooksToJSON',['../classpesieve_1_1_i_a_t_scan_report.html#a601ee6e6ef776eb84f367c4836648546',1,'pesieve::IATScanReport']]],
-  ['hooktargetresolver_14',['HookTargetResolver',['../classpesieve_1_1_hook_target_resolver.html#a67f45c79aabc8609ff844bfde436bc4d',1,'pesieve::HookTargetResolver']]]
+  ['hexdumpvalues_13',['hexdumpValues',['../namespacepesieve_1_1stats.html#ade82e467a4f4e18d203467d3927bd871',1,'pesieve::stats']]],
+  ['hookstojson_14',['hooksToJSON',['../classpesieve_1_1_i_a_t_scan_report.html#a601ee6e6ef776eb84f367c4836648546',1,'pesieve::IATScanReport']]],
+  ['hooktargetresolver_15',['HookTargetResolver',['../classpesieve_1_1_hook_target_resolver.html#a67f45c79aabc8609ff844bfde436bc4d',1,'pesieve::HookTargetResolver']]]
 ];
