@@ -471,7 +471,9 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws exceptions
 {
 	if (!this->symbols.IsInitialized()) {
-		std::cerr << "Failed to initialize symbols!\n";
+		if (!args.quiet) {
+			std::cerr << "[-] Failed to initialize symbols!\n";
+		}
 		return 0;
 	}
 
@@ -493,7 +495,7 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 		if (!pesieve::util::fetch_threads_by_snapshot(pid, threads_info)) { // works on old Windows, but gives less data..
 
 			if (!args.quiet) {
-				std::cout << "[-] Failed enumerating threads." << std::endl;
+				std::cerr << "[-] Failed enumerating threads." << std::endl;
 			}
 			return 0;
 		}
