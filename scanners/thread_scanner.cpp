@@ -128,7 +128,8 @@ size_t pesieve::ThreadScanner::analyzeStackFrames(IN const std::vector<ULONGLONG
 	std::cout << "\n" << "Stack frame Size: " << std::dec << stack_frame.size() << "\n===\n";
 #endif //_SHOW_THREAD_INFO
 	for (auto itr = stack_frame.rbegin();
-		itr != stack_frame.rend();
+		itr != stack_frame.rend() 
+		&& (!cDetails.is_managed && !has_shellcode); // break on first found shellcode, (for now) discontinue analysis if the module is .NET to avoid FP
 		++itr, ++processedCntr)
 	{
 		const ULONGLONG next_return = *itr;
@@ -143,15 +144,14 @@ size_t pesieve::ThreadScanner::analyzeStackFrames(IN const std::vector<ULONGLONG
 		const ScannedModule* mod = modulesInfo.findModuleContaining(next_return);
 		const std::string mod_name = mod ? mod->getModName() : "";
 		if (mod_name.length() == 0) {
-			if (cDetails.is_managed) {
-#ifdef _SHOW_THREAD_INFO
-				std::cout << "\t" << std::hex << next_return << " <=== .NET JIT\n";
-#endif //_SHOW_THREAD_INFO
-			}
-			else {
+			if (!cDetails.is_managed) {
 				has_shellcode = is_curr_shc = true;
 #ifdef _SHOW_THREAD_INFO
 				std::cout << "\t" << std::hex << next_return << " <=== SHELLCODE\n";
+#endif //_SHOW_THREAD_INFO
+			} else {
+#ifdef _SHOW_THREAD_INFO
+				std::cout << "\t" << std::hex << next_return << " <=== .NET JIT\n";
 #endif //_SHOW_THREAD_INFO
 			}
 		}
