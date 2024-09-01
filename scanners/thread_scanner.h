@@ -4,6 +4,7 @@
 
 #include "module_scanner.h"
 #include "../utils/threads_util.h"
+#include "../utils/process_symbols.h"
 #include "../stats/stats.h"
 #include "../stats/entropy_stats.h"
 
@@ -20,7 +21,7 @@ namespace pesieve {
 			: ModuleScanReport(0, 0), 
 			tid(_tid), 
 			susp_addr(0), protection(0),
-			thread_state(THREAD_STATE_UNKNOWN), thread_wait_reason(0)
+			thread_state(THREAD_STATE_UNKNOWN), thread_wait_reason(0), thread_wait_time(0)
 		{
 		}
 
@@ -68,6 +69,7 @@ namespace pesieve {
 		DWORD protection;
 		DWORD thread_state;
 		DWORD thread_wait_reason;
+		DWORD thread_wait_time;
 		AreaEntropyStats stats;
 
 	protected:
@@ -89,9 +91,9 @@ namespace pesieve {
 	//!  Stack-scan inspired by the idea presented here: https://github.com/thefLink/Hunt-Sleeping-Beacons
 	class ThreadScanner : public ProcessFeatureScanner {
 	public:
-		ThreadScanner(HANDLE hProc, bool _isReflection, const util::thread_info& _info, ModulesInfo& _modulesInfo, peconv::ExportsMapper* _exportsMap)
+		ThreadScanner(HANDLE hProc, bool _isReflection, const util::thread_info& _info, ModulesInfo& _modulesInfo, peconv::ExportsMapper* _exportsMap, ProcessSymbolsManager* _symbols)
 			: ProcessFeatureScanner(hProc), isReflection(_isReflection),
-			info(_info), modulesInfo(_modulesInfo), exportsMap(_exportsMap)
+			info(_info), modulesInfo(_modulesInfo), exportsMap(_exportsMap), symbols(_symbols)
 		{
 		}
 
@@ -111,6 +113,7 @@ namespace pesieve {
 		const util::thread_info& info;
 		ModulesInfo& modulesInfo;
 		peconv::ExportsMapper* exportsMap;
+		ProcessSymbolsManager* symbols;
 	};
 
 }; //namespace pesieve

@@ -7,8 +7,8 @@
 class ProcessSymbolsManager
 {
 public:
-	ProcessSymbolsManager(HANDLE _hProcess)
-		: hProcess(_hProcess), isInit(false)
+	ProcessSymbolsManager()
+		: hProcess(NULL), isInit(false)
 	{
 	}
 
@@ -17,9 +17,13 @@ public:
 		FreeSymbols();
 	}
 
-	bool InitSymbols()
+	bool InitSymbols(HANDLE _hProcess)
 	{
+		if (!_hProcess || _hProcess == INVALID_HANDLE_VALUE) {
+			return false;
+		}
 		if (!isInit) {
+			hProcess = _hProcess;
 			SymSetOptions(SYMOPT_UNDNAME | SYMOPT_DEBUG | SYMOPT_INCLUDE_32BIT_MODULES);
 			if (SymInitialize(hProcess, NULL, TRUE)) {
 				isInit = true;
@@ -28,10 +32,17 @@ public:
 		return isInit;
 	}
 	
+	bool IsInitialized()
+	{
+		return isInit;
+	}
+
 	//---
 
-	static bool dumpSymbolInfo(HANDLE hProcess, ULONG_PTR addr)
+	bool dumpSymbolInfo(ULONG_PTR addr)
 	{
+		if (!isInit) return false;
+
 		CHAR buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME] = { 0 };
 		PSYMBOL_INFO pSymbol = (PSYMBOL_INFO)buffer;
 		pSymbol->SizeOfStruct = sizeof(SYMBOL_INFO);
@@ -55,6 +66,7 @@ protected:
 	{
 		if (!isInit) return true;
 		if (SymCleanup(hProcess)) {
+			isInit = false;
 			return true;
 		}
 		return false;

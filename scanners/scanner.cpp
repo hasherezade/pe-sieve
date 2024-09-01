@@ -67,9 +67,10 @@ namespace pesieve {
 };
 
 pesieve::ProcessScanner::ProcessScanner(HANDLE procHndl, bool is_reflection, pesieve::t_params _args)
-	: args(_args), isDEP(false), isReflection(is_reflection), symbols(procHndl)
+	: processHandle(procHndl), isDEP(false), isReflection(is_reflection),
+	args(_args)
 {
-	this->processHandle = procHndl;
+	symbols.InitSymbols(this->processHandle);
 	if (validate_param_str(args.modules_ignored)) {
 		pesieve::util::string_to_list(args.modules_ignored.buffer, PARAM_LIST_SEPARATOR, ignoredModules);
 	}
@@ -469,7 +470,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 
 size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws exceptions
 {
-	if (!this->symbols.InitSymbols()) {
+	if (!this->symbols.IsInitialized()) {
 		std::cerr << "Failed to initialize symbols!\n";
 		return 0;
 	}
@@ -506,7 +507,7 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 	for (auto itr = threads_info.begin(); itr != threads_info.end(); ++itr) {
 		const thread_info &info = itr->second;
 		
-		ThreadScanner scanner(this->processHandle, this->isReflection, info,  pReport.modulesInfo, pReport.exportsMap);
+		ThreadScanner scanner(this->processHandle, this->isReflection, info,  pReport.modulesInfo, pReport.exportsMap, &symbols);
 		ThreadScanReport* report = scanner.scanRemote();
 		pReport.appendReport(report);
 	}

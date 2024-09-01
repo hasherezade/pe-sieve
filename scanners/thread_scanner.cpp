@@ -17,9 +17,11 @@ typedef struct _t_stack_enum_params {
 	const pesieve::thread_ctx* c;
 	std::vector<ULONGLONG> stack_frame;
 	bool is_ok;
+	ProcessSymbolsManager* symbols;
 
 	_t_stack_enum_params()
-		: hProcess(NULL), hThread(NULL), ctx(NULL), c(NULL), is_ok(false)
+		: hProcess(NULL), hThread(NULL), ctx(NULL), c(NULL), is_ok(false),
+		symbols(NULL)
 	{
 	}
 
@@ -59,7 +61,10 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 			//std::cout << "Next Frame start:" << std::hex << frame.AddrPC.Offset << "\n";
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
 #ifdef _DEBUG
-			ProcessSymbolsManager::dumpSymbolInfo(args->hProcess, next_addr);
+			if (args->symbols) {
+				args->symbols->dumpSymbolInfo(next_addr);
+			}
+			
 #endif
 			args->stack_frame.push_back(next_addr);
 			fetched++;
@@ -79,7 +84,9 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 		while (StackWalk(IMAGE_FILE_MACHINE_I386, args->hProcess, args->hThread, &frame, args->ctx, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL)) {
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
 #ifdef _DEBUG
-			ProcessSymbolsManager::dumpSymbolInfo(args->hProcess, next_addr);
+			if (args->symbols) {
+				args->symbols->dumpSymbolInfo(next_addr);
+			}
 #endif
 			args->stack_frame.push_back(next_addr);
 			fetched++;
@@ -133,6 +140,8 @@ size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hTh
 {
 	// do it in a new thread to prevent stucking...
 	t_stack_enum_params args(hProcess, hThread, ctx, c);
+	args.symbols = this->symbols;
+
 	const size_t max_wait = 1000;
 	{
 		HANDLE enumThread = CreateThread(
@@ -321,6 +330,7 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 	if (this->info.is_extended) {
 		my_report->thread_state = info.ext.state;
 		my_report->thread_wait_reason = info.ext.wait_reason;
+		my_report->thread_wait_time = info.ext.wait_time;
 	}
 	my_report->module = (HMODULE)base;
 	my_report->moduleSize = page_info.RegionSize;
