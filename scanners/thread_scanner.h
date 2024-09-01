@@ -17,6 +17,11 @@ namespace pesieve {
 		static const DWORD THREAD_STATE_UNKNOWN = (-1);
 		static const DWORD THREAD_STATE_WAITING = 5;
 
+		static std::string translate_thread_state(DWORD thread_state);
+		static std::string translate_wait_reason(DWORD thread_wait_reason);
+		
+		//---
+
 		ThreadScanReport(DWORD _tid)
 			: ModuleScanReport(0, 0), 
 			tid(_tid), 
@@ -71,10 +76,6 @@ namespace pesieve {
 		DWORD thread_wait_reason;
 		DWORD thread_wait_time;
 		AreaEntropyStats stats;
-
-	protected:
-		static std::string translate_thread_state(DWORD thread_state);
-		static std::string translate_wait_reason(DWORD thread_wait_reason);
 	};
 
 	//!  A custom structure keeping a fragment of a thread context

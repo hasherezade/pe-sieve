@@ -293,9 +293,9 @@ void pesieve::ThreadScanner::printThreadInfo(const pesieve::util::thread_info& t
 	if (threadi.is_extended) {
 		std::cout << std::hex << "\tSysStart: ";
 		printResolvedAddr(threadi.ext.sys_start_addr);
-		std::cout << "\tState: " << threadi.ext.state;
+		std::cout << "\tState: [" << ThreadScanReport::translate_thread_state(threadi.ext.state) << "]";
 		if (threadi.ext.state == Waiting) {
-			std::cout << " Reason: " << threadi.ext.wait_reason << " Time: " << threadi.ext.wait_time;
+			std::cout << " Reason: [" << ThreadScanReport::translate_wait_reason(threadi.ext.wait_reason) << "] Time: " << threadi.ext.wait_time;
 		}
 		std::cout << "\n";
 	}
