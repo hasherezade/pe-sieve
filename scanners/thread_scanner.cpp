@@ -365,7 +365,7 @@ bool should_scan_context(const util::thread_info& info)
 		return true;
 	}
 	const KTHREAD_STATE state = (KTHREAD_STATE)info.ext.state;
-	if (state == Running || state == Ready) {
+	if (state == Ready) {
 		return true;
 	}
 	if (state == Terminated) {
