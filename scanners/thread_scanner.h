@@ -38,9 +38,16 @@ namespace pesieve {
 			OUT_PADDED(outs, level, "\"thread_id\" : ");
 			outs << std::dec << tid;
 			outs << ",\n";
-			OUT_PADDED(outs, level, "\"susp_addr\" : ");
-			outs << "\"" << std::hex << susp_addr << "\"";
-			outs << ",\n";
+			if (susp_addr) {
+				OUT_PADDED(outs, level, "\"susp_addr\" : ");
+				outs << "\"" << std::hex << susp_addr << "\"";
+				outs << ",\n";
+			}
+			else {
+				OUT_PADDED(outs, level, "\"susp_callstack\" : ");
+				outs << "\"" << std::hex << 1 << "\"";
+				outs << ",\n";
+			}
 			if (thread_state != THREAD_STATE_UNKNOWN) {
 				OUT_PADDED(outs, level, "\"thread_state\" : ");
 				outs << "\"" << translate_thread_state(thread_state) << "\"";
@@ -49,14 +56,18 @@ namespace pesieve {
 				if (thread_state == THREAD_STATE_WAITING) {
 					OUT_PADDED(outs, level, "\"thread_wait_reason\" : ");
 					outs << "\"" << translate_wait_reason(thread_wait_reason) << "\"";
-					outs << ",\n";
+					if (susp_addr) {
+						outs << ",\n";
+					}
 				}
 			}
-			OUT_PADDED(outs, level, "\"protection\" : ");
-			outs << "\"" << std::hex << protection << "\"";
-			if (stats.isFilled()) {
-				outs << ",\n";
-				stats.toJSON(outs, level);
+			if (susp_addr) {
+				OUT_PADDED(outs, level, "\"protection\" : ");
+				outs << "\"" << std::hex << protection << "\"";
+				if (stats.isFilled()) {
+					outs << ",\n";
+					stats.toJSON(outs, level);
+				}
 			}
 		}
 
@@ -86,9 +97,11 @@ namespace pesieve {
 		ULONGLONG rbp;
 		ULONGLONG ret_addr; // the last return address on the stack (or the address of the first shellcode)
 		bool is_managed; // does it contain .NET modules
+		size_t stackFramesCount;
 
 		_ctx_details(bool _is64b = false, ULONGLONG _rip = 0, ULONGLONG _rsp = 0, ULONGLONG _rbp = 0, ULONGLONG _ret_addr = 0)
-			: is64b(_is64b), rip(_rip), rsp(_rsp), rbp(_rbp), ret_addr(_ret_addr),
+			: is64b(_is64b), rip(_rip), rsp(_rsp), rbp(_rbp), ret_addr(_ret_addr), 
+			stackFramesCount(0),
 			is_managed(false)
 		{
 		}

@@ -82,6 +82,21 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 	return STATUS_UNSUCCESSFUL;
 }
 
+bool has_empty_gui_info(DWORD tid)
+{
+	GUITHREADINFO gui = { 0 };
+	gui.cbSize = sizeof(GUITHREADINFO);
+	if (!GetGUIThreadInfo(tid, &gui)) {
+		return false;
+	}
+	bool hasWindows = gui.hwndActive || gui.hwndCapture || gui.hwndCaret || gui.hwndMenuOwner || gui.hwndMoveSize;
+	bool hasRcCaret = gui.rcCaret.left || gui.rcCaret.right || gui.rcCaret.bottom || gui.rcCaret.top;
+	if (hasWindows || hasRcCaret) {
+		return false;
+	}
+	return true;
+}
+
 //---
 
 std::string ThreadScanReport::translate_wait_reason(DWORD thread_wait_reason)
@@ -126,6 +141,7 @@ size_t pesieve::ThreadScanner::analyzeStackFrames(IN const std::vector<ULONGLONG
 	size_t processedCntr = 0;
 	bool has_shellcode = false;
 	cDetails.is_managed = false;
+	cDetails.stackFramesCount = stack_frame.size();
 #ifdef _SHOW_THREAD_INFO
 	std::cout << "\n" << "Stack frame Size: " << std::dec << stack_frame.size() << "\n===\n";
 #endif //_SHOW_THREAD_INFO
@@ -411,7 +427,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 #endif
 		return nullptr;
 	}
-
+	const DWORD tid = GetThreadId(hThread);
 	ctx_details cDetails = { 0 };
 	const bool is_ok = fetchThreadCtxDetails(processHandle, hThread, cDetails);
 
@@ -462,6 +478,17 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 				return my_report;
 			}
 		}
+	}
+	const bool hasEmptyGUI = has_empty_gui_info(tid);
+	if (hasEmptyGUI && 
+		cDetails.stackFramesCount == 1 
+		&& this->info.is_extended && info.ext.state == Waiting && info.ext.wait_reason == UserRequest)
+	{
+		my_report->thread_state = info.ext.state;
+		my_report->thread_wait_reason = info.ext.wait_reason;
+		my_report->thread_wait_time = info.ext.wait_time;
+		my_report->susp_addr = 0;
+		my_report->status = SCAN_SUSPICIOUS;
 	}
 	return my_report;
 }
