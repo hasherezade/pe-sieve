@@ -20,14 +20,13 @@ var searchData=
   ['resize_17',['resize',['../classpesieve_1_1_scanned_module.html#ac27ab29a010ac2d3e139f2654c3d0777',1,'pesieve::ScannedModule']]],
   ['resizebuffer_18',['resizeBuffer',['../classpesieve_1_1_pe_buffer.html#acb55b77a03b907c954733c0bcedb1999',1,'pesieve::PeBuffer']]],
   ['resizelastsection_19',['resizeLastSection',['../classpesieve_1_1_pe_buffer.html#ac4cadead68e44b5be64edaf80880cbef',1,'pesieve::PeBuffer']]],
-  ['resolveaddr_20',['resolveAddr',['../classpesieve_1_1_thread_scanner.html#a5556239f285cff21f8cf85e282c0bd97',1,'pesieve::ThreadScanner']]],
-  ['resolveallhooks_21',['resolveAllHooks',['../classpesieve_1_1_hook_target_resolver.html#a51fc6092d397fbb7c414853d703ed064',1,'pesieve::HookTargetResolver']]],
-  ['resolvehookedexport_22',['resolveHookedExport',['../classpesieve_1_1_patch_list_1_1_patch.html#a6bfc8ab70087b9bb66ba299e96b527d8',1,'pesieve::PatchList::Patch']]],
-  ['resolvehookstargets_23',['resolveHooksTargets',['../classpesieve_1_1_process_scanner.html#a90626aea47ee92aebaf55cc7cf9f3b06',1,'pesieve::ProcessScanner']]],
-  ['resolvetarget_24',['resolveTarget',['../classpesieve_1_1_hook_target_resolver.html#a608ca9968909fbbb18a07af866ea47b1',1,'pesieve::HookTargetResolver']]],
-  ['resultsdumper_25',['ResultsDumper',['../classpesieve_1_1_results_dumper.html#a84cedbc87af0ee8b72f06fd7c6cb9b5a',1,'pesieve::ResultsDumper']]],
-  ['rtrim_26',['rtrim',['../namespacepesieve_1_1util.html#a31052004d33cccf72236cd5bd451fa91',1,'pesieve::util']]],
-  ['rulematcher_27',['RuleMatcher',['../classpesieve_1_1_rule_matcher.html#a977717986c584a95b87ffd73da2e8905',1,'pesieve::RuleMatcher']]],
-  ['rulematchersset_28',['RuleMatchersSet',['../structpesieve_1_1_rule_matchers_set.html#aff5025d1a45e27e0f98cb4da745b3ff8',1,'pesieve::RuleMatchersSet']]],
-  ['rvatova_29',['rvaToVa',['../classpesieve_1_1_module_data.html#a1227c638b7039f75d3bf31b61fe13bf9',1,'pesieve::ModuleData']]]
+  ['resolveallhooks_20',['resolveAllHooks',['../classpesieve_1_1_hook_target_resolver.html#a51fc6092d397fbb7c414853d703ed064',1,'pesieve::HookTargetResolver']]],
+  ['resolvehookedexport_21',['resolveHookedExport',['../classpesieve_1_1_patch_list_1_1_patch.html#a6bfc8ab70087b9bb66ba299e96b527d8',1,'pesieve::PatchList::Patch']]],
+  ['resolvehookstargets_22',['resolveHooksTargets',['../classpesieve_1_1_process_scanner.html#a90626aea47ee92aebaf55cc7cf9f3b06',1,'pesieve::ProcessScanner']]],
+  ['resolvetarget_23',['resolveTarget',['../classpesieve_1_1_hook_target_resolver.html#a608ca9968909fbbb18a07af866ea47b1',1,'pesieve::HookTargetResolver']]],
+  ['resultsdumper_24',['ResultsDumper',['../classpesieve_1_1_results_dumper.html#a84cedbc87af0ee8b72f06fd7c6cb9b5a',1,'pesieve::ResultsDumper']]],
+  ['rtrim_25',['rtrim',['../namespacepesieve_1_1util.html#a31052004d33cccf72236cd5bd451fa91',1,'pesieve::util']]],
+  ['rulematcher_26',['RuleMatcher',['../classpesieve_1_1_rule_matcher.html#a977717986c584a95b87ffd73da2e8905',1,'pesieve::RuleMatcher']]],
+  ['rulematchersset_27',['RuleMatchersSet',['../structpesieve_1_1_rule_matchers_set.html#aff5025d1a45e27e0f98cb4da745b3ff8',1,'pesieve::RuleMatchersSet']]],
+  ['rvatova_28',['rvaToVa',['../classpesieve_1_1_module_data.html#a1227c638b7039f75d3bf31b61fe13bf9',1,'pesieve::ModuleData']]]
 ];

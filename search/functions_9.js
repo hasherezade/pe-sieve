@@ -8,7 +8,7 @@ var searchData=
   ['imprec_5fmode_5fto_5fid_5',['imprec_mode_to_id',['../namespacepesieve.html#a4a09f14ac6ece5c4181a1fcb3a8071a0',1,'pesieve']]],
   ['impreconstructor_6',['ImpReconstructor',['../classpesieve_1_1_imp_reconstructor.html#a0c9a8a4800358e1e1c57fcef3ebe0b6a',1,'pesieve::ImpReconstructor']]],
   ['info_7',['info',['../namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84',1,'pesieve']]],
-  ['init_8',['init',['../classpesieve_1_1_remote_module_data.html#a609e79972a0b37cdfb72a4be35f838c0',1,'pesieve::RemoteModuleData::init()'],['../namespacepesieve.html#a2053c41480ba617357fa427bc8252c64',1,'pesieve.init()']]],
+  ['init_8',['init',['../classpesieve_1_1_remote_module_data.html#a609e79972a0b37cdfb72a4be35f838c0',1,'pesieve::RemoteModuleData::init()'],['../structpesieve_1_1__ctx__details.html#a0934e6ecb1c6e65150bfa4d4641cb517',1,'pesieve::_ctx_details::init()'],['../namespacepesieve.html#a2053c41480ba617357fa427bc8252c64',1,'pesieve.init()']]],
   ['init_5f32_5fpatterns_9',['init_32_patterns',['../namespacepesieve.html#a1b4dba41ddf56a7365eefc3cab744572',1,'pesieve']]],
   ['init_5f64_5fpatterns_10',['init_64_patterns',['../namespacepesieve.html#ae48407b62138601a97bbfb8fa8723fe8',1,'pesieve']]],
   ['init_5fsyspaths_11',['init_syspaths',['../namespacepesieve_1_1util.html#a7784404ead578981dc824836d8a59797',1,'pesieve::util']]],
