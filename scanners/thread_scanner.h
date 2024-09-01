@@ -78,14 +78,14 @@ namespace pesieve {
 	};
 
 	//!  A custom structure keeping a fragment of a thread context
-	typedef struct _thread_ctx {
+	typedef struct _ctx_details {
 		bool is64b;
 		ULONGLONG rip;
 		ULONGLONG rsp;
 		ULONGLONG rbp;
 		ULONGLONG ret_addr; // the last return address on the stack (or the address of the first shellcode)
 		bool is_managed; // does it contain .NET modules
-	} thread_ctx;
+	} ctx_details;
 
 	//!  A scanner for threads
 	//!  Stack-scan inspired by the idea presented here: https://github.com/thefLink/Hunt-Sleeping-Beacons
@@ -104,8 +104,8 @@ namespace pesieve {
 		bool isAddrInShellcode(ULONGLONG addr);
 		void printInfo(const util::thread_info& threadi);
 		bool resolveAddr(ULONGLONG addr);
-		bool fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThread, OUT thread_ctx& c);
-		size_t enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT thread_ctx& c);
+		bool fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThread, OUT ctx_details& c);
+		size_t enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ctx_details& c);
 		bool fillAreaStats(ThreadScanReport* my_report);
 		bool reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr);
 

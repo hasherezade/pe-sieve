@@ -14,7 +14,7 @@ typedef struct _t_stack_enum_params {
 	HANDLE hProcess;
 	HANDLE hThread;
 	LPVOID ctx;
-	const pesieve::thread_ctx* c;
+	const pesieve::ctx_details* c;
 	std::vector<ULONGLONG> stack_frame;
 	bool is_ok;
 	ProcessSymbolsManager* symbols;
@@ -25,7 +25,7 @@ typedef struct _t_stack_enum_params {
 	{
 	}
 
-	_t_stack_enum_params(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN const pesieve::thread_ctx& c)
+	_t_stack_enum_params(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN const pesieve::ctx_details& c)
 	{
 		this->hProcess = hProcess;
 		this->hThread = hThread;
@@ -45,7 +45,7 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 	}
 	size_t fetched = 0;
 	bool in_shc = false;
-	const pesieve::thread_ctx& c = *(args->c);
+	const pesieve::ctx_details& c = *(args->c);
 #ifdef _WIN64
 	if (c.is64b) {
 		STACKFRAME64 frame = { 0 };
@@ -136,7 +136,7 @@ std::string ThreadScanReport::translate_thread_state(DWORD thread_state)
 
 //---
 
-size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT thread_ctx& c)
+size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ctx_details& c)
 {
 	// do it in a new thread to prevent stucking...
 	t_stack_enum_params args(hProcess, hThread, ctx, c);
@@ -204,7 +204,7 @@ size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hTh
 	return cntr;
 }
 
-bool pesieve::ThreadScanner::fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThread, OUT thread_ctx& c)
+bool pesieve::ThreadScanner::fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThread, OUT ctx_details& c)
 {
 	bool is_ok = false;
 	BOOL is_wow64 = FALSE;
@@ -428,7 +428,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		return nullptr;
 	}
 
-	thread_ctx ctx = { 0 };
+	ctx_details ctx = { 0 };
 	const bool is_ok = fetchThreadCtx(processHandle, hThread, ctx);
 
 	DWORD exit_code = 0;
