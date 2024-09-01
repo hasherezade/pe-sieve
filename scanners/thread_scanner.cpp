@@ -11,28 +11,21 @@
 using namespace pesieve;
 
 typedef struct _t_stack_enum_params {
+	bool is_ok;
 	HANDLE hProcess;
 	HANDLE hThread;
 	LPVOID ctx;
-	const pesieve::ctx_details* c;
+	const pesieve::ctx_details* cDetails;
 	std::vector<ULONGLONG> stack_frame;
-	bool is_ok;
 	ProcessSymbolsManager* symbols;
 
-	_t_stack_enum_params()
-		: hProcess(NULL), hThread(NULL), ctx(NULL), c(NULL), is_ok(false),
+	_t_stack_enum_params(IN HANDLE _hProcess = NULL, IN HANDLE _hThread = NULL, IN LPVOID _ctx = NULL, IN const pesieve::ctx_details* _cDetails = NULL)
+		: is_ok(false),
+		hProcess(_hProcess), hThread(_hThread), ctx(_ctx), cDetails(_cDetails),
 		symbols(NULL)
 	{
 	}
 
-	_t_stack_enum_params(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN const pesieve::ctx_details& c)
-	{
-		this->hProcess = hProcess;
-		this->hThread = hThread;
-		this->ctx = ctx;
-		this->c = &c;
-		this->is_ok = false;
-	}
 } t_stack_enum_params;
 
 //---
@@ -40,21 +33,21 @@ typedef struct _t_stack_enum_params {
 DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 {
 	t_stack_enum_params* args = static_cast<t_stack_enum_params*>(lpParam);
-	if (!args || !args->c || !args->ctx) {
+	if (!args || !args->cDetails || !args->ctx) {
 		return STATUS_INVALID_PARAMETER;
 	}
 	size_t fetched = 0;
 	bool in_shc = false;
-	const pesieve::ctx_details& c = *(args->c);
+	const pesieve::ctx_details& cDetails = *(args->cDetails);
 #ifdef _WIN64
-	if (c.is64b) {
+	if (cDetails.is64b) {
 		STACKFRAME64 frame = { 0 };
 
-		frame.AddrPC.Offset = c.rip;
+		frame.AddrPC.Offset = cDetails.rip;
 		frame.AddrPC.Mode = AddrModeFlat;
-		frame.AddrStack.Offset = c.rsp;
+		frame.AddrStack.Offset = cDetails.rsp;
 		frame.AddrStack.Mode = AddrModeFlat;
-		frame.AddrFrame.Offset = c.rbp;
+		frame.AddrFrame.Offset = cDetails.rbp;
 		frame.AddrFrame.Mode = AddrModeFlat;
 
 		while (StackWalk64(IMAGE_FILE_MACHINE_AMD64, args->hProcess, args->hThread, &frame, args->ctx, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL)) {
@@ -71,14 +64,14 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 		}
 	}
 #endif
-	if (!c.is64b) {
+	if (!cDetails.is64b) {
 		STACKFRAME frame = { 0 };
 
-		frame.AddrPC.Offset = c.rip;
+		frame.AddrPC.Offset = cDetails.rip;
 		frame.AddrPC.Mode = AddrModeFlat;
-		frame.AddrStack.Offset = c.rsp;
+		frame.AddrStack.Offset = cDetails.rsp;
 		frame.AddrStack.Mode = AddrModeFlat;
-		frame.AddrFrame.Offset = c.rbp;
+		frame.AddrFrame.Offset = cDetails.rbp;
 		frame.AddrFrame.Mode = AddrModeFlat;
 
 		while (StackWalk(IMAGE_FILE_MACHINE_I386, args->hProcess, args->hThread, &frame, args->ctx, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL)) {
@@ -136,10 +129,46 @@ std::string ThreadScanReport::translate_thread_state(DWORD thread_state)
 
 //---
 
-size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ctx_details& c)
+size_t pesieve::ThreadScanner::analyzeStackFrames(IN const std::vector<ULONGLONG> stack_frame, IN OUT ctx_details& cDetails)
+{
+	size_t processedCntr = 0;
+	bool has_shellcode = false;
+	cDetails.is_managed = false;
+
+	for (auto itr = stack_frame.begin(); itr != stack_frame.end(); ++itr, ++processedCntr) {
+		ULONGLONG next_addr = *itr;
+#ifdef _DEBUG
+		printResolvedAddr(next_addr);
+#endif
+		bool is_curr_shc = false;
+		const ScannedModule* mod = modulesInfo.findModuleContaining(next_addr);
+		const std::string mod_name = mod ? mod->getModName() : "";
+		if (mod_name.length() == 0) {
+			has_shellcode = is_curr_shc = true;
+#ifdef _DEBUG
+			std::cout << std::hex << next_addr << " <=== SHELLCODE\n";
+#endif
+		}
+		if (!has_shellcode || is_curr_shc) {
+			// store the last address, till the first called shellcode:
+			cDetails.ret_addr = next_addr;
+		}
+		// check if the found shellcode is a .NET JIT:
+		if (mod_name == "clr.dll") {
+			cDetails.is_managed = true;
+#ifdef _DEBUG
+			std::cout << std::hex << next_addr << " <--- .NET\n";
+#endif
+			if (has_shellcode) break;
+		}
+	}
+	return processedCntr;
+}
+
+size_t pesieve::ThreadScanner::fillStackFrameInfo(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ctx_details& cDetails)
 {
 	// do it in a new thread to prevent stucking...
-	t_stack_enum_params args(hProcess, hThread, ctx, c);
+	t_stack_enum_params args(hProcess, hThread, ctx, &cDetails);
 	args.symbols = this->symbols;
 
 	const size_t max_wait = 1000;
@@ -163,48 +192,13 @@ size_t pesieve::ThreadScanner::enumStackFrames(IN HANDLE hProcess, IN HANDLE hTh
 			CloseHandle(enumThread);
 		}
 	}
-
 	if (!args.is_ok) {
 		return 0;
 	}
-
-	// filter:
-	size_t cntr = 0;
-	bool has_shellcode = false;
-	c.is_managed = false;
-	std::vector<ULONGLONG>::iterator itr;
-	for (itr = args.stack_frame.begin(); itr != args.stack_frame.end(); ++itr) {
-		cntr++;
-		ULONGLONG next_addr = *itr;
-#ifdef _DEBUG
-		resolveAddr(next_addr);
-#endif
-		bool is_curr_shc = false;
-		const ScannedModule* mod = modulesInfo.findModuleContaining(next_addr);
-		const std::string mod_name = mod ? mod->getModName() : "";
-		if (mod_name.length() == 0) {
-			has_shellcode = is_curr_shc = true;
-#ifdef _DEBUG
-			std::cout << std::hex << next_addr << " <=== SHELLCODE\n";
-#endif
-		}
-		if (!has_shellcode || is_curr_shc) {
-			// store the last address, till the first called shellcode:
-			c.ret_addr = next_addr;
-		}
-		// check if the found shellcode is a .NET JIT:
-		if (mod_name == "clr.dll") {
-			c.is_managed = true;
-#ifdef _DEBUG
-			std::cout << std::hex << next_addr << " <--- .NET\n";
-#endif
-			if (has_shellcode) break;
-		}
-	}
-	return cntr;
+	return analyzeStackFrames(args.stack_frame, cDetails);
 }
 
-bool pesieve::ThreadScanner::fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThread, OUT ctx_details& c)
+bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, OUT ctx_details& cDetails)
 {
 	bool is_ok = false;
 	BOOL is_wow64 = FALSE;
@@ -216,12 +210,8 @@ bool pesieve::ThreadScanner::fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThrea
 		ctx.ContextFlags = CONTEXT_INTEGER | CONTEXT_CONTROL;
 		if (pesieve::util::wow64_get_thread_context(hThread, &ctx)) {
 			is_ok = true;
-
-			c.rip = ctx.Eip;
-			c.rsp = ctx.Esp;
-			c.rbp = ctx.Ebp;
-			c.is64b = false;
-			enumStackFrames(hProcess, hThread, &ctx, c);
+			cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
+			fillStackFrameInfo(hProcess, hThread, &ctx, cDetails);
 		}
 	}
 #endif
@@ -232,24 +222,17 @@ bool pesieve::ThreadScanner::fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThrea
 		if (GetThreadContext(hThread, &ctx)) {
 			is_ok = true;
 #ifdef _WIN64
-			c.rip = ctx.Rip;
-			c.rsp = ctx.Rsp;
-			c.rbp = ctx.Rbp;
-			c.is64b = true;
-
-
+			cDetails.init(true, ctx.Rip, ctx.Rsp, ctx.Rbp);
 #else
-			c.rip = ctx.Eip;
-			c.rsp = ctx.Esp;
-			c.is64b = false;
+			cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
 #endif
-			enumStackFrames(hProcess, hThread, &ctx, c);
+			fillStackFrameInfo(hProcess, hThread, &ctx, cDetails);
 		}
 	}
 	return is_ok;
 }
 
-bool pesieve::ThreadScanner::isAddrInShellcode(ULONGLONG addr)
+bool pesieve::ThreadScanner::isAddrInShellcode(const ULONGLONG addr)
 {
 	ScannedModule* mod = modulesInfo.findModuleContaining(addr);
 	if (!mod) return true;
@@ -261,7 +244,7 @@ bool pesieve::ThreadScanner::isAddrInShellcode(ULONGLONG addr)
 	return true;
 }
 
-bool pesieve::ThreadScanner::resolveAddr(ULONGLONG addr)
+bool pesieve::ThreadScanner::printResolvedAddr(const ULONGLONG addr)
 {
 	bool is_resolved = false;
 	std::cout << std::hex << addr;
@@ -289,6 +272,24 @@ bool pesieve::ThreadScanner::resolveAddr(ULONGLONG addr)
 	}
 	std::cout << std::endl;
 	return is_resolved;
+}
+
+void pesieve::ThreadScanner::printThreadInfo(const pesieve::util::thread_info& threadi)
+{
+	std::cout << std::dec << "TID: " << threadi.tid << "\n";
+	std::cout << std::hex << "\tStart   : ";
+	printResolvedAddr(threadi.start_addr);
+
+	if (threadi.is_extended) {
+		std::cout << std::hex << "\tSysStart: ";
+		printResolvedAddr(threadi.ext.sys_start_addr);
+		std::cout << "\tState: " << threadi.ext.state;
+		if (threadi.ext.state == Waiting) {
+			std::cout << " Reason: " << threadi.ext.wait_reason << " Time: " << threadi.ext.wait_time;
+		}
+		std::cout << "\n";
+	}
+	std::cout << "\n";
 }
 
 bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORMATION &page_info)
@@ -377,30 +378,12 @@ bool should_scan_context(const util::thread_info& info)
 	return false;
 }
 
-void pesieve::ThreadScanner::printInfo(const pesieve::util::thread_info& threadi)
-{
-	std::cout << std::dec << "TID: " << threadi.tid << "\n";
-	std::cout << std::hex << "\tStart   : ";
-	resolveAddr(threadi.start_addr);
-
-	if (threadi.is_extended) {
-		std::cout << std::hex << "\tSysStart: ";
-		resolveAddr(threadi.ext.sys_start_addr);
-		std::cout << "\tState: " << threadi.ext.state;
-		if (threadi.ext.state == Waiting) {
-			std::cout << " Reason: " << threadi.ext.wait_reason << " Time: " << threadi.ext.wait_time;
-		}
-		std::cout << "\n";
-	}
-	std::cout << "\n";
-}
-
 ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 {
 	ThreadScanReport* my_report = new ThreadScanReport(info.tid);
 	if (!my_report) return nullptr;
 #ifdef _DEBUG
-	printInfo(info);
+	printThreadInfo(info);
 #endif
 	bool is_shc = isAddrInShellcode(info.start_addr);
 	if (is_shc) {
@@ -428,8 +411,8 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		return nullptr;
 	}
 
-	ctx_details ctx = { 0 };
-	const bool is_ok = fetchThreadCtx(processHandle, hThread, ctx);
+	ctx_details cDetails = { 0 };
+	const bool is_ok = fetchThreadCtxDetails(processHandle, hThread, cDetails);
 
 	DWORD exit_code = 0;
 	GetExitCodeThread(hThread, &exit_code);
@@ -441,12 +424,13 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		return my_report;
 	}
 #ifdef _DEBUG
-	std::cout << " b:" << ctx.is64b << std::hex << " Rip: " << ctx.rip << " Rsp: " << ctx.rsp;
+	std::string bits = cDetails.is64b ? "64" : "32";
+	std::cout << "[" << bits << "-bit] " << std::hex << " Rip: " << cDetails.rip << " Rsp: " << cDetails.rsp;
 	if (exit_code != STILL_ACTIVE) 
 		std::cout << " ExitCode: " << exit_code;
 
-	if (ctx.ret_addr != 0) {
-		std::cout << std::hex << " Ret: " << ctx.ret_addr;
+	if (cDetails.ret_addr != 0) {
+		std::cout << std::hex << " Ret: " << cDetails.ret_addr;
 	}
 	std::cout << "\n";
 #endif
@@ -464,16 +448,16 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	}
 #endif
 
-	is_shc = isAddrInShellcode(ctx.rip);
+	is_shc = isAddrInShellcode(cDetails.rip);
 	if (is_shc) {
-		if (reportSuspiciousAddr(my_report, ctx.rip)) {
+		if (reportSuspiciousAddr(my_report, cDetails.rip)) {
 			return my_report;
 		}
 	}
-	if ((ctx.ret_addr != 0) && (ctx.is_managed == false)) {
-		is_shc = isAddrInShellcode(ctx.ret_addr);
+	if ((cDetails.ret_addr != 0) && (cDetails.is_managed == false)) {
+		is_shc = isAddrInShellcode(cDetails.ret_addr);
 		if (is_shc) {
-			if (reportSuspiciousAddr(my_report, ctx.ret_addr)) {
+			if (reportSuspiciousAddr(my_report, cDetails.ret_addr)) {
 				return my_report;
 			}
 		}

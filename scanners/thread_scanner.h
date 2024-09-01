@@ -85,6 +85,22 @@ namespace pesieve {
 		ULONGLONG rbp;
 		ULONGLONG ret_addr; // the last return address on the stack (or the address of the first shellcode)
 		bool is_managed; // does it contain .NET modules
+
+		_ctx_details(bool _is64b = false, ULONGLONG _rip = 0, ULONGLONG _rsp = 0, ULONGLONG _rbp = 0, ULONGLONG _ret_addr = 0)
+			: is64b(_is64b), rip(_rip), rsp(_rsp), rbp(_rbp), ret_addr(_ret_addr),
+			is_managed(false)
+		{
+		}
+
+		void init(bool _is64b = false, ULONGLONG _rip = 0, ULONGLONG _rsp = 0, ULONGLONG _rbp = 0, ULONGLONG _ret_addr = 0)
+		{
+			this->is64b = _is64b;
+			this->rip = _rip;
+			this->rsp = _rsp;
+			this->rbp = _rbp;
+			this->ret_addr = _ret_addr;
+		}
+
 	} ctx_details;
 
 	//!  A scanner for threads
@@ -102,10 +118,11 @@ namespace pesieve {
 	protected:
 
 		bool isAddrInShellcode(ULONGLONG addr);
-		void printInfo(const util::thread_info& threadi);
-		bool resolveAddr(ULONGLONG addr);
-		bool fetchThreadCtx(IN HANDLE hProcess, IN HANDLE hThread, OUT ctx_details& c);
-		size_t enumStackFrames(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ctx_details& c);
+		void printThreadInfo(const util::thread_info& threadi);
+		bool printResolvedAddr(ULONGLONG addr);
+		bool fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, OUT ctx_details& c);
+		size_t fillStackFrameInfo(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ctx_details& cDetails);
+		size_t analyzeStackFrames(IN const std::vector<ULONGLONG> stack_frame, IN OUT ctx_details& cDetails);
 		bool fillAreaStats(ThreadScanReport* my_report);
 		bool reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr);
 

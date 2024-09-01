@@ -39,7 +39,7 @@ public:
 
 	//---
 
-	bool dumpSymbolInfo(ULONG_PTR addr)
+	bool dumpSymbolInfo(const ULONG_PTR addr)
 	{
 		if (!isInit) return false;
 
@@ -47,16 +47,17 @@ public:
 		PSYMBOL_INFO pSymbol = (PSYMBOL_INFO)buffer;
 		pSymbol->SizeOfStruct = sizeof(SYMBOL_INFO);
 		pSymbol->MaxNameLen = MAX_SYM_NAME;
-		DWORD64 Displacement = { 0 };
 
+		DWORD64 Displacement = 0;
 		BOOLEAN result = SymFromAddr(hProcess, addr, &Displacement, pSymbol);
+		std::cout << std::dec << "[" << GetProcessId(hProcess) << "] " << std::hex << addr;
 		if (result) {
-			std::cout << std::dec << "[" << GetProcessId(hProcess) << "]" << std::hex << addr << " Sym: " << pSymbol->ModBase << " : " << pSymbol->Name << " disp: " << Displacement
+			std::cout << " Sym: " << pSymbol->ModBase << " : " << pSymbol->Name << " disp: " << Displacement
 				<< " Flags: " << pSymbol->Flags << " Tag: " << pSymbol->Tag << std::endl;
-			if (pSymbol->Flags == SYMFLAG_CLR_TOKEN) std::cout << "CLR token!\n";
+			if (pSymbol->Flags == SYMFLAG_CLR_TOKEN) std::cout << " CLR token!\n";
 		}
 		else {
-			std::cout << std::dec << "[" << GetProcessId(hProcess) << "]" << std::hex << addr << " UNK \n";
+			std::cout << " UNK \n";
 		}
 		return true;
 	}
