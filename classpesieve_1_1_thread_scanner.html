@@ -125,6 +125,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:ae1bd5026205bae8766930b5d26c7cedf" id="r_ae1bd5026205bae8766930b5d26c7cedf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1bd5026205bae8766930b5d26c7cedf">scanRemoteThreadCtx</a> (HANDLE hThread, <a class="el" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a> *my_report)</td></tr>
+<tr class="separator:ae1bd5026205bae8766930b5d26c7cedf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a912120f6549a8b27c3e8166ccd2511cf" id="r_a912120f6549a8b27c3e8166ccd2511cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a912120f6549a8b27c3e8166ccd2511cf">isAddrInShellcode</a> (ULONGLONG addr)</td></tr>
 <tr class="separator:a912120f6549a8b27c3e8166ccd2511cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75c0be0ec6ea82b700f3ca5e846a0675" id="r_a75c0be0ec6ea82b700f3ca5e846a0675"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75c0be0ec6ea82b700f3ca5e846a0675">printThreadInfo</a> (const <a class="el" href="namespacepesieve_1_1util.html#ad14df902e4cf78a24e85c3984b8d9e74">util::thread_info</a> &amp;threadi)</td></tr>
@@ -606,20 +608,61 @@ Here is the call graph for this function:</div>
 
 <p>Implements <a class="el" href="classpesieve_1_1_process_feature_scanner.html#a8c85491f592bbfe32e4906dddea8973f">pesieve::ProcessFeatureScanner</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00415">415</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00501">501</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_thread_scanner_a23839353374eedcda7c92b0c7ce6b3bf_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scanner_a23839353374eedcda7c92b0c7ce6b3bf_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_thread_scanner_a23839353374eedcda7c92b0c7ce6b3bf_cgraph" id="aclasspesieve_1_1_thread_scanner_a23839353374eedcda7c92b0c7ce6b3bf_cgraph">
-<area shape="rect" title=" " alt="" coords="5,48,166,89"/>
-<area shape="rect" href="thread__scanner_8cpp.html#a20dfb89b6f97369747479fad5b4e764b" title=" " alt="" coords="217,5,354,31"/>
-<area shape="poly" title=" " alt="" coords="165,46,216,33,218,38,167,51"/>
-<area shape="rect" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="405,81,498,107"/>
-<area shape="poly" title=" " alt="" coords="166,72,389,87,389,93,166,77"/>
-<area shape="rect" href="thread__scanner_8cpp.html#acde231c42b9527dcc026402dcb8b9d87" title=" " alt="" coords="214,107,357,132"/>
-<area shape="poly" title=" " alt="" coords="167,87,218,100,216,105,165,92"/>
-<area shape="poly" title=" " alt="" coords="357,106,389,101,390,106,358,111"/>
+<area shape="rect" title=" " alt="" coords="5,5,166,46"/>
+<area shape="rect" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="405,13,498,38"/>
+<area shape="poly" title=" " alt="" coords="166,23,389,23,389,28,166,28"/>
+<area shape="rect" href="thread__scanner_8cpp.html#acde231c42b9527dcc026402dcb8b9d87" title=" " alt="" coords="214,38,357,64"/>
+<area shape="poly" title=" " alt="" coords="166,33,199,37,198,43,166,38"/>
+<area shape="poly" title=" " alt="" coords="357,37,389,32,390,38,358,43"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ae1bd5026205bae8766930b5d26c7cedf" name="ae1bd5026205bae8766930b5d26c7cedf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1bd5026205bae8766930b5d26c7cedf">&#9670;&#160;</a></span>scanRemoteThreadCtx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::ThreadScanner::scanRemoteThreadCtx </td>
+          <td>(</td>
+          <td class="paramtype">HANDLE</td>          <td class="paramname"><span class="paramname"><em>hThread</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a> *</td>          <td class="paramname"><span class="paramname"><em>my_report</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00415">415</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classpesieve_1_1_thread_scanner_ae1bd5026205bae8766930b5d26c7cedf_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scanner_ae1bd5026205bae8766930b5d26c7cedf_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_thread_scanner_ae1bd5026205bae8766930b5d26c7cedf_cgraph" id="aclasspesieve_1_1_thread_scanner_ae1bd5026205bae8766930b5d26c7cedf_cgraph">
+<area shape="rect" title=" " alt="" coords="5,23,166,64"/>
+<area shape="rect" href="thread__scanner_8cpp.html#a20dfb89b6f97369747479fad5b4e764b" title=" " alt="" coords="214,5,350,31"/>
+<area shape="poly" title=" " alt="" coords="166,30,198,26,199,32,167,36"/>
+<area shape="rect" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="235,55,328,80"/>
+<area shape="poly" title=" " alt="" coords="166,51,220,57,219,63,166,56"/>
 </map>
 </div>
 
