@@ -25,7 +25,7 @@ namespace pesieve {
 		ThreadScanReport(DWORD _tid)
 			: ModuleScanReport(0, 0), 
 			tid(_tid), 
-			susp_addr(0), protection(0),
+			susp_addr(0), protection(0), stack_ptr(0),
 			thread_state(THREAD_STATE_UNKNOWN), thread_wait_reason(0), thread_wait_time(0)
 		{
 		}
@@ -39,11 +39,16 @@ namespace pesieve {
 			outs << std::dec << tid;
 			outs << ",\n";
 			if (susp_addr) {
-				OUT_PADDED(outs, level, "\"susp_addr\" : ");
+				if (this->module && this->moduleSize) {
+					OUT_PADDED(outs, level, "\"susp_addr\" : ");
+				}
+				else {
+					OUT_PADDED(outs, level, "\"susp_return_addr\" : ");
+				}
 				outs << "\"" << std::hex << susp_addr << "\"";
 				outs << ",\n";
 			}
-			else {
+			if (stack_ptr) {
 				OUT_PADDED(outs, level, "\"susp_callstack\" : ");
 				outs << "\"" << std::hex << stack_ptr << "\"";
 				outs << ",\n";
@@ -97,12 +102,14 @@ namespace pesieve {
 		ULONGLONG rsp;
 		ULONGLONG rbp;
 		ULONGLONG last_ret; // the last return address on the stack
+		ULONGLONG ret_on_stack; // the last return address stored on the stack
+		bool is_ret_in_frame;
 		bool is_managed; // does it contain .NET modules
 		size_t stackFramesCount;
 		std::set<ULONGLONG> shcCandidates;
 
 		_ctx_details(bool _is64b = false, ULONGLONG _rip = 0, ULONGLONG _rsp = 0, ULONGLONG _rbp = 0, ULONGLONG _ret_addr = 0)
-			: is64b(_is64b), rip(_rip), rsp(_rsp), rbp(_rbp), last_ret(_ret_addr),
+			: is64b(_is64b), rip(_rip), rsp(_rsp), rbp(_rbp), last_ret(_ret_addr), ret_on_stack(0), is_ret_in_frame(false),
 			stackFramesCount(0),
 			is_managed(false)
 		{

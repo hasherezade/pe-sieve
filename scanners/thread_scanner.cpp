@@ -142,15 +142,15 @@ size_t pesieve::ThreadScanner::analyzeStackFrames(IN const std::vector<ULONGLONG
 
 	cDetails.is_managed = false;
 	cDetails.stackFramesCount = stack_frame.size();
+	cDetails.is_ret_in_frame = false;
 #ifdef _SHOW_THREAD_INFO
 	std::cout << "\n" << "Stack frame Size: " << std::dec << stack_frame.size() << "\n===\n";
 #endif //_SHOW_THREAD_INFO
-	for (auto itr = stack_frame.rbegin();
-		itr != stack_frame.rend() 
-		&& (!cDetails.is_managed) // discontinue analysis if the module is .NET to avoid FP
-		;++itr, ++processedCntr)
-	{
+	for (auto itr = stack_frame.rbegin(); itr != stack_frame.rend() ;++itr, ++processedCntr) {
 		const ULONGLONG next_return = *itr;
+		if (cDetails.ret_on_stack == next_return) {
+			cDetails.is_ret_in_frame = true;
+		}
 #ifdef _SHOW_THREAD_INFO
 		if (symbols) {
 			symbols->dumpSymbolInfo(next_return);
@@ -227,6 +227,17 @@ size_t pesieve::ThreadScanner::fillStackFrameInfo(IN HANDLE hProcess, IN HANDLE 
 	return analyzeStackFrames(args.stack_frame, cDetails);
 }
 
+template <typename PTR_T>
+bool read_return_ptr(IN HANDLE hProcess, IN OUT ctx_details& cDetails) {
+	PTR_T ret_addr = 0;
+	cDetails.ret_on_stack = 0;
+	if (peconv::read_remote_memory(hProcess, (LPVOID)cDetails.rsp, (BYTE*)&ret_addr, sizeof(ret_addr)) == sizeof(ret_addr)) {
+		cDetails.ret_on_stack = (ULONGLONG)ret_addr;
+		return true;
+	}
+	return false;
+}
+
 bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, OUT ctx_details& cDetails)
 {
 	bool is_ok = false;
@@ -241,6 +252,7 @@ bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE
 		if (pesieve::util::wow64_get_thread_context(hThread, &ctx)) {
 			is_ok = true;
 			cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
+			read_return_ptr<DWORD>(hProcess, cDetails);
 			retrieved = fillStackFrameInfo(hProcess, hThread, &ctx, cDetails);
 		}
 	}
@@ -253,8 +265,10 @@ bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE
 			is_ok = true;
 #ifdef _WIN64
 			cDetails.init(true, ctx.Rip, ctx.Rsp, ctx.Rbp);
+			read_return_ptr<ULONGLONG>(hProcess, cDetails);
 #else
 			cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
+			read_return_ptr<DWORD>(hProcess, cDetails);
 #endif
 			retrieved = fillStackFrameInfo(hProcess, hThread, &ctx, cDetails);
 		}
@@ -478,6 +492,29 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		}
 	}
 
+	if (this->info.is_extended && info.ext.state == Waiting
+		&& !cDetails.is_ret_in_frame)
+	{
+		const ULONGLONG ret_addr = cDetails.ret_on_stack;
+		is_shc = isAddrInShellcode(ret_addr);
+#ifdef _SHOW_THREAD_INFO
+		std::cout << "Return addr: " << std::hex << ret_addr << "\n";
+		printResolvedAddr(ret_addr);
+#endif //_SHOW_THREAD_INFO
+		if (is_shc && reportSuspiciousAddr(my_report, (ULONGLONG)ret_addr)) {
+			if (my_report->status == SCAN_SUSPICIOUS) {
+				return my_report;
+			}
+			my_report->status = SCAN_SUSPICIOUS;
+			my_report->stack_ptr = cDetails.rsp;
+			if (my_report->stats.entropy < 1) { // discard, do not dump
+				my_report->module = 0;
+				my_report->moduleSize = 0;
+			}
+			return my_report;
+		}
+	}
+
 	const bool hasEmptyGUI = has_empty_gui_info(tid);
 	if (hasEmptyGUI && 
 		cDetails.stackFramesCount == 1 
@@ -486,7 +523,6 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		my_report->thread_state = info.ext.state;
 		my_report->thread_wait_reason = info.ext.wait_reason;
 		my_report->thread_wait_time = info.ext.wait_time;
-		my_report->susp_addr = 0;
 		my_report->stack_ptr = cDetails.rsp;
 		my_report->status = SCAN_SUSPICIOUS;
 	}
