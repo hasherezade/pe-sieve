@@ -139,7 +139,7 @@ namespace pesieve {
 		virtual ThreadScanReport* scanRemote();
 
 	protected:
-
+		bool scanRemoteThreadCtx(HANDLE hThread, ThreadScanReport* my_report);
 		bool isAddrInShellcode(ULONGLONG addr);
 		void printThreadInfo(const util::thread_info& threadi);
 		bool printResolvedAddr(ULONGLONG addr);

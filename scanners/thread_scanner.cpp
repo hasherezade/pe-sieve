@@ -406,11 +406,97 @@ bool should_scan_context(const util::thread_info& info)
 	if (state == Terminated) {
 		return false;
 	}
-	if (state == Waiting) {
+	if (state == Waiting && info.ext.wait_reason <= WrQueue) {
 		return true;
 	}
 	return false;
 }
+
+bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanReport* my_report)
+{
+	const DWORD tid = GetThreadId(hThread);
+	ctx_details cDetails = { 0 };
+	const bool is_ok = fetchThreadCtxDetails(processHandle, hThread, cDetails);
+
+	DWORD exit_code = 0;
+	GetExitCodeThread(hThread, &exit_code);
+
+	if (exit_code != STILL_ACTIVE) {
+#ifdef _DEBUG
+		std::cout << " ExitCode: " << std::dec << exit_code << "\n";
+#endif
+		my_report->status = SCAN_NOT_SUSPICIOUS;
+		return false;
+	}
+
+	if (!is_ok) {
+		// could not fetch the thread context and information
+		my_report->status = SCAN_ERROR;
+		return false;
+	}
+
+	bool is_shc = isAddrInShellcode(cDetails.rip);
+	if (is_shc) {
+		if (reportSuspiciousAddr(my_report, cDetails.rip)) {
+			if (my_report->status == SCAN_SUSPICIOUS) {
+				return true;
+			}
+		}
+	}
+
+	for (auto itr = cDetails.shcCandidates.begin(); itr != cDetails.shcCandidates.end(); ++itr) {
+		const ULONGLONG addr = *itr;
+#ifdef _SHOW_THREAD_INFO
+		std::cout << "Checking shc candidate: " << std::hex << addr << "\n";
+#endif //_SHOW_THREAD_INFO
+		//automatically verifies if the address is legit:
+		if (reportSuspiciousAddr(my_report, addr)) {
+			if (my_report->status == SCAN_SUSPICIOUS) {
+#ifdef _SHOW_THREAD_INFO
+				std::cout << "Found! " << std::hex << addr << "\n";
+#endif //_SHOW_THREAD_INFO
+				return true;
+			}
+		}
+	}
+
+	if (this->info.is_extended && info.ext.state == Waiting
+		&& !cDetails.is_ret_in_frame)
+	{
+		const ULONGLONG ret_addr = cDetails.ret_on_stack;
+		is_shc = isAddrInShellcode(ret_addr);
+#ifdef _SHOW_THREAD_INFO
+		std::cout << "Return addr: " << std::hex << ret_addr << "\n";
+		printResolvedAddr(ret_addr);
+#endif //_SHOW_THREAD_INFO
+		if (is_shc && reportSuspiciousAddr(my_report, (ULONGLONG)ret_addr)) {
+			if (my_report->status == SCAN_SUSPICIOUS) {
+				return true;
+			}
+			my_report->status = SCAN_SUSPICIOUS;
+			my_report->stack_ptr = cDetails.rsp;
+			if (my_report->stats.entropy < 1) { // discard, do not dump
+				my_report->module = 0;
+				my_report->moduleSize = 0;
+			}
+			return true;
+		}
+	}
+
+	const bool hasEmptyGUI = has_empty_gui_info(tid);
+	if (hasEmptyGUI &&
+		cDetails.stackFramesCount == 1
+		&& this->info.is_extended && info.ext.state == Waiting && info.ext.wait_reason == UserRequest)
+	{
+		my_report->thread_state = info.ext.state;
+		my_report->thread_wait_reason = info.ext.wait_reason;
+		my_report->thread_wait_time = info.ext.wait_time;
+		my_report->stack_ptr = cDetails.rsp;
+		my_report->status = SCAN_SUSPICIOUS;
+	}
+	return true;
+}
+
 
 ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 {
@@ -446,86 +532,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		my_report->status = SCAN_ERROR;
 		return my_report;
 	}
-	const DWORD tid = GetThreadId(hThread);
-	ctx_details cDetails = { 0 };
-	const bool is_ok = fetchThreadCtxDetails(processHandle, hThread, cDetails);
-
-	DWORD exit_code = 0;
-	GetExitCodeThread(hThread, &exit_code);
+	scanRemoteThreadCtx(hThread, my_report);
 	CloseHandle(hThread);
-
-	if (exit_code != STILL_ACTIVE) {
-#ifdef _DEBUG
-		std::cout << " ExitCode: " << std::dec << exit_code << "\n";
-#endif
-		my_report->status = SCAN_NOT_SUSPICIOUS;
-		return my_report;
-	}
-
-	if (!is_ok) {
-		// could not fetch the thread context and information
-		my_report->status = SCAN_ERROR;
-		return my_report;
-	}
-
-	is_shc = isAddrInShellcode(cDetails.rip);
-	if (is_shc) {
-		if (reportSuspiciousAddr(my_report, cDetails.rip)) {
-			if (my_report->status == SCAN_SUSPICIOUS) {
-				return my_report;
-			}
-		}
-	}
-
-	for (auto itr = cDetails.shcCandidates.begin(); itr != cDetails.shcCandidates.end(); ++itr) {
-		const ULONGLONG addr = *itr;
-#ifdef _SHOW_THREAD_INFO
-		std::cout << "Checking shc candidate: " << std::hex << addr << "\n";
-#endif //_SHOW_THREAD_INFO
-		//automatically verifies if the address is legit:
-		if (reportSuspiciousAddr(my_report, addr)) {
-			if (my_report->status == SCAN_SUSPICIOUS) {
-#ifdef _SHOW_THREAD_INFO
-				std::cout << "Found! " << std::hex << addr << "\n";
-#endif //_SHOW_THREAD_INFO
-				return my_report;
-			}
-		}
-	}
-
-	if (this->info.is_extended && info.ext.state == Waiting
-		&& !cDetails.is_ret_in_frame)
-	{
-		const ULONGLONG ret_addr = cDetails.ret_on_stack;
-		is_shc = isAddrInShellcode(ret_addr);
-#ifdef _SHOW_THREAD_INFO
-		std::cout << "Return addr: " << std::hex << ret_addr << "\n";
-		printResolvedAddr(ret_addr);
-#endif //_SHOW_THREAD_INFO
-		if (is_shc && reportSuspiciousAddr(my_report, (ULONGLONG)ret_addr)) {
-			if (my_report->status == SCAN_SUSPICIOUS) {
-				return my_report;
-			}
-			my_report->status = SCAN_SUSPICIOUS;
-			my_report->stack_ptr = cDetails.rsp;
-			if (my_report->stats.entropy < 1) { // discard, do not dump
-				my_report->module = 0;
-				my_report->moduleSize = 0;
-			}
-			return my_report;
-		}
-	}
-
-	const bool hasEmptyGUI = has_empty_gui_info(tid);
-	if (hasEmptyGUI && 
-		cDetails.stackFramesCount == 1 
-		&& this->info.is_extended && info.ext.state == Waiting && info.ext.wait_reason == UserRequest)
-	{
-		my_report->thread_state = info.ext.state;
-		my_report->thread_wait_reason = info.ext.wait_reason;
-		my_report->thread_wait_time = info.ext.wait_time;
-		my_report->stack_ptr = cDetails.rsp;
-		my_report->status = SCAN_SUSPICIOUS;
-	}
 	return my_report;
 }
