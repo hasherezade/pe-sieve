@@ -139,7 +139,7 @@ std::string ThreadScanReport::translate_thread_state(DWORD thread_state)
 size_t pesieve::ThreadScanner::analyzeStackFrames(IN const std::vector<ULONGLONG> stack_frame, IN OUT ctx_details& cDetails)
 {
 	size_t processedCntr = 0;
-	bool has_shellcode = false;
+
 	cDetails.is_managed = false;
 	cDetails.stackFramesCount = stack_frame.size();
 #ifdef _SHOW_THREAD_INFO
@@ -147,7 +147,7 @@ size_t pesieve::ThreadScanner::analyzeStackFrames(IN const std::vector<ULONGLONG
 #endif //_SHOW_THREAD_INFO
 	for (auto itr = stack_frame.rbegin();
 		itr != stack_frame.rend() 
-		&& (!cDetails.is_managed && !has_shellcode) // break on first found shellcode, (for now) discontinue analysis if the module is .NET to avoid FP
+		&& (!cDetails.is_managed) // discontinue analysis if the module is .NET to avoid FP
 		;++itr, ++processedCntr)
 	{
 		const ULONGLONG next_return = *itr;
@@ -163,7 +163,8 @@ size_t pesieve::ThreadScanner::analyzeStackFrames(IN const std::vector<ULONGLONG
 		const std::string mod_name = mod ? mod->getModName() : "";
 		if (mod_name.length() == 0) {
 			if (!cDetails.is_managed) {
-				has_shellcode = is_curr_shc = true;
+				is_curr_shc = true;
+				cDetails.shcCandidates.insert(next_return);
 #ifdef _SHOW_THREAD_INFO
 				std::cout << "\t" << std::hex << next_return << " <=== SHELLCODE\n";
 #endif //_SHOW_THREAD_INFO
@@ -173,9 +174,9 @@ size_t pesieve::ThreadScanner::analyzeStackFrames(IN const std::vector<ULONGLONG
 #endif //_SHOW_THREAD_INFO
 			}
 		}
-		if (!has_shellcode || is_curr_shc) {
+		if (!is_curr_shc) {
 			// store the last address, till the first called shellcode:
-			cDetails.ret_addr = next_return;
+			cDetails.last_ret = next_return;
 		}
 		// check if the found shellcode is a .NET JIT:
 		if (mod_name == "clr.dll") {
@@ -399,13 +400,17 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 {
 	ThreadScanReport* my_report = new ThreadScanReport(info.tid);
 	if (!my_report) return nullptr;
+
 #ifdef _SHOW_THREAD_INFO
 	printThreadInfo(info);
 #endif // _SHOW_THREAD_INFO
+
 	bool is_shc = isAddrInShellcode(info.start_addr);
 	if (is_shc) {
 		if (reportSuspiciousAddr(my_report, info.start_addr)) {
-			return my_report;
+			if (my_report->status == SCAN_SUSPICIOUS) {
+				return my_report;
+			}
 		}
 	}
 #ifndef _DEBUG
@@ -468,17 +473,28 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	is_shc = isAddrInShellcode(cDetails.rip);
 	if (is_shc) {
 		if (reportSuspiciousAddr(my_report, cDetails.rip)) {
-			return my_report;
-		}
-	}
-	if ((cDetails.ret_addr != 0) && (cDetails.is_managed == false)) {
-		is_shc = isAddrInShellcode(cDetails.ret_addr);
-		if (is_shc) {
-			if (reportSuspiciousAddr(my_report, cDetails.ret_addr)) {
+			if (my_report->status == SCAN_SUSPICIOUS) {
 				return my_report;
 			}
 		}
 	}
+
+	for (auto itr = cDetails.shcCandidates.begin(); itr != cDetails.shcCandidates.end(); ++itr) {
+		const ULONGLONG addr = *itr;
+#ifdef _SHOW_THREAD_INFO
+		std::cout << "Checking shc candidate: " << std::hex << addr << "\n";
+#endif //_SHOW_THREAD_INFO
+		//automatically verifies if the address is legit
+		if (reportSuspiciousAddr(my_report, addr)) {
+			if (my_report->status == SCAN_SUSPICIOUS) {
+#ifdef _SHOW_THREAD_INFO
+				std::cout << "Found! " << std::hex << addr << "\n";
+#endif //_SHOW_THREAD_INFO
+				return my_report;
+			}
+		}
+	}
+
 	const bool hasEmptyGUI = has_empty_gui_info(tid);
 	if (hasEmptyGUI && 
 		cDetails.stackFramesCount == 1 

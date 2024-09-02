@@ -95,12 +95,13 @@ namespace pesieve {
 		ULONGLONG rip;
 		ULONGLONG rsp;
 		ULONGLONG rbp;
-		ULONGLONG ret_addr; // the last return address on the stack (or the address of the first shellcode)
+		ULONGLONG last_ret; // the last return address on the stack
 		bool is_managed; // does it contain .NET modules
 		size_t stackFramesCount;
+		std::set<ULONGLONG> shcCandidates;
 
 		_ctx_details(bool _is64b = false, ULONGLONG _rip = 0, ULONGLONG _rsp = 0, ULONGLONG _rbp = 0, ULONGLONG _ret_addr = 0)
-			: is64b(_is64b), rip(_rip), rsp(_rsp), rbp(_rbp), ret_addr(_ret_addr), 
+			: is64b(_is64b), rip(_rip), rsp(_rsp), rbp(_rbp), last_ret(_ret_addr),
 			stackFramesCount(0),
 			is_managed(false)
 		{
@@ -112,7 +113,7 @@ namespace pesieve {
 			this->rip = _rip;
 			this->rsp = _rsp;
 			this->rbp = _rbp;
-			this->ret_addr = _ret_addr;
+			this->last_ret = _ret_addr;
 		}
 
 	} ctx_details;
