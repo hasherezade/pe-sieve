@@ -21,7 +21,7 @@ typedef struct _t_stack_enum_params {
 	HANDLE hThread;
 	LPVOID ctx;
 	const pesieve::ctx_details* cDetails;
-	std::vector<ULONGLONG> stack_frame;
+	std::vector<ULONGLONG> callStack;
 
 	_t_stack_enum_params(IN HANDLE _hProcess = NULL, IN HANDLE _hThread = NULL, IN LPVOID _ctx = NULL, IN const pesieve::ctx_details* _cDetails = NULL)
 		: is_ok(false),
@@ -54,7 +54,7 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 
 		while (StackWalk64(IMAGE_FILE_MACHINE_AMD64, args->hProcess, args->hThread, &frame, args->ctx, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL)) {
 			const ULONGLONG next_addr = frame.AddrPC.Offset;
-			args->stack_frame.push_back(next_addr);
+			args->callStack.push_back(next_addr);
 			fetched++;
 		}
 	}
@@ -71,7 +71,7 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 
 		while (StackWalk(IMAGE_FILE_MACHINE_I386, args->hProcess, args->hThread, &frame, args->ctx, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL)) {
 			const ULONGLONG next_return = frame.AddrPC.Offset;
-			args->stack_frame.push_back(next_return);
+			args->callStack.push_back(next_return);
 			fetched++;
 		}
 	}
@@ -136,17 +136,17 @@ std::string ThreadScanReport::translate_thread_state(DWORD thread_state)
 
 //---
 
-size_t pesieve::ThreadScanner::analyzeStackFrames(IN const std::vector<ULONGLONG> stack_frame, IN OUT ctx_details& cDetails)
+size_t pesieve::ThreadScanner::analyzeCallStack(IN const std::vector<ULONGLONG> call_stack, IN OUT ctx_details& cDetails)
 {
 	size_t processedCntr = 0;
 
 	cDetails.is_managed = false;
-	cDetails.stackFramesCount = stack_frame.size();
+	cDetails.stackFramesCount = call_stack.size();
 	cDetails.is_ret_in_frame = false;
 #ifdef _SHOW_THREAD_INFO
 	std::cout << "\n" << "Stack frame Size: " << std::dec << stack_frame.size() << "\n===\n";
 #endif //_SHOW_THREAD_INFO
-	for (auto itr = stack_frame.rbegin(); itr != stack_frame.rend() ;++itr, ++processedCntr) {
+	for (auto itr = call_stack.rbegin(); itr != call_stack.rend() ;++itr, ++processedCntr) {
 		const ULONGLONG next_return = *itr;
 		if (cDetails.ret_on_stack == next_return) {
 			cDetails.is_ret_in_frame = true;
@@ -192,7 +192,7 @@ size_t pesieve::ThreadScanner::analyzeStackFrames(IN const std::vector<ULONGLONG
 	return processedCntr;
 }
 
-size_t pesieve::ThreadScanner::fillStackFrameInfo(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ctx_details& cDetails)
+size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ctx_details& cDetails)
 {
 	// do it in a new thread to prevent stucking...
 	t_stack_enum_params args(hProcess, hThread, ctx, &cDetails);
@@ -224,7 +224,7 @@ size_t pesieve::ThreadScanner::fillStackFrameInfo(IN HANDLE hProcess, IN HANDLE 
 #ifdef _SHOW_THREAD_INFO
 	std::cout << "\n=== TID " << std::dec << GetThreadId(hThread) << " ===\n";
 #endif //_SHOW_THREAD_INFO
-	return analyzeStackFrames(args.stack_frame, cDetails);
+	return analyzeCallStack(args.callStack, cDetails);
 }
 
 template <typename PTR_T>
@@ -253,7 +253,7 @@ bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE
 			is_ok = true;
 			cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
 			read_return_ptr<DWORD>(hProcess, cDetails);
-			retrieved = fillStackFrameInfo(hProcess, hThread, &ctx, cDetails);
+			retrieved = fillCallStackInfo(hProcess, hThread, &ctx, cDetails);
 		}
 	}
 #endif
@@ -270,7 +270,7 @@ bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE
 			cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
 			read_return_ptr<DWORD>(hProcess, cDetails);
 #endif
-			retrieved = fillStackFrameInfo(hProcess, hThread, &ctx, cDetails);
+			retrieved = fillCallStackInfo(hProcess, hThread, &ctx, cDetails);
 		}
 	}
 	if (!retrieved) is_ok = false;
