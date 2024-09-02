@@ -443,7 +443,8 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 #ifdef _DEBUG
 		std::cerr << "[-] Could not OpenThread. Error: " << GetLastError() << std::endl;
 #endif
-		return nullptr;
+		my_report->status = SCAN_ERROR;
+		return my_report;
 	}
 	const DWORD tid = GetThreadId(hThread);
 	ctx_details cDetails = { 0 };
