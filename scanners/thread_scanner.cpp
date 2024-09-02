@@ -179,7 +179,7 @@ size_t pesieve::ThreadScanner::analyzeStackFrames(IN const std::vector<ULONGLONG
 			cDetails.last_ret = next_return;
 		}
 		// check if the found shellcode is a .NET JIT:
-		if (mod_name == "clr.dll") {
+		if (mod_name == "clr.dll" || mod_name == "coreclr.dll") {
 			cDetails.is_managed = true;
 #ifdef _SHOW_THREAD_INFO
 			std::cout << "\t" << std::hex << next_return << " <--- .NET\n";
@@ -231,6 +231,7 @@ bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE
 {
 	bool is_ok = false;
 	BOOL is_wow64 = FALSE;
+	size_t retrieved = 0;
 #ifdef _WIN64
 	pesieve::util::is_process_wow64(hProcess, &is_wow64);
 
@@ -240,7 +241,7 @@ bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE
 		if (pesieve::util::wow64_get_thread_context(hThread, &ctx)) {
 			is_ok = true;
 			cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
-			fillStackFrameInfo(hProcess, hThread, &ctx, cDetails);
+			retrieved = fillStackFrameInfo(hProcess, hThread, &ctx, cDetails);
 		}
 	}
 #endif
@@ -255,9 +256,10 @@ bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE
 #else
 			cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
 #endif
-			fillStackFrameInfo(hProcess, hThread, &ctx, cDetails);
+			retrieved = fillStackFrameInfo(hProcess, hThread, &ctx, cDetails);
 		}
 	}
+	if (!retrieved) is_ok = false;
 	return is_ok;
 }
 
@@ -413,13 +415,10 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 			}
 		}
 	}
-#ifndef _DEBUG
-	// if NOT compiled in a debug mode, make this check BEFORE scan
 	if (!should_scan_context(info)) {
 		my_report->status = SCAN_NOT_SUSPICIOUS;
 		return my_report;
 	}
-#endif
 	// proceed with detailed checks:
 	HANDLE hThread = OpenThread(
 		THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION | SYNCHRONIZE,
@@ -440,35 +439,19 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	GetExitCodeThread(hThread, &exit_code);
 	CloseHandle(hThread);
 
+	if (exit_code != STILL_ACTIVE) {
+#ifdef _DEBUG
+		std::cout << " ExitCode: " << std::dec << exit_code << "\n";
+#endif
+		my_report->status = SCAN_NOT_SUSPICIOUS;
+		return my_report;
+	}
+
 	if (!is_ok) {
 		// could not fetch the thread context and information
 		my_report->status = SCAN_ERROR;
 		return my_report;
 	}
-#ifdef _DEBUG
-	std::string bits = cDetails.is64b ? "64" : "32";
-	std::cout << "[" << bits << "-bit] " << std::hex << " Rip: " << cDetails.rip << " Rsp: " << cDetails.rsp;
-	if (exit_code != STILL_ACTIVE) 
-		std::cout << " ExitCode: " << exit_code;
-
-	if (cDetails.ret_addr != 0) {
-		std::cout << std::hex << " Ret: " << cDetails.ret_addr;
-	}
-	std::cout << "\n";
-#endif
-
-	if (exit_code != STILL_ACTIVE) {
-		my_report->status = SCAN_NOT_SUSPICIOUS;
-		return my_report;
-	}
-#ifdef _DEBUG
-	// if compiled in a debug mode, make this check AFTER scan
-	// (so that we can see first what was skipped)
-	if (!should_scan_context(info)) {
-		my_report->status = SCAN_NOT_SUSPICIOUS;
-		return my_report;
-	}
-#endif
 
 	is_shc = isAddrInShellcode(cDetails.rip);
 	if (is_shc) {
@@ -484,7 +467,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 #ifdef _SHOW_THREAD_INFO
 		std::cout << "Checking shc candidate: " << std::hex << addr << "\n";
 #endif //_SHOW_THREAD_INFO
-		//automatically verifies if the address is legit
+		//automatically verifies if the address is legit:
 		if (reportSuspiciousAddr(my_report, addr)) {
 			if (my_report->status == SCAN_SUSPICIOUS) {
 #ifdef _SHOW_THREAD_INFO
