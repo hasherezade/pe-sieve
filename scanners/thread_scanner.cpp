@@ -494,7 +494,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		my_report->stack_ptr = cDetails.rsp;
 		my_report->status = SCAN_SUSPICIOUS;
 	}
-	return false;
+	return true;
 }
 
 ThreadScanReport* pesieve::ThreadScanner::scanRemote()
@@ -531,12 +531,21 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		my_report->status = SCAN_ERROR;
 		return my_report;
 	}
+	size_t attempts = 10;
 	if (scanRemoteThreadCtx(hThread, my_report)) {
 		if (my_report->status == SCAN_SUSPICIOUS && !my_report->module && my_report->stack_ptr) { //anomaly detected, but not the proper shellcode...
-			std::cout << "Waiting to rescan...\n";
-			if (WaitForSingleObject(hThread, 1000) != WAIT_TIMEOUT) {
+			while (attempts--) {
+				std::cout << "Waiting to rescan...\n";
+				DWORD res = WaitForSingleObject(hThread, 1000);
+				if (res != WAIT_TIMEOUT) {
+					std::cout << "Thread signaled!\n";
+				}
 				std::cout << "Rescanning...\n";
-				scanRemoteThreadCtx(hThread, my_report);
+				if (!scanRemoteThreadCtx(hThread, my_report)) break;
+				if (my_report->status == SCAN_SUSPICIOUS && my_report->module) {
+					std::cout << "Detected!\n";
+					break;
+				}
 			}
 		}
 	}
