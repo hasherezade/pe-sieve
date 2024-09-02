@@ -45,7 +45,7 @@ namespace pesieve {
 			}
 			else {
 				OUT_PADDED(outs, level, "\"susp_callstack\" : ");
-				outs << "\"" << std::hex << 1 << "\"";
+				outs << "\"" << std::hex << stack_ptr << "\"";
 				outs << ",\n";
 			}
 			if (thread_state != THREAD_STATE_UNKNOWN) {
@@ -83,6 +83,7 @@ namespace pesieve {
 		DWORD tid;
 		ULONGLONG susp_addr;
 		DWORD protection;
+		ULONGLONG stack_ptr;
 		DWORD thread_state;
 		DWORD thread_wait_reason;
 		DWORD thread_wait_time;

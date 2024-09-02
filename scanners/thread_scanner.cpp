@@ -487,6 +487,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		my_report->thread_wait_reason = info.ext.wait_reason;
 		my_report->thread_wait_time = info.ext.wait_time;
 		my_report->susp_addr = 0;
+		my_report->stack_ptr = cDetails.rsp;
 		my_report->status = SCAN_SUSPICIOUS;
 	}
 	return my_report;
