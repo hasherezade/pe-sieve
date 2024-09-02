@@ -144,7 +144,7 @@ size_t pesieve::ThreadScanner::analyzeCallStack(IN const std::vector<ULONGLONG> 
 	cDetails.stackFramesCount = call_stack.size();
 	cDetails.is_ret_in_frame = false;
 #ifdef _SHOW_THREAD_INFO
-	std::cout << "\n" << "Stack frame Size: " << std::dec << stack_frame.size() << "\n===\n";
+	std::cout << "\n" << "Stack frame Size: " << std::dec << call_stack.size() << "\n===\n";
 #endif //_SHOW_THREAD_INFO
 	for (auto itr = call_stack.rbegin(); itr != call_stack.rend() ;++itr, ++processedCntr) {
 		const ULONGLONG next_return = *itr;
