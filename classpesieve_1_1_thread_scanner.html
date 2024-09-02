@@ -133,10 +133,10 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ac35db3f1ec2765f9dda550b04f0cb9ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1cc74daf162025643c225c29cd8225b" id="r_ab1cc74daf162025643c225c29cd8225b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1cc74daf162025643c225c29cd8225b">fetchThreadCtxDetails</a> (IN HANDLE hProcess, IN HANDLE hThread, OUT <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a> &amp;c)</td></tr>
 <tr class="separator:ab1cc74daf162025643c225c29cd8225b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69820b7fd6f60e4f136b6d71e03cb28d" id="r_a69820b7fd6f60e4f136b6d71e03cb28d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69820b7fd6f60e4f136b6d71e03cb28d">fillStackFrameInfo</a> (IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a> &amp;cDetails)</td></tr>
-<tr class="separator:a69820b7fd6f60e4f136b6d71e03cb28d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae67285f50239657076a865f1b2d82ed7" id="r_ae67285f50239657076a865f1b2d82ed7"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae67285f50239657076a865f1b2d82ed7">analyzeStackFrames</a> (IN const std::vector&lt; ULONGLONG &gt; stack_frame, IN OUT <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a> &amp;cDetails)</td></tr>
-<tr class="separator:ae67285f50239657076a865f1b2d82ed7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bb1f60bbf77e4faed6d288ef3e83b9f" id="r_a4bb1f60bbf77e4faed6d288ef3e83b9f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bb1f60bbf77e4faed6d288ef3e83b9f">fillCallStackInfo</a> (IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a> &amp;cDetails)</td></tr>
+<tr class="separator:a4bb1f60bbf77e4faed6d288ef3e83b9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaaef1f47c9746bbc346b00b7da57f6b" id="r_aaaaef1f47c9746bbc346b00b7da57f6b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaaaef1f47c9746bbc346b00b7da57f6b">analyzeCallStack</a> (IN const std::vector&lt; ULONGLONG &gt; stack_frame, IN OUT <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a> &amp;cDetails)</td></tr>
+<tr class="separator:aaaaef1f47c9746bbc346b00b7da57f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79df00ed9c178f7eab47cbb8ee43dd42" id="r_a79df00ed9c178f7eab47cbb8ee43dd42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79df00ed9c178f7eab47cbb8ee43dd42">fillAreaStats</a> (<a class="el" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a> *my_report)</td></tr>
 <tr class="separator:a79df00ed9c178f7eab47cbb8ee43dd42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36850edb808d4be733631fa2bcd3b7b4" id="r_a36850edb808d4be733631fa2bcd3b7b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a36850edb808d4be733631fa2bcd3b7b4">reportSuspiciousAddr</a> (<a class="el" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a> *my_report, ULONGLONG susp_addr)</td></tr>
@@ -215,8 +215,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae67285f50239657076a865f1b2d82ed7" name="ae67285f50239657076a865f1b2d82ed7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae67285f50239657076a865f1b2d82ed7">&#9670;&#160;</a></span>analyzeStackFrames()</h2>
+<a id="aaaaef1f47c9746bbc346b00b7da57f6b" name="aaaaef1f47c9746bbc346b00b7da57f6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaaef1f47c9746bbc346b00b7da57f6b">&#9670;&#160;</a></span>analyzeCallStack()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -225,7 +225,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t pesieve::ThreadScanner::analyzeStackFrames </td>
+          <td class="memname">size_t pesieve::ThreadScanner::analyzeCallStack </td>
           <td>(</td>
           <td class="paramtype">IN const std::vector&lt; ULONGLONG &gt;</td>          <td class="paramname"><span class="paramname"><em>stack_frame</em></span>, </td>
         </tr>
@@ -241,6 +241,18 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00139">139</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classpesieve_1_1_thread_scanner_aaaaef1f47c9746bbc346b00b7da57f6b_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scanner_aaaaef1f47c9746bbc346b00b7da57f6b_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_thread_scanner_aaaaef1f47c9746bbc346b00b7da57f6b_cgraph" id="aclasspesieve_1_1_thread_scanner_aaaaef1f47c9746bbc346b00b7da57f6b_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,166,46"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="214,5,379,46"/>
+<area shape="poly" title=" " alt="" coords="166,23,198,23,198,28,166,28"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -361,8 +373,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a69820b7fd6f60e4f136b6d71e03cb28d" name="a69820b7fd6f60e4f136b6d71e03cb28d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69820b7fd6f60e4f136b6d71e03cb28d">&#9670;&#160;</a></span>fillStackFrameInfo()</h2>
+<a id="a4bb1f60bbf77e4faed6d288ef3e83b9f" name="a4bb1f60bbf77e4faed6d288ef3e83b9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bb1f60bbf77e4faed6d288ef3e83b9f">&#9670;&#160;</a></span>fillCallStackInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -371,7 +383,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t pesieve::ThreadScanner::fillStackFrameInfo </td>
+          <td class="memname">size_t pesieve::ThreadScanner::fillCallStackInfo </td>
           <td>(</td>
           <td class="paramtype">IN HANDLE</td>          <td class="paramname"><span class="paramname"><em>hProcess</em></span>, </td>
         </tr>
@@ -397,6 +409,18 @@ Here is the call graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00195">195</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classpesieve_1_1_thread_scanner_a4bb1f60bbf77e4faed6d288ef3e83b9f_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scanner_a4bb1f60bbf77e4faed6d288ef3e83b9f_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_thread_scanner_a4bb1f60bbf77e4faed6d288ef3e83b9f_cgraph" id="aclasspesieve_1_1_thread_scanner_a4bb1f60bbf77e4faed6d288ef3e83b9f_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,166,46"/>
+<area shape="rect" href="thread__scanner_8cpp.html#aae9f172c5997c8651c566511823bb19e" title=" " alt="" coords="214,13,349,38"/>
+<area shape="poly" title=" " alt="" coords="166,23,198,23,198,28,166,28"/>
+</map>
+</div>
 
 </div>
 </div>
