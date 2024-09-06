@@ -396,6 +396,9 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 // if extended info given, allow to filter out from the scan basing on the thread state and conditions
 bool should_scan_context(const util::thread_info& info)
 {
+	if (GetCurrentThreadId() == info.tid) {
+		return false; // don't scan the current thread
+	}
 	if (!info.is_extended) {
 		return true;
 	}
