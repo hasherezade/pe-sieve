@@ -361,10 +361,9 @@ pesieve::CodeScanReport* pesieve::CodeScanner::scanRemote()
 		}
 		return my_report;
 	}
-	ULONGLONG load_base = (ULONGLONG)moduleData.moduleHandle;
-	ULONGLONG hdr_base = remoteModData.getHdrImageBase();
-
-	my_report->relocBase = load_base;
+	const ULONGLONG load_base = (ULONGLONG)moduleData.moduleHandle;
+	const ULONGLONG hdr_base = remoteModData.getHdrImageBase();
+	my_report->origBase = moduleData.getHdrImageBase();
 	last_res = scanUsingBase(load_base, remote_code, my_report->sectionToResult, my_report->patchesList);
 	
 	if (load_base != hdr_base && my_report->patchesList.size() > 0) {

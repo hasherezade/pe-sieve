@@ -21,7 +21,7 @@ namespace pesieve {
 		} t_section_status;
 
 		CodeScanReport(HMODULE _module, size_t _moduleSize)
-			: ModuleScanReport(_module, _moduleSize), relocBase(0)
+			: ModuleScanReport(_module, _moduleSize)
 		{
 		}
 
@@ -43,6 +43,7 @@ namespace pesieve {
 			const size_t inaccessibleCount = countInaccessibleSections();
 			const size_t scannedCount = sectionToResult.size() - inaccessibleCount;
 			ModuleScanReport::_toJSON(outs, level);
+			outs << ",\n";
 			if (sectionToResult.size() > 0) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"scanned_sections\" : ");
@@ -59,6 +60,7 @@ namespace pesieve {
 				OUT_PADDED(outs, level, "\"unpacked_sections\" : ");
 				outs << std::dec << unpacked;
 			}
+			outs << ",\n";
 			if (patchesList.size() > 0) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"patches\" : ");
@@ -98,7 +100,6 @@ namespace pesieve {
 
 		size_t generateTags(std::string reportPath);
 
-		ULONGLONG relocBase;
 		std::map<DWORD, t_section_status> sectionToResult;
 		PatchList patchesList;
 	};

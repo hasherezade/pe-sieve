@@ -35,20 +35,12 @@ namespace pesieve {
 			return report->status;
 		}
 
-		ModuleScanReport(HMODULE _module, size_t _moduleSize, t_scan_status _status)
-		{
-			this->module = _module;
-			this->moduleSize = _moduleSize;
-			this->status = _status;
-			this->isDotNetModule = false;
-		}
 
-		ModuleScanReport(HMODULE _module, size_t _moduleSize)
+		ModuleScanReport(HMODULE _module, size_t _moduleSize, t_scan_status _status = SCAN_NOT_SUSPICIOUS)
+			: module(_module), moduleSize(_moduleSize), isDotNetModule(false), 
+			origBase(0), relocBase((ULONGLONG)_module),
+			status(_status)
 		{
-			this->module = _module;
-			this->moduleSize = _moduleSize;
-			this->isDotNetModule = false;
-			this->status = SCAN_NOT_SUSPICIOUS;
 		}
 
 		virtual ~ModuleScanReport() {}
@@ -64,6 +56,8 @@ namespace pesieve {
 		size_t moduleSize;
 		bool isDotNetModule;
 		std::string moduleFile;
+		ULONGLONG origBase;
+		ULONGLONG relocBase;
 		t_scan_status status;
 
 	protected:
@@ -76,6 +70,14 @@ namespace pesieve {
 					OUT_PADDED(outs, level, "\"module_size\" : ");
 					outs << "\"" << std::hex << (ULONGLONG)moduleSize << "\"" << ",\n";
 				}
+			}
+			if (origBase) {
+				OUT_PADDED(outs, level, "\"original_base\" : ");
+				outs << std::hex << "\"" << origBase << "\"" << ",\n";
+			}
+			if (relocBase != (ULONGLONG)module) {
+				OUT_PADDED(outs, level, "\"reloc_base\" : ");
+				outs << std::hex << "\"" << relocBase << "\"" << ",\n";
 			}
 			if (moduleFile.length()) {
 				OUT_PADDED(outs, level, "\"module_file\" : ");
