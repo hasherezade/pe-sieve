@@ -9,9 +9,9 @@
 #define ENTROPY_TRESHOLD 3.0
 //#define NO_ENTROPY_CHECK
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 #define _SHOW_THREAD_INFO
-//#endif
+#endif
 
 using namespace pesieve;
 
