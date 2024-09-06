@@ -9,9 +9,9 @@
 #define ENTROPY_TRESHOLD 3.0
 //#define NO_ENTROPY_CHECK
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 #define _SHOW_THREAD_INFO
-#endif
+//#endif
 
 using namespace pesieve;
 
@@ -400,7 +400,7 @@ bool should_scan_context(const util::thread_info& info)
 		return true;
 	}
 	const KTHREAD_STATE state = (KTHREAD_STATE)info.ext.state;
-	if (state == Ready) {
+	if (state == Ready || state == Running) {
 		return true;
 	}
 	if (state == Terminated) {
