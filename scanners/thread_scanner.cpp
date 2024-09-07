@@ -33,6 +33,23 @@ typedef struct _t_stack_enum_params {
 
 //---
 
+namespace pesieve {
+
+	bool is_thread_running(HANDLE hThread)
+	{
+		DWORD exit_code = 0;
+		if (GetExitCodeThread(hThread, &exit_code)) {
+			if (exit_code != STILL_ACTIVE) {
+#ifdef _DEBUG
+				std::cout << " Thread ExitCode: " << std::dec << exit_code << "\n";
+#endif
+				return false;
+			}
+		}
+		return true;
+	}
+};
+
 DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 {
 	t_stack_enum_params* args = static_cast<t_stack_enum_params*>(lpParam);
@@ -418,13 +435,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	ctx_details cDetails = { 0 };
 	const bool is_ok = fetchThreadCtxDetails(processHandle, hThread, cDetails);
 
-	DWORD exit_code = 0;
-	GetExitCodeThread(hThread, &exit_code);
-
-	if (exit_code != STILL_ACTIVE) {
-#ifdef _DEBUG
-		std::cout << " ExitCode: " << std::dec << exit_code << "\n";
-#endif
+	if (!pesieve::is_thread_running(hThread)) {
 		my_report->status = SCAN_NOT_SUSPICIOUS;
 		return false;
 	}
