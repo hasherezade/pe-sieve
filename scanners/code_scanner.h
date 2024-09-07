@@ -43,7 +43,6 @@ namespace pesieve {
 			const size_t inaccessibleCount = countInaccessibleSections();
 			const size_t scannedCount = sectionToResult.size() - inaccessibleCount;
 			ModuleScanReport::_toJSON(outs, level);
-			outs << ",\n";
 			if (sectionToResult.size() > 0) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"scanned_sections\" : ");
@@ -60,7 +59,6 @@ namespace pesieve {
 				OUT_PADDED(outs, level, "\"unpacked_sections\" : ");
 				outs << std::dec << unpacked;
 			}
-			outs << ",\n";
 			if (patchesList.size() > 0) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"patches\" : ");
