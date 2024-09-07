@@ -107,8 +107,9 @@ var searchData=
   ['summarize_104',['summarize',['../classpesieve_1_1_area_entropy_stats.html#a55525d7498ddf04738ce1fac9332be3f',1,'pesieve::AreaEntropyStats::summarize()'],['../structpesieve_1_1_chunk_stats.html#ac68e19c8316bf003c2fbdea739176001',1,'pesieve::ChunkStats::summarize()'],['../classpesieve_1_1_area_multi_stats.html#adc0566558c7de4604692be9fec9ba0e3',1,'pesieve::AreaMultiStats::summarize()'],['../classpesieve_1_1_area_stats.html#a5b449d535857a37328518f752ab2f610',1,'pesieve::AreaStats::summarize()']]],
   ['susp_5faddr_105',['susp_addr',['../classpesieve_1_1_thread_scan_report.html#a5a930aaa32e9de46d95b25018a373cbc',1,'pesieve::ThreadScanReport']]],
   ['suspicious_106',['suspicious',['../structreport.html#a5ee5e4dbcf6777455b2b32b1529d4980',1,'report']]],
-  ['switchtowow64path_107',['switchToWow64Path',['../classpesieve_1_1_module_data.html#a2e919f44d71aad97bb40a77086c28e7b',1,'pesieve::ModuleData']]],
-  ['symbols_108',['symbols',['../classpesieve_1_1_process_scanner.html#ac9a6ee9cd3632a5ccd3f03742700959f',1,'pesieve::ProcessScanner::symbols'],['../classpesieve_1_1_thread_scanner.html#ad455f81b20ec49dc2968d6f2db67ae13',1,'pesieve::ThreadScanner::symbols']]],
-  ['sys_5fstart_5faddr_109',['sys_start_addr',['../structpesieve_1_1util_1_1__thread__info__ext.html#a015d9ec862bebffabeeea74cc94c6c03',1,'pesieve::util::_thread_info_ext']]],
-  ['szmodname_110',['szModName',['../classpesieve_1_1_module_data.html#ab7463bd2db1ce6343e1be66600c48cd8',1,'pesieve::ModuleData']]]
+  ['switchtomappedpath_107',['switchToMappedPath',['../classpesieve_1_1_module_data.html#aedc122bb2958fa253cb1db900a9048f9',1,'pesieve::ModuleData']]],
+  ['switchtowow64path_108',['switchToWow64Path',['../classpesieve_1_1_module_data.html#a2e919f44d71aad97bb40a77086c28e7b',1,'pesieve::ModuleData']]],
+  ['symbols_109',['symbols',['../classpesieve_1_1_process_scanner.html#ac9a6ee9cd3632a5ccd3f03742700959f',1,'pesieve::ProcessScanner::symbols'],['../classpesieve_1_1_thread_scanner.html#ad455f81b20ec49dc2968d6f2db67ae13',1,'pesieve::ThreadScanner::symbols']]],
+  ['sys_5fstart_5faddr_110',['sys_start_addr',['../structpesieve_1_1util_1_1__thread__info__ext.html#a015d9ec862bebffabeeea74cc94c6c03',1,'pesieve::util::_thread_info_ext']]],
+  ['szmodname_111',['szModName',['../classpesieve_1_1_module_data.html#ab7463bd2db1ce6343e1be66600c48cd8',1,'pesieve::ModuleData']]]
 ];

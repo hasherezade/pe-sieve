@@ -27,7 +27,7 @@ var searchData=
   ['release_5fprocess_5fsnapshot_24',['release_process_snapshot',['../namespacepesieve_1_1util.html#a905cd117f8d7e19b984bc395defc3b63',1,'pesieve::util']]],
   ['reloadwow64_25',['reloadWow64',['../classpesieve_1_1_module_data.html#a1fab06ced58f5432dae107aed4063a32',1,'pesieve::ModuleData']]],
   ['relocatetobase_26',['relocateToBase',['../classpesieve_1_1_module_data.html#a39d37446bca2041d5fb9c0cc64998f15',1,'pesieve::ModuleData']]],
-  ['relocbase_27',['relocBase',['../classpesieve_1_1_pe_buffer.html#af82f09c9cf7265dd990b5fe299864838',1,'pesieve::PeBuffer::relocBase'],['../classpesieve_1_1_code_scan_report.html#a00859bb5571d96ddc13130bc23eac9f3',1,'pesieve::CodeScanReport::relocBase']]],
+  ['relocbase_27',['relocBase',['../classpesieve_1_1_pe_buffer.html#af82f09c9cf7265dd990b5fe299864838',1,'pesieve::PeBuffer::relocBase'],['../classpesieve_1_1_module_scan_report.html#a65db46896baa89ad7718d33daa449024',1,'pesieve::ModuleScanReport::relocBase']]],
   ['relocs_28',['relocs',['../classpesieve_1_1_patch_analyzer.html#a449f7bb45cab966c6cad9032275cbb5e',1,'pesieve::PatchAnalyzer']]],
   ['remap_5fto_5fdrive_5fletter_29',['remap_to_drive_letter',['../namespacepesieve_1_1util.html#ace72c6bdbbf45a2a63efd91a0df09031',1,'pesieve::util']]],
   ['remotemoddata_30',['remoteModData',['../classpesieve_1_1_module_scanner.html#a78ff1c135f070ab0d6e0ad3870604f90',1,'pesieve::ModuleScanner']]],
