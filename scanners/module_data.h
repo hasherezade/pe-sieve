@@ -89,7 +89,7 @@ namespace pesieve {
 		}
 
 		bool loadOriginal();
-
+		bool switchToMappedPath();
 		bool switchToWow64Path();
 		bool reloadWow64();
 		bool relocateToBase(ULONGLONG new_base);

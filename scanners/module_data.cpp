@@ -200,6 +200,18 @@ bool pesieve::ModuleData::switchToWow64Path()
 	return false;
 }
 
+bool pesieve::ModuleData::switchToMappedPath()
+{
+	const std::string path = RemoteModuleData::getMappedName(this->processHandle, this->moduleHandle);
+	const size_t len = path.length();
+	if (len >= MAX_PATH) {
+		return false;
+	}
+	::memcpy(szModName, path.c_str(), len);
+	szModName[len] = 0;
+	return true;
+}
+
 bool pesieve::ModuleData::reloadWow64()
 {
 	if (!switchToWow64Path()) return false;
