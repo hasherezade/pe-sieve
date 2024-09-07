@@ -34,11 +34,10 @@ namespace pesieve {
 		{
 			ModuleScanReport::_toJSON(outs, level);
 			outs << ",\n";
-
 			OUT_PADDED(outs, level, "\"thread_id\" : ");
 			outs << std::dec << tid;
-			outs << ",\n";
 			if (susp_addr) {
+				outs << ",\n";
 				if (this->module && this->moduleSize) {
 					OUT_PADDED(outs, level, "\"susp_addr\" : ");
 				}
@@ -46,27 +45,25 @@ namespace pesieve {
 					OUT_PADDED(outs, level, "\"susp_return_addr\" : ");
 				}
 				outs << "\"" << std::hex << susp_addr << "\"";
-				outs << ",\n";
 			}
 			if (stack_ptr) {
+				outs << ",\n";
 				OUT_PADDED(outs, level, "\"susp_callstack\" : ");
 				outs << "\"" << std::hex << stack_ptr << "\"";
-				outs << ",\n";
 			}
 			if (thread_state != THREAD_STATE_UNKNOWN) {
+				outs << ",\n";
 				OUT_PADDED(outs, level, "\"thread_state\" : ");
 				outs << "\"" << translate_thread_state(thread_state) << "\"";
-				outs << ",\n";
 
 				if (thread_state == THREAD_STATE_WAITING) {
+					outs << ",\n";
 					OUT_PADDED(outs, level, "\"thread_wait_reason\" : ");
 					outs << "\"" << translate_wait_reason(thread_wait_reason) << "\"";
-					if (susp_addr) {
-						outs << ",\n";
-					}
 				}
 			}
 			if (susp_addr) {
+				outs << ",\n";
 				OUT_PADDED(outs, level, "\"protection\" : ");
 				outs << "\"" << std::hex << protection << "\"";
 				if (stats.isFilled()) {
