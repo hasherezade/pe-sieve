@@ -64,6 +64,19 @@ namespace pesieve {
 		std::cout << ss.str() << std::endl;
 	}
 
+	bool is_running(HANDLE processHandle)
+	{
+		DWORD exitCode = 0;
+		if (GetExitCodeProcess(processHandle, &exitCode)) {
+			if (exitCode != STILL_ACTIVE) {
+#ifdef _DEBUG
+				std::cerr << "Process terminated, exit = " << std::dec << exitCode << "\n";
+#endif
+				return false; //process terminated, discontinue the scan
+			}
+		}
+		return true;
+	}
 };
 
 pesieve::ProcessScanner::ProcessScanner(HANDLE procHndl, bool is_reflection, pesieve::t_params _args)
@@ -299,7 +312,7 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 	size_t counter = 0;
 	//now scan all the nodes:
 
-	for (auto set_itr = region_bases.begin(); set_itr != region_bases.end(); ++set_itr, ++counter) {
+	for (auto set_itr = region_bases.begin(); set_itr != region_bases.end() && is_running(this->processHandle); ++set_itr, ++counter) {
 		const mem_region_info region = *set_itr;
 
 		WorkingSetScanner scanner(this->processHandle, proc_details, region, this->args, pReport);
@@ -346,7 +359,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 	}
 
 	size_t counter = 0;
-	for (counter = 0; counter < modules_count; counter++) {
+	for (counter = 0; counter < modules_count && is_running(this->processHandle); counter++) {
 		if (processHandle == nullptr) break;
 		const HMODULE module_base = hMods[counter];
 		//load module from file:
@@ -390,7 +403,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 		//load data about the remote module
 		RemoteModuleData remoteModData(processHandle, this->isReflection, module_base);
 		if (!remoteModData.isInitialized()) {
-			//make a report that initializing remote module was not possible
+			if (!is_running(processHandle)) break;
 			pReport.appendReport(new MalformedHeaderReport(module_base, 0, modData.szModName));
 			continue;
 		}
@@ -437,7 +450,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 	}
 	DWORD start_tick = GetTickCount();
 	size_t counter = 0;
-	for (counter = 0; counter < modules_count; counter++) {
+	for (counter = 0; counter < modules_count && is_running(this->processHandle); counter++) {
 		if (!processHandle) break; // this should never happen
 
 		const HMODULE module_base = hMods[counter];
@@ -506,7 +519,7 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 		}
 	}
 
-	for (auto itr = threads_info.begin(); itr != threads_info.end(); ++itr) {
+	for (auto itr = threads_info.begin(); itr != threads_info.end() && is_running(this->processHandle); ++itr) {
 		const thread_info &info = itr->second;
 		
 		ThreadScanner scanner(this->processHandle, this->isReflection, info,  pReport.modulesInfo, pReport.exportsMap, &symbols);
