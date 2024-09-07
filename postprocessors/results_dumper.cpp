@@ -187,8 +187,7 @@ pesieve::ProcessDumpReport* pesieve::ResultsDumper::dumpDetectedModules(
 	ProcessDumpReport *dumpReport = new ProcessDumpReport(process_report.getPid());
 	this->dumpDir = pesieve::ResultsDumper::makeDirName(process_report.getPid());
 
-	std::vector<ModuleScanReport*>::iterator itr;
-	for (itr = process_report.moduleReports.begin();
+	for (auto itr = process_report.moduleReports.begin();
 		itr != process_report.moduleReports.end();
 		++itr)
 	{
@@ -294,15 +293,16 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 		ImpReconstructor::t_imprec_res imprec_res = impRec.rebuildImportTable(exportsMap, imprec_mode);
 		modDumpReport->impRecMode = get_imprec_res_name(imprec_res);
 
-
 		module_buf.setRelocBase(mod->getRelocBase());
+		if (mod->origBase) {
+			module_buf.setRelocBase(mod->origBase);
+		}
 		if (imprec_mode == pesieve::PE_IMPREC_NONE) {
 			modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode);
 		}
 		else {
 			modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode, exportsMap, &notCovered);
 		}
-		
 
 		if (!modDumpReport->isDumped) {
 			modDumpReport->isDumped = module_buf.dumpToFile(modDumpReport->dumpFileName);

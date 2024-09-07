@@ -20,6 +20,8 @@ HeadersScanReport* pesieve::HeadersScanner::scanRemote()
 	memcpy(hdr_buffer1, remoteModData.headerBuffer, peconv::MAX_HEADER_SIZE);
 	my_report->is64 = peconv::is64bit(hdr_buffer1);
 	my_report->isDotNetModule = moduleData.isDotNet();
+	my_report->origBase = moduleData.getHdrImageBase();
+	my_report->relocBase = remoteModData.getHdrImageBase();
 
 	size_t hdrs_size = peconv::get_hdrs_size(hdr_buffer1);
 	if (hdrs_size > peconv::MAX_HEADER_SIZE) {

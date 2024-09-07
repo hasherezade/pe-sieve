@@ -9,7 +9,8 @@ namespace pesieve {
 	public:
 		PeBuffer(HANDLE _process_hndl, bool _is_refl)
 			: processHndl(_process_hndl), isRefl(_is_refl),
-			vBuf(nullptr), vBufSize(0), moduleBase(0), relocBase(0)
+			vBuf(nullptr), vBufSize(0), 
+			moduleBase(0), relocBase(0)
 		{
 		}
 

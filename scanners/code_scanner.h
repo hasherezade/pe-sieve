@@ -21,7 +21,7 @@ namespace pesieve {
 		} t_section_status;
 
 		CodeScanReport(HMODULE _module, size_t _moduleSize)
-			: ModuleScanReport(_module, _moduleSize), relocBase(0)
+			: ModuleScanReport(_module, _moduleSize)
 		{
 		}
 
@@ -98,7 +98,6 @@ namespace pesieve {
 
 		size_t generateTags(std::string reportPath);
 
-		ULONGLONG relocBase;
 		std::map<DWORD, t_section_status> sectionToResult;
 		PatchList patchesList;
 	};
