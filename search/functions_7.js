@@ -68,5 +68,6 @@ var searchData=
   ['getstart_65',['getStart',['../classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef',1,'pesieve::ScannedModule']]],
   ['getstartoffset_66',['getStartOffset',['../classpesieve_1_1_mem_page_data.html#ab8d49149baea1828af255a53386934c6',1,'pesieve::MemPageData::getStartOffset()'],['../structpesieve_1_1util_1_1_basic_buffer.html#ad9b00fbd2200ffe7508c708434206a34',1,'pesieve::util::BasicBuffer::getStartOffset()']]],
   ['getsum_67',['getSum',['../classpesieve_1_1stats_1_1_std_deviation_calc.html#aee38b9d143ec3da0804f3d40a528e469',1,'pesieve::stats::StdDeviationCalc']]],
-  ['getvalratio_68',['getValRatio',['../namespacepesieve.html#a169ec97afb0aab13e1b69e98d6e5b9dc',1,'pesieve']]]
+  ['getsyscallname_68',['getSyscallName',['../structpesieve_1_1_syscall_table.html#a8861442dc69bfcc4bdd042cee33d444b',1,'pesieve::SyscallTable']]],
+  ['getvalratio_69',['getValRatio',['../namespacepesieve.html#a169ec97afb0aab13e1b69e98d6e5b9dc',1,'pesieve']]]
 ];

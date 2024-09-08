@@ -50,5 +50,6 @@ var searchData=
   ['strip_5fprefix_47',['strip_prefix',['../namespacepesieve_1_1util.html#a2d19e21063f990f24ceea5c64d452cfc',1,'pesieve::util']]],
   ['summarize_48',['summarize',['../classpesieve_1_1_area_entropy_stats.html#a55525d7498ddf04738ce1fac9332be3f',1,'pesieve::AreaEntropyStats::summarize()'],['../structpesieve_1_1_chunk_stats.html#ac68e19c8316bf003c2fbdea739176001',1,'pesieve::ChunkStats::summarize()'],['../classpesieve_1_1_area_multi_stats.html#adc0566558c7de4604692be9fec9ba0e3',1,'pesieve::AreaMultiStats::summarize()'],['../classpesieve_1_1_area_stats.html#a5b449d535857a37328518f752ab2f610',1,'pesieve::AreaStats::summarize()']]],
   ['switchtomappedpath_49',['switchToMappedPath',['../classpesieve_1_1_module_data.html#aedc122bb2958fa253cb1db900a9048f9',1,'pesieve::ModuleData']]],
-  ['switchtowow64path_50',['switchToWow64Path',['../classpesieve_1_1_module_data.html#a2e919f44d71aad97bb40a77086c28e7b',1,'pesieve::ModuleData']]]
+  ['switchtowow64path_50',['switchToWow64Path',['../classpesieve_1_1_module_data.html#a2e919f44d71aad97bb40a77086c28e7b',1,'pesieve::ModuleData']]],
+  ['syscalltable_51',['SyscallTable',['../structpesieve_1_1_syscall_table.html#a2ede7f1145a7c6abe44e9ce24d1f7d95',1,'pesieve::SyscallTable']]]
 ];

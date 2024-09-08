@@ -40,5 +40,7 @@ var searchData=
   ['suspicious_37',['suspicious',['../structreport.html#a5ee5e4dbcf6777455b2b32b1529d4980',1,'report']]],
   ['symbols_38',['symbols',['../classpesieve_1_1_process_scanner.html#ac9a6ee9cd3632a5ccd3f03742700959f',1,'pesieve::ProcessScanner::symbols'],['../classpesieve_1_1_thread_scanner.html#ad455f81b20ec49dc2968d6f2db67ae13',1,'pesieve::ThreadScanner::symbols']]],
   ['sys_5fstart_5faddr_39',['sys_start_addr',['../structpesieve_1_1util_1_1__thread__info__ext.html#a015d9ec862bebffabeeea74cc94c6c03',1,'pesieve::util::_thread_info_ext']]],
-  ['szmodname_40',['szModName',['../classpesieve_1_1_module_data.html#ab7463bd2db1ce6343e1be66600c48cd8',1,'pesieve::ModuleData']]]
+  ['syscalltoname_40',['syscallToName',['../structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6',1,'pesieve::SyscallTable']]],
+  ['systemcallnumber_41',['SystemCallNumber',['../structpesieve_1_1util_1_1___t_h_r_e_a_d___l_a_s_t___s_y_s_c_a_l_l___i_n_f_o_r_m_a_t_i_o_n.html#a4a887ea12475b532a388a4ca95598f11',1,'pesieve::util::_THREAD_LAST_SYSCALL_INFORMATION']]],
+  ['szmodname_42',['szModName',['../classpesieve_1_1_module_data.html#ab7463bd2db1ce6343e1be66600c48cd8',1,'pesieve::ModuleData']]]
 ];

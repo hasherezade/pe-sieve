@@ -95,7 +95,8 @@ $(function(){ initResizable(false); });
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">thread_scanner.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -106,6 +107,7 @@ $(function(){ initResizable(false); });
 <code>#include &quot;../utils/ntddk.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="stats_8h_source.html">../stats/stats.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="process__symbols_8h_source.html">../utils/process_symbols.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="syscall__extractor_8h_source.html">../utils/syscall_extractor.h</a>&quot;</code><br />
 </div>
 <p><a href="thread__scanner_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -133,6 +135,8 @@ Typedefs</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a7c9c19e3f0ce1362c7e404893a1163f6" id="r_a7c9c19e3f0ce1362c7e404893a1163f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepesieve.html#a7c9c19e3f0ce1362c7e404893a1163f6">pesieve::is_thread_running</a> (HANDLE hThread)</td></tr>
 <tr class="separator:a7c9c19e3f0ce1362c7e404893a1163f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b9ade21d4de016d2a048bf6cc42dbc0" id="r_a7b9ade21d4de016d2a048bf6cc42dbc0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b9ade21d4de016d2a048bf6cc42dbc0">get_page_details</a> (HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORMATION &amp;page_info)</td></tr>
+<tr class="separator:a7b9ade21d4de016d2a048bf6cc42dbc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae9f172c5997c8651c566511823bb19e" id="r_aae9f172c5997c8651c566511823bb19e"><td class="memItemLeft" align="right" valign="top">DWORD WINAPI&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae9f172c5997c8651c566511823bb19e">enum_stack_thread</a> (LPVOID lpParam)</td></tr>
 <tr class="separator:aae9f172c5997c8651c566511823bb19e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20dfb89b6f97369747479fad5b4e764b" id="r_a20dfb89b6f97369747479fad5b4e764b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20dfb89b6f97369747479fad5b4e764b">has_empty_gui_info</a> (DWORD tid)</td></tr>
@@ -140,10 +144,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a8df4a00bf9eb5dfebad5cfe6c4248ffc" id="r_a8df4a00bf9eb5dfebad5cfe6c4248ffc"><td class="memTemplParams" colspan="2">template&lt;typename PTR_T &gt; </td></tr>
 <tr class="memitem:a8df4a00bf9eb5dfebad5cfe6c4248ffc"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a8df4a00bf9eb5dfebad5cfe6c4248ffc">read_return_ptr</a> (IN HANDLE hProcess, IN OUT <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a> &amp;cDetails)</td></tr>
 <tr class="separator:a8df4a00bf9eb5dfebad5cfe6c4248ffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b9ade21d4de016d2a048bf6cc42dbc0" id="r_a7b9ade21d4de016d2a048bf6cc42dbc0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b9ade21d4de016d2a048bf6cc42dbc0">get_page_details</a> (HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORMATION &amp;page_info)</td></tr>
-<tr class="separator:a7b9ade21d4de016d2a048bf6cc42dbc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acde231c42b9527dcc026402dcb8b9d87" id="r_acde231c42b9527dcc026402dcb8b9d87"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acde231c42b9527dcc026402dcb8b9d87">should_scan_context</a> (const <a class="el" href="namespacepesieve_1_1util.html#ad14df902e4cf78a24e85c3984b8d9e74">util::thread_info</a> &amp;info)</td></tr>
 <tr class="separator:acde231c42b9527dcc026402dcb8b9d87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ad9b41a5c4eaa3b01ef3ad5301c987c77" id="r_ad9b41a5c4eaa3b01ef3ad5301c987c77"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpesieve_1_1_syscall_table.html">pesieve::SyscallTable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9b41a5c4eaa3b01ef3ad5301c987c77">g_SyscallTable</a></td></tr>
+<tr class="separator:ad9b41a5c4eaa3b01ef3ad5301c987c77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="acaf6cb2ff8299b9b3c55905f936d38a9" name="acaf6cb2ff8299b9b3c55905f936d38a9"></a>
@@ -158,7 +165,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00009">9</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00012">12</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 
 </div>
 </div>
@@ -193,7 +200,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00053">53</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00069">69</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 
 </div>
 </div>
@@ -221,7 +228,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00357">357</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00056">56</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 
 </div>
 </div>
@@ -240,7 +247,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00102">102</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00118">118</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 
 </div>
 </div>
@@ -265,7 +272,7 @@ template&lt;typename PTR_T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00248">248</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00308">308</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 
 </div>
 </div>
@@ -284,7 +291,7 @@ template&lt;typename PTR_T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00414">414</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00464">464</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -295,6 +302,31 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="149,16,181,16,181,21,149,21"/>
 </map>
 </div>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ad9b41a5c4eaa3b01ef3ad5301c987c77" name="ad9b41a5c4eaa3b01ef3ad5301c987c77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9b41a5c4eaa3b01ef3ad5301c987c77">&#9670;&#160;</a></span>g_SyscallTable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structpesieve_1_1_syscall_table.html">pesieve::SyscallTable</a> g_SyscallTable</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="pe__sieve_8cpp_source.html#l00024">24</a> of file <a class="el" href="pe__sieve_8cpp_source.html">pe_sieve.cpp</a>.</p>
 
 </div>
 </div>

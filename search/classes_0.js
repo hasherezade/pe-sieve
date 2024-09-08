@@ -7,5 +7,6 @@ var searchData=
   ['_5ft_5fpattern_4',['_t_pattern',['../structpesieve_1_1__t__pattern.html',1,'pesieve']]],
   ['_5ft_5fstack_5fenum_5fparams_5',['_t_stack_enum_params',['../struct__t__stack__enum__params.html',1,'']]],
   ['_5fthread_5finfo_6',['_thread_info',['../structpesieve_1_1util_1_1__thread__info.html',1,'pesieve::util']]],
-  ['_5fthread_5finfo_5fext_7',['_thread_info_ext',['../structpesieve_1_1util_1_1__thread__info__ext.html',1,'pesieve::util']]]
+  ['_5fthread_5finfo_5fext_7',['_thread_info_ext',['../structpesieve_1_1util_1_1__thread__info__ext.html',1,'pesieve::util']]],
+  ['_5fthread_5flast_5fsyscall_5finformation_8',['_THREAD_LAST_SYSCALL_INFORMATION',['../structpesieve_1_1util_1_1___t_h_r_e_a_d___l_a_s_t___s_y_s_c_a_l_l___i_n_f_o_r_m_a_t_i_o_n.html',1,'pesieve::util']]]
 ];

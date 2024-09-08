@@ -45,5 +45,6 @@ var searchData=
   ['free_5fstrparam_42',['free_strparam',['../params_8h.html#ae5bce7f115c2f5448f6453cff04fcebe',1,'params.h']]],
   ['freebuffer_43',['freeBuffer',['../classpesieve_1_1_pe_buffer.html#a23c8cf5875b9d0e63d1e5080d0fe7787',1,'pesieve::PeBuffer::freeBuffer()'],['../structpesieve_1_1util_1_1_byte_buffer.html#ab61c789fa430d217951c03f5a8dff658',1,'pesieve::util::ByteBuffer::freeBuffer()']]],
   ['freefullimage_44',['freeFullImage',['../classpesieve_1_1_remote_module_data.html#aec7840414faf08a309da0a2bbeae7e1e',1,'pesieve::RemoteModuleData']]],
-  ['freesymbols_45',['FreeSymbols',['../class_process_symbols_manager.html#ac0971d7bd0f98cfe609c1f1a1001e80f',1,'ProcessSymbolsManager']]]
+  ['freesymbols_45',['FreeSymbols',['../class_process_symbols_manager.html#ac0971d7bd0f98cfe609c1f1a1001e80f',1,'ProcessSymbolsManager']]],
+  ['funcnamefromaddr_46',['funcNameFromAddr',['../class_process_symbols_manager.html#a1f596791a95938ac76051baaba62961a',1,'ProcessSymbolsManager']]]
 ];

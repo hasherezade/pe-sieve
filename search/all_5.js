@@ -23,5 +23,8 @@ var searchData=
   ['exceptionparam_20',['ExceptionParam',['../namespacepesieve_1_1util.html#a2f48b0c1e52ab5c08ca7312301fc8543',1,'pesieve::util']]],
   ['expand_5fpath_21',['expand_path',['../namespacepesieve_1_1util.html#a4f8f94b209d1771e90f0b56e303cddd1',1,'pesieve::util']]],
   ['exportsmap_22',['exportsMap',['../classpesieve_1_1_process_scan_report.html#a4f395a9b2f05200683c08886fb81e992',1,'pesieve::ProcessScanReport::exportsMap'],['../classpesieve_1_1_thread_scanner.html#aa32fde697d92f5f545c9d2faa5ade268',1,'pesieve::ThreadScanner::exportsMap']]],
-  ['ext_23',['ext',['../structpesieve_1_1util_1_1__thread__info.html#aa8f037bcc48e97319145006c5ceef188',1,'pesieve::util::_thread_info']]]
+  ['ext_23',['ext',['../structpesieve_1_1util_1_1__thread__info.html#aa8f037bcc48e97319145006c5ceef188',1,'pesieve::util::_thread_info']]],
+  ['extract_5ffrom_5fdll_24',['extract_from_dll',['../namespacepesieve_1_1util.html#a9a0b78302afec18f94651ab7426d847a',1,'pesieve::util']]],
+  ['extract_5fsyscall_5ftable_25',['extract_syscall_table',['../namespacepesieve_1_1util.html#ac95cf6c6c1068bc672275290965c0350',1,'pesieve::util']]],
+  ['extract_5fsyscalls_26',['extract_syscalls',['../namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15',1,'pesieve::util']]]
 ];
