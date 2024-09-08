@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <map>
 
+#define INVALID_SYSCALL (-1)
+
 namespace pesieve {
 	namespace util {
 
@@ -35,12 +37,13 @@ namespace pesieve {
 		{
 			DWORD tid;
 			ULONGLONG start_addr;
+			DWORD last_syscall;
 			bool is_extended;
 			thread_info_ext ext;
 
 			_thread_info(DWORD _tid = 0)
 				: tid(_tid), 
-				start_addr(0),
+				start_addr(0), last_syscall(INVALID_SYSCALL),
 				is_extended(false)
 			{
 			}
@@ -49,6 +52,7 @@ namespace pesieve {
 			{
 				this->tid = other.tid;
 				this->start_addr = other.start_addr;
+				this->last_syscall = other.last_syscall;
 				this->is_extended = other.is_extended;
 				this->ext = other.ext;
 			}
