@@ -53,6 +53,19 @@ namespace pesieve {
 	}
 };
 
+bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORMATION& page_info)
+{
+	size_t page_info_size = sizeof(MEMORY_BASIC_INFORMATION);
+	const SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID)start_va, &page_info, page_info_size);
+	const bool is_read = (out == page_info_size) ? true : false;
+	const DWORD error = is_read ? ERROR_SUCCESS : GetLastError();
+	if (error != ERROR_SUCCESS) {
+		//nothing to read
+		return false;
+	}
+	return true;
+}
+
 DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 {
 	t_stack_enum_params* args = static_cast<t_stack_enum_params*>(lpParam);
@@ -156,21 +169,26 @@ std::string ThreadScanReport::translate_thread_state(DWORD thread_state)
 
 //---
 
-bool pesieve::ThreadScanner::checkCallStackIntegrity(IN const std::vector<ULONGLONG> callStack)
+bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONGLONG>& callStack)
 {
-	if (this->info.last_syscall == INVALID_SYSCALL || !symbols || !callStack.size()) {
+	if (this->info.last_syscall == INVALID_SYSCALL || !symbols || !callStack.size() || !info.is_extended) {
 		return true; // skip the check
 	}
-	std::string syscallFuncName = g_SyscallTable.getSyscallName(this->info.last_syscall);
+	const std::string syscallFuncName = g_SyscallTable.getSyscallName(this->info.last_syscall);
 
-	ULONGLONG lastCalled = *callStack.begin();
-	std::string lastFuncCalled = symbols->funcNameFromAddr(lastCalled);
+	const ULONGLONG lastCalled = *callStack.begin();
+	const std::string lastFuncCalled = symbols->funcNameFromAddr(lastCalled);
 
+	if (SyscallTable::isSameSyscallFunc(syscallFuncName, lastFuncCalled)) {
+		return true;
+	}
 	if (this->info.ext.wait_reason == Suspended && callStack.size() == 1 && lastFuncCalled == "RtlUserThreadStart" && this->info.last_syscall == 0) {
 		return true; //normal for suspended threads
 	}
-	if (g_SyscallTable.isSameSyscallFunc(syscallFuncName, lastFuncCalled)) return true;
-	
+	if (syscallFuncName == "NtCallbackReturn") {
+		const ScannedModule* mod = modulesInfo.findModuleContaining(lastCalled);
+		if (mod && mod->getModName() == "win32u.dll") return true;
+	}
 	std::cout << "\n#### TID=" << std::dec <<info.tid << " " << syscallFuncName << " VS " << lastFuncCalled << " DIFFERENT"<< std::endl;
 	printThreadInfo(info);
 	std::cout << "STACK:\n";
@@ -273,7 +291,9 @@ size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE h
 	std::cout << "\n=== TID " << std::dec << GetThreadId(hThread) << " ===\n";
 #endif //_SHOW_THREAD_INFO
 	const size_t analyzedCount = analyzeCallStack(args.callStack, cDetails);
-	checkCallStackIntegrity(args.callStack);
+	if (!cDetails.is_managed) {
+		cDetails.is_ret_as_syscall = checkReturnAddrIntegrity(args.callStack);
+	}
 	return analyzedCount;
 }
 
@@ -379,7 +399,7 @@ void pesieve::ThreadScanner::printThreadInfo(const pesieve::util::thread_info& t
 		std::cout << std::hex << "\tSysStart: ";
 		printResolvedAddr(threadi.ext.sys_start_addr);
 		if (threadi.last_syscall != INVALID_SYSCALL) {
-			std::cout << "\tLast Syscall: " << std::hex << threadi.last_syscall << " func: " << g_SyscallTable.getSyscallName(threadi.last_syscall) << std::endl;
+			std::cout << "\tLast Syscall: " << std::hex << threadi.last_syscall << " Func: " << g_SyscallTable.getSyscallName(threadi.last_syscall) << std::endl;
 		}
 		std::cout << "\tState: [" << ThreadScanReport::translate_thread_state(threadi.ext.state) << "]";
 		if (threadi.ext.state == Waiting) {
@@ -388,19 +408,6 @@ void pesieve::ThreadScanner::printThreadInfo(const pesieve::util::thread_info& t
 		std::cout << "\n";
 	}
 	std::cout << "\n";
-}
-
-bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORMATION &page_info)
-{
-	size_t page_info_size = sizeof(MEMORY_BASIC_INFORMATION);
-	const SIZE_T out = VirtualQueryEx(processHandle, (LPCVOID)start_va, &page_info, page_info_size);
-	const bool is_read = (out == page_info_size) ? true : false;
-	const DWORD error = is_read ? ERROR_SUCCESS : GetLastError();
-	if (error != ERROR_SUCCESS) {
-		//nothing to read
-		return false;
-	}
-	return true;
 }
 
 bool pesieve::ThreadScanner::fillAreaStats(ThreadScanReport* my_report)
@@ -507,8 +514,9 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		}
 	}
 
-	if (this->info.is_extended && info.ext.state == Waiting
-		&& !cDetails.is_ret_in_frame)
+	const bool hasEmptyGUI = has_empty_gui_info(tid);
+
+	if (this->info.is_extended && info.ext.state == Waiting && !cDetails.is_ret_in_frame)
 	{
 		const ULONGLONG ret_addr = cDetails.ret_on_stack;
 		is_shc = isAddrInShellcode(ret_addr);
@@ -530,11 +538,23 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		}
 	}
 
-	const bool hasEmptyGUI = has_empty_gui_info(tid);
+	// other indicators of stack being corrupt:
+	
+	bool isStackCorrupt = false;
+
+	if (this->info.is_extended && !cDetails.is_managed && !cDetails.is_ret_as_syscall)
+	{
+		isStackCorrupt = true;
+	}
+
 	if (hasEmptyGUI &&
 		cDetails.stackFramesCount == 1
 		&& this->info.is_extended && info.ext.state == Waiting && info.ext.wait_reason == UserRequest)
 	{
+		isStackCorrupt = true;
+	}
+
+	if (isStackCorrupt) {
 		my_report->thread_state = info.ext.state;
 		my_report->thread_wait_reason = info.ext.wait_reason;
 		my_report->thread_wait_time = info.ext.wait_time;

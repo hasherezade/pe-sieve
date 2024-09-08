@@ -32,11 +32,9 @@ namespace pesieve {
 			entropy = stats::calcShannonEntropy(histogram, area_size);
 		}
 
-		std::map<BYTE, size_t> histogram;
 		double entropy;
 
 	protected:
-
 		const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
 		{
 			OUT_PADDED(outs, level, "\"area_start\" : ");
@@ -49,6 +47,8 @@ namespace pesieve {
 			outs << std::dec << entropy;
 		}
 
+		std::map<BYTE, size_t> histogram;
+		
 		friend class AreaStatsCalculator;
 
 	}; // AreaStats
