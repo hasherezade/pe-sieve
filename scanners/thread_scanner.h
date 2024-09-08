@@ -143,6 +143,7 @@ namespace pesieve {
 		bool fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, OUT ctx_details& c);
 		size_t fillCallStackInfo(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ctx_details& cDetails);
 		size_t analyzeCallStack(IN const std::vector<ULONGLONG> stack_frame, IN OUT ctx_details& cDetails);
+		bool checkCallStackIntegrity(IN const std::vector<ULONGLONG> stack_frame);
 		bool fillAreaStats(ThreadScanReport* my_report);
 		bool reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr);
 

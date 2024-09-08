@@ -156,6 +156,34 @@ std::string ThreadScanReport::translate_thread_state(DWORD thread_state)
 
 //---
 
+bool pesieve::ThreadScanner::checkCallStackIntegrity(IN const std::vector<ULONGLONG> callStack)
+{
+	if (this->info.last_syscall == INVALID_SYSCALL || !symbols || !callStack.size()) {
+		return true; // skip the check
+	}
+	std::string syscallFuncName = g_SyscallTable.getSyscallName(this->info.last_syscall);
+
+	ULONGLONG lastCalled = *callStack.begin();
+	std::string lastFuncCalled = symbols->funcNameFromAddr(lastCalled);
+
+	if (this->info.ext.wait_reason == Suspended && callStack.size() == 1 && lastFuncCalled == "RtlUserThreadStart" && this->info.last_syscall == 0) {
+		return true; //normal for suspended threads
+	}
+	if (g_SyscallTable.isSameSyscallFunc(syscallFuncName, lastFuncCalled)) return true;
+	
+	std::cout << "\n#### TID=" << std::dec <<info.tid << " " << syscallFuncName << " VS " << lastFuncCalled << " DIFFERENT"<< std::endl;
+	printThreadInfo(info);
+	std::cout << "STACK:\n";
+	for (auto itr = callStack.rbegin(); itr != callStack.rend(); ++itr) {
+		ULONGLONG next_return = *itr;
+		symbols->dumpSymbolInfo(next_return);
+		std::cout << "\t";
+		printResolvedAddr(next_return);
+	}
+	std::cout << std::endl;
+	return false;
+}
+
 size_t pesieve::ThreadScanner::analyzeCallStack(IN const std::vector<ULONGLONG> call_stack, IN OUT ctx_details& cDetails)
 {
 	size_t processedCntr = 0;
@@ -244,23 +272,8 @@ size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE h
 #ifdef _SHOW_THREAD_INFO
 	std::cout << "\n=== TID " << std::dec << GetThreadId(hThread) << " ===\n";
 #endif //_SHOW_THREAD_INFO
-	size_t analyzedCount = analyzeCallStack(args.callStack, cDetails);
-
-
-	if (this->info.last_syscall != INVALID_SYSCALL) {
-		std::string syscallFuncName = g_SyscallTable.getSyscallName(this->info.last_syscall);
-
-		auto itr = args.callStack.begin();
-		ULONGLONG lastCalled = *itr;
-		std::string lastFuncCalled = symbols ? symbols->funcNameFromAddr(lastCalled) : "";
-		if (!g_SyscallTable.isSameSyscallFunc(syscallFuncName, lastFuncCalled)) {
-			std::cout << "#### " << syscallFuncName << " VS " << lastFuncCalled;
-			std::cout << " DIFFERENT";
-			std::cout << std::endl;
-		}
-		
-
-	}
+	const size_t analyzedCount = analyzeCallStack(args.callStack, cDetails);
+	checkCallStackIntegrity(args.callStack);
 	return analyzedCount;
 }
 
