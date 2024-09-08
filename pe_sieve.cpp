@@ -15,11 +15,13 @@
 #include "color_scheme.h"
 
 #include "utils/artefacts_util.h"
+#include "utils/syscall_extractor.h"
 
 using namespace pesieve;
 using namespace pesieve::util;
 
 pesieve::PatternMatcher g_Matcher;
+pesieve::SyscallTable g_SyscallTable;
 
 namespace pesieve {
 	void check_access_denied(DWORD processID)

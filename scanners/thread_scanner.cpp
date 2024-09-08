@@ -5,6 +5,9 @@
 #include "../utils/ntddk.h"
 #include "../stats/stats.h"
 #include "../utils/process_symbols.h"
+#include "../utils/syscall_extractor.h"
+
+extern pesieve::SyscallTable g_SyscallTable;
 
 #define ENTROPY_TRESHOLD 3.0
 //#define NO_ENTROPY_CHECK
@@ -345,6 +348,9 @@ void pesieve::ThreadScanner::printThreadInfo(const pesieve::util::thread_info& t
 	if (threadi.is_extended) {
 		std::cout << std::hex << "\tSysStart: ";
 		printResolvedAddr(threadi.ext.sys_start_addr);
+		if (threadi.last_syscall != INVALID_SYSCALL) {
+			std::cout << "\tLast Syscall: " << std::hex << threadi.last_syscall << " func: " << g_SyscallTable.getSyscallName(threadi.last_syscall) << std::endl;
+		}
 		std::cout << "\tState: [" << ThreadScanReport::translate_thread_state(threadi.ext.state) << "]";
 		if (threadi.ext.state == Waiting) {
 			std::cout << " Reason: [" << ThreadScanReport::translate_wait_reason(threadi.ext.wait_reason) << "] Time: " << threadi.ext.wait_time;

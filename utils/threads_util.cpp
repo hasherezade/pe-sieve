@@ -9,8 +9,17 @@
 #include <iostream>
 #endif
 
+
 namespace pesieve {
 	namespace util {
+
+		// Thread info structures:
+		typedef struct _THREAD_LAST_SYSCALL_INFORMATION
+		{
+			PVOID FirstArgument;
+			USHORT SystemCallNumber;
+		} THREAD_LAST_SYSCALL_INFORMATION, * PTHREAD_LAST_SYSCALL_INFORMATION;
+
 
 		bool query_thread_details(IN DWORD tid, OUT pesieve::util::thread_info& info)
 		{
@@ -20,10 +29,12 @@ namespace pesieve {
 			static auto pNtQueryInformationThread = reinterpret_cast<decltype(&NtQueryInformationThread)>(GetProcAddress(mod, "NtQueryInformationThread"));
 			if (!pNtQueryInformationThread)  return false;
 
-			DWORD thAccess = THREAD_QUERY_INFORMATION;
+			const DWORD thAccess = THREAD_QUERY_INFORMATION | THREAD_GET_CONTEXT;
 			HANDLE hThread = OpenThread(thAccess, 0, tid);
-			if (!hThread)  return false;
-
+			if (!hThread) {
+				hThread = OpenThread(THREAD_QUERY_INFORMATION, 0, tid);
+				if (!hThread) return false;
+			}
 			bool isOk = false;
 			ULONG returnedLen = 0;
 			LPVOID startAddr = 0;
@@ -31,6 +42,13 @@ namespace pesieve {
 			status = pNtQueryInformationThread(hThread, ThreadQuerySetWin32StartAddress, &startAddr, sizeof(LPVOID), &returnedLen);
 			if (status == 0 && returnedLen == sizeof(startAddr)) {
 				info.start_addr = (ULONGLONG)startAddr;
+				isOk = true;
+			}
+			returnedLen = 0;
+			THREAD_LAST_SYSCALL_INFORMATION syscallInfo = { 0 };
+			status = pNtQueryInformationThread(hThread, ThreadLastSystemCall, &syscallInfo, sizeof(syscallInfo), &returnedLen);
+			if (status == 0 && returnedLen == sizeof(syscallInfo)) {
+				info.last_syscall = syscallInfo.SystemCallNumber;
 				isOk = true;
 			}
 			CloseHandle(hThread);
