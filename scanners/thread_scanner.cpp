@@ -244,7 +244,24 @@ size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE h
 #ifdef _SHOW_THREAD_INFO
 	std::cout << "\n=== TID " << std::dec << GetThreadId(hThread) << " ===\n";
 #endif //_SHOW_THREAD_INFO
-	return analyzeCallStack(args.callStack, cDetails);
+	size_t analyzedCount = analyzeCallStack(args.callStack, cDetails);
+
+
+	if (this->info.last_syscall != INVALID_SYSCALL) {
+		std::string syscallFuncName = g_SyscallTable.getSyscallName(this->info.last_syscall);
+
+		auto itr = args.callStack.begin();
+		ULONGLONG lastCalled = *itr;
+		std::string lastFuncCalled = symbols ? symbols->funcNameFromAddr(lastCalled) : "";
+		if (!g_SyscallTable.isSameSyscallFunc(syscallFuncName, lastFuncCalled)) {
+			std::cout << "#### " << syscallFuncName << " VS " << lastFuncCalled;
+			std::cout << " DIFFERENT";
+			std::cout << std::endl;
+		}
+		
+
+	}
+	return analyzedCount;
 }
 
 template <typename PTR_T>

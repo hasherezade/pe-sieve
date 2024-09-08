@@ -39,6 +39,22 @@ public:
 
 	//---
 
+	std::string funcNameFromAddr(const ULONG_PTR addr)
+	{
+		if (!isInit) return "";
+
+		CHAR buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME] = { 0 };
+		PSYMBOL_INFO pSymbol = (PSYMBOL_INFO)buffer;
+		pSymbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+		pSymbol->MaxNameLen = MAX_SYM_NAME;
+
+		DWORD64 Displacement = 0;
+		if (!SymFromAddr(hProcess, addr, &Displacement, pSymbol)) {
+			return "";
+		}
+		return pSymbol->Name;
+	}
+
 	bool dumpSymbolInfo(const ULONG_PTR addr)
 	{
 		if (!isInit) return false;
