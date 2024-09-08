@@ -194,6 +194,7 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		const ScannedModule* mod = modulesInfo.findModuleContaining(lastCalled);
 		if (mod && mod->getModName() == "win32u.dll") return true;
 	}
+#ifdef _SHOW_THREAD_INFO
 	std::cout << "\n#### TID=" << std::dec <<info.tid << " " << syscallFuncName << " VS " << lastFuncCalled << " DIFFERENT"<< std::endl;
 	printThreadInfo(info);
 	std::cout << "STACK:\n";
@@ -204,6 +205,7 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		printResolvedAddr(next_return);
 	}
 	std::cout << std::endl;
+#endif //_SHOW_THREAD_INFO
 	return false;
 }
 
