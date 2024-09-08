@@ -185,6 +185,11 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	if (this->info.ext.wait_reason == Suspended && callStack.size() == 1 && lastFuncCalled == "RtlUserThreadStart" && this->info.last_syscall == 0) {
 		return true; //normal for suspended threads
 	}
+	if (this->info.ext.wait_reason == UserRequest && syscallFuncName == "NtWaitForSingleObject") {
+		if (lastFuncCalled.rfind("NtQuery", 0) == 0 || lastFuncCalled.rfind("ZwQuery", 0) == 0) {
+			return true;
+		}
+	}
 	if (syscallFuncName == "NtCallbackReturn") {
 		const ScannedModule* mod = modulesInfo.findModuleContaining(lastCalled);
 		if (mod && mod->getModName() == "win32u.dll") return true;
