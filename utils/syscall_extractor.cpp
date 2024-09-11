@@ -58,7 +58,9 @@ namespace pesieve {
 			BYTE* buffer = peconv::load_pe_module(path.c_str(), bufsize, false, false);
 
 			if (!buffer) {
+#ifdef _DEBUG
 				std::cerr << "Failed to load the PE: " << path << "\n";
+#endif
 				return 0;
 			}
 
@@ -66,7 +68,9 @@ namespace pesieve {
 			peconv::free_pe_buffer(buffer);
 
 			if (!extracted_count) {
+#ifdef _DEBUG
 				std::cerr << "No syscalls extracted from: " << path << "\n";
+#endif
 			}
 			return extracted_count;
 		}
@@ -94,7 +98,9 @@ size_t pesieve::util::extract_syscall_table(OUT std::map<DWORD, std::string>& sy
 	pesieve::util::wow64_revert_fs_redirection(&old_val);
 
 	if (!extracted_count) {
+#ifdef _DEBUG
 		std::cerr << "Failed to extract syscalls.\n";
+#endif
 		return 0;
 	}
 	return syscallToName.size();

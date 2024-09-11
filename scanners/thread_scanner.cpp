@@ -171,7 +171,7 @@ std::string ThreadScanReport::translate_thread_state(DWORD thread_state)
 
 bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONGLONG>& callStack)
 {
-	if (this->info.last_syscall == INVALID_SYSCALL || !symbols || !callStack.size() || !info.is_extended) {
+	if (this->info.last_syscall == INVALID_SYSCALL || !symbols || !callStack.size() || !info.is_extended || !g_SyscallTable.isReady()) {
 		return true; // skip the check
 	}
 	const std::string syscallFuncName = g_SyscallTable.getSyscallName(this->info.last_syscall);
