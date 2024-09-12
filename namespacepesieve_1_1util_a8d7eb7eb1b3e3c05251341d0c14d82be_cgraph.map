@@ -1,0 +1,10 @@
+<map id="pesieve::util::is_current_wow64" name="pesieve::util::is_current_wow64">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,27,158,68"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="412,5,544,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,39,396,21,397,27,158,45"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#a43b6faf00b6a97279f2d67f4a3fd2513" title=" " alt="" coords="206,55,364,96"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="158,55,190,60,190,65,158,61"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="355,52,417,33,418,39,356,57"/>
+<area shape="rect" id="Node000004" href="$namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="422,55,535,96"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="364,73,406,73,406,78,364,78"/>
+</map>
