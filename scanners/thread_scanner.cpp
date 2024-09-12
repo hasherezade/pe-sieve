@@ -544,7 +544,6 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 			return true;
 		}
 	}
-
 	// other indicators of stack being corrupt:
 	
 	bool isStackCorrupt = false;
@@ -574,9 +573,13 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 
 ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 {
-	ThreadScanReport* my_report = new ThreadScanReport(info.tid);
-	if (!my_report) return nullptr;
-
+	if (GetCurrentThreadId() == info.tid) {
+		return nullptr; // do not scan your own thread
+	}
+	ThreadScanReport* my_report = new (std::nothrow) ThreadScanReport(info.tid);
+	if (!my_report) {
+		return nullptr;
+	}
 #ifdef _SHOW_THREAD_INFO
 	printThreadInfo(info);
 #endif // _SHOW_THREAD_INFO
