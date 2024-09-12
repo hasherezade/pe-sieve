@@ -70,6 +70,19 @@ bool pesieve::util::is_process_64bit(IN HANDLE process)
 	return true;
 }
 
+bool pesieve::util::is_current_wow64()
+{
+#ifdef _WIN64
+	return false;
+#else
+	BOOL isWow64 = FALSE;
+	if (is_process_wow64(GetCurrentProcess(), &isWow64)) {
+		return false;
+	}
+	return (bool)isWow64;
+#endif
+}
+
 BOOL pesieve::util::wow64_get_thread_context(IN HANDLE hThread, IN OUT PWOW64_CONTEXT lpContext)
 {
 #ifdef _WIN64

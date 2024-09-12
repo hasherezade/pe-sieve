@@ -51,6 +51,7 @@ namespace pesieve {
 		}
 		return true;
 	}
+
 };
 
 bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORMATION& page_info)
@@ -178,13 +179,22 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 
 	const ULONGLONG lastCalled = *callStack.begin();
 	const std::string lastFuncCalled = symbols->funcNameFromAddr(lastCalled);
-
+	if (callStack.size() == 1) {
+		if (this->info.ext.wait_reason == Suspended && lastFuncCalled == "RtlUserThreadStart" && this->info.last_syscall == 0) {
+			return true; //normal for suspended threads
+		}
+		return false; // otherwise it is an anomaly
+	}
+#ifndef _WIN64
+	static bool isWow64 = util::is_current_wow64();
+	if (!isWow64 && lastFuncCalled == "KiFastSystemCallRet") {
+		return true;
+	}
+#endif
 	if (SyscallTable::isSameSyscallFunc(syscallFuncName, lastFuncCalled)) {
 		return true;
 	}
-	if (this->info.ext.wait_reason == Suspended && callStack.size() == 1 && lastFuncCalled == "RtlUserThreadStart" && this->info.last_syscall == 0) {
-		return true; //normal for suspended threads
-	}
+
 	if (this->info.ext.wait_reason == UserRequest && syscallFuncName == "NtWaitForSingleObject") {
 		if (lastFuncCalled.rfind("NtQuery", 0) == 0 || lastFuncCalled.rfind("ZwQuery", 0) == 0) {
 			return true;
