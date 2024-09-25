@@ -32,7 +32,7 @@ var searchData=
   ['count_5fsection_5fhdrs_29',['count_section_hdrs',['../namespacepesieve_1_1util.html#ac5c9c8728b3429b9499eb8e0978e33d0',1,'pesieve::util']]],
   ['count_5fworkingset_5fentries_30',['count_workingset_entries',['../namespacepesieve_1_1util.html#a539f415709cc4ca711a41118bed18c1f',1,'pesieve::util']]],
   ['countdumped_31',['countDumped',['../classpesieve_1_1_process_dump_report.html#acd254aea75b8454bda044b23dcc55d6e',1,'pesieve::ProcessDumpReport']]],
-  ['countfoundstrings_32',['countFoundStrings',['../namespacepesieve.html#afd6e2f6a7418d9dc85b4c720110bf304',1,'pesieve']]],
+  ['countfoundstrings_32',['countFoundStrings',['../namespacepesieve.html#ad212e5c3fbb0e98de653dd411997b82d',1,'pesieve']]],
   ['counthdrsreplaced_33',['countHdrsReplaced',['../classpesieve_1_1_process_scan_report.html#ab7b1df2bc09c6ea7843ac247ea161ddd',1,'pesieve::ProcessScanReport']]],
   ['counthooked_34',['countHooked',['../classpesieve_1_1_i_a_t_scan_report.html#ac5085baa77c99946b6c111eab61934cd',1,'pesieve::IATScanReport']]],
   ['countinaccessiblesections_35',['countInaccessibleSections',['../classpesieve_1_1_code_scan_report.html#a70b46a7a133350ab18e15838598b1908',1,'pesieve::CodeScanReport']]],

@@ -29,7 +29,7 @@ var searchData=
   ['relocatetobase_26',['relocateToBase',['../classpesieve_1_1_module_data.html#a39d37446bca2041d5fb9c0cc64998f15',1,'pesieve::ModuleData']]],
   ['relocbase_27',['relocBase',['../classpesieve_1_1_pe_buffer.html#af82f09c9cf7265dd990b5fe299864838',1,'pesieve::PeBuffer::relocBase'],['../classpesieve_1_1_module_scan_report.html#a65db46896baa89ad7718d33daa449024',1,'pesieve::ModuleScanReport::relocBase']]],
   ['relocs_28',['relocs',['../classpesieve_1_1_patch_analyzer.html#a449f7bb45cab966c6cad9032275cbb5e',1,'pesieve::PatchAnalyzer']]],
-  ['remap_5fto_5fdrive_5fletter_29',['remap_to_drive_letter',['../namespacepesieve_1_1util.html#ace72c6bdbbf45a2a63efd91a0df09031',1,'pesieve::util']]],
+  ['remap_5fto_5fdrive_5fletter_29',['remap_to_drive_letter',['../namespacepesieve_1_1util.html#a31cd5387a84569779492a6d7c5b0420a',1,'pesieve::util']]],
   ['remotemoddata_30',['remoteModData',['../classpesieve_1_1_module_scanner.html#a78ff1c135f070ab0d6e0ad3870604f90',1,'pesieve::ModuleScanner']]],
   ['remotemoduledata_31',['RemoteModuleData',['../classpesieve_1_1_remote_module_data.html',1,'pesieve::RemoteModuleData'],['../classpesieve_1_1_remote_module_data.html#accd114f284a3f3b261b54806f60c4991',1,'pesieve::RemoteModuleData::RemoteModuleData()']]],
   ['replace_5fchar_32',['replace_char',['../namespacepesieve_1_1util.html#a030a7f8a58a027763c9207b0ff815d26',1,'pesieve::util']]],

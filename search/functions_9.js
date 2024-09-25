@@ -27,7 +27,7 @@ var searchData=
   ['is_5fcurrent_5fwow64_24',['is_current_wow64',['../namespacepesieve_1_1util.html#a8d7eb7eb1b3e3c05251341d0c14d82be',1,'pesieve::util']]],
   ['is_5fdec_25',['is_dec',['../namespacepesieve_1_1util.html#ae57bc6f959f2d79411087e1b8d3600f7',1,'pesieve::util']]],
   ['is_5fdep_5fenabled_26',['is_DEP_enabled',['../namespacepesieve_1_1util.html#a4e03a2c1c527e0f0b4063f8ac12ff22d',1,'pesieve::util']]],
-  ['is_5fdevice_5fpath_27',['is_device_path',['../path__converter_8cpp.html#aa38e814828efe4c9d588eb4529ed5b1c',1,'path_converter.cpp']]],
+  ['is_5fdevice_5fpath_27',['is_device_path',['../path__converter_8cpp.html#a0f553783bc5f07b958af49d79daffd5b',1,'path_converter.cpp']]],
   ['is_5fdisk_5frelative_28',['is_disk_relative',['../namespacepesieve_1_1util.html#aa402c13598449f9a1f47efb72df8f62f',1,'pesieve::util']]],
   ['is_5fexecutable_29',['is_executable',['../namespacepesieve_1_1util.html#ab5a500e51ff539294a3c71f6b95aa65b',1,'pesieve::util']]],
   ['is_5fhex_30',['is_hex',['../namespacepesieve_1_1util.html#a23447c87ce0d32d372ca0c4e3bc6e39b',1,'pesieve::util']]],

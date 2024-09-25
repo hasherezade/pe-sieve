@@ -84,7 +84,7 @@ var searchData=
   ['is_5fcurrent_5fwow64_81',['is_current_wow64',['../namespacepesieve_1_1util.html#a8d7eb7eb1b3e3c05251341d0c14d82be',1,'pesieve::util']]],
   ['is_5fdec_82',['is_dec',['../namespacepesieve_1_1util.html#ae57bc6f959f2d79411087e1b8d3600f7',1,'pesieve::util']]],
   ['is_5fdep_5fenabled_83',['is_DEP_enabled',['../namespacepesieve_1_1util.html#a4e03a2c1c527e0f0b4063f8ac12ff22d',1,'pesieve::util']]],
-  ['is_5fdevice_5fpath_84',['is_device_path',['../path__converter_8cpp.html#aa38e814828efe4c9d588eb4529ed5b1c',1,'path_converter.cpp']]],
+  ['is_5fdevice_5fpath_84',['is_device_path',['../path__converter_8cpp.html#a0f553783bc5f07b958af49d79daffd5b',1,'path_converter.cpp']]],
   ['is_5fdisk_5frelative_85',['is_disk_relative',['../namespacepesieve_1_1util.html#aa402c13598449f9a1f47efb72df8f62f',1,'pesieve::util']]],
   ['is_5fdot_5fnet_86',['is_dot_net',['../classpesieve_1_1_module_data.html#a7f242e23b293e9741c8b4821a5df9dc4',1,'pesieve::ModuleData']]],
   ['is_5fendline_87',['IS_ENDLINE',['../strings__util_8h.html#a08090b46d9133e90e2a8f0d326895b09',1,'strings_util.h']]],

@@ -137,8 +137,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ab1cc74daf162025643c225c29cd8225b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bb1f60bbf77e4faed6d288ef3e83b9f" id="r_a4bb1f60bbf77e4faed6d288ef3e83b9f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bb1f60bbf77e4faed6d288ef3e83b9f">fillCallStackInfo</a> (IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a> &amp;cDetails)</td></tr>
 <tr class="separator:a4bb1f60bbf77e4faed6d288ef3e83b9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaaaef1f47c9746bbc346b00b7da57f6b" id="r_aaaaef1f47c9746bbc346b00b7da57f6b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaaaef1f47c9746bbc346b00b7da57f6b">analyzeCallStack</a> (IN const std::vector&lt; ULONGLONG &gt; stack_frame, IN OUT <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a> &amp;cDetails)</td></tr>
-<tr class="separator:aaaaef1f47c9746bbc346b00b7da57f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9919021b6f9a87d1ee2622e530bf5f7f" id="r_a9919021b6f9a87d1ee2622e530bf5f7f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9919021b6f9a87d1ee2622e530bf5f7f">analyzeCallStack</a> (IN const std::vector&lt; ULONGLONG &gt; &amp;stack_frame, IN OUT <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a> &amp;cDetails)</td></tr>
+<tr class="separator:a9919021b6f9a87d1ee2622e530bf5f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed5b08704f3c1e96e9d8e00b05c7768f" id="r_aed5b08704f3c1e96e9d8e00b05c7768f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed5b08704f3c1e96e9d8e00b05c7768f">checkReturnAddrIntegrity</a> (IN const std::vector&lt; ULONGLONG &gt; &amp;callStack)</td></tr>
 <tr class="separator:aed5b08704f3c1e96e9d8e00b05c7768f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79df00ed9c178f7eab47cbb8ee43dd42" id="r_a79df00ed9c178f7eab47cbb8ee43dd42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79df00ed9c178f7eab47cbb8ee43dd42">fillAreaStats</a> (<a class="el" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a> *my_report)</td></tr>
@@ -219,8 +219,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aaaaef1f47c9746bbc346b00b7da57f6b" name="aaaaef1f47c9746bbc346b00b7da57f6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaaaef1f47c9746bbc346b00b7da57f6b">&#9670;&#160;</a></span>analyzeCallStack()</h2>
+<a id="a9919021b6f9a87d1ee2622e530bf5f7f" name="a9919021b6f9a87d1ee2622e530bf5f7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9919021b6f9a87d1ee2622e530bf5f7f">&#9670;&#160;</a></span>analyzeCallStack()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -231,7 +231,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">size_t pesieve::ThreadScanner::analyzeCallStack </td>
           <td>(</td>
-          <td class="paramtype">IN const std::vector&lt; ULONGLONG &gt;</td>          <td class="paramname"><span class="paramname"><em>stack_frame</em></span>, </td>
+          <td class="paramtype">IN const std::vector&lt; ULONGLONG &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>stack_frame</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -250,8 +250,8 @@ Protected Attributes</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classpesieve_1_1_thread_scanner_aaaaef1f47c9746bbc346b00b7da57f6b_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scanner_aaaaef1f47c9746bbc346b00b7da57f6b_cgraph" alt=""/></div>
-<map name="aclasspesieve_1_1_thread_scanner_aaaaef1f47c9746bbc346b00b7da57f6b_cgraph" id="aclasspesieve_1_1_thread_scanner_aaaaef1f47c9746bbc346b00b7da57f6b_cgraph">
+<div class="center"><img src="classpesieve_1_1_thread_scanner_a9919021b6f9a87d1ee2622e530bf5f7f_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scanner_a9919021b6f9a87d1ee2622e530bf5f7f_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_thread_scanner_a9919021b6f9a87d1ee2622e530bf5f7f_cgraph" id="aclasspesieve_1_1_thread_scanner_a9919021b6f9a87d1ee2622e530bf5f7f_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,166,46"/>
 <area shape="rect" href="classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="214,5,379,46"/>
 <area shape="poly" title=" " alt="" coords="166,23,198,23,198,28,166,28"/>
