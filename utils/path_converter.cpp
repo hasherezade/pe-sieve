@@ -125,7 +125,7 @@ namespace pesieve {
 			return false;
 		}
 
-		std::string remap_to_drive_letter(std::string full_path)
+		std::string remap_to_drive_letter(const std::string &full_path)
 		{
 			size_t full_path_size = full_path.length();
 			if (full_path_size == 0) {
@@ -237,7 +237,7 @@ std::string pesieve::util::device_path_to_win32_path(const std::string &full_pat
 	return path;
 }
 
-bool is_device_path(std::string path)
+bool is_device_path(const std::string &path)
 {
 	const std::string device_path = "\\Device\\";
 	if (path.length() < device_path.length() || path[0] !='\\') {
@@ -249,7 +249,7 @@ bool is_device_path(std::string path)
 	return false;
 }
 
-std::string pesieve::util::expand_path(std::string path)
+std::string pesieve::util::expand_path(const std::string &path)
 {
 	std::string basic_path = pesieve::util::device_path_to_win32_path(path);
 	if (is_device_path(basic_path)) {
@@ -270,4 +270,3 @@ std::string pesieve::util::expand_path(std::string path)
 	}
 	return strip_prefix(filename, LONG_PATH_PREFIX);
 }
-

@@ -198,7 +198,7 @@ pesieve::ImpReconstructor::t_imprec_res pesieve::ImpReconstructor::rebuildImport
 	return IMP_RECOVERY_ERROR;
 }
 
-bool pesieve::ImpReconstructor::printFoundIATs(std::string reportPath)
+bool pesieve::ImpReconstructor::printFoundIATs(const std::string& reportPath)
 {
 	if (!foundIATs.size()) {
 		return false;

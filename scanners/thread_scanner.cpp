@@ -219,7 +219,7 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	return false;
 }
 
-size_t pesieve::ThreadScanner::analyzeCallStack(IN const std::vector<ULONGLONG> call_stack, IN OUT ctx_details& cDetails)
+size_t pesieve::ThreadScanner::analyzeCallStack(IN const std::vector<ULONGLONG> &call_stack, IN OUT ctx_details& cDetails)
 {
 	size_t processedCntr = 0;
 

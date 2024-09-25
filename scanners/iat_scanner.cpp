@@ -89,7 +89,7 @@ std::string IATScanReport::formatHookedFuncName(IN peconv::ImportsCollection* st
 	
 }
 
-bool IATScanReport::saveNotRecovered(IN std::string fileName,
+bool IATScanReport::saveNotRecovered(IN const std::string& fileName,
 	IN HANDLE hProcess,
 	IN peconv::ImportsCollection *storedFunc,
 	IN peconv::ImpsNotCovered &notCovered,

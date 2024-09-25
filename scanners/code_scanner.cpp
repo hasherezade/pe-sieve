@@ -10,7 +10,7 @@
 using namespace pesieve;
 using namespace pesieve::util;
 
-size_t pesieve::CodeScanReport::generateTags(std::string reportPath)
+size_t pesieve::CodeScanReport::generateTags(const std::string& reportPath)
 {
 	if (patchesList.size() == 0) {
 		return 0;

@@ -96,7 +96,7 @@ namespace pesieve {
 			return countSectionsWithStatus(SECTION_SCAN_ERR);
 		}
 
-		size_t generateTags(std::string reportPath);
+		size_t generateTags(const std::string &reportPath);
 
 		std::map<DWORD, t_section_status> sectionToResult;
 		PatchList patchesList;

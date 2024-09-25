@@ -12,7 +12,7 @@ namespace pesieve {
 	{
 	public:
 
-		static bool saveNotRecovered(IN std::string fileName,
+		static bool saveNotRecovered(IN const std::string &fileName,
 			IN HANDLE hProcess,
 			IN peconv::ImportsCollection *storedFunc,
 			IN peconv::ImpsNotCovered &notCovered,

@@ -198,7 +198,7 @@ namespace pesieve {
 
 		t_imprec_res rebuildImportTable(const IN peconv::ExportsMapper* exportsMap, IN const pesieve::t_imprec_mode &imprec_mode);
 
-		bool printFoundIATs(std::string reportPath);
+		bool printFoundIATs(const std::string &reportPath);
 
 	private:
 

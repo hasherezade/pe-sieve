@@ -15,7 +15,7 @@ namespace pesieve {
 		//converts path in format i.e.: \Device\HarddiskVolume2\... to format: C:\...
 		std::string device_path_to_win32_path(const std::string &full_path);
 
-		std::string expand_path(std::string path);
+		std::string expand_path(const std::string &path);
 
 	};
 };

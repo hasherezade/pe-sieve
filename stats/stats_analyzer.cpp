@@ -56,7 +56,7 @@ namespace pesieve {
 		return points;
 	}
 
-	size_t countFoundStrings(IN const AreaMultiStats& stats, IN std::set<std::string> neededStrings, IN size_t minOccurrence)
+	size_t countFoundStrings(IN const AreaMultiStats& stats, IN const std::set<std::string> &neededStrings, IN size_t minOccurrence)
 	{
 		size_t totalCount = 0;
 		if (!stats.currArea.foundStrings.size()) {
@@ -100,7 +100,7 @@ namespace pesieve {
 	{
 		size_t valsCount = 0;
 		for (auto itr1 = currArea.frequencies.rbegin(); itr1 != currArea.frequencies.rend(); ++itr1) {
-			double counter = itr1->first;
+			double counter = (double)itr1->first;
 			if (counter >= mean) {
 				valsCount += itr1->second.size();
 			}
