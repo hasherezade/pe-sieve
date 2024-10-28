@@ -36,6 +36,34 @@ std::string pesieve::scan_report_to_string(const ProcessScanReport &process_repo
 	return stream.str();
 }
 
+std::string pesieve::err_report_to_json(const pesieve::ErrorReport& err_report,
+	ProcessScanReport::t_report_filter filter,
+	size_t start_level
+)
+{
+	if ((filter & ProcessScanReport::REPORT_ERRORS) == 0) {
+		return "";
+	}
+	//summary:
+	std::stringstream stream;
+
+	size_t level = start_level + 1;
+	OUT_PADDED(stream, start_level, "{\n"); // beginning of the report
+
+	OUT_PADDED(stream, level, "\"pid\" : ");
+	stream << std::dec << err_report.pid << ",\n";
+	OUT_PADDED(stream, level, "\"err_message\" : ");
+	stream << "\"" << err_report.message << "\"\n";
+	OUT_PADDED(stream, start_level, "}\n"); // end of the report
+
+	std::string report_all = stream.str();
+	if (report_all.length() == 0) {
+		return "";
+	}
+	return report_all;
+}
+
+
 std::string pesieve::scan_report_to_json(
 	const ProcessScanReport &process_report,
 	ProcessScanReport::t_report_filter filter,
@@ -77,13 +105,21 @@ std::string pesieve::dump_report_to_json(
 
 std::string pesieve::report_to_json(const pesieve::ReportEx& report, const t_report_type rtype, ProcessScanReport::t_report_filter filter, const pesieve::t_json_level& jdetails, size_t start_level)
 {
-	if (!report.scan_report || rtype == REPORT_NONE) return 0;
+	if (rtype == REPORT_NONE) return 0;
 
 	size_t level = 1;
 	std::stringstream stream;
+
+	if (report.error_report && (filter & ProcessScanReport::REPORT_ERRORS)) {
+		stream << "{\n";
+		OUT_PADDED(stream, level, "\"error_report\" :\n");
+		stream << err_report_to_json(*report.error_report, filter, level);
+		stream << "}\n";
+		return stream.str();
+	}
 	const bool has_dumps = (report.dump_report && report.dump_report->countDumped() > 0) ? true : false;
 	stream << "{\n";
-	if (rtype == REPORT_ALL || rtype == REPORT_SCANNED) {
+	if (report.scan_report && (rtype == REPORT_ALL || rtype == REPORT_SCANNED)) {
 		OUT_PADDED(stream, level, "\"scan_report\" :\n");
 		stream << scan_report_to_json(*report.scan_report, filter, jdetails, level);
 		if (rtype == REPORT_ALL && has_dumps) {

@@ -25,6 +25,8 @@ namespace pesieve {
 
 		bool dumpJsonReport(ProcessDumpReport &process_report);
 
+		bool dumpJsonReport(ErrorReport& error_report, const ProcessScanReport::t_report_filter& filter);
+
 		std::string getOutputDir()
 		{
 			return this->dumpDir;

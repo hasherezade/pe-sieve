@@ -38,11 +38,11 @@ namespace pesieve {
 bool pesieve::ProcessScanReport::hasAnyShownType(const pesieve::ProcessScanReport::t_report_filter &filter)
 {
 	t_report summary = this->generateSummary();
-	t_scan_status aggregated_status = summary.suspicious > 0 ? SCAN_SUSPICIOUS : SCAN_NOT_SUSPICIOUS;
+	t_scan_status aggregated_status = (summary.suspicious > 0) ? SCAN_SUSPICIOUS : SCAN_NOT_SUSPICIOUS;
 	if (is_shown_type(aggregated_status, filter)) {
 		return true;
 	}
-	aggregated_status = summary.errors > 0 ? SCAN_ERROR : SCAN_NOT_SUSPICIOUS;
+	aggregated_status = (summary.errors > 0) ? SCAN_ERROR : SCAN_NOT_SUSPICIOUS;
 	if (is_shown_type(aggregated_status, filter)) {
 		return true;
 	}
