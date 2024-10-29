@@ -47,6 +47,19 @@ std::string pesieve::translate_out_filter(const pesieve::t_output_filter o_filte
 	return "undefined";
 }
 
+std::string pesieve::translate_report_filter(const pesieve::t_report_filter r_filter)
+{
+	switch (r_filter) {
+	case pesieve::SHOW_SUSPICIOUS:
+		return "only suspicious (default)";
+	case pesieve::SHOW_SUSPICIOUS_AND_ERRORS:
+		return "only suspicious and errors";
+	case pesieve::SHOW_ALL:
+		return "all scanned";
+	}
+	return "undefined";
+}
+
 std::string pesieve::translate_imprec_mode(const pesieve::t_imprec_mode imprec_mode)
 {
 	switch (imprec_mode) {

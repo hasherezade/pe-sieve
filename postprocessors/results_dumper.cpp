@@ -113,7 +113,7 @@ namespace pesieve {
 }; //namespace pesieve
 
 
-bool pesieve::ResultsDumper::dumpJsonReport(pesieve::ProcessScanReport &process_report, const ProcessScanReport::t_report_filter &filter, const pesieve::t_json_level &jdetails)
+bool pesieve::ResultsDumper::dumpJsonReport(pesieve::ProcessScanReport &process_report, const t_report_filter &filter, const pesieve::t_json_level &jdetails)
 {
 	std::stringstream stream;
 	size_t level = 1;
@@ -174,7 +174,7 @@ bool pesieve::ResultsDumper::dumpJsonReport(ProcessDumpReport &process_report)
 	return false;
 }
 
-bool pesieve::ResultsDumper::dumpJsonReport(ErrorReport& error_report, const ProcessScanReport::t_report_filter& filter)
+bool pesieve::ResultsDumper::dumpJsonReport(ErrorReport& error_report, const t_report_filter& filter)
 {
 	std::stringstream stream;
 	size_t level = 1;

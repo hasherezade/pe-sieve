@@ -25,6 +25,7 @@ using namespace pesieve;
 #define PARAM_DUMP_MODE "dmode"
 //output options:
 #define PARAM_OUT_FILTER "ofilter"
+#define PARAM_REPORT_FILTER "report"
 #define PARAM_QUIET "quiet"
 #define PARAM_JSON "json"
 #define PARAM_JSON_LVL "jlvl"
@@ -79,6 +80,18 @@ public:
 			for (size_t i = 0; i < OUT_FILTERS_COUNT; i++) {
 				t_output_filter mode = (t_output_filter)(i);
 				enumParam->addEnumValue(mode, translate_out_filter(mode));
+			}
+		}
+
+		enumParam = new EnumParam(PARAM_REPORT_FILTER, "rfilter_id", false);
+		if (enumParam) {
+			this->addParam(enumParam);
+			this->setInfo(PARAM_REPORT_FILTER, "Define what is reported.");
+			for (size_t i = SHOW_SUSPICIOUS; i < SHOW_FILTERS_COUNT; i++) {
+				t_report_filter mode = (t_report_filter)(i);
+				std::string info = translate_report_filter(mode);
+				if (info == "undefined") continue;
+				enumParam->addEnumValue(mode, info);
 			}
 		}
 
@@ -202,6 +215,7 @@ public:
 		this->addParamToGroup(PARAM_JSON, str_group);
 		this->addParamToGroup(PARAM_JSON_LVL, str_group);
 		this->addParamToGroup(PARAM_OUT_FILTER, str_group);
+		this->addParamToGroup(PARAM_REPORT_FILTER, str_group);
 
 		str_group = "1. scanner settings";
 		this->addGroup(new ParamGroup(str_group));
@@ -253,6 +267,7 @@ public:
 		copyVal<IntParam>(PARAM_PID, ps.pid);
 		copyVal<EnumParam>(PARAM_IMP_REC, ps.imprec_mode);
 		copyVal<EnumParam>(PARAM_OUT_FILTER, ps.out_filter);
+		copyVal<EnumParam>(PARAM_REPORT_FILTER, ps.report_filter);
 
 		fillStringParam(PARAM_MODULES_IGNORE, ps.modules_ignored);
 

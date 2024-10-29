@@ -25,8 +25,6 @@ pesieve::SyscallTable g_SyscallTable;
 
 namespace pesieve {
 
-	ProcessScanReport::t_report_filter g_reportLevel = ProcessScanReport::t_report_filter::REPORT_SUSPICIOUS;// REPORT_SUSPICIOUS_AND_ERRORS;
-
 	void check_access_denied(DWORD processID)
 	{
 		HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, processID);
@@ -129,7 +127,7 @@ namespace pesieve {
 		ProcessDumpReport* dumpReport = nullptr;
 		ResultsDumper dumper(expand_path(args.output_dir), args.quiet);
 
-		if (dumper.dumpJsonReport(process_report, g_reportLevel, args.json_lvl) && !args.quiet) {
+		if (dumper.dumpJsonReport(process_report, args.report_filter, args.json_lvl) && !args.quiet) {
 			std::cout << "[+] Report dumped to: " << dumper.getOutputDir() << std::endl;
 		}
 		
@@ -262,7 +260,7 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 			util::print_in_color(ERROR_COLOR, std::string("[ERROR] ") + e.what() + "\n", true);
 		}
 		ResultsDumper dumper(expand_path(args.output_dir), args.quiet);
-		if (dumper.dumpJsonReport(*report->error_report, g_reportLevel) && !args.quiet) {
+		if (dumper.dumpJsonReport(*report->error_report, args.report_filter) && !args.quiet) {
 			std::cout << "[+] Report dumped to: " << dumper.getOutputDir() << std::endl;
 		}
 	}

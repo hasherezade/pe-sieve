@@ -37,11 +37,11 @@ std::string pesieve::scan_report_to_string(const ProcessScanReport &process_repo
 }
 
 std::string pesieve::err_report_to_json(const pesieve::ErrorReport& err_report,
-	ProcessScanReport::t_report_filter filter,
+	t_report_filter filter,
 	size_t start_level
 )
 {
-	if ((filter & ProcessScanReport::REPORT_ERRORS) == 0) {
+	if ((filter & SHOW_ERRORS) == 0) {
 		return "";
 	}
 	//summary:
@@ -66,7 +66,7 @@ std::string pesieve::err_report_to_json(const pesieve::ErrorReport& err_report,
 
 std::string pesieve::scan_report_to_json(
 	const ProcessScanReport &process_report,
-	ProcessScanReport::t_report_filter filter,
+	t_report_filter filter,
 	const pesieve::t_json_level &jdetails,
 	size_t start_level
 )
@@ -103,14 +103,14 @@ std::string pesieve::dump_report_to_json(
 	return report_all;
 }
 
-std::string pesieve::report_to_json(const pesieve::ReportEx& report, const t_report_type rtype, ProcessScanReport::t_report_filter filter, const pesieve::t_json_level& jdetails, size_t start_level)
+std::string pesieve::report_to_json(const pesieve::ReportEx& report, const t_report_type rtype, t_report_filter filter, const pesieve::t_json_level& jdetails, size_t start_level)
 {
 	if (rtype == REPORT_NONE) return 0;
 
 	size_t level = 1;
 	std::stringstream stream;
 
-	if (report.error_report && (filter & ProcessScanReport::REPORT_ERRORS)) {
+	if (report.error_report && (filter & SHOW_ERRORS)) {
 		stream << "{\n";
 		OUT_PADDED(stream, level, "\"error_report\" :\n");
 		stream << err_report_to_json(*report.error_report, filter, level);
