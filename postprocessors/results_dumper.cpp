@@ -113,7 +113,7 @@ namespace pesieve {
 }; //namespace pesieve
 
 
-bool pesieve::ResultsDumper::dumpJsonReport(pesieve::ProcessScanReport &process_report, const ProcessScanReport::t_report_filter &filter, const pesieve::t_json_level &jdetails)
+bool pesieve::ResultsDumper::dumpJsonReport(pesieve::ProcessScanReport &process_report, const t_results_filter &filter, const pesieve::t_json_level &jdetails)
 {
 	std::stringstream stream;
 	size_t level = 1;
@@ -154,7 +154,7 @@ bool pesieve::ResultsDumper::dumpJsonReport(ProcessDumpReport &process_report)
 	size_t level = 1;
 	process_report.toJSON(stream, level);
 	std::string report_all = stream.str();
-	if (report_all.length() == 0) {
+	if (report_all.empty()) {
 		return false;
 	}
 	//ensure that the directory is created:
@@ -167,6 +167,33 @@ bool pesieve::ResultsDumper::dumpJsonReport(ProcessDumpReport &process_report)
 		return false;
 	}
 	json_report << report_all << std::endl;
+	if (json_report.is_open()) {
+		json_report.close();
+		return true;
+	}
+	return false;
+}
+
+bool pesieve::ResultsDumper::dumpJsonReport(ErrorReport& error_report, const t_results_filter& filter)
+{
+	std::stringstream stream;
+	size_t level = 1;
+
+	const std::string err_content = err_report_to_json(error_report, filter, level);
+	if (err_content.empty()) {
+		return false;
+	}
+
+	//ensure that the directory is created:
+	this->dumpDir = pesieve::ResultsDumper::makeDirName(error_report.pid);
+
+	std::ofstream json_report;
+	std::string report_path = makeOutPath("error_report.json");
+	json_report.open(report_path);
+	if (json_report.is_open() == false) {
+		return false;
+	}
+	json_report << err_content << std::endl;
 	if (json_report.is_open()) {
 		json_report.close();
 		return true;

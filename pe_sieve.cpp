@@ -24,6 +24,7 @@ pesieve::PatternMatcher g_Matcher;
 pesieve::SyscallTable g_SyscallTable;
 
 namespace pesieve {
+
 	void check_access_denied(DWORD processID)
 	{
 		HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, processID);
@@ -126,7 +127,7 @@ namespace pesieve {
 		ProcessDumpReport* dumpReport = nullptr;
 		ResultsDumper dumper(expand_path(args.output_dir), args.quiet);
 
-		if (dumper.dumpJsonReport(process_report, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS, args.json_lvl) && !args.quiet) {
+		if (dumper.dumpJsonReport(process_report, args.results_filter, args.json_lvl) && !args.quiet) {
 			std::cout << "[+] Report dumped to: " << dumper.getOutputDir() << std::endl;
 		}
 		
@@ -248,18 +249,19 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 		const bool is_reflection = (cloned_proc) ? true : false;
 		ProcessScanner scanner(target_proc, is_reflection, args);
 		report->scan_report = scanner.scanRemote();
-
 		if (report->scan_report) {
 			// dump elements from the process:
 			report->dump_report = make_dump(target_proc, is_reflection, args, *report->scan_report);
 		}
 	}
 	catch (std::exception &e) {
-		delete report;
-		report = nullptr;
-
+		report->error_report = new ErrorReport(args.pid, e.what());
 		if (!args.quiet) {
 			util::print_in_color(ERROR_COLOR, std::string("[ERROR] ") + e.what() + "\n", true);
+		}
+		ResultsDumper dumper(expand_path(args.output_dir), args.quiet);
+		if (dumper.dumpJsonReport(*report->error_report, args.results_filter) && !args.quiet) {
+			std::cout << "[+] Report dumped to: " << dumper.getOutputDir() << std::endl;
 		}
 	}
 	if (cloned_proc) {

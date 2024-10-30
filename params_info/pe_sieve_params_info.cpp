@@ -16,7 +16,7 @@ std::string pesieve::translate_dump_mode(const DWORD dump_mode)
 	case pesieve::PE_DUMP_REALIGN:
 		return "realigned raw (converted raw format to be the same as virtual)";
 	}
-	return "undefined";
+	return "";
 }
 
 std::string pesieve::dump_mode_to_id(const DWORD dump_mode)
@@ -44,7 +44,33 @@ std::string pesieve::translate_out_filter(const pesieve::t_output_filter o_filte
 	case pesieve::OUT_NO_DIR:
 		return "don't dump any files";
 	}
-	return "undefined";
+	return "";
+}
+
+std::string pesieve::translate_results_filter(const pesieve::t_results_filter r_filter)
+{
+	switch (r_filter) {
+	case pesieve::SHOW_SUSPICIOUS:
+		return "only suspicious (default)";
+	case pesieve::SHOW_SUSPICIOUS_AND_ERRORS:
+		return "suspicious and errors";
+	case pesieve::SHOW_ALL:
+		return "all scanned";
+	}
+	return "";
+}
+
+std::string pesieve::results_filter_to_id(const DWORD r_filter)
+{
+	switch (r_filter) {
+	case pesieve::SHOW_SUSPICIOUS:
+		return "S";
+	case pesieve::SHOW_SUSPICIOUS_AND_ERRORS:
+		return "SE";
+	case pesieve::SHOW_ALL:
+		return "L";
+	}
+	return "";
 }
 
 std::string pesieve::translate_imprec_mode(const pesieve::t_imprec_mode imprec_mode)
@@ -63,7 +89,7 @@ std::string pesieve::translate_imprec_mode(const pesieve::t_imprec_mode imprec_m
 	case pesieve::PE_IMPREC_REBUILD2:
 		return "build the ImportTable from scratch, basing on the found IATs:\n\t         use all found blocks (aggressive mode)";
 	}
-	return "undefined";
+	return "";
 }
 
 
@@ -101,7 +127,7 @@ std::string pesieve::translate_dotnet_policy(const pesieve::t_dotnet_policy &mod
 	case pesieve::PE_DNET_SKIP_ALL:
 		return "skip all the above (mapping, shellcodes, hooks)";
 	}
-	return "undefined";
+	return "";
 }
 
 std::string pesieve::translate_data_mode(const pesieve::t_data_scan_mode &mode)
@@ -120,7 +146,7 @@ std::string pesieve::translate_data_mode(const pesieve::t_data_scan_mode &mode)
 	case pesieve::PE_DATA_SCAN_INACCESSIBLE_ONLY:
 		return "scan inaccessible pages, but exclude other non-executable;\n\t    works in reflection mode (/refl) only";
 	}
-	return "undefined";
+	return "";
 }
 
 std::string pesieve::translate_json_level(const pesieve::t_json_level &mode)
@@ -133,7 +159,7 @@ std::string pesieve::translate_json_level(const pesieve::t_json_level &mode)
 	case pesieve::JSON_DETAILS2:
 		return "details #2 (list patches: extended)";
 	}
-	return "undefined";
+	return "";
 }
 
 std::string pesieve::shellc_mode_mode_to_id(const pesieve::t_shellc_mode& mode)
@@ -165,7 +191,7 @@ std::string pesieve::translate_shellc_mode(const pesieve::t_shellc_mode& mode)
 	case pesieve::SHELLC_PATTERNS_AND_STATS:
 		return "detect shellcodes by patterns and stats (both match)";
 	}
-	return "undefined";
+	return "";
 }
 
 std::string pesieve::translate_obfusc_mode(const pesieve::t_obfusc_mode& mode)
@@ -180,7 +206,7 @@ std::string pesieve::translate_obfusc_mode(const pesieve::t_obfusc_mode& mode)
 	case pesieve::OBFUSC_ANY:
 		return "detect any: possible strong or weak encryption";
 	}
-	return "undefined";
+	return "";
 }
 
 std::string pesieve::obfusc_mode_mode_to_id(const pesieve::t_obfusc_mode& mode)
@@ -209,5 +235,5 @@ std::string pesieve::translate_iat_scan_mode(const pesieve::t_iat_scan_mode mode
 	case pesieve::PE_IATS_UNFILTERED:
 		return "unfiltered: scan for IAT Hooks, report all";
 	}
-	return "undefined";
+	return "";
 }

@@ -21,9 +21,11 @@ namespace pesieve {
 		ProcessDumpReport* dumpDetectedModules(HANDLE hProcess, bool isRefl, ProcessScanReport &process_report, const pesieve::t_dump_mode dump_mode, const pesieve::t_imprec_mode imprec_mode);
 
 		// dump JSON report from the process scan
-		bool dumpJsonReport(ProcessScanReport &process_report, const ProcessScanReport::t_report_filter &filter, const pesieve::t_json_level &jdetails);
+		bool dumpJsonReport(ProcessScanReport &process_report, const t_results_filter &filter, const pesieve::t_json_level &jdetails);
 
 		bool dumpJsonReport(ProcessDumpReport &process_report);
+
+		bool dumpJsonReport(ErrorReport& error_report, const t_results_filter& filter);
 
 		std::string getOutputDir()
 		{

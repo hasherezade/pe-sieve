@@ -31,14 +31,6 @@ namespace pesieve {
 			REPORT_TYPES_COUNT
 		} t_report_type;
 
-		typedef enum {
-			REPORT_ERRORS = 1,
-			REPORT_NOT_SUSPICIOUS = 2,
-			REPORT_SUSPICIOUS = 4,
-			REPORT_SUSPICIOUS_AND_ERRORS = REPORT_ERRORS | REPORT_SUSPICIOUS,
-			REPORT_ALL = REPORT_ERRORS | REPORT_NOT_SUSPICIOUS | REPORT_SUSPICIOUS
-		} t_report_filter;
-
 		static t_report_type getReportType(ModuleScanReport *report);
 
 		ProcessScanReport(DWORD _pid, bool _is64bit, bool _isReflection, t_params* _usedParams)
@@ -95,7 +87,7 @@ namespace pesieve {
 			return modulesInfo.findModuleContaining(field_addr, field_size);
 		}
 
-		const virtual bool toJSON(std::stringstream &stream, size_t level, const t_report_filter &filter, const pesieve::t_json_level &jdetails) const;
+		const virtual bool toJSON(std::stringstream &stream, size_t level, const t_results_filter &filter, const pesieve::t_json_level &jdetails) const;
 
 		pesieve::t_report generateSummary() const;
 		DWORD getPid() { return pid; }
@@ -106,7 +98,7 @@ namespace pesieve {
 		peconv::ExportsMapper *exportsMap;
 
 	protected:
-		std::string listModules(size_t level, const ProcessScanReport::t_report_filter &filter, const t_json_level &jdetails) const;
+		std::string listModules(size_t level, const t_results_filter &filter, const t_json_level &jdetails) const;
 
 		void deleteModuleReports()
 		{
@@ -127,7 +119,7 @@ namespace pesieve {
 		}
 
 		size_t countHdrsReplaced() const;
-		bool hasAnyShownType(const ProcessScanReport::t_report_filter &filter);
+		bool hasAnyShownType(const t_results_filter &filter);
 
 		DWORD pid;
 		bool is64bit;

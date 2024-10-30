@@ -28,7 +28,7 @@ void print_report(const pesieve::ReportEx& report, const t_params args)
 
 	std::string report_str;
 	if (args.json_output) {
-		report_str = report_to_json(report, pesieve::REPORT_ALL, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS, args.json_lvl);
+		report_str = report_to_json(report, pesieve::REPORT_ALL, args.results_filter, args.json_lvl);
 	} else {
 		report_str = scan_report_to_string(*report.scan_report);
 	}
@@ -48,6 +48,7 @@ void free_params(t_params &args)
 int main(int argc, char *argv[])
 {
 	t_params args = { 0 };
+	args.results_filter = SHOW_SUSPICIOUS;
 
 	PEsieveParams uParams(PESIEVE_VERSION_STR);
 	if (argc < 2) {
@@ -81,10 +82,11 @@ int main(int argc, char *argv[])
 	t_pesieve_res res = PESIEVE_ERROR;
 	if (report != nullptr) {
 		print_report(*report, args);
-
-		pesieve::t_report summary = report->scan_report->generateSummary();
-		if (summary.scanned > 0) {
-			res = (summary.suspicious > 0) ? PESIEVE_DETECTED : PESIEVE_NOT_DETECTED;
+		if (report->scan_report) {
+			pesieve::t_report summary = report->scan_report->generateSummary();
+			if (summary.scanned > 0) {
+				res = (summary.suspicious > 0) ? PESIEVE_DETECTED : PESIEVE_NOT_DETECTED;
+			}
 		}
 		delete report;
 		report = nullptr;

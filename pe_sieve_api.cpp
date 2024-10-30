@@ -13,10 +13,10 @@ using namespace pesieve;
 
 size_t print_report(const pesieve::ReportEx& report, const pesieve::t_params args, const t_report_type rtype, char* json_buf, size_t json_buf_size)
 {
-	if (!report.scan_report || rtype == REPORT_NONE) return 0;
-	
+	if (rtype == REPORT_NONE) return 0;
+
 	size_t level = 1;
-	std::string report_str = report_to_json(report, rtype, ProcessScanReport::REPORT_SUSPICIOUS_AND_ERRORS, args.json_lvl, level);
+	std::string report_str = report_to_json(report, rtype, args.report_filter, args.json_lvl, level);
 	const size_t report_len = report_str.length();
 
 	if (json_buf && json_buf_size) {
@@ -35,13 +35,15 @@ PEsieve_report PESIEVE_API_FUNC PESieve_scan_ex(IN const PEsieve_params &args, I
 		return empty;
 	}
 	const pesieve::ReportEx* report = pesieve::scan_and_dump(args);
-	if (report == nullptr) {
-		pesieve::t_report nullrep = { 0 };
-		nullrep.pid = args.pid;
-		nullrep.errors = pesieve::ERROR_SCAN_FAILURE;
-		return nullrep;
+	pesieve::t_report summary = { 0 };
+	summary.pid = args.pid;
+	summary.errors = pesieve::ERROR_SCAN_FAILURE;
+	if (!report) {
+		return summary;
 	}
-	pesieve::t_report summary = report->scan_report->generateSummary();
+	if (report->scan_report) {
+		summary = report->scan_report->generateSummary();
+	}
 	//check the pointers:
 	if (json_buf) {
 		if (!json_buf_size || IsBadWritePtr(json_buf, json_buf_size)) {

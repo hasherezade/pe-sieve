@@ -16,18 +16,18 @@ using namespace pesieve::util;
 
 namespace pesieve {
 
-	bool is_shown_type(t_scan_status status, ProcessScanReport::t_report_filter filter)
+	bool is_shown_type(t_scan_status status, t_results_filter filter)
 	{
-		if (filter == ProcessScanReport::REPORT_ALL) {
+		if (filter == SHOW_ALL) {
 			return true;
 		}
-		if (filter & ProcessScanReport::REPORT_ERRORS) {
+		if (filter & SHOW_ERRORS) {
 			if (status == SCAN_ERROR) return true;
 		}
-		if (filter & ProcessScanReport::REPORT_SUSPICIOUS) {
+		if (filter & SHOW_SUSPICIOUS) {
 			if (status == SCAN_SUSPICIOUS) return true;
 		}
-		if (filter & ProcessScanReport::REPORT_NOT_SUSPICIOUS) {
+		if (filter & SHOW_NOT_SUSPICIOUS) {
 			if (status == SCAN_NOT_SUSPICIOUS) return true;
 		}
 		return false;
@@ -35,14 +35,14 @@ namespace pesieve {
 
 }; //namespace pesieve
 
-bool pesieve::ProcessScanReport::hasAnyShownType(const pesieve::ProcessScanReport::t_report_filter &filter)
+bool pesieve::ProcessScanReport::hasAnyShownType(const pesieve::t_results_filter &filter)
 {
 	t_report summary = this->generateSummary();
-	t_scan_status aggregated_status = summary.suspicious > 0 ? SCAN_SUSPICIOUS : SCAN_NOT_SUSPICIOUS;
+	t_scan_status aggregated_status = (summary.suspicious > 0) ? SCAN_SUSPICIOUS : SCAN_NOT_SUSPICIOUS;
 	if (is_shown_type(aggregated_status, filter)) {
 		return true;
 	}
-	aggregated_status = summary.errors > 0 ? SCAN_ERROR : SCAN_NOT_SUSPICIOUS;
+	aggregated_status = (summary.errors > 0) ? SCAN_ERROR : SCAN_NOT_SUSPICIOUS;
 	if (is_shown_type(aggregated_status, filter)) {
 		return true;
 	}
@@ -182,7 +182,7 @@ pesieve::t_report pesieve::ProcessScanReport::generateSummary() const
 	return summary;
 }
 
-std::string pesieve::ProcessScanReport::listModules(size_t level, const pesieve::ProcessScanReport::t_report_filter &filter, const t_json_level &jdetails) const
+std::string pesieve::ProcessScanReport::listModules(size_t level, const pesieve::t_results_filter &filter, const t_json_level &jdetails) const
 {
 	std::stringstream stream;
 	//summary:
@@ -211,7 +211,7 @@ std::string pesieve::ProcessScanReport::listModules(size_t level, const pesieve:
 
 const bool pesieve::ProcessScanReport::toJSON(
 	std::stringstream &stream, size_t start_level,
-	const pesieve::ProcessScanReport::t_report_filter &filter, 
+	const pesieve::t_results_filter &filter, 
 	const pesieve::t_json_level &jdetails) const
 {
 	const t_report report = this->generateSummary();

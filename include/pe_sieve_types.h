@@ -28,6 +28,17 @@ namespace pesieve {
 	} t_output_filter;
 
 	typedef enum {
+		SHOW_NONE = 0,
+		SHOW_ERRORS = 1,
+		SHOW_NOT_SUSPICIOUS = 2,
+		SHOW_SUSPICIOUS = 4,
+		SHOW_SUSPICIOUS_AND_ERRORS = SHOW_ERRORS | SHOW_SUSPICIOUS,
+		SHOW_SUCCESSFUL_ONLY = SHOW_NOT_SUSPICIOUS | SHOW_SUSPICIOUS,
+		SHOW_ALL = SHOW_ERRORS | SHOW_NOT_SUSPICIOUS | SHOW_SUSPICIOUS,
+		SHOW_FILTERS_COUNT
+	} t_results_filter;
+
+	typedef enum {
 		SHELLC_NONE = 0,           ///< do not detect shellcode
 		SHELLC_PATTERNS,           ///< detect shellcodes by patterns
 		SHELLC_STATS,              ///< detect shellcodes by stats
@@ -128,6 +139,7 @@ namespace pesieve {
 		bool make_reflection;   ///< operate on a process reflection rather than on the live process (this allows i.e. to force-read inaccessible pages)
 		bool use_cache;      ///< enable cache for the scanned modules
 		t_json_level json_lvl;  ///< level of the details of the JSON report
+		t_results_filter results_filter; ///< what type of results should be included in the report
 		char output_dir[MAX_PATH + 1];  ///< the root directory where the output should be saved (default: current directory)
 		PARAM_STRING modules_ignored; ///< a list of modules that will not be scanned, separated by PARAM_LIST_SEPARATOR
 		PARAM_STRING pattern_file; ///< a file with additional patterns for code recognition
