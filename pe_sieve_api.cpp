@@ -16,7 +16,7 @@ size_t print_report(const pesieve::ReportEx& report, const pesieve::t_params arg
 	if (rtype == REPORT_NONE) return 0;
 
 	size_t level = 1;
-	std::string report_str = report_to_json(report, rtype, args.report_filter, args.json_lvl, level);
+	std::string report_str = report_to_json(report, rtype, args.results_filter, args.json_lvl, level);
 	const size_t report_len = report_str.length();
 
 	if (json_buf && json_buf_size) {
