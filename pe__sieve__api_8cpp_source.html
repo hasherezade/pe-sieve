@@ -108,7 +108,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordflow">if</span> (rtype == <a class="code hl_enumvalue" href="pe__sieve__types_8h.html#ac8c9bbde52a2aaaa12a023d92a7d75b1a5c81ddc6d9cb0bcc993394f818d16ac2">REPORT_NONE</a>) <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordtype">size_t</span> level = 1;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    std::string report_str = <a class="code hl_function" href="namespacepesieve.html#a90510c3aed6db4cb8169647fe0be23a2">report_to_json</a>(<a class="code hl_struct" href="structreport.html">report</a>, rtype, args.report_filter, args.json_lvl, level);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    std::string report_str = <a class="code hl_function" href="namespacepesieve.html#a90510c3aed6db4cb8169647fe0be23a2">report_to_json</a>(<a class="code hl_struct" href="structreport.html">report</a>, rtype, args.results_filter, args.json_lvl, level);</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> report_len = report_str.length();</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordflow">if</span> (json_buf &amp;&amp; json_buf_size) {</div>
