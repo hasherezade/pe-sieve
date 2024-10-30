@@ -11,7 +11,7 @@ var searchData=
   ['t_5foutput_5ffilter_8',['t_output_filter',['../pe__sieve__types_8h.html#a88871c9404ff586fdb6fe9980cb5874f',1,'pe_sieve_types.h']]],
   ['t_5fpatch_5ftype_9',['t_patch_type',['../namespacepesieve.html#aef1981236931c047e3b21059e717ea64',1,'pesieve']]],
   ['t_5fpesieve_5fres_10',['t_pesieve_res',['../pe__sieve__return__codes_8h.html#abc1ca83d5b8fef97216b0f38dee607dc',1,'pe_sieve_return_codes.h']]],
-  ['t_5freport_5ffilter_11',['t_report_filter',['../classpesieve_1_1_process_scan_report.html#a5e5555ab40a87968250aa56322071510',1,'pesieve::ProcessScanReport']]],
-  ['t_5freport_5ftype_12',['t_report_type',['../classpesieve_1_1_process_scan_report.html#a96471984218782869b375015cc93e6c2',1,'pesieve::ProcessScanReport::t_report_type'],['../pe__sieve__types_8h.html#ac8c9bbde52a2aaaa12a023d92a7d75b1',1,'t_report_type:&#160;pe_sieve_types.h']]],
+  ['t_5freport_5ftype_11',['t_report_type',['../classpesieve_1_1_process_scan_report.html#a96471984218782869b375015cc93e6c2',1,'pesieve::ProcessScanReport::t_report_type'],['../pe__sieve__types_8h.html#ac8c9bbde52a2aaaa12a023d92a7d75b1',1,'t_report_type:&#160;pe_sieve_types.h']]],
+  ['t_5fresults_5ffilter_12',['t_results_filter',['../pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df',1,'pe_sieve_types.h']]],
   ['t_5fshellc_5fmode_13',['t_shellc_mode',['../pe__sieve__types_8h.html#a440fabe616455608f0c66f6e10116e49',1,'pe_sieve_types.h']]]
 ];

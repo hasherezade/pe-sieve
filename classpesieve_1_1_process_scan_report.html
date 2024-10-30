@@ -126,16 +126,6 @@ Public Types</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:a96471984218782869b375015cc93e6c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e5555ab40a87968250aa56322071510" id="r_a5e5555ab40a87968250aa56322071510"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5e5555ab40a87968250aa56322071510">t_report_filter</a> { <br />
-&#160;&#160;<a class="el" href="#a5e5555ab40a87968250aa56322071510a0a8d9884875abab0b7b6bce45b91bc35">REPORT_ERRORS</a> = 1
-, <a class="el" href="#a5e5555ab40a87968250aa56322071510a07159c16929036c2f505f0a90b5dc285">REPORT_NOT_SUSPICIOUS</a> = 2
-, <a class="el" href="#a5e5555ab40a87968250aa56322071510a583c9b4226113379190f3ef6cc9f5f5e">REPORT_SUSPICIOUS</a> = 4
-, <a class="el" href="#a5e5555ab40a87968250aa56322071510a35dd324dd05aa88e3f3c35cb802a506b">REPORT_SUSPICIOUS_AND_ERRORS</a> = REPORT_ERRORS | REPORT_SUSPICIOUS
-, <br />
-&#160;&#160;<a class="el" href="#a5e5555ab40a87968250aa56322071510a95faf12acbb87a9e22fc41f5f08e797d">REPORT_ALL</a> = REPORT_ERRORS | REPORT_NOT_SUSPICIOUS | REPORT_SUSPICIOUS
-<br />
- }</td></tr>
-<tr class="separator:a5e5555ab40a87968250aa56322071510"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -155,8 +145,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3c12c6b6913421538450af514b67a641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbccac104f264bc0b548a0f493a66dde" id="r_abbccac104f264bc0b548a0f493a66dde"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpesieve_1_1_scanned_module.html">ScannedModule</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abbccac104f264bc0b548a0f493a66dde">getModuleContaining</a> (ULONGLONG field_addr, size_t field_size=0) const</td></tr>
 <tr class="separator:abbccac104f264bc0b548a0f493a66dde"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1269fd73204b2b9171466ac32bc03252" id="r_a1269fd73204b2b9171466ac32bc03252"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1269fd73204b2b9171466ac32bc03252">toJSON</a> (std::stringstream &amp;stream, size_t level, const <a class="el" href="#a5e5555ab40a87968250aa56322071510">t_report_filter</a> &amp;filter, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails) const</td></tr>
-<tr class="separator:a1269fd73204b2b9171466ac32bc03252"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b2432a66696b4f9a82a3dafa50b56d6" id="r_a0b2432a66696b4f9a82a3dafa50b56d6"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b2432a66696b4f9a82a3dafa50b56d6">toJSON</a> (std::stringstream &amp;stream, size_t level, const <a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a> &amp;filter, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails) const</td></tr>
+<tr class="separator:a0b2432a66696b4f9a82a3dafa50b56d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a493399a015b35b5be092366256d90aad" id="r_a493399a015b35b5be092366256d90aad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpesieve_1_1t__report.html">pesieve::t_report</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a493399a015b35b5be092366256d90aad">generateSummary</a> () const</td></tr>
 <tr class="separator:a493399a015b35b5be092366256d90aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b36b5cf6979968d1c3d590b6875d89c" id="r_a7b36b5cf6979968d1c3d590b6875d89c"><td class="memItemLeft" align="right" valign="top">DWORD&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b36b5cf6979968d1c3d590b6875d89c">getPid</a> ()</td></tr>
@@ -180,8 +170,8 @@ Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:afea529d36f778ea890c8c347cec57c9f" id="r_afea529d36f778ea890c8c347cec57c9f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afea529d36f778ea890c8c347cec57c9f">listModules</a> (size_t level, const <a class="el" href="#a5e5555ab40a87968250aa56322071510">ProcessScanReport::t_report_filter</a> &amp;filter, const <a class="el" href="classpesieve_1_1t__json__level.html">t_json_level</a> &amp;jdetails) const</td></tr>
-<tr class="separator:afea529d36f778ea890c8c347cec57c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a31fe9cc237ae45535d2532df0eaecf" id="r_a5a31fe9cc237ae45535d2532df0eaecf"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a31fe9cc237ae45535d2532df0eaecf">listModules</a> (size_t level, const <a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a> &amp;filter, const <a class="el" href="classpesieve_1_1t__json__level.html">t_json_level</a> &amp;jdetails) const</td></tr>
+<tr class="separator:a5a31fe9cc237ae45535d2532df0eaecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a973ce4d2a83d0c37383d21237865f068" id="r_a973ce4d2a83d0c37383d21237865f068"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a973ce4d2a83d0c37383d21237865f068">deleteModuleReports</a> ()</td></tr>
 <tr class="separator:a973ce4d2a83d0c37383d21237865f068"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3cd73b44ba0c30368cdadf25746b55f" id="r_ac3cd73b44ba0c30368cdadf25746b55f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3cd73b44ba0c30368cdadf25746b55f">appendToType</a> (<a class="el" href="classpesieve_1_1_module_scan_report.html">ModuleScanReport</a> *<a class="el" href="structreport.html">report</a>)</td></tr>
@@ -192,8 +182,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ac9a4018b68508a26966c9c02f14aa4da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7b1df2bc09c6ea7843ac247ea161ddd" id="r_ab7b1df2bc09c6ea7843ac247ea161ddd"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7b1df2bc09c6ea7843ac247ea161ddd">countHdrsReplaced</a> () const</td></tr>
 <tr class="separator:ab7b1df2bc09c6ea7843ac247ea161ddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0611939155d7d2de69941e7e00390848" id="r_a0611939155d7d2de69941e7e00390848"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0611939155d7d2de69941e7e00390848">hasAnyShownType</a> (const <a class="el" href="#a5e5555ab40a87968250aa56322071510">ProcessScanReport::t_report_filter</a> &amp;filter)</td></tr>
-<tr class="separator:a0611939155d7d2de69941e7e00390848"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2ff334eed9cf844d5a3ae8bceeb1b77" id="r_ac2ff334eed9cf844d5a3ae8bceeb1b77"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac2ff334eed9cf844d5a3ae8bceeb1b77">hasAnyShownType</a> (const <a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a> &amp;filter)</td></tr>
+<tr class="separator:ac2ff334eed9cf844d5a3ae8bceeb1b77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -226,29 +216,6 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00018">18</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a5e5555ab40a87968250aa56322071510" name="a5e5555ab40a87968250aa56322071510"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e5555ab40a87968250aa56322071510">&#9670;&#160;</a></span>t_report_filter</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#a5e5555ab40a87968250aa56322071510">pesieve::ProcessScanReport::t_report_filter</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5e5555ab40a87968250aa56322071510a0a8d9884875abab0b7b6bce45b91bc35" name="a5e5555ab40a87968250aa56322071510a0a8d9884875abab0b7b6bce45b91bc35"></a>REPORT_ERRORS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5e5555ab40a87968250aa56322071510a07159c16929036c2f505f0a90b5dc285" name="a5e5555ab40a87968250aa56322071510a07159c16929036c2f505f0a90b5dc285"></a>REPORT_NOT_SUSPICIOUS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5e5555ab40a87968250aa56322071510a583c9b4226113379190f3ef6cc9f5f5e" name="a5e5555ab40a87968250aa56322071510a583c9b4226113379190f3ef6cc9f5f5e"></a>REPORT_SUSPICIOUS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5e5555ab40a87968250aa56322071510a35dd324dd05aa88e3f3c35cb802a506b" name="a5e5555ab40a87968250aa56322071510a35dd324dd05aa88e3f3c35cb802a506b"></a>REPORT_SUSPICIOUS_AND_ERRORS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5e5555ab40a87968250aa56322071510a95faf12acbb87a9e22fc41f5f08e797d" name="a5e5555ab40a87968250aa56322071510a95faf12acbb87a9e22fc41f5f08e797d"></a>REPORT_ALL&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00034">34</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
-
-</div>
-</div>
 <a id="a96471984218782869b375015cc93e6c2" name="a96471984218782869b375015cc93e6c2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a96471984218782869b375015cc93e6c2">&#9670;&#160;</a></span>t_report_type</h2>
 
@@ -315,7 +282,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00044">44</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00036">36</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -342,7 +309,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00050">50</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00042">42</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -380,7 +347,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00056">56</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00048">48</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -548,7 +515,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00124">124</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00116">116</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -587,7 +554,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00111">111</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00103">103</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -649,7 +616,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00093">93</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00085">85</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -688,7 +655,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00101">101</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00093">93</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -742,7 +709,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00070">70</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00062">62</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -756,8 +723,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a0611939155d7d2de69941e7e00390848" name="a0611939155d7d2de69941e7e00390848"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0611939155d7d2de69941e7e00390848">&#9670;&#160;</a></span>hasAnyShownType()</h2>
+<a id="ac2ff334eed9cf844d5a3ae8bceeb1b77" name="ac2ff334eed9cf844d5a3ae8bceeb1b77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2ff334eed9cf844d5a3ae8bceeb1b77">&#9670;&#160;</a></span>hasAnyShownType()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -768,7 +735,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::ProcessScanReport::hasAnyShownType </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="#a5e5555ab40a87968250aa56322071510">ProcessScanReport::t_report_filter</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>filter</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>filter</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -783,12 +750,12 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classpesieve_1_1_process_scan_report_a0611939155d7d2de69941e7e00390848_cgraph.png" border="0" usemap="#aclasspesieve_1_1_process_scan_report_a0611939155d7d2de69941e7e00390848_cgraph" alt=""/></div>
-<map name="aclasspesieve_1_1_process_scan_report_a0611939155d7d2de69941e7e00390848_cgraph" id="aclasspesieve_1_1_process_scan_report_a0611939155d7d2de69941e7e00390848_cgraph">
+<div class="center"><img src="classpesieve_1_1_process_scan_report_ac2ff334eed9cf844d5a3ae8bceeb1b77_cgraph.png" border="0" usemap="#aclasspesieve_1_1_process_scan_report_ac2ff334eed9cf844d5a3ae8bceeb1b77_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_process_scan_report_ac2ff334eed9cf844d5a3ae8bceeb1b77_cgraph" id="aclasspesieve_1_1_process_scan_report_ac2ff334eed9cf844d5a3ae8bceeb1b77_cgraph">
 <area shape="rect" title=" " alt="" coords="5,55,194,96"/>
 <area shape="rect" href="classpesieve_1_1_process_scan_report.html#a493399a015b35b5be092366256d90aad" title=" " alt="" coords="242,26,430,66"/>
 <area shape="poly" title=" " alt="" coords="194,61,226,57,227,62,195,66"/>
-<area shape="rect" href="namespacepesieve.html#acbbeace832fb77bc16027b0371cf55d9" title=" " alt="" coords="257,91,415,116"/>
+<area shape="rect" href="namespacepesieve.html#afa0c8ad8a1812e5114f615afc6683ee6" title=" " alt="" coords="257,91,415,116"/>
 <area shape="poly" title=" " alt="" coords="195,84,241,90,241,95,194,89"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="497,5,641,31"/>
 <area shape="poly" title=" " alt="" coords="430,32,481,26,482,31,431,38"/>
@@ -822,7 +789,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00075">75</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00067">67</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -863,7 +830,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00083">83</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00075">75</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -902,7 +869,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00102">102</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00094">94</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -925,8 +892,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="afea529d36f778ea890c8c347cec57c9f" name="afea529d36f778ea890c8c347cec57c9f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afea529d36f778ea890c8c347cec57c9f">&#9670;&#160;</a></span>listModules()</h2>
+<a id="a5a31fe9cc237ae45535d2532df0eaecf" name="a5a31fe9cc237ae45535d2532df0eaecf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a31fe9cc237ae45535d2532df0eaecf">&#9670;&#160;</a></span>listModules()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -942,7 +909,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="#a5e5555ab40a87968250aa56322071510">ProcessScanReport::t_report_filter</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>filter</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>filter</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -961,10 +928,10 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classpesieve_1_1_process_scan_report_afea529d36f778ea890c8c347cec57c9f_cgraph.png" border="0" usemap="#aclasspesieve_1_1_process_scan_report_afea529d36f778ea890c8c347cec57c9f_cgraph" alt=""/></div>
-<map name="aclasspesieve_1_1_process_scan_report_afea529d36f778ea890c8c347cec57c9f_cgraph" id="aclasspesieve_1_1_process_scan_report_afea529d36f778ea890c8c347cec57c9f_cgraph">
+<div class="center"><img src="classpesieve_1_1_process_scan_report_a5a31fe9cc237ae45535d2532df0eaecf_cgraph.png" border="0" usemap="#aclasspesieve_1_1_process_scan_report_a5a31fe9cc237ae45535d2532df0eaecf_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_process_scan_report_a5a31fe9cc237ae45535d2532df0eaecf_cgraph" id="aclasspesieve_1_1_process_scan_report_a5a31fe9cc237ae45535d2532df0eaecf_cgraph">
 <area shape="rect" title=" " alt="" coords="5,27,194,68"/>
-<area shape="rect" href="namespacepesieve.html#acbbeace832fb77bc16027b0371cf55d9" title=" " alt="" coords="254,5,412,31"/>
+<area shape="rect" href="namespacepesieve.html#afa0c8ad8a1812e5114f615afc6683ee6" title=" " alt="" coords="254,5,412,31"/>
 <area shape="poly" title=" " alt="" coords="194,33,238,27,239,33,194,38"/>
 <area shape="rect" href="classpesieve_1_1_module_scan_report.html#a25e97f444bf7df224380c0f7b112443f" title=" " alt="" coords="242,55,424,96"/>
 <area shape="poly" title=" " alt="" coords="194,56,227,60,226,65,194,61"/>
@@ -973,8 +940,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a1269fd73204b2b9171466ac32bc03252" name="a1269fd73204b2b9171466ac32bc03252"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1269fd73204b2b9171466ac32bc03252">&#9670;&#160;</a></span>toJSON()</h2>
+<a id="a0b2432a66696b4f9a82a3dafa50b56d6" name="a0b2432a66696b4f9a82a3dafa50b56d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b2432a66696b4f9a82a3dafa50b56d6">&#9670;&#160;</a></span>toJSON()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -995,7 +962,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="#a5e5555ab40a87968250aa56322071510">t_report_filter</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>filter</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>filter</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1014,8 +981,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classpesieve_1_1_process_scan_report_a1269fd73204b2b9171466ac32bc03252_cgraph.png" border="0" usemap="#aclasspesieve_1_1_process_scan_report_a1269fd73204b2b9171466ac32bc03252_cgraph" alt=""/></div>
-<map name="aclasspesieve_1_1_process_scan_report_a1269fd73204b2b9171466ac32bc03252_cgraph" id="aclasspesieve_1_1_process_scan_report_a1269fd73204b2b9171466ac32bc03252_cgraph">
+<div class="center"><img src="classpesieve_1_1_process_scan_report_a0b2432a66696b4f9a82a3dafa50b56d6_cgraph.png" border="0" usemap="#aclasspesieve_1_1_process_scan_report_a0b2432a66696b4f9a82a3dafa50b56d6_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_process_scan_report_a0b2432a66696b4f9a82a3dafa50b56d6_cgraph" id="aclasspesieve_1_1_process_scan_report_a0b2432a66696b4f9a82a3dafa50b56d6_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,194,46"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="242,5,379,46"/>
 <area shape="poly" title=" " alt="" coords="194,23,226,23,226,28,194,28"/>
@@ -1045,7 +1012,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00142">142</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00134">134</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -1069,7 +1036,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00143">143</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00135">135</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -1094,7 +1061,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00137">137</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00129">129</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -1110,7 +1077,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00106">106</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00098">98</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -1134,7 +1101,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00133">133</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00125">125</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -1158,7 +1125,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00134">134</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00126">126</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -1182,7 +1149,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00135">135</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00127">127</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -1198,7 +1165,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00104">104</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00096">96</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -1214,7 +1181,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00105">105</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00097">97</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -1238,7 +1205,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00139">139</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00131">131</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -1262,7 +1229,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00132">132</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00124">124</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -1286,7 +1253,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00140">140</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00132">132</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>
@@ -1310,7 +1277,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00136">136</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scan__report_8h_source.html#l00128">128</a> of file <a class="el" href="scan__report_8h_source.html">scan_report.h</a>.</p>
 
 </div>
 </div>

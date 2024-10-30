@@ -145,6 +145,19 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#a88871c9404ff586fdb6fe9980cb5874fadadc68f4ec4b1397999f41cf7b766b41">OUT_FILTERS_COUNT</a>
  }</td></tr>
 <tr class="separator:a88871c9404ff586fdb6fe9980cb5874f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a372cb32a6ffd61ba01d553e362bb10df" id="r_a372cb32a6ffd61ba01d553e362bb10df"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a> { <br />
+&#160;&#160;<a class="el" href="#a372cb32a6ffd61ba01d553e362bb10dfa23077e43ea9efbc11aa4ff810b0485bb">SHOW_NONE</a> = 0
+, <a class="el" href="#a372cb32a6ffd61ba01d553e362bb10dfa07bdba8ae302e373ac823a29eb61ff99">SHOW_ERRORS</a> = 1
+, <a class="el" href="#a372cb32a6ffd61ba01d553e362bb10dfa8a1b5fe96c55edc6436a815040ba4db2">SHOW_NOT_SUSPICIOUS</a> = 2
+, <a class="el" href="#a372cb32a6ffd61ba01d553e362bb10dfa895ab589d04dc140d73208770118a95a">SHOW_SUSPICIOUS</a> = 4
+, <br />
+&#160;&#160;<a class="el" href="#a372cb32a6ffd61ba01d553e362bb10dfa6813c73baae176238bdeadacc1be9ffa">SHOW_SUSPICIOUS_AND_ERRORS</a> = SHOW_ERRORS | SHOW_SUSPICIOUS
+, <a class="el" href="#a372cb32a6ffd61ba01d553e362bb10dfa54b720b417c5e16ce96d8da5edb54c19">SHOW_SUCCESSFUL_ONLY</a> = SHOW_NOT_SUSPICIOUS | SHOW_SUSPICIOUS
+, <a class="el" href="#a372cb32a6ffd61ba01d553e362bb10dfaca2bfbd2b0152f202a01395ec7dc89e4">SHOW_ALL</a> = SHOW_ERRORS | SHOW_NOT_SUSPICIOUS | SHOW_SUSPICIOUS
+, <a class="el" href="#a372cb32a6ffd61ba01d553e362bb10dfacdfd9d24418c5091d6bd8352970a3fd1">SHOW_FILTERS_COUNT</a>
+<br />
+ }</td></tr>
+<tr class="separator:a372cb32a6ffd61ba01d553e362bb10df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a440fabe616455608f0c66f6e10116e49" id="r_a440fabe616455608f0c66f6e10116e49"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a440fabe616455608f0c66f6e10116e49">t_shellc_mode</a> { <br />
 &#160;&#160;<a class="el" href="#a440fabe616455608f0c66f6e10116e49a806397db03996a9ad3582b4a5249a6b5">SHELLC_NONE</a> = 0
 , <a class="el" href="#a440fabe616455608f0c66f6e10116e49af374abe8ac723478824a06eb79fd3edb">SHELLC_PATTERNS</a>
@@ -354,7 +367,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a5fb3e4cedace302eae50005b7435b9eda9e5ba8161a67ff34b8a7e155f18a8ae9" name="a5fb3e4cedace302eae50005b7435b9eda9e5ba8161a67ff34b8a7e155f18a8ae9"></a>PE_DATA_COUNT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00082">82</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00093">93</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>
@@ -383,7 +396,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="aaa6670735c0e7113cc4fb68bba2d6dc9aa1c282e794aabda8e27c182bf27a447f" name="aaa6670735c0e7113cc4fb68bba2d6dc9aa1c282e794aabda8e27c182bf27a447f"></a>PE_DNET_COUNT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00073">73</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00084">84</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>
@@ -410,7 +423,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a6089a4d880e10b44866807331526fda1ae44355568dd50d13e05b5a04f3a06894" name="a6089a4d880e10b44866807331526fda1ae44355568dd50d13e05b5a04f3a06894"></a>PE_DUMP_MODES_COUNT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00057">57</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00068">68</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>
@@ -437,7 +450,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a7c5f7e9e508b6cfcd5ffd9ab223246d7ac836f111d94a32e550f2ad43cab65924" name="a7c5f7e9e508b6cfcd5ffd9ab223246d7ac836f111d94a32e550f2ad43cab65924"></a>PE_IATS_MODES_COUNT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00065">65</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00076">76</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>
@@ -468,7 +481,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ae445f5c8507355b16ab1c37f6b1c3c2faadb6339de1cd98b81511b644735b9cdd" name="ae445f5c8507355b16ab1c37f6b1c3c2faadb6339de1cd98b81511b644735b9cdd"></a>PE_IMPREC_MODES_COUNT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00047">47</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00058">58</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>
@@ -493,7 +506,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="af6093dc1d1fb0449adbc0fe4d909943da585a7f090f93d1b9b681ef515128a762" name="af6093dc1d1fb0449adbc0fe4d909943da585a7f090f93d1b9b681ef515128a762"></a>JSON_LVL_COUNT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00092">92</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00103">103</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>
@@ -520,7 +533,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ad4b1167f329f8327c38daff92d990bb1a7fd15f5fc4af83c7cb0c3604e841d6fa" name="ad4b1167f329f8327c38daff92d990bb1a7fd15f5fc4af83c7cb0c3604e841d6fa"></a>OBFUSC_COUNT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00039">39</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00050">50</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>
@@ -571,7 +584,33 @@ Variables</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00099">99</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00110">110</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+
+</div>
+</div>
+<a id="a372cb32a6ffd61ba01d553e362bb10df" name="a372cb32a6ffd61ba01d553e362bb10df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a372cb32a6ffd61ba01d553e362bb10df">&#9670;&#160;</a></span>t_results_filter</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a372cb32a6ffd61ba01d553e362bb10dfa23077e43ea9efbc11aa4ff810b0485bb" name="a372cb32a6ffd61ba01d553e362bb10dfa23077e43ea9efbc11aa4ff810b0485bb"></a>SHOW_NONE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a372cb32a6ffd61ba01d553e362bb10dfa07bdba8ae302e373ac823a29eb61ff99" name="a372cb32a6ffd61ba01d553e362bb10dfa07bdba8ae302e373ac823a29eb61ff99"></a>SHOW_ERRORS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a372cb32a6ffd61ba01d553e362bb10dfa8a1b5fe96c55edc6436a815040ba4db2" name="a372cb32a6ffd61ba01d553e362bb10dfa8a1b5fe96c55edc6436a815040ba4db2"></a>SHOW_NOT_SUSPICIOUS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a372cb32a6ffd61ba01d553e362bb10dfa895ab589d04dc140d73208770118a95a" name="a372cb32a6ffd61ba01d553e362bb10dfa895ab589d04dc140d73208770118a95a"></a>SHOW_SUSPICIOUS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a372cb32a6ffd61ba01d553e362bb10dfa6813c73baae176238bdeadacc1be9ffa" name="a372cb32a6ffd61ba01d553e362bb10dfa6813c73baae176238bdeadacc1be9ffa"></a>SHOW_SUSPICIOUS_AND_ERRORS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a372cb32a6ffd61ba01d553e362bb10dfa54b720b417c5e16ce96d8da5edb54c19" name="a372cb32a6ffd61ba01d553e362bb10dfa54b720b417c5e16ce96d8da5edb54c19"></a>SHOW_SUCCESSFUL_ONLY&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a372cb32a6ffd61ba01d553e362bb10dfaca2bfbd2b0152f202a01395ec7dc89e4" name="a372cb32a6ffd61ba01d553e362bb10dfaca2bfbd2b0152f202a01395ec7dc89e4"></a>SHOW_ALL&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a372cb32a6ffd61ba01d553e362bb10dfacdfd9d24418c5091d6bd8352970a3fd1" name="a372cb32a6ffd61ba01d553e362bb10dfacdfd9d24418c5091d6bd8352970a3fd1"></a>SHOW_FILTERS_COUNT&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00030">30</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>
@@ -600,7 +639,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a440fabe616455608f0c66f6e10116e49acb31dc14f5b66f4be2d4593cb10d3385" name="a440fabe616455608f0c66f6e10116e49acb31dc14f5b66f4be2d4593cb10d3385"></a>SHELLC_COUNT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00030">30</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00041">41</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>
