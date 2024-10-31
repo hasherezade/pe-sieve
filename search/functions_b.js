@@ -20,7 +20,7 @@ var searchData=
   ['match_5fto_5ftag_17',['match_to_tag',['../namespacepesieve.html#a6ddb4b260f42d4e8c10413ad81b5537f',1,'pesieve']]],
   ['maxdlllen_18',['maxDllLen',['../classpesieve_1_1_i_a_t_block.html#a385b2a21afd976e4160de8a69bd61e8c',1,'pesieve::IATBlock']]],
   ['mempagedata_19',['MemPageData',['../classpesieve_1_1_mem_page_data.html#a26fde7b75da2faecc8162704d0d65163',1,'pesieve::MemPageData']]],
-  ['moduledata_20',['ModuleData',['../classpesieve_1_1_module_data.html#a265979704c14d44a80f50a65a38bd04f',1,'pesieve::ModuleData::ModuleData(HANDLE _processHandle, HMODULE _module, bool _isPEBConnected, bool _useCache)'],['../classpesieve_1_1_module_data.html#aa68a746a51673e00f1585bbf3bc1a771',1,'pesieve::ModuleData::ModuleData(HANDLE _processHandle, HMODULE _module, std::string module_name, bool _useCache)']]],
+  ['moduledata_20',['ModuleData',['../classpesieve_1_1_module_data.html#a1fb74377c82598834ea2a59f62a3c775',1,'pesieve::ModuleData']]],
   ['moduledumpreport_21',['ModuleDumpReport',['../classpesieve_1_1_module_dump_report.html#af6c954c3af9be929c2b177015e6f056d',1,'pesieve::ModuleDumpReport']]],
   ['modulescache_22',['ModulesCache',['../classpesieve_1_1_modules_cache.html#a75dbc306df755b0178cd8c0fec0bab80',1,'pesieve::ModulesCache']]],
   ['modulescanner_23',['ModuleScanner',['../classpesieve_1_1_module_scanner.html#a89867c3a3b2a85f1fd03f1cb0f2228a6',1,'pesieve::ModuleScanner']]],
