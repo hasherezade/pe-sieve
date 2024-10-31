@@ -118,7 +118,7 @@ namespace pesieve {
 size_t pesieve::stats::fillCodeStrings(OUT std::set<std::string>& codeStrings)
 {
 	const size_t patterns_count = 8;
-	char *patterns[patterns_count] = {
+	char patterns[][patterns_count] = {
 		"WVS",
 		"SVW",
 		"D$",
