@@ -220,7 +220,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1stats.html#a5bcaa2755988f61e3122f880a121addf">  118</a></span><span class="keywordtype">size_t</span> <a class="code hl_function" href="namespacepesieve_1_1stats.html#a5bcaa2755988f61e3122f880a121addf">pesieve::stats::fillCodeStrings</a>(OUT std::set&lt;std::string&gt;&amp; codeStrings)</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>{</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> patterns_count = 8;</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keywordtype">char</span> *patterns[patterns_count] = {</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keywordtype">char</span> patterns[][patterns_count] = {</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="stringliteral">&quot;WVS&quot;</span>,</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="stringliteral">&quot;SVW&quot;</span>,</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="stringliteral">&quot;D$&quot;</span>,</div>
