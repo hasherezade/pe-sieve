@@ -311,6 +311,9 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 	ModuleDumpReport *modDumpReport = new ModuleDumpReport(module_buf.getModuleBase(), module_buf.getBufferSize());
 	dumpReport.appendReport(modDumpReport);
 
+	if (out_base) {
+		modDumpReport->rebasedTo = out_base;
+	}
 	modDumpReport->dumpFileName = makeModuleDumpPath(module_buf.getModuleBase(), module_name, payload_ext);
 	modDumpReport->is_corrupt_pe = is_corrupt_pe;
 	modDumpReport->is_shellcode = !module_buf.isValidPe() && module_buf.isCode();

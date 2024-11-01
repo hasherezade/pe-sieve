@@ -10,6 +10,10 @@ const bool pesieve::ModuleDumpReport::toJSON(std::stringstream &outs, size_t lev
 	outs << "\"" << std::hex << moduleStart << "\"" << ",\n";
 	OUT_PADDED(outs, level, "\"module_size\" : ");
 	outs << "\"" << std::hex << moduleSize << "\"" << ",\n";
+	if (moduleStart != rebasedTo) {
+		OUT_PADDED(outs, level, "\"dump_base\" : ");
+		outs << "\"" << std::hex << rebasedTo << "\"" << ",\n";
+	}
 	if (dumpFileName.length()) {
 		OUT_PADDED(outs, level, "\"dump_file\" : ");
 		outs << "\"" << peconv::get_file_name(dumpFileName) << "\"" << ",\n";

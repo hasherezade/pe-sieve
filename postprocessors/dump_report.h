@@ -18,7 +18,7 @@ namespace pesieve {
 	public:
 
 		ModuleDumpReport(ULONGLONG module_start, size_t module_size)
-			: moduleStart(module_start), moduleSize(module_size),
+			: moduleStart(module_start), moduleSize(module_size), rebasedTo(module_start),
 			isDumped(false), isReportDumped(false),
 			is_corrupt_pe(false),
 			is_shellcode(false)
@@ -29,6 +29,7 @@ namespace pesieve {
 
 		ULONGLONG moduleStart;
 		size_t moduleSize;
+		ULONGLONG rebasedTo;
 		bool is_corrupt_pe;
 		bool is_shellcode;
 		std::string impRecMode;
