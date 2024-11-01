@@ -56,9 +56,9 @@ namespace pesieve {
 	} t_obfusc_mode;
 
 	typedef enum {
-		PE_IMPREC_NONE = 0, ///< do not try to recover imports
-		PE_IMPREC_AUTO,     ///< try to autodetect the most suitable mode
-		PE_IMPREC_UNERASE,  ///< recover erased parts of the partialy damaged import table
+		PE_IMPREC_NONE = 0,  ///< do not try to recover imports
+		PE_IMPREC_AUTO,      ///< try to autodetect the most suitable mode
+		PE_IMPREC_UNERASE,   ///< recover erased parts of the partialy damaged import table
 		PE_IMPREC_REBUILD0,  ///< build the import table from the scratch, basing on the found IAT(s): use only terminated blocks (restrictive mode)
 		PE_IMPREC_REBUILD1,  ///< build the import table from the scratch, basing on the found IAT(s): use terminated blocks, or blocks with more than 1 thunk
 		PE_IMPREC_REBUILD2,  ///< build the import table from the scratch, basing on the found IAT(s): use all found blocks (aggressive mode)
@@ -134,6 +134,7 @@ namespace pesieve {
 		t_iat_scan_mode iat;    ///< detect IAT hooking
 		t_data_scan_mode data;  ///< should scan non-executable pages?
 		bool minidump;          ///< make minidump of full process
+		bool rebase;            ///< rebase the module to its original base (if known)
 		t_dump_mode dump_mode;  ///< in which mode the detected PE implants should be dumped
 		bool json_output;       ///< display the final summary as the JSON report
 		bool make_reflection;   ///< operate on a process reflection rather than on the live process (this allows i.e. to force-read inaccessible pages)

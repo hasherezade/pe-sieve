@@ -206,7 +206,8 @@ pesieve::ProcessDumpReport* pesieve::ResultsDumper::dumpDetectedModules(
 	bool isRefl,
 	ProcessScanReport &process_report, 
 	const pesieve::t_dump_mode dump_mode, 
-	const t_imprec_mode imprec_mode)
+	const t_imprec_mode imprec_mode,
+	const bool rebase)
 {
 	if (processHandle == nullptr) {
 		return nullptr;
@@ -222,6 +223,7 @@ pesieve::ProcessDumpReport* pesieve::ResultsDumper::dumpDetectedModules(
 		if (mod->status != SCAN_SUSPICIOUS) {
 			continue;
 		}
+		ULONGLONG out_base = rebase ? mod->origBase : 0;
 		dumpModule(processHandle,
 			isRefl,
 			process_report.modulesInfo,
@@ -229,6 +231,7 @@ pesieve::ProcessDumpReport* pesieve::ResultsDumper::dumpDetectedModules(
 			process_report.exportsMap,
 			dump_mode,
 			imprec_mode,
+			out_base,
 			*dumpReport
 		);
 	}
@@ -260,6 +263,7 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 	IN const peconv::ExportsMapper *exportsMap,
 	IN const pesieve::t_dump_mode dump_mode,
 	IN const t_imprec_mode imprec_mode,
+	IN ULONGLONG out_base,
 	OUT ProcessDumpReport &dumpReport
 )
 {
@@ -321,8 +325,8 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 		modDumpReport->impRecMode = get_imprec_res_name(imprec_res);
 
 		module_buf.setRelocBase(mod->getRelocBase());
-		if (mod->origBase) {
-			module_buf.setRelocBase(mod->origBase);
+		if (out_base) {
+			module_buf.setRelocBase(out_base);
 		}
 		if (imprec_mode == pesieve::PE_IMPREC_NONE) {
 			modDumpReport->isDumped = module_buf.dumpPeToFile(modDumpReport->dumpFileName, curr_dump_mode);

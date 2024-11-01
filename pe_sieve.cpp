@@ -137,7 +137,7 @@ namespace pesieve {
 				dump_mode = pesieve::t_dump_mode(args.dump_mode);
 			}
 			size_t dumped_modules = 0;
-			dumpReport = dumper.dumpDetectedModules(hProcess, isRefl, process_report, dump_mode, args.imprec_mode);
+			dumpReport = dumper.dumpDetectedModules(hProcess, isRefl, process_report, dump_mode, args.imprec_mode, args.rebase);
 			if (dumpReport && dumpReport->countDumped()) {
 				dumped_modules = dumpReport->countDumped();
 			}
