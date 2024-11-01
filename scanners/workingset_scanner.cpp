@@ -272,7 +272,7 @@ bool pesieve::WorkingSetScanner::scanImg(MemPageData& memPage)
 	}
 
 	//load module from file:
-	ModuleData modData(processHandle, module_start, true, args.use_cache, memPage.mapped_name.c_str());
+	ModuleData modData(processHandle, module_start, false, args.use_cache, memPage.mapped_name.c_str());
 	if (!modData.loadOriginal()) {
 		if (!args.quiet) {
 			std::cerr << "[-] [" << std::hex << modData.moduleHandle << "] Could not read the module file" << std::endl;
