@@ -223,6 +223,10 @@ pesieve::ProcessDumpReport* pesieve::ResultsDumper::dumpDetectedModules(
 		if (mod->status != SCAN_SUSPICIOUS) {
 			continue;
 		}
+		// skip already dumped:
+		if (dumpReport->hasModule((ULONGLONG)mod->module, mod->moduleSize)) {
+			continue;
+		}
 		ULONGLONG out_base = rebase ? mod->origBase : 0;
 		dumpModule(processHandle,
 			isRefl,

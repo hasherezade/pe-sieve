@@ -89,6 +89,20 @@ namespace pesieve {
 			return dumped;
 		}
 
+		bool hasModule(const ULONGLONG modBase, const size_t modSize) const
+		{
+			if (!modBase) return false;
+
+			for (auto itr = moduleReports.begin(); itr != moduleReports.end(); ++itr) {
+				const ModuleDumpReport* report = *itr;
+				if (!report->isDumped) continue; // dumping failed
+				if (report->moduleStart == modBase && report->moduleSize == modSize) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 		virtual bool toJSON(std::stringstream &stream, size_t level) const;
 
 		DWORD getPid() const { return pid; }
