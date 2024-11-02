@@ -311,9 +311,6 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 	ModuleDumpReport *modDumpReport = new ModuleDumpReport(module_buf.getModuleBase(), module_buf.getBufferSize());
 	dumpReport.appendReport(modDumpReport);
 
-	if (out_base) {
-		modDumpReport->rebasedTo = out_base;
-	}
 	modDumpReport->dumpFileName = makeModuleDumpPath(module_buf.getModuleBase(), module_name, payload_ext);
 	modDumpReport->is_corrupt_pe = is_corrupt_pe;
 	modDumpReport->is_shellcode = !module_buf.isValidPe() && module_buf.isCode();
@@ -341,6 +338,9 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 		if (!modDumpReport->isDumped) {
 			modDumpReport->isDumped = module_buf.dumpToFile(modDumpReport->dumpFileName);
 			curr_dump_mode = peconv::PE_DUMP_VIRTUAL;
+		}
+		if (curr_dump_mode != peconv::PE_DUMP_VIRTUAL && out_base) {
+			modDumpReport->rebasedTo = out_base;
 		}
 		modDumpReport->mode_info = get_dump_mode_name(curr_dump_mode);
 		bool iat_not_rebuilt = (imprec_res == ImpReconstructor::IMP_RECOVERY_ERROR) || (imprec_res == ImpReconstructor::IMP_RECOVERY_NOT_APPLICABLE);
