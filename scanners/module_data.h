@@ -171,7 +171,11 @@ namespace pesieve {
 			if (imgBufferSize) {
 				return imgBufferSize;
 			}
-			return getHdrImageSize();
+			size_t defined_size = getHdrImageSize();
+			if (!defined_size) {
+				return 0;
+			}
+			return peconv::round_up_to_unit(defined_size, (size_t)PAGE_SIZE);
 		}
 
 		size_t getHeaderSize()
