@@ -120,8 +120,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a616abb17a0bae83face289dbee1ab766" id="r_a616abb17a0bae83face289dbee1ab766"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a616abb17a0bae83face289dbee1ab766">dumpModule</a> (IN HANDLE processHandle, IN <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> isRefl, IN const <a class="el" href="classpesieve_1_1_modules_info.html">ModulesInfo</a> &amp;modulesInfo, IN <a class="el" href="classpesieve_1_1_module_scan_report.html">ModuleScanReport</a> *modReport, IN const peconv::ExportsMapper *exportsMap, IN const <a class="el" href="classpesieve_1_1t__dump__mode.html">pesieve::t_dump_mode</a> dump_mode, IN const <a class="el" href="classpesieve_1_1t__imprec__mode.html">pesieve::t_imprec_mode</a> imprec_mode, IN ULONGLONG out_base, OUT <a class="el" href="classpesieve_1_1_process_dump_report.html">ProcessDumpReport</a> &amp;dumpReport)</td></tr>
-<tr class="separator:a616abb17a0bae83face289dbee1ab766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3add8b5792cc47935267d88f0ea4e32" id="r_ad3add8b5792cc47935267d88f0ea4e32"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3add8b5792cc47935267d88f0ea4e32">dumpModule</a> (IN HANDLE processHandle, IN <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> isRefl, IN const <a class="el" href="classpesieve_1_1_modules_info.html">ModulesInfo</a> &amp;modulesInfo, IN <a class="el" href="classpesieve_1_1_module_scan_report.html">ModuleScanReport</a> *modReport, IN const peconv::ExportsMapper *exportsMap, IN const <a class="el" href="classpesieve_1_1t__dump__mode.html">pesieve::t_dump_mode</a> dump_mode, IN const <a class="el" href="classpesieve_1_1t__imprec__mode.html">pesieve::t_imprec_mode</a> imprec_mode, IN <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> rebase, OUT <a class="el" href="classpesieve_1_1_process_dump_report.html">ProcessDumpReport</a> &amp;dumpReport)</td></tr>
+<tr class="separator:ad3add8b5792cc47935267d88f0ea4e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00565456b461f2e766979b3b3775996c" id="r_a00565456b461f2e766979b3b3775996c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00565456b461f2e766979b3b3775996c">makeModuleDumpPath</a> (ULONGLONG modBaseAddr, const std::string &amp;fname, const std::string &amp;defaultExtension)</td></tr>
 <tr class="separator:a00565456b461f2e766979b3b3775996c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0530341a87284f2c065bc14ecbdef41d" id="r_a0530341a87284f2c065bc14ecbdef41d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0530341a87284f2c065bc14ecbdef41d">makeDirName</a> (const DWORD process_id)</td></tr>
@@ -363,8 +363,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a616abb17a0bae83face289dbee1ab766" name="a616abb17a0bae83face289dbee1ab766"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a616abb17a0bae83face289dbee1ab766">&#9670;&#160;</a></span>dumpModule()</h2>
+<a id="ad3add8b5792cc47935267d88f0ea4e32" name="ad3add8b5792cc47935267d88f0ea4e32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3add8b5792cc47935267d88f0ea4e32">&#9670;&#160;</a></span>dumpModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -410,7 +410,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">IN ULONGLONG</td>          <td class="paramname"><span class="paramname"><em>out_base</em></span>, </td>
+          <td class="paramtype">IN <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a></td>          <td class="paramname"><span class="paramname"><em>rebase</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -438,12 +438,12 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="results__dumper_8cpp_source.html#l00263">263</a> of file <a class="el" href="results__dumper_8cpp_source.html">results_dumper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="results__dumper_8cpp_source.html#l00262">262</a> of file <a class="el" href="results__dumper_8cpp_source.html">results_dumper.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classpesieve_1_1_results_dumper_a616abb17a0bae83face289dbee1ab766_cgraph.png" border="0" usemap="#aclasspesieve_1_1_results_dumper_a616abb17a0bae83face289dbee1ab766_cgraph" alt=""/></div>
-<map name="aclasspesieve_1_1_results_dumper_a616abb17a0bae83face289dbee1ab766_cgraph" id="aclasspesieve_1_1_results_dumper_a616abb17a0bae83face289dbee1ab766_cgraph">
+<div class="center"><img src="classpesieve_1_1_results_dumper_ad3add8b5792cc47935267d88f0ea4e32_cgraph.png" border="0" usemap="#aclasspesieve_1_1_results_dumper_ad3add8b5792cc47935267d88f0ea4e32_cgraph" alt=""/></div>
+<map name="aclasspesieve_1_1_results_dumper_ad3add8b5792cc47935267d88f0ea4e32_cgraph" id="aclasspesieve_1_1_results_dumper_ad3add8b5792cc47935267d88f0ea4e32_cgraph">
 <area shape="rect" title=" " alt="" coords="5,619,167,659"/>
 <area shape="rect" href="namespacepesieve.html#abec7483e4e33334bee68b5b0ca95483a" title=" " alt="" coords="244,5,392,46"/>
 <area shape="poly" title=" " alt="" coords="87,618,99,503,123,335,141,248,161,169,185,103,198,77,213,57,229,44,232,48,217,61,203,80,190,105,166,170,146,249,129,336,104,504,92,618"/>
@@ -546,7 +546,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="results__dumper_8cpp_source.html#l00245">245</a> of file <a class="el" href="results__dumper_8cpp_source.html">results_dumper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="results__dumper_8cpp_source.html#l00244">244</a> of file <a class="el" href="results__dumper_8cpp_source.html">results_dumper.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -610,7 +610,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="results__dumper_8cpp_source.html#l00428">428</a> of file <a class="el" href="results__dumper_8cpp_source.html">results_dumper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="results__dumper_8cpp_source.html#l00433">433</a> of file <a class="el" href="results__dumper_8cpp_source.html">results_dumper.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -655,7 +655,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="results__dumper_8cpp_source.html#l00479">479</a> of file <a class="el" href="results__dumper_8cpp_source.html">results_dumper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="results__dumper_8cpp_source.html#l00484">484</a> of file <a class="el" href="results__dumper_8cpp_source.html">results_dumper.cpp</a>.</p>
 
 </div>
 </div>
@@ -699,7 +699,7 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="results__dumper_8cpp_source.html#l00450">450</a> of file <a class="el" href="results__dumper_8cpp_source.html">results_dumper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="results__dumper_8cpp_source.html#l00455">455</a> of file <a class="el" href="results__dumper_8cpp_source.html">results_dumper.cpp</a>.</p>
 
 </div>
 </div>
@@ -722,7 +722,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="results__dumper_8cpp_source.html#l00464">464</a> of file <a class="el" href="results__dumper_8cpp_source.html">results_dumper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="results__dumper_8cpp_source.html#l00469">469</a> of file <a class="el" href="results__dumper_8cpp_source.html">results_dumper.cpp</a>.</p>
 
 </div>
 </div>
