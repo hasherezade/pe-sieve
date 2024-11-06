@@ -13,7 +13,7 @@
 #include "../scanners/code_scanner.h"
 
 #define DIR_SEPARATOR "\\"
-
+#define DEFAULT_BASE  0x10000000
 //---
 namespace pesieve {
 
@@ -227,7 +227,6 @@ pesieve::ProcessDumpReport* pesieve::ResultsDumper::dumpDetectedModules(
 		if (dumpReport->hasModule((ULONGLONG)mod->module, mod->moduleSize)) {
 			continue;
 		}
-		ULONGLONG out_base = rebase ? mod->origBase : 0;
 		dumpModule(processHandle,
 			isRefl,
 			process_report.modulesInfo,
@@ -235,7 +234,7 @@ pesieve::ProcessDumpReport* pesieve::ResultsDumper::dumpDetectedModules(
 			process_report.exportsMap,
 			dump_mode,
 			imprec_mode,
-			out_base,
+			rebase,
 			*dumpReport
 		);
 	}
@@ -267,7 +266,7 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 	IN const peconv::ExportsMapper *exportsMap,
 	IN const pesieve::t_dump_mode dump_mode,
 	IN const t_imprec_mode imprec_mode,
-	IN ULONGLONG out_base,
+	IN bool rebase,
 	OUT ProcessDumpReport &dumpReport
 )
 {
@@ -328,8 +327,14 @@ bool pesieve::ResultsDumper::dumpModule(IN HANDLE processHandle,
 		ImpReconstructor::t_imprec_res imprec_res = impRec.rebuildImportTable(exportsMap, imprec_mode);
 		modDumpReport->impRecMode = get_imprec_res_name(imprec_res);
 
+		// Define a base the module should be rebased to:
 		module_buf.setRelocBase(mod->getRelocBase());
-		if (out_base) {
+		ULONGLONG out_base = 0;
+		if (rebase) {
+			out_base = mod->origBase;
+			if (!out_base) {
+				out_base = DEFAULT_BASE;
+			}
 			module_buf.setRelocBase(out_base);
 		}
 		if (imprec_mode == pesieve::PE_IMPREC_NONE) {

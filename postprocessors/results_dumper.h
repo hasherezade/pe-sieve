@@ -60,7 +60,7 @@ namespace pesieve {
 			IN const peconv::ExportsMapper *exportsMap,
 			IN const pesieve::t_dump_mode dump_mode,
 			IN const pesieve::t_imprec_mode imprec_mode,
-			IN ULONGLONG out_base,
+			IN bool rebase,
 			OUT ProcessDumpReport &dumpReport
 		);
 
