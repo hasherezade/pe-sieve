@@ -492,7 +492,7 @@ bool should_scan_context(const util::thread_info& info)
 bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanReport* my_report)
 {
 	const DWORD tid = GetThreadId(hThread);
-	ctx_details cDetails = { 0 };
+	ctx_details cDetails;
 	const bool is_ok = fetchThreadCtxDetails(processHandle, hThread, cDetails);
 
 	if (!pesieve::is_thread_running(hThread)) {
