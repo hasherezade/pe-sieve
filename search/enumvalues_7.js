@@ -15,10 +15,9 @@ var searchData=
   ['shellc_5fstats_12',['SHELLC_STATS',['../pe__sieve__types_8h.html#a440fabe616455608f0c66f6e10116e49a49155121e3f2b030dde86a3d8ed80760',1,'pe_sieve_types.h']]],
   ['show_5fall_13',['SHOW_ALL',['../pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10dfaca2bfbd2b0152f202a01395ec7dc89e4',1,'pe_sieve_types.h']]],
   ['show_5ferrors_14',['SHOW_ERRORS',['../pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10dfa07bdba8ae302e373ac823a29eb61ff99',1,'pe_sieve_types.h']]],
-  ['show_5ffilters_5fmax_15',['SHOW_FILTERS_MAX',['../pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10dfa96451ee767b05731033c438e4af269d0',1,'pe_sieve_types.h']]],
-  ['show_5fnone_16',['SHOW_NONE',['../pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10dfa23077e43ea9efbc11aa4ff810b0485bb',1,'pe_sieve_types.h']]],
-  ['show_5fnot_5fsuspicious_17',['SHOW_NOT_SUSPICIOUS',['../pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10dfa8a1b5fe96c55edc6436a815040ba4db2',1,'pe_sieve_types.h']]],
-  ['show_5fsuccessful_5fonly_18',['SHOW_SUCCESSFUL_ONLY',['../pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10dfa54b720b417c5e16ce96d8da5edb54c19',1,'pe_sieve_types.h']]],
-  ['show_5fsuspicious_19',['SHOW_SUSPICIOUS',['../pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10dfa895ab589d04dc140d73208770118a95a',1,'pe_sieve_types.h']]],
-  ['show_5fsuspicious_5fand_5ferrors_20',['SHOW_SUSPICIOUS_AND_ERRORS',['../pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10dfa6813c73baae176238bdeadacc1be9ffa',1,'pe_sieve_types.h']]]
+  ['show_5fnone_15',['SHOW_NONE',['../pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10dfa23077e43ea9efbc11aa4ff810b0485bb',1,'pe_sieve_types.h']]],
+  ['show_5fnot_5fsuspicious_16',['SHOW_NOT_SUSPICIOUS',['../pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10dfa8a1b5fe96c55edc6436a815040ba4db2',1,'pe_sieve_types.h']]],
+  ['show_5fsuccessful_5fonly_17',['SHOW_SUCCESSFUL_ONLY',['../pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10dfa54b720b417c5e16ce96d8da5edb54c19',1,'pe_sieve_types.h']]],
+  ['show_5fsuspicious_18',['SHOW_SUSPICIOUS',['../pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10dfa895ab589d04dc140d73208770118a95a',1,'pe_sieve_types.h']]],
+  ['show_5fsuspicious_5fand_5ferrors_19',['SHOW_SUSPICIOUS_AND_ERRORS',['../pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10dfa6813c73baae176238bdeadacc1be9ffa',1,'pe_sieve_types.h']]]
 ];
