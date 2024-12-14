@@ -3,8 +3,8 @@
 import ctypes
 import os
 
-PESIEVE_MIN_VER = 0x030800 # minimal version of the PE-sieve DLL to work with this wrapper
-PESIEVE_MAX_VER = 0x030800 # maximal version of the PE-sieve DLL to work with this wrapper
+PESIEVE_MIN_VER = 0x040000 # minimal version of the PE-sieve DLL to work with this wrapper
+PESIEVE_MAX_VER = 0x040000 # maximal version of the PE-sieve DLL to work with this wrapper
 
 ERROR_SCAN_FAILURE = -1
 MAX_PATH =  260
@@ -23,7 +23,7 @@ class t_output_filter(ctypes.c_int):
 	OUT_NO_DUMPS = 1
 	OUT_NO_DIR = 2
 	OUT_FILTERS_COUNT = 3
-    
+
 class t_shellc_mode(ctypes.c_int):
 	SHELLC_NONE = 0
 	SHELLC_PATTERNS = 1
@@ -31,14 +31,14 @@ class t_shellc_mode(ctypes.c_int):
 	SHELLC_PATTERNS_OR_STATS = 3
 	SHELLC_PATTERNS_AND_STATS = 4
 	SHELLC_COUNT = 5
-    
+
 class t_obfusc_mode(ctypes.c_int):
 	OBFUSC_NONE = 0
 	OBFUSC_STRONG_ENC = 1
 	OBFUSC_WEAK_ENC = 2
 	OBFUSC_ANY = 3
 	OBFUSC_COUNT = 4
-    
+
 class t_imprec_mode(ctypes.c_int):
 	PE_IMPREC_NONE = 0
 	PE_IMPREC_AUTO = 1
@@ -85,6 +85,16 @@ class t_json_level(ctypes.c_int):
 	JSON_DETAILS2 = 2
 	JSON_LVL_COUNT = 3
 
+class t_results_filter(ctypes.c_int):
+	SHOW_NONE = 0
+	SHOW_ERRORS = 1
+	SHOW_NOT_SUSPICIOUS = 2
+	SHOW_SUSPICIOUS = 4
+	SHOW_SUSPICIOUS_AND_ERRORS = 5
+	SHOW_SUCCESSFUL_ONLY = 6
+	SHOW_ALL = 7
+	SHOW_FILTERS_MAX = 8
+
 class t_report_type(ctypes.c_int):
 	REPORT_NONE = 0
 	REPORT_SCANNED = 1
@@ -111,13 +121,16 @@ class t_params(ctypes.Structure):
 		('iat', t_iat_scan_mode),
 		('data', t_data_scan_mode),
 		('minidump', ctypes.c_bool),
+		('rebase', ctypes.c_bool),
 		('dump_mode', t_dump_mode),
 		('json_output', ctypes.c_bool),
 		('make_reflection', ctypes.c_bool),
 		('use_cache', ctypes.c_bool),
 		('json_lvl', t_json_level),
+		('results_filter', t_results_filter),
 		('output_dir', ctypes.c_char * (MAX_PATH + 1)),
-		('modules_ignored', PARAM_STRING)
+		('modules_ignored', PARAM_STRING),
+		('pattern_file', PARAM_STRING)
 	]
 
 class t_report(ctypes.Structure):

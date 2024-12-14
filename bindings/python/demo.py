@@ -25,13 +25,14 @@ params.json_output = True
 params.make_reflection = False
 params.use_cache = False
 params.json_lvl = pesieve.t_json_level.JSON_BASIC
+params.results_filter = pesieve.t_results_filter.SHOW_SUSPICIOUS
 params.output_dir = b"/path/to/output/dir"
 params.modules_ignored = pesieve.PARAM_STRING(length=10, buffer=b'ignored1;ignored2')
+
 
 # run the function
 json_max_size = 2000
 (report, json, out_size) = pesieve.PESieve_scan_ex(params, pesieve.t_report_type.REPORT_ALL, json_max_size)
-
 # print the report
 print("PID: %d" % report.pid)
 print("Scanned: %d" % report.scanned)

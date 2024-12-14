@@ -27,15 +27,16 @@ namespace pesieve {
 		OUT_FILTERS_COUNT
 	} t_output_filter;
 
+	//! the flags defining what will be reported
 	typedef enum {
-		SHOW_NONE = 0,
-		SHOW_ERRORS = 1,
-		SHOW_NOT_SUSPICIOUS = 2,
-		SHOW_SUSPICIOUS = 4,
+		SHOW_NONE = 0,              ///< do not report any module
+		SHOW_ERRORS = 1,            ///< report only scan errors
+		SHOW_NOT_SUSPICIOUS = 2,    ///< report only not suspicious
+		SHOW_SUSPICIOUS = 4,        ///< report only suspicious
 		SHOW_SUSPICIOUS_AND_ERRORS = SHOW_ERRORS | SHOW_SUSPICIOUS,
 		SHOW_SUCCESSFUL_ONLY = SHOW_NOT_SUSPICIOUS | SHOW_SUSPICIOUS,
 		SHOW_ALL = SHOW_ERRORS | SHOW_NOT_SUSPICIOUS | SHOW_SUSPICIOUS,
-		SHOW_FILTERS_COUNT
+		SHOW_FILTERS_MAX            ///< terminator of the list of filters
 	} t_results_filter;
 
 	typedef enum {
