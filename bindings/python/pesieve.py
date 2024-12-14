@@ -93,7 +93,6 @@ class t_results_filter(ctypes.c_int):
 	SHOW_SUSPICIOUS_AND_ERRORS = 5
 	SHOW_SUCCESSFUL_ONLY = 6
 	SHOW_ALL = 7
-	SHOW_FILTERS_MAX = 8
 
 class t_report_type(ctypes.c_int):
 	REPORT_NONE = 0

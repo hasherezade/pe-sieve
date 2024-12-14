@@ -36,7 +36,6 @@ namespace pesieve {
 		SHOW_SUSPICIOUS_AND_ERRORS = SHOW_ERRORS | SHOW_SUSPICIOUS,
 		SHOW_SUCCESSFUL_ONLY = SHOW_NOT_SUSPICIOUS | SHOW_SUSPICIOUS,
 		SHOW_ALL = SHOW_ERRORS | SHOW_NOT_SUSPICIOUS | SHOW_SUSPICIOUS,
-		SHOW_FILTERS_MAX            ///< terminator of the list of filters
 	} t_results_filter;
 
 	typedef enum {

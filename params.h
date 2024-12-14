@@ -88,7 +88,7 @@ public:
 		if (enumParam) {
 			this->addParam(enumParam);
 			this->setInfo(PARAM_RESULTS_FILTER, "Define what type of results are reported.");
-			for (size_t i = SHOW_SUSPICIOUS; i < SHOW_FILTERS_COUNT; i++) {
+			for (size_t i = SHOW_SUSPICIOUS; i <= SHOW_ALL; i++) {
 				t_results_filter mode = (t_results_filter)(i);
 				std::string info = translate_results_filter(mode);
 				if (info.empty()) continue;
