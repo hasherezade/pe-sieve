@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classpesieve_1_1_area_stats.html" title="Base class for the statistics from analyzed buffer." alt="" coords="5,31,136,56"/>
 <area shape="rect" id="Node000001" href="$classpesieve_1_1_area_entropy_stats.html" title=" " alt="" coords="184,5,357,31"/>
-<area shape="poly" id="edge15_Node000000_Node000001" title=" " alt="" coords="151,31,183,27,183,32,151,36"/>
+<area shape="poly" id="edge16_Node000000_Node000001" title=" " alt="" coords="151,31,183,27,183,32,151,36"/>
 <area shape="rect" id="Node000002" href="$classpesieve_1_1_area_multi_stats.html" title=" " alt="" coords="191,55,350,80"/>
-<area shape="poly" id="edge16_Node000000_Node000002" title=" " alt="" coords="151,50,191,55,191,61,151,56"/>
+<area shape="poly" id="edge17_Node000000_Node000002" title=" " alt="" coords="151,50,191,55,191,61,151,56"/>
 </map>

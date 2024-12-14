@@ -278,6 +278,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1t__report__type.html">t_report_type</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1t__results__filter.html">t_results_filter</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1t__shellc__mode.html">t_shellc_mode</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_text_matcher.html">TextMatcher</a></td></tr>
@@ -352,7 +354,7 @@ Functions</h2></td></tr>
 <tr class="separator:a7d3250596f391d7bf3ae3f5fc1609736"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe5f652e94b13f6f140330db727bd36b" id="r_abe5f652e94b13f6f140330db727bd36b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe5f652e94b13f6f140330db727bd36b">translate_out_filter</a> (const <a class="el" href="classpesieve_1_1t__output__filter.html">pesieve::t_output_filter</a> o_filter)</td></tr>
 <tr class="separator:abe5f652e94b13f6f140330db727bd36b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade3724e3061e90098a52e498f484a8a5" id="r_ade3724e3061e90098a52e498f484a8a5"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ade3724e3061e90098a52e498f484a8a5">translate_results_filter</a> (const pesieve::t_results_filter r_filter)</td></tr>
+<tr class="memitem:ade3724e3061e90098a52e498f484a8a5" id="r_ade3724e3061e90098a52e498f484a8a5"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ade3724e3061e90098a52e498f484a8a5">translate_results_filter</a> (const <a class="el" href="classpesieve_1_1t__results__filter.html">pesieve::t_results_filter</a> r_filter)</td></tr>
 <tr class="separator:ade3724e3061e90098a52e498f484a8a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb9076180378513af333eab3b495a1bd" id="r_abb9076180378513af333eab3b495a1bd"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb9076180378513af333eab3b495a1bd">results_filter_to_id</a> (const DWORD r_filter)</td></tr>
 <tr class="separator:abb9076180378513af333eab3b495a1bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -425,13 +427,13 @@ Functions</h2></td></tr>
 <tr class="separator:a294ac1ed36b2f8bbffab80b3314c7155"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22be478637fe6ab08135f946a1a85aac" id="r_a22be478637fe6ab08135f946a1a85aac"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a22be478637fe6ab08135f946a1a85aac">scan_report_to_string</a> (const <a class="el" href="classpesieve_1_1_process_scan_report.html">ProcessScanReport</a> &amp;<a class="el" href="structreport.html">report</a>)</td></tr>
 <tr class="separator:a22be478637fe6ab08135f946a1a85aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ce4b743db4b6b4180f58461819618f5" id="r_a9ce4b743db4b6b4180f58461819618f5"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9ce4b743db4b6b4180f58461819618f5">scan_report_to_json</a> (const <a class="el" href="classpesieve_1_1_process_scan_report.html">ProcessScanReport</a> &amp;process_report, <a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a> filter, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails, size_t start_level=0)</td></tr>
+<tr class="memitem:a9ce4b743db4b6b4180f58461819618f5" id="r_a9ce4b743db4b6b4180f58461819618f5"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9ce4b743db4b6b4180f58461819618f5">scan_report_to_json</a> (const <a class="el" href="classpesieve_1_1_process_scan_report.html">ProcessScanReport</a> &amp;process_report, <a class="el" href="classpesieve_1_1t__results__filter.html">t_results_filter</a> filter, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails, size_t start_level=0)</td></tr>
 <tr class="separator:a9ce4b743db4b6b4180f58461819618f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66549976a4e32dd1d7a784ec28a5c665" id="r_a66549976a4e32dd1d7a784ec28a5c665"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a66549976a4e32dd1d7a784ec28a5c665">dump_report_to_json</a> (const <a class="el" href="classpesieve_1_1_process_dump_report.html">ProcessDumpReport</a> &amp;process_report, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails, size_t start_level=0)</td></tr>
 <tr class="separator:a66549976a4e32dd1d7a784ec28a5c665"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f9b8d2e27e77e8924f34ebdf8367f11" id="r_a7f9b8d2e27e77e8924f34ebdf8367f11"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f9b8d2e27e77e8924f34ebdf8367f11">err_report_to_json</a> (const <a class="el" href="classpesieve_1_1_error_report.html">ErrorReport</a> &amp;err_report, <a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a> filter, size_t start_level=0)</td></tr>
+<tr class="memitem:a7f9b8d2e27e77e8924f34ebdf8367f11" id="r_a7f9b8d2e27e77e8924f34ebdf8367f11"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f9b8d2e27e77e8924f34ebdf8367f11">err_report_to_json</a> (const <a class="el" href="classpesieve_1_1_error_report.html">ErrorReport</a> &amp;err_report, <a class="el" href="classpesieve_1_1t__results__filter.html">t_results_filter</a> filter, size_t start_level=0)</td></tr>
 <tr class="separator:a7f9b8d2e27e77e8924f34ebdf8367f11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90510c3aed6db4cb8169647fe0be23a2" id="r_a90510c3aed6db4cb8169647fe0be23a2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a90510c3aed6db4cb8169647fe0be23a2">report_to_json</a> (const <a class="el" href="classpesieve_1_1_report_ex.html">ReportEx</a> &amp;<a class="el" href="structreport.html">report</a>, const <a class="el" href="classpesieve_1_1t__report__type.html">t_report_type</a> rtype, <a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a> filter, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails, size_t start_level=0)</td></tr>
+<tr class="memitem:a90510c3aed6db4cb8169647fe0be23a2" id="r_a90510c3aed6db4cb8169647fe0be23a2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a90510c3aed6db4cb8169647fe0be23a2">report_to_json</a> (const <a class="el" href="classpesieve_1_1_report_ex.html">ReportEx</a> &amp;<a class="el" href="structreport.html">report</a>, const <a class="el" href="classpesieve_1_1t__report__type.html">t_report_type</a> rtype, <a class="el" href="classpesieve_1_1t__results__filter.html">t_results_filter</a> filter, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails, size_t start_level=0)</td></tr>
 <tr class="separator:a90510c3aed6db4cb8169647fe0be23a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37106144bce7fd014a5bd3dc1631af0d" id="r_a37106144bce7fd014a5bd3dc1631af0d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37106144bce7fd014a5bd3dc1631af0d">get_payload_ext</a> (const <a class="el" href="classpesieve_1_1_artefact_scan_report.html">ArtefactScanReport</a> &amp;artefactRepot)</td></tr>
 <tr class="separator:a37106144bce7fd014a5bd3dc1631af0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -451,7 +453,7 @@ Functions</h2></td></tr>
 <tr class="separator:ab6eb75407c454f07ae7910a1d8b7c826"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad710b4114538c040cf66158264fbe899" id="r_ad710b4114538c040cf66158264fbe899"><td class="memItemLeft" align="right" valign="top">BYTE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad710b4114538c040cf66158264fbe899">first_different</a> (const BYTE *buf_ptr, size_t bif_size, const BYTE padding)</td></tr>
 <tr class="separator:ad710b4114538c040cf66158264fbe899"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa0c8ad8a1812e5114f615afc6683ee6" id="r_afa0c8ad8a1812e5114f615afc6683ee6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa0c8ad8a1812e5114f615afc6683ee6">is_shown_type</a> (<a class="el" href="#ae1427f2c930ab7bdd8a08ad8b4a6a90d">t_scan_status</a> status, <a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a> filter)</td></tr>
+<tr class="memitem:afa0c8ad8a1812e5114f615afc6683ee6" id="r_afa0c8ad8a1812e5114f615afc6683ee6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa0c8ad8a1812e5114f615afc6683ee6">is_shown_type</a> (<a class="el" href="#ae1427f2c930ab7bdd8a08ad8b4a6a90d">t_scan_status</a> status, <a class="el" href="classpesieve_1_1t__results__filter.html">t_results_filter</a> filter)</td></tr>
 <tr class="separator:afa0c8ad8a1812e5114f615afc6683ee6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15a9583f5de3d091bffbee68e712d8d6" id="r_a15a9583f5de3d091bffbee68e712d8d6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15a9583f5de3d091bffbee68e712d8d6">validate_param_str</a> (<a class="el" href="classpesieve_1_1_p_a_r_a_m___s_t_r_i_n_g.html">PARAM_STRING</a> &amp;strparam)</td></tr>
 <tr class="separator:a15a9583f5de3d091bffbee68e712d8d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -480,9 +482,9 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a96ecbddb71934bfb5bdf81c6e6410d1b" id="r_a96ecbddb71934bfb5bdf81c6e6410d1b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96ecbddb71934bfb5bdf81c6e6410d1b">PESIEVE_MIN_VER</a> = 0x030800</td></tr>
+<tr class="memitem:a96ecbddb71934bfb5bdf81c6e6410d1b" id="r_a96ecbddb71934bfb5bdf81c6e6410d1b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96ecbddb71934bfb5bdf81c6e6410d1b">PESIEVE_MIN_VER</a> = 0x040000</td></tr>
 <tr class="separator:a96ecbddb71934bfb5bdf81c6e6410d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa49edaed56fbdafac80aaa7e7774a602" id="r_aa49edaed56fbdafac80aaa7e7774a602"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa49edaed56fbdafac80aaa7e7774a602">PESIEVE_MAX_VER</a> = 0x030800</td></tr>
+<tr class="memitem:aa49edaed56fbdafac80aaa7e7774a602" id="r_aa49edaed56fbdafac80aaa7e7774a602"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa49edaed56fbdafac80aaa7e7774a602">PESIEVE_MAX_VER</a> = 0x040000</td></tr>
 <tr class="separator:aa49edaed56fbdafac80aaa7e7774a602"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a267e690d8ed5004a62be6a7ce04f7617" id="r_a267e690d8ed5004a62be6a7ce04f7617"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a267e690d8ed5004a62be6a7ce04f7617">ERROR_SCAN_FAILURE</a> = -1</td></tr>
 <tr class="separator:a267e690d8ed5004a62be6a7ce04f7617"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -882,7 +884,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a></td>          <td class="paramname"><span class="paramname"><em>filter</em></span>, </td>
+          <td class="paramtype"><a class="el" href="classpesieve_1_1t__results__filter.html">t_results_filter</a></td>          <td class="paramname"><span class="paramname"><em>filter</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1404,7 +1406,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pesieve_8py_source.html#l00147">147</a> of file <a class="el" href="pesieve_8py_source.html">pesieve.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pesieve_8py_source.html#l00160">160</a> of file <a class="el" href="pesieve_8py_source.html">pesieve.py</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1587,7 +1589,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a></td>          <td class="paramname"><span class="paramname"><em>filter</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classpesieve_1_1t__results__filter.html">t_results_filter</a></td>          <td class="paramname"><span class="paramname"><em>filter</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -2094,7 +2096,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pesieve_8py_source.html#l00168">168</a> of file <a class="el" href="pesieve_8py_source.html">pesieve.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pesieve_8py_source.html#l00181">181</a> of file <a class="el" href="pesieve_8py_source.html">pesieve.py</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2125,7 +2127,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pesieve_8py_source.html#l00173">173</a> of file <a class="el" href="pesieve_8py_source.html">pesieve.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pesieve_8py_source.html#l00186">186</a> of file <a class="el" href="pesieve_8py_source.html">pesieve.py</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2165,7 +2167,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pesieve_8py_source.html#l00186">186</a> of file <a class="el" href="pesieve_8py_source.html">pesieve.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pesieve_8py_source.html#l00199">199</a> of file <a class="el" href="pesieve_8py_source.html">pesieve.py</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2233,7 +2235,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a></td>          <td class="paramname"><span class="paramname"><em>filter</em></span>, </td>
+          <td class="paramtype"><a class="el" href="classpesieve_1_1t__results__filter.html">t_results_filter</a></td>          <td class="paramname"><span class="paramname"><em>filter</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -2466,7 +2468,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a></td>          <td class="paramname"><span class="paramname"><em>filter</em></span>, </td>
+          <td class="paramtype"><a class="el" href="classpesieve_1_1t__results__filter.html">t_results_filter</a></td>          <td class="paramname"><span class="paramname"><em>filter</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -2777,7 +2779,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">std::string pesieve::translate_results_filter </td>
           <td>(</td>
-          <td class="paramtype">const pesieve::t_results_filter</td>          <td class="paramname"><span class="paramname"><em>r_filter</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classpesieve_1_1t__results__filter.html">pesieve::t_results_filter</a></td>          <td class="paramname"><span class="paramname"><em>r_filter</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -2937,7 +2939,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pesieve_8py_source.html#l00144">144</a> of file <a class="el" href="pesieve_8py_source.html">pesieve.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pesieve_8py_source.html#l00157">157</a> of file <a class="el" href="pesieve_8py_source.html">pesieve.py</a>.</p>
 
 </div>
 </div>
@@ -3018,7 +3020,7 @@ Here is the call graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int pesieve.PESIEVE_MAX_VER = 0x030800</td>
+          <td class="memname">int pesieve.PESIEVE_MAX_VER = 0x040000</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3034,7 +3036,7 @@ Here is the call graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int pesieve.PESIEVE_MIN_VER = 0x030800</td>
+          <td class="memname">int pesieve.PESIEVE_MIN_VER = 0x040000</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -3071,7 +3073,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pesieve_8py_source.html#l00145">145</a> of file <a class="el" href="pesieve_8py_source.html">pesieve.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pesieve_8py_source.html#l00158">158</a> of file <a class="el" href="pesieve_8py_source.html">pesieve.py</a>.</p>
 
 </div>
 </div>

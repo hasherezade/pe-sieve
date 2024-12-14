@@ -13,10 +13,11 @@ var searchData=
   ['t_5frefl_5fargs_10',['t_refl_args',['../structpesieve_1_1util_1_1t__refl__args.html',1,'pesieve::util']]],
   ['t_5freport_11',['t_report',['../classpesieve_1_1t__report.html',1,'pesieve']]],
   ['t_5freport_5ftype_12',['t_report_type',['../classpesieve_1_1t__report__type.html',1,'pesieve']]],
-  ['t_5frtlp_5fprocess_5freflection_5freflection_5finformation_13',['T_RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION',['../structpesieve_1_1util_1_1_t___r_t_l_p___p_r_o_c_e_s_s___r_e_f_l_e_c_t_i_o_n___r_e_f_l_e_c_t_i_o_n___i_n_f_o_r_m_a_t_i_o_n.html',1,'pesieve::util']]],
-  ['t_5fshellc_5fmode_14',['t_shellc_mode',['../classpesieve_1_1t__shellc__mode.html',1,'pesieve']]],
-  ['textmatcher_15',['TextMatcher',['../classpesieve_1_1_text_matcher.html',1,'pesieve']]],
-  ['threadscanner_16',['ThreadScanner',['../classpesieve_1_1_thread_scanner.html',1,'pesieve']]],
-  ['threadscanreport_17',['ThreadScanReport',['../classpesieve_1_1_thread_scan_report.html',1,'pesieve']]],
-  ['thunkfoundcallback_18',['ThunkFoundCallback',['../classpesieve_1_1_thunk_found_callback.html',1,'pesieve']]]
+  ['t_5fresults_5ffilter_13',['t_results_filter',['../classpesieve_1_1t__results__filter.html',1,'pesieve']]],
+  ['t_5frtlp_5fprocess_5freflection_5freflection_5finformation_14',['T_RTLP_PROCESS_REFLECTION_REFLECTION_INFORMATION',['../structpesieve_1_1util_1_1_t___r_t_l_p___p_r_o_c_e_s_s___r_e_f_l_e_c_t_i_o_n___r_e_f_l_e_c_t_i_o_n___i_n_f_o_r_m_a_t_i_o_n.html',1,'pesieve::util']]],
+  ['t_5fshellc_5fmode_15',['t_shellc_mode',['../classpesieve_1_1t__shellc__mode.html',1,'pesieve']]],
+  ['textmatcher_16',['TextMatcher',['../classpesieve_1_1_text_matcher.html',1,'pesieve']]],
+  ['threadscanner_17',['ThreadScanner',['../classpesieve_1_1_thread_scanner.html',1,'pesieve']]],
+  ['threadscanreport_18',['ThreadScanReport',['../classpesieve_1_1_thread_scan_report.html',1,'pesieve']]],
+  ['thunkfoundcallback_19',['ThunkFoundCallback',['../classpesieve_1_1_thunk_found_callback.html',1,'pesieve']]]
 ];
