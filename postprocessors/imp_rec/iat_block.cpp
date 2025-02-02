@@ -47,7 +47,7 @@ bool pesieve::IATThunksSeries::fillNamesSpace(const BYTE* buf_start, size_t buf_
 	const size_t longest_name = get_longest_func_name(this->cov->addrToFunc);
 	const size_t field_size = is64b ? sizeof(ULONGLONG) : sizeof(DWORD);
 
-	const size_t thunks_count = this->cov->addrToFunc.size();
+	const size_t thunks_count = this->funcCount();
 	const size_t thunks_area_size = (thunks_count * field_size) + field_size;
 
 	size_t names_rva = bufRVA + thunks_area_size;
@@ -55,11 +55,13 @@ bool pesieve::IATThunksSeries::fillNamesSpace(const BYTE* buf_start, size_t buf_
 	//fill thunks:
 	BYTE *buf = const_cast<BYTE*>(buf_start);
 	const BYTE *buf_end = buf_start + buf_size;
-	std::map<ULONGLONG, std::set<peconv::ExportedFunc>>::iterator itr;
-	for (itr = this->cov->addrToFunc.begin(); itr != cov->addrToFunc.end() && buf < buf_end; ++itr) {
-
-		std::set<peconv::ExportedFunc> &expSet = itr->second;
-		const peconv::ExportedFunc& exp = *(expSet.begin());
+	for (size_t i = 0; i < thunks_count; i++) {
+		if (buf >= buf_end) {
+#ifdef _DEBUG
+			std::cerr << "ERR: run out of buffer for names! Failed to make space for the name\n";
+#endif
+			break;
+		}
 		if (is64b) {
 			ULONGLONG *val = (ULONGLONG*)buf;
 			*val = names_rva;
@@ -85,10 +87,8 @@ size_t pesieve::IATThunksSeries::sizeOfNamesSpace(bool is64b)
 	}
 	const size_t longest_name = get_longest_func_name(this->cov->addrToFunc);
 	const size_t field_size = is64b ? sizeof(ULONGLONG) : sizeof(DWORD);
-	std::map<ULONGLONG, std::set<peconv::ExportedFunc>>::iterator itr;
-	for (itr = this->cov->addrToFunc.begin(); itr != cov->addrToFunc.end(); ++itr) {
-		std::set<peconv::ExportedFunc> &expSet = itr->second;
-		const peconv::ExportedFunc& exp = *(expSet.begin());
+	const size_t entriesCount = this->funcCount();
+	for (size_t i = 0; i < entriesCount; i++) {
 		space_size += field_size;
 		space_size += sizeof(IMAGE_IMPORT_BY_NAME) + longest_name;
 	}
@@ -111,8 +111,9 @@ bool pesieve::IATBlock::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 
 	IATThunksSeriesSet::iterator itr;
 	std::set<IATThunksSeries*>to_split;
-
+	
 	for (itr = this->thunkSeries.begin(); itr != thunkSeries.end(); ++itr) {
+
 		IATThunksSeries* series = *itr;
 		if (!series->makeCoverage(exportsMap)) {
 			to_split.insert(series);
@@ -127,8 +128,9 @@ bool pesieve::IATBlock::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 			continue;
 		}
 #ifdef _DEBUG
-		std::cout << "Uncovered series splitted into: " << splitted.size() << " series\n";
+		std::cout << "Uncovered series: " << std::hex << series->startOffset << " splitted into: " <<  std::dec << splitted.size() << " series\n";
 #endif
+
 		this->thunkSeries.erase(series);
 		this->thunkSeries.insert(splitted.begin(), splitted.end());
 		
@@ -143,7 +145,13 @@ bool pesieve::IATBlock::makeCoverage(IN const peconv::ExportsMapper* exportsMap)
 			covered_count++;
 		}
 	}
-
+#ifdef _DEBUG
+	size_t total = 0;
+	for (auto it1 = thunkSeries.begin(); it1 != thunkSeries.end(); ++it1) {
+		total += (*it1)->funcCount();
+	}
+	std::cout << "[#] IAT block: " << std::hex << this->iatOffset << " Total: " << std::dec << total << " Missed: " << (this->countThunks() - total) << std::endl;
+#endif
 	isCoverageComplete = (covered_count == this->thunkSeries.size());
 	return isCoverageComplete;
 }

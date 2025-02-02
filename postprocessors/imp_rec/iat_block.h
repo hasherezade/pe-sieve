@@ -12,7 +12,7 @@ namespace pesieve {
 	{
 	public:
 		IATThunksSeries(DWORD start_offset)
-			: startOffset(start_offset), cov(nullptr), covered(false)
+			: startOffset(start_offset), endOffset(start_offset), cov(nullptr), covered(false)
 		{
 		}
 
@@ -30,6 +30,9 @@ namespace pesieve {
 		{
 			rvaToFuncVA[rva] = funcAddr;
 			funcAddresses.insert(funcAddr);
+			if (rva > endOffset) {
+				endOffset = rva;
+			}
 			return true;
 		}
 
@@ -38,6 +41,11 @@ namespace pesieve {
 		bool isCovered()
 		{
 			return covered;
+		}
+
+		size_t funcCount()
+		{
+			return rvaToFuncVA.size();
 		}
 
 		std::string getDllName();
@@ -54,6 +62,7 @@ namespace pesieve {
 		}
 
 		DWORD startOffset;
+		DWORD endOffset;
 
 	private:
 		bool covered;
@@ -96,17 +105,27 @@ namespace pesieve {
 			return iatOffset < other.iatOffset;
 		}
 
-		void appendSeries(IATThunksSeries* series)
-		{
-			thunkSeries.insert(series);
-		}
-
-		bool append(ULONGLONG offset, ULONGLONG functionVA, const peconv::ExportedFunc *exp)
+		bool append(DWORD rva, ULONGLONG functionVA, const peconv::ExportedFunc *exp)
 		{
 			if (!exp) return false;
 
-			functions[offset] = exp;
-			addrToFunctionVA[offset] = functionVA;
+			functions[rva] = exp;
+			addrToFunctionVA[rva] = functionVA;
+
+			IATThunksSeries* mySeries = nullptr;
+			for (auto itr = thunkSeries.begin(); itr != thunkSeries.end(); ++itr) {
+				IATThunksSeries* series = *itr;
+				// is the next offset in the series:
+				if ((series->endOffset + sizeof(rva)) == rva) {
+					mySeries = series;
+					break;
+				}
+			}
+			if (!mySeries) {
+				mySeries = new IATThunksSeries(rva);
+				thunkSeries.insert(mySeries);
+			}
+			mySeries->insert(rva, functionVA);
 			return true;
 		}
 

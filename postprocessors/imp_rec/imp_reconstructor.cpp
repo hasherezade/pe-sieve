@@ -547,6 +547,9 @@ ImportTableBuffer* pesieve::ImpReconstructor::constructImportTable()
 			const size_t names_space_size = series->sizeOfNamesSpace(this->is64bit);
 			BYTE *buf = importTableBuffer->getNamesSpaceAt(name_rva, names_space_size);
 			if (!buf) {
+#ifdef _DEBUG
+				std::cout << "ERR: Cannot get the space for name RVA: " << std::hex << name_rva << std::endl;
+#endif
 				continue;
 			}
 			series->fillNamesSpace(buf, names_space_size, name_rva, this->is64bit);
@@ -571,7 +574,7 @@ ImportTableBuffer* pesieve::ImpReconstructor::constructImportTable()
 			BYTE *buf = importTableBuffer->getDllSpaceAt(dll_name_rva, max_dll_name);
 			if (buf) {
 				//fill the name:
-				memcpy(buf, series->getDllName().c_str(), series->getDllName().length() + 1);
+				::memcpy(buf, series->getDllName().c_str(), series->getDllName().length() + 1);
 			}
 			dll_name_rva += max_dll_name;
 		}

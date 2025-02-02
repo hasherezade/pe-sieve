@@ -40,16 +40,11 @@ namespace pesieve {
 		iat.isTerminated = true;
 		const peconv::ExportedFunc *exp = nullptr;
 
-		IATThunksSeries *series = nullptr;
 		bool is_terminated = true;
 		FIELD_T *imp = (FIELD_T*)(iat.iatOffset + (ULONG_PTR)vBuf);
 		for (; imp < (FIELD_T*)(vBuf + max_check); imp++) {
 			if (*imp == 0) {
 				is_terminated = true;
-				if (series) {
-					iat.appendSeries(series); //add filled series
-					series = nullptr;
-				}
 				continue;
 			}
 
@@ -70,15 +65,6 @@ namespace pesieve {
 			is_terminated = false;
 			DWORD offset = MASK_TO_DWORD((BYTE*)imp - vBuf);
 			iat.append(offset, imp_va, exp);
-
-			if (!series) series = new IATThunksSeries(offset);
-			if (series) {
-				series->insert(offset, imp_va);
-			}
-		}
-		if (series) {
-			iat.appendSeries(series); //add filled series
-			series = nullptr;
 		}
 		iat.isTerminated = is_terminated;
 		if (!exp && iat.iatOffset && iat.countThunks() > 0) {
