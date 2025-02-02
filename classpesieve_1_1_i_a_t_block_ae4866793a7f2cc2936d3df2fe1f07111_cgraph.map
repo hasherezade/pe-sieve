@@ -1,7 +1,13 @@
 <map id="pesieve::IATBlock::makeCoverage" name="pesieve::IATBlock::makeCoverage">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,138,79"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_i_a_t_thunks_series.html#afa77af01bd49d5428a03227b1d2a2283" title=" " alt="" coords="186,5,359,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,45,170,40,171,45,139,51"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#a18c9c42229cec006c23ee90d6a4a5824" title=" " alt="" coords="186,71,359,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="139,67,171,72,170,77,138,72"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,104,138,145"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_i_a_t_block.html#a2d4d263518aab46409802d50e84b2f9e" title=" " alt="" coords="206,5,338,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,101,184,57,199,50,201,55,187,61,107,106"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_i_a_t_thunks_series.html#afa77af01bd49d5428a03227b1d2a2283" title=" " alt="" coords="186,71,359,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="138,111,170,105,171,111,139,116"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_i_a_t_thunks_series.html#a18c9c42229cec006c23ee90d6a4a5824" title=" " alt="" coords="186,136,359,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="139,132,171,137,170,143,138,138"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_i_a_t_block.html#af25037eb1bb7ea83fa7e5a24807727d7" title=" " alt="" coords="206,201,338,242"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="108,143,187,186,201,192,199,197,184,191,105,148"/>
+<area shape="rect" id="Node000006" href="$classpesieve_1_1_i_a_t_thunks_series.html#a75580288fabee929f3dca3573992a05d" title=" " alt="" coords="407,201,580,242"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="339,219,392,219,392,224,339,224"/>
 </map>

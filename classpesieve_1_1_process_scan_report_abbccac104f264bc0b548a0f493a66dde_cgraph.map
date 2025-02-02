@@ -1,7 +1,0 @@
-<map id="pesieve::ProcessScanReport::getModuleContaining" name="pesieve::ProcessScanReport::getModuleContaining">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,194,46"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_modules_info.html#a15b3653af8bb2e2f86991103ab3b9f9e" title=" " alt="" coords="242,5,392,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,23,226,23,226,28,194,28"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="440,5,605,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="393,23,425,23,425,28,393,28"/>
-</map>

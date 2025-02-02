@@ -1,7 +1,7 @@
 <map id="pesieve::MemPageData::load" name="pesieve::MemPageData::load">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,164,79"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="214,5,372,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,44,198,38,199,43,165,49"/>
-<area shape="rect" id="Node000003" href="$structpesieve_1_1util_1_1_basic_buffer.html#a62c880c7daca719d983e9fc638518fca" title=" " alt="" coords="212,71,374,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="165,69,197,74,196,79,164,74"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,164,46"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="212,5,370,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,23,196,23,196,28,164,28"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_mem_page_data.html#a6cbf6c12b0cbfd5e9211523fe89cd70d" title=" " alt="" coords="418,5,576,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="370,23,402,23,402,28,370,28"/>
 </map>

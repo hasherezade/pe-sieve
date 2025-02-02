@@ -1,9 +1,10 @@
 <map id="pesieve::RemoteModuleData::calcImgSize" name="pesieve::RemoteModuleData::calcImgSize">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,192,64"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_artefact_scanner.html#aeedfc8d641b324dd3eb203313731292f" title=" " alt="" coords="240,23,406,64"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,41,224,41,224,46,192,46"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="464,5,609,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="406,31,449,26,449,31,407,36"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve.html#ab6eb75407c454f07ae7910a1d8b7c826" title=" " alt="" coords="454,55,619,80"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="407,50,439,54,438,59,406,55"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,192,46"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_artefact_scanner.html#aeedfc8d641b324dd3eb203313731292f" title=" " alt="" coords="240,5,406,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,23,224,23,224,28,192,28"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="667,13,812,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="406,23,652,23,652,28,406,28"/>
+<area shape="rect" id="Node000004" href="$namespacepesieve.html#ab6eb75407c454f07ae7910a1d8b7c826" title=" " alt="" coords="454,38,619,64"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="407,33,439,37,438,42,406,38"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="620,38,651,34,652,39,620,43"/>
 </map>

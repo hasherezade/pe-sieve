@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bindings_0',['Available bindings',['../index.html',1,'']]]
+  ['sieve_0',['PE-sieve',['../index.html',1,'']]]
 ];

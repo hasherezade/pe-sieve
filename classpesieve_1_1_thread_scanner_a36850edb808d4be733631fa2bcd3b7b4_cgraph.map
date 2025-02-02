@@ -1,7 +1,17 @@
 <map id="pesieve::ThreadScanner::reportSuspiciousAddr" name="pesieve::ThreadScanner::reportSuspiciousAddr">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,166,64"/>
-<area shape="rect" id="Node000002" href="$thread__scanner_8cpp.html#a7b9ade21d4de016d2a048bf6cc42dbc0" title=" " alt="" coords="214,5,333,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,30,198,26,199,31,166,35"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="227,55,320,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,51,212,57,211,62,166,56"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,100,166,141"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_thread_scanner.html#a79df00ed9c178f7eab47cbb8ee43dd42" title=" " alt="" coords="214,71,374,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,106,198,102,198,107,166,112"/>
+<area shape="rect" id="Node000008" href="$thread__scanner_8cpp.html#a7b9ade21d4de016d2a048bf6cc42dbc0" title=" " alt="" coords="234,136,354,161"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="166,128,219,136,219,141,165,134"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_area_stats_calculator.html#a5f85d093b7ddc31bb358a19917f6b4c2" title=" " alt="" coords="422,5,610,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="365,68,429,48,431,54,366,73"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_mem_page_data.html#a59ed1087d268c1742139c7240ab5854f" title=" " alt="" coords="437,71,595,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="374,88,421,88,421,94,374,94"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_mem_page_data.html#a01d3a9dc59b2965fa6defbc4dfda8524" title=" " alt="" coords="437,136,595,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="366,109,431,128,429,134,365,114"/>
+<area shape="rect" id="Node000006" href="$classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="658,136,817,177"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="596,154,643,154,643,159,596,159"/>
+<area shape="rect" id="Node000007" href="$classpesieve_1_1_mem_page_data.html#a6cbf6c12b0cbfd5e9211523fe89cd70d" title=" " alt="" coords="865,136,1023,177"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="817,154,849,154,849,159,817,159"/>
 </map>

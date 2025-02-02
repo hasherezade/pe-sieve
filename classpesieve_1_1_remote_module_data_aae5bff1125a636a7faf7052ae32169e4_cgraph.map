@@ -1,0 +1,21 @@
+<map id="pesieve::RemoteModuleData::loadFullImage" name="pesieve::RemoteModuleData::loadFullImage">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,104,192,145"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_remote_module_data.html#a2d851432acd3771fea6a89ac0a3b78c5" title=" " alt="" coords="240,17,426,58"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,101,261,61,262,66,157,106"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_remote_module_data.html#a1bbfb7e3bcb6136909a1cf812da2a955" title=" " alt="" coords="474,71,660,111"/>
+<area shape="poly" id="edge10_Node000001_Node000004" title=" " alt="" coords="192,115,458,96,459,101,192,120"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_remote_module_data.html#a2566f869e49becd1a75b1e3d11fbff10" title=" " alt="" coords="240,132,426,173"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="192,133,224,137,224,142,192,138"/>
+<area shape="rect" id="Node000009" href="$classpesieve_1_1_remote_module_data.html#a96a7adafecd92c30b305d7e03d28b4ac" title=" " alt="" coords="240,197,426,238"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="148,143,241,182,259,189,258,194,239,187,146,148"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_remote_module_data.html#aec7840414faf08a309da0a2bbeae7e1e" title=" " alt="" coords="474,5,660,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="426,30,458,29,459,34,427,36"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="426,56,461,64,460,69,424,61"/>
+<area shape="rect" id="Node000006" href="$classpesieve_1_1_artefact_scanner.html#aeedfc8d641b324dd3eb203313731292f" title=" " alt="" coords="484,136,650,177"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="426,151,469,152,469,157,426,157"/>
+<area shape="rect" id="Node000007" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="922,144,1066,169"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="651,154,906,154,906,159,651,159"/>
+<area shape="rect" id="Node000008" href="$namespacepesieve.html#ab6eb75407c454f07ae7910a1d8b7c826" title=" " alt="" coords="708,169,874,194"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="651,163,693,168,693,173,651,168"/>
+<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="874,169,906,165,906,170,875,174"/>
+</map>

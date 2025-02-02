@@ -1,9 +1,0 @@
-<map id="pesieve::CodeScanReport::generateTags" name="pesieve::CodeScanReport::generateTags">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,176,79"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_patch_list.html#ab6fc10f0853f55604093c1b1d29d60df" title=" " alt="" coords="224,5,352,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,42,208,36,209,42,177,47"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_patch_list.html#a8ee9372cf593db3d9b004e402a4e5b7a" title=" " alt="" coords="224,71,352,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="177,70,209,76,208,81,176,75"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_patch_list_1_1_patch.html#a9d85af3c5c28cb144451ebf5e5f4e303" title=" " alt="" coords="400,71,528,111"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="352,88,384,88,384,94,352,94"/>
-</map>

@@ -1,5 +1,8 @@
 <map id="pesieve::ThreadScanner::analyzeCallStack" name="pesieve::ThreadScanner::analyzeCallStack">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,166,46"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="214,5,379,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,23,198,23,198,28,166,28"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="422,5,587,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,20,214,19,374,19,406,20,406,25,374,24,214,24,166,25"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_thread_scanner.html#ac35db3f1ec2765f9dda550b04f0cb9ee" title=" " alt="" coords="214,33,374,74"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,34,198,38,198,43,165,39"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="374,40,406,36,407,41,375,46"/>
 </map>

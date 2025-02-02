@@ -1,5 +1,7 @@
 <map id="pesieve::PatchList::operator=" name="pesieve::PatchList::operator=">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,134,46"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,134,79"/>
 <area shape="rect" id="Node000002" href="$classpesieve_1_1_patch_list.html#a79ee31915cbfdae803e7ebc613865386" title=" " alt="" coords="182,5,310,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,23,166,23,166,28,134,28"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,44,166,38,167,43,135,49"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_patch_list.html#a9051301e9682e04a755acebbe6f877b7" title=" " alt="" coords="182,71,310,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="135,68,167,74,166,79,134,73"/>
 </map>

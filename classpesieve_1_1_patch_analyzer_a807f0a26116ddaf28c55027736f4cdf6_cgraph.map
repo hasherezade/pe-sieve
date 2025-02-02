@@ -1,5 +1,7 @@
 <map id="pesieve::PatchAnalyzer::parseMovJmp" name="pesieve::PatchAnalyzer::parseMovJmp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,161,46"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_patch_list_1_1_patch.html#a0ef11444af2c99e07e5db6e97c598734" title=" " alt="" coords="209,5,362,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,23,193,23,193,28,161,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,161,79"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_patch_analyzer.html#a4c5ab2246b9124276defa70d025f4e73" title=" " alt="" coords="209,5,364,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,44,193,38,193,44,161,49"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_patch_list_1_1_patch.html#a0ef11444af2c99e07e5db6e97c598734" title=" " alt="" coords="210,71,363,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="161,69,195,74,194,79,160,74"/>
 </map>

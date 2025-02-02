@@ -1,7 +1,11 @@
 <map id="pesieve::PeBuffer::fillFromBuffer" name="pesieve::PeBuffer::fillFromBuffer">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,134,79"/>
-<area shape="rect" id="Node000002" href="$structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="182,5,344,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,45,166,40,167,45,135,51"/>
-<area shape="rect" id="Node000003" href="$structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2" title=" " alt="" coords="182,71,344,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="135,67,167,72,166,78,134,72"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,71,134,111"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_pe_buffer.html#a449b249560082a0d379d726a184bb790" title=" " alt="" coords="199,5,327,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,68,185,49,187,54,133,73"/>
+<area shape="rect" id="Node000004" href="$structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="182,71,344,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="134,88,166,88,166,94,134,94"/>
+<area shape="rect" id="Node000005" href="$structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2" title=" " alt="" coords="182,136,344,177"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="133,109,187,128,185,133,131,114"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_pe_buffer.html#a23c8cf5875b9d0e63d1e5080d0fe7787" title=" " alt="" coords="392,5,520,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="328,23,376,23,376,28,328,28"/>
 </map>

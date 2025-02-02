@@ -1,9 +1,21 @@
 <map id="pesieve::RemoteModuleData::isSectionExecutable" name="pesieve::RemoteModuleData::isSectionExecutable">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,192,96"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ab5a500e51ff539294a3c71f6b95aa65b" title=" " alt="" coords="240,5,414,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,52,257,33,258,38,183,57"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#a9bc0e707ae1cceda1678bc269f2870ea" title=" " alt="" coords="251,55,402,96"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="192,73,236,73,236,78,192,78"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve_1_1util.html#a57e9c1266c247784669f5ea0191e086d" title=" " alt="" coords="246,120,408,146"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="183,94,258,113,257,118,181,99"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,92,192,133"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_remote_module_data.html#acf38553702d88269f9d753cc5e22d111" title=" " alt="" coords="240,5,426,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,89,239,55,256,49,257,54,241,60,153,94"/>
+<area shape="rect" id="Node000006" href="$namespacepesieve_1_1util.html#ab5a500e51ff539294a3c71f6b95aa65b" title=" " alt="" coords="246,70,420,96"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="192,98,230,93,231,98,192,103"/>
+<area shape="rect" id="Node000008" href="$namespacepesieve_1_1util.html#a9bc0e707ae1cceda1678bc269f2870ea" title=" " alt="" coords="257,120,408,161"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="192,121,242,127,242,132,192,126"/>
+<area shape="rect" id="Node000009" href="$namespacepesieve_1_1util.html#a57e9c1266c247784669f5ea0191e086d" title=" " alt="" coords="252,185,414,210"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="145,131,241,170,264,178,263,183,239,175,143,136"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_remote_module_data.html#a10f74dddd152a0895545bd68268da7ff" title=" " alt="" coords="474,5,660,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="426,23,458,23,458,28,426,28"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_remote_module_data.html#a609e79972a0b37cdfb72a4be35f838c0" title=" " alt="" coords="708,5,895,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="661,23,693,23,693,28,661,28"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_remote_module_data.html#a457911397fddaf4d660cf8330a00bb20" title=" " alt="" coords="943,5,1129,46"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="895,23,927,23,927,28,895,28"/>
+<area shape="rect" id="Node000007" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="495,128,639,153"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="389,94,497,121,496,126,388,99"/>
+<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="409,138,480,138,480,143,409,143"/>
+<area shape="poly" id="edge10_Node000009_Node000007" title=" " alt="" coords="388,182,496,155,497,160,389,187"/>
 </map>

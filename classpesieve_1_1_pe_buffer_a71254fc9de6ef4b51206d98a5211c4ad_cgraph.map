@@ -1,0 +1,19 @@
+<map id="pesieve::PeBuffer::readRemote" name="pesieve::PeBuffer::readRemote">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,92,134,133"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_pe_buffer.html#a62cf4335cc4f61b8e6fc07b40aa55659" title=" " alt="" coords="186,59,314,99"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,98,171,91,172,96,135,103"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_pe_buffer.html#a1fd37e72b44513e2830cac46a5ff5075" title=" " alt="" coords="182,124,319,165"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="135,121,167,127,166,132,134,126"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_pe_buffer.html#a449b249560082a0d379d726a184bb790" title=" " alt="" coords="386,5,514,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="314,59,370,44,372,49,316,64"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_pe_buffer.html#a23c8cf5875b9d0e63d1e5080d0fe7787" title=" " alt="" coords="600,24,728,65"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="315,72,533,55,584,50,585,55,534,60,315,77"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="515,29,585,35,584,40,515,34"/>
+<area shape="rect" id="Node000006" href="$classpesieve_1_1_artefact_scanner.html#aeedfc8d641b324dd3eb203313731292f" title=" " alt="" coords="367,124,533,165"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="320,142,351,142,351,147,320,147"/>
+<area shape="rect" id="Node000007" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="795,132,939,157"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="534,142,779,142,779,147,534,147"/>
+<area shape="rect" id="Node000008" href="$namespacepesieve.html#ab6eb75407c454f07ae7910a1d8b7c826" title=" " alt="" coords="581,157,747,182"/>
+<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="534,152,566,155,566,161,533,157"/>
+<area shape="poly" id="edge9_Node000008_Node000007" title=" " alt="" coords="747,157,779,153,779,158,748,162"/>
+</map>

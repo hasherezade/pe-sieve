@@ -1,0 +1,15 @@
+<map id="pesieve::HookTargetResolver::resolveAllHooks" name="pesieve::HookTargetResolver::resolveAllHooks">
+<area shape="rect" id="Node000001" title="Resolves all the hooks collected within the given set of reports." alt="" coords="5,136,197,177"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_hook_target_resolver.html#a608ca9968909fbbb18a07af866ea47b1" title="Resolves the information about the target of the provided hook, and fills it back into the object." alt="" coords="245,136,436,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="197,154,229,154,229,159,197,159"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_patch_list_1_1_patch.html#abefc01f22610a8bfa9c06e76323f685f" title=" " alt="" coords="486,5,657,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="367,133,419,95,483,57,495,50,498,55,485,61,422,100,370,138"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="489,71,654,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="414,133,482,114,483,119,415,138"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="489,136,654,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="437,154,473,154,473,159,437,159"/>
+<area shape="rect" id="Node000006" href="$classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="489,201,654,242"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="415,175,483,194,482,199,414,180"/>
+<area shape="rect" id="Node000007" href="$classpesieve_1_1_patch_list_1_1_patch.html#a7995c01369861207268c6d18f6ed3934" title=" " alt="" coords="484,267,659,307"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="370,175,422,213,485,251,498,257,495,262,483,256,419,217,367,179"/>
+</map>

@@ -1,29 +1,13 @@
 <map id="pesieve::ThreadScanner::fillAreaStats" name="pesieve::ThreadScanner::fillAreaStats">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,365,166,406"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_area_stats_calculator.html#a5f85d093b7ddc31bb358a19917f6b4c2" title=" " alt="" coords="214,235,402,275"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,362,257,281,260,286,123,367"/>
-<area shape="rect" id="Node000011" href="$classpesieve_1_1_mem_page_data.html#a59ed1087d268c1742139c7240ab5854f" title=" " alt="" coords="229,365,387,406"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="166,383,213,383,213,388,166,388"/>
-<area shape="rect" id="Node000012" href="$classpesieve_1_1_mem_page_data.html#a01d3a9dc59b2965fa6defbc4dfda8524" title=" " alt="" coords="229,463,387,503"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="135,404,247,454,245,459,133,409"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_area_stats.html#acd0dc60822f1b4b0101f8aeafeb8b585" title=" " alt="" coords="466,5,596,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="317,233,337,196,366,149,404,100,448,57,455,52,458,57,452,61,408,104,370,152,341,199,321,236"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_area_stats.html#a7285129021224b3b7e9796b69b2020e2" title=" " alt="" coords="466,71,596,111"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="325,233,377,179,412,149,449,122,458,116,461,121,451,127,415,153,381,183,329,236"/>
-<area shape="rect" id="Node000006" href="$structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="450,136,612,177"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="352,232,449,187,464,181,466,185,451,192,354,237"/>
-<area shape="rect" id="Node000007" href="$structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2" title=" " alt="" coords="450,201,612,242"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="402,238,434,233,435,239,403,244"/>
-<area shape="rect" id="Node000008" href="$structpesieve_1_1util_1_1_basic_buffer.html#ad9b00fbd2200ffe7508c708434206a34" title=" " alt="" coords="450,267,612,307"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="402,266,435,271,434,276,402,271"/>
-<area shape="rect" id="Node000009" href="$classpesieve_1_1_area_stats.html#a6e47c28d9cbf35abe43481e21185808b" title=" " alt="" coords="466,332,596,373"/>
-<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="355,273,451,317,466,323,464,328,449,321,353,278"/>
-<area shape="rect" id="Node000010" href="$classpesieve_1_1_area_stats.html#a5b449d535857a37328518f752ab2f610" title=" " alt="" coords="466,397,596,438"/>
-<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="329,274,382,327,415,356,451,382,461,388,458,392,449,387,412,360,378,331,326,278"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_area_stats.html#a35f114aa7bb17d6f04f6c9a5c28d458b" title=" " alt="" coords="660,5,791,46"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="597,23,645,23,645,28,597,28"/>
-<area shape="rect" id="Node000013" href="$classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="452,463,610,503"/>
-<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="388,480,437,480,437,486,388,486"/>
-<area shape="rect" id="Node000014" href="$structpesieve_1_1util_1_1_basic_buffer.html#a62c880c7daca719d983e9fc638518fca" title=" " alt="" coords="450,528,612,569"/>
-<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="380,501,445,520,444,526,379,506"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,71,166,111"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_area_stats_calculator.html#a5f85d093b7ddc31bb358a19917f6b4c2" title=" " alt="" coords="214,5,402,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,68,221,48,222,54,158,73"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_mem_page_data.html#a59ed1087d268c1742139c7240ab5854f" title=" " alt="" coords="229,71,387,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,88,213,88,213,94,166,94"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_mem_page_data.html#a01d3a9dc59b2965fa6defbc4dfda8524" title=" " alt="" coords="229,136,387,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="158,109,222,128,221,134,156,114"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="450,136,608,177"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="387,154,435,154,435,159,387,159"/>
+<area shape="rect" id="Node000006" href="$classpesieve_1_1_mem_page_data.html#a6cbf6c12b0cbfd5e9211523fe89cd70d" title=" " alt="" coords="656,136,815,177"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="609,154,641,154,641,159,609,159"/>
 </map>

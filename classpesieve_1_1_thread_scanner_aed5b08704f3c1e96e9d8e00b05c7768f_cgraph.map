@@ -1,22 +1,26 @@
 <map id="pesieve::ThreadScanner::checkReturnAddrIntegrity" name="pesieve::ThreadScanner::checkReturnAddrIntegrity">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,157,179,198"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="227,5,392,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,155,160,107,225,57,235,51,238,56,228,61,163,111,114,159"/>
-<area shape="rect" id="Node000003" href="$structpesieve_1_1_syscall_table.html#a8861442dc69bfcc4bdd042cee33d444b" title=" " alt="" coords="236,71,382,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="143,154,226,121,240,115,242,120,228,125,145,159"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="263,136,356,161"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="178,163,247,154,248,159,179,169"/>
-<area shape="rect" id="Node000005" href="$namespacepesieve_1_1util.html#a8d7eb7eb1b3e3c05251341d0c14d82be" title=" " alt="" coords="233,185,386,226"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="179,186,218,191,217,197,178,191"/>
-<area shape="rect" id="Node000009" href="$structpesieve_1_1_syscall_table.html#a88e2aaa8bdf47d29d611c198a49bcf97" title=" " alt="" coords="236,251,382,291"/>
-<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="140,196,228,235,243,242,241,247,226,240,138,201"/>
-<area shape="rect" id="Node000010" href="$structpesieve_1_1_syscall_table.html#a14a36e5a99adfc3322ab8f2b96d1faf2" title=" " alt="" coords="236,316,382,357"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="113,196,162,248,194,276,228,301,237,306,235,311,225,305,191,280,158,251,109,200"/>
-<area shape="rect" id="Node000006" href="$namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="646,165,779,190"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="386,198,631,181,631,186,386,203"/>
-<area shape="rect" id="Node000007" href="$namespacepesieve_1_1util.html#a43b6faf00b6a97279f2d67f4a3fd2513" title=" " alt="" coords="440,215,598,255"/>
-<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="386,214,425,219,424,224,386,219"/>
-<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="589,212,651,193,653,198,591,217"/>
-<area shape="rect" id="Node000008" href="$namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="656,215,769,255"/>
-<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="599,232,641,232,641,238,599,238"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,99,179,139"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="663,5,829,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,96,175,74,226,55,281,41,337,30,451,17,557,13,648,16,648,21,557,19,451,22,338,35,282,46,227,60,177,79,133,101"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#a8d7eb7eb1b3e3c05251341d0c14d82be" title=" " alt="" coords="231,192,383,233"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="142,138,245,183,243,188,140,142"/>
+<area shape="rect" id="Node000007" href="$structpesieve_1_1_syscall_table.html#a14a36e5a99adfc3322ab8f2b96d1faf2" title=" " alt="" coords="234,257,380,298"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="113,138,162,189,194,217,228,242,237,247,234,252,225,247,191,221,158,193,109,141"/>
+<area shape="rect" id="Node000008" href="$classpesieve_1_1_thread_scanner.html#ac35db3f1ec2765f9dda550b04f0cb9ee" title=" " alt="" coords="445,33,605,74"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="173,95,226,84,331,69,429,59,430,64,332,74,227,90,174,101"/>
+<area shape="rect" id="Node000009" href="$classpesieve_1_1_thread_scanner.html#a75c0be0ec6ea82b700f3ca5e846a0675" title=" " alt="" coords="227,99,387,139"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="179,116,211,116,211,122,179,122"/>
+<area shape="rect" id="Node000004" href="$namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="680,229,812,254"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="383,215,665,234,664,239,383,220"/>
+<area shape="rect" id="Node000005" href="$namespacepesieve_1_1util.html#a43b6faf00b6a97279f2d67f4a3fd2513" title=" " alt="" coords="446,279,604,319"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="361,231,459,270,457,275,359,236"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="604,276,678,256,679,262,605,281"/>
+<area shape="rect" id="Node000006" href="$namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="689,279,803,319"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="605,296,674,296,674,302,605,302"/>
+<area shape="poly" id="edge9_Node000008_Node000002" title=" " alt="" coords="606,41,647,35,648,41,606,46"/>
+<area shape="poly" id="edge11_Node000009_Node000008" title=" " alt="" coords="376,96,440,76,441,82,378,101"/>
+<area shape="rect" id="Node000010" href="$classpesieve_1_1_thread_scan_report.html#af30839203957e838bc299232e05ab735" title=" " alt="" coords="435,99,615,139"/>
+<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="387,116,419,116,419,122,387,122"/>
+<area shape="rect" id="Node000011" href="$classpesieve_1_1_thread_scan_report.html#a6d190b1f19a3a9fe2c81cd18abb6a72f" title=" " alt="" coords="435,164,615,205"/>
+<area shape="poly" id="edge13_Node000009_Node000011" title=" " alt="" coords="378,137,441,156,440,162,376,142"/>
 </map>

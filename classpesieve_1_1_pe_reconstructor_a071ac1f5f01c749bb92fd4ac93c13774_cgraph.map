@@ -1,11 +1,5 @@
 <map id="pesieve::PeReconstructor::shiftPeHeader" name="pesieve::PeReconstructor::shiftPeHeader">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,104,175,145"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_pe_artefacts.html#a87c67e9f227167cc9cec40210d94523c" title=" " alt="" coords="230,5,371,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,101,222,57,235,50,237,55,224,61,133,106"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_pe_artefacts.html#a09908fcbd1202e8c1de8b9a7b5f0eb0d" title=" " alt="" coords="230,71,371,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="175,108,214,102,215,107,176,114"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_pe_artefacts.html#a19961a28022c5d2e0616d0d3510f12ef" title=" " alt="" coords="230,136,371,177"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="176,135,215,141,214,146,175,140"/>
-<area shape="rect" id="Node000005" href="$namespacepesieve.html#ab28bfe1ca7dd95f63741ac0089f5343a" title=" " alt="" coords="223,201,378,226"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="131,143,224,186,242,193,240,198,222,191,129,147"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,175,46"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#ab28bfe1ca7dd95f63741ac0089f5343a" title=" " alt="" coords="223,13,378,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,23,207,23,207,28,175,28"/>
 </map>

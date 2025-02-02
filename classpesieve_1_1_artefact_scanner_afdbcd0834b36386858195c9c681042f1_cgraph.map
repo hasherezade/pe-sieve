@@ -1,9 +1,10 @@
 <map id="pesieve::ArtefactScanner::_findSecByPatterns" name="pesieve::ArtefactScanner::_findSecByPatterns">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,172,96"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="230,5,374,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,52,236,33,237,38,167,57"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#a9a1dac61a6a85886543fe742b091caf1" title=" " alt="" coords="245,55,360,96"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="172,73,229,73,229,78,172,78"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve.html#ab6eb75407c454f07ae7910a1d8b7c826" title=" " alt="" coords="220,120,385,146"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="167,94,237,113,236,118,166,99"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,24,172,65"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="433,32,577,57"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,21,219,10,302,3,385,10,450,24,449,29,385,15,302,8,220,15,162,26"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#a9a1dac61a6a85886543fe742b091caf1" title=" " alt="" coords="245,24,360,65"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="172,42,229,42,229,47,172,47"/>
+<area shape="rect" id="Node000004" href="$namespacepesieve.html#ab6eb75407c454f07ae7910a1d8b7c826" title=" " alt="" coords="220,89,385,115"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="167,63,237,82,236,87,166,68"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="350,86,442,59,443,65,351,91"/>
 </map>
