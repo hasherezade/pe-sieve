@@ -39,6 +39,15 @@ public:
 
 	//---
 
+	std::string normalizeSyscallPrefix(std::string& funcName)
+	{
+		if (funcName[0] == 'Z' && funcName[1] == 'w') {
+			funcName[0] = 'N';
+			funcName[1] = 't';
+		}
+		return funcName;
+	}
+
 	std::string funcNameFromAddr(const ULONG_PTR addr)
 	{
 		if (!isInit) return "";
@@ -52,7 +61,8 @@ public:
 		if (!SymFromAddr(hProcess, addr, &Displacement, pSymbol)) {
 			return "";
 		}
-		return pSymbol->Name;
+		std::string funcName = pSymbol->Name;
+		return normalizeSyscallPrefix(funcName);
 	}
 
 	bool dumpSymbolInfo(const ULONG_PTR addr)

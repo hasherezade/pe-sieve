@@ -194,18 +194,36 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	if (SyscallTable::isSameSyscallFunc(syscallFuncName, lastFuncCalled)) {
 		return true;
 	}
-
-	if (this->info.ext.wait_reason == UserRequest && syscallFuncName == "NtWaitForSingleObject") {
-		if (lastFuncCalled.rfind("NtQuery", 0) == 0 || lastFuncCalled.rfind("ZwQuery", 0) == 0) {
-			return true;
-		}
-	}
 	if (syscallFuncName == "NtCallbackReturn") {
 		const ScannedModule* mod = modulesInfo.findModuleContaining(lastCalled);
 		if (mod && mod->getModName() == "win32u.dll") return true;
 	}
+
+	if (this->info.ext.wait_reason == WrUserRequest || this->info.ext.wait_reason == UserRequest || this->info.ext.wait_reason == Suspended) {
+		if (syscallFuncName.rfind("NtUser", 0) == 0 && (lastFuncCalled.rfind("NtUser", 0) == 0)) {
+			return true;
+		}
+	}
+
+	if (this->info.ext.wait_reason == UserRequest) {
+		if (syscallFuncName == "NtWaitForSingleObject" && (lastFuncCalled.rfind("NtQuery", 0) == 0)) {
+			return true;
+		}
+		if (syscallFuncName == "NtUserSetSystemMenu" && (lastFuncCalled.rfind("NtGdi", 0) == 0)) {
+			return true;
+		}
+		if (syscallFuncName.rfind("NtGdi", 0) == 0 && (lastFuncCalled.rfind("NtGdi", 0) == 0)) {
+			return true;
+		}
+	}
+	if (this->info.ext.wait_reason == DelayExecution) {
+		if (syscallFuncName == "NtDelayExecution" && ((lastFuncCalled.rfind("NtUserMsgWaitFor", 0) == 0) || (lastFuncCalled.rfind("NtWaitFor", 0) == 0))) {
+			return true;
+		}
+	}
+
 #ifdef _SHOW_THREAD_INFO
-	std::cout << "\n#### TID=" << std::dec <<info.tid << " " << syscallFuncName << " VS " << lastFuncCalled << " DIFFERENT"<< std::endl;
+	std::cout << "\n#### TID=" << std::dec << info.tid << " " << syscallFuncName << " VS " << lastFuncCalled << " DIFFERENT!" << " WaitReason: " << this->info.ext.wait_reason << std::endl;
 	printThreadInfo(info);
 	std::cout << "STACK:\n";
 	for (auto itr = callStack.rbegin(); itr != callStack.rend(); ++itr) {
