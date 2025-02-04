@@ -47,13 +47,14 @@ var searchData=
   ['formattargetname_44',['formatTargetName',['../classpesieve_1_1_i_a_t_scan_report.html#aae687714420a235f95d8867021eb502c',1,'pesieve::IATScanReport']]],
   ['foundany_45',['foundAny',['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#aed8f32729b34e73763ea7d150a0723a7',1,'pesieve::ArtefactScanner::ArtefactsMapping']]],
   ['foundstrings_46',['foundStrings',['../structpesieve_1_1_chunk_stats.html#ae97d685c9ed683c96ac8ee3c672d649b',1,'pesieve::ChunkStats']]],
-  ['free_5fparams_47',['free_params',['../main_8cpp.html#a7ae814d25724b5525d225dd408fb994e',1,'main.cpp']]],
-  ['free_5fstrparam_48',['free_strparam',['../params_8h.html#ae5bce7f115c2f5448f6453cff04fcebe',1,'params.h']]],
-  ['freebuffer_49',['freeBuffer',['../classpesieve_1_1_pe_buffer.html#a23c8cf5875b9d0e63d1e5080d0fe7787',1,'pesieve::PeBuffer::freeBuffer()'],['../structpesieve_1_1util_1_1_byte_buffer.html#ab61c789fa430d217951c03f5a8dff658',1,'pesieve::util::ByteBuffer::freeBuffer()']]],
-  ['freefullimage_50',['freeFullImage',['../classpesieve_1_1_remote_module_data.html#aec7840414faf08a309da0a2bbeae7e1e',1,'pesieve::RemoteModuleData']]],
-  ['freesymbols_51',['FreeSymbols',['../class_process_symbols_manager.html#ac0971d7bd0f98cfe609c1f1a1001e80f',1,'ProcessSymbolsManager']]],
-  ['frequencies_52',['frequencies',['../structpesieve_1_1_chunk_stats.html#a01822b739bd2ef3e241756673c8c937e',1,'pesieve::ChunkStats']]],
-  ['funccount_53',['funcCount',['../classpesieve_1_1_i_a_t_thunks_series.html#ae0431a64f7ed06cf1e0b9fdddb63c50d',1,'pesieve::IATThunksSeries']]],
-  ['funcnamefromaddr_54',['funcNameFromAddr',['../class_process_symbols_manager.html#a1f596791a95938ac76051baaba62961a',1,'ProcessSymbolsManager']]],
-  ['functions_55',['functions',['../classpesieve_1_1_i_a_t_block.html#a13ff609da02dbf051d6702cda326b1e4',1,'pesieve::IATBlock']]]
+  ['frames_5fcount_47',['frames_count',['../classpesieve_1_1_thread_scan_report.html#af9ec0a6a328ecc3a48117dd901d5d421',1,'pesieve::ThreadScanReport']]],
+  ['free_5fparams_48',['free_params',['../main_8cpp.html#a7ae814d25724b5525d225dd408fb994e',1,'main.cpp']]],
+  ['free_5fstrparam_49',['free_strparam',['../params_8h.html#ae5bce7f115c2f5448f6453cff04fcebe',1,'params.h']]],
+  ['freebuffer_50',['freeBuffer',['../classpesieve_1_1_pe_buffer.html#a23c8cf5875b9d0e63d1e5080d0fe7787',1,'pesieve::PeBuffer::freeBuffer()'],['../structpesieve_1_1util_1_1_byte_buffer.html#ab61c789fa430d217951c03f5a8dff658',1,'pesieve::util::ByteBuffer::freeBuffer()']]],
+  ['freefullimage_51',['freeFullImage',['../classpesieve_1_1_remote_module_data.html#aec7840414faf08a309da0a2bbeae7e1e',1,'pesieve::RemoteModuleData']]],
+  ['freesymbols_52',['FreeSymbols',['../class_process_symbols_manager.html#ac0971d7bd0f98cfe609c1f1a1001e80f',1,'ProcessSymbolsManager']]],
+  ['frequencies_53',['frequencies',['../structpesieve_1_1_chunk_stats.html#a01822b739bd2ef3e241756673c8c937e',1,'pesieve::ChunkStats']]],
+  ['funccount_54',['funcCount',['../classpesieve_1_1_i_a_t_thunks_series.html#ae0431a64f7ed06cf1e0b9fdddb63c50d',1,'pesieve::IATThunksSeries']]],
+  ['funcnamefromaddr_55',['funcNameFromAddr',['../class_process_symbols_manager.html#a1f596791a95938ac76051baaba62961a',1,'ProcessSymbolsManager']]],
+  ['functions_56',['functions',['../classpesieve_1_1_i_a_t_block.html#a13ff609da02dbf051d6702cda326b1e4',1,'pesieve::IATBlock']]]
 ];

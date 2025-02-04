@@ -16,7 +16,7 @@ var searchData=
   ['importtableoffset_13',['importTableOffset',['../classpesieve_1_1_i_a_t_block.html#a9234e5999fc7bad15262efd03926daeb',1,'pesieve::IATBlock']]],
   ['imprec_5fmode_14',['imprec_mode',['../structparams.html#a9475b19228c79dd1b3aff8d8a8846d81',1,'params::imprec_mode'],['../namespacedemo.html#a36c4e9b93229444141977bb3ff3caa5c',1,'demo.imprec_mode']]],
   ['imprecmode_15',['impRecMode',['../classpesieve_1_1_module_dump_report.html#afa53bc05cf4910ceca008bbeaae5df93',1,'pesieve::ModuleDumpReport']]],
-  ['indicator_16',['indicator',['../classpesieve_1_1_thread_scan_report.html#a16d87ad62703d72f411844fbf7cca6e2',1,'pesieve::ThreadScanReport']]],
+  ['indicators_16',['indicators',['../classpesieve_1_1_thread_scan_report.html#a2635a4a34fb75863a79a496a68727eea',1,'pesieve::ThreadScanReport']]],
   ['info_17',['info',['../classpesieve_1_1_thread_scanner.html#aa4261219925db9cf54c61714dc5234b9',1,'pesieve::ThreadScanner']]],
   ['informationclass_18',['InformationClass',['../namespacepesieve_1_1util.html#a3a73a11f9c88c4c43c75cfe6b6c06199',1,'pesieve::util']]],
   ['initial_5fprotect_19',['initial_protect',['../classpesieve_1_1_mem_page_data.html#a8b8c273555cf7de042060c3fcc12ebed',1,'pesieve::MemPageData']]],
