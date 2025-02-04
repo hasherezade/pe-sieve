@@ -566,6 +566,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	if (is_shc) {
 		if (reportSuspiciousAddr(my_report, cDetails.rip)) {
 			if (my_report->status == SCAN_SUSPICIOUS) {
+				my_report->indicator = THI_SUS_IP;
 				return true;
 			}
 		}
@@ -579,6 +580,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		//automatically verifies if the address is legit:
 		if (reportSuspiciousAddr(my_report, addr)) {
 			if (my_report->status == SCAN_SUSPICIOUS) {
+				my_report->indicator = THI_SUS_CALLSTACK_SHC;
 				std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << std::endl;
 #ifdef _SHOW_THREAD_INFO
 				std::cout << "Found! " << std::hex << addr << "\n";
@@ -600,8 +602,10 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 #endif //_SHOW_THREAD_INFO
 		if (is_shc && reportSuspiciousAddr(my_report, (ULONGLONG)ret_addr)) {
 			if (my_report->status == SCAN_SUSPICIOUS) {
+				my_report->indicator = THI_SUS_RET;
 				return true;
 			}
+			my_report->indicator = THI_SUS_RET;
 			my_report->status = SCAN_SUSPICIOUS;
 			my_report->stack_ptr = cDetails.rsp;
 			if (my_report->stats.entropy < 1) { // discard, do not dump
@@ -617,6 +621,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 
 	if (this->info.is_extended && !cDetails.is_managed && !cDetails.is_ret_as_syscall)
 	{
+		my_report->indicator = THI_SUS_CALLS_INTEGRITY;
 		isStackCorrupt = true;
 	}
 
@@ -624,6 +629,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		cDetails.stackFramesCount == 1
 		&& this->info.is_extended && info.ext.state == Waiting && info.ext.wait_reason == UserRequest)
 	{
+		my_report->indicator = THI_SUS_CALLSTACK_CORRUPT;
 		isStackCorrupt = true;
 	}
 
@@ -632,6 +638,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		my_report->thread_wait_reason = info.ext.wait_reason;
 		my_report->thread_wait_time = info.ext.wait_time;
 		my_report->stack_ptr = cDetails.rsp;
+
 		my_report->status = SCAN_SUSPICIOUS;
 	}
 	return true;
@@ -655,6 +662,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	if (is_shc) {
 		if (reportSuspiciousAddr(my_report, info.start_addr)) {
 			if (my_report->status == SCAN_SUSPICIOUS) {
+				my_report->indicator = THI_SUS_START;
 				return my_report;
 			}
 		}
