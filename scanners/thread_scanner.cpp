@@ -236,7 +236,7 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	}
 	const ScannedModule* mod = modulesInfo.findModuleContaining(lastCalled);
 	const std::string mod_name = mod ? mod->getModName() : "";
-	std::cout << "[@]" << std::dec << info.tid << " : " << "LastSyscall: " << syscallFuncName << " VS LastCalledAddr: " << std::hex << lastCalled << " : " << lastFuncCalled << "(" << mod_name << "." << manualSymbol <<" )" << " DIFFERENT!" << " WaitReason: " << this->info.ext.wait_reason << std::endl;
+	std::cout << "[@]" << std::dec << info.tid << " : " << "LastSyscall: " << syscallFuncName << " VS LastCalledAddr: " << std::hex << lastCalled << " : " << lastFuncCalled << "(" << mod_name << "." << manualSymbol <<" )" << " DIFFERENT!" << " WaitReason: " << std::dec << this->info.ext.wait_reason << std::endl;
 #ifdef _SHOW_THREAD_INFO
 	printThreadInfo(info);
 	std::cout << "STACK:\n";
@@ -500,6 +500,7 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 	my_report->protection = page_info.AllocationProtect;
 
 	my_report->susp_addr = susp_addr;
+	my_report->indicator = THI_SUS_CALLSTACK_SHC; // this may be overwriten later by other checks
 	my_report->status = SCAN_SUSPICIOUS;
 	const bool isStatFilled = fillAreaStats(my_report);
 #ifndef NO_ENTROPY_CHECK

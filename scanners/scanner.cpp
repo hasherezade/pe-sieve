@@ -483,7 +483,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 
 size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws exceptions
 {
-	if (!this->symbols.IsInitialized() && !pReport.exportsMap) {
+	if (!this->symbols.IsInitialized()) {
 		if (!args.quiet) {
 			std::cerr << "[-] Failed to initialize symbols!\n";
 		}
