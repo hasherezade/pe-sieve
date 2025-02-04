@@ -219,13 +219,27 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		}
 	}
 	if (this->info.ext.wait_reason == UserRequest) {
-		if (syscallFuncName == "NtWaitForSingleObject" && (lastFuncCalled.rfind("NtQuery", 0) == 0)) {
+		if (syscallFuncName.rfind("NtWaitFor", 0) == 0 && (lastFuncCalled.rfind("NtWaitFor", 0) == 0)) {
+			return true;
+		}
+		if (syscallFuncName == "NtWaitForSingleObject" && (lastFuncCalled.rfind("NtQuery", 0) == 0) || lastFuncCalled == "NtDelayExecution") {
 			return true;
 		}
 		if (syscallFuncName.rfind("NtGdi", 0) == 0 && (lastFuncCalled.rfind("NtGdi", 0) == 0)) {
 			return true;
 		}
+		if (syscallFuncName.rfind("NtGdiDdDDIWaitFor", 0) == 0 && (lastFuncCalled.rfind("NtWaitFor", 0) == 0)) {
+			return true;
+		}
 		if (syscallFuncName.rfind("NtUser", 0) == 0 && (lastFuncCalled.rfind("NtGdi", 0) == 0)) {
+			return true;
+		}
+	}
+	if (this->info.ext.wait_reason == WrQueue) {
+		if (syscallFuncName == "NtWaitForSingleObject" && lastFuncCalled == "NtWaitForWorkViaWorkerFactory") {
+			return true;
+		}
+		if (syscallFuncName == "NtWaitForWorkViaWorkerFactory" && lastFuncCalled == "NtWaitForSingleObject") {
 			return true;
 		}
 	}
