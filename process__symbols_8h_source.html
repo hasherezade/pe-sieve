@@ -99,132 +99,135 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;dbghelp.h&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#pragma comment(lib, &quot;dbghelp&quot;)</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html">    7</a></span><span class="keyword">class </span><a class="code hl_function" href="class_process_symbols_manager.html#a12daa79c985a492c117fff26451434f3">ProcessSymbolsManager</a></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>{</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00010" data-start="{" data-end="}">
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#a12daa79c985a492c117fff26451434f3">   10</a></span>    <a class="code hl_function" href="class_process_symbols_manager.html#a12daa79c985a492c117fff26451434f3">ProcessSymbolsManager</a>()</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        : <a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>(NULL), <a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>(false)</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    }</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="foldopen" id="foldopen00008" data-start="{" data-end="};">
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html">    8</a></span><span class="keyword">class </span><a class="code hl_function" href="class_process_symbols_manager.html#a12daa79c985a492c117fff26451434f3">ProcessSymbolsManager</a></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>{</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00011" data-start="{" data-end="}">
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#a12daa79c985a492c117fff26451434f3">   11</a></span>    <a class="code hl_function" href="class_process_symbols_manager.html#a12daa79c985a492c117fff26451434f3">ProcessSymbolsManager</a>()</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        : <a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>(NULL), <a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>(false)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    }</div>
 </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="foldopen" id="foldopen00015" data-start="{" data-end="}">
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#a8c0370174c2618902c2ccf9ff6dcab3f">   15</a></span>    <a class="code hl_function" href="class_process_symbols_manager.html#a8c0370174c2618902c2ccf9ff6dcab3f">~ProcessSymbolsManager</a>()</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <a class="code hl_function" href="class_process_symbols_manager.html#ac0971d7bd0f98cfe609c1f1a1001e80f">FreeSymbols</a>();</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    }</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="foldopen" id="foldopen00016" data-start="{" data-end="}">
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#a8c0370174c2618902c2ccf9ff6dcab3f">   16</a></span>    <a class="code hl_function" href="class_process_symbols_manager.html#a8c0370174c2618902c2ccf9ff6dcab3f">~ProcessSymbolsManager</a>()</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <a class="code hl_function" href="class_process_symbols_manager.html#ac0971d7bd0f98cfe609c1f1a1001e80f">FreeSymbols</a>();</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    }</div>
 </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="foldopen" id="foldopen00020" data-start="{" data-end="}">
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#a99ac137d11b68b281f8efc84fb1681da">   20</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_process_symbols_manager.html#a99ac137d11b68b281f8efc84fb1681da">InitSymbols</a>(HANDLE _hProcess)</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    {</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <span class="keywordflow">if</span> (!_hProcess || _hProcess == INVALID_HANDLE_VALUE) {</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        }</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>) {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            <a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a> = _hProcess;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            SymSetOptions(SYMOPT_UNDNAME | SYMOPT_DEBUG | SYMOPT_INCLUDE_32BIT_MODULES);</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>            <span class="keywordflow">if</span> (SymInitialize(<a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>, NULL, TRUE)) {</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                <a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            }</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        }</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    }</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="foldopen" id="foldopen00021" data-start="{" data-end="}">
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#a99ac137d11b68b281f8efc84fb1681da">   21</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_process_symbols_manager.html#a99ac137d11b68b281f8efc84fb1681da">InitSymbols</a>(HANDLE _hProcess)</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <span class="keywordflow">if</span> (!_hProcess || _hProcess == INVALID_HANDLE_VALUE) {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        }   </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>) {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            <a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a> = _hProcess;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            SymSetOptions(SYMOPT_UNDNAME | SYMOPT_ALLOW_ABSOLUTE_SYMBOLS | SYMOPT_OMAP_FIND_NEAREST | SYMOPT_INCLUDE_32BIT_MODULES);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            <span class="keywordflow">if</span> (SymInitialize(<a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>, NULL, TRUE)) {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                <a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            }</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    }</div>
 </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    </div>
-<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#ad6b1d880d0b5ae9618c8ac5452823704">   35</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_process_symbols_manager.html#ad6b1d880d0b5ae9618c8ac5452823704">IsInitialized</a>()</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    }</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    </div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#ad6b1d880d0b5ae9618c8ac5452823704">   37</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_process_symbols_manager.html#ad6b1d880d0b5ae9618c8ac5452823704">IsInitialized</a>()</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    }</div>
 </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="comment">//---</span></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#af8934eeb7397191e5201fefdc29cc333">   42</a></span>    std::string <a class="code hl_function" href="class_process_symbols_manager.html#af8934eeb7397191e5201fefdc29cc333">normalizeSyscallPrefix</a>(std::string&amp; funcName)</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    {</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">if</span> (funcName[0] == <span class="charliteral">&#39;Z&#39;</span> &amp;&amp; funcName[1] == <span class="charliteral">&#39;w&#39;</span>) {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            funcName[0] = <span class="charliteral">&#39;N&#39;</span>;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>            funcName[1] = <span class="charliteral">&#39;t&#39;</span>;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        }</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="keywordflow">return</span> funcName;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    }</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="comment">//---</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#af8934eeb7397191e5201fefdc29cc333">   44</a></span>    std::string <a class="code hl_function" href="class_process_symbols_manager.html#af8934eeb7397191e5201fefdc29cc333">normalizeSyscallPrefix</a>(std::string&amp; funcName)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keywordflow">if</span> (funcName[0] == <span class="charliteral">&#39;Z&#39;</span> &amp;&amp; funcName[1] == <span class="charliteral">&#39;w&#39;</span>) {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            funcName[0] = <span class="charliteral">&#39;N&#39;</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            funcName[1] = <span class="charliteral">&#39;t&#39;</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keywordflow">return</span> funcName;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    }</div>
 </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="foldopen" id="foldopen00051" data-start="{" data-end="}">
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#a1f596791a95938ac76051baaba62961a">   51</a></span>    std::string <a class="code hl_function" href="class_process_symbols_manager.html#a1f596791a95938ac76051baaba62961a">funcNameFromAddr</a>(<span class="keyword">const</span> ULONG_PTR addr)</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    {</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>) <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        CHAR buffer[<span class="keyword">sizeof</span>(SYMBOL_INFO) + MAX_SYM_NAME] = { 0 };</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        PSYMBOL_INFO pSymbol = (PSYMBOL_INFO)buffer;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        pSymbol-&gt;SizeOfStruct = <span class="keyword">sizeof</span>(SYMBOL_INFO);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        pSymbol-&gt;MaxNameLen = MAX_SYM_NAME;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        DWORD64 Displacement = 0;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keywordflow">if</span> (!SymFromAddr(<a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>, addr, &amp;Displacement, pSymbol)) {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        std::string funcName = pSymbol-&gt;Name;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="class_process_symbols_manager.html#af8934eeb7397191e5201fefdc29cc333">normalizeSyscallPrefix</a>(funcName);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    }</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="foldopen" id="foldopen00053" data-start="{" data-end="}">
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#a1f596791a95938ac76051baaba62961a">   53</a></span>    std::string <a class="code hl_function" href="class_process_symbols_manager.html#a1f596791a95938ac76051baaba62961a">funcNameFromAddr</a>(<span class="keyword">const</span> ULONG_PTR addr)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    {</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keywordflow">if</span> (!<a class="code hl_function" href="class_process_symbols_manager.html#ad6b1d880d0b5ae9618c8ac5452823704">IsInitialized</a>()) {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        CHAR buffer[<span class="keyword">sizeof</span>(SYMBOL_INFO) + MAX_SYM_NAME] = { 0 };</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        PSYMBOL_INFO pSymbol = (PSYMBOL_INFO)buffer;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        pSymbol-&gt;SizeOfStruct = <span class="keyword">sizeof</span>(SYMBOL_INFO);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        pSymbol-&gt;MaxNameLen = MAX_SYM_NAME;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        DWORD64 Displacement = 0;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">if</span> (!SymFromAddr(<a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>, addr, &amp;Displacement, pSymbol)) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        std::string funcName = pSymbol-&gt;Name;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="class_process_symbols_manager.html#af8934eeb7397191e5201fefdc29cc333">normalizeSyscallPrefix</a>(funcName);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    }</div>
 </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#a78f8074e9a746d53e8e5d8388e50abd0">   68</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_process_symbols_manager.html#a78f8074e9a746d53e8e5d8388e50abd0">dumpSymbolInfo</a>(<span class="keyword">const</span> ULONG_PTR addr)</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    {</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        CHAR buffer[<span class="keyword">sizeof</span>(SYMBOL_INFO) + MAX_SYM_NAME] = { 0 };</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        PSYMBOL_INFO pSymbol = (PSYMBOL_INFO)buffer;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        pSymbol-&gt;SizeOfStruct = <span class="keyword">sizeof</span>(SYMBOL_INFO);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        pSymbol-&gt;MaxNameLen = MAX_SYM_NAME;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        DWORD64 Displacement = 0;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        BOOLEAN result = SymFromAddr(<a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>, addr, &amp;Displacement, pSymbol);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        std::cout &lt;&lt; std::dec &lt;&lt; <span class="stringliteral">&quot;[&quot;</span> &lt;&lt; GetProcessId(<a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>) &lt;&lt; <span class="stringliteral">&quot;] &quot;</span> &lt;&lt; std::hex &lt;&lt; addr;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keywordflow">if</span> (result) {</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            std::cout &lt;&lt; <span class="stringliteral">&quot; Sym: &quot;</span> &lt;&lt; pSymbol-&gt;ModBase &lt;&lt; <span class="stringliteral">&quot; : &quot;</span> &lt;&lt; pSymbol-&gt;Name &lt;&lt; <span class="stringliteral">&quot; disp: &quot;</span> &lt;&lt; Displacement</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                &lt;&lt; <span class="stringliteral">&quot; Flags: &quot;</span> &lt;&lt; pSymbol-&gt;Flags &lt;&lt; <span class="stringliteral">&quot; Tag: &quot;</span> &lt;&lt; pSymbol-&gt;Tag &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>            <span class="keywordflow">if</span> (pSymbol-&gt;Flags == SYMFLAG_CLR_TOKEN) std::cout &lt;&lt; <span class="stringliteral">&quot; CLR token!\n&quot;</span>;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        }</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            std::cout &lt;&lt; <span class="stringliteral">&quot; UNK \n&quot;</span>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="foldopen" id="foldopen00071" data-start="{" data-end="}">
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#a78f8074e9a746d53e8e5d8388e50abd0">   71</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_process_symbols_manager.html#a78f8074e9a746d53e8e5d8388e50abd0">dumpSymbolInfo</a>(<span class="keyword">const</span> ULONG_PTR addr)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="keywordflow">if</span> (!<a class="code hl_function" href="class_process_symbols_manager.html#ad6b1d880d0b5ae9618c8ac5452823704">IsInitialized</a>()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        CHAR buffer[<span class="keyword">sizeof</span>(SYMBOL_INFO) + MAX_SYM_NAME] = { 0 };</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        PSYMBOL_INFO pSymbol = (PSYMBOL_INFO)buffer;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        pSymbol-&gt;SizeOfStruct = <span class="keyword">sizeof</span>(SYMBOL_INFO);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        pSymbol-&gt;MaxNameLen = MAX_SYM_NAME;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        DWORD64 Displacement = 0;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        BOOLEAN result = SymFromAddr(<a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>, addr, &amp;Displacement, pSymbol);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        std::cout &lt;&lt; std::dec &lt;&lt; <span class="stringliteral">&quot;[&quot;</span> &lt;&lt; GetProcessId(<a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>) &lt;&lt; <span class="stringliteral">&quot;] &quot;</span> &lt;&lt; std::hex &lt;&lt; addr;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        <span class="keywordflow">if</span> (result) {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            std::cout &lt;&lt; <span class="stringliteral">&quot; Sym: &quot;</span> &lt;&lt; pSymbol-&gt;ModBase &lt;&lt; <span class="stringliteral">&quot; : &quot;</span> &lt;&lt; pSymbol-&gt;Name &lt;&lt; <span class="stringliteral">&quot; disp: &quot;</span> &lt;&lt; Displacement</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                &lt;&lt; <span class="stringliteral">&quot; Flags: &quot;</span> &lt;&lt; pSymbol-&gt;Flags &lt;&lt; <span class="stringliteral">&quot; Tag: &quot;</span> &lt;&lt; pSymbol-&gt;Tag &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            <span class="keywordflow">if</span> (pSymbol-&gt;Flags == SYMFLAG_CLR_TOKEN) std::cout &lt;&lt; <span class="stringliteral">&quot; CLR token!\n&quot;</span>;</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        }</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    }</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            std::cout &lt;&lt; <span class="stringliteral">&quot; UNK \n&quot;</span>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        }</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    }</div>
 </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="keyword">protected</span>:</div>
-<div class="foldopen" id="foldopen00092" data-start="{" data-end="}">
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#ac0971d7bd0f98cfe609c1f1a1001e80f">   92</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_process_symbols_manager.html#ac0971d7bd0f98cfe609c1f1a1001e80f">FreeSymbols</a>()</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    {</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="keywordflow">if</span> (SymCleanup(<a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>)) {</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a> = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        }</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    }</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="keyword">protected</span>:</div>
+<div class="foldopen" id="foldopen00095" data-start="{" data-end="}">
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#ac0971d7bd0f98cfe609c1f1a1001e80f">   95</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_process_symbols_manager.html#ac0971d7bd0f98cfe609c1f1a1001e80f">FreeSymbols</a>()</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="keywordflow">if</span> (SymCleanup(<a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>)) {</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            <a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        }</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    }</div>
 </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">  102</a></span>    HANDLE <a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">  103</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>};</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">  105</a></span>    HANDLE <a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">  106</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>};</div>
 </div>
-<div class="ttc" id="aclass_process_symbols_manager_html_a12daa79c985a492c117fff26451434f3"><div class="ttname"><a href="class_process_symbols_manager.html#a12daa79c985a492c117fff26451434f3">ProcessSymbolsManager::ProcessSymbolsManager</a></div><div class="ttdeci">ProcessSymbolsManager()</div><div class="ttdef"><b>Definition</b> <a href="#l00010">process_symbols.h:10</a></div></div>
-<div class="ttc" id="aclass_process_symbols_manager_html_a1f596791a95938ac76051baaba62961a"><div class="ttname"><a href="class_process_symbols_manager.html#a1f596791a95938ac76051baaba62961a">ProcessSymbolsManager::funcNameFromAddr</a></div><div class="ttdeci">std::string funcNameFromAddr(const ULONG_PTR addr)</div><div class="ttdef"><b>Definition</b> <a href="#l00051">process_symbols.h:51</a></div></div>
-<div class="ttc" id="aclass_process_symbols_manager_html_a4c2130eb0673ab159d260c63d56aee23"><div class="ttname"><a href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">ProcessSymbolsManager::isInit</a></div><div class="ttdeci">bool isInit</div><div class="ttdef"><b>Definition</b> <a href="#l00103">process_symbols.h:103</a></div></div>
-<div class="ttc" id="aclass_process_symbols_manager_html_a78f8074e9a746d53e8e5d8388e50abd0"><div class="ttname"><a href="class_process_symbols_manager.html#a78f8074e9a746d53e8e5d8388e50abd0">ProcessSymbolsManager::dumpSymbolInfo</a></div><div class="ttdeci">bool dumpSymbolInfo(const ULONG_PTR addr)</div><div class="ttdef"><b>Definition</b> <a href="#l00068">process_symbols.h:68</a></div></div>
-<div class="ttc" id="aclass_process_symbols_manager_html_a8c0370174c2618902c2ccf9ff6dcab3f"><div class="ttname"><a href="class_process_symbols_manager.html#a8c0370174c2618902c2ccf9ff6dcab3f">ProcessSymbolsManager::~ProcessSymbolsManager</a></div><div class="ttdeci">~ProcessSymbolsManager()</div><div class="ttdef"><b>Definition</b> <a href="#l00015">process_symbols.h:15</a></div></div>
-<div class="ttc" id="aclass_process_symbols_manager_html_a99ac137d11b68b281f8efc84fb1681da"><div class="ttname"><a href="class_process_symbols_manager.html#a99ac137d11b68b281f8efc84fb1681da">ProcessSymbolsManager::InitSymbols</a></div><div class="ttdeci">bool InitSymbols(HANDLE _hProcess)</div><div class="ttdef"><b>Definition</b> <a href="#l00020">process_symbols.h:20</a></div></div>
-<div class="ttc" id="aclass_process_symbols_manager_html_ac0971d7bd0f98cfe609c1f1a1001e80f"><div class="ttname"><a href="class_process_symbols_manager.html#ac0971d7bd0f98cfe609c1f1a1001e80f">ProcessSymbolsManager::FreeSymbols</a></div><div class="ttdeci">bool FreeSymbols()</div><div class="ttdef"><b>Definition</b> <a href="#l00092">process_symbols.h:92</a></div></div>
-<div class="ttc" id="aclass_process_symbols_manager_html_ad6b1d880d0b5ae9618c8ac5452823704"><div class="ttname"><a href="class_process_symbols_manager.html#ad6b1d880d0b5ae9618c8ac5452823704">ProcessSymbolsManager::IsInitialized</a></div><div class="ttdeci">bool IsInitialized()</div><div class="ttdef"><b>Definition</b> <a href="#l00035">process_symbols.h:35</a></div></div>
-<div class="ttc" id="aclass_process_symbols_manager_html_af8934eeb7397191e5201fefdc29cc333"><div class="ttname"><a href="class_process_symbols_manager.html#af8934eeb7397191e5201fefdc29cc333">ProcessSymbolsManager::normalizeSyscallPrefix</a></div><div class="ttdeci">std::string normalizeSyscallPrefix(std::string &amp;funcName)</div><div class="ttdef"><b>Definition</b> <a href="#l00042">process_symbols.h:42</a></div></div>
-<div class="ttc" id="aclass_process_symbols_manager_html_afbc6ee9e01329ead375d2bacd2e09a48"><div class="ttname"><a href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">ProcessSymbolsManager::hProcess</a></div><div class="ttdeci">HANDLE hProcess</div><div class="ttdef"><b>Definition</b> <a href="#l00102">process_symbols.h:102</a></div></div>
+<div class="ttc" id="aclass_process_symbols_manager_html_a12daa79c985a492c117fff26451434f3"><div class="ttname"><a href="class_process_symbols_manager.html#a12daa79c985a492c117fff26451434f3">ProcessSymbolsManager::ProcessSymbolsManager</a></div><div class="ttdeci">ProcessSymbolsManager()</div><div class="ttdef"><b>Definition</b> <a href="#l00011">process_symbols.h:11</a></div></div>
+<div class="ttc" id="aclass_process_symbols_manager_html_a1f596791a95938ac76051baaba62961a"><div class="ttname"><a href="class_process_symbols_manager.html#a1f596791a95938ac76051baaba62961a">ProcessSymbolsManager::funcNameFromAddr</a></div><div class="ttdeci">std::string funcNameFromAddr(const ULONG_PTR addr)</div><div class="ttdef"><b>Definition</b> <a href="#l00053">process_symbols.h:53</a></div></div>
+<div class="ttc" id="aclass_process_symbols_manager_html_a4c2130eb0673ab159d260c63d56aee23"><div class="ttname"><a href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">ProcessSymbolsManager::isInit</a></div><div class="ttdeci">bool isInit</div><div class="ttdef"><b>Definition</b> <a href="#l00106">process_symbols.h:106</a></div></div>
+<div class="ttc" id="aclass_process_symbols_manager_html_a78f8074e9a746d53e8e5d8388e50abd0"><div class="ttname"><a href="class_process_symbols_manager.html#a78f8074e9a746d53e8e5d8388e50abd0">ProcessSymbolsManager::dumpSymbolInfo</a></div><div class="ttdeci">bool dumpSymbolInfo(const ULONG_PTR addr)</div><div class="ttdef"><b>Definition</b> <a href="#l00071">process_symbols.h:71</a></div></div>
+<div class="ttc" id="aclass_process_symbols_manager_html_a8c0370174c2618902c2ccf9ff6dcab3f"><div class="ttname"><a href="class_process_symbols_manager.html#a8c0370174c2618902c2ccf9ff6dcab3f">ProcessSymbolsManager::~ProcessSymbolsManager</a></div><div class="ttdeci">~ProcessSymbolsManager()</div><div class="ttdef"><b>Definition</b> <a href="#l00016">process_symbols.h:16</a></div></div>
+<div class="ttc" id="aclass_process_symbols_manager_html_a99ac137d11b68b281f8efc84fb1681da"><div class="ttname"><a href="class_process_symbols_manager.html#a99ac137d11b68b281f8efc84fb1681da">ProcessSymbolsManager::InitSymbols</a></div><div class="ttdeci">bool InitSymbols(HANDLE _hProcess)</div><div class="ttdef"><b>Definition</b> <a href="#l00021">process_symbols.h:21</a></div></div>
+<div class="ttc" id="aclass_process_symbols_manager_html_ac0971d7bd0f98cfe609c1f1a1001e80f"><div class="ttname"><a href="class_process_symbols_manager.html#ac0971d7bd0f98cfe609c1f1a1001e80f">ProcessSymbolsManager::FreeSymbols</a></div><div class="ttdeci">bool FreeSymbols()</div><div class="ttdef"><b>Definition</b> <a href="#l00095">process_symbols.h:95</a></div></div>
+<div class="ttc" id="aclass_process_symbols_manager_html_ad6b1d880d0b5ae9618c8ac5452823704"><div class="ttname"><a href="class_process_symbols_manager.html#ad6b1d880d0b5ae9618c8ac5452823704">ProcessSymbolsManager::IsInitialized</a></div><div class="ttdeci">bool IsInitialized()</div><div class="ttdef"><b>Definition</b> <a href="#l00037">process_symbols.h:37</a></div></div>
+<div class="ttc" id="aclass_process_symbols_manager_html_af8934eeb7397191e5201fefdc29cc333"><div class="ttname"><a href="class_process_symbols_manager.html#af8934eeb7397191e5201fefdc29cc333">ProcessSymbolsManager::normalizeSyscallPrefix</a></div><div class="ttdeci">std::string normalizeSyscallPrefix(std::string &amp;funcName)</div><div class="ttdef"><b>Definition</b> <a href="#l00044">process_symbols.h:44</a></div></div>
+<div class="ttc" id="aclass_process_symbols_manager_html_afbc6ee9e01329ead375d2bacd2e09a48"><div class="ttname"><a href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">ProcessSymbolsManager::hProcess</a></div><div class="ttdeci">HANDLE hProcess</div><div class="ttdef"><b>Definition</b> <a href="#l00105">process_symbols.h:105</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

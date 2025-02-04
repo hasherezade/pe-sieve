@@ -24,11 +24,12 @@ var searchData=
   ['resolveallhooks_21',['resolveAllHooks',['../classpesieve_1_1_hook_target_resolver.html#a51fc6092d397fbb7c414853d703ed064',1,'pesieve::HookTargetResolver']]],
   ['resolvehookedexport_22',['resolveHookedExport',['../classpesieve_1_1_patch_list_1_1_patch.html#a6bfc8ab70087b9bb66ba299e96b527d8',1,'pesieve::PatchList::Patch']]],
   ['resolvehookstargets_23',['resolveHooksTargets',['../classpesieve_1_1_process_scanner.html#a90626aea47ee92aebaf55cc7cf9f3b06',1,'pesieve::ProcessScanner']]],
-  ['resolvetarget_24',['resolveTarget',['../classpesieve_1_1_hook_target_resolver.html#a608ca9968909fbbb18a07af866ea47b1',1,'pesieve::HookTargetResolver']]],
-  ['results_5ffilter_5fto_5fid_25',['results_filter_to_id',['../namespacepesieve.html#abb9076180378513af333eab3b495a1bd',1,'pesieve']]],
-  ['resultsdumper_26',['ResultsDumper',['../classpesieve_1_1_results_dumper.html#a84cedbc87af0ee8b72f06fd7c6cb9b5a',1,'pesieve::ResultsDumper']]],
-  ['rtrim_27',['rtrim',['../namespacepesieve_1_1util.html#a31052004d33cccf72236cd5bd451fa91',1,'pesieve::util']]],
-  ['rulematcher_28',['RuleMatcher',['../classpesieve_1_1_rule_matcher.html#a977717986c584a95b87ffd73da2e8905',1,'pesieve::RuleMatcher']]],
-  ['rulematchersset_29',['RuleMatchersSet',['../structpesieve_1_1_rule_matchers_set.html#aff5025d1a45e27e0f98cb4da745b3ff8',1,'pesieve::RuleMatchersSet']]],
-  ['rvatova_30',['rvaToVa',['../classpesieve_1_1_module_data.html#a1227c638b7039f75d3bf31b61fe13bf9',1,'pesieve::ModuleData']]]
+  ['resolvelowlevelfuncname_24',['resolveLowLevelFuncName',['../classpesieve_1_1_thread_scanner.html#a4f5d8d9f8c84562ef92c9cec236f5a2d',1,'pesieve::ThreadScanner']]],
+  ['resolvetarget_25',['resolveTarget',['../classpesieve_1_1_hook_target_resolver.html#a608ca9968909fbbb18a07af866ea47b1',1,'pesieve::HookTargetResolver']]],
+  ['results_5ffilter_5fto_5fid_26',['results_filter_to_id',['../namespacepesieve.html#abb9076180378513af333eab3b495a1bd',1,'pesieve']]],
+  ['resultsdumper_27',['ResultsDumper',['../classpesieve_1_1_results_dumper.html#a84cedbc87af0ee8b72f06fd7c6cb9b5a',1,'pesieve::ResultsDumper']]],
+  ['rtrim_28',['rtrim',['../namespacepesieve_1_1util.html#a31052004d33cccf72236cd5bd451fa91',1,'pesieve::util']]],
+  ['rulematcher_29',['RuleMatcher',['../classpesieve_1_1_rule_matcher.html#a977717986c584a95b87ffd73da2e8905',1,'pesieve::RuleMatcher']]],
+  ['rulematchersset_30',['RuleMatchersSet',['../structpesieve_1_1_rule_matchers_set.html#aff5025d1a45e27e0f98cb4da745b3ff8',1,'pesieve::RuleMatchersSet']]],
+  ['rvatova_31',['rvaToVa',['../classpesieve_1_1_module_data.html#a1227c638b7039f75d3bf31b61fe13bf9',1,'pesieve::ModuleData']]]
 ];
