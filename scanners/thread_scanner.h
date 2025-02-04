@@ -180,7 +180,7 @@ namespace pesieve {
 
 	protected:
 		bool scanRemoteThreadCtx(HANDLE hThread, ThreadScanReport* my_report);
-		bool isAddrInShellcode(ULONGLONG addr);
+		bool isAddrInNamedModule(ULONGLONG addr);
 		void printThreadInfo(const util::thread_info& threadi);
 		std::string resolveLowLevelFuncName(const ULONGLONG addr, size_t maxDisp=25);
 		bool printResolvedAddr(ULONGLONG addr);

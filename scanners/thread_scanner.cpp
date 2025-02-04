@@ -410,16 +410,16 @@ bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE
 	return is_ok;
 }
 
-bool pesieve::ThreadScanner::isAddrInShellcode(const ULONGLONG addr)
+bool pesieve::ThreadScanner::isAddrInNamedModule(const ULONGLONG addr)
 {
 	ScannedModule* mod = modulesInfo.findModuleContaining(addr);
-	if (!mod) return true;
+	if (!mod) return false;
 
 	//the module is named
 	if (mod->getModName().length() > 0) {
-		return false;
+		return true;
 	}
-	return true;
+	return false;
 }
 
 std::string pesieve::ThreadScanner::resolveLowLevelFuncName(const ULONGLONG addr, size_t maxDisp)
@@ -558,11 +558,12 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	}
 	my_report->frames_count = cDetails.stackFramesCount;
 	bool isModified = false;
-	bool is_shc = isAddrInShellcode(cDetails.rip);
-	if (is_shc) {
+	bool is_unnamed = !isAddrInNamedModule(cDetails.rip);
+	if (is_unnamed) {
+		my_report->indicators.insert(THI_SUS_IP);
 		if (reportSuspiciousAddr(my_report, cDetails.rip)) {
 			if (my_report->status == SCAN_SUSPICIOUS) {
-				my_report->indicators.insert(THI_SUS_IP);
+				my_report->indicators.insert(THI_SUS_CALLSTACK_SHC);
 				isModified = true;
 			}
 		}
@@ -591,12 +592,12 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	if (this->info.is_extended && info.ext.state == Waiting && !cDetails.is_ret_in_frame)
 	{
 		const ULONGLONG ret_addr = cDetails.ret_on_stack;
-		is_shc = isAddrInShellcode(ret_addr);
+		is_unnamed = !isAddrInNamedModule(ret_addr);
 #ifdef _SHOW_THREAD_INFO
 		std::cout << "Return addr: " << std::hex << ret_addr << "\n";
 		printResolvedAddr(ret_addr);
 #endif //_SHOW_THREAD_INFO
-		if (is_shc && reportSuspiciousAddr(my_report, (ULONGLONG)ret_addr)) {
+		if (is_unnamed && reportSuspiciousAddr(my_report, (ULONGLONG)ret_addr)) {
 			isModified = true;
 			my_report->indicators.insert(THI_SUS_RET);
 			if (my_report->status == SCAN_SUSPICIOUS) {
@@ -656,8 +657,8 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	printThreadInfo(info);
 #endif // _SHOW_THREAD_INFO
 
-	bool is_shc = isAddrInShellcode(info.start_addr);
-	if (is_shc) {
+	bool is_unnamed = !isAddrInNamedModule(info.start_addr);
+	if (is_unnamed) {
 		if (reportSuspiciousAddr(my_report, info.start_addr)) {
 			if (my_report->status == SCAN_SUSPICIOUS) {
 				my_report->indicators.insert(THI_SUS_START);
