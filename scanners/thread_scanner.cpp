@@ -192,6 +192,10 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		}
 		return false; // otherwise it is an anomaly
 	}
+	// Proceed to check if the last syscall matches the last function called...
+	if (this->info.ext.wait_reason == Suspended) {
+		return true; // there can be last func. vs last syscall mismatch in case of suspended threads
+	}
 #ifndef _WIN64
 	static bool isWow64 = util::is_current_wow64();
 	if (!isWow64 && lastFuncCalled == "KiFastSystemCallRet") {
@@ -206,7 +210,7 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		if (mod && mod->getModName() == "win32u.dll") return true;
 	}
 
-	if (this->info.ext.wait_reason == WrUserRequest || this->info.ext.wait_reason == UserRequest || this->info.ext.wait_reason == Suspended) {
+	if (this->info.ext.wait_reason == WrUserRequest || this->info.ext.wait_reason == UserRequest) {
 		if (syscallFuncName.rfind("NtUser", 0) == 0 && (lastFuncCalled.rfind("NtUser", 0) == 0)) {
 			return true;
 		}
