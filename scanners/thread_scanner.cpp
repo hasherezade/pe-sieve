@@ -232,7 +232,7 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	}
 	const ScannedModule* mod = modulesInfo.findModuleContaining(lastCalled);
 	const std::string mod_name = mod ? mod->getModName() : "";
-	std::cout << "\n#### TID=" << std::dec << info.tid << " " << syscallFuncName << " VS " << lastFuncCalled << "(" << mod_name << "." << manualSymbol << ")" << " DIFFERENT!" << " WaitReason: " << this->info.ext.wait_reason << std::endl;
+	std::cout << "[@]" << std::dec << info.tid << " : " << "LastSyscall: " << syscallFuncName << " VS LastCalledAddr: " << std::hex << lastCalled << " : " << lastFuncCalled << "(" << mod_name << "." << manualSymbol <<" )" << " DIFFERENT!" << " WaitReason: " << this->info.ext.wait_reason << std::endl;
 #ifdef _SHOW_THREAD_INFO
 	printThreadInfo(info);
 	std::cout << "STACK:\n";
@@ -575,6 +575,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		//automatically verifies if the address is legit:
 		if (reportSuspiciousAddr(my_report, addr)) {
 			if (my_report->status == SCAN_SUSPICIOUS) {
+				std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << std::endl;
 #ifdef _SHOW_THREAD_INFO
 				std::cout << "Found! " << std::hex << addr << "\n";
 #endif //_SHOW_THREAD_INFO

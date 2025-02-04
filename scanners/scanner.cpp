@@ -354,7 +354,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport)  //throw
 	if (modules_count == 0) {
 		return 0;
 	}
-	if (args.imprec_mode != PE_IMPREC_NONE || args.iat != pesieve::PE_IATS_NONE) {
+	if (args.imprec_mode != PE_IMPREC_NONE || args.iat != pesieve::PE_IATS_NONE || args.threads) {
 		pReport.exportsMap = new peconv::ExportsMapper();
 	}
 
