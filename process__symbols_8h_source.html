@@ -123,11 +123,11 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    {</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <span class="keywordflow">if</span> (!_hProcess || _hProcess == INVALID_HANDLE_VALUE) {</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        }   </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        }</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>) {</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            <a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a> = _hProcess;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            SymSetOptions(SYMOPT_UNDNAME | SYMOPT_ALLOW_ABSOLUTE_SYMBOLS | SYMOPT_OMAP_FIND_NEAREST | SYMOPT_INCLUDE_32BIT_MODULES);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            SymSetOptions(SYMOPT_INCLUDE_32BIT_MODULES | SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS);</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            <span class="keywordflow">if</span> (SymInitialize(<a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>, NULL, TRUE)) {</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                <a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a> = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            }</div>
