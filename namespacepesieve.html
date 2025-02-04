@@ -309,6 +309,8 @@ Typedefs</h2></td></tr>
 <tr class="separator:ae1427f2c930ab7bdd8a08ad8b4a6a90d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12a2f91c4e947163c0b69bf18755098d" id="r_a12a2f91c4e947163c0b69bf18755098d"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structpesieve_1_1__process__details.html">pesieve::_process_details</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a12a2f91c4e947163c0b69bf18755098d">process_details</a></td></tr>
 <tr class="separator:a12a2f91c4e947163c0b69bf18755098d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7c8db419515b7be38e2354c2934a24c" id="r_ad7c8db419515b7be38e2354c2934a24c"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="#ad7ea85bd66840b769e4e5a59b0f3e4c0">pesieve::ThSusIndicator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7c8db419515b7be38e2354c2934a24c">_ThSusIndicator</a></td></tr>
+<tr class="separator:ad7c8db419515b7be38e2354c2934a24c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a37f9e361f80961af26f92053c89f36" id="r_a7a37f9e361f80961af26f92053c89f36"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structpesieve_1_1__ctx__details.html">pesieve::_ctx_details</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7a37f9e361f80961af26f92053c89f36">ctx_details</a></td></tr>
 <tr class="memdesc:a7a37f9e361f80961af26f92053c89f36"><td class="mdescLeft">&#160;</td><td class="mdescRight">A custom structure keeping a fragment of a thread context.  <br /></td></tr>
 <tr class="separator:a7a37f9e361f80961af26f92053c89f36"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -333,6 +335,19 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:aef1981236931c047e3b21059e717ea64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7ea85bd66840b769e4e5a59b0f3e4c0" id="r_ad7ea85bd66840b769e4e5a59b0f3e4c0"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7ea85bd66840b769e4e5a59b0f3e4c0">ThSusIndicator</a> { <br />
+&#160;&#160;<a class="el" href="#ad7ea85bd66840b769e4e5a59b0f3e4c0a20a484669432ef0329118e2e8c380a2b">THI_NONE</a>
+, <a class="el" href="#ad7ea85bd66840b769e4e5a59b0f3e4c0afba12b41e4316d112c51d739141a9a44">THI_SUS_START</a>
+, <a class="el" href="#ad7ea85bd66840b769e4e5a59b0f3e4c0a4dcfa8988c2f7879c57aafd22673c72c">THI_SUS_IP</a>
+, <a class="el" href="#ad7ea85bd66840b769e4e5a59b0f3e4c0aa87e6cfbd05537024a6546d8900dce67">THI_SUS_RET</a>
+, <br />
+&#160;&#160;<a class="el" href="#ad7ea85bd66840b769e4e5a59b0f3e4c0a1b8fcb7da85d77dfd33e05390fba3565">THI_SUS_CALLSTACK_SHC</a>
+, <a class="el" href="#ad7ea85bd66840b769e4e5a59b0f3e4c0aaa5da4f7417e527aeb83845019d26709">THI_SUS_CALLS_INTEGRITY</a>
+, <a class="el" href="#ad7ea85bd66840b769e4e5a59b0f3e4c0a5ad672d0a430c57636beffa53755097c">THI_SUS_CALLSTACK_CORRUPT</a>
+, <a class="el" href="#ad7ea85bd66840b769e4e5a59b0f3e4c0a4a41fde895a730344e2f4a7b81a69e2c">THI_MAX</a>
+<br />
+ }</td></tr>
+<tr class="separator:ad7ea85bd66840b769e4e5a59b0f3e4c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -463,6 +478,8 @@ Functions</h2></td></tr>
 <tr class="separator:a5de73d5ffa8f7073fdf5fd6b7c6deea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c9c19e3f0ce1362c7e404893a1163f6" id="r_a7c9c19e3f0ce1362c7e404893a1163f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7c9c19e3f0ce1362c7e404893a1163f6">is_thread_running</a> (HANDLE hThread)</td></tr>
 <tr class="separator:a7c9c19e3f0ce1362c7e404893a1163f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac993ea54598eedc07ad1801b9a565153" id="r_ac993ea54598eedc07ad1801b9a565153"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac993ea54598eedc07ad1801b9a565153">indicator_to_str</a> (const <a class="el" href="#ad7ea85bd66840b769e4e5a59b0f3e4c0">ThSusIndicator</a> &amp;indicator)</td></tr>
+<tr class="separator:ac993ea54598eedc07ad1801b9a565153"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee245dc4878b8329cc82d3e93ce843e1" id="r_aee245dc4878b8329cc82d3e93ce843e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee245dc4878b8329cc82d3e93ce843e1">is_by_stats</a> (const <a class="el" href="classpesieve_1_1t__shellc__mode.html">t_shellc_mode</a> &amp;shellc_mode)</td></tr>
 <tr class="separator:aee245dc4878b8329cc82d3e93ce843e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ddb4b260f42d4e8c10413ad81b5537f" id="r_a6ddb4b260f42d4e8c10413ad81b5537f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ddb4b260f42d4e8c10413ad81b5537f">match_to_tag</a> (std::ofstream &amp;patch_report, const char delimiter, size_t start_offset, const sig_finder::Match &amp;match)</td></tr>
@@ -532,6 +549,20 @@ Variables</h2></td></tr>
 <tr class="separator:aabf8b899f3fb06f158bb4888ff743016"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="ad7c8db419515b7be38e2354c2934a24c" name="ad7c8db419515b7be38e2354c2934a24c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7c8db419515b7be38e2354c2934a24c">&#9670;&#160;</a></span>_ThSusIndicator</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef enum <a class="el" href="#ad7ea85bd66840b769e4e5a59b0f3e4c0">pesieve::ThSusIndicator</a> <a class="el" href="#ad7c8db419515b7be38e2354c2934a24c">pesieve._ThSusIndicator</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a7a37f9e361f80961af26f92053c89f36" name="a7a37f9e361f80961af26f92053c89f36"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7a37f9e361f80961af26f92053c89f36">&#9670;&#160;</a></span>ctx_details</h2>
 
@@ -649,6 +680,32 @@ Variables</h2></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="patch__list_8h_source.html#l00011">11</a> of file <a class="el" href="patch__list_8h_source.html">patch_list.h</a>.</p>
+
+</div>
+</div>
+<a id="ad7ea85bd66840b769e4e5a59b0f3e4c0" name="ad7ea85bd66840b769e4e5a59b0f3e4c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7ea85bd66840b769e4e5a59b0f3e4c0">&#9670;&#160;</a></span>ThSusIndicator</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#ad7ea85bd66840b769e4e5a59b0f3e4c0">pesieve::ThSusIndicator</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad7ea85bd66840b769e4e5a59b0f3e4c0a20a484669432ef0329118e2e8c380a2b" name="ad7ea85bd66840b769e4e5a59b0f3e4c0a20a484669432ef0329118e2e8c380a2b"></a>THI_NONE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7ea85bd66840b769e4e5a59b0f3e4c0afba12b41e4316d112c51d739141a9a44" name="ad7ea85bd66840b769e4e5a59b0f3e4c0afba12b41e4316d112c51d739141a9a44"></a>THI_SUS_START&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7ea85bd66840b769e4e5a59b0f3e4c0a4dcfa8988c2f7879c57aafd22673c72c" name="ad7ea85bd66840b769e4e5a59b0f3e4c0a4dcfa8988c2f7879c57aafd22673c72c"></a>THI_SUS_IP&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7ea85bd66840b769e4e5a59b0f3e4c0aa87e6cfbd05537024a6546d8900dce67" name="ad7ea85bd66840b769e4e5a59b0f3e4c0aa87e6cfbd05537024a6546d8900dce67"></a>THI_SUS_RET&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7ea85bd66840b769e4e5a59b0f3e4c0a1b8fcb7da85d77dfd33e05390fba3565" name="ad7ea85bd66840b769e4e5a59b0f3e4c0a1b8fcb7da85d77dfd33e05390fba3565"></a>THI_SUS_CALLSTACK_SHC&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7ea85bd66840b769e4e5a59b0f3e4c0aaa5da4f7417e527aeb83845019d26709" name="ad7ea85bd66840b769e4e5a59b0f3e4c0aaa5da4f7417e527aeb83845019d26709"></a>THI_SUS_CALLS_INTEGRITY&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7ea85bd66840b769e4e5a59b0f3e4c0a5ad672d0a430c57636beffa53755097c" name="ad7ea85bd66840b769e4e5a59b0f3e4c0a5ad672d0a430c57636beffa53755097c"></a>THI_SUS_CALLSTACK_CORRUPT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad7ea85bd66840b769e4e5a59b0f3e4c0a4a41fde895a730344e2f4a7b81a69e2c" name="ad7ea85bd66840b769e4e5a59b0f3e4c0a4a41fde895a730344e2f4a7b81a69e2c"></a>THI_MAX&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00013">13</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -1383,6 +1440,33 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="pe__sieve__params__info_8cpp_source.html#l00096">96</a> of file <a class="el" href="pe__sieve__params__info_8cpp_source.html">pe_sieve_params_info.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ac993ea54598eedc07ad1801b9a565153" name="ac993ea54598eedc07ad1801b9a565153"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac993ea54598eedc07ad1801b9a565153">&#9670;&#160;</a></span>indicator_to_str()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string pesieve::indicator_to_str </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="#ad7ea85bd66840b769e4e5a59b0f3e4c0">ThSusIndicator</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>indicator</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00024">24</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>

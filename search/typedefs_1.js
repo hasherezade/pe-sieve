@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ctx_5fdetails_0',['ctx_details',['../namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36',1,'pesieve']]]
+  ['bool_0',['bool',['../pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0',1,'pe_sieve_types.h']]]
 ];
