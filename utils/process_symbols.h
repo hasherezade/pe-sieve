@@ -4,6 +4,7 @@
 #include <dbghelp.h>
 #pragma comment(lib, "dbghelp")
 
+
 class ProcessSymbolsManager
 {
 public:
@@ -21,10 +22,11 @@ public:
 	{
 		if (!_hProcess || _hProcess == INVALID_HANDLE_VALUE) {
 			return false;
-		}
+		}	
 		if (!isInit) {
 			hProcess = _hProcess;
-			SymSetOptions(SYMOPT_UNDNAME | SYMOPT_DEBUG | SYMOPT_INCLUDE_32BIT_MODULES);
+
+			SymSetOptions(SYMOPT_UNDNAME | SYMOPT_ALLOW_ABSOLUTE_SYMBOLS | SYMOPT_OMAP_FIND_NEAREST | SYMOPT_INCLUDE_32BIT_MODULES);
 			if (SymInitialize(hProcess, NULL, TRUE)) {
 				isInit = true;
 			}
@@ -50,8 +52,9 @@ public:
 
 	std::string funcNameFromAddr(const ULONG_PTR addr)
 	{
-		if (!isInit) return "";
-
+		if (!IsInitialized()) {
+			return "";
+		}
 		CHAR buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME] = { 0 };
 		PSYMBOL_INFO pSymbol = (PSYMBOL_INFO)buffer;
 		pSymbol->SizeOfStruct = sizeof(SYMBOL_INFO);
@@ -67,7 +70,7 @@ public:
 
 	bool dumpSymbolInfo(const ULONG_PTR addr)
 	{
-		if (!isInit) return false;
+		if (!IsInitialized()) return false;
 
 		CHAR buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME] = { 0 };
 		PSYMBOL_INFO pSymbol = (PSYMBOL_INFO)buffer;

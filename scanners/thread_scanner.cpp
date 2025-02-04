@@ -178,7 +178,14 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	const std::string syscallFuncName = g_SyscallTable.getSyscallName(this->info.last_syscall);
 
 	const ULONGLONG lastCalled = *callStack.begin();
-	const std::string lastFuncCalled = symbols->funcNameFromAddr(lastCalled);
+	std::string lastFuncCalled = symbols->funcNameFromAddr(lastCalled);
+	std::string manualSymbol = exportsMap ? resolveLowLevelFuncName(lastCalled) : "";
+	if (lastFuncCalled.empty()) {
+		if (!exportsMap) {
+			return true; // skip the check
+		}
+		lastFuncCalled = manualSymbol;
+	}
 	if (callStack.size() == 1) {
 		if (this->info.ext.wait_reason == Suspended && lastFuncCalled == "RtlUserThreadStart" && this->info.last_syscall == 0) {
 			return true; //normal for suspended threads
@@ -203,16 +210,18 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		if (syscallFuncName.rfind("NtUser", 0) == 0 && (lastFuncCalled.rfind("NtUser", 0) == 0)) {
 			return true;
 		}
+		if (syscallFuncName.rfind("NtGdi", 0) == 0 && (lastFuncCalled.rfind("NtUser", 0) == 0)) {
+			return true;
+		}
 	}
-
 	if (this->info.ext.wait_reason == UserRequest) {
 		if (syscallFuncName == "NtWaitForSingleObject" && (lastFuncCalled.rfind("NtQuery", 0) == 0)) {
 			return true;
 		}
-		if (syscallFuncName == "NtUserSetSystemMenu" && (lastFuncCalled.rfind("NtGdi", 0) == 0)) {
+		if (syscallFuncName.rfind("NtGdi", 0) == 0 && (lastFuncCalled.rfind("NtGdi", 0) == 0)) {
 			return true;
 		}
-		if (syscallFuncName.rfind("NtGdi", 0) == 0 && (lastFuncCalled.rfind("NtGdi", 0) == 0)) {
+		if (syscallFuncName.rfind("NtUser", 0) == 0 && (lastFuncCalled.rfind("NtGdi", 0) == 0)) {
 			return true;
 		}
 	}
@@ -221,9 +230,10 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 			return true;
 		}
 	}
-
+	const ScannedModule* mod = modulesInfo.findModuleContaining(lastCalled);
+	const std::string mod_name = mod ? mod->getModName() : "";
+	std::cout << "\n#### TID=" << std::dec << info.tid << " " << syscallFuncName << " VS " << lastFuncCalled << "(" << mod_name << "." << manualSymbol << ")" << " DIFFERENT!" << " WaitReason: " << this->info.ext.wait_reason << std::endl;
 #ifdef _SHOW_THREAD_INFO
-	std::cout << "\n#### TID=" << std::dec << info.tid << " " << syscallFuncName << " VS " << lastFuncCalled << " DIFFERENT!" << " WaitReason: " << this->info.ext.wait_reason << std::endl;
 	printThreadInfo(info);
 	std::cout << "STACK:\n";
 	for (auto itr = callStack.rbegin(); itr != callStack.rend(); ++itr) {
@@ -392,6 +402,30 @@ bool pesieve::ThreadScanner::isAddrInShellcode(const ULONGLONG addr)
 		return false;
 	}
 	return true;
+}
+
+std::string pesieve::ThreadScanner::resolveLowLevelFuncName(const ULONGLONG addr, size_t maxDisp)
+{
+	if (!exportsMap) {
+		return "";
+	}
+	ScannedModule* mod = modulesInfo.findModuleContaining(addr);
+	if (!mod) {
+		return "";
+	}
+	if (mod->getModName() != "ntdll.dll" && mod->getModName() != "win32u.dll") {
+		// not a DLL containing a syscall
+		return "";
+	}
+	bool is_resolved = false;
+	std::string func;
+	for (size_t disp = 0; disp < maxDisp; disp++) {
+		const peconv::ExportedFunc* exp = exportsMap->find_export_by_va(addr - disp);
+		if (exp) {
+			return exp->nameToString();
+		}
+	}
+	return "";
 }
 
 bool pesieve::ThreadScanner::printResolvedAddr(const ULONGLONG addr)

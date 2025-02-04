@@ -141,6 +141,7 @@ namespace pesieve {
 		bool scanRemoteThreadCtx(HANDLE hThread, ThreadScanReport* my_report);
 		bool isAddrInShellcode(ULONGLONG addr);
 		void printThreadInfo(const util::thread_info& threadi);
+		std::string resolveLowLevelFuncName(const ULONGLONG addr, size_t maxDisp=25);
 		bool printResolvedAddr(ULONGLONG addr);
 		bool fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, OUT ctx_details& c);
 		size_t fillCallStackInfo(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ctx_details& cDetails);
