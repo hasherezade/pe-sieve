@@ -22,11 +22,11 @@ public:
 	{
 		if (!_hProcess || _hProcess == INVALID_HANDLE_VALUE) {
 			return false;
-		}	
+		}
 		if (!isInit) {
 			hProcess = _hProcess;
 
-			SymSetOptions(SYMOPT_UNDNAME | SYMOPT_ALLOW_ABSOLUTE_SYMBOLS | SYMOPT_OMAP_FIND_NEAREST | SYMOPT_INCLUDE_32BIT_MODULES);
+			SymSetOptions(SYMOPT_INCLUDE_32BIT_MODULES | SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS);
 			if (SymInitialize(hProcess, NULL, TRUE)) {
 				isInit = true;
 			}
