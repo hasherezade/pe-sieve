@@ -1,4 +1,4 @@
-<map id="pesieve::ThreadScanner::isAddrInShellcode" name="pesieve::ThreadScanner::isAddrInShellcode">
+<map id="pesieve::ThreadScanner::isAddrInNamedModule" name="pesieve::ThreadScanner::isAddrInNamedModule">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,166,46"/>
 <area shape="rect" id="Node000002" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="214,5,379,46"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,23,198,23,198,28,166,28"/>
