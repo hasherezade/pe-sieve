@@ -512,9 +512,7 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 	my_report->module = (HMODULE)base;
 	my_report->moduleSize = page_info.RegionSize;
 	my_report->protection = page_info.AllocationProtect;
-
 	my_report->susp_addr = susp_addr;
-	my_report->indicator = THI_SUS_CALLSTACK_SHC; // this may be overwriten later by other checks
 	my_report->status = SCAN_SUSPICIOUS;
 	const bool isStatFilled = fillAreaStats(my_report);
 #ifndef NO_ENTROPY_CHECK
@@ -549,24 +547,23 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	const DWORD tid = GetThreadId(hThread);
 	ctx_details cDetails;
 	const bool is_ok = fetchThreadCtxDetails(processHandle, hThread, cDetails);
-
 	if (!pesieve::is_thread_running(hThread)) {
 		my_report->status = SCAN_NOT_SUSPICIOUS;
 		return false;
 	}
-
 	if (!is_ok) {
 		// could not fetch the thread context and information
 		my_report->status = SCAN_ERROR;
 		return false;
 	}
-
+	my_report->frames_count = cDetails.stackFramesCount;
+	bool isModified = false;
 	bool is_shc = isAddrInShellcode(cDetails.rip);
 	if (is_shc) {
 		if (reportSuspiciousAddr(my_report, cDetails.rip)) {
 			if (my_report->status == SCAN_SUSPICIOUS) {
-				my_report->indicator = THI_SUS_IP;
-				return true;
+				my_report->indicators.insert(THI_SUS_IP);
+				isModified = true;
 			}
 		}
 	}
@@ -579,12 +576,12 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		//automatically verifies if the address is legit:
 		if (reportSuspiciousAddr(my_report, addr)) {
 			if (my_report->status == SCAN_SUSPICIOUS) {
-				my_report->indicator = THI_SUS_CALLSTACK_SHC;
+				my_report->indicators.insert(THI_SUS_CALLSTACK_SHC);
 				std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << std::endl;
 #ifdef _SHOW_THREAD_INFO
 				std::cout << "Found! " << std::hex << addr << "\n";
 #endif //_SHOW_THREAD_INFO
-				return true;
+				isModified = true;
 			}
 		}
 	}
@@ -600,27 +597,29 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		printResolvedAddr(ret_addr);
 #endif //_SHOW_THREAD_INFO
 		if (is_shc && reportSuspiciousAddr(my_report, (ULONGLONG)ret_addr)) {
+			isModified = true;
+			my_report->indicators.insert(THI_SUS_RET);
 			if (my_report->status == SCAN_SUSPICIOUS) {
-				my_report->indicator = THI_SUS_RET;
-				return true;
+				my_report->indicators.insert(THI_SUS_CALLSTACK_SHC);
 			}
-			my_report->indicator = THI_SUS_RET;
-			my_report->status = SCAN_SUSPICIOUS;
-			my_report->stack_ptr = cDetails.rsp;
-			if (my_report->stats.entropy < 1) { // discard, do not dump
-				my_report->module = 0;
-				my_report->moduleSize = 0;
+			else {
+				my_report->status = SCAN_SUSPICIOUS;
+				my_report->stack_ptr = cDetails.rsp;
+				if (my_report->stats.entropy < 1) { // discard, do not dump
+					my_report->module = 0;
+					my_report->moduleSize = 0;
+				}
 			}
-			return true;
 		}
 	}
+
 	// other indicators of stack being corrupt:
 	
 	bool isStackCorrupt = false;
 
 	if (this->info.is_extended && !cDetails.is_managed && !cDetails.is_ret_as_syscall)
 	{
-		my_report->indicator = THI_SUS_CALLS_INTEGRITY;
+		my_report->indicators.insert(THI_SUS_CALLS_INTEGRITY);
 		isStackCorrupt = true;
 	}
 
@@ -628,7 +627,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		cDetails.stackFramesCount == 1
 		&& this->info.is_extended && info.ext.state == Waiting && info.ext.wait_reason == UserRequest)
 	{
-		my_report->indicator = THI_SUS_CALLSTACK_CORRUPT;
+		my_report->indicators.insert(THI_SUS_CALLSTACK_CORRUPT);
 		isStackCorrupt = true;
 	}
 
@@ -640,7 +639,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 
 		my_report->status = SCAN_SUSPICIOUS;
 	}
-	return true;
+	return isModified;
 }
 
 
@@ -661,7 +660,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	if (is_shc) {
 		if (reportSuspiciousAddr(my_report, info.start_addr)) {
 			if (my_report->status == SCAN_SUSPICIOUS) {
-				my_report->indicator = THI_SUS_START;
+				my_report->indicators.insert(THI_SUS_START);
 				return my_report;
 			}
 		}

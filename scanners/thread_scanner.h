@@ -50,10 +50,9 @@ namespace pesieve {
 		ThreadScanReport(DWORD _tid)
 			: ModuleScanReport(0, 0), 
 			tid(_tid), 
-			susp_addr(0), protection(0), stack_ptr(0),
+			susp_addr(0), protection(0), stack_ptr(0), frames_count(0),
 			thread_state(THREAD_STATE_UNKNOWN), 
-			thread_wait_reason(0), thread_wait_time(0), 
-			indicator(THI_NONE)
+			thread_wait_reason(0), thread_wait_time(0)
 		{
 		}
 
@@ -64,8 +63,14 @@ namespace pesieve {
 			OUT_PADDED(outs, level, "\"thread_id\" : ");
 			outs << std::dec << tid;
 			outs << ",\n";
-			OUT_PADDED(outs, level, "\"indicator\" : ");
-			outs << "\"" << indicator_to_str(indicator) << "\"";
+			OUT_PADDED(outs, level, "\"indicators\" : [");
+			for (auto itr = indicators.begin(); itr != indicators.end(); ++itr) {
+				if (itr != indicators.begin()) {
+					outs << ", ";
+				}
+				outs << "\"" << indicator_to_str(*itr) << "\"";
+			}
+			outs << "]";
 			if (susp_addr) {
 				outs << ",\n";
 				if (this->module && this->moduleSize) {
@@ -80,6 +85,11 @@ namespace pesieve {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"susp_callstack\" : ");
 				outs << "\"" << std::hex << stack_ptr << "\"";
+			}
+			if (frames_count) {
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"frames_count\" : ");
+				outs << std::dec << frames_count;
 			}
 			if (thread_state != THREAD_STATE_UNKNOWN) {
 				outs << ",\n";
@@ -116,10 +126,11 @@ namespace pesieve {
 		ULONGLONG susp_addr;
 		DWORD protection;
 		ULONGLONG stack_ptr;
+		size_t frames_count;
 		DWORD thread_state;
 		DWORD thread_wait_reason;
 		DWORD thread_wait_time;
-		ThSusIndicator indicator;
+		std::set<ThSusIndicator> indicators;
 		AreaEntropyStats stats;
 	};
 
