@@ -661,12 +661,10 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		if (reportSuspiciousAddr(my_report, info.start_addr)) {
 			if (my_report->status == SCAN_SUSPICIOUS) {
 				my_report->indicators.insert(THI_SUS_START);
-				return my_report;
 			}
 		}
 	}
 	if (!should_scan_context(info)) {
-		my_report->status = SCAN_NOT_SUSPICIOUS;
 		return my_report;
 	}
 	// proceed with detailed checks:
