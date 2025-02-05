@@ -50,7 +50,7 @@ var searchData=
   ['isinit_47',['isInit',['../class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23',1,'ProcessSymbolsManager']]],
   ['isinmain_48',['isInMain',['../classpesieve_1_1_i_a_t_block.html#a090236dac85527e386c7a8d509a07116',1,'pesieve::IATBlock']]],
   ['isinpeb_49',['isInPEB',['../classpesieve_1_1_headers_scan_report.html#aebdeeae678d69ca403aa6b16e4d08ec0',1,'pesieve::HeadersScanReport']]],
-  ['ismanaged_50',['isManaged',['../classpesieve_1_1_process_scan_report.html#a69437e618cbea7083a39c78f6391ef24',1,'pesieve::ProcessScanReport']]],
+  ['ismanaged_50',['isManaged',['../classpesieve_1_1_process_scan_report.html#a69437e618cbea7083a39c78f6391ef24',1,'pesieve::ProcessScanReport::isManaged'],['../classpesieve_1_1_thread_scanner.html#adb9e7d496e22299bf5ab2d3b9d392a2a',1,'pesieve::ThreadScanner::isManaged']]],
   ['ismodule64bit_51',['isModule64bit',['../classpesieve_1_1_patch_analyzer.html#a7e6ec6e872a4854c22134fa65c39d136',1,'pesieve::PatchAnalyzer']]],
   ['ismzpefound_52',['isMzPeFound',['../classpesieve_1_1_pe_artefacts.html#a96aa7a9827fffeaad69a5c7bb7334534',1,'pesieve::PeArtefacts::isMzPeFound'],['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#a66e0b7bd90ffce6274c4c278816d0750',1,'pesieve::ArtefactScanner::ArtefactsMapping::isMzPeFound']]],
   ['ispebconnected_53',['isPEBConnected',['../classpesieve_1_1_module_data.html#a4c6bdfac3eeef79c206e3f959ea0519b',1,'pesieve::ModuleData']]],

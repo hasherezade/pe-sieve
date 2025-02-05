@@ -145,7 +145,7 @@ var searchData=
   ['isinmain_142',['isInMain',['../classpesieve_1_1_i_a_t_block.html#a090236dac85527e386c7a8d509a07116',1,'pesieve::IATBlock']]],
   ['isinpeb_143',['isInPEB',['../classpesieve_1_1_headers_scan_report.html#aebdeeae678d69ca403aa6b16e4d08ec0',1,'pesieve::HeadersScanReport']]],
   ['islongmodifier_144',['isLongModifier',['../classpesieve_1_1_patch_analyzer.html#ab001e027c9dba6e06ff4c6b06996455e',1,'pesieve::PatchAnalyzer']]],
-  ['ismanaged_145',['isManaged',['../classpesieve_1_1_process_scan_report.html#a69437e618cbea7083a39c78f6391ef24',1,'pesieve::ProcessScanReport']]],
+  ['ismanaged_145',['isManaged',['../classpesieve_1_1_process_scan_report.html#a69437e618cbea7083a39c78f6391ef24',1,'pesieve::ProcessScanReport::isManaged'],['../classpesieve_1_1_thread_scanner.html#adb9e7d496e22299bf5ab2d3b9d392a2a',1,'pesieve::ThreadScanner::isManaged']]],
   ['ismanagedprocess_146',['isManagedProcess',['../classpesieve_1_1_process_scan_report.html#a20f7307ba415bb75748eff0d9d60930f',1,'pesieve::ProcessScanReport']]],
   ['ismatched_147',['isMatched',['../classpesieve_1_1_rule_matcher.html#ae15f8e5d971163e6156b858f50ff0b4d',1,'pesieve::RuleMatcher']]],
   ['ismatching_148',['isMatching',['../classpesieve_1_1_rule_matcher.html#a14f2cd3fb316465b0f5f9d770312aaeb',1,'pesieve::RuleMatcher']]],
