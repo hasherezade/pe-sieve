@@ -212,30 +212,29 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	}
 
 	if (this->info.ext.wait_reason == WrUserRequest || this->info.ext.wait_reason == UserRequest) {
-		if (syscallFuncName.rfind("NtUser", 0) == 0 && (lastFuncCalled.rfind("NtUser", 0) == 0)) {
-			return true;
+		if (syscallFuncName.rfind("NtUser", 0) == 0 ) {
+			if (lastFuncCalled.rfind("NtUser", 0) == 0) return true;
+			if (lastFuncCalled.rfind("NtGdi", 0) == 0) return true;
 		}
-		if (syscallFuncName.rfind("NtGdi", 0) == 0 && (lastFuncCalled.rfind("NtUser", 0) == 0)) {
-			return true;
+		if (syscallFuncName.rfind("NtGdi", 0) == 0) {
+			if (lastFuncCalled.rfind("NtGdi", 0) == 0) return true;
+			if (lastFuncCalled.rfind("NtUser", 0) == 0) return true;
 		}
 	}
+
 	if (this->info.ext.wait_reason == UserRequest) {
-		if (syscallFuncName.rfind("NtWaitFor", 0) == 0 && (lastFuncCalled.rfind("NtWaitFor", 0) == 0)) {
-			return true;
-		}
-		if (syscallFuncName == "NtWaitForSingleObject" && (lastFuncCalled.rfind("NtQuery", 0) == 0) || lastFuncCalled == "NtDelayExecution") {
-			return true;
-		}
-		if (syscallFuncName.rfind("NtGdi", 0) == 0 && (lastFuncCalled.rfind("NtGdi", 0) == 0)) {
-			return true;
+		if (syscallFuncName.rfind("NtWaitFor", 0) == 0) {
+			if (lastFuncCalled.rfind("NtWaitFor", 0) == 0) return true;
+			if (lastFuncCalled.rfind("NtGdiDdDDIWaitFor", 0) == 0) return true;
+
+			if (syscallFuncName == "NtWaitForSingleObject") {
+				if ((lastFuncCalled.rfind("NtQuery", 0) == 0) || lastFuncCalled == "NtDelayExecution") return true;
+			}
 		}
 		if (syscallFuncName.rfind("NtGdiDdDDIWaitFor", 0) == 0 && (lastFuncCalled.rfind("NtWaitFor", 0) == 0)) {
 			return true;
 		}
-		if (syscallFuncName.rfind("NtWaitFor", 0) == 0 && (lastFuncCalled.rfind("NtGdiDdDDIWaitFor", 0) == 0)) {
-			return true;
-		}
-		if (syscallFuncName.rfind("NtUser", 0) == 0 && (lastFuncCalled.rfind("NtGdi", 0) == 0)) {
+		if (syscallFuncName.rfind("NtUser", 0) == 0 && lastFuncCalled == "NtWaitForWorkViaWorkerFactory") {
 			return true;
 		}
 	}
@@ -248,13 +247,13 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		}
 	}
 	if (this->info.ext.wait_reason == DelayExecution) {
-		if (syscallFuncName == "NtDelayExecution" && ((lastFuncCalled.rfind("NtUserMsgWaitFor", 0) == 0) || (lastFuncCalled.rfind("NtWaitFor", 0) == 0))) {
-			return true;
+		if (syscallFuncName == "NtDelayExecution") {
+			if ((lastFuncCalled.rfind("NtUserMsgWaitFor", 0) == 0) || (lastFuncCalled.rfind("NtWaitFor", 0) == 0)) return true;
 		}
 	}
 	const ScannedModule* mod = modulesInfo.findModuleContaining(lastCalled);
 	const std::string mod_name = mod ? mod->getModName() : "";
-	std::cout << "[@]" << std::dec << info.tid << " : " << "LastSyscall: " << syscallFuncName << " VS LastCalledAddr: " << std::hex << lastCalled << " : " << lastFuncCalled << "(" << mod_name << "." << manualSymbol <<" )" << " DIFFERENT!" << " WaitReason: " << std::dec << this->info.ext.wait_reason << std::endl;
+	std::cout << "[@]" << std::dec << info.tid << " : " << "LastSyscall: " << syscallFuncName << " VS LastCalledAddr: " << std::hex << lastCalled << " : " << lastFuncCalled << "(" << mod_name << "." << manualSymbol <<" )" << " DIFFERENT!" << " WaitReason: " << std::dec << ThreadScanReport::translate_wait_reason(this->info.ext.wait_reason) << std::endl;
 #ifdef _SHOW_THREAD_INFO
 	printThreadInfo(info);
 	std::cout << "STACK:\n";
