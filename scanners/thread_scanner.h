@@ -104,7 +104,7 @@ namespace pesieve {
 				}
 				outs << "\"" << std::hex << susp_addr << "\"";
 			}
-			if (susp_addr) {
+			if (this->module) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"protection\" : ");
 				outs << "\"" << std::hex << protection << "\"";
