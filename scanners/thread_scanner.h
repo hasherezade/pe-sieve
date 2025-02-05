@@ -72,7 +72,11 @@ namespace pesieve {
 				outs << "\"" << indicator_to_str(*itr) << "\"";
 			}
 			outs << "]";
-
+			if (stack_ptr) {
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"stack_ptr\" : ");
+				outs << "\"" << std::hex << stack_ptr << "\"";
+			}
 			if (frames_count) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"frames_count\" : ");
@@ -88,11 +92,6 @@ namespace pesieve {
 					OUT_PADDED(outs, level, "\"thread_wait_reason\" : ");
 					outs << "\"" << translate_wait_reason(thread_wait_reason) << "\"";
 				}
-			}
-			if (stack_ptr) {
-				outs << ",\n";
-				OUT_PADDED(outs, level, "\"susp_callstack_ptr\" : ");
-				outs << "\"" << std::hex << stack_ptr << "\"";
 			}
 			if (susp_addr) {
 				outs << ",\n";

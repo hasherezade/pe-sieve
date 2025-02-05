@@ -556,6 +556,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		return false;
 	}
 	my_report->frames_count = cDetails.stackFramesCount;
+	my_report->stack_ptr = cDetails.rsp;
 	bool isModified = false;
 	bool is_unnamed = !isAddrInNamedModule(cDetails.rip);
 	if (is_unnamed) {
@@ -609,7 +610,6 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 			}
 			else {
 				my_report->status = SCAN_SUSPICIOUS;
-				my_report->stack_ptr = cDetails.rsp;
 				if (my_report->stats.entropy < 1) { // discard, do not dump
 					my_report->module = 0;
 					my_report->moduleSize = 0;
@@ -637,11 +637,6 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	}
 
 	if (isStackCorrupt) {
-		my_report->thread_state = info.ext.state;
-		my_report->thread_wait_reason = info.ext.wait_reason;
-		my_report->thread_wait_time = info.ext.wait_time;
-		my_report->stack_ptr = cDetails.rsp;
-
 		my_report->status = SCAN_SUSPICIOUS;
 	}
 	return isModified;
