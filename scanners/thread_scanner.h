@@ -62,6 +62,7 @@ namespace pesieve {
 			outs << ",\n";
 			OUT_PADDED(outs, level, "\"thread_id\" : ");
 			outs << std::dec << tid;
+
 			outs << ",\n";
 			OUT_PADDED(outs, level, "\"indicators\" : [");
 			for (auto itr = indicators.begin(); itr != indicators.end(); ++itr) {
@@ -71,21 +72,7 @@ namespace pesieve {
 				outs << "\"" << indicator_to_str(*itr) << "\"";
 			}
 			outs << "]";
-			if (susp_addr) {
-				outs << ",\n";
-				if (this->module && this->moduleSize) {
-					OUT_PADDED(outs, level, "\"susp_addr\" : ");
-				}
-				else {
-					OUT_PADDED(outs, level, "\"susp_return_addr\" : ");
-				}
-				outs << "\"" << std::hex << susp_addr << "\"";
-			}
-			if (stack_ptr) {
-				outs << ",\n";
-				OUT_PADDED(outs, level, "\"susp_callstack\" : ");
-				outs << "\"" << std::hex << stack_ptr << "\"";
-			}
+
 			if (frames_count) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"frames_count\" : ");
@@ -101,6 +88,21 @@ namespace pesieve {
 					OUT_PADDED(outs, level, "\"thread_wait_reason\" : ");
 					outs << "\"" << translate_wait_reason(thread_wait_reason) << "\"";
 				}
+			}
+			if (stack_ptr) {
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"susp_callstack_ptr\" : ");
+				outs << "\"" << std::hex << stack_ptr << "\"";
+			}
+			if (susp_addr) {
+				outs << ",\n";
+				if (this->module && this->moduleSize) {
+					OUT_PADDED(outs, level, "\"susp_addr\" : ");
+				}
+				else {
+					OUT_PADDED(outs, level, "\"susp_return_addr\" : ");
+				}
+				outs << "\"" << std::hex << susp_addr << "\"";
 			}
 			if (susp_addr) {
 				outs << ",\n";
