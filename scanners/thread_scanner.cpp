@@ -231,6 +231,9 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		if (syscallFuncName.rfind("NtGdiDdDDIWaitFor", 0) == 0 && (lastFuncCalled.rfind("NtWaitFor", 0) == 0)) {
 			return true;
 		}
+		if (syscallFuncName.rfind("NtWaitFor", 0) == 0 && (lastFuncCalled.rfind("NtGdiDdDDIWaitFor", 0) == 0)) {
+			return true;
+		}
 		if (syscallFuncName.rfind("NtUser", 0) == 0 && (lastFuncCalled.rfind("NtGdi", 0) == 0)) {
 			return true;
 		}
