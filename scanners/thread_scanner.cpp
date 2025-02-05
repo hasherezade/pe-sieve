@@ -178,7 +178,7 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	}
 	const std::string syscallFuncName = g_SyscallTable.getSyscallName(this->info.last_syscall);
 
-	const ULONGLONG lastCalled = *callStack.begin();
+	const ULONGLONG lastCalled = *(callStack.begin());
 	std::string lastFuncCalled = symbols->funcNameFromAddr(lastCalled);
 	std::string manualSymbol = exportsMap ? resolveLowLevelFuncName(lastCalled) : "";
 	if (lastFuncCalled.empty()) {
@@ -209,10 +209,6 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	const ScannedModule* mod = modulesInfo.findModuleContaining(lastCalled);
 	const std::string lastModName = mod ? mod->getModName() : "";
 
-	if (syscallFuncName == "NtCallbackReturn") {
-		if (lastModName == "win32u.dll") return true;
-	}
-	
 	if (lastModName != "ntdll.dll" && lastModName != "win32u.dll") {
 //#ifdef _DEBUG
 		std::cout << "[@]" << std::dec << info.tid << " : " << "LastSyscall: " << syscallFuncName << " VS LastCalledAddr: " << std::hex << lastCalled 
@@ -221,7 +217,14 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 //#endif //_DEBUG
 		return false;
 	}
-	if (this->info.ext.wait_reason == WrUserRequest || this->info.ext.wait_reason == UserRequest) {
+
+	if (syscallFuncName == "NtCallbackReturn") {
+		if (lastModName == "win32u.dll") return true;
+	}
+
+	if (this->info.ext.wait_reason == WrUserRequest ||
+		this->info.ext.wait_reason == UserRequest)
+	{
 		if (syscallFuncName.rfind("NtUser", 0) == 0 ) {
 			if (lastFuncCalled.rfind("NtUser", 0) == 0) return true;
 			if (lastFuncCalled.rfind("NtGdi", 0) == 0) return true;
@@ -247,13 +250,16 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	}
 
 	if (this->info.ext.wait_reason == WrQueue) {
-		if (syscallFuncName == "NtWaitForSingleObject" && lastFuncCalled == "NtWaitForWorkViaWorkerFactory") {
+		if (syscallFuncName.rfind("NtWaitFor", 0) == 0 && lastFuncCalled == "NtWaitForWorkViaWorkerFactory") {
 			return true;
 		}
-		if (syscallFuncName == "NtWaitForWorkViaWorkerFactory" && lastFuncCalled == "NtWaitForSingleObject") {
-			return true;
+		if (syscallFuncName == "NtWaitForWorkViaWorkerFactory") {
+			if (lastFuncCalled.rfind("NtWaitFor", 0) == 0 || lastFuncCalled.rfind("NtUserMsgWaitFor", 0) == 0) {
+				return true;
+			}
 		}
 	}
+
 	if (this->info.ext.wait_reason == DelayExecution) {
 		if (syscallFuncName == "NtDelayExecution") {
 			if ((lastFuncCalled.rfind("NtUserMsgWaitFor", 0) == 0) || (lastFuncCalled.rfind("NtWaitFor", 0) == 0)) return true;
