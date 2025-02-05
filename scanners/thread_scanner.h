@@ -173,8 +173,8 @@ namespace pesieve {
 	//!  Stack-scan inspired by the idea presented here: https://github.com/thefLink/Hunt-Sleeping-Beacons
 	class ThreadScanner : public ProcessFeatureScanner {
 	public:
-		ThreadScanner(HANDLE hProc, bool _isReflection, const util::thread_info& _info, ModulesInfo& _modulesInfo, peconv::ExportsMapper* _exportsMap, ProcessSymbolsManager* _symbols)
-			: ProcessFeatureScanner(hProc), isReflection(_isReflection),
+		ThreadScanner(HANDLE hProc, bool _isReflection, bool _isManaged, const util::thread_info& _info, ModulesInfo& _modulesInfo, peconv::ExportsMapper* _exportsMap, ProcessSymbolsManager* _symbols)
+			: ProcessFeatureScanner(hProc), isReflection(_isReflection), isManaged(_isManaged),
 			info(_info), modulesInfo(_modulesInfo), exportsMap(_exportsMap), symbols(_symbols)
 		{
 		}
@@ -193,8 +193,10 @@ namespace pesieve {
 		bool checkReturnAddrIntegrity(IN const std::vector<ULONGLONG>& callStack);
 		bool fillAreaStats(ThreadScanReport* my_report);
 		bool reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr);
+		bool filterDotNet(ThreadScanReport& my_report);
 
 		bool isReflection;
+		bool isManaged;
 		const util::thread_info& info;
 		ModulesInfo& modulesInfo;
 		peconv::ExportsMapper* exportsMap;

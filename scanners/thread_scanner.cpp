@@ -645,6 +645,22 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	return isModified;
 }
 
+bool pesieve::ThreadScanner::filterDotNet(ThreadScanReport& my_report)
+{
+	if (!isManaged) return false;
+
+	const size_t count = my_report.indicators.size();
+	if (count > 1) return false;
+
+	auto itr = my_report.indicators.begin();
+	if (itr == my_report.indicators.end()) return false;
+
+	if (*itr == THI_SUS_CALLSTACK_SHC) {
+		my_report.status = SCAN_NOT_SUSPICIOUS;
+		return true;
+	}
+	return false;
+}
 
 ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 {
@@ -690,5 +706,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	}
 	scanRemoteThreadCtx(hThread, my_report);
 	CloseHandle(hThread);
+
+	filterDotNet(*my_report);
 	return my_report;
 }

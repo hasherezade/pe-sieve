@@ -522,7 +522,7 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 	for (auto itr = threads_info.begin(); itr != threads_info.end() && is_running(this->processHandle); ++itr) {
 		const thread_info &info = itr->second;
 		
-		ThreadScanner scanner(this->processHandle, this->isReflection, info,  pReport.modulesInfo, pReport.exportsMap, &symbols);
+		ThreadScanner scanner(this->processHandle, this->isReflection, pReport.isManaged, info, pReport.modulesInfo, pReport.exportsMap, &symbols);
 		ThreadScanReport* report = scanner.scanRemote();
 		pReport.appendReport(report);
 	}
