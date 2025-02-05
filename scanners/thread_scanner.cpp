@@ -507,11 +507,6 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 		return false;
 	}
 	ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
-	if (this->info.is_extended) {
-		my_report->thread_state = info.ext.state;
-		my_report->thread_wait_reason = info.ext.wait_reason;
-		my_report->thread_wait_time = info.ext.wait_time;
-	}
 	my_report->module = (HMODULE)base;
 	my_report->moduleSize = page_info.RegionSize;
 	my_report->protection = page_info.AllocationProtect;
@@ -670,6 +665,11 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	}
 	if (!should_scan_context(info)) {
 		return my_report;
+	}
+	if (this->info.is_extended) {
+		my_report->thread_state = info.ext.state;
+		my_report->thread_wait_reason = info.ext.wait_reason;
+		my_report->thread_wait_time = info.ext.wait_time;
 	}
 	// proceed with detailed checks:
 	HANDLE hThread = OpenThread(
