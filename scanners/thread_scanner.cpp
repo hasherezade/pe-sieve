@@ -603,8 +603,9 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	}
 
 	const bool hasEmptyGUI = has_empty_gui_info(tid);
-
-	if (this->info.is_extended && info.ext.state == Waiting && !cDetails.is_ret_in_frame)
+	
+	if (this->info.is_extended && info.ext.state == Waiting && this->info.ext.wait_reason != Suspended 
+		&& !cDetails.is_ret_in_frame)
 	{
 		const ULONGLONG ret_addr = cDetails.ret_on_stack;
 		is_unnamed = !isAddrInNamedModule(ret_addr);
