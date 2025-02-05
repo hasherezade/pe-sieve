@@ -481,46 +481,67 @@ void pesieve::ThreadScanner::printThreadInfo(const pesieve::util::thread_info& t
 	std::cout << "\n";
 }
 
-bool pesieve::ThreadScanner::fillAreaStats(ThreadScanReport* my_report)
+bool ThreadScanReport::AreaInfo::fillStats(HANDLE processHandle, bool isReflection)
 {
-	if (!my_report) return false;
-
-	ULONG_PTR end_va = (ULONG_PTR)my_report->module + my_report->moduleSize;
-	MemPageData mem(this->processHandle, this->isReflection, (ULONG_PTR)my_report->module, end_va);
+	ULONG_PTR end_va = (ULONG_PTR)base + regionSize;
+	MemPageData mem(processHandle, isReflection, (ULONG_PTR)base, end_va);
 	if (!mem.fillInfo() || !mem.load()) {
 		return false;
 	}
 	AreaStatsCalculator calc(mem.loadedData);
-	return calc.fill(my_report->stats, nullptr);
+	return calc.fill(stats, nullptr);
+}
+
+ThreadScanReport::AreaInfo* ThreadScanReport::AreaInfo::fillInfo(HANDLE processHandle, bool isReflection, ULONGLONG susp_addr)
+{
+	MEMORY_BASIC_INFORMATION page_info = { 0 };
+	if (!get_page_details(processHandle, (LPVOID)susp_addr, page_info)) {
+		return nullptr;
+	}
+	if (page_info.State & MEM_FREE) {
+		return nullptr;
+	}
+
+	ULONG_PTR base = (ULONG_PTR)page_info.BaseAddress;
+	ThreadScanReport::AreaInfo* info = new ThreadScanReport::AreaInfo(base, page_info.RegionSize, page_info.AllocationProtect);
+	info->fillStats(processHandle, isReflection);
+	return info;
+}
+
+ThreadScanReport::AreaInfo* pesieve::ThreadScanReport::makeInfoForAddress(HANDLE processHandle, bool isReflection, ULONG_PTR address)
+{
+	ThreadScanReport::AreaInfo* info = getInfoForAddress(susp_addr);
+	if (!info) {
+		info = ThreadScanReport::AreaInfo::fillInfo(processHandle, isReflection, susp_addr);
+		if (!info) {
+			return nullptr;
+		}
+		suspiciousAreas[info->base] = info;
+	}
+	return info;
 }
 
 bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr)
 {
-	MEMORY_BASIC_INFORMATION page_info = { 0 };
-	if (!get_page_details(processHandle, (LPVOID)susp_addr, page_info)) {
+	ThreadScanReport::AreaInfo* info = my_report->makeInfoForAddress(this->processHandle, this->isReflection, susp_addr);
+	if (!info) {
 		return false;
 	}
-	if (page_info.State & MEM_FREE) {
-		return false;
-	}
-	ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
-	if (this->info.is_extended) {
-		my_report->thread_state = info.ext.state;
-		my_report->thread_wait_reason = info.ext.wait_reason;
-		my_report->thread_wait_time = info.ext.wait_time;
-	}
-	my_report->module = (HMODULE)base;
-	my_report->moduleSize = page_info.RegionSize;
-	my_report->protection = page_info.AllocationProtect;
 	my_report->susp_addr = susp_addr;
-	my_report->status = SCAN_SUSPICIOUS;
-	const bool isStatFilled = fillAreaStats(my_report);
+	my_report->protection = info->allocationProtect;
+
 #ifndef NO_ENTROPY_CHECK
-	if (isStatFilled && (my_report->stats.entropy < ENTROPY_TRESHOLD)) {
-		my_report->status = SCAN_NOT_SUSPICIOUS;
+	if (info->stats.isFilled() && (info->stats.entropy >= ENTROPY_TRESHOLD)) {
+		my_report->module = (HMODULE)info->base;
+		my_report->moduleSize = info->regionSize;
+		my_report->indicators.insert(THI_SUS_CALLSTACK_SHC);
+		return true;
 	}
-#endif
+	my_report->status = SCAN_NOT_SUSPICIOUS;
+	return false;
+#else
 	return true;
+#endif
 }
 
 // if extended info given, allow to filter out from the scan basing on the thread state and conditions
@@ -544,7 +565,7 @@ bool should_scan_context(const util::thread_info& info)
 
 bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanReport* my_report)
 {
-	const DWORD tid = GetThreadId(hThread);
+	const DWORD tid = info.tid;
 	ctx_details cDetails;
 	const bool is_ok = fetchThreadCtxDetails(processHandle, hThread, cDetails);
 	if (!pesieve::is_thread_running(hThread)) {
@@ -562,28 +583,22 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	if (is_unnamed) {
 		my_report->indicators.insert(THI_SUS_IP);
 		if (reportSuspiciousAddr(my_report, cDetails.rip)) {
-			if (my_report->status == SCAN_SUSPICIOUS) {
-				my_report->indicators.insert(THI_SUS_CALLSTACK_SHC);
-				isModified = true;
-			}
+			isModified = true;
 		}
 	}
 
+	// fill in the info about each candidate:
 	for (auto itr = cDetails.shcCandidates.begin(); itr != cDetails.shcCandidates.end(); ++itr) {
 		const ULONGLONG addr = *itr;
 #ifdef _SHOW_THREAD_INFO
 		std::cout << "Checking shc candidate: " << std::hex << addr << "\n";
 #endif //_SHOW_THREAD_INFO
-		//automatically verifies if the address is legit:
 		if (reportSuspiciousAddr(my_report, addr)) {
-			if (my_report->status == SCAN_SUSPICIOUS) {
-				my_report->indicators.insert(THI_SUS_CALLSTACK_SHC);
-				std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << std::endl;
+			std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << std::endl;
 #ifdef _SHOW_THREAD_INFO
-				std::cout << "Found! " << std::hex << addr << "\n";
+			std::cout << "Found! " << std::hex << addr << "\n";
 #endif //_SHOW_THREAD_INFO
-				isModified = true;
-			}
+			isModified = true;
 		}
 	}
 
@@ -591,25 +606,20 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 
 	if (this->info.is_extended && info.ext.state == Waiting && !cDetails.is_ret_in_frame)
 	{
-		const ULONGLONG ret_addr = cDetails.ret_on_stack;
-		is_unnamed = !isAddrInNamedModule(ret_addr);
+		is_unnamed = !isAddrInNamedModule(cDetails.ret_on_stack);
 #ifdef _SHOW_THREAD_INFO
-		std::cout << "Return addr: " << std::hex << ret_addr << "\n";
+		std::cout << "Return addr: " << std::hex << cDetails.ret_on_stack << "\n";
 		printResolvedAddr(ret_addr);
 #endif //_SHOW_THREAD_INFO
-		if (is_unnamed && reportSuspiciousAddr(my_report, (ULONGLONG)ret_addr)) {
+		if (is_unnamed) {
 			isModified = true;
 			my_report->indicators.insert(THI_SUS_RET);
-			if (my_report->status == SCAN_SUSPICIOUS) {
-				my_report->indicators.insert(THI_SUS_CALLSTACK_SHC);
-			}
-			else {
-				my_report->status = SCAN_SUSPICIOUS;
+			if (!reportSuspiciousAddr(my_report, (ULONGLONG)cDetails.ret_on_stack)) {
 				my_report->stack_ptr = cDetails.rsp;
-				if (my_report->stats.entropy < 1) { // discard, do not dump
+				/*if (my_report->stats.entropy < 1) { // discard, do not dump
 					my_report->module = 0;
 					my_report->moduleSize = 0;
-				}
+				}*/
 			}
 		}
 	}
@@ -633,12 +643,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	}
 
 	if (isStackCorrupt) {
-		my_report->thread_state = info.ext.state;
-		my_report->thread_wait_reason = info.ext.wait_reason;
-		my_report->thread_wait_time = info.ext.wait_time;
 		my_report->stack_ptr = cDetails.rsp;
-
-		my_report->status = SCAN_SUSPICIOUS;
 	}
 	return isModified;
 }
@@ -668,6 +673,12 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	if (!should_scan_context(info)) {
 		return my_report;
 	}
+	if (this->info.is_extended) {
+		my_report->thread_state = info.ext.state;
+		my_report->thread_wait_reason = info.ext.wait_reason;
+		my_report->thread_wait_time = info.ext.wait_time;
+	}
+
 	// proceed with detailed checks:
 	HANDLE hThread = OpenThread(
 		THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION | SYNCHRONIZE,
@@ -683,5 +694,8 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	}
 	scanRemoteThreadCtx(hThread, my_report);
 	CloseHandle(hThread);
+	if (my_report->indicators.size()) {
+		my_report->status = SCAN_SUSPICIOUS;
+	}
 	return my_report;
 }
