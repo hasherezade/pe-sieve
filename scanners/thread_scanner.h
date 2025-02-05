@@ -52,7 +52,7 @@ namespace pesieve {
 			tid(_tid), 
 			susp_addr(0), protection(0), stack_ptr(0), frames_count(0),
 			thread_state(THREAD_STATE_UNKNOWN), 
-			thread_wait_reason(0), thread_wait_time(0)
+			thread_wait_reason(0), thread_wait_time(0), is_code(false)
 		{
 		}
 
@@ -132,6 +132,7 @@ namespace pesieve {
 		DWORD thread_wait_time;
 		std::set<ThSusIndicator> indicators;
 		AreaEntropyStats stats;
+		bool is_code;
 	};
 
 	//!  A custom structure keeping a fragment of a thread context

@@ -17,17 +17,17 @@ namespace pesieve {
 		/*
 		Scans the buffer searching for the hardcoded 32-bit code patterns. If found, returns the match offset, otherwise returns CODE_PATTERN_NOT_FOUND
 		*/
-		size_t is_32bit_code(BYTE* loadedData, size_t loadedSize);
+		size_t is_32bit_code(const BYTE* loadedData, size_t loadedSize);
 
 		/*
 		Scans the buffer searching for the hardcoded 64-bit code patterns. If found, returns the match offset, otherwise returns CODE_PATTERN_NOT_FOUND
 		*/
-		size_t is_64bit_code(BYTE* loadedData, size_t loadedSize);
+		size_t is_64bit_code(const BYTE* loadedData, size_t loadedSize);
 
 		/*
 		Scans the buffer searching for any hardcoded code patterns (both 32 and 64 bit).
 		*/
-		bool is_code(BYTE* loadedData, size_t loadedSize);
+		bool is_code(const BYTE* loadedData, size_t loadedSize);
 
 		bool is_executable(DWORD mapping_type, DWORD protection);
 

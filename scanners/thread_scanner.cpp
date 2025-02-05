@@ -6,6 +6,7 @@
 #include "../stats/stats.h"
 #include "../utils/process_symbols.h"
 #include "../utils/syscall_extractor.h"
+#include "../utils/artefacts_util.h"
 
 extern pesieve::SyscallTable g_SyscallTable;
 
@@ -493,6 +494,7 @@ bool pesieve::ThreadScanner::fillAreaStats(ThreadScanReport* my_report)
 	if (!mem.fillInfo() || !mem.load()) {
 		return false;
 	}
+	my_report->is_code = util::is_code(mem.loadedData.getData(true), mem.loadedData.getDataSize(true));
 	AreaStatsCalculator calc(mem.loadedData);
 	return calc.fill(my_report->stats, nullptr);
 }
@@ -542,7 +544,7 @@ bool should_scan_context(const util::thread_info& info)
 
 bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanReport* my_report)
 {
-	const DWORD tid = GetThreadId(hThread);
+	const DWORD tid = info.tid;
 	ctx_details cDetails;
 	const bool is_ok = fetchThreadCtxDetails(processHandle, hThread, cDetails);
 	if (!pesieve::is_thread_running(hThread)) {
@@ -576,7 +578,10 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		if (reportSuspiciousAddr(my_report, addr)) {
 			if (my_report->status == SCAN_SUSPICIOUS) {
 				my_report->indicators.insert(THI_SUS_CALLSTACK_SHC);
-				std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << std::endl;
+				std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << " Entropy: " << std::dec << my_report->stats.entropy << " : " << my_report->is_code << std::endl;
+				if (my_report->is_code) {
+					break;
+				}
 #ifdef _SHOW_THREAD_INFO
 				std::cout << "Found! " << std::hex << addr << "\n";
 #endif //_SHOW_THREAD_INFO

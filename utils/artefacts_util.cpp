@@ -72,7 +72,7 @@ namespace pesieve {
 
 }; //namespace pesieve
 
-size_t pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
+size_t pesieve::util::is_32bit_code(const BYTE *loadedData, size_t loadedSize)
 {
 	static sig_finder::Node rootN;
 	if(rootN.isEnd()) {
@@ -81,7 +81,7 @@ size_t pesieve::util::is_32bit_code(BYTE *loadedData, size_t loadedSize)
 	return search_till_pattern(rootN, loadedData, loadedSize);
 }
 
-size_t pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
+size_t pesieve::util::is_64bit_code(const BYTE* loadedData, size_t loadedSize)
 {
 	static sig_finder::Node rootN;
 	if (rootN.isEnd()) {
@@ -90,7 +90,7 @@ size_t pesieve::util::is_64bit_code(BYTE* loadedData, size_t loadedSize)
 	return search_till_pattern(rootN, loadedData, loadedSize);
 }
 
-bool pesieve::util::is_code(BYTE* loadedData, size_t loadedSize)
+bool pesieve::util::is_code(const BYTE* loadedData, size_t loadedSize)
 {
 	static sig_finder::Node rootN;
 	if (peconv::is_padding(loadedData, loadedSize, 0)) {
