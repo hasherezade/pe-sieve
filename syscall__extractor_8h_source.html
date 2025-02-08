@@ -109,78 +109,120 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="structpesieve_1_1_syscall_table.html">   13</a></span>    <span class="keyword">struct </span><a class="code hl_function" href="structpesieve_1_1_syscall_table.html#a2ede7f1145a7c6abe44e9ce24d1f7d95">SyscallTable</a> {</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="foldopen" id="foldopen00015" data-start="{" data-end="}">
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="structpesieve_1_1_syscall_table.html#a14a36e5a99adfc3322ab8f2b96d1faf2">   15</a></span>        <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structpesieve_1_1_syscall_table.html#a14a36e5a99adfc3322ab8f2b96d1faf2">isSameSyscallFunc</a>(std::string func1, std::string func2)</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="structpesieve_1_1_syscall_table.html#a8e3f90d691f666c516605f4cd0afd247">   15</a></span>        <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structpesieve_1_1_syscall_table.html#a8e3f90d691f666c516605f4cd0afd247">isSyscallDll</a>(<span class="keyword">const</span> std::string&amp; libName)</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            <span class="keywordflow">if</span> (func1 == func2) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            std::string prefix1 = func1.substr(0, 2);</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>            std::string prefix2 = func2.substr(0, 2);</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>            <span class="keywordflow">if</span> ((prefix1 == <span class="stringliteral">&quot;Zw&quot;</span> || prefix1 == <span class="stringliteral">&quot;Nt&quot;</span>) &amp;&amp; (prefix2 == <span class="stringliteral">&quot;Zw&quot;</span> || prefix2 == <span class="stringliteral">&quot;Nt&quot;</span>)) {</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                std::string body1 = func1.substr(2);</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                std::string body2 = func2.substr(2);</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                <span class="keywordflow">if</span> (body1 == body2) {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                }</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                <span class="keywordflow">if</span> (body1.length() == body2.length()) {</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                }</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                <span class="comment">// the difference may be in the suffix</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                std::string* smaller_ptr = body1.length() &lt; body2.length() ? &amp;body1 : &amp;body2;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                <span class="keywordtype">size_t</span> smaller_size = smaller_ptr-&gt;length();</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                <span class="keywordflow">if</span> (body1.substr(0, smaller_size) == body2.substr(0, smaller_size)) {</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                    std::string* bigger_ptr = body1.length() &gt; body2.length() ? &amp;body1 : &amp;body2;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                    std::string suffix = bigger_ptr-&gt;substr(smaller_size);</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                    <span class="keywordflow">if</span> (suffix == <span class="stringliteral">&quot;32&quot;</span>) {</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                    }</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                }</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            }</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        }</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            <span class="keywordflow">if</span> (libName == <span class="stringliteral">&quot;ntdll.dll&quot;</span> || libName == <span class="stringliteral">&quot;win32u.dll&quot;</span>) {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            }</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>            <span class="keywordflow">if</span> (libName == <span class="stringliteral">&quot;ntdll&quot;</span> || libName == <span class="stringliteral">&quot;win32u&quot;</span>) {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>            }</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        }</div>
 </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="structpesieve_1_1_syscall_table.html#a2ede7f1145a7c6abe44e9ce24d1f7d95">   45</a></span>        <a class="code hl_function" href="structpesieve_1_1_syscall_table.html#a2ede7f1145a7c6abe44e9ce24d1f7d95">SyscallTable</a>()</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            <a class="code hl_function" href="namespacepesieve_1_1util.html#ac95cf6c6c1068bc672275290965c0350">util::extract_syscall_table</a>(this-&gt;<a class="code hl_variable" href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">syscallToName</a>);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;Extracted syscalls: &quot;</span> &lt;&lt; <a class="code hl_variable" href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">syscallToName</a>.size() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        }</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08">   26</a></span>        <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08">isSyscallFunc</a>(<span class="keyword">const</span> std::string&amp; funcName, <span class="keywordtype">bool</span> NtOnly = <span class="keyword">false</span>)</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>            <span class="keywordflow">if</span> (funcName.empty() || funcName.length() &lt; 3) {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            }</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>            <span class="keywordtype">bool</span> hasPrefix = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            <span class="keywordflow">if</span> (!NtOnly) {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                <span class="keywordflow">if</span> (funcName[0] == <span class="charliteral">&#39;Z&#39;</span> &amp;&amp; funcName[1] == <span class="charliteral">&#39;w&#39;</span>) {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                    hasPrefix = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                }</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            }</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            <span class="keywordflow">if</span> (funcName[0] == <span class="charliteral">&#39;N&#39;</span> &amp;&amp; funcName[1] == <span class="charliteral">&#39;t&#39;</span>) {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                hasPrefix = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            <span class="keywordflow">if</span> (!hasPrefix) {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            }</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            <span class="keywordflow">if</span> (funcName[2] &gt;= <span class="charliteral">&#39;A&#39;</span> &amp;&amp; funcName[2] &lt;= <span class="charliteral">&#39;Z&#39;</span>) {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                <span class="comment">// the name of the function after the Nt prefix should start in uppercase,</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                <span class="comment">// syscalls are in functions like: NtUserSetWindowLongPtr, but not: NtdllDefWindowProc_A</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            }</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        }</div>
 </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="foldopen" id="foldopen00053" data-start="{" data-end="}">
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="structpesieve_1_1_syscall_table.html#a88e2aaa8bdf47d29d611c198a49bcf97">   53</a></span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="structpesieve_1_1_syscall_table.html#a88e2aaa8bdf47d29d611c198a49bcf97">isReady</a>()</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        {</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            <span class="keywordflow">return</span> <a class="code hl_variable" href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">syscallToName</a>.size() ? true : <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        }</div>
-</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="foldopen" id="foldopen00051" data-start="{" data-end="}">
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="structpesieve_1_1_syscall_table.html#a866739a072d312c6bb6b2d4414a872ba">   51</a></span>        <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structpesieve_1_1_syscall_table.html#a866739a072d312c6bb6b2d4414a872ba">isSameSyscallFunc</a>(<span class="keyword">const</span> std::string &amp;func1, <span class="keyword">const</span> std::string &amp;func2)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            <span class="keywordflow">if</span> (func1 == func2) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            std::string prefix1 = func1.substr(0, 2);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            std::string prefix2 = func2.substr(0, 2);</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="foldopen" id="foldopen00058" data-start="{" data-end="}">
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="structpesieve_1_1_syscall_table.html#a8861442dc69bfcc4bdd042cee33d444b">   58</a></span>        std::string <a class="code hl_function" href="structpesieve_1_1_syscall_table.html#a8861442dc69bfcc4bdd042cee33d444b">getSyscallName</a>(DWORD <span class="keywordtype">id</span>)</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        {</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            <span class="keyword">auto</span> itr = <a class="code hl_variable" href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">syscallToName</a>.find(<span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            <span class="keywordflow">if</span> (itr != <a class="code hl_variable" href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">syscallToName</a>.end()) {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                <span class="keywordflow">return</span> itr-&gt;second;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            <span class="keywordflow">if</span> ((prefix1 == <span class="stringliteral">&quot;Zw&quot;</span> || prefix1 == <span class="stringliteral">&quot;Nt&quot;</span>) &amp;&amp; (prefix2 == <span class="stringliteral">&quot;Zw&quot;</span> || prefix2 == <span class="stringliteral">&quot;Nt&quot;</span>)) {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                std::string body1 = func1.substr(2);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                std::string body2 = func2.substr(2);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                <span class="keywordflow">if</span> (body1 == body2) {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                }</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                <span class="keywordflow">if</span> (body1.length() == body2.length()) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                <span class="comment">// the difference may be in the suffix</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                std::string* smaller_ptr = body1.length() &lt; body2.length() ? &amp;body1 : &amp;body2;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                <span class="keywordtype">size_t</span> smaller_size = smaller_ptr-&gt;length();</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                <span class="keywordflow">if</span> (body1.substr(0, smaller_size) == body2.substr(0, smaller_size)) {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                    std::string* bigger_ptr = body1.length() &gt; body2.length() ? &amp;body1 : &amp;body2;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                    std::string suffix = bigger_ptr-&gt;substr(smaller_size);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                    <span class="keywordflow">if</span> (suffix == <span class="stringliteral">&quot;32&quot;</span>) {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                    }</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                }</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        }</div>
 </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">   67</a></span>        std::map&lt;DWORD, std::string&gt; <a class="code hl_variable" href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">syscallToName</a>;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    }; <span class="comment">//struct SyscallTable</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="foldopen" id="foldopen00081" data-start="{" data-end="}">
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="structpesieve_1_1_syscall_table.html#a2ede7f1145a7c6abe44e9ce24d1f7d95">   81</a></span>        <a class="code hl_function" href="structpesieve_1_1_syscall_table.html#a2ede7f1145a7c6abe44e9ce24d1f7d95">SyscallTable</a>()</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>            <a class="code hl_function" href="namespacepesieve_1_1util.html#ac95cf6c6c1068bc672275290965c0350">util::extract_syscall_table</a>(this-&gt;<a class="code hl_variable" href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">syscallToName</a>);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;Extracted syscalls: &quot;</span> &lt;&lt; <a class="code hl_variable" href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">syscallToName</a>.size() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        }</div>
 </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}; <span class="comment">// namespace pesieve </span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="foldopen" id="foldopen00089" data-start="{" data-end="}">
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="structpesieve_1_1_syscall_table.html#a88e2aaa8bdf47d29d611c198a49bcf97">   89</a></span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="structpesieve_1_1_syscall_table.html#a88e2aaa8bdf47d29d611c198a49bcf97">isReady</a>()</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            <span class="keywordflow">return</span> <a class="code hl_variable" href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">syscallToName</a>.size() ? true : <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        }</div>
+</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="foldopen" id="foldopen00094" data-start="{" data-end="}">
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="structpesieve_1_1_syscall_table.html#a8861442dc69bfcc4bdd042cee33d444b">   94</a></span>        std::string <a class="code hl_function" href="structpesieve_1_1_syscall_table.html#a8861442dc69bfcc4bdd042cee33d444b">getSyscallName</a>(DWORD <span class="keywordtype">id</span>)</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <span class="keyword">auto</span> itr = <a class="code hl_variable" href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">syscallToName</a>.find(<span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            <span class="keywordflow">if</span> (itr != <a class="code hl_variable" href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">syscallToName</a>.end()) {</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                <span class="keywordflow">return</span> itr-&gt;second;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        }</div>
+</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">  103</a></span>        std::map&lt;DWORD, std::string&gt; <a class="code hl_variable" href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">syscallToName</a>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    }; <span class="comment">//struct SyscallTable</span></div>
+</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>}; <span class="comment">// namespace pesieve </span></div>
 <div class="ttc" id="anamespacepesieve_1_1util_html"><div class="ttname"><a href="namespacepesieve_1_1util.html">pesieve::util</a></div><div class="ttdef"><b>Definition</b> <a href="artefact__scanner_8cpp_source.html#l00012">artefact_scanner.cpp:12</a></div></div>
-<div class="ttc" id="anamespacepesieve_1_1util_html_ac95cf6c6c1068bc672275290965c0350"><div class="ttname"><a href="namespacepesieve_1_1util.html#ac95cf6c6c1068bc672275290965c0350">pesieve::util::extract_syscall_table</a></div><div class="ttdeci">size_t extract_syscall_table(OUT std::map&lt; DWORD, std::string &gt; &amp;syscallToName)</div><div class="ttdef"><b>Definition</b> <a href="syscall__extractor_8cpp_source.html#l00082">syscall_extractor.cpp:82</a></div></div>
+<div class="ttc" id="anamespacepesieve_1_1util_html_ac95cf6c6c1068bc672275290965c0350"><div class="ttname"><a href="namespacepesieve_1_1util.html#ac95cf6c6c1068bc672275290965c0350">pesieve::util::extract_syscall_table</a></div><div class="ttdeci">size_t extract_syscall_table(OUT std::map&lt; DWORD, std::string &gt; &amp;syscallToName)</div><div class="ttdef"><b>Definition</b> <a href="syscall__extractor_8cpp_source.html#l00064">syscall_extractor.cpp:64</a></div></div>
 <div class="ttc" id="anamespacepesieve_html"><div class="ttname"><a href="namespacepesieve.html">pesieve</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00001">pesieve.py:1</a></div></div>
-<div class="ttc" id="astructpesieve_1_1_syscall_table_html_a14a36e5a99adfc3322ab8f2b96d1faf2"><div class="ttname"><a href="structpesieve_1_1_syscall_table.html#a14a36e5a99adfc3322ab8f2b96d1faf2">pesieve::SyscallTable::isSameSyscallFunc</a></div><div class="ttdeci">static bool isSameSyscallFunc(std::string func1, std::string func2)</div><div class="ttdef"><b>Definition</b> <a href="#l00015">syscall_extractor.h:15</a></div></div>
-<div class="ttc" id="astructpesieve_1_1_syscall_table_html_a2ede7f1145a7c6abe44e9ce24d1f7d95"><div class="ttname"><a href="structpesieve_1_1_syscall_table.html#a2ede7f1145a7c6abe44e9ce24d1f7d95">pesieve::SyscallTable::SyscallTable</a></div><div class="ttdeci">SyscallTable()</div><div class="ttdef"><b>Definition</b> <a href="#l00045">syscall_extractor.h:45</a></div></div>
-<div class="ttc" id="astructpesieve_1_1_syscall_table_html_a6117d1e96f8e02713fa86d11c4273ea6"><div class="ttname"><a href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">pesieve::SyscallTable::syscallToName</a></div><div class="ttdeci">std::map&lt; DWORD, std::string &gt; syscallToName</div><div class="ttdef"><b>Definition</b> <a href="#l00067">syscall_extractor.h:67</a></div></div>
-<div class="ttc" id="astructpesieve_1_1_syscall_table_html_a8861442dc69bfcc4bdd042cee33d444b"><div class="ttname"><a href="structpesieve_1_1_syscall_table.html#a8861442dc69bfcc4bdd042cee33d444b">pesieve::SyscallTable::getSyscallName</a></div><div class="ttdeci">std::string getSyscallName(DWORD id)</div><div class="ttdef"><b>Definition</b> <a href="#l00058">syscall_extractor.h:58</a></div></div>
-<div class="ttc" id="astructpesieve_1_1_syscall_table_html_a88e2aaa8bdf47d29d611c198a49bcf97"><div class="ttname"><a href="structpesieve_1_1_syscall_table.html#a88e2aaa8bdf47d29d611c198a49bcf97">pesieve::SyscallTable::isReady</a></div><div class="ttdeci">bool isReady()</div><div class="ttdef"><b>Definition</b> <a href="#l00053">syscall_extractor.h:53</a></div></div>
+<div class="ttc" id="astructpesieve_1_1_syscall_table_html_a2ede7f1145a7c6abe44e9ce24d1f7d95"><div class="ttname"><a href="structpesieve_1_1_syscall_table.html#a2ede7f1145a7c6abe44e9ce24d1f7d95">pesieve::SyscallTable::SyscallTable</a></div><div class="ttdeci">SyscallTable()</div><div class="ttdef"><b>Definition</b> <a href="#l00081">syscall_extractor.h:81</a></div></div>
+<div class="ttc" id="astructpesieve_1_1_syscall_table_html_a6117d1e96f8e02713fa86d11c4273ea6"><div class="ttname"><a href="structpesieve_1_1_syscall_table.html#a6117d1e96f8e02713fa86d11c4273ea6">pesieve::SyscallTable::syscallToName</a></div><div class="ttdeci">std::map&lt; DWORD, std::string &gt; syscallToName</div><div class="ttdef"><b>Definition</b> <a href="#l00103">syscall_extractor.h:103</a></div></div>
+<div class="ttc" id="astructpesieve_1_1_syscall_table_html_a7421f265ea7f8e42b0476d5929853c08"><div class="ttname"><a href="structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08">pesieve::SyscallTable::isSyscallFunc</a></div><div class="ttdeci">static bool isSyscallFunc(const std::string &amp;funcName, bool NtOnly=false)</div><div class="ttdef"><b>Definition</b> <a href="#l00026">syscall_extractor.h:26</a></div></div>
+<div class="ttc" id="astructpesieve_1_1_syscall_table_html_a866739a072d312c6bb6b2d4414a872ba"><div class="ttname"><a href="structpesieve_1_1_syscall_table.html#a866739a072d312c6bb6b2d4414a872ba">pesieve::SyscallTable::isSameSyscallFunc</a></div><div class="ttdeci">static bool isSameSyscallFunc(const std::string &amp;func1, const std::string &amp;func2)</div><div class="ttdef"><b>Definition</b> <a href="#l00051">syscall_extractor.h:51</a></div></div>
+<div class="ttc" id="astructpesieve_1_1_syscall_table_html_a8861442dc69bfcc4bdd042cee33d444b"><div class="ttname"><a href="structpesieve_1_1_syscall_table.html#a8861442dc69bfcc4bdd042cee33d444b">pesieve::SyscallTable::getSyscallName</a></div><div class="ttdeci">std::string getSyscallName(DWORD id)</div><div class="ttdef"><b>Definition</b> <a href="#l00094">syscall_extractor.h:94</a></div></div>
+<div class="ttc" id="astructpesieve_1_1_syscall_table_html_a88e2aaa8bdf47d29d611c198a49bcf97"><div class="ttname"><a href="structpesieve_1_1_syscall_table.html#a88e2aaa8bdf47d29d611c198a49bcf97">pesieve::SyscallTable::isReady</a></div><div class="ttdeci">bool isReady()</div><div class="ttdef"><b>Definition</b> <a href="#l00089">syscall_extractor.h:89</a></div></div>
+<div class="ttc" id="astructpesieve_1_1_syscall_table_html_a8e3f90d691f666c516605f4cd0afd247"><div class="ttname"><a href="structpesieve_1_1_syscall_table.html#a8e3f90d691f666c516605f4cd0afd247">pesieve::SyscallTable::isSyscallDll</a></div><div class="ttdeci">static bool isSyscallDll(const std::string &amp;libName)</div><div class="ttdef"><b>Definition</b> <a href="#l00015">syscall_extractor.h:15</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

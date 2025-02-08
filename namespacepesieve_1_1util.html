@@ -352,8 +352,6 @@ Functions</h2></td></tr>
 <tr class="separator:a39356c7ae484d7b1dae7548ff4e50609"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6211673ea221530eb4472658fdab12a6" id="r_a6211673ea221530eb4472658fdab12a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6211673ea221530eb4472658fdab12a6">is_cstr_equal</a> (char const *a, char const *b, const size_t max_len)</td></tr>
 <tr class="separator:a6211673ea221530eb4472658fdab12a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f7e69ed521ed2a4d2c4887a4c4a7323" id="r_a1f7e69ed521ed2a4d2c4887a4c4a7323"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f7e69ed521ed2a4d2c4887a4c4a7323">isSyscallFunc</a> (const std::string &amp;funcName)</td></tr>
-<tr class="separator:a1f7e69ed521ed2a4d2c4887a4c4a7323"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac99548a60414e711aa8bace85438cd15" id="r_ac99548a60414e711aa8bace85438cd15"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac99548a60414e711aa8bace85438cd15">extract_syscalls</a> (BYTE *pe_buf, size_t pe_size, std::map&lt; <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>, std::string &gt; &amp;syscallToName, size_t startID=0)</td></tr>
 <tr class="separator:ac99548a60414e711aa8bace85438cd15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a0b78302afec18f94651ab7426d847a" id="r_a9a0b78302afec18f94651ab7426d847a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a0b78302afec18f94651ab7426d847a">extract_from_dll</a> (IN const std::string &amp;path, size_t startSyscallID, OUT std::map&lt; <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>, std::string &gt; &amp;syscallToName)</td></tr>
@@ -1257,19 +1255,19 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="syscall__extractor_8cpp_source.html#l00055">55</a> of file <a class="el" href="syscall__extractor_8cpp_source.html">syscall_extractor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="syscall__extractor_8cpp_source.html#l00037">37</a> of file <a class="el" href="syscall__extractor_8cpp_source.html">syscall_extractor.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacepesieve_1_1util_a9a0b78302afec18f94651ab7426d847a_cgraph.png" border="0" usemap="#anamespacepesieve_1_1util_a9a0b78302afec18f94651ab7426d847a_cgraph" alt=""/></div>
 <map name="anamespacepesieve_1_1util_a9a0b78302afec18f94651ab7426d847a_cgraph" id="anamespacepesieve_1_1util_a9a0b78302afec18f94651ab7426d847a_cgraph">
-<area shape="rect" title=" " alt="" coords="5,23,140,64"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15" title=" " alt="" coords="188,23,322,64"/>
-<area shape="poly" title=" " alt="" coords="140,41,172,41,172,46,140,46"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="386,5,530,31"/>
-<area shape="poly" title=" " alt="" coords="322,32,370,26,371,32,323,38"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a1f7e69ed521ed2a4d2c4887a4c4a7323" title=" " alt="" coords="370,55,546,80"/>
-<area shape="poly" title=" " alt="" coords="323,49,355,53,354,58,322,54"/>
+<area shape="rect" title=" " alt="" coords="5,27,140,68"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15" title=" " alt="" coords="188,27,322,68"/>
+<area shape="poly" title=" " alt="" coords="140,45,172,45,172,50,140,50"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="371,5,515,31"/>
+<area shape="poly" title=" " alt="" coords="322,34,355,29,356,34,323,40"/>
+<area shape="rect" href="structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08" title=" " alt="" coords="370,55,516,96"/>
+<area shape="poly" title=" " alt="" coords="323,55,355,60,354,65,322,60"/>
 </map>
 </div>
 
@@ -1290,31 +1288,31 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="syscall__extractor_8cpp_source.html#l00082">82</a> of file <a class="el" href="syscall__extractor_8cpp_source.html">syscall_extractor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="syscall__extractor_8cpp_source.html#l00064">64</a> of file <a class="el" href="syscall__extractor_8cpp_source.html">syscall_extractor.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacepesieve_1_1util_ac95cf6c6c1068bc672275290965c0350_cgraph.png" border="0" usemap="#anamespacepesieve_1_1util_ac95cf6c6c1068bc672275290965c0350_cgraph" alt=""/></div>
 <map name="anamespacepesieve_1_1util_ac95cf6c6c1068bc672275290965c0350_cgraph" id="anamespacepesieve_1_1util_ac95cf6c6c1068bc672275290965c0350_cgraph">
-<area shape="rect" title=" " alt="" coords="5,87,140,128"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a9a0b78302afec18f94651ab7426d847a" title=" " alt="" coords="198,22,332,62"/>
-<area shape="poly" title=" " alt="" coords="133,84,188,65,190,70,135,89"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a39cfbc887b8c190834eece6c67a4af17" title=" " alt="" coords="188,152,342,193"/>
-<area shape="poly" title=" " alt="" coords="135,126,190,145,188,150,133,131"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#aed4eb6ec69c30d271b4f4b6c4244f03e" title=" " alt="" coords="192,87,338,128"/>
-<area shape="poly" title=" " alt="" coords="140,105,176,105,176,110,140,110"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15" title=" " alt="" coords="390,22,524,62"/>
-<area shape="poly" title=" " alt="" coords="333,40,375,40,375,45,333,45"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="588,5,733,31"/>
-<area shape="poly" title=" " alt="" coords="524,32,572,26,573,31,525,37"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a1f7e69ed521ed2a4d2c4887a4c4a7323" title=" " alt="" coords="572,55,749,80"/>
-<area shape="poly" title=" " alt="" coords="525,48,557,52,557,57,524,53"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="391,157,523,183"/>
-<area shape="poly" title=" " alt="" coords="342,169,375,169,375,174,342,174"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="400,91,514,132"/>
-<area shape="poly" title=" " alt="" coords="330,149,385,132,387,137,332,154"/>
-<area shape="poly" title=" " alt="" coords="330,126,402,149,400,155,328,131"/>
-<area shape="poly" title=" " alt="" coords="338,106,385,107,385,113,338,112"/>
+<area shape="rect" title=" " alt="" coords="5,91,140,132"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a9a0b78302afec18f94651ab7426d847a" title=" " alt="" coords="198,26,332,66"/>
+<area shape="poly" title=" " alt="" coords="133,88,188,69,190,74,135,93"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a39cfbc887b8c190834eece6c67a4af17" title=" " alt="" coords="188,156,342,197"/>
+<area shape="poly" title=" " alt="" coords="135,130,190,149,188,154,133,135"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#aed4eb6ec69c30d271b4f4b6c4244f03e" title=" " alt="" coords="192,91,338,132"/>
+<area shape="poly" title=" " alt="" coords="140,109,176,109,176,114,140,114"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15" title=" " alt="" coords="390,26,524,66"/>
+<area shape="poly" title=" " alt="" coords="333,44,375,44,375,49,333,49"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="573,5,718,31"/>
+<area shape="poly" title=" " alt="" coords="524,34,557,29,558,34,525,39"/>
+<area shape="rect" href="structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08" title=" " alt="" coords="572,55,719,96"/>
+<area shape="poly" title=" " alt="" coords="525,54,558,59,557,64,524,59"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="391,161,523,187"/>
+<area shape="poly" title=" " alt="" coords="342,173,375,173,375,178,342,178"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="400,95,514,136"/>
+<area shape="poly" title=" " alt="" coords="330,153,385,136,387,141,332,158"/>
+<area shape="poly" title=" " alt="" coords="330,130,402,153,400,159,328,135"/>
+<area shape="poly" title=" " alt="" coords="338,110,385,111,385,117,338,116"/>
 </map>
 </div>
 
@@ -1349,17 +1347,17 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="syscall__extractor_8cpp_source.html#l00029">29</a> of file <a class="el" href="syscall__extractor_8cpp_source.html">syscall_extractor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="syscall__extractor_8cpp_source.html#l00011">11</a> of file <a class="el" href="syscall__extractor_8cpp_source.html">syscall_extractor.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacepesieve_1_1util_ac99548a60414e711aa8bace85438cd15_cgraph.png" border="0" usemap="#anamespacepesieve_1_1util_ac99548a60414e711aa8bace85438cd15_cgraph" alt=""/></div>
 <map name="anamespacepesieve_1_1util_ac99548a60414e711aa8bace85438cd15_cgraph" id="anamespacepesieve_1_1util_ac99548a60414e711aa8bace85438cd15_cgraph">
-<area shape="rect" title=" " alt="" coords="5,23,140,64"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="204,5,348,31"/>
-<area shape="poly" title=" " alt="" coords="140,32,188,26,188,32,140,38"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a1f7e69ed521ed2a4d2c4887a4c4a7323" title=" " alt="" coords="188,55,364,80"/>
-<area shape="poly" title=" " alt="" coords="140,49,173,53,172,58,140,54"/>
+<area shape="rect" title=" " alt="" coords="5,27,140,68"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="189,5,333,31"/>
+<area shape="poly" title=" " alt="" coords="139,34,173,29,173,34,140,40"/>
+<area shape="rect" href="structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08" title=" " alt="" coords="188,55,334,96"/>
+<area shape="poly" title=" " alt="" coords="140,55,173,60,172,65,139,60"/>
 </map>
 </div>
 
@@ -2294,25 +2292,6 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="path__converter_8cpp_source.html#l00095">95</a> of file <a class="el" href="path__converter_8cpp_source.html">path_converter.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a1f7e69ed521ed2a4d2c4887a4c4a7323" name="a1f7e69ed521ed2a4d2c4887a4c4a7323"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f7e69ed521ed2a4d2c4887a4c4a7323">&#9670;&#160;</a></span>isSyscallFunc()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::util::isSyscallFunc </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>funcName</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="syscall__extractor_8cpp_source.html#l00011">11</a> of file <a class="el" href="syscall__extractor_8cpp_source.html">syscall_extractor.cpp</a>.</p>
 
 </div>
 </div>

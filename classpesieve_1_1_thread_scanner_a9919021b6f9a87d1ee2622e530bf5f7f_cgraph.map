@@ -1,11 +1,15 @@
 <map id="pesieve::ThreadScanner::analyzeCallStack" name="pesieve::ThreadScanner::analyzeCallStack">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,166,46"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="660,27,826,67"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,20,214,19,413,17,613,28,645,31,644,37,612,34,413,23,214,24,166,25"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="660,19,826,59"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,20,214,19,413,17,612,24,645,27,645,32,612,30,413,22,214,24,166,25"/>
 <area shape="rect" id="Node000003" href="$classpesieve_1_1_thread_scanner.html#ac35db3f1ec2765f9dda550b04f0cb9ee" title=" " alt="" coords="214,33,374,74"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,34,198,38,198,43,165,39"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="374,50,644,46,645,51,375,55"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="374,48,644,40,645,45,375,54"/>
 <area shape="rect" id="Node000004" href="$classpesieve_1_1_thread_scanner.html#a4f5d8d9f8c84562ef92c9cec236f5a2d" title=" " alt="" coords="422,84,612,125"/>
 <area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="375,69,411,77,409,83,374,74"/>
-<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="599,81,645,69,646,74,600,86"/>
+<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="589,81,655,62,657,67,590,86"/>
+<area shape="rect" id="Node000005" href="$structpesieve_1_1_syscall_table.html#a8e3f90d691f666c516605f4cd0afd247" title=" " alt="" coords="670,84,816,125"/>
+<area shape="poly" id="edge6_Node000004_Node000005" title=" " alt="" coords="612,102,654,102,654,107,612,107"/>
+<area shape="rect" id="Node000006" href="$structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08" title=" " alt="" coords="670,149,816,190"/>
+<area shape="poly" id="edge7_Node000004_Node000006" title=" " alt="" coords="590,123,657,142,655,147,589,128"/>
 </map>

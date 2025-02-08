@@ -104,121 +104,101 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keyword">namespace </span><a class="code hl_namespace" href="namespacepesieve_1_1util.html">util</a> {</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="foldopen" id="foldopen00011" data-start="{" data-end="}">
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1util.html#a1f7e69ed521ed2a4d2c4887a4c4a7323">   11</a></span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#a1f7e69ed521ed2a4d2c4887a4c4a7323">isSyscallFunc</a>(<span class="keyword">const</span> std::string&amp; funcName)</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15">   11</a></span>        <span class="keywordtype">size_t</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15">extract_syscalls</a>(BYTE* pe_buf, <span class="keywordtype">size_t</span> pe_size, std::map&lt;DWORD, std::string&gt;&amp; syscallToName, <span class="keywordtype">size_t</span> startID = 0)</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>            std::string prefix(<span class="stringliteral">&quot;Nt&quot;</span>);</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>            <span class="keywordflow">if</span> (funcName.size() &lt; (prefix.size() + 1)) {</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>            std::vector&lt;std::string&gt; names_list;</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>            <span class="keywordflow">if</span> (!peconv::get_exported_names(pe_buf, names_list)) {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>            }</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            <span class="keywordflow">if</span> (funcName.compare(0, prefix.size(), prefix) != 0) {</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            }</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>            <span class="keywordtype">char</span> afterPrefix = funcName.at(prefix.size());</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>            <span class="keywordflow">if</span> (afterPrefix &gt;= <span class="charliteral">&#39;A&#39;</span> &amp;&amp; afterPrefix &lt;= <span class="charliteral">&#39;Z&#39;</span>) {</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                <span class="comment">// the name of the function after the Nt prefix will start in uppercase,</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                <span class="comment">// syscalls are in functions like: NtUserSetWindowLongPtr, but not: NtdllDefWindowProc_A</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            }</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        }</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            std::map&lt;DWORD, std::string&gt; sys_functions;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> itr = names_list.begin(); itr != names_list.end(); ++itr) {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                std::string funcName = *itr;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                <span class="keywordflow">if</span> (<a class="code hl_function" href="structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08">SyscallTable::isSyscallFunc</a>(funcName, <span class="keyword">true</span>)) {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                    ULONG_PTR va = (ULONG_PTR)peconv::get_exported_func(pe_buf, funcName.c_str());</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                    <span class="keywordflow">if</span> (!va) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                    <a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> rva = <a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>(va - (ULONG_PTR)pe_buf);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                    sys_functions[rva] = funcName;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                }</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>            }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            <span class="keywordtype">size_t</span> <span class="keywordtype">id</span> = startID;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> itr = sys_functions.begin(); itr != sys_functions.end(); ++itr) {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                std::string funcName = itr-&gt;second;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                syscallToName[<span class="keywordtype">id</span>++] = funcName;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>            <span class="keywordflow">return</span> id;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        }</div>
 </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15">   29</a></span>        <span class="keywordtype">size_t</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15">extract_syscalls</a>(BYTE* pe_buf, <span class="keywordtype">size_t</span> pe_size, std::map&lt;DWORD, std::string&gt;&amp; syscallToName, <span class="keywordtype">size_t</span> startID = 0)</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        {</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>            std::vector&lt;std::string&gt; names_list;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            <span class="keywordflow">if</span> (!peconv::get_exported_names(pe_buf, names_list)) {</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>            }</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            std::map&lt;DWORD, std::string&gt; sys_functions;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> itr = names_list.begin(); itr != names_list.end(); ++itr) {</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                std::string funcName = *itr;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                <span class="keywordflow">if</span> (<a class="code hl_function" href="namespacepesieve_1_1util.html#a1f7e69ed521ed2a4d2c4887a4c4a7323">isSyscallFunc</a>(funcName)) {</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                    ULONG_PTR va = (ULONG_PTR)peconv::get_exported_func(pe_buf, funcName.c_str());</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                    <span class="keywordflow">if</span> (!va) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                    <a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> rva = <a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>(va - (ULONG_PTR)pe_buf);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                    sys_functions[rva] = funcName;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                }</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>            }</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            <span class="keywordtype">size_t</span> <span class="keywordtype">id</span> = startID;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> itr = sys_functions.begin(); itr != sys_functions.end(); ++itr) {</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                std::string funcName = itr-&gt;second;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                syscallToName[<span class="keywordtype">id</span>++] = funcName;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            }</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            <span class="keywordflow">return</span> id;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        }</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1util.html#a9a0b78302afec18f94651ab7426d847a">   37</a></span>        <span class="keywordtype">size_t</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#a9a0b78302afec18f94651ab7426d847a">extract_from_dll</a>(IN <span class="keyword">const</span> std::string&amp; path, <span class="keywordtype">size_t</span> startSyscallID, OUT std::map&lt;DWORD, std::string&gt;&amp; syscallToName)</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            <span class="keywordtype">size_t</span> bufsize = 0;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            BYTE* buffer = peconv::load_pe_module(path.c_str(), bufsize, <span class="keyword">false</span>, <span class="keyword">false</span>);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            <span class="keywordflow">if</span> (!buffer) {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to load the PE: &quot;</span> &lt;&lt; path &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            }</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            <span class="keywordtype">size_t</span> extracted_count = <a class="code hl_function" href="namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15">extract_syscalls</a>(buffer, bufsize, syscallToName, startSyscallID);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            peconv::free_pe_buffer(buffer);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            <span class="keywordflow">if</span> (!extracted_count) {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                std::cerr &lt;&lt; <span class="stringliteral">&quot;No syscalls extracted from: &quot;</span> &lt;&lt; path &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            }</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="keywordflow">return</span> extracted_count;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        }</div>
 </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1util.html#a9a0b78302afec18f94651ab7426d847a">   55</a></span>        <span class="keywordtype">size_t</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#a9a0b78302afec18f94651ab7426d847a">extract_from_dll</a>(IN <span class="keyword">const</span> std::string&amp; path, <span class="keywordtype">size_t</span> startSyscallID, OUT std::map&lt;DWORD, std::string&gt;&amp; syscallToName)</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="keywordtype">size_t</span> bufsize = 0;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            BYTE* buffer = peconv::load_pe_module(path.c_str(), bufsize, <span class="keyword">false</span>, <span class="keyword">false</span>);</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            <span class="keywordflow">if</span> (!buffer) {</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to load the PE: &quot;</span> &lt;&lt; path &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            }</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            <span class="keywordtype">size_t</span> extracted_count = <a class="code hl_function" href="namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15">extract_syscalls</a>(buffer, bufsize, syscallToName, startSyscallID);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            peconv::free_pe_buffer(buffer);</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            <span class="keywordflow">if</span> (!extracted_count) {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                std::cerr &lt;&lt; <span class="stringliteral">&quot;No syscalls extracted from: &quot;</span> &lt;&lt; path &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>            }</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            <span class="keywordflow">return</span> extracted_count;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        }</div>
-</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    }; <span class="comment">//namespace util</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    }; <span class="comment">//namespace util</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}; <span class="comment">//namespace pesieve</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1util.html#ac95cf6c6c1068bc672275290965c0350">   64</a></span><span class="keywordtype">size_t</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#ac95cf6c6c1068bc672275290965c0350">pesieve::util::extract_syscall_table</a>(OUT std::map&lt;DWORD, std::string&gt;&amp; syscallToName)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>{</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    PVOID old_val = NULL;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <a class="code hl_function" href="namespacepesieve_1_1util.html#a39cfbc887b8c190834eece6c67a4af17">pesieve::util::wow64_disable_fs_redirection</a>(&amp;old_val);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    std::stringstream outs;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordtype">size_t</span> extracted_count = 0;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordtype">char</span> ntdll_path[<a class="code hl_variable" href="namespacepesieve.html#a1cb84e5f71928d34d7e7169a19964a9c">MAX_PATH</a>] = { 0 };</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    ExpandEnvironmentStringsA(<span class="stringliteral">&quot;%SystemRoot%\\system32\\ntdll.dll&quot;</span>, ntdll_path, <a class="code hl_variable" href="namespacepesieve.html#a1cb84e5f71928d34d7e7169a19964a9c">MAX_PATH</a>);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    extracted_count += <a class="code hl_function" href="namespacepesieve_1_1util.html#a9a0b78302afec18f94651ab7426d847a">extract_from_dll</a>(ntdll_path, 0, syscallToName);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordtype">char</span> win32u_path[<a class="code hl_variable" href="namespacepesieve.html#a1cb84e5f71928d34d7e7169a19964a9c">MAX_PATH</a>] = { 0 };</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    ExpandEnvironmentStringsA(<span class="stringliteral">&quot;%SystemRoot%\\system32\\win32u.dll&quot;</span>, win32u_path, <a class="code hl_variable" href="namespacepesieve.html#a1cb84e5f71928d34d7e7169a19964a9c">MAX_PATH</a>);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    extracted_count += <a class="code hl_function" href="namespacepesieve_1_1util.html#a9a0b78302afec18f94651ab7426d847a">extract_from_dll</a>(win32u_path, 0x1000, syscallToName);</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>}; <span class="comment">//namespace pesieve</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <a class="code hl_function" href="namespacepesieve_1_1util.html#aed4eb6ec69c30d271b4f4b6c4244f03e">pesieve::util::wow64_revert_fs_redirection</a>(&amp;old_val);</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="foldopen" id="foldopen00082" data-start="{" data-end="}">
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="namespacepesieve_1_1util.html#ac95cf6c6c1068bc672275290965c0350">   82</a></span><span class="keywordtype">size_t</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#ac95cf6c6c1068bc672275290965c0350">pesieve::util::extract_syscall_table</a>(OUT std::map&lt;DWORD, std::string&gt;&amp; syscallToName)</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>{</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    PVOID old_val = NULL;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <a class="code hl_function" href="namespacepesieve_1_1util.html#a39cfbc887b8c190834eece6c67a4af17">pesieve::util::wow64_disable_fs_redirection</a>(&amp;old_val);</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    std::stringstream outs;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordtype">size_t</span> extracted_count = 0;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordtype">char</span> ntdll_path[<a class="code hl_variable" href="namespacepesieve.html#a1cb84e5f71928d34d7e7169a19964a9c">MAX_PATH</a>] = { 0 };</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    ExpandEnvironmentStringsA(<span class="stringliteral">&quot;%SystemRoot%\\system32\\ntdll.dll&quot;</span>, ntdll_path, <a class="code hl_variable" href="namespacepesieve.html#a1cb84e5f71928d34d7e7169a19964a9c">MAX_PATH</a>);</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    extracted_count += <a class="code hl_function" href="namespacepesieve_1_1util.html#a9a0b78302afec18f94651ab7426d847a">extract_from_dll</a>(ntdll_path, 0, syscallToName);</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordtype">char</span> win32u_path[<a class="code hl_variable" href="namespacepesieve.html#a1cb84e5f71928d34d7e7169a19964a9c">MAX_PATH</a>] = { 0 };</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    ExpandEnvironmentStringsA(<span class="stringliteral">&quot;%SystemRoot%\\system32\\win32u.dll&quot;</span>, win32u_path, <a class="code hl_variable" href="namespacepesieve.html#a1cb84e5f71928d34d7e7169a19964a9c">MAX_PATH</a>);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    extracted_count += <a class="code hl_function" href="namespacepesieve_1_1util.html#a9a0b78302afec18f94651ab7426d847a">extract_from_dll</a>(win32u_path, 0x1000, syscallToName);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <a class="code hl_function" href="namespacepesieve_1_1util.html#aed4eb6ec69c30d271b4f4b6c4244f03e">pesieve::util::wow64_revert_fs_redirection</a>(&amp;old_val);</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordflow">if</span> (!extracted_count) {</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to extract syscalls.\n&quot;</span>;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    }</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordflow">return</span> syscallToName.size();</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keywordflow">if</span> (!extracted_count) {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to extract syscalls.\n&quot;</span>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordflow">return</span> syscallToName.size();</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>}</div>
 </div>
 <div class="ttc" id="anamespacepesieve_1_1util_html"><div class="ttname"><a href="namespacepesieve_1_1util.html">pesieve::util</a></div><div class="ttdef"><b>Definition</b> <a href="artefact__scanner_8cpp_source.html#l00012">artefact_scanner.cpp:12</a></div></div>
-<div class="ttc" id="anamespacepesieve_1_1util_html_a1f7e69ed521ed2a4d2c4887a4c4a7323"><div class="ttname"><a href="namespacepesieve_1_1util.html#a1f7e69ed521ed2a4d2c4887a4c4a7323">pesieve::util::isSyscallFunc</a></div><div class="ttdeci">bool isSyscallFunc(const std::string &amp;funcName)</div><div class="ttdef"><b>Definition</b> <a href="#l00011">syscall_extractor.cpp:11</a></div></div>
 <div class="ttc" id="anamespacepesieve_1_1util_html_a39cfbc887b8c190834eece6c67a4af17"><div class="ttname"><a href="namespacepesieve_1_1util.html#a39cfbc887b8c190834eece6c67a4af17">pesieve::util::wow64_disable_fs_redirection</a></div><div class="ttdeci">BOOL wow64_disable_fs_redirection(OUT PVOID *OldValue)</div><div class="ttdef"><b>Definition</b> <a href="process__util_8cpp_source.html#l00104">process_util.cpp:104</a></div></div>
-<div class="ttc" id="anamespacepesieve_1_1util_html_a9a0b78302afec18f94651ab7426d847a"><div class="ttname"><a href="namespacepesieve_1_1util.html#a9a0b78302afec18f94651ab7426d847a">pesieve::util::extract_from_dll</a></div><div class="ttdeci">size_t extract_from_dll(IN const std::string &amp;path, size_t startSyscallID, OUT std::map&lt; DWORD, std::string &gt; &amp;syscallToName)</div><div class="ttdef"><b>Definition</b> <a href="#l00055">syscall_extractor.cpp:55</a></div></div>
+<div class="ttc" id="anamespacepesieve_1_1util_html_a9a0b78302afec18f94651ab7426d847a"><div class="ttname"><a href="namespacepesieve_1_1util.html#a9a0b78302afec18f94651ab7426d847a">pesieve::util::extract_from_dll</a></div><div class="ttdeci">size_t extract_from_dll(IN const std::string &amp;path, size_t startSyscallID, OUT std::map&lt; DWORD, std::string &gt; &amp;syscallToName)</div><div class="ttdef"><b>Definition</b> <a href="#l00037">syscall_extractor.cpp:37</a></div></div>
 <div class="ttc" id="anamespacepesieve_1_1util_html_ac533b9c8a18228f62223a0042c40f5ae"><div class="ttname"><a href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">pesieve::util::DWORD</a></div><div class="ttdeci">DWORD(__stdcall *_PssCaptureSnapshot)(HANDLE ProcessHandle</div></div>
-<div class="ttc" id="anamespacepesieve_1_1util_html_ac95cf6c6c1068bc672275290965c0350"><div class="ttname"><a href="namespacepesieve_1_1util.html#ac95cf6c6c1068bc672275290965c0350">pesieve::util::extract_syscall_table</a></div><div class="ttdeci">size_t extract_syscall_table(OUT std::map&lt; DWORD, std::string &gt; &amp;syscallToName)</div><div class="ttdef"><b>Definition</b> <a href="#l00082">syscall_extractor.cpp:82</a></div></div>
-<div class="ttc" id="anamespacepesieve_1_1util_html_ac99548a60414e711aa8bace85438cd15"><div class="ttname"><a href="namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15">pesieve::util::extract_syscalls</a></div><div class="ttdeci">size_t extract_syscalls(BYTE *pe_buf, size_t pe_size, std::map&lt; DWORD, std::string &gt; &amp;syscallToName, size_t startID=0)</div><div class="ttdef"><b>Definition</b> <a href="#l00029">syscall_extractor.cpp:29</a></div></div>
+<div class="ttc" id="anamespacepesieve_1_1util_html_ac95cf6c6c1068bc672275290965c0350"><div class="ttname"><a href="namespacepesieve_1_1util.html#ac95cf6c6c1068bc672275290965c0350">pesieve::util::extract_syscall_table</a></div><div class="ttdeci">size_t extract_syscall_table(OUT std::map&lt; DWORD, std::string &gt; &amp;syscallToName)</div><div class="ttdef"><b>Definition</b> <a href="#l00064">syscall_extractor.cpp:64</a></div></div>
+<div class="ttc" id="anamespacepesieve_1_1util_html_ac99548a60414e711aa8bace85438cd15"><div class="ttname"><a href="namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15">pesieve::util::extract_syscalls</a></div><div class="ttdeci">size_t extract_syscalls(BYTE *pe_buf, size_t pe_size, std::map&lt; DWORD, std::string &gt; &amp;syscallToName, size_t startID=0)</div><div class="ttdef"><b>Definition</b> <a href="#l00011">syscall_extractor.cpp:11</a></div></div>
 <div class="ttc" id="anamespacepesieve_1_1util_html_aed4eb6ec69c30d271b4f4b6c4244f03e"><div class="ttname"><a href="namespacepesieve_1_1util.html#aed4eb6ec69c30d271b4f4b6c4244f03e">pesieve::util::wow64_revert_fs_redirection</a></div><div class="ttdeci">BOOL wow64_revert_fs_redirection(IN PVOID OldValue)</div><div class="ttdef"><b>Definition</b> <a href="process__util_8cpp_source.html#l00121">process_util.cpp:121</a></div></div>
 <div class="ttc" id="anamespacepesieve_html"><div class="ttname"><a href="namespacepesieve.html">pesieve</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00001">pesieve.py:1</a></div></div>
 <div class="ttc" id="anamespacepesieve_html_a1cb84e5f71928d34d7e7169a19964a9c"><div class="ttname"><a href="namespacepesieve.html#a1cb84e5f71928d34d7e7169a19964a9c">pesieve.MAX_PATH</a></div><div class="ttdeci">int MAX_PATH</div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00010">pesieve.py:10</a></div></div>
 <div class="ttc" id="aprocess__util_8h_html"><div class="ttname"><a href="process__util_8h.html">process_util.h</a></div></div>
+<div class="ttc" id="astructpesieve_1_1_syscall_table_html_a7421f265ea7f8e42b0476d5929853c08"><div class="ttname"><a href="structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08">pesieve::SyscallTable::isSyscallFunc</a></div><div class="ttdeci">static bool isSyscallFunc(const std::string &amp;funcName, bool NtOnly=false)</div><div class="ttdef"><b>Definition</b> <a href="syscall__extractor_8h_source.html#l00026">syscall_extractor.h:26</a></div></div>
 <div class="ttc" id="asyscall__extractor_8h_html"><div class="ttname"><a href="syscall__extractor_8h.html">syscall_extractor.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

@@ -1,9 +1,9 @@
 <map id="pesieve::util::extract_from_dll" name="pesieve::util::extract_from_dll">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,140,64"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15" title=" " alt="" coords="188,23,322,64"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,41,172,41,172,46,140,46"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="386,5,530,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="322,32,370,26,371,32,323,38"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve_1_1util.html#a1f7e69ed521ed2a4d2c4887a4c4a7323" title=" " alt="" coords="370,55,546,80"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="323,49,355,53,354,58,322,54"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,27,140,68"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15" title=" " alt="" coords="188,27,322,68"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,45,172,45,172,50,140,50"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="371,5,515,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="322,34,355,29,356,34,323,40"/>
+<area shape="rect" id="Node000004" href="$structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08" title=" " alt="" coords="370,55,516,96"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="323,55,355,60,354,65,322,60"/>
 </map>

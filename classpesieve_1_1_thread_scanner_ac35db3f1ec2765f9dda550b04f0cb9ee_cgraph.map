@@ -1,8 +1,12 @@
 <map id="pesieve::ThreadScanner::printResolvedAddr" name="pesieve::ThreadScanner::printResolvedAddr">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,166,46"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,166,79"/>
 <area shape="rect" id="Node000002" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="452,5,617,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,20,214,19,404,19,436,20,436,25,404,24,214,24,166,25"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_thread_scanner.html#a4f5d8d9f8c84562ef92c9cec236f5a2d" title=" " alt="" coords="214,33,404,74"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,33,199,37,198,42,166,38"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="404,39,436,35,437,40,404,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,50,436,30,436,36,166,56"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_thread_scanner.html#a4f5d8d9f8c84562ef92c9cec236f5a2d" title=" " alt="" coords="214,67,404,107"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,66,199,71,198,76,166,72"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="386,63,442,48,443,53,387,69"/>
+<area shape="rect" id="Node000004" href="$structpesieve_1_1_syscall_table.html#a8e3f90d691f666c516605f4cd0afd247" title=" " alt="" coords="462,71,608,111"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="404,86,446,87,446,92,404,91"/>
+<area shape="rect" id="Node000005" href="$structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08" title=" " alt="" coords="462,136,608,177"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="379,105,452,128,451,133,377,111"/>
 </map>
