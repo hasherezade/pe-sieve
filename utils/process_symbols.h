@@ -26,7 +26,7 @@ public:
 		if (!isInit) {
 			hProcess = _hProcess;
 
-			SymSetOptions(SYMOPT_INCLUDE_32BIT_MODULES | SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS);
+			SymSetOptions(SYMOPT_INCLUDE_32BIT_MODULES | SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS | SYMOPT_FAIL_CRITICAL_ERRORS);
 			if (SymInitialize(hProcess, NULL, TRUE)) {
 				isInit = true;
 			}
