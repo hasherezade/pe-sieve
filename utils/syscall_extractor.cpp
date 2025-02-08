@@ -8,24 +8,6 @@
 namespace pesieve {
 	namespace util {
 
-		bool isSyscallFunc(const std::string& funcName)
-		{
-			std::string prefix("Nt");
-			if (funcName.size() < (prefix.size() + 1)) {
-				return false;
-			}
-			if (funcName.compare(0, prefix.size(), prefix) != 0) {
-				return false;
-			}
-			char afterPrefix = funcName.at(prefix.size());
-			if (afterPrefix >= 'A' && afterPrefix <= 'Z') {
-				// the name of the function after the Nt prefix will start in uppercase,
-				// syscalls are in functions like: NtUserSetWindowLongPtr, but not: NtdllDefWindowProc_A
-				return true;
-			}
-			return false;
-		}
-
 		size_t extract_syscalls(BYTE* pe_buf, size_t pe_size, std::map<DWORD, std::string>& syscallToName, size_t startID = 0)
 		{
 			std::vector<std::string> names_list;
@@ -36,7 +18,7 @@ namespace pesieve {
 			std::map<DWORD, std::string> sys_functions;
 			for (auto itr = names_list.begin(); itr != names_list.end(); ++itr) {
 				std::string funcName = *itr;
-				if (isSyscallFunc(funcName)) {
+				if (SyscallTable::isSyscallFunc(funcName, true)) {
 					ULONG_PTR va = (ULONG_PTR)peconv::get_exported_func(pe_buf, funcName.c_str());
 					if (!va) continue;
 

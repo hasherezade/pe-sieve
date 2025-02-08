@@ -171,6 +171,25 @@ std::string ThreadScanReport::translate_thread_state(DWORD thread_state)
 
 //---
 
+std::string pesieve::ThreadScanner::choosePreferredFunctionName(const std::string& dbgSymbol, const std::string& manualSymbol)
+{
+	if (dbgSymbol.empty()) {
+		if (manualSymbol.empty()) {
+			return "";
+		}
+		// Give priority to the manual symbol if the debug symbol is empty
+		return manualSymbol;
+	}
+	// Give priority to the manual symbol if it denotes the actual syscall
+	if (!SyscallTable::isSyscallFunc(dbgSymbol)) {
+		if (SyscallTable::isSyscallFunc(manualSymbol)) {
+			return manualSymbol;
+		}
+	}
+	//oterwise use the debug symbol
+	return dbgSymbol;
+}
+
 bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONGLONG>& callStack)
 {
 	if (this->info.last_syscall == INVALID_SYSCALL || !symbols || !callStack.size() || !info.is_extended || !g_SyscallTable.isReady()) {
@@ -179,13 +198,15 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	const std::string syscallFuncName = g_SyscallTable.getSyscallName(this->info.last_syscall);
 
 	const ULONGLONG lastCalled = *(callStack.begin());
-	std::string lastFuncCalled = symbols->funcNameFromAddr(lastCalled);
-	std::string manualSymbol = exportsMap ? resolveLowLevelFuncName(lastCalled) : "";
+	const std::string debugFuncName = symbols->funcNameFromAddr(lastCalled);
+	const std::string manualSymbol = exportsMap ? resolveLowLevelFuncName(lastCalled) : "";
+	if (debugFuncName.empty() && !exportsMap) {
+		return true; // skip the check
+	}
+	const std::string lastFuncCalled = choosePreferredFunctionName(debugFuncName, manualSymbol);
 	if (lastFuncCalled.empty()) {
-		if (!exportsMap) {
-			return true; // skip the check
-		}
-		lastFuncCalled = manualSymbol;
+		std::cout << "ERR: Can't fetch the name of the last function called!\n";
+		return false;
 	}
 	if (callStack.size() == 1) {
 		if (this->info.ext.wait_reason == Suspended && lastFuncCalled == "RtlUserThreadStart" && this->info.last_syscall == 0) {
@@ -206,10 +227,11 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	if (SyscallTable::isSameSyscallFunc(syscallFuncName, lastFuncCalled)) {
 		return true;
 	}
+
 	const ScannedModule* mod = modulesInfo.findModuleContaining(lastCalled);
 	const std::string lastModName = mod ? mod->getModName() : "";
 
-	if (lastModName != "ntdll.dll" && lastModName != "win32u.dll") {
+	if (!SyscallTable::isSyscallDll(lastModName)) {
 //#ifdef _DEBUG
 		std::cout << "[@]" << std::dec << info.tid << " : " << "LastSyscall: " << syscallFuncName << " VS LastCalledAddr: " << std::hex << lastCalled 
 			<< " : " << lastFuncCalled << "(" << lastModName << "." << manualSymbol << " )" << " DIFFERENT!"
@@ -450,19 +472,35 @@ std::string pesieve::ThreadScanner::resolveLowLevelFuncName(const ULONGLONG addr
 	if (!mod) {
 		return "";
 	}
-	if (mod->getModName() != "ntdll.dll" && mod->getModName() != "win32u.dll") {
-		// not a DLL containing a syscall
+	if (!SyscallTable::isSyscallDll(mod->getModName())) {
+		// not a DLL containing syscalls
 		return "";
 	}
-	bool is_resolved = false;
-	std::string func;
+	std::string expName;
 	for (size_t disp = 0; disp < maxDisp; disp++) {
-		const peconv::ExportedFunc* exp = exportsMap->find_export_by_va(addr - disp);
-		if (exp) {
-			return exp->nameToString();
+		const ULONGLONG va = addr - disp;
+
+		const std::set<peconv::ExportedFunc>* exp_set = exportsMap->find_exports_by_va(va);
+		if (!exp_set) {
+			continue; // no exports at this VA
+		}
+		// walk through the export candicates, and find the most suitable one:
+		for (auto it1 = exp_set->begin(); it1 != exp_set->end(); ++it1) {
+			const peconv::ExportedFunc& exp = *it1;
+			const std::string libName = exp.libName;
+			if (!SyscallTable::isSyscallDll(libName)) {
+				// it is not a low-level export
+				continue;
+			}
+			expName = exp.nameToString();
+			// give preference to the functions naming syscalls:
+			if (SyscallTable::isSyscallFunc(expName)) {
+				return expName;
+			}
 		}
 	}
-	return "";
+	// otherwise, return any found
+	return expName;
 }
 
 bool pesieve::ThreadScanner::printResolvedAddr(const ULONGLONG addr)

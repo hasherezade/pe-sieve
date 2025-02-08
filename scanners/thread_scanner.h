@@ -181,6 +181,8 @@ namespace pesieve {
 		virtual ThreadScanReport* scanRemote();
 
 	protected:
+		static std::string choosePreferredFunctionName(const std::string& dbgSymbol, const std::string& manualSymbol);
+
 		bool scanRemoteThreadCtx(HANDLE hThread, ThreadScanReport* my_report);
 		bool isAddrInNamedModule(ULONGLONG addr);
 		void printThreadInfo(const util::thread_info& threadi);

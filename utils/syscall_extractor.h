@@ -12,7 +12,43 @@ namespace pesieve {
 
 	struct SyscallTable {
 
-		static bool isSameSyscallFunc(std::string func1, std::string func2)
+		static bool isSyscallDll(const std::string& libName)
+		{
+			if (libName == "ntdll.dll" || libName == "win32u.dll") {
+				return true;
+			}
+			if (libName == "ntdll" || libName == "win32u") {
+				return true;
+			}
+			return false;
+		}
+
+		static bool isSyscallFunc(const std::string& funcName, bool NtOnly = false)
+		{
+			if (funcName.empty() || funcName.length() < 3) {
+				return false;
+			}
+			bool hasPrefix = false;
+			if (!NtOnly) {
+				if (funcName[0] == 'Z' && funcName[1] == 'w') {
+					hasPrefix = true;
+				}
+			}
+			if (funcName[0] == 'N' && funcName[1] == 't') {
+				hasPrefix = true;
+			}
+			if (!hasPrefix) {
+				return false;
+			}
+			if (funcName[2] >= 'A' && funcName[2] <= 'Z') {
+				// the name of the function after the Nt prefix should start in uppercase,
+				// syscalls are in functions like: NtUserSetWindowLongPtr, but not: NtdllDefWindowProc_A
+				return true;
+			}
+			return false;
+		}
+
+		static bool isSameSyscallFunc(const std::string &func1, const std::string &func2)
 		{
 			if (func1 == func2) return true;
 
