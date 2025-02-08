@@ -127,7 +127,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a>) {</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            <a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a> = _hProcess;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            SymSetOptions(SYMOPT_INCLUDE_32BIT_MODULES | SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            SymSetOptions(SYMOPT_INCLUDE_32BIT_MODULES | SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS | SYMOPT_FAIL_CRITICAL_ERRORS);</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            <span class="keywordflow">if</span> (SymInitialize(<a class="code hl_variable" href="class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48">hProcess</a>, NULL, TRUE)) {</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                <a class="code hl_variable" href="class_process_symbols_manager.html#a4c2130eb0673ab159d260c63d56aee23">isInit</a> = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            }</div>
