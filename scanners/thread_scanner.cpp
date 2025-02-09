@@ -306,17 +306,16 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	return false;
 }
 
-size_t pesieve::ThreadScanner::_analyzeCallStack(IN const std::vector<ULONGLONG> &call_stack, IN OUT ctx_details& cDetails, OUT IN std::set<ULONGLONG> &shcCandidates)
+size_t pesieve::ThreadScanner::_analyzeCallStack(IN OUT ctx_details& cDetails, OUT IN std::set<ULONGLONG> &shcCandidates)
 {
 	size_t processedCntr = 0;
 
 	cDetails.is_managed = false;
-	cDetails.stackFramesCount = call_stack.size();
 	cDetails.is_ret_in_frame = false;
 #ifdef _SHOW_THREAD_INFO
-	std::cout << "\n" << "Stack frame Size: " << std::dec << call_stack.size() << "\n===\n";
+	std::cout << "\n" << "Stack frame Size: " << std::dec << cDetails.callStack.size() << "\n===\n";
 #endif //_SHOW_THREAD_INFO
-	for (auto itr = call_stack.rbegin(); itr != call_stack.rend() ;++itr, ++processedCntr) {
+	for (auto itr = cDetails.callStack.rbegin(); itr != cDetails.callStack.rend() ;++itr, ++processedCntr) {
 		const ULONGLONG next_return = *itr;
 		if (cDetails.ret_on_stack == next_return) {
 			cDetails.is_ret_in_frame = true;
@@ -362,6 +361,15 @@ size_t pesieve::ThreadScanner::_analyzeCallStack(IN const std::vector<ULONGLONG>
 	return processedCntr;
 }
 
+size_t pesieve::ThreadScanner::analyzeCallStackInfo(IN OUT ThreadScanReport& my_report)
+{
+	const size_t analyzedCount = _analyzeCallStack(my_report.cDetails, my_report.shcCandidates);
+	if (!my_report.cDetails.is_managed) {
+		my_report.cDetails.is_ret_as_syscall = checkReturnAddrIntegrity(my_report.cDetails.callStack);
+	}
+	return analyzedCount;
+}
+
 size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ThreadScanReport& my_report)
 {
 	// do it in a new thread to prevent stucking...
@@ -391,31 +399,22 @@ size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE h
 	if (!args.is_ok) {
 		return 0;
 	}
-	my_report.callStack = args.callStack;
+	my_report.cDetails.callStack = args.callStack;
 	return args.callStack.size();
 }
 
-size_t pesieve::ThreadScanner::analyzeCallStackInfo(IN OUT ThreadScanReport& my_report)
-{
-	const size_t analyzedCount = _analyzeCallStack(my_report.callStack, my_report.cDetails, my_report.shcCandidates);
-	if (!my_report.cDetails.is_managed) {
-		my_report.cDetails.is_ret_as_syscall = checkReturnAddrIntegrity(my_report.callStack);
+namespace pesieve {
+	template <typename PTR_T>
+	bool read_return_ptr(IN HANDLE hProcess, IN OUT ctx_details& cDetails) {
+		PTR_T ret_addr = 0;
+		cDetails.ret_on_stack = 0;
+		if (peconv::read_remote_memory(hProcess, (LPVOID)cDetails.rsp, (BYTE*)&ret_addr, sizeof(ret_addr)) == sizeof(ret_addr)) {
+			cDetails.ret_on_stack = (ULONGLONG)ret_addr;
+			return true;
+		}
+		return false;
 	}
-	return analyzedCount;
-}
-
-template <typename PTR_T>
-bool read_return_ptr(IN HANDLE hProcess, IN OUT ctx_details& cDetails) {
-	PTR_T ret_addr = 0;
-	cDetails.ret_on_stack = 0;
-	if (peconv::read_remote_memory(hProcess, (LPVOID)cDetails.rsp, (BYTE*)&ret_addr, sizeof(ret_addr)) == sizeof(ret_addr)) {
-		cDetails.ret_on_stack = (ULONGLONG)ret_addr;
-		return true;
-	}
-	return false;
-}
-
-
+}; //namespace pesieve
 
 bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, OUT ThreadScanReport& my_report)
 {
@@ -610,13 +609,11 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		my_report.status = SCAN_NOT_SUSPICIOUS;
 		return false;
 	}
-	if (!is_ok) {
+	if (!is_ok || !analyzeCallStackInfo(my_report)) {
 		// could not fetch the thread context and information
 		my_report.status = SCAN_ERROR;
 		return false;
 	}
-
-	analyzeCallStackInfo(my_report);
 
 	my_report.stack_ptr = cDetails.rsp;
 	bool isModified = false;
@@ -692,7 +689,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	}
 
 	if (hasEmptyGUI &&
-		cDetails.stackFramesCount == 1
+		cDetails.callStack.size() == 1
 		&& this->info.is_extended && info.ext.state == Waiting && info.ext.wait_reason == UserRequest)
 	{
 		my_report.indicators.insert(THI_SUS_CALLSTACK_CORRUPT);
@@ -743,13 +740,13 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 			}
 		}
 	}
-	if (!should_scan_context(info)) {
-		return my_report;
-	}
 	if (this->info.is_extended) {
 		my_report->thread_state = info.ext.state;
 		my_report->thread_wait_reason = info.ext.wait_reason;
 		my_report->thread_wait_time = info.ext.wait_time;
+	}
+	if (!should_scan_context(info)) {
+		return my_report;
 	}
 	// proceed with detailed checks:
 	HANDLE hThread = OpenThread(

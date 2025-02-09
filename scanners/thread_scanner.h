@@ -7,6 +7,7 @@
 #include "../utils/process_symbols.h"
 #include "../stats/stats.h"
 #include "../stats/entropy_stats.h"
+#include <vector>
 
 namespace pesieve {
 
@@ -46,11 +47,10 @@ namespace pesieve {
 		bool is_ret_as_syscall;
 		bool is_ret_in_frame;
 		bool is_managed; // does it contain .NET modules
-		size_t stackFramesCount;
+		std::vector<ULONGLONG> callStack;
 
 		_ctx_details(bool _is64b = false, ULONGLONG _rip = 0, ULONGLONG _rsp = 0, ULONGLONG _rbp = 0, ULONGLONG _ret_addr = 0)
 			: is64b(_is64b), rip(_rip), rsp(_rsp), rbp(_rbp), last_ret(_ret_addr), ret_on_stack(0), is_ret_as_syscall(false), is_ret_in_frame(false),
-			stackFramesCount(0),
 			is_managed(false)
 		{
 		}
@@ -87,6 +87,29 @@ namespace pesieve {
 		{
 		}
 
+		const virtual void callstackToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails)
+		{
+			OUT_PADDED(outs, level, "\"stack_ptr\" : ");
+			outs << "\"" << std::hex << stack_ptr << "\"";
+			if (cDetails.callStack.size()) {
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"frames_count\" : ");
+				outs << std::dec << cDetails.callStack.size();
+				if (jdetails >= JSON_DETAILS) {
+					outs << ",\n";
+					OUT_PADDED(outs, level, "\"frames\" : [");
+					for (auto itr = cDetails.callStack.begin(); itr != cDetails.callStack.end(); ++itr) {
+						if (itr != cDetails.callStack.begin()) {
+							outs << ", ";
+						}
+						const ULONGLONG addr = *itr;
+						outs << "\"" << std::hex << addr << "\"";
+					}
+					outs << "]";
+				}
+			}
+		}
+
 		const virtual void fieldsToJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
 		{
 			ModuleScanReport::_toJSON(outs, level);
@@ -105,13 +128,10 @@ namespace pesieve {
 			outs << "]";
 			if (stack_ptr) {
 				outs << ",\n";
-				OUT_PADDED(outs, level, "\"stack_ptr\" : ");
-				outs << "\"" << std::hex << stack_ptr << "\"";
-			}
-			if (callStack.size()) {
-				outs << ",\n";
-				OUT_PADDED(outs, level, "\"frames_count\" : ");
-				outs << std::dec << callStack.size();
+				OUT_PADDED(outs, level, "\"callstack\" : {\n");
+				callstackToJSON(outs, level + 1, jdetails);
+				outs << "\n";
+				OUT_PADDED(outs, level, "}");
 			}
 			if (thread_state != THREAD_STATE_UNKNOWN) {
 				outs << ",\n";
@@ -158,13 +178,11 @@ namespace pesieve {
 		ULONGLONG susp_addr;
 		DWORD protection;
 		ULONGLONG stack_ptr;
-		//size_t frames_count;
 		DWORD thread_state;
 		DWORD thread_wait_reason;
 		DWORD thread_wait_time;
 
 		ctx_details cDetails;
-		std::vector<ULONGLONG> callStack;
 		std::set<ULONGLONG> shcCandidates;
 		std::set<ThSusIndicator> indicators;
 
@@ -197,7 +215,7 @@ namespace pesieve {
 
 		size_t fillCallStackInfo(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ThreadScanReport& my_report);
 		size_t analyzeCallStackInfo(IN OUT ThreadScanReport& my_report);
-		size_t _analyzeCallStack(IN const std::vector<ULONGLONG>& call_stack, IN OUT ctx_details& cDetails, OUT IN std::set<ULONGLONG>& shcCandidates);
+		size_t _analyzeCallStack(IN OUT ctx_details& cDetails, OUT IN std::set<ULONGLONG>& shcCandidates);
 
 		bool checkReturnAddrIntegrity(IN const std::vector<ULONGLONG>& callStack);
 

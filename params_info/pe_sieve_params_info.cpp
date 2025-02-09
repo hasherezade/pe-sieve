@@ -153,11 +153,11 @@ std::string pesieve::translate_json_level(const pesieve::t_json_level &mode)
 {
 	switch (mode) {
 	case pesieve::JSON_BASIC:
-		return "basic";
+		return "basic (default)";
 	case pesieve::JSON_DETAILS:
-		return "details #1 (list patches)";
+		return "details #1 (medium)";
 	case pesieve::JSON_DETAILS2:
-		return "details #2 (list patches: extended)";
+		return "details #2 (verbose)";
 	}
 	return "";
 }
