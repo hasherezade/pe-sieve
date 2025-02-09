@@ -93,6 +93,9 @@ namespace pesieve {
 			if (this->indicators.find(THI_SUS_CALLSTACK_CORRUPT) != this->indicators.end()) {
 				printCallstack = true;
 			}
+			if (this->indicators.find(THI_SUS_CALLSTACK_SHC) != this->indicators.end()) {
+				printCallstack = true;
+			}
 			OUT_PADDED(outs, level, "\"stack_ptr\" : ");
 			outs << "\"" << std::hex << stack_ptr << "\"";
 			if (cDetails.callStack.size()) {
