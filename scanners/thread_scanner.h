@@ -137,6 +137,49 @@ namespace pesieve {
 			return true;
 		}
 
+		const bool threadInfoToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails)
+		{
+			OUT_PADDED(outs, level, "\"state\" : ");
+			if (thread_state == THREAD_STATE_UNKNOWN) {
+				outs << "\"" << "UNKNOWN" << "\"";
+			}
+			else {
+				outs << "\"" << translate_thread_state(thread_state) << "\"";
+			}
+			if (thread_state == THREAD_STATE_WAITING) {
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"wait_reason\" : ");
+				outs << "\"" << translate_wait_reason(thread_wait_reason) << "\"";
+			}
+			if (stack_ptr) {
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"callstack\" : {\n");
+				callstackToJSON(outs, level + 1, jdetails);
+				outs << "\n";
+				OUT_PADDED(outs, level, "}");
+			}
+			bool showLastCall = (jdetails >= JSON_DETAILS) ? true : false;
+			if ((this->indicators.find(THI_SUS_CALLS_INTEGRITY) != this->indicators.end()) || 
+				(this->indicators.find(THI_SUS_CALLSTACK_CORRUPT) != this->indicators.end()) )
+			{
+				showLastCall = true;
+			}
+			if (showLastCall) {
+				if (!this->lastSyscall.empty()) {
+					outs << ",\n";
+					OUT_PADDED(outs, level, "\"last_sysc\" : ");
+					outs << "\"" << this->lastSyscall << "\"";
+				}
+				if (!this->lastFunction.empty() && (this->lastFunction != this->lastSyscall)) {
+					outs << ",\n";
+					OUT_PADDED(outs, level, "\"last_func\" : ");
+					outs << "\"" << this->lastFunction << "\"";
+				}
+			}
+			outs << "\n";
+			return true;
+		}
+
 		const bool indicatorsToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails)
 		{
 			OUT_PADDED(outs, level, "\"indicators\" : [");
@@ -147,6 +190,7 @@ namespace pesieve {
 				outs << "\"" << indicator_to_str(*itr) << "\"";
 			}
 			outs << "]";
+			return true;
 		}
 
 		const virtual void fieldsToJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
@@ -155,25 +199,10 @@ namespace pesieve {
 			outs << ",\n";
 			OUT_PADDED(outs, level, "\"thread_id\" : ");
 			outs << std::dec << tid;
-			if (thread_state != THREAD_STATE_UNKNOWN) {
-				outs << ",\n";
-				OUT_PADDED(outs, level, "\"thread_state\" : ");
-				outs << "\"" << translate_thread_state(thread_state) << "\"";
-
-				if (thread_state == THREAD_STATE_WAITING) {
-					outs << ",\n";
-					OUT_PADDED(outs, level, "\"thread_wait_reason\" : ");
-					outs << "\"" << translate_wait_reason(thread_wait_reason) << "\"";
-				}
-			}
-			if (stack_ptr) {
-				outs << ",\n";
-				OUT_PADDED(outs, level, "\"callstack\" : {\n");
-				callstackToJSON(outs, level + 1, jdetails);
-				outs << "\n";
-				OUT_PADDED(outs, level, "}");
-			}
-
+			outs << ",\n";
+			OUT_PADDED(outs, level, "\"thread_info\" : {\n");
+			threadInfoToJSON(outs, level + 1, jdetails);
+			OUT_PADDED(outs, level, "}");
 			outs << ",\n";
 			indicatorsToJSON(outs, level, jdetails);
 
@@ -206,6 +235,9 @@ namespace pesieve {
 		DWORD thread_state;
 		DWORD thread_wait_reason;
 		DWORD thread_wait_time;
+
+		std::string lastSyscall;
+		std::string lastFunction;
 
 		ctx_details cDetails;
 		std::set<ULONGLONG> shcCandidates;
@@ -242,7 +274,7 @@ namespace pesieve {
 		size_t analyzeCallStackInfo(IN OUT ThreadScanReport& my_report);
 		size_t _analyzeCallStack(IN OUT ctx_details& cDetails, OUT IN std::set<ULONGLONG>& shcCandidates);
 
-		bool checkReturnAddrIntegrity(IN const std::vector<ULONGLONG>& callStack);
+		bool checkReturnAddrIntegrity(IN const std::vector<ULONGLONG>& callStack, IN OUT ThreadScanReport& my_report);
 
 		bool fillAreaStats(ThreadScanReport* my_report);
 		bool reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr);

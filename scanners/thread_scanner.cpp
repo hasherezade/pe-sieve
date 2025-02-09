@@ -175,7 +175,7 @@ std::string pesieve::ThreadScanner::choosePreferredFunctionName(const std::strin
 	return dbgSymbol;
 }
 
-bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONGLONG>& callStack)
+bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONGLONG>& callStack, IN OUT ThreadScanReport& my_report)
 {
 	if (this->info.last_syscall == INVALID_SYSCALL || !symbols || !callStack.size() || !info.is_extended || !g_SyscallTable.isReady()) {
 		return true; // skip the check
@@ -187,12 +187,14 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		return true; // skip the check
 	}
 	const std::string lastFuncCalled = choosePreferredFunctionName(debugFuncName, manualSymbol);
+	my_report.lastFunction = lastFuncCalled;
 	if (lastFuncCalled.empty()) {
 #ifdef _DEBUG
 		std::cout << "ERR: Can't fetch the name of the last function called!\n";
 #endif
 		return false;
 	}
+
 	if (callStack.size() == 1) {
 		if (this->info.ext.wait_reason == Suspended && lastFuncCalled == "RtlUserThreadStart" && this->info.last_syscall == 0) {
 			return true; //normal for suspended threads
@@ -208,9 +210,11 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	}
 #endif
 	const std::string syscallFuncName = g_SyscallTable.getSyscallName(this->info.last_syscall);
+	my_report.lastSyscall = syscallFuncName;
 	if (syscallFuncName.empty()) {
 		return true; // skip the check
 	}
+
 	if (SyscallTable::isSameSyscallFunc(syscallFuncName, lastFuncCalled)) {
 		return true; // valid
 	}
@@ -370,7 +374,7 @@ size_t pesieve::ThreadScanner::analyzeCallStackInfo(IN OUT ThreadScanReport& my_
 		checkCalls = false; 
 	}
 	if (checkCalls) {
-		my_report.cDetails.is_ret_as_syscall = checkReturnAddrIntegrity(my_report.cDetails.callStack);
+		my_report.cDetails.is_ret_as_syscall = checkReturnAddrIntegrity(my_report.cDetails.callStack, my_report);
 	} 
 	return analyzedCount;
 }
