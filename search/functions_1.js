@@ -6,7 +6,7 @@ var searchData=
   ['allocdesciptors_3',['allocDesciptors',['../classpesieve_1_1_import_table_buffer.html#adc8c45704dbab903b08ab0bdaeef513b',1,'pesieve::ImportTableBuffer']]],
   ['allocdllsspace_4',['allocDllsSpace',['../classpesieve_1_1_import_table_buffer.html#a582a28c3c9c44a7122cee1408452f4d0',1,'pesieve::ImportTableBuffer']]],
   ['allocnamesspace_5',['allocNamesSpace',['../classpesieve_1_1_import_table_buffer.html#a7d1ad0c14a30eb85e5b9f14e2a5a3fdb',1,'pesieve::ImportTableBuffer']]],
-  ['analyzecallstack_6',['analyzeCallStack',['../classpesieve_1_1_thread_scanner.html#a9919021b6f9a87d1ee2622e530bf5f7f',1,'pesieve::ThreadScanner']]],
+  ['analyzecallstackinfo_6',['analyzeCallStackInfo',['../classpesieve_1_1_thread_scanner.html#a26dce77279491e0e3f78241052eb8862',1,'pesieve::ThreadScanner']]],
   ['analyzehook_7',['analyzeHook',['../classpesieve_1_1_patch_analyzer.html#af6ad44c0f19e902244177f051113d5ab',1,'pesieve::PatchAnalyzer']]],
   ['analyzeother_8',['analyzeOther',['../classpesieve_1_1_patch_analyzer.html#a4cc8ae713b19e4584186a822fbe41149',1,'pesieve::PatchAnalyzer']]],
   ['append_9',['append',['../classpesieve_1_1_i_a_t_block.html#a47545a6c12fbcc97dcaf8e8490a5b18a',1,'pesieve::IATBlock']]],

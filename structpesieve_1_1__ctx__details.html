@@ -130,15 +130,13 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a236ccadbe7548913e6186651b56f1636"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8add5038bb0b71c10646482ba2bbcaaa" id="r_a8add5038bb0b71c10646482ba2bbcaaa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8add5038bb0b71c10646482ba2bbcaaa">is_managed</a></td></tr>
 <tr class="separator:a8add5038bb0b71c10646482ba2bbcaaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabca56adbcd0155923d8e6b0e62599c5" id="r_aabca56adbcd0155923d8e6b0e62599c5"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aabca56adbcd0155923d8e6b0e62599c5">stackFramesCount</a></td></tr>
-<tr class="separator:aabca56adbcd0155923d8e6b0e62599c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44ca7a32918f0eab5a8d9cf14080e0c0" id="r_a44ca7a32918f0eab5a8d9cf14080e0c0"><td class="memItemLeft" align="right" valign="top">std::set&lt; ULONGLONG &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44ca7a32918f0eab5a8d9cf14080e0c0">shcCandidates</a></td></tr>
-<tr class="separator:a44ca7a32918f0eab5a8d9cf14080e0c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40cdca22475631c6a2e746415ce68ee0" id="r_a40cdca22475631c6a2e746415ce68ee0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; ULONGLONG &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a40cdca22475631c6a2e746415ce68ee0">callStack</a></td></tr>
+<tr class="separator:a40cdca22475631c6a2e746415ce68ee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A custom structure keeping a fragment of a thread context. </p>
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00140">140</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00040">40</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a973d23630a3057a9e1fc500c5bccb639" name="a973d23630a3057a9e1fc500c5bccb639"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a973d23630a3057a9e1fc500c5bccb639">&#9670;&#160;</a></span>_ctx_details()</h2>
@@ -182,7 +180,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00153">153</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00052">52</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -229,11 +227,27 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00160">160</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00058">58</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a40cdca22475631c6a2e746415ce68ee0" name="a40cdca22475631c6a2e746415ce68ee0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40cdca22475631c6a2e746415ce68ee0">&#9670;&#160;</a></span>callStack</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;ULONGLONG&gt; pesieve::_ctx_details::callStack</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00050">50</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+
+</div>
+</div>
 <a id="ad0c5e14eb1bb6d1bef2421752eb5e298" name="ad0c5e14eb1bb6d1bef2421752eb5e298"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad0c5e14eb1bb6d1bef2421752eb5e298">&#9670;&#160;</a></span>is64b</h2>
 
@@ -246,7 +260,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00141">141</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00041">41</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -262,7 +276,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00149">149</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00049">49</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -278,7 +292,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00147">147</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00047">47</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -294,7 +308,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00148">148</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00048">48</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -310,7 +324,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00145">145</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00045">45</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -326,7 +340,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00144">144</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00044">44</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -342,7 +356,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00146">146</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00046">46</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -358,7 +372,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00142">142</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00042">42</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -374,39 +388,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00143">143</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
-
-</div>
-</div>
-<a id="a44ca7a32918f0eab5a8d9cf14080e0c0" name="a44ca7a32918f0eab5a8d9cf14080e0c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44ca7a32918f0eab5a8d9cf14080e0c0">&#9670;&#160;</a></span>shcCandidates</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::set&lt;ULONGLONG&gt; pesieve::_ctx_details::shcCandidates</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00151">151</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
-
-</div>
-</div>
-<a id="aabca56adbcd0155923d8e6b0e62599c5" name="aabca56adbcd0155923d8e6b0e62599c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabca56adbcd0155923d8e6b0e62599c5">&#9670;&#160;</a></span>stackFramesCount</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t pesieve::_ctx_details::stackFramesCount</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00150">150</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00043">43</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
