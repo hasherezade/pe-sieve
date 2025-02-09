@@ -279,7 +279,7 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 			return true;
 		}
 		if (syscallFuncName == "NtWaitForWorkViaWorkerFactory") {
-			if (lastFuncCalled.rfind("NtWaitFor", 0) == 0 || lastFuncCalled.rfind("NtUserMsgWaitFor", 0) == 0) {
+			if (lastFuncCalled.rfind("NtWaitFor", 0) == 0 || lastFuncCalled.rfind("NtUserMsgWaitFor", 0) == 0 || lastFuncCalled.rfind("NtUserCreate", 0) == 0) {
 				return true;
 			}
 		}
