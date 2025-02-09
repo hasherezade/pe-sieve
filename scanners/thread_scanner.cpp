@@ -229,9 +229,17 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	if (SyscallTable::isSameSyscallFunc(syscallFuncName, lastFuncCalled)) {
 		return true; // valid
 	}
-
+	
 	const ScannedModule* mod = modulesInfo.findModuleContaining(lastCalled);
 	const std::string lastModName = mod ? mod->getModName() : "";
+
+	if (syscallFuncName == "NtCallbackReturn") {
+		if (lastModName == "win32u.dll" 
+			|| lastModName == "user32.dll" || lastModName == "winsrv.dll") // for Windows7
+		{
+			return true;
+		}
+	}
 
 	if (!SyscallTable::isSyscallDll(lastModName)) {
 //#ifdef _DEBUG
@@ -240,10 +248,6 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 			<< " WaitReason: " << std::dec << ThreadScanReport::translate_wait_reason(this->info.ext.wait_reason) << std::endl;
 //#endif //_DEBUG
 		return false;
-	}
-
-	if (syscallFuncName == "NtCallbackReturn") {
-		if (lastModName == "win32u.dll") return true;
 	}
 
 	if (this->info.ext.wait_reason == WrUserRequest ||
