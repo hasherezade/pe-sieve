@@ -641,7 +641,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 			if (my_report.status == SCAN_SUSPICIOUS) {
 				my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
 #ifdef _DEBUG
-				std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << " Entropy: " << std::dec << my_report->stats.entropy << " : " << my_report->is_code << std::endl;
+				std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << " Entropy: " << std::dec << my_report.stats.entropy << " : " << my_report.is_code << std::endl;
 #endif //_DEBUG
 				if (my_report.is_code) {
 					break;
