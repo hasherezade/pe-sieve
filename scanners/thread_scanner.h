@@ -89,13 +89,17 @@ namespace pesieve {
 
 		const virtual void callstackToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails)
 		{
+			bool printCallstack = (jdetails >= JSON_DETAILS) ? true : false;
+			if (this->indicators.find(THI_SUS_CALLSTACK_CORRUPT) != this->indicators.end()) {
+				printCallstack = true;
+			}
 			OUT_PADDED(outs, level, "\"stack_ptr\" : ");
 			outs << "\"" << std::hex << stack_ptr << "\"";
 			if (cDetails.callStack.size()) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"frames_count\" : ");
 				outs << std::dec << cDetails.callStack.size();
-				if (jdetails >= JSON_DETAILS) {
+				if (printCallstack) {
 					outs << ",\n";
 					OUT_PADDED(outs, level, "\"frames\" : [");
 					for (auto itr = cDetails.callStack.begin(); itr != cDetails.callStack.end(); ++itr) {
