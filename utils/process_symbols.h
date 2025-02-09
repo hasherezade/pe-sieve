@@ -50,7 +50,7 @@ public:
 		return funcName;
 	}
 
-	std::string funcNameFromAddr(const ULONG_PTR addr)
+	std::string funcNameFromAddr(IN const ULONG_PTR addr, OUT OPTIONAL size_t* displacement = nullptr)
 	{
 		if (!IsInitialized()) {
 			return "";
@@ -63,6 +63,9 @@ public:
 		DWORD64 Displacement = 0;
 		if (!SymFromAddr(hProcess, addr, &Displacement, pSymbol)) {
 			return "";
+		}
+		if (displacement) {
+			(*displacement) = static_cast<size_t>(Displacement);
 		}
 		std::string funcName = pSymbol->Name;
 		return normalizeSyscallPrefix(funcName);

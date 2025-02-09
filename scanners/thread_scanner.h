@@ -107,7 +107,13 @@ namespace pesieve {
 							outs << ", ";
 						}
 						const ULONGLONG addr = *itr;
-						outs << "\"" << std::hex << addr << "\"";
+						outs << "\"" << std::hex << addr;
+						auto sItr = this->addrToSymbol.find(addr);
+						if (sItr != this->addrToSymbol.end()) {
+							outs << ";" << sItr->second;
+						}
+						outs << "\"";
+						
 					}
 					outs << "]";
 				}
@@ -240,6 +246,7 @@ namespace pesieve {
 		std::string lastFunction;
 
 		ctx_details cDetails;
+		std::map<ULONGLONG, std::string> addrToSymbol;
 		std::set<ULONGLONG> shcCandidates;
 		std::set<ThSusIndicator> indicators;
 
@@ -260,7 +267,8 @@ namespace pesieve {
 		virtual ThreadScanReport* scanRemote();
 
 	protected:
-		void initReport(ThreadScanReport* my_report);
+		void initReport(ThreadScanReport& my_report);
+		void reportResolvedCallstack(ThreadScanReport& my_report);
 		static std::string choosePreferredFunctionName(const std::string& dbgSymbol, const std::string& manualSymbol);
 
 		bool scanRemoteThreadCtx(HANDLE hThread, ThreadScanReport& my_report);
@@ -268,9 +276,9 @@ namespace pesieve {
 
 		bool isAddrInNamedModule(ULONGLONG addr);
 		void printThreadInfo(const util::thread_info& threadi);
-		std::string resolveLowLevelFuncName(const ULONGLONG addr, size_t maxDisp=25);
-		bool printResolvedAddr(ULONGLONG addr);
-
+		std::string resolveLowLevelFuncName(IN const ULONGLONG addr, OUT OPTIONAL size_t* disp = nullptr);
+		std::string resolveAddrToString(IN ULONGLONG addr);
+		bool printResolvedAddr(const ULONGLONG addr);
 		size_t fillCallStackInfo(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ThreadScanReport& my_report);
 		size_t analyzeCallStackInfo(IN OUT ThreadScanReport& my_report);
 		size_t _analyzeCallStack(IN OUT ctx_details& cDetails, OUT IN std::set<ULONGLONG>& shcCandidates);

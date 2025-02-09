@@ -476,8 +476,9 @@ bool pesieve::ThreadScanner::isAddrInNamedModule(const ULONGLONG addr)
 	return false;
 }
 
-std::string pesieve::ThreadScanner::resolveLowLevelFuncName(const ULONGLONG addr, size_t maxDisp)
+std::string pesieve::ThreadScanner::resolveLowLevelFuncName(IN const ULONGLONG addr, OUT OPTIONAL size_t* displacement)
 {
+	size_t MAX_DISP = 25;
 	if (!exportsMap) {
 		return "";
 	}
@@ -489,8 +490,10 @@ std::string pesieve::ThreadScanner::resolveLowLevelFuncName(const ULONGLONG addr
 		// not a DLL containing syscalls
 		return "";
 	}
+	size_t _displacement = 0;
 	std::string expName;
-	for (size_t disp = 0; disp < maxDisp; disp++) {
+	for (size_t disp = 0; disp < MAX_DISP; disp++) {
+		_displacement = disp;
 		const ULONGLONG va = addr - disp;
 
 		const std::set<peconv::ExportedFunc>* exp_set = exportsMap->find_exports_by_va(va);
@@ -508,12 +511,58 @@ std::string pesieve::ThreadScanner::resolveLowLevelFuncName(const ULONGLONG addr
 			expName = exp.nameToString();
 			// give preference to the functions naming syscalls:
 			if (SyscallTable::isSyscallFunc(expName)) {
+				if (displacement) {
+					(*displacement) = _displacement;
+				}
 				return expName;
 			}
 		}
 	}
 	// otherwise, return any found
+	if (displacement) {
+		(*displacement) = _displacement;
+	}
 	return expName;
+}
+
+std::string pesieve::ThreadScanner::resolveAddrToString(IN const ULONGLONG addr)
+{
+	ScannedModule* mod = modulesInfo.findModuleContaining(addr);
+	ULONGLONG modBase = 0;
+	if (!mod) {
+		return "";
+	}
+	std::stringstream ss;
+	modBase = mod->getStart();
+	ss << mod->getModName();
+
+	char SEPARATOR = '!';
+	bool is_resolved = false;
+	size_t disp = 0;
+	if (symbols && symbols->IsInitialized()) {
+		std::string funcName = symbols->funcNameFromAddr(addr, &disp);
+		if (!funcName.empty()) {
+			is_resolved = true;
+			ss << SEPARATOR << funcName;
+		}
+	}
+	if (!is_resolved) {
+		std::string funcName = resolveLowLevelFuncName(addr, &disp);
+		if (!funcName.empty()) {
+			is_resolved = true;
+			ss << SEPARATOR << funcName;
+		}
+	}
+	if (is_resolved) {
+		if (disp) {
+			ss << "+0x" << std::hex << disp;
+		}
+	}
+	else {
+		ULONGLONG diff = addr - modBase;
+		ss << "+0x" << std::hex << diff;
+	}
+	return ss.str();
 }
 
 bool pesieve::ThreadScanner::printResolvedAddr(const ULONGLONG addr)
@@ -715,16 +764,24 @@ bool pesieve::ThreadScanner::filterDotNet(ThreadScanReport& my_report)
 	return false;
 }
 
-void pesieve::ThreadScanner::initReport(ThreadScanReport* my_report)
+void pesieve::ThreadScanner::initReport(ThreadScanReport& my_report)
 {
-	if (!my_report ||!this->info.is_extended) {
+	if (!this->info.is_extended) {
 		return;
 	}
-	my_report->thread_state = info.ext.state;
-	my_report->thread_wait_reason = info.ext.wait_reason;
-	my_report->thread_wait_time = info.ext.wait_time;
+	my_report.thread_state = info.ext.state;
+	my_report.thread_wait_reason = info.ext.wait_reason;
+	my_report.thread_wait_time = info.ext.wait_time;
 	if (this->info.last_syscall != INVALID_SYSCALL) {
-		my_report->lastSyscall = g_SyscallTable.getSyscallName(this->info.last_syscall);
+		my_report.lastSyscall = g_SyscallTable.getSyscallName(this->info.last_syscall);
+	}
+}
+
+void pesieve::ThreadScanner::reportResolvedCallstack(ThreadScanReport& my_report)
+{
+	for (auto itr = my_report.cDetails.callStack.begin(); itr != my_report.cDetails.callStack.end(); ++itr) {
+		ULONGLONG addr = *itr;
+		my_report.addrToSymbol[addr] = this->resolveAddrToString(addr);
 	}
 }
 
@@ -737,7 +794,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	if (!my_report) {
 		return nullptr;
 	}
-	initReport(my_report);
+	initReport(*my_report);
 
 #ifdef _SHOW_THREAD_INFO
 	printThreadInfo(info);
@@ -772,5 +829,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	CloseHandle(hThread);
 
 	filterDotNet(*my_report);
+	reportResolvedCallstack(*my_report);
+
 	return my_report;
 }
