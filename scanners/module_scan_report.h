@@ -85,23 +85,27 @@ namespace pesieve {
 			if (module) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"module\" : ");
-				outs << "\"" << std::hex << (ULONGLONG)module << "\"" << ",\n";
+				outs << "\"" << std::hex << (ULONGLONG)module << "\"";
 				if (moduleSize) {
+					outs << ",\n";
 					OUT_PADDED(outs, level, "\"module_size\" : ");
-					outs << "\"" << std::hex << (ULONGLONG)moduleSize << "\"" << ",\n";
+					outs << "\"" << std::hex << (ULONGLONG)moduleSize << "\"";
 				}
 			}
 #ifdef _DEBUG
 			if (origBase) {
+				outs << ",\n";
 				OUT_PADDED(outs, level, "\"original_base\" : ");
-				outs << std::hex << "\"" << origBase << "\"" << ",\n";
+				outs << std::hex << "\"" << origBase << "\"";
 			}
 #endif //_DEBUG
 			if (relocBase && relocBase != (ULONGLONG)module) {
+				outs << ",\n";
 				OUT_PADDED(outs, level, "\"reloc_base\" : ");
-				outs << std::hex << "\"" << relocBase << "\"" << ",\n";
+				outs << std::hex << "\"" << relocBase << "\"";
 			}
 			if (moduleFile.length()) {
+				outs << ",\n";
 				OUT_PADDED(outs, level, "\"module_file\" : ");
 				outs << "\"" << pesieve::util::escape_path_separators(moduleFile) << "\"";
 			}
