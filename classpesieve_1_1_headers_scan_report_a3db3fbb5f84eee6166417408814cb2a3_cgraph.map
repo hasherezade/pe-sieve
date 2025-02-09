@@ -1,9 +1,11 @@
 <map id="pesieve::HeadersScanReport::fieldsToJSON" name="pesieve::HeadersScanReport::fieldsToJSON">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,195,79"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="246,5,428,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,43,230,38,231,43,195,48"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_headers_scan_report.html#af04c1c2f3d532acf4bd980f23422f134" title=" " alt="" coords="243,71,432,111"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="195,69,227,73,227,79,195,74"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="480,5,617,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="429,23,464,23,464,28,429,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,71,195,111"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="246,37,428,78"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,75,230,70,231,75,195,80"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_headers_scan_report.html#af04c1c2f3d532acf4bd980f23422f134" title=" " alt="" coords="243,103,432,143"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="195,101,227,105,227,111,195,106"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_element_scan_report.html#a0b1369dca3fdb900b2f7d6b5abdaaba5" title=" " alt="" coords="480,5,667,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="429,43,464,38,465,43,429,48"/>
+<area shape="rect" id="Node000004" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="505,71,642,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="429,68,490,77,489,82,429,73"/>
 </map>

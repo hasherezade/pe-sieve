@@ -1,7 +1,9 @@
 <map id="pesieve::SkippedModuleReport::toJSON" name="pesieve::SkippedModuleReport::toJSON">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,205,46"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="253,5,435,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,23,237,23,237,28,205,28"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="483,5,620,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="435,23,467,23,467,28,435,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,205,79"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="253,39,435,79"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,56,237,56,237,62,205,62"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_element_scan_report.html#a0b1369dca3fdb900b2f7d6b5abdaaba5" title=" " alt="" coords="483,5,670,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="435,43,467,39,468,44,436,49"/>
+<area shape="rect" id="Node000004" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="508,71,645,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="436,69,493,77,492,82,435,74"/>
 </map>

@@ -1,5 +1,7 @@
 <map id="pesieve::ModuleScanReport::_toJSON" name="pesieve::ModuleScanReport::_toJSON">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,188,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="236,5,373,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,23,220,23,220,28,188,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,39,188,79"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_element_scan_report.html#a0b1369dca3fdb900b2f7d6b5abdaaba5" title=" " alt="" coords="236,5,423,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,43,220,39,221,44,189,49"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="261,71,398,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="189,69,245,77,245,82,188,74"/>
 </map>

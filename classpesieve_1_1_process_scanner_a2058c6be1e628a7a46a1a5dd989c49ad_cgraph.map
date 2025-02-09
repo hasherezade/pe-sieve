@@ -20,12 +20,12 @@
 <area shape="poly" id="edge18_Node000001_Node000016" title=" " alt="" coords="91,1394,135,1124,173,924,219,719,261,572,300,455,305,456,266,573,224,721,179,925,141,1125,96,1395"/>
 <area shape="rect" id="Node000003" href="$classpesieve_1_1_process_scan_report.html#ac3cd73b44ba0c30368cdadf25746b55f" title=" " alt="" coords="1165,422,1353,463"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1117,462,1149,457,1150,462,1118,467"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63" title=" " alt="" coords="1168,488,1350,528"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="1118,488,1153,492,1152,498,1117,493"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_element_scan_report.html#a35b9ed4a057e16ae93783cc59c38258a" title=" " alt="" coords="1166,488,1353,528"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="1118,488,1150,492,1150,497,1117,493"/>
 <area shape="rect" id="Node000004" href="$classpesieve_1_1_process_scan_report.html#aac59d32a60ad030d364e13f0d132c8d6" title=" " alt="" coords="1401,422,1590,463"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1354,440,1386,440,1386,445,1354,445"/>
-<area shape="rect" id="Node000006" href="$classpesieve_1_1_module_scan_report.html#a414cc9a435e507f082e4f8e649de40dc" title=" " alt="" coords="1404,488,1587,528"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1351,505,1388,505,1388,511,1351,511"/>
+<area shape="rect" id="Node000006" href="$classpesieve_1_1_element_scan_report.html#ad146c5c498aae1632d89b471c09ae9b7" title=" " alt="" coords="1402,488,1589,528"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1353,505,1386,505,1386,511,1353,511"/>
 <area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="385,1478,522,1489,706,1492,808,1488,913,1477,1016,1458,1116,1431,1149,1417,1180,1399,1231,1360,1234,1364,1183,1403,1151,1422,1118,1436,1017,1463,913,1482,809,1493,706,1498,522,1495,384,1483"/>
 <area shape="rect" id="Node000010" href="$namespacepesieve_1_1util.html#a7b470a0106a3ad9352e64d1295bd9870" title=" " alt="" coords="472,1286,631,1327"/>
 <area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="380,1304,457,1304,457,1309,380,1309"/>
@@ -118,5 +118,5 @@
 <area shape="poly" id="edge67_Node000109_Node000005" title=" " alt="" coords="872,425,989,424,1054,431,1118,444,1143,457,1166,472,1182,479,1180,484,1164,477,1140,462,1116,449,1054,436,989,430,872,430"/>
 <area shape="poly" id="edge66_Node000109_Node000039" title=" " alt="" coords="862,413,958,386,960,391,863,418"/>
 <area shape="poly" id="edge69_Node000114_Node000002" title=" " alt="" coords="871,491,913,487,913,492,871,496"/>
-<area shape="poly" id="edge70_Node000114_Node000005" title=" " alt="" coords="872,505,929,508,1152,509,1152,514,929,513,872,511"/>
+<area shape="poly" id="edge70_Node000114_Node000005" title=" " alt="" coords="872,505,929,508,1150,509,1150,514,929,513,872,511"/>
 </map>

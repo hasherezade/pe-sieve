@@ -103,8 +103,10 @@ Inheritance diagram for pesieve::UnreachableModuleReport:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_unreachable_module_report__inherit__graph.png" border="0" usemap="#apesieve_1_1_unreachable_module_report_inherit__map" alt="Inheritance graph"/></div>
 <map name="apesieve_1_1_unreachable_module_report_inherit__map" id="apesieve_1_1_unreachable_module_report_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,79,193,120"/>
-<area shape="rect" href="classpesieve_1_1_module_scan_report.html" title="A base class of all the reports detailing on the output of the performed module&#39;s scan." alt="" coords="8,5,190,31"/>
+<area shape="rect" title=" " alt="" coords="5,153,193,193"/>
+<area shape="rect" href="classpesieve_1_1_module_scan_report.html" title="A base class of all the reports detailing on the output of the performed module&#39;s scan." alt="" coords="8,79,190,105"/>
+<area shape="poly" title=" " alt="" coords="102,120,102,152,96,152,96,120"/>
+<area shape="rect" href="classpesieve_1_1_element_scan_report.html" title="A base class of all the reports detailing on the output of the performed element scan." alt="" coords="5,5,193,31"/>
 <area shape="poly" title=" " alt="" coords="102,46,102,79,96,79,96,46"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -113,7 +115,7 @@ Inheritance diagram for pesieve::UnreachableModuleReport:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa7cc8fc1b63f083a9cd3a16435fa2110" id="r_aa7cc8fc1b63f083a9cd3a16435fa2110"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7cc8fc1b63f083a9cd3a16435fa2110">UnreachableModuleReport</a> (HMODULE _module, size_t _moduleSize, std::string _moduleFile)</td></tr>
 <tr class="separator:aa7cc8fc1b63f083a9cd3a16435fa2110"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92157ac6d81c322b65fb18d52f41239c" id="r_a92157ac6d81c322b65fb18d52f41239c"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92157ac6d81c322b65fb18d52f41239c">toJSON</a> (std::stringstream &amp;outs, size_t level=<a class="el" href="classpesieve_1_1_module_scan_report.html#a4bd715db6b234bb5d299ef39abb11860">JSON_LEVEL</a>, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails=<a class="el" href="pe__sieve__types_8h.html#af6093dc1d1fb0449adbc0fe4d909943dad8818893313c7c1f0419f9447e9b2d17">JSON_BASIC</a>)</td></tr>
+<tr class="memitem:a92157ac6d81c322b65fb18d52f41239c" id="r_a92157ac6d81c322b65fb18d52f41239c"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92157ac6d81c322b65fb18d52f41239c">toJSON</a> (std::stringstream &amp;outs, size_t level=<a class="el" href="classpesieve_1_1_element_scan_report.html#a2fc362050f25eeb5ba6c02769aa036de">JSON_LEVEL</a>, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails=<a class="el" href="pe__sieve__types_8h.html#af6093dc1d1fb0449adbc0fe4d909943dad8818893313c7c1f0419f9447e9b2d17">JSON_BASIC</a>)</td></tr>
 <tr class="separator:a92157ac6d81c322b65fb18d52f41239c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpesieve_1_1_module_scan_report"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classpesieve_1_1_module_scan_report')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpesieve_1_1_module_scan_report.html">pesieve::ModuleScanReport</a></td></tr>
 <tr class="memitem:a414cc9a435e507f082e4f8e649de40dc inherit pub_methods_classpesieve_1_1_module_scan_report" id="r_a414cc9a435e507f082e4f8e649de40dc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_scan_report.html#a414cc9a435e507f082e4f8e649de40dc">ModuleScanReport</a> (HMODULE _module, size_t _moduleSize, <a class="el" href="namespacepesieve.html#ae1427f2c930ab7bdd8a08ad8b4a6a90d">t_scan_status</a> _status=<a class="el" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a898214572c7aff1aca29db4a3ec9856d">SCAN_NOT_SUSPICIOUS</a>)</td></tr>
@@ -122,12 +124,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac8a9424d63db32edd1b0988ccb8aade4 inherit pub_methods_classpesieve_1_1_module_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21091979535aba437b6e3cb97cfca6d3 inherit pub_methods_classpesieve_1_1_module_scan_report" id="r_a21091979535aba437b6e3cb97cfca6d3"><td class="memItemLeft" align="right" valign="top">virtual ULONGLONG&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_scan_report.html#a21091979535aba437b6e3cb97cfca6d3">getRelocBase</a> ()</td></tr>
 <tr class="separator:a21091979535aba437b6e3cb97cfca6d3 inherit pub_methods_classpesieve_1_1_module_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classpesieve_1_1_element_scan_report"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classpesieve_1_1_element_scan_report')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpesieve_1_1_element_scan_report.html">pesieve::ElementScanReport</a></td></tr>
+<tr class="memitem:ad146c5c498aae1632d89b471c09ae9b7 inherit pub_methods_classpesieve_1_1_element_scan_report" id="r_ad146c5c498aae1632d89b471c09ae9b7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_element_scan_report.html#ad146c5c498aae1632d89b471c09ae9b7">ElementScanReport</a> (<a class="el" href="namespacepesieve.html#ae1427f2c930ab7bdd8a08ad8b4a6a90d">t_scan_status</a> _status=<a class="el" href="namespacepesieve.html#a458a4723ce4aa55fd1033f3e36381883a898214572c7aff1aca29db4a3ec9856d">SCAN_NOT_SUSPICIOUS</a>)</td></tr>
+<tr class="separator:ad146c5c498aae1632d89b471c09ae9b7 inherit pub_methods_classpesieve_1_1_element_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_static_methods_classpesieve_1_1_module_scan_report"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_static_methods_classpesieve_1_1_module_scan_report')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classpesieve_1_1_module_scan_report.html">pesieve::ModuleScanReport</a></td></tr>
-<tr class="memitem:a56c33c5d0e75abfa8edf5e4e3c3b2e63 inherit pub_static_methods_classpesieve_1_1_module_scan_report" id="r_a56c33c5d0e75abfa8edf5e4e3c3b2e63"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacepesieve.html#ae1427f2c930ab7bdd8a08ad8b4a6a90d">t_scan_status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63">get_scan_status</a> (const <a class="el" href="classpesieve_1_1_module_scan_report.html">ModuleScanReport</a> *<a class="el" href="structreport.html">report</a>)</td></tr>
-<tr class="separator:a56c33c5d0e75abfa8edf5e4e3c3b2e63 inherit pub_static_methods_classpesieve_1_1_module_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classpesieve_1_1_element_scan_report"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_static_methods_classpesieve_1_1_element_scan_report')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classpesieve_1_1_element_scan_report.html">pesieve::ElementScanReport</a></td></tr>
+<tr class="memitem:a35b9ed4a057e16ae93783cc59c38258a inherit pub_static_methods_classpesieve_1_1_element_scan_report" id="r_a35b9ed4a057e16ae93783cc59c38258a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacepesieve.html#ae1427f2c930ab7bdd8a08ad8b4a6a90d">t_scan_status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_element_scan_report.html#a35b9ed4a057e16ae93783cc59c38258a">get_scan_status</a> (const <a class="el" href="classpesieve_1_1_element_scan_report.html">ElementScanReport</a> *<a class="el" href="structreport.html">report</a>)</td></tr>
+<tr class="separator:a35b9ed4a057e16ae93783cc59c38258a inherit pub_static_methods_classpesieve_1_1_element_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classpesieve_1_1_module_scan_report"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_attribs_classpesieve_1_1_module_scan_report')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classpesieve_1_1_module_scan_report.html">pesieve::ModuleScanReport</a></td></tr>
 <tr class="memitem:a49bdf7d9e08c3b7ea427ccf1df2a15df inherit pub_attribs_classpesieve_1_1_module_scan_report" id="r_a49bdf7d9e08c3b7ea427ccf1df2a15df"><td class="memItemLeft" align="right" valign="top">HMODULE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_scan_report.html#a49bdf7d9e08c3b7ea427ccf1df2a15df">module</a></td></tr>
 <tr class="separator:a49bdf7d9e08c3b7ea427ccf1df2a15df inherit pub_attribs_classpesieve_1_1_module_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -141,18 +146,19 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:aa10e34874b64fd20dcd18ec4e0f4d965 inherit pub_attribs_classpesieve_1_1_module_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65db46896baa89ad7718d33daa449024 inherit pub_attribs_classpesieve_1_1_module_scan_report" id="r_a65db46896baa89ad7718d33daa449024"><td class="memItemLeft" align="right" valign="top">ULONGLONG&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_scan_report.html#a65db46896baa89ad7718d33daa449024">relocBase</a></td></tr>
 <tr class="separator:a65db46896baa89ad7718d33daa449024 inherit pub_attribs_classpesieve_1_1_module_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10b0bdf16cb9e7af32e1ab9b35532f68 inherit pub_attribs_classpesieve_1_1_module_scan_report" id="r_a10b0bdf16cb9e7af32e1ab9b35532f68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepesieve.html#ae1427f2c930ab7bdd8a08ad8b4a6a90d">t_scan_status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68">status</a></td></tr>
-<tr class="separator:a10b0bdf16cb9e7af32e1ab9b35532f68 inherit pub_attribs_classpesieve_1_1_module_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_static_attribs_classpesieve_1_1_module_scan_report"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_static_attribs_classpesieve_1_1_module_scan_report')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classpesieve_1_1_module_scan_report.html">pesieve::ModuleScanReport</a></td></tr>
-<tr class="memitem:a4bd715db6b234bb5d299ef39abb11860 inherit pub_static_attribs_classpesieve_1_1_module_scan_report" id="r_a4bd715db6b234bb5d299ef39abb11860"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_scan_report.html#a4bd715db6b234bb5d299ef39abb11860">JSON_LEVEL</a> = 1</td></tr>
-<tr class="separator:a4bd715db6b234bb5d299ef39abb11860 inherit pub_static_attribs_classpesieve_1_1_module_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_classpesieve_1_1_element_scan_report"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_attribs_classpesieve_1_1_element_scan_report')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classpesieve_1_1_element_scan_report.html">pesieve::ElementScanReport</a></td></tr>
+<tr class="memitem:aad748b7507e3b8701e62d216e15e4d80 inherit pub_attribs_classpesieve_1_1_element_scan_report" id="r_aad748b7507e3b8701e62d216e15e4d80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepesieve.html#ae1427f2c930ab7bdd8a08ad8b4a6a90d">t_scan_status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_element_scan_report.html#aad748b7507e3b8701e62d216e15e4d80">status</a></td></tr>
+<tr class="separator:aad748b7507e3b8701e62d216e15e4d80 inherit pub_attribs_classpesieve_1_1_element_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_attribs_classpesieve_1_1_element_scan_report"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_static_attribs_classpesieve_1_1_element_scan_report')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classpesieve_1_1_element_scan_report.html">pesieve::ElementScanReport</a></td></tr>
+<tr class="memitem:a2fc362050f25eeb5ba6c02769aa036de inherit pub_static_attribs_classpesieve_1_1_element_scan_report" id="r_a2fc362050f25eeb5ba6c02769aa036de"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_element_scan_report.html#a2fc362050f25eeb5ba6c02769aa036de">JSON_LEVEL</a> = 1</td></tr>
+<tr class="separator:a2fc362050f25eeb5ba6c02769aa036de inherit pub_static_attribs_classpesieve_1_1_element_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classpesieve_1_1_module_scan_report"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classpesieve_1_1_module_scan_report')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classpesieve_1_1_module_scan_report.html">pesieve::ModuleScanReport</a></td></tr>
-<tr class="memitem:a1abd35c0bc354eb713e7a27383e27137 inherit pro_methods_classpesieve_1_1_module_scan_report" id="r_a1abd35c0bc354eb713e7a27383e27137"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137">_toJSON</a> (std::stringstream &amp;outs, size_t level=<a class="el" href="classpesieve_1_1_module_scan_report.html#a4bd715db6b234bb5d299ef39abb11860">JSON_LEVEL</a>, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails=<a class="el" href="pe__sieve__types_8h.html#af6093dc1d1fb0449adbc0fe4d909943dad8818893313c7c1f0419f9447e9b2d17">JSON_BASIC</a>)</td></tr>
+<tr class="memitem:a1abd35c0bc354eb713e7a27383e27137 inherit pro_methods_classpesieve_1_1_module_scan_report" id="r_a1abd35c0bc354eb713e7a27383e27137"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137">_toJSON</a> (std::stringstream &amp;outs, size_t level=<a class="el" href="classpesieve_1_1_element_scan_report.html#a2fc362050f25eeb5ba6c02769aa036de">JSON_LEVEL</a>, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails=<a class="el" href="pe__sieve__types_8h.html#af6093dc1d1fb0449adbc0fe4d909943dad8818893313c7c1f0419f9447e9b2d17">JSON_BASIC</a>)</td></tr>
 <tr class="separator:a1abd35c0bc354eb713e7a27383e27137 inherit pro_methods_classpesieve_1_1_module_scan_report"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="module__scan__report_8h_source.html#l00100">100</a> of file <a class="el" href="module__scan__report_8h_source.html">module_scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__scan__report_8h_source.html#l00118">118</a> of file <a class="el" href="module__scan__report_8h_source.html">module_scan_report.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa7cc8fc1b63f083a9cd3a16435fa2110" name="aa7cc8fc1b63f083a9cd3a16435fa2110"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa7cc8fc1b63f083a9cd3a16435fa2110">&#9670;&#160;</a></span>UnreachableModuleReport()</h2>
@@ -186,7 +192,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="module__scan__report_8h_source.html#l00103">103</a> of file <a class="el" href="module__scan__report_8h_source.html">module_scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__scan__report_8h_source.html#l00121">121</a> of file <a class="el" href="module__scan__report_8h_source.html">module_scan_report.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -195,6 +201,8 @@ Here is the call graph for this function:</div>
 <area shape="rect" title=" " alt="" coords="5,5,224,46"/>
 <area shape="rect" href="classpesieve_1_1_module_scan_report.html#a414cc9a435e507f082e4f8e649de40dc" title=" " alt="" coords="272,5,454,46"/>
 <area shape="poly" title=" " alt="" coords="224,23,256,23,256,28,224,28"/>
+<area shape="rect" href="classpesieve_1_1_element_scan_report.html#ad146c5c498aae1632d89b471c09ae9b7" title=" " alt="" coords="502,5,689,46"/>
+<area shape="poly" title=" " alt="" coords="454,23,487,23,487,28,454,28"/>
 </map>
 </div>
 
@@ -218,7 +226,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>level</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="classpesieve_1_1_module_scan_report.html#a4bd715db6b234bb5d299ef39abb11860">JSON_LEVEL</a></span>, </td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>level</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="classpesieve_1_1_element_scan_report.html#a2fc362050f25eeb5ba6c02769aa036de">JSON_LEVEL</a></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -235,17 +243,19 @@ Here is the call graph for this function:</div>
 
 <p>Implements <a class="el" href="classpesieve_1_1_module_scan_report.html#a25e97f444bf7df224380c0f7b112443f">pesieve::ModuleScanReport</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="module__scan__report_8h_source.html#l00109">109</a> of file <a class="el" href="module__scan__report_8h_source.html">module_scan_report.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="module__scan__report_8h_source.html#l00127">127</a> of file <a class="el" href="module__scan__report_8h_source.html">module_scan_report.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_unreachable_module_report_a92157ac6d81c322b65fb18d52f41239c_cgraph.png" border="0" usemap="#aclasspesieve_1_1_unreachable_module_report_a92157ac6d81c322b65fb18d52f41239c_cgraph" alt=""/></div>
 <map name="aclasspesieve_1_1_unreachable_module_report_a92157ac6d81c322b65fb18d52f41239c_cgraph" id="aclasspesieve_1_1_unreachable_module_report_a92157ac6d81c322b65fb18d52f41239c_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,193,46"/>
-<area shape="rect" href="classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="241,5,423,46"/>
-<area shape="poly" title=" " alt="" coords="193,23,225,23,225,28,193,28"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="471,5,608,46"/>
-<area shape="poly" title=" " alt="" coords="423,23,455,23,455,28,423,28"/>
+<area shape="rect" title=" " alt="" coords="5,39,193,79"/>
+<area shape="rect" href="classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="241,39,423,79"/>
+<area shape="poly" title=" " alt="" coords="193,56,225,56,225,62,193,62"/>
+<area shape="rect" href="classpesieve_1_1_element_scan_report.html#a0b1369dca3fdb900b2f7d6b5abdaaba5" title=" " alt="" coords="471,5,658,46"/>
+<area shape="poly" title=" " alt="" coords="423,43,455,39,456,44,424,49"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="496,71,633,111"/>
+<area shape="poly" title=" " alt="" coords="424,69,481,77,480,82,423,74"/>
 </map>
 </div>
 

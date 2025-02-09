@@ -26,7 +26,7 @@ var searchData=
   ['get_5for_5fload_5fmodule_23',['get_or_load_module',['../namespacepesieve_1_1util.html#af1021608b35c08f8ab69dba2ec27cde2',1,'pesieve::util']]],
   ['get_5fpage_5fdetails_24',['get_page_details',['../thread__scanner_8cpp.html#a7b9ade21d4de016d2a048bf6cc42dbc0',1,'thread_scanner.cpp']]],
   ['get_5fpayload_5fext_25',['get_payload_ext',['../namespacepesieve.html#a37106144bce7fd014a5bd3dc1631af0d',1,'pesieve']]],
-  ['get_5fscan_5fstatus_26',['get_scan_status',['../classpesieve_1_1_module_scan_report.html#a56c33c5d0e75abfa8edf5e4e3c3b2e63',1,'pesieve::ModuleScanReport']]],
+  ['get_5fscan_5fstatus_26',['get_scan_status',['../classpesieve_1_1_element_scan_report.html#a35b9ed4a057e16ae93783cc59c38258a',1,'pesieve::ElementScanReport']]],
   ['get_5fsubpath_5fptr_27',['get_subpath_ptr',['../namespacepesieve_1_1util.html#a1260888974b2542240fd7f81e99435b9',1,'pesieve::util']]],
   ['get_5fsystem_5fdrive_28',['get_system_drive',['../namespacepesieve_1_1util.html#ac15d9d6947cab96587bbffaf79467d38',1,'pesieve::util']]],
   ['get_5fthunk_5fat_5frva_29',['get_thunk_at_rva',['../iat__scanner_8cpp.html#a5bac0747c0d9dabf532e119ec9925575',1,'iat_scanner.cpp']]],

@@ -1,16 +1,18 @@
 <map id="pesieve::ArtefactScanReport::toJSON" name="pesieve::ArtefactScanReport::toJSON">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,92,192,133"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_artefact_scan_report.html#a5bacb517e05b8a1cec522efa2ac1ff96" title=" " alt="" coords="240,92,426,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,110,224,110,224,115,192,115"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_working_set_scan_report.html#a8b2eb2f022203f7ff88a7baa2bc3d1c0" title=" " alt="" coords="474,92,681,133"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="426,110,458,110,458,115,426,115"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="742,5,924,46"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="639,89,755,49,757,54,641,94"/>
-<area shape="rect" id="Node000005" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="985,35,1122,75"/>
-<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="681,97,969,62,970,68,682,103"/>
-<area shape="rect" id="Node000006" href="$classpesieve_1_1_working_set_scan_report.html#a6b4c4ea3b12495f789a765eb3162d5be" title=" " alt="" coords="729,120,937,161"/>
-<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="682,121,714,125,714,130,681,126"/>
-<area shape="rect" id="Node000007" href="$classpesieve_1_1_working_set_scan_report.html#a6fbdc9666d6eb78801d4ecb6e7cd6182" title=" " alt="" coords="729,185,937,226"/>
-<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="630,131,730,170,752,177,750,183,728,175,628,136"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="925,35,970,41,969,46,924,40"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,100,192,141"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_artefact_scan_report.html#a5bacb517e05b8a1cec522efa2ac1ff96" title=" " alt="" coords="240,100,426,141"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,118,224,118,224,123,192,123"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_working_set_scan_report.html#a8b2eb2f022203f7ff88a7baa2bc3d1c0" title=" " alt="" coords="474,100,681,141"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="426,118,458,118,458,123,426,123"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_module_scan_report.html#a1abd35c0bc354eb713e7a27383e27137" title=" " alt="" coords="742,13,924,54"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="639,97,755,57,757,62,641,102"/>
+<area shape="rect" id="Node000006" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="1010,71,1147,111"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="681,112,994,93,994,99,682,117"/>
+<area shape="rect" id="Node000007" href="$classpesieve_1_1_working_set_scan_report.html#a6b4c4ea3b12495f789a765eb3162d5be" title=" " alt="" coords="729,128,937,169"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="682,129,714,133,714,138,681,134"/>
+<area shape="rect" id="Node000008" href="$classpesieve_1_1_working_set_scan_report.html#a6fbdc9666d6eb78801d4ecb6e7cd6182" title=" " alt="" coords="729,193,937,234"/>
+<area shape="poly" id="edge8_Node000003_Node000008" title=" " alt="" coords="630,139,730,178,752,185,750,191,728,183,628,144"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_element_scan_report.html#a0b1369dca3fdb900b2f7d6b5abdaaba5" title=" " alt="" coords="985,5,1172,46"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="925,28,969,27,969,32,925,33"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="924,52,995,69,994,74,922,57"/>
 </map>

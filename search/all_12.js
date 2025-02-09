@@ -101,7 +101,7 @@ var searchData=
   ['stats_5fanalyzer_2eh_98',['stats_analyzer.h',['../stats__analyzer_8h.html',1,'']]],
   ['stats_5futil_2eh_99',['stats_util.h',['../stats__util_8h.html',1,'']]],
   ['statssettings_100',['StatsSettings',['../structpesieve_1_1_stats_settings.html',1,'pesieve::StatsSettings'],['../structpesieve_1_1_stats_settings.html#a6cc87183e4f04394819667bd2acc00ac',1,'pesieve::StatsSettings::StatsSettings()']]],
-  ['status_101',['status',['../classpesieve_1_1_module_scan_report.html#a10b0bdf16cb9e7af32e1ab9b35532f68',1,'pesieve::ModuleScanReport']]],
+  ['status_101',['status',['../classpesieve_1_1_element_scan_report.html#aad748b7507e3b8701e62d216e15e4d80',1,'pesieve::ElementScanReport']]],
   ['std_5fdev_5fcalc_2eh_102',['std_dev_calc.h',['../std__dev__calc_8h.html',1,'']]],
   ['stddeviationcalc_103',['StdDeviationCalc',['../classpesieve_1_1stats_1_1_std_deviation_calc.html',1,'pesieve::stats::StdDeviationCalc'],['../classpesieve_1_1stats_1_1_std_deviation_calc.html#a4ec518e853777eb643d82926f0ad6c70',1,'pesieve::stats::StdDeviationCalc::StdDeviationCalc()']]],
   ['stop_5fva_104',['stop_va',['../classpesieve_1_1_mem_page_data.html#a7c151bd819b2444eb7e93c92fcd4f8ce',1,'pesieve::MemPageData']]],
