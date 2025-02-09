@@ -617,7 +617,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		my_report.status = SCAN_ERROR;
 		return false;
 	}
-
+	
 	my_report.stack_ptr = cDetails.rsp;
 	bool isModified = false;
 	bool is_unnamed = !isAddrInNamedModule(cDetails.rip);
@@ -654,8 +654,6 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		}
 	}
 
-	const bool hasEmptyGUI = has_empty_gui_info(tid);
-	
 	if (this->info.is_extended && info.ext.state == Waiting && this->info.ext.wait_reason != Suspended 
 		&& !cDetails.is_ret_in_frame)
 	{
@@ -691,8 +689,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		isStackCorrupt = true;
 	}
 
-	if (hasEmptyGUI &&
-		cDetails.callStack.size() == 1
+	if (cDetails.callStack.size() == 1
 		&& this->info.is_extended && info.ext.state == Waiting && info.ext.wait_reason == UserRequest)
 	{
 		my_report.indicators.insert(THI_SUS_CALLSTACK_CORRUPT);
