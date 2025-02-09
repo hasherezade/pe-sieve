@@ -129,6 +129,7 @@ std::string ThreadScanReport::translate_wait_reason(DWORD thread_wait_reason)
 		case WrUserRequest: return "WrUserRequest";
 		case WrEventPair: return "WrEventPair";
 		case WrQueue: return "WrQueue";
+		case WrAlertByThreadId: return "WrAlertByThreadId";
 	}
 	std::stringstream ss;
 	ss << "Other: " << std::dec << thread_wait_reason;
@@ -209,8 +210,7 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		return true;
 	}
 #endif
-	const std::string syscallFuncName = g_SyscallTable.getSyscallName(this->info.last_syscall);
-	my_report.lastSyscall = syscallFuncName;
+	const std::string syscallFuncName = my_report.lastSyscall;
 	if (syscallFuncName.empty()) {
 		return true; // skip the check
 	}
@@ -230,11 +230,11 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		}
 	}
 	if (!SyscallTable::isSyscallDll(lastModName)) {
-//#ifdef _DEBUG
+#ifdef _DEBUG
 		std::cout << "[@]" << std::dec << info.tid << " : " << "LastSyscall: " << syscallFuncName << " VS LastCalledAddr: " << std::hex << lastCalled 
 			<< " : " << lastFuncCalled << "(" << lastModName << "." << manualSymbol << " )" << " DIFFERENT!"
 			<< " WaitReason: " << std::dec << ThreadScanReport::translate_wait_reason(this->info.ext.wait_reason) << std::endl;
-//#endif //_DEBUG
+#endif //_DEBUG
 		return false;
 	}
 
@@ -284,11 +284,11 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 			if ((lastFuncCalled.rfind("NtUserMsgWaitFor", 0) == 0) || (lastFuncCalled.rfind("NtWaitFor", 0) == 0)) return true;
 		}
 	}
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	std::cout << "[@]" << std::dec << info.tid << " : " << "LastSyscall: " << syscallFuncName << " VS LastCalledAddr: " << std::hex << lastCalled
 		<< " : " << lastFuncCalled << "(" << lastModName << "." << manualSymbol << " )" << " DIFFERENT!"
 		<< " WaitReason: " << std::dec << ThreadScanReport::translate_wait_reason(this->info.ext.wait_reason) << std::endl;
-//#endif //_DEBUG
+#endif //_DEBUG
 #ifdef _SHOW_THREAD_INFO
 	printThreadInfo(info);
 	std::cout << "STACK:\n";
@@ -715,6 +715,19 @@ bool pesieve::ThreadScanner::filterDotNet(ThreadScanReport& my_report)
 	return false;
 }
 
+void pesieve::ThreadScanner::initReport(ThreadScanReport* my_report)
+{
+	if (!my_report ||!this->info.is_extended) {
+		return;
+	}
+	my_report->thread_state = info.ext.state;
+	my_report->thread_wait_reason = info.ext.wait_reason;
+	my_report->thread_wait_time = info.ext.wait_time;
+	if (this->info.last_syscall != INVALID_SYSCALL) {
+		my_report->lastSyscall = g_SyscallTable.getSyscallName(this->info.last_syscall);
+	}
+}
+
 ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 {
 	if (GetCurrentThreadId() == info.tid) {
@@ -724,9 +737,12 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	if (!my_report) {
 		return nullptr;
 	}
+	initReport(my_report);
+
 #ifdef _SHOW_THREAD_INFO
 	printThreadInfo(info);
 #endif // _SHOW_THREAD_INFO
+	// initialize the report with the collected info:
 
 	bool is_unnamed = !isAddrInNamedModule(info.start_addr);
 	if (is_unnamed) {
@@ -735,11 +751,6 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 				my_report->indicators.insert(THI_SUS_START);
 			}
 		}
-	}
-	if (this->info.is_extended) {
-		my_report->thread_state = info.ext.state;
-		my_report->thread_wait_reason = info.ext.wait_reason;
-		my_report->thread_wait_time = info.ext.wait_time;
 	}
 	if (!should_scan_context(info)) {
 		return my_report;

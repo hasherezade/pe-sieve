@@ -260,6 +260,7 @@ namespace pesieve {
 		virtual ThreadScanReport* scanRemote();
 
 	protected:
+		void initReport(ThreadScanReport* my_report);
 		static std::string choosePreferredFunctionName(const std::string& dbgSymbol, const std::string& manualSymbol);
 
 		bool scanRemoteThreadCtx(HANDLE hThread, ThreadScanReport& my_report);
