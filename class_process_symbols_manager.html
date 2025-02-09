@@ -109,8 +109,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad6b1d880d0b5ae9618c8ac5452823704"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8934eeb7397191e5201fefdc29cc333" id="r_af8934eeb7397191e5201fefdc29cc333"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af8934eeb7397191e5201fefdc29cc333">normalizeSyscallPrefix</a> (std::string &amp;funcName)</td></tr>
 <tr class="separator:af8934eeb7397191e5201fefdc29cc333"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f596791a95938ac76051baaba62961a" id="r_a1f596791a95938ac76051baaba62961a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f596791a95938ac76051baaba62961a">funcNameFromAddr</a> (const ULONG_PTR addr)</td></tr>
-<tr class="separator:a1f596791a95938ac76051baaba62961a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae14448a00440ad28c16be2ab16d56899" id="r_ae14448a00440ad28c16be2ab16d56899"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae14448a00440ad28c16be2ab16d56899">funcNameFromAddr</a> (IN const ULONG_PTR addr, OUT OPTIONAL size_t *displacement=nullptr)</td></tr>
+<tr class="separator:ae14448a00440ad28c16be2ab16d56899"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78f8074e9a746d53e8e5d8388e50abd0" id="r_a78f8074e9a746d53e8e5d8388e50abd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a78f8074e9a746d53e8e5d8388e50abd0">dumpSymbolInfo</a> (const ULONG_PTR addr)</td></tr>
 <tr class="separator:a78f8074e9a746d53e8e5d8388e50abd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -218,7 +218,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00071">71</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00074">74</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -255,12 +255,12 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00095">95</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00098">98</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 
 </div>
 </div>
-<a id="a1f596791a95938ac76051baaba62961a" name="a1f596791a95938ac76051baaba62961a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f596791a95938ac76051baaba62961a">&#9670;&#160;</a></span>funcNameFromAddr()</h2>
+<a id="ae14448a00440ad28c16be2ab16d56899" name="ae14448a00440ad28c16be2ab16d56899"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae14448a00440ad28c16be2ab16d56899">&#9670;&#160;</a></span>funcNameFromAddr()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,8 +271,12 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname">std::string ProcessSymbolsManager::funcNameFromAddr </td>
           <td>(</td>
-          <td class="paramtype">const ULONG_PTR</td>          <td class="paramname"><span class="paramname"><em>addr</em></span></td><td>)</td>
+          <td class="paramtype">IN const ULONG_PTR</td>          <td class="paramname"><span class="paramname"><em>addr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">OUT OPTIONAL size_t *</td>          <td class="paramname"><span class="paramname"><em>displacement</em></span><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -286,8 +290,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="class_process_symbols_manager_a1f596791a95938ac76051baaba62961a_cgraph.png" border="0" usemap="#aclass_process_symbols_manager_a1f596791a95938ac76051baaba62961a_cgraph" alt=""/></div>
-<map name="aclass_process_symbols_manager_a1f596791a95938ac76051baaba62961a_cgraph" id="aclass_process_symbols_manager_a1f596791a95938ac76051baaba62961a_cgraph">
+<div class="center"><img src="class_process_symbols_manager_ae14448a00440ad28c16be2ab16d56899_cgraph.png" border="0" usemap="#aclass_process_symbols_manager_ae14448a00440ad28c16be2ab16d56899_cgraph" alt=""/></div>
+<map name="aclass_process_symbols_manager_ae14448a00440ad28c16be2ab16d56899_cgraph" id="aclass_process_symbols_manager_ae14448a00440ad28c16be2ab16d56899_cgraph">
 <area shape="rect" title=" " alt="" coords="5,39,175,79"/>
 <area shape="rect" href="class_process_symbols_manager.html#ad6b1d880d0b5ae9618c8ac5452823704" title=" " alt="" coords="223,5,392,46"/>
 <area shape="poly" title=" " alt="" coords="175,43,207,38,208,44,175,49"/>
@@ -400,7 +404,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00105">105</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00108">108</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 
 </div>
 </div>
@@ -424,7 +428,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00106">106</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00109">109</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 
 </div>
 </div>
