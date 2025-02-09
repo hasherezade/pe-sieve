@@ -203,7 +203,9 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	}
 	const std::string lastFuncCalled = choosePreferredFunctionName(debugFuncName, manualSymbol);
 	if (lastFuncCalled.empty()) {
+#ifdef _DEBUG
 		std::cout << "ERR: Can't fetch the name of the last function called!\n";
+#endif
 		return false;
 	}
 	if (callStack.size() == 1) {
@@ -213,9 +215,7 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		return false; // otherwise it is an anomaly
 	}
 	// Proceed to check if the last syscall matches the last function called...
-	if (this->info.ext.wait_reason == Suspended) {
-		return true; // there can be last func. vs last syscall mismatch in case of suspended threads
-	}
+
 #ifndef _WIN64
 	static bool isWow64 = util::is_current_wow64();
 	if (!isWow64 && lastFuncCalled == "KiFastSystemCallRet") {
@@ -240,7 +240,6 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 			return true;
 		}
 	}
-
 	if (!SyscallTable::isSyscallDll(lastModName)) {
 //#ifdef _DEBUG
 		std::cout << "[@]" << std::dec << info.tid << " : " << "LastSyscall: " << syscallFuncName << " VS LastCalledAddr: " << std::hex << lastCalled 
@@ -373,9 +372,21 @@ size_t pesieve::ThreadScanner::_analyzeCallStack(IN OUT ctx_details& cDetails, O
 size_t pesieve::ThreadScanner::analyzeCallStackInfo(IN OUT ThreadScanReport& my_report)
 {
 	const size_t analyzedCount = _analyzeCallStack(my_report.cDetails, my_report.shcCandidates);
-	if (!my_report.cDetails.is_managed) {
-		my_report.cDetails.is_ret_as_syscall = checkReturnAddrIntegrity(my_report.cDetails.callStack);
+
+	bool checkCalls = true;
+	if (my_report.cDetails.is_managed) {
+		checkCalls = false;
 	}
+	if (info.ext.wait_reason > WrQueue ||
+		info.ext.wait_reason == WrFreePage || info.ext.wait_reason == WrPageIn || info.ext.wait_reason == WrPoolAllocation ||
+		info.ext.wait_reason == FreePage || info.ext.wait_reason == PageIn || info.ext.wait_reason == PoolAllocation ||
+		info.ext.wait_reason == Suspended)// there can be last func. vs last syscall mismatch in case of suspended threads
+	{
+		checkCalls = false; 
+	}
+	if (checkCalls) {
+		my_report.cDetails.is_ret_as_syscall = checkReturnAddrIntegrity(my_report.cDetails.callStack);
+	} 
 	return analyzedCount;
 }
 
@@ -625,14 +636,12 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	}
 	
 	my_report.stack_ptr = cDetails.rsp;
-	bool isModified = false;
 	bool is_unnamed = !isAddrInNamedModule(cDetails.rip);
 	if (is_unnamed) {
 		my_report.indicators.insert(THI_SUS_IP);
 		if (reportSuspiciousAddr(&my_report, cDetails.rip)) {
 			if (my_report.status == SCAN_SUSPICIOUS) {
 				my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
-				isModified = true;
 			}
 		}
 	}
@@ -655,7 +664,6 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 #ifdef _SHOW_THREAD_INFO
 				std::cout << "Found! " << std::hex << addr << "\n";
 #endif //_SHOW_THREAD_INFO
-				isModified = true;
 			}
 		}
 	}
@@ -670,7 +678,6 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		printResolvedAddr(ret_addr);
 #endif //_SHOW_THREAD_INFO
 		if (is_unnamed && reportSuspiciousAddr(&my_report, (ULONGLONG)ret_addr)) {
-			isModified = true;
 			my_report.indicators.insert(THI_SUS_RET);
 			if (my_report.status == SCAN_SUSPICIOUS) {
 				my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
@@ -687,25 +694,19 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 
 	// other indicators of stack being corrupt:
 	
-	bool isStackCorrupt = false;
-
 	if (this->info.is_extended && !my_report.cDetails.is_managed && !my_report.cDetails.is_ret_as_syscall)
 	{
 		my_report.indicators.insert(THI_SUS_CALLS_INTEGRITY);
-		isStackCorrupt = true;
+		my_report.status = SCAN_SUSPICIOUS;
 	}
 
 	if (cDetails.callStack.size() == 1
 		&& this->info.is_extended && info.ext.state == Waiting && info.ext.wait_reason == UserRequest)
 	{
 		my_report.indicators.insert(THI_SUS_CALLSTACK_CORRUPT);
-		isStackCorrupt = true;
-	}
-
-	if (isStackCorrupt) {
 		my_report.status = SCAN_SUSPICIOUS;
 	}
-	return isModified;
+	return (my_report.status == SCAN_SUSPICIOUS) ? true : false;
 }
 
 bool pesieve::ThreadScanner::filterDotNet(ThreadScanReport& my_report)
