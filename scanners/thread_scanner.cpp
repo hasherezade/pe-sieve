@@ -195,8 +195,6 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	if (this->info.last_syscall == INVALID_SYSCALL || !symbols || !callStack.size() || !info.is_extended || !g_SyscallTable.isReady()) {
 		return true; // skip the check
 	}
-	const std::string syscallFuncName = g_SyscallTable.getSyscallName(this->info.last_syscall);
-
 	const ULONGLONG lastCalled = *(callStack.begin());
 	const std::string debugFuncName = symbols->funcNameFromAddr(lastCalled);
 	const std::string manualSymbol = exportsMap ? resolveLowLevelFuncName(lastCalled) : "";
@@ -224,8 +222,12 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		return true;
 	}
 #endif
+	const std::string syscallFuncName = g_SyscallTable.getSyscallName(this->info.last_syscall);
+	if (syscallFuncName.empty()) {
+		return true; // skip the check
+	}
 	if (SyscallTable::isSameSyscallFunc(syscallFuncName, lastFuncCalled)) {
-		return true;
+		return true; // valid
 	}
 
 	const ScannedModule* mod = modulesInfo.findModuleContaining(lastCalled);
