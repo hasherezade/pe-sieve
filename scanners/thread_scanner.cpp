@@ -269,6 +269,9 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		if (syscallFuncName.rfind("NtUser", 0) == 0 && lastFuncCalled == "NtWaitForWorkViaWorkerFactory") {
 			return true;
 		}
+		if (syscallFuncName.rfind("NtUserModify", 0) == 0 && lastFuncCalled == "NtDeviceIoControlFile") {
+			return true;
+		}
 	}
 
 	if (this->info.ext.wait_reason == WrQueue) {
