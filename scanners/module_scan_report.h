@@ -103,7 +103,7 @@ namespace pesieve {
 			}
 			if (moduleFile.length()) {
 				OUT_PADDED(outs, level, "\"module_file\" : ");
-				outs << "\"" << pesieve::util::escape_path_separators(moduleFile) << "\"" << ",\n";
+				outs << "\"" << pesieve::util::escape_path_separators(moduleFile) << "\"";
 			}
 			if (isDotNetModule) {
 				outs << ",\n";
