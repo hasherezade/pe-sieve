@@ -114,14 +114,31 @@ namespace pesieve {
 			}
 		}
 
-		const virtual void fieldsToJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
+		const bool moduleInfoToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails)
 		{
-			ModuleScanReport::_toJSON(outs, level);
+			if (!this->module) {
+				return false;
+			}
 			outs << ",\n";
-			OUT_PADDED(outs, level, "\"thread_id\" : ");
-			outs << std::dec << tid;
+			OUT_PADDED(outs, level, "\"module\" : ");
+			outs << "\"" << std::hex << (ULONGLONG)module << "\"";
+			if (moduleSize) {
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"module_size\" : ");
+				outs << "\"" << std::hex << (ULONGLONG)moduleSize << "\"";
+			}
+			outs << ",\n";
+			OUT_PADDED(outs, level, "\"protection\" : ");
+			outs << "\"" << std::hex << protection << "\"";
+			if (stats.isFilled()) {
+				outs << ",\n";
+				stats.toJSON(outs, level);
+			}
+			return true;
+		}
 
-			outs << ",\n";
+		const bool indicatorsToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails)
+		{
 			OUT_PADDED(outs, level, "\"indicators\" : [");
 			for (auto itr = indicators.begin(); itr != indicators.end(); ++itr) {
 				if (itr != indicators.begin()) {
@@ -130,13 +147,14 @@ namespace pesieve {
 				outs << "\"" << indicator_to_str(*itr) << "\"";
 			}
 			outs << "]";
-			if (stack_ptr) {
-				outs << ",\n";
-				OUT_PADDED(outs, level, "\"callstack\" : {\n");
-				callstackToJSON(outs, level + 1, jdetails);
-				outs << "\n";
-				OUT_PADDED(outs, level, "}");
-			}
+		}
+
+		const virtual void fieldsToJSON(std::stringstream &outs, size_t level, const pesieve::t_json_level &jdetails)
+		{
+			ElementScanReport::_toJSON(outs, level);
+			outs << ",\n";
+			OUT_PADDED(outs, level, "\"thread_id\" : ");
+			outs << std::dec << tid;
 			if (thread_state != THREAD_STATE_UNKNOWN) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"thread_state\" : ");
@@ -148,6 +166,17 @@ namespace pesieve {
 					outs << "\"" << translate_wait_reason(thread_wait_reason) << "\"";
 				}
 			}
+			if (stack_ptr) {
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"callstack\" : {\n");
+				callstackToJSON(outs, level + 1, jdetails);
+				outs << "\n";
+				OUT_PADDED(outs, level, "}");
+			}
+
+			outs << ",\n";
+			indicatorsToJSON(outs, level, jdetails);
+
 			if (susp_addr) {
 				outs << ",\n";
 				if (this->module && this->moduleSize) {
@@ -158,15 +187,7 @@ namespace pesieve {
 				}
 				outs << "\"" << std::hex << susp_addr << "\"";
 			}
-			if (this->module) {
-				outs << ",\n";
-				OUT_PADDED(outs, level, "\"protection\" : ");
-				outs << "\"" << std::hex << protection << "\"";
-				if (stats.isFilled()) {
-					outs << ",\n";
-					stats.toJSON(outs, level);
-				}
-			}
+			moduleInfoToJSON(outs, level, jdetails);
 		}
 
 		const virtual bool toJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level &jdetails)

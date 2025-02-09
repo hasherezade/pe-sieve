@@ -21,13 +21,18 @@ namespace pesieve {
 		SCAN_SUSPICIOUS = 1
 	} t_scan_status;
 
-	//!  A base class of all the reports detailing on the output of the performed module's scan.
-	class ModuleScanReport
+	//!  A base class of all the reports detailing on the output of the performed element scan.
+	class ElementScanReport
 	{
 	public:
+		ElementScanReport(t_scan_status _status = SCAN_NOT_SUSPICIOUS)
+			: status(_status)
+		{
+		}
+
 		static const size_t JSON_LEVEL = 1;
 
-		static t_scan_status get_scan_status(const ModuleScanReport *report)
+		static t_scan_status get_scan_status(const ElementScanReport* report)
 		{
 			if (report == nullptr) {
 				return SCAN_ERROR;
@@ -35,11 +40,25 @@ namespace pesieve {
 			return report->status;
 		}
 
+		t_scan_status status;
 
+	protected:
+		const virtual bool _toJSON(std::stringstream& outs, size_t level = JSON_LEVEL, const pesieve::t_json_level& jdetails = JSON_BASIC)
+		{
+			OUT_PADDED(outs, level, "\"status\" : ");
+			outs << std::dec << status;
+			return true;
+		}
+	};
+
+	//!  A base class of all the reports detailing on the output of the performed module's scan.
+	class ModuleScanReport : public ElementScanReport
+	{
+	public:
 		ModuleScanReport(HMODULE _module, size_t _moduleSize, t_scan_status _status = SCAN_NOT_SUSPICIOUS)
-			: module(_module), moduleSize(_moduleSize), isDotNetModule(false), 
-			origBase(0), relocBase((ULONGLONG)_module),
-			status(_status)
+			: ElementScanReport(_status),
+			module(_module), moduleSize(_moduleSize), isDotNetModule(false),
+			origBase(0), relocBase((ULONGLONG)_module)
 		{
 		}
 
@@ -58,12 +77,13 @@ namespace pesieve {
 		std::string moduleFile;
 		ULONGLONG origBase;
 		ULONGLONG relocBase;
-		t_scan_status status;
 
 	protected:
 		const virtual bool _toJSON(std::stringstream& outs, size_t level = JSON_LEVEL, const pesieve::t_json_level& jdetails = JSON_BASIC)
 		{
+			ElementScanReport::_toJSON(outs, level, jdetails);
 			if (module) {
+				outs << ",\n";
 				OUT_PADDED(outs, level, "\"module\" : ");
 				outs << "\"" << std::hex << (ULONGLONG)module << "\"" << ",\n";
 				if (moduleSize) {
@@ -85,8 +105,6 @@ namespace pesieve {
 				OUT_PADDED(outs, level, "\"module_file\" : ");
 				outs << "\"" << pesieve::util::escape_path_separators(moduleFile) << "\"" << ",\n";
 			}
-			OUT_PADDED(outs, level, "\"status\" : ");
-			outs << std::dec << status;
 			if (isDotNetModule) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"is_dot_net\" : \"");

@@ -117,21 +117,6 @@ DWORD WINAPI enum_stack_thread(LPVOID lpParam)
 	return STATUS_UNSUCCESSFUL;
 }
 
-bool has_empty_gui_info(DWORD tid)
-{
-	GUITHREADINFO gui = { 0 };
-	gui.cbSize = sizeof(GUITHREADINFO);
-	if (!GetGUIThreadInfo(tid, &gui)) {
-		return false;
-	}
-	bool hasWindows = gui.hwndActive || gui.hwndCapture || gui.hwndCaret || gui.hwndMenuOwner || gui.hwndMoveSize;
-	bool hasRcCaret = gui.rcCaret.left || gui.rcCaret.right || gui.rcCaret.bottom || gui.rcCaret.top;
-	if (hasWindows || hasRcCaret) {
-		return false;
-	}
-	return true;
-}
-
 //---
 
 std::string ThreadScanReport::translate_wait_reason(DWORD thread_wait_reason)
