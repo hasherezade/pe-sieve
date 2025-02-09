@@ -102,8 +102,8 @@ namespace pesieve {
 				if (printCallstack) {
 					outs << ",\n";
 					OUT_PADDED(outs, level, "\"frames\" : [");
-					for (auto itr = cDetails.callStack.begin(); itr != cDetails.callStack.end(); ++itr) {
-						if (itr != cDetails.callStack.begin()) {
+					for (auto itr = cDetails.callStack.rbegin(); itr != cDetails.callStack.rend(); ++itr) {
+						if (itr != cDetails.callStack.rbegin()) {
 							outs << ", ";
 						}
 						const ULONGLONG addr = *itr;
