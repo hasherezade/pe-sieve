@@ -77,7 +77,7 @@ namespace pesieve {
 				outs << std::hex << "\"" << origBase << "\"" << ",\n";
 			}
 #endif //_DEBUG
-			if (relocBase != (ULONGLONG)module) {
+			if (relocBase && relocBase != (ULONGLONG)module) {
 				OUT_PADDED(outs, level, "\"reloc_base\" : ");
 				outs << std::hex << "\"" << relocBase << "\"" << ",\n";
 			}

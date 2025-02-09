@@ -269,6 +269,9 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		if (syscallFuncName.rfind("NtUser", 0) == 0 && lastFuncCalled == "NtWaitForWorkViaWorkerFactory") {
 			return true;
 		}
+		if (syscallFuncName.rfind("NtUserModify", 0) == 0 && lastFuncCalled == "NtDeviceIoControlFile") {
+			return true;
+		}
 	}
 
 	if (this->info.ext.wait_reason == WrQueue) {
@@ -276,7 +279,7 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 			return true;
 		}
 		if (syscallFuncName == "NtWaitForWorkViaWorkerFactory") {
-			if (lastFuncCalled.rfind("NtWaitFor", 0) == 0 || lastFuncCalled.rfind("NtUserMsgWaitFor", 0) == 0) {
+			if (lastFuncCalled.rfind("NtWaitFor", 0) == 0 || lastFuncCalled.rfind("NtUserMsgWaitFor", 0) == 0 || lastFuncCalled.rfind("NtUserCreate", 0) == 0) {
 				return true;
 			}
 		}
@@ -306,17 +309,16 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	return false;
 }
 
-size_t pesieve::ThreadScanner::analyzeCallStack(IN const std::vector<ULONGLONG> &call_stack, IN OUT ctx_details& cDetails)
+size_t pesieve::ThreadScanner::_analyzeCallStack(IN OUT ctx_details& cDetails, OUT IN std::set<ULONGLONG> &shcCandidates)
 {
 	size_t processedCntr = 0;
 
 	cDetails.is_managed = false;
-	cDetails.stackFramesCount = call_stack.size();
 	cDetails.is_ret_in_frame = false;
 #ifdef _SHOW_THREAD_INFO
-	std::cout << "\n" << "Stack frame Size: " << std::dec << call_stack.size() << "\n===\n";
+	std::cout << "\n" << "Stack frame Size: " << std::dec << cDetails.callStack.size() << "\n===\n";
 #endif //_SHOW_THREAD_INFO
-	for (auto itr = call_stack.rbegin(); itr != call_stack.rend() ;++itr, ++processedCntr) {
+	for (auto itr = cDetails.callStack.rbegin(); itr != cDetails.callStack.rend() ;++itr, ++processedCntr) {
 		const ULONGLONG next_return = *itr;
 		if (cDetails.ret_on_stack == next_return) {
 			cDetails.is_ret_in_frame = true;
@@ -334,7 +336,7 @@ size_t pesieve::ThreadScanner::analyzeCallStack(IN const std::vector<ULONGLONG> 
 		if (mod_name.length() == 0) {
 			if (!cDetails.is_managed) {
 				is_curr_shc = true;
-				cDetails.shcCandidates.insert(next_return);
+				shcCandidates.insert(next_return);
 #ifdef _SHOW_THREAD_INFO
 				std::cout << "\t" << std::hex << next_return << " <=== SHELLCODE\n";
 #endif //_SHOW_THREAD_INFO
@@ -362,10 +364,19 @@ size_t pesieve::ThreadScanner::analyzeCallStack(IN const std::vector<ULONGLONG> 
 	return processedCntr;
 }
 
-size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ctx_details& cDetails)
+size_t pesieve::ThreadScanner::analyzeCallStackInfo(IN OUT ThreadScanReport& my_report)
+{
+	const size_t analyzedCount = _analyzeCallStack(my_report.cDetails, my_report.shcCandidates);
+	if (!my_report.cDetails.is_managed) {
+		my_report.cDetails.is_ret_as_syscall = checkReturnAddrIntegrity(my_report.cDetails.callStack);
+	}
+	return analyzedCount;
+}
+
+size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ThreadScanReport& my_report)
 {
 	// do it in a new thread to prevent stucking...
-	t_stack_enum_params args(hProcess, hThread, ctx, &cDetails);
+	t_stack_enum_params args(hProcess, hThread, ctx, &my_report.cDetails);
 
 	const size_t max_wait = 1000;
 	{
@@ -391,28 +402,24 @@ size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE h
 	if (!args.is_ok) {
 		return 0;
 	}
-#ifdef _SHOW_THREAD_INFO
-	std::cout << "\n=== TID " << std::dec << GetThreadId(hThread) << " ===\n";
-#endif //_SHOW_THREAD_INFO
-	const size_t analyzedCount = analyzeCallStack(args.callStack, cDetails);
-	if (!cDetails.is_managed) {
-		cDetails.is_ret_as_syscall = checkReturnAddrIntegrity(args.callStack);
-	}
-	return analyzedCount;
+	my_report.cDetails.callStack = args.callStack;
+	return args.callStack.size();
 }
 
-template <typename PTR_T>
-bool read_return_ptr(IN HANDLE hProcess, IN OUT ctx_details& cDetails) {
-	PTR_T ret_addr = 0;
-	cDetails.ret_on_stack = 0;
-	if (peconv::read_remote_memory(hProcess, (LPVOID)cDetails.rsp, (BYTE*)&ret_addr, sizeof(ret_addr)) == sizeof(ret_addr)) {
-		cDetails.ret_on_stack = (ULONGLONG)ret_addr;
-		return true;
+namespace pesieve {
+	template <typename PTR_T>
+	bool read_return_ptr(IN HANDLE hProcess, IN OUT ctx_details& cDetails) {
+		PTR_T ret_addr = 0;
+		cDetails.ret_on_stack = 0;
+		if (peconv::read_remote_memory(hProcess, (LPVOID)cDetails.rsp, (BYTE*)&ret_addr, sizeof(ret_addr)) == sizeof(ret_addr)) {
+			cDetails.ret_on_stack = (ULONGLONG)ret_addr;
+			return true;
+		}
+		return false;
 	}
-	return false;
-}
+}; //namespace pesieve
 
-bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, OUT ctx_details& cDetails)
+bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, OUT ThreadScanReport& my_report)
 {
 	bool is_ok = false;
 	BOOL is_wow64 = FALSE;
@@ -425,9 +432,9 @@ bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE
 		ctx.ContextFlags = CONTEXT_INTEGER | CONTEXT_CONTROL;
 		if (pesieve::util::wow64_get_thread_context(hThread, &ctx)) {
 			is_ok = true;
-			cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
-			read_return_ptr<DWORD>(hProcess, cDetails);
-			retrieved = fillCallStackInfo(hProcess, hThread, &ctx, cDetails);
+			my_report.cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
+			read_return_ptr<DWORD>(hProcess, my_report.cDetails);
+			retrieved = fillCallStackInfo(hProcess, hThread, &ctx, my_report);
 		}
 	}
 #endif
@@ -438,13 +445,13 @@ bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE
 		if (GetThreadContext(hThread, &ctx)) {
 			is_ok = true;
 #ifdef _WIN64
-			cDetails.init(true, ctx.Rip, ctx.Rsp, ctx.Rbp);
-			read_return_ptr<ULONGLONG>(hProcess, cDetails);
+			my_report.cDetails.init(true, ctx.Rip, ctx.Rsp, ctx.Rbp);
+			read_return_ptr<ULONGLONG>(hProcess, my_report.cDetails);
 #else
-			cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
-			read_return_ptr<DWORD>(hProcess, cDetails);
+			my_report.cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
+			read_return_ptr<DWORD>(hProcess, my_report.cDetails);
 #endif
-			retrieved = fillCallStackInfo(hProcess, hThread, &ctx, cDetails);
+			retrieved = fillCallStackInfo(hProcess, hThread, &ctx, my_report);
 		}
 	}
 	if (!retrieved) is_ok = false;
@@ -595,47 +602,48 @@ bool should_scan_context(const util::thread_info& info)
 	return false;
 }
 
-bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanReport* my_report)
+bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanReport& my_report)
 {
 	const DWORD tid = info.tid;
-	ctx_details cDetails;
-	const bool is_ok = fetchThreadCtxDetails(processHandle, hThread, cDetails);
+	ctx_details &cDetails = my_report.cDetails;
+
+	const bool is_ok = fetchThreadCtxDetails(processHandle, hThread, my_report);
 	if (!pesieve::is_thread_running(hThread)) {
-		my_report->status = SCAN_NOT_SUSPICIOUS;
+		my_report.status = SCAN_NOT_SUSPICIOUS;
 		return false;
 	}
-	if (!is_ok) {
+	if (!is_ok || !analyzeCallStackInfo(my_report)) {
 		// could not fetch the thread context and information
-		my_report->status = SCAN_ERROR;
+		my_report.status = SCAN_ERROR;
 		return false;
 	}
-	my_report->frames_count = cDetails.stackFramesCount;
-	my_report->stack_ptr = cDetails.rsp;
+	
+	my_report.stack_ptr = cDetails.rsp;
 	bool isModified = false;
 	bool is_unnamed = !isAddrInNamedModule(cDetails.rip);
 	if (is_unnamed) {
-		my_report->indicators.insert(THI_SUS_IP);
-		if (reportSuspiciousAddr(my_report, cDetails.rip)) {
-			if (my_report->status == SCAN_SUSPICIOUS) {
-				my_report->indicators.insert(THI_SUS_CALLSTACK_SHC);
+		my_report.indicators.insert(THI_SUS_IP);
+		if (reportSuspiciousAddr(&my_report, cDetails.rip)) {
+			if (my_report.status == SCAN_SUSPICIOUS) {
+				my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
 				isModified = true;
 			}
 		}
 	}
 
-	for (auto itr = cDetails.shcCandidates.begin(); itr != cDetails.shcCandidates.end(); ++itr) {
+	for (auto itr = my_report.shcCandidates.begin(); itr != my_report.shcCandidates.end(); ++itr) {
 		const ULONGLONG addr = *itr;
 #ifdef _SHOW_THREAD_INFO
 		std::cout << "Checking shc candidate: " << std::hex << addr << "\n";
 #endif //_SHOW_THREAD_INFO
 		//automatically verifies if the address is legit:
-		if (reportSuspiciousAddr(my_report, addr)) {
-			if (my_report->status == SCAN_SUSPICIOUS) {
-				my_report->indicators.insert(THI_SUS_CALLSTACK_SHC);
+		if (reportSuspiciousAddr(&my_report, addr)) {
+			if (my_report.status == SCAN_SUSPICIOUS) {
+				my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
 #ifdef _DEBUG
-				std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << " Entropy: " << std::dec << my_report->stats.entropy << " : " << my_report->is_code << std::endl;
+				std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << " Entropy: " << std::dec << my_report.stats.entropy << " : " << my_report.is_code << std::endl;
 #endif //_DEBUG
-				if (my_report->is_code) {
+				if (my_report.is_code) {
 					break;
 				}
 #ifdef _SHOW_THREAD_INFO
@@ -646,8 +654,6 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		}
 	}
 
-	const bool hasEmptyGUI = has_empty_gui_info(tid);
-	
 	if (this->info.is_extended && info.ext.state == Waiting && this->info.ext.wait_reason != Suspended 
 		&& !cDetails.is_ret_in_frame)
 	{
@@ -657,17 +663,17 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		std::cout << "Return addr: " << std::hex << ret_addr << "\n";
 		printResolvedAddr(ret_addr);
 #endif //_SHOW_THREAD_INFO
-		if (is_unnamed && reportSuspiciousAddr(my_report, (ULONGLONG)ret_addr)) {
+		if (is_unnamed && reportSuspiciousAddr(&my_report, (ULONGLONG)ret_addr)) {
 			isModified = true;
-			my_report->indicators.insert(THI_SUS_RET);
-			if (my_report->status == SCAN_SUSPICIOUS) {
-				my_report->indicators.insert(THI_SUS_CALLSTACK_SHC);
+			my_report.indicators.insert(THI_SUS_RET);
+			if (my_report.status == SCAN_SUSPICIOUS) {
+				my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
 			}
 			else {
-				my_report->status = SCAN_SUSPICIOUS;
-				if (my_report->stats.entropy < 1) { // discard, do not dump
-					my_report->module = 0;
-					my_report->moduleSize = 0;
+				my_report.status = SCAN_SUSPICIOUS;
+				if (my_report.stats.entropy < 1) { // discard, do not dump
+					my_report.module = 0;
+					my_report.moduleSize = 0;
 				}
 			}
 		}
@@ -677,22 +683,21 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	
 	bool isStackCorrupt = false;
 
-	if (this->info.is_extended && !cDetails.is_managed && !cDetails.is_ret_as_syscall)
+	if (this->info.is_extended && !my_report.cDetails.is_managed && !my_report.cDetails.is_ret_as_syscall)
 	{
-		my_report->indicators.insert(THI_SUS_CALLS_INTEGRITY);
+		my_report.indicators.insert(THI_SUS_CALLS_INTEGRITY);
 		isStackCorrupt = true;
 	}
 
-	if (hasEmptyGUI &&
-		cDetails.stackFramesCount == 1
+	if (cDetails.callStack.size() == 1
 		&& this->info.is_extended && info.ext.state == Waiting && info.ext.wait_reason == UserRequest)
 	{
-		my_report->indicators.insert(THI_SUS_CALLSTACK_CORRUPT);
+		my_report.indicators.insert(THI_SUS_CALLSTACK_CORRUPT);
 		isStackCorrupt = true;
 	}
 
 	if (isStackCorrupt) {
-		my_report->status = SCAN_SUSPICIOUS;
+		my_report.status = SCAN_SUSPICIOUS;
 	}
 	return isModified;
 }
@@ -735,13 +740,13 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 			}
 		}
 	}
-	if (!should_scan_context(info)) {
-		return my_report;
-	}
 	if (this->info.is_extended) {
 		my_report->thread_state = info.ext.state;
 		my_report->thread_wait_reason = info.ext.wait_reason;
 		my_report->thread_wait_time = info.ext.wait_time;
+	}
+	if (!should_scan_context(info)) {
+		return my_report;
 	}
 	// proceed with detailed checks:
 	HANDLE hThread = OpenThread(
@@ -756,7 +761,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		my_report->status = SCAN_ERROR;
 		return my_report;
 	}
-	scanRemoteThreadCtx(hThread, my_report);
+	scanRemoteThreadCtx(hThread, *my_report);
 	CloseHandle(hThread);
 
 	filterDotNet(*my_report);
