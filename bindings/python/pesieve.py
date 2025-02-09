@@ -4,7 +4,7 @@ import ctypes
 import os
 
 PESIEVE_MIN_VER = 0x040000 # minimal version of the PE-sieve DLL to work with this wrapper
-PESIEVE_MAX_VER = 0x040001 # maximal version of the PE-sieve DLL to work with this wrapper
+PESIEVE_MAX_VER = 0x040100 # maximal version of the PE-sieve DLL to work with this wrapper
 
 ERROR_SCAN_FAILURE = -1
 MAX_PATH =  260
