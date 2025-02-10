@@ -9,7 +9,7 @@
 #define VER_FILEDESCRIPTION_STR     "PE-sieve: scans given process, recognizes and dumps a variety of potentially malicious implants."
 #define VER_INTERNALNAME_STR        "pe-sieve.exe"
 #define VER_ORIGINALFILENAME_STR    "pe-sieve.exe"
-#define VER_LEGALCOPYRIGHT_STR      "Copyright © 2017-2024 Hasherezade"
+#define VER_LEGALCOPYRIGHT_STR      "Copyright © 2017-2025 Hasherezade"
 #define VER_PRODUCTNAME_STR         "PE-sieve"
 #define VER_FILEVERSION             PESIEVE_MAJOR_VERSION,PESIEVE_MINOR_VERSION,PESIEVE_MICRO_VERSION,PESIEVE_PATCH_VERSION
 #define VER_PRODUCTVERSION_STR      PESIEVE_VERSION_STR
