@@ -1,6 +1,6 @@
 <map id="pesieve::PatchAnalyzer::analyzeHook" name="pesieve::PatchAnalyzer::analyzeHook">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,109,161,150"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_patch_analyzer.html#a001e90cbeba7489104b31f53986c3634" title=" " alt="" coords="209,141,364,182"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_patch_analyzer.html#a9dc6193caf385bd1b11fef26566295a5" title=" " alt="" coords="209,141,364,182"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,139,193,144,193,150,160,144"/>
 <area shape="rect" id="Node000012" href="$classpesieve_1_1_patch_analyzer.html#a1904d926a1218925ec597ae2f60e91ae" title=" " alt="" coords="209,5,364,46"/>
 <area shape="poly" id="edge18_Node000001_Node000012" title=" " alt="" coords="123,107,230,51,233,56,126,111"/>
@@ -8,15 +8,15 @@
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="297,139,316,112,341,81,373,51,411,29,458,14,507,8,555,8,600,13,599,18,555,14,507,13,459,19,413,33,377,55,345,85,320,115,302,142"/>
 <area shape="rect" id="Node000004" href="$classpesieve_1_1_patch_analyzer.html#ab001e027c9dba6e06ff4c6b06996455e" title=" " alt="" coords="412,239,567,279"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="328,180,413,223,427,230,424,234,411,228,325,185"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_patch_analyzer.html#a752d635896cee5780eb9aeffed42da68" title=" " alt="" coords="412,369,567,410"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_patch_analyzer.html#a413d8980cb6e9a50b97b5ca801d15309" title=" " alt="" coords="412,369,567,410"/>
 <area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="298,181,315,217,340,264,373,312,414,354,419,358,416,363,410,358,369,315,336,266,310,220,293,183"/>
-<area shape="rect" id="Node000008" href="$classpesieve_1_1_patch_analyzer.html#a4eb4b54b83e6e11f043a7f08d09635c4" title=" " alt="" coords="412,304,567,345"/>
+<area shape="rect" id="Node000008" href="$classpesieve_1_1_patch_analyzer.html#aa940bbbdf4a3d250604ea731fadf92b7" title=" " alt="" coords="412,304,567,345"/>
 <area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="305,181,351,234,381,263,414,289,422,294,419,299,410,293,377,267,347,237,301,184"/>
-<area shape="rect" id="Node000009" href="$classpesieve_1_1_patch_analyzer.html#a807f0a26116ddaf28c55027736f4cdf6" title=" " alt="" coords="412,43,567,83"/>
+<area shape="rect" id="Node000009" href="$classpesieve_1_1_patch_analyzer.html#a6e76560251af12afcacc346ba7096b34" title=" " alt="" coords="412,43,567,83"/>
 <area shape="poly" id="edge10_Node000002_Node000009" title=" " alt="" coords="324,139,411,94,424,88,427,92,413,99,327,143"/>
-<area shape="rect" id="Node000010" href="$classpesieve_1_1_patch_analyzer.html#aa716229494f02dad520aef0329efba75" title=" " alt="" coords="412,108,567,149"/>
+<area shape="rect" id="Node000010" href="$classpesieve_1_1_patch_analyzer.html#a0b450bff8ba15387ec32957230d636d7" title=" " alt="" coords="412,108,567,149"/>
 <area shape="poly" id="edge13_Node000002_Node000010" title=" " alt="" coords="364,146,396,141,397,146,365,152"/>
-<area shape="rect" id="Node000011" href="$classpesieve_1_1_patch_analyzer.html#a05f8b2e1acc8b4333d31815214457fe4" title=" " alt="" coords="412,173,567,214"/>
+<area shape="rect" id="Node000011" href="$classpesieve_1_1_patch_analyzer.html#aec3f95f1b5678e348e0b7adc66927942" title=" " alt="" coords="412,173,567,214"/>
 <area shape="poly" id="edge15_Node000002_Node000011" title=" " alt="" coords="365,171,397,176,396,182,364,176"/>
 <area shape="rect" id="Node000006" href="$classpesieve_1_1_patch_analyzer.html#a782b8c2c82e5792ec514bc249a6f9060" title=" " alt="" coords="615,304,771,345"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="554,366,612,347,614,353,556,371"/>

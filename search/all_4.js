@@ -34,7 +34,7 @@ var searchData=
   ['dumpfilename_31',['dumpFileName',['../classpesieve_1_1_module_dump_report.html#ad9ffe25caa0688a2951d0695c8f012c5',1,'pesieve::ModuleDumpReport']]],
   ['dumpjsonreport_32',['dumpJsonReport',['../classpesieve_1_1_results_dumper.html#af8b2acc24bd5faa544a24638f6c5e6f3',1,'pesieve::ResultsDumper::dumpJsonReport(ProcessScanReport &amp;process_report, const t_results_filter &amp;filter, const pesieve::t_json_level &amp;jdetails)'],['../classpesieve_1_1_results_dumper.html#aa4c6543c10ea9e04174a6bf1ba60d5f7',1,'pesieve::ResultsDumper::dumpJsonReport(ProcessDumpReport &amp;process_report)'],['../classpesieve_1_1_results_dumper.html#a97c93db08c5cf4e92b451ab4b4233c00',1,'pesieve::ResultsDumper::dumpJsonReport(ErrorReport &amp;error_report, const t_results_filter &amp;filter)']]],
   ['dumpmodule_33',['dumpModule',['../classpesieve_1_1_results_dumper.html#ad3add8b5792cc47935267d88f0ea4e32',1,'pesieve::ResultsDumper']]],
-  ['dumppetofile_34',['dumpPeToFile',['../classpesieve_1_1_pe_buffer.html#a9032a33069a00aab2264c09172376d7a',1,'pesieve::PeBuffer']]],
+  ['dumppetofile_34',['dumpPeToFile',['../classpesieve_1_1_pe_buffer.html#a9d555de528c82c4e77f425b6e02e486c',1,'pesieve::PeBuffer']]],
   ['dumpsymbolinfo_35',['dumpSymbolInfo',['../class_process_symbols_manager.html#a78f8074e9a746d53e8e5d8388e50abd0',1,'ProcessSymbolsManager']]],
   ['dumptofile_36',['dumpToFile',['../classpesieve_1_1_pe_buffer.html#af917a4a96569cd80a957a44ef7dd2954',1,'pesieve::PeBuffer']]],
   ['dumptype_37',['DumpType',['../namespacepesieve_1_1util.html#a139ea0310394c05aebb1940805bb1285',1,'pesieve::util']]],

@@ -477,11 +477,11 @@ $(function(){ initResizable(false); });
 <div class="foldopen" id="foldopen00344" data-start="{" data-end="}">
 <div class="line"><a id="l00344" name="l00344"></a><span class="lineno"><a class="line" href="classpesieve_1_1_remote_module_data.html#acf38553702d88269f9d753cc5e22d111">  344</a></span>ULONGLONG <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#acf38553702d88269f9d753cc5e22d111">pesieve::RemoteModuleData::getRemoteSectionVa</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> section_num)</div>
 <div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>{</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="keywordflow">if</span> (!this-&gt;<a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a10f74dddd152a0895545bd68268da7ff">isInitialized</a>()) <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="keywordflow">if</span> (!this-&gt;<a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#a10f74dddd152a0895545bd68268da7ff">isInitialized</a>()) <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span> </div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a601a27ff576179474ff6270d4bdbc87f">headerBuffer</a>, peconv::MAX_HEADER_SIZE, section_num);</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    <span class="keywordflow">if</span> ((section_hdr == NULL) || section_hdr-&gt;SizeOfRawData == 0) {</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>        <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    <span class="keywordflow">if</span> (!section_hdr || (section_hdr-&gt;SizeOfRawData == 0)) {</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    }</div>
 <div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>    <span class="keywordflow">return</span> (ULONGLONG) <a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a74f010e8b6a9735727d807b8b780c195">modBaseAddr</a> + section_hdr-&gt;VirtualAddress;</div>
 <div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>}</div>
@@ -516,7 +516,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>    <span class="comment">//for special cases when the section is not set executable in headers, but in reality is executable...</span></div>
 <div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    <span class="comment">//get the section header from the module:</span></div>
 <div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    ULONGLONG start_va = <a class="code hl_function" href="classpesieve_1_1_remote_module_data.html#acf38553702d88269f9d753cc5e22d111">getRemoteSectionVa</a>(section_number);</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    <span class="keywordflow">if</span> (start_va == NULL) {</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    <span class="keywordflow">if</span> (!start_va) {</div>
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    }</div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    MEMORY_BASIC_INFORMATION page_info = { 0 };</div>
@@ -574,6 +574,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classpesieve_1_1_artefact_scanner.html#aeedfc8d641b324dd3eb203313731292f">ArtefactScanner::calcImgSize</a>(this-&gt;<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a9b7a0af420fd8278c27e97baf181c292">processHandle</a>, this-&gt;<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a74f010e8b6a9735727d807b8b780c195">modBaseAddr</a>, this-&gt;<a class="code hl_variable" href="classpesieve_1_1_remote_module_data.html#a601a27ff576179474ff6270d4bdbc87f">headerBuffer</a>, peconv::MAX_HEADER_SIZE);</div>
 <div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>}</div>
 </div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span> </div>
 <div class="ttc" id="aartefact__scanner_8h_html"><div class="ttname"><a href="artefact__scanner_8h.html">artefact_scanner.h</a></div></div>
 <div class="ttc" id="aartefacts__util_8h_html"><div class="ttname"><a href="artefacts__util_8h.html">artefacts_util.h</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_artefact_scanner_html_aeedfc8d641b324dd3eb203313731292f"><div class="ttname"><a href="classpesieve_1_1_artefact_scanner.html#aeedfc8d641b324dd3eb203313731292f">pesieve::ArtefactScanner::calcImgSize</a></div><div class="ttdeci">static size_t calcImgSize(HANDLE processHandle, HMODULE modBaseAddr, BYTE *headerBuffer, size_t headerBufferSize, IMAGE_SECTION_HEADER *hdr_ptr=NULL)</div><div class="ttdef"><b>Definition</b> <a href="artefact__scanner_8cpp_source.html#l00176">artefact_scanner.cpp:176</a></div></div>
