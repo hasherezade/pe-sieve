@@ -10,38 +10,37 @@ ULONGLONG pesieve::PatchAnalyzer::getJmpDestAddr(ULONGLONG currVA, int instrLen,
 	return addr;
 }
 
-size_t pesieve::PatchAnalyzer::parseShortJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
+size_t pesieve::PatchAnalyzer::parseShortJmp(PatchList::Patch &patch, BYTE* patch_ptr, ULONGLONG patch_va)
 {
 	const size_t instr_size = 2;
 	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, instr_size)) {
 		return 0;
 	}
-	BYTE *lval = (BYTE*)((ULONGLONG)patch_ptr + 1);
+	BYTE *lval = reinterpret_cast<BYTE*>((ULONG_PTR)patch_ptr + 1);
 	ULONGLONG addr = getJmpDestAddr<BYTE>(patch_va, instr_size, (*lval));
 
 	patch.setHookTarget(addr);
 	return instr_size;
 }
 
-size_t pesieve::PatchAnalyzer::parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
+size_t pesieve::PatchAnalyzer::parseJmp(PatchList::Patch &patch, BYTE* patch_ptr, ULONGLONG patch_va)
 {
 	const size_t instr_size = 5;
 	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, instr_size)) {
 		return 0;
 	}
-	DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
+	DWORD *lval = reinterpret_cast<DWORD*>((ULONG_PTR) patch_ptr + 1);
 	ULONGLONG addr = getJmpDestAddr<DWORD>(patch_va, instr_size, (*lval));
 
 	patch.setHookTarget(addr);
 	return instr_size;
 }
 
-size_t pesieve::PatchAnalyzer::parseJmpViaAddr(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
+size_t pesieve::PatchAnalyzer::parseJmpViaAddr(PatchList::Patch &patch, BYTE* patch_ptr, ULONGLONG patch_va)
 {
 	const size_t instr_size = 6;
-	ULONGLONG addr = NULL;
-
-	DWORD *lval = (DWORD*)((ULONGLONG)patch_ptr + 2);
+	
+	DWORD *lval = reinterpret_cast<DWORD*>((ULONG_PTR)patch_ptr + 2);
 	if (!isModule64bit) { //32bit
 		patch.setHookTarget(*lval, false);
 	}
@@ -52,14 +51,14 @@ size_t pesieve::PatchAnalyzer::parseJmpViaAddr(PatchList::Patch &patch, PBYTE pa
 	return instr_size;
 }
 
-size_t pesieve::PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, bool is_long)
+size_t pesieve::PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, BYTE* patch_ptr, bool is_long)
 {
 	size_t mov_instr_len = is_long ? 9 : 5;
 	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, mov_instr_len + 2)) {
 		return 0;
 	}
 
-	PBYTE jmp_ptr = patch_ptr + mov_instr_len; // next instruction
+	BYTE* jmp_ptr = patch_ptr + mov_instr_len; // next instruction
 	if (is64Modifier(*patch_ptr)) {
 		patch_ptr++;
 		jmp_ptr++;
@@ -87,22 +86,22 @@ size_t pesieve::PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_
 #ifdef _DEBUG
 		std::cerr << "It is not MOV->JMP" << std::hex << (DWORD)jmp_ptr[0] << std::endl;
 #endif
-		return NULL;
+		return 0;
 	}
 	//TODO: take into account also modifiers
 	if (reg_id1 != reg_id0) {
 #ifdef _DEBUG
 		std::cerr << "MOV->JMP : reg mismatch" << std::endl;
 #endif
-		return NULL;
+		return 0;
 	}
 	size_t patch_size = mov_instr_len;
-	ULONGLONG addr = NULL;
+	ULONGLONG addr = 0;
 	if (!is_long) { //32bit
-		DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
+		DWORD *lval = reinterpret_cast<DWORD*>((ULONG_PTR) patch_ptr + 1);
 		addr = *lval;
 	} else { //64bit
-		ULONGLONG *lval = (ULONGLONG*)((ULONGLONG) patch_ptr + 1);
+		ULONGLONG *lval = reinterpret_cast<ULONGLONG*>((ULONG_PTR) patch_ptr + 1);
 		addr = *lval;
 	}
 	patch_size += 2; //add jump reg size
@@ -113,18 +112,18 @@ size_t pesieve::PatchAnalyzer::parseMovJmp(PatchList::Patch &patch, PBYTE patch_
 	return patch_size;
 }
 
-size_t pesieve::PatchAnalyzer::parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr)
+size_t pesieve::PatchAnalyzer::parsePushRet(PatchList::Patch &patch, BYTE* patch_ptr)
 {
 	size_t instr_size = 5;
 	if (!peconv::validate_ptr(this->patchedCode, this->codeSize, patch_ptr, instr_size + 1)) {
 		return 0;
 	}
-	PBYTE ret_ptr = patch_ptr + instr_size; // next instruction
+	BYTE* ret_ptr = reinterpret_cast<BYTE*>((ULONG_PTR) patch_ptr + instr_size); // next instruction
 	if (ret_ptr[0] != 0xC3) {
-		return NULL; // this is not push->ret
+		return 0; // this is not push->ret
 	}
 	instr_size++;
-	DWORD *lval = (DWORD*)((ULONGLONG) patch_ptr + 1);
+	DWORD *lval = reinterpret_cast<DWORD*>((ULONG_PTR) patch_ptr + 1);
 	patch.setHookTarget(*lval);
 	return instr_size;
 }
@@ -147,7 +146,7 @@ bool pesieve::PatchAnalyzer::isLongModifier(BYTE op)
 	return false;
 }
 
-size_t pesieve::PatchAnalyzer::_analyzeHook(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va)
+size_t pesieve::PatchAnalyzer::_analyzeHook(PatchList::Patch &patch, BYTE* patch_ptr, ULONGLONG patch_va)
 {
 	BYTE op = patch_ptr[0];
 	if (op == OP_JMP || op == OP_CALL_DWORD) {

@@ -61,7 +61,7 @@ namespace pesieve {
 				FILE_OPEN,
 				FILE_NON_DIRECTORY_FILE,
 				NULL,
-				NULL
+				0
 			);
 			if (status != STATUS_SUCCESS) {
 				std::wcerr << "Cannot open file: " << filePath << ". Error: " << std::hex << status << std::endl;

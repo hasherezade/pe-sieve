@@ -2,6 +2,7 @@
 
 #include "module_data.h"
 #include "patch_list.h"
+#include <set>
 
 namespace pesieve {
 
@@ -30,14 +31,14 @@ namespace pesieve {
 		size_t analyzeOther(PatchList::Patch& patch);
 
 	protected:
-		size_t _analyzeHook(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
+		size_t _analyzeHook(PatchList::Patch &patch, BYTE* patch_ptr, ULONGLONG patch_va);
 		size_t _analyzeRelocated(PatchList::Patch &patch, BYTE* patch_ptr);
 
-		size_t parseJmpViaAddr(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
-		size_t parseShortJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
-		size_t parseJmp(PatchList::Patch &patch, PBYTE patch_ptr, ULONGLONG patch_va);
-		size_t parseMovJmp(PatchList::Patch &patch, PBYTE patch_ptr, bool is_long);
-		size_t parsePushRet(PatchList::Patch &patch, PBYTE patch_ptr);
+		size_t parseJmpViaAddr(PatchList::Patch &patch, BYTE* patch_ptr, ULONGLONG patch_va);
+		size_t parseShortJmp(PatchList::Patch &patch, BYTE* patch_ptr, ULONGLONG patch_va);
+		size_t parseJmp(PatchList::Patch &patch, BYTE* patch_ptr, ULONGLONG patch_va);
+		size_t parseMovJmp(PatchList::Patch &patch, BYTE* patch_ptr, bool is_long);
+		size_t parsePushRet(PatchList::Patch &patch, BYTE* patch_ptr);
 
 		template <typename DELTA_T>
 		ULONGLONG getJmpDestAddr(ULONGLONG currVA, int instrLen, DELTA_T lVal);

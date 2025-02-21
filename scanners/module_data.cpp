@@ -343,11 +343,11 @@ bool pesieve::RemoteModuleData::loadHeader()
 
 ULONGLONG pesieve::RemoteModuleData::getRemoteSectionVa(const size_t section_num)
 {
-	if (!this->isInitialized()) return NULL;
+	if (!this->isInitialized()) return 0;
 
 	PIMAGE_SECTION_HEADER section_hdr = peconv::get_section_hdr(headerBuffer, peconv::MAX_HEADER_SIZE, section_num);
-	if ((section_hdr == NULL) || section_hdr->SizeOfRawData == 0) {
-		return NULL;
+	if (!section_hdr || (section_hdr->SizeOfRawData == 0)) {
+		return 0;
 	}
 	return (ULONGLONG) modBaseAddr + section_hdr->VirtualAddress;
 }
@@ -378,7 +378,7 @@ bool pesieve::RemoteModuleData::isSectionExecutable(const size_t section_number,
 	//for special cases when the section is not set executable in headers, but in reality is executable...
 	//get the section header from the module:
 	ULONGLONG start_va = getRemoteSectionVa(section_number);
-	if (start_va == NULL) {
+	if (!start_va) {
 		return false;
 	}
 	MEMORY_BASIC_INFORMATION page_info = { 0 };
@@ -431,3 +431,4 @@ size_t pesieve::RemoteModuleData::calcImgSize()
 
 	return ArtefactScanner::calcImgSize(this->processHandle, this->modBaseAddr, this->headerBuffer, peconv::MAX_HEADER_SIZE);
 }
+

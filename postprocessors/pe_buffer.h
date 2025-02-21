@@ -59,8 +59,8 @@ namespace pesieve {
 		// Dumps the PE into a file with a given name.
 		bool dumpPeToFile(IN std::string dumpFileName,
 			IN OUT peconv::t_pe_dump_mode &dumpMode,
-			IN OPTIONAL const peconv::ExportsMapper* exportsMap = NULL,
-			OUT OPTIONAL peconv::ImpsNotCovered *notCovered = NULL
+			IN OPTIONAL const peconv::ExportsMapper* exportsMap = nullptr,
+			OUT OPTIONAL peconv::ImpsNotCovered *notCovered = nullptr
 		);
 
 		bool dumpToFile(IN std::string dumpFileName);
