@@ -12,6 +12,10 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 
 	option(LINK_STATICALLY "Link PE-Sieve with static versions of linked libraries" ON)
 
+	enable_language(RC)
+	set(CMAKE_RC_COMPILE_OBJECT
+		"<CMAKE_RC_COMPILER> <FLAGS> -O coff <DEFINES> -i <SOURCE> -o <OBJECT>")
+		
 	add_compile_options(
 		-fpermissive
 	)
