@@ -55,7 +55,7 @@ Download the latest [release](https://github.com/hasherezade/pe-sieve/releases),
 
 Available also via:
 +  ![](https://community.chocolatey.org/favicon.ico) [Chocolatey](https://community.chocolatey.org/packages/pesieve)
-+  ![](https://avatars.githubusercontent.com/u/16618068?s=15) [Scoop](https://scoop.sh/#/apps?q=pe-bear)
++  ![](https://avatars.githubusercontent.com/u/16618068?s=15) [Scoop](https://scoop.sh/#/apps?q=pe-sieve)
 
 <hr/>
 
