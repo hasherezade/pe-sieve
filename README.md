@@ -53,7 +53,9 @@ git clone --recursive https://github.com/hasherezade/pe-sieve.git
 
 Download the latest [release](https://github.com/hasherezade/pe-sieve/releases), or [read more](https://github.com/hasherezade/pe-sieve/wiki/1.-FAQ#how-to-get-it).
 
-![](https://community.chocolatey.org/favicon.ico) Available also via [Chocolatey](https://community.chocolatey.org/packages/pesieve)
+Available also via:
++  ![](https://community.chocolatey.org/favicon.ico) [Chocolatey](https://community.chocolatey.org/packages/pesieve)
++  ![](https://avatars.githubusercontent.com/u/16618068?s=15) [Scoop](https://scoop.sh/#/apps?q=pe-bear)
 
 <hr/>
 
