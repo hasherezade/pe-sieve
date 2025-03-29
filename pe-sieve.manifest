@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly
 	xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
-	<assemblyIdentity name="PE-sieve" type="win32" processorArchitecture="x86"></assemblyIdentity>
+	<assemblyIdentity name="PE-sieve" type="win32" version="0.4.1.0" processorArchitecture="x86"></assemblyIdentity>
 	<description>PE-sieve process forensic scanner.</description>
 	<dependency>
 		<dependentAssembly>
