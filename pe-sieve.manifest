@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly
+	xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+	<assemblyIdentity name="PE-sieve" type="win32" processorArchitecture="x86"></assemblyIdentity>
+	<description>PE-sieve process forensic scanner.</description>
+	<dependency>
+		<dependentAssembly>
+			<assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" processorArchitecture="*" publicKeyToken="6595b64144ccf1df" language="*"></assemblyIdentity>
+		</dependentAssembly>
+	</dependency>
+	<file name="imagehlp.dll" loadFrom="%SystemRoot%\System32\"></file>
+	<file name="dbghelp.dll" loadFrom="%SystemRoot%\System32\"></file>
+	<file name="USERENV.dll" loadFrom="%SystemRoot%\System32\"></file>
+	<file name="VERSION.dll" loadFrom="%SystemRoot%\System32\"></file>
+	<file name="oleaut32.dll" loadFrom="%SystemRoot%\System32\"></file>
+	<file name="oleaut32.dll" loadFrom="%SystemRoot%\System32\"></file>
+	<file name="bcrypt.dll" loadFrom="%SystemRoot%\System32\"></file>
+	<file name="bcryptprimitives.dll" loadFrom="%SystemRoot%\System32\"></file>
+	<trustInfo
+		xmlns="urn:schemas-microsoft-com:asm.v3">
+		<security>
+			<requestedPrivileges>
+				<requestedExecutionLevel level="asInvoker" uiAccess="false"></requestedExecutionLevel>
+			</requestedPrivileges>
+		</security>
+	</trustInfo>
+</assembly>

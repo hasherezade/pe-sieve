@@ -227,6 +227,7 @@ set (rsrc
 	resources.h
 	pe_sieve_ver_short.h
 	pe_sieve_res.rc
+	pe-sieve.manifest 
 )
 
 # set filters in Visual Studio project:
