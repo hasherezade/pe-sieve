@@ -324,7 +324,9 @@ else()
 
 endif()
 
-target_link_options( ${PROJECT_NAME} PRIVATE "/MANIFEST:NO")
+if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+	target_link_options( ${PROJECT_NAME} PRIVATE "/MANIFEST:NO")
+endif()
 
 if (NOT PESIEVE_AS_STATIC_LIB)
 	install(TARGETS ${PROJECT_NAME}
