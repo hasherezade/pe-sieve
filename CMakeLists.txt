@@ -31,7 +31,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 			-static-libstdc++
 		)
 	endif()
-
 endif()
 
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
@@ -325,6 +324,8 @@ else()
 
 endif()
 
+target_link_options( ${PROJECT_NAME} PRIVATE "/MANIFEST:NO")
+
 if (NOT PESIEVE_AS_STATIC_LIB)
 	install(TARGETS ${PROJECT_NAME}
 		DESTINATION ${CMAKE_INSTALL_PREFIX} COMPONENT ${PROJECT_NAME}
@@ -339,4 +340,3 @@ if (NOT PESIEVE_AS_STATIC_LIB)
 		set_tests_properties(TestRuns PROPERTIES PASS_REGULAR_EXPRESSION "Version:")
 	endif()
 endif()
-
