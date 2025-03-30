@@ -2,6 +2,16 @@
 #include "resources.h"
 #include <windows.h>
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// Application Manifest
+//
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "pe-sieve.manifest"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Application Version
+//
 #define VER_COMPANYNAME_STR         "Hashereware (hashereware.com)"
 #define VER_FILETYPE                VFT_APP
 #define VER_FILESUBTYPE             VFT2_UNKNOWN

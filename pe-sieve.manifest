@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<assembly
-	xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
 	<assemblyIdentity name="PE-sieve" type="win32" version="0.4.1.0" processorArchitecture="x86"></assemblyIdentity>
 	<description>PE-sieve process forensic scanner.</description>
 	<dependency>
@@ -13,11 +12,9 @@
 	<file name="USERENV.dll" loadFrom="%SystemRoot%\System32\"></file>
 	<file name="VERSION.dll" loadFrom="%SystemRoot%\System32\"></file>
 	<file name="oleaut32.dll" loadFrom="%SystemRoot%\System32\"></file>
-	<file name="oleaut32.dll" loadFrom="%SystemRoot%\System32\"></file>
 	<file name="bcrypt.dll" loadFrom="%SystemRoot%\System32\"></file>
 	<file name="bcryptprimitives.dll" loadFrom="%SystemRoot%\System32\"></file>
-	<trustInfo
-		xmlns="urn:schemas-microsoft-com:asm.v3">
+	<trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
 		<security>
 			<requestedPrivileges>
 				<requestedExecutionLevel level="asInvoker" uiAccess="false"></requestedExecutionLevel>
