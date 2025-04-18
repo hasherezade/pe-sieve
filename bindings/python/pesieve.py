@@ -165,12 +165,16 @@ def init():
 	else:
 		pesieve_dll = "pe-sieve64.dll"
 
-	if 'PESIEVE_DIR' in os.environ:
-		pesieve_dir = os.environ.get('PESIEVE_DIR')
-	else:
-		pesieve_dir = os.path.abspath(os.getcwd())
-	pesieve_path = pesieve_dir + os.path.sep + pesieve_dll
-	lib = ctypes.cdll.LoadLibrary(pesieve_path)
+	try:
+		pesieve_path = os.path.abspath(os.getcwd()) + os.path.sep + pesieve_dll
+		lib = ctypes.cdll.LoadLibrary(pesieve_path)
+	except:
+		if 'PESIEVE_DIR' in os.environ:
+			pesieve_path = os.environ.get('PESIEVE_DIR') + os.path.sep + pesieve_dll
+			lib = ctypes.cdll.LoadLibrary(pesieve_path)
+		else:
+			raise
+
 	PESieve_version = ctypes.cast(lib.PESieve_version, ctypes.POINTER(ctypes.c_uint32)).contents.value
 	if (PESieve_version < PESIEVE_MIN_VER or PESieve_version > PESIEVE_MAX_VER):
 		dll_version_str = version_to_str(PESieve_version)
