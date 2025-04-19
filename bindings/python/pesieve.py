@@ -168,7 +168,7 @@ def init():
 	try:
 		pesieve_path = os.path.abspath(os.getcwd()) + os.path.sep + pesieve_dll
 		lib = ctypes.cdll.LoadLibrary(pesieve_path)
-	except:
+	except FileNotFoundError:
 		if 'PESIEVE_DIR' in os.environ:
 			pesieve_path = os.environ.get('PESIEVE_DIR') + os.path.sep + pesieve_dll
 			lib = ctypes.cdll.LoadLibrary(pesieve_path)
