@@ -294,7 +294,7 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keywordflow">try</span>:</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        pesieve_path = os.path.abspath(os.getcwd()) + os.path.sep + pesieve_dll</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        lib = ctypes.cdll.LoadLibrary(pesieve_path)</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keywordflow">except</span>:</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keywordflow">except</span> FileNotFoundError:</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        <span class="keywordflow">if</span> <span class="stringliteral">&#39;PESIEVE_DIR&#39;</span> <span class="keywordflow">in</span> os.environ:</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>            pesieve_path = os.environ.get(<span class="stringliteral">&#39;PESIEVE_DIR&#39;</span>) + os.path.sep + pesieve_dll</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>            lib = ctypes.cdll.LoadLibrary(pesieve_path)</div>
