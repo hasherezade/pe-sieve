@@ -191,244 +191,249 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordflow">if</span> (!is_pe_hdr) {</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    }</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="comment">//do not modify section headers if the PE is in raw format, or no unmapping requested</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordflow">if</span> (!peconv::is_pe_raw(<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBuf, <a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBufSize)) {</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keywordflow">if</span> (!<a class="code hl_function" href="classpesieve_1_1_pe_reconstructor.html#a12ecde5ccd9c8081192600f2b05e6bc9">fixSectionsVirtualSize</a>(<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.processHndl) || !<a class="code hl_function" href="classpesieve_1_1_pe_reconstructor.html#a9e12362010a44611c7bcdcc9d6608d45">fixSectionsCharacteristics</a>(<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.processHndl)) {</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        }</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    }</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.isValidPe();</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>}</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="comment">//do not modify section headers if the PE is in raw format, or no unmapping requested</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordflow">if</span> (!peconv::is_pe_raw(<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBuf, <a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBufSize)) {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="keywordflow">if</span> (!<a class="code hl_function" href="classpesieve_1_1_pe_reconstructor.html#a12ecde5ccd9c8081192600f2b05e6bc9">fixSectionsVirtualSize</a>(<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.processHndl) || !<a class="code hl_function" href="classpesieve_1_1_pe_reconstructor.html#a9e12362010a44611c7bcdcc9d6608d45">fixSectionsCharacteristics</a>(<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.processHndl)) {</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        }</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keyword">const</span> ULONGLONG base_candidate = peconv::find_base_candidate(<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBuf, <a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBufSize);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordflow">if</span> (base_candidate) {</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            peconv::update_image_base(<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBuf, (ULONGLONG)base_candidate);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    }</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.isValidPe();</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
 </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="foldopen" id="foldopen00103" data-start="{" data-end="}">
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="classpesieve_1_1_pe_reconstructor.html#a12ecde5ccd9c8081192600f2b05e6bc9">  103</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_pe_reconstructor.html#a12ecde5ccd9c8081192600f2b05e6bc9">pesieve::PeReconstructor::fixSectionsVirtualSize</a>(HANDLE processHandle)</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>{</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    BYTE *vBuf = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBuf;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> vBufSize = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBufSize;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">if</span> (!vBuf) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keywordflow">if</span> (!this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.hasSectionHdrs()) {</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    }</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    ULONGLONG sec_offset = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.dropPeBase(this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secHdrsOffset);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    BYTE *hdr_ptr = (sec_offset + vBuf);</div>
+<div class="foldopen" id="foldopen00109" data-start="{" data-end="}">
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="classpesieve_1_1_pe_reconstructor.html#a12ecde5ccd9c8081192600f2b05e6bc9">  109</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_pe_reconstructor.html#a12ecde5ccd9c8081192600f2b05e6bc9">pesieve::PeReconstructor::fixSectionsVirtualSize</a>(HANDLE processHandle)</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>{</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    BYTE *vBuf = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBuf;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> vBufSize = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBufSize;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">if</span> (!vBuf) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordtype">size_t</span> max_sec_size = 0;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    IMAGE_SECTION_HEADER* prev_sec = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    IMAGE_SECTION_HEADER* curr_sec = (IMAGE_SECTION_HEADER*)(hdr_ptr);</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keyword">const</span> ULONGLONG pe_img_base = (ULONGLONG)<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.peImageBase();</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> hdr_sec_count = peconv::get_sections_count(vBuf, vBufSize);</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> sec_count = <a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secCount &gt; hdr_sec_count ? <a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secCount : hdr_sec_count;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keywordtype">size_t</span> i = 0;</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordflow">for</span> (i = 0; i &lt; sec_count; i++, curr_sec++) {</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="keywordflow">if</span> (!peconv::validate_ptr(vBuf, vBufSize, curr_sec, <span class="keyword">sizeof</span>(IMAGE_SECTION_HEADER))) {</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>            <span class="comment">// buffer finished</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        }</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="keyword">const</span> DWORD sec_rva = curr_sec-&gt;VirtualAddress;</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="keyword">const</span> DWORD sec_size = curr_sec-&gt;Misc.VirtualSize;</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        <span class="keyword">const</span> ULONGLONG sec_va = pe_img_base + sec_rva;</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        <span class="keywordtype">size_t</span> real_sec_size = peconv::fetch_region_size(processHandle, (PBYTE)sec_va);</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        <span class="comment">// if the RVA is out of scope, and the calculated size is 0:</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        <span class="keywordflow">if</span> (!peconv::validate_ptr(vBuf, vBufSize, vBuf + sec_rva, <span class="keyword">sizeof</span>(BYTE)) &amp;&amp; !real_sec_size) {</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>            std::cout &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;# Invalid section found: &quot;</span> &lt;&lt; std::hex</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                &lt;&lt; sec_rva &lt;&lt; <span class="stringliteral">&quot; of size: &quot;</span> &lt;&lt; sec_size &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        }</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        <span class="keywordflow">if</span> (sec_size &gt; real_sec_size) {</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>            curr_sec-&gt;Misc.VirtualSize = DWORD(real_sec_size);</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            std::cout &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;# Fixed section &quot;</span> &lt;&lt; std::hex &lt;&lt; sec_rva  &lt;&lt; <span class="stringliteral">&quot; size: &quot;</span> &lt;&lt; std::hex</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>                &lt;&lt; sec_size &lt;&lt; <span class="stringliteral">&quot; vs real: &quot;</span> &lt;&lt; real_sec_size &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        }</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        max_sec_size = (real_sec_size &gt; max_sec_size) ? real_sec_size : max_sec_size;</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        <span class="keywordflow">if</span> (prev_sec &amp;&amp; curr_sec-&gt;Misc.VirtualSize &gt; 0) {</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>            ULONGLONG prev_sec_end = prev_sec-&gt;VirtualAddress + prev_sec-&gt;Misc.VirtualSize;</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            <span class="keywordflow">if</span> (prev_sec_end &gt; curr_sec-&gt;VirtualAddress) {</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>                <span class="keywordflow">if</span> (curr_sec-&gt;VirtualAddress &gt; prev_sec-&gt;VirtualAddress) {</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>                    DWORD diff = curr_sec-&gt;VirtualAddress - prev_sec-&gt;VirtualAddress;</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                    prev_sec-&gt;Misc.VirtualSize = diff;</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>                    std::cout &lt;&lt; <span class="stringliteral">&quot;Trimmed section: &quot;</span> &lt;&lt; std::dec &lt;&lt; i &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                }</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>            }</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        }</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        <span class="keywordflow">if</span> (curr_sec-&gt;Misc.VirtualSize &gt; 0) {</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>            prev_sec = curr_sec;</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        }</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    }</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    IMAGE_FILE_HEADER* file_hdr = <span class="keyword">const_cast&lt;</span>IMAGE_FILE_HEADER*<span class="keyword">&gt;</span>(peconv::get_file_hdr(vBuf, vBufSize));</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="keywordflow">if</span> (file_hdr &amp;&amp; (i &gt; 0)) {</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        <span class="comment">// set the actual number of valid sections:</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        file_hdr-&gt;NumberOfSections = MASK_TO_WORD(i);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordflow">if</span> (!this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.hasSectionHdrs()) {</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    }</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    ULONGLONG sec_offset = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.dropPeBase(this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secHdrsOffset);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    BYTE *hdr_ptr = (sec_offset + vBuf);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keywordtype">size_t</span> max_sec_size = 0;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    IMAGE_SECTION_HEADER* prev_sec = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    IMAGE_SECTION_HEADER* curr_sec = (IMAGE_SECTION_HEADER*)(hdr_ptr);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keyword">const</span> ULONGLONG pe_img_base = (ULONGLONG)<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.peImageBase();</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> hdr_sec_count = peconv::get_sections_count(vBuf, vBufSize);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> sec_count = <a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secCount &gt; hdr_sec_count ? <a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secCount : hdr_sec_count;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordtype">size_t</span> i = 0;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keywordflow">for</span> (i = 0; i &lt; sec_count; i++, curr_sec++) {</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        <span class="keywordflow">if</span> (!peconv::validate_ptr(vBuf, vBufSize, curr_sec, <span class="keyword">sizeof</span>(IMAGE_SECTION_HEADER))) {</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>            <span class="comment">// buffer finished</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        }</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        <span class="keyword">const</span> DWORD sec_rva = curr_sec-&gt;VirtualAddress;</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        <span class="keyword">const</span> DWORD sec_size = curr_sec-&gt;Misc.VirtualSize;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        <span class="keyword">const</span> ULONGLONG sec_va = pe_img_base + sec_rva;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        <span class="keywordtype">size_t</span> real_sec_size = peconv::fetch_region_size(processHandle, (PBYTE)sec_va);</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        <span class="comment">// if the RVA is out of scope, and the calculated size is 0:</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        <span class="keywordflow">if</span> (!peconv::validate_ptr(vBuf, vBufSize, vBuf + sec_rva, <span class="keyword">sizeof</span>(BYTE)) &amp;&amp; !real_sec_size) {</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            std::cout &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;# Invalid section found: &quot;</span> &lt;&lt; std::hex</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                &lt;&lt; sec_rva &lt;&lt; <span class="stringliteral">&quot; of size: &quot;</span> &lt;&lt; sec_size &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        }</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        <span class="keywordflow">if</span> (sec_size &gt; real_sec_size) {</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>            curr_sec-&gt;Misc.VirtualSize = DWORD(real_sec_size);</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>            std::cout &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;# Fixed section &quot;</span> &lt;&lt; std::hex &lt;&lt; sec_rva  &lt;&lt; <span class="stringliteral">&quot; size: &quot;</span> &lt;&lt; std::hex</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                &lt;&lt; sec_size &lt;&lt; <span class="stringliteral">&quot; vs real: &quot;</span> &lt;&lt; real_sec_size &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        }</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        max_sec_size = (real_sec_size &gt; max_sec_size) ? real_sec_size : max_sec_size;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        <span class="keywordflow">if</span> (prev_sec &amp;&amp; curr_sec-&gt;Misc.VirtualSize &gt; 0) {</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            <span class="keyword">const</span> ULONGLONG prev_sec_end = <span class="keyword">static_cast&lt;</span>ULONGLONG<span class="keyword">&gt;</span>(prev_sec-&gt;VirtualAddress) + <span class="keyword">static_cast&lt;</span>ULONGLONG<span class="keyword">&gt;</span>(prev_sec-&gt;Misc.VirtualSize);</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            <span class="keywordflow">if</span> (prev_sec_end &gt; curr_sec-&gt;VirtualAddress) {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                <span class="keywordflow">if</span> (curr_sec-&gt;VirtualAddress &gt; prev_sec-&gt;VirtualAddress) {</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>                    DWORD diff = curr_sec-&gt;VirtualAddress - prev_sec-&gt;VirtualAddress;</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                    prev_sec-&gt;Misc.VirtualSize = diff;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>                    std::cout &lt;&lt; <span class="stringliteral">&quot;Trimmed section: &quot;</span> &lt;&lt; std::dec &lt;&lt; i &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                }</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>            }</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        }</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        <span class="keywordflow">if</span> (curr_sec-&gt;Misc.VirtualSize &gt; 0) {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>            prev_sec = curr_sec;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        }</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    }</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    <span class="keywordflow">if</span> (max_sec_size == 0) {</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    }</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>}</div>
-</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    </div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    IMAGE_FILE_HEADER* file_hdr = <span class="keyword">const_cast&lt;</span>IMAGE_FILE_HEADER*<span class="keyword">&gt;</span>(peconv::get_file_hdr(vBuf, vBufSize));</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keywordflow">if</span> (file_hdr &amp;&amp; (i &gt; 0)) {</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        <span class="comment">// set the actual number of valid sections:</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        file_hdr-&gt;NumberOfSections = MASK_TO_WORD(i);</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    }</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
-<div class="foldopen" id="foldopen00185" data-start="{" data-end="}">
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="classpesieve_1_1_pe_reconstructor.html#a9e12362010a44611c7bcdcc9d6608d45">  185</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_pe_reconstructor.html#a9e12362010a44611c7bcdcc9d6608d45">pesieve::PeReconstructor::fixSectionsCharacteristics</a>(HANDLE processHandle)</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>{</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    BYTE *vBuf = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBuf;</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> vBufSize = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBufSize;</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keywordflow">if</span> (!vBuf) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keywordflow">if</span> (max_sec_size == 0) {</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    }</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>}</div>
+</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keywordflow">if</span> (!this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.hasSectionHdrs()) {</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    }</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    ULONGLONG sec_offset = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.dropPeBase(this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secHdrsOffset);</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <span class="keyword">const</span> BYTE *hdr_ptr = (sec_offset + vBuf);</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    IMAGE_SECTION_HEADER* curr_sec = (IMAGE_SECTION_HEADER*)(hdr_ptr);</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="keyword">const</span> DWORD sec_all_flags = IMAGE_SCN_TYPE_NO_PAD</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        | IMAGE_SCN_CNT_CODE | IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_CNT_UNINITIALIZED_DATA</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        | IMAGE_SCN_LNK_NRELOC_OVFL | IMAGE_SCN_MEM_DISCARDABLE | IMAGE_SCN_MEM_NOT_CACHED</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        | IMAGE_SCN_MEM_NOT_PAGED | IMAGE_SCN_MEM_SHARED | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        | IMAGE_SCN_MEM_WRITE</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        | IMAGE_SCN_NO_DEFER_SPEC_EXC | IMAGE_SCN_GPREL;</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secCount; i++, curr_sec++) {</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacepesieve.html#ab6eb75407c454f07ae7910a1d8b7c826">is_valid_section</a>(vBuf, vBufSize, (BYTE*)curr_sec, 0)) {</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        }</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        <span class="comment">//leave only the flags that are valid</span></div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        <span class="keyword">const</span> DWORD charact = curr_sec-&gt;Characteristics;</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        curr_sec-&gt;Characteristics = charact &amp; sec_all_flags;</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="preprocessor">#ifdef DEBUG</span></div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        <span class="keywordflow">if</span> (charact != curr_sec-&gt;Characteristics) {</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;Section characteristics overwriten\n&quot;</span>;</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        }</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    }</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>}</div>
+<div class="foldopen" id="foldopen00191" data-start="{" data-end="}">
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno"><a class="line" href="classpesieve_1_1_pe_reconstructor.html#a9e12362010a44611c7bcdcc9d6608d45">  191</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_pe_reconstructor.html#a9e12362010a44611c7bcdcc9d6608d45">pesieve::PeReconstructor::fixSectionsCharacteristics</a>(HANDLE processHandle)</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>{</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    BYTE *vBuf = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBuf;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> vBufSize = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBufSize;</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="keywordflow">if</span> (!vBuf) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    <span class="keywordflow">if</span> (!this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.hasSectionHdrs()) {</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    }</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    ULONGLONG sec_offset = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.dropPeBase(this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secHdrsOffset);</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="keyword">const</span> BYTE *hdr_ptr = (sec_offset + vBuf);</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    IMAGE_SECTION_HEADER* curr_sec = (IMAGE_SECTION_HEADER*)(hdr_ptr);</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keyword">const</span> DWORD sec_all_flags = IMAGE_SCN_TYPE_NO_PAD</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        | IMAGE_SCN_CNT_CODE | IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_CNT_UNINITIALIZED_DATA</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        | IMAGE_SCN_LNK_NRELOC_OVFL | IMAGE_SCN_MEM_DISCARDABLE | IMAGE_SCN_MEM_NOT_CACHED</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        | IMAGE_SCN_MEM_NOT_PAGED | IMAGE_SCN_MEM_SHARED | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        | IMAGE_SCN_MEM_WRITE</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        | IMAGE_SCN_NO_DEFER_SPEC_EXC | IMAGE_SCN_GPREL;</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secCount; i++, curr_sec++) {</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacepesieve.html#ab6eb75407c454f07ae7910a1d8b7c826">is_valid_section</a>(vBuf, vBufSize, (BYTE*)curr_sec, 0)) {</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        }</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        <span class="comment">//leave only the flags that are valid</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        <span class="keyword">const</span> DWORD charact = curr_sec-&gt;Characteristics;</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        curr_sec-&gt;Characteristics = charact &amp; sec_all_flags;</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="preprocessor">#ifdef DEBUG</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        <span class="keywordflow">if</span> (charact != curr_sec-&gt;Characteristics) {</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;Section characteristics overwriten\n&quot;</span>;</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        }</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    }</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>}</div>
 </div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
-<div class="foldopen" id="foldopen00222" data-start="{" data-end="}">
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno"><a class="line" href="classpesieve_1_1_pe_reconstructor.html#aa0d7088e0c017e177c2c487e48350ec4">  222</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_pe_reconstructor.html#aa0d7088e0c017e177c2c487e48350ec4">pesieve::PeReconstructor::reconstructFileHdr</a>()</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>{</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    BYTE *vBuf = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBuf;</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> vBufSize = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBufSize;</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    <span class="keywordflow">if</span> (!vBuf) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    <span class="keywordflow">if</span> (!this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.hasNtHdrs()) {</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    }</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    <span class="keywordtype">size_t</span> nt_offset = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.dropPeBase(this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.ntFileHdrsOffset);</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    BYTE* nt_ptr = (BYTE*)((ULONGLONG)vBuf + nt_offset);</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespacepesieve.html#a18e59ce96d19eab91937d55a85d40d3a">is_valid_file_hdr</a>(vBuf, vBufSize, nt_ptr, 0)) {</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    }</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    IMAGE_FILE_HEADER* hdr_candidate = (IMAGE_FILE_HEADER*)nt_ptr;</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    <span class="keywordflow">if</span> (!peconv::validate_ptr(vBuf, vBufSize, hdr_candidate, <span class="keyword">sizeof</span>(IMAGE_FILE_HEADER))) {</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        <span class="comment">// probably buffer finished</span></div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    }</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <span class="keywordtype">size_t</span> opt_hdr_size = 0;</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.is64bit) {</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        hdr_candidate-&gt;Machine = IMAGE_FILE_MACHINE_AMD64;</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        opt_hdr_size = <span class="keyword">sizeof</span>(IMAGE_OPTIONAL_HEADER64);</div>
+<div class="foldopen" id="foldopen00228" data-start="{" data-end="}">
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno"><a class="line" href="classpesieve_1_1_pe_reconstructor.html#aa0d7088e0c017e177c2c487e48350ec4">  228</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_pe_reconstructor.html#aa0d7088e0c017e177c2c487e48350ec4">pesieve::PeReconstructor::reconstructFileHdr</a>()</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>{</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    BYTE *vBuf = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBuf;</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> vBufSize = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBufSize;</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="keywordflow">if</span> (!vBuf) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="keywordflow">if</span> (!this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.hasNtHdrs()) {</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    }</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    <span class="keywordtype">size_t</span> nt_offset = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.dropPeBase(this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.ntFileHdrsOffset);</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    BYTE* nt_ptr = (BYTE*)((ULONGLONG)vBuf + nt_offset);</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespacepesieve.html#a18e59ce96d19eab91937d55a85d40d3a">is_valid_file_hdr</a>(vBuf, vBufSize, nt_ptr, 0)) {</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    }</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    IMAGE_FILE_HEADER* hdr_candidate = (IMAGE_FILE_HEADER*)nt_ptr;</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="keywordflow">if</span> (!peconv::validate_ptr(vBuf, vBufSize, hdr_candidate, <span class="keyword">sizeof</span>(IMAGE_FILE_HEADER))) {</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        <span class="comment">// probably buffer finished</span></div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    }</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        hdr_candidate-&gt;Machine = IMAGE_FILE_MACHINE_I386;</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        opt_hdr_size = <span class="keyword">sizeof</span>(IMAGE_OPTIONAL_HEADER32);</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    }</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="keywordflow">if</span> (this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secHdrsOffset) {</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        <span class="keyword">const</span> <span class="keywordtype">size_t</span> sec_offset = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.dropPeBase(this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secHdrsOffset);</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>        <span class="keywordtype">size_t</span> calc_offset = sec_offset - (nt_offset + <span class="keyword">sizeof</span>(IMAGE_FILE_HEADER));</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        <span class="keywordflow">if</span> (calc_offset != opt_hdr_size) {</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;[WARNING] Calculated sections header offset is different than the saved one!\n&quot;</span>;</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        }</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        hdr_candidate-&gt;NumberOfSections = WORD(this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secCount);</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        hdr_candidate-&gt;SizeOfOptionalHeader = WORD(calc_offset);</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    }</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    hdr_candidate-&gt;NumberOfSymbols = 0;</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    hdr_candidate-&gt;PointerToSymbolTable = 0;</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>}</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="keywordtype">size_t</span> opt_hdr_size = 0;</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.is64bit) {</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        hdr_candidate-&gt;Machine = IMAGE_FILE_MACHINE_AMD64;</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        opt_hdr_size = <span class="keyword">sizeof</span>(IMAGE_OPTIONAL_HEADER64);</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    }</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        hdr_candidate-&gt;Machine = IMAGE_FILE_MACHINE_I386;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        opt_hdr_size = <span class="keyword">sizeof</span>(IMAGE_OPTIONAL_HEADER32);</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    }</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    <span class="keywordflow">if</span> (this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secHdrsOffset) {</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        <span class="keyword">const</span> <span class="keywordtype">size_t</span> sec_offset = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.dropPeBase(this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secHdrsOffset);</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        <span class="keywordtype">size_t</span> calc_offset = sec_offset - (nt_offset + <span class="keyword">sizeof</span>(IMAGE_FILE_HEADER));</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        <span class="keywordflow">if</span> (calc_offset != opt_hdr_size) {</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;[WARNING] Calculated sections header offset is different than the saved one!\n&quot;</span>;</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        }</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>        hdr_candidate-&gt;NumberOfSections = WORD(this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.secCount);</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        hdr_candidate-&gt;SizeOfOptionalHeader = WORD(calc_offset);</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    }</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    hdr_candidate-&gt;NumberOfSymbols = 0;</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    hdr_candidate-&gt;PointerToSymbolTable = 0;</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>}</div>
 </div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
-<div class="foldopen" id="foldopen00266" data-start="{" data-end="}">
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno"><a class="line" href="classpesieve_1_1_pe_reconstructor.html#a8303cb8e9feccbd0d7c64e0626ab40a9">  266</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_pe_reconstructor.html#a8303cb8e9feccbd0d7c64e0626ab40a9">pesieve::PeReconstructor::reconstructPeHdr</a>()</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>{</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    BYTE *vBuf = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBuf;</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> vBufSize = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBufSize;</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    <span class="keywordflow">if</span> (!vBuf) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    <span class="keywordflow">if</span> (!this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.hasNtHdrs()) {</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    }</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    ULONGLONG nt_offset = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.dropPeBase(this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.ntFileHdrsOffset);</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    BYTE* nt_ptr = (BYTE*)((ULONGLONG)vBuf + nt_offset);</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    BYTE *pe_ptr = nt_ptr - <span class="keyword">sizeof</span>(DWORD);</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    <span class="keywordflow">if</span> (!peconv::validate_ptr(vBuf, vBufSize, pe_ptr, <span class="keyword">sizeof</span>(DWORD))) {</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    }</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    IMAGE_NT_HEADERS32 *nt32 = (IMAGE_NT_HEADERS32*)pe_ptr;</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    <span class="comment">//write signature:</span></div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    nt32-&gt;Signature = IMAGE_NT_SIGNATURE;</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    IMAGE_FILE_HEADER *file_hdr = &amp;nt32-&gt;FileHeader;</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    <span class="keywordtype">bool</span> is64bit = (file_hdr-&gt;Machine == IMAGE_FILE_MACHINE_AMD64) ? <span class="keyword">true</span> : <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    <span class="keywordflow">if</span> (nt32-&gt;FileHeader.SizeOfOptionalHeader == 0) {</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        nt32-&gt;FileHeader.SizeOfOptionalHeader = is64bit ? <span class="keyword">sizeof</span>(IMAGE_OPTIONAL_HEADER64) : <span class="keyword">sizeof</span>(IMAGE_OPTIONAL_HEADER32);</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    }</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    LONG pe_offset = LONG((ULONGLONG)pe_ptr - (ULONGLONG)vBuf);</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    IMAGE_DOS_HEADER* dosHdr = (IMAGE_DOS_HEADER*) vBuf;</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    dosHdr-&gt;e_magic = IMAGE_DOS_SIGNATURE;</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    dosHdr-&gt;e_lfanew = pe_offset;</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    <span class="keywordtype">bool</span> is_fixed = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    <span class="keywordflow">if</span> (is64bit) {</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        is_fixed = <a class="code hl_function" href="namespacepesieve.html#a294ac1ed36b2f8bbffab80b3314c7155">overwrite_opt_hdr&lt;IMAGE_OPTIONAL_HEADER64&gt;</a>(vBuf, vBufSize, (IMAGE_OPTIONAL_HEADER64*)&amp;nt32-&gt;OptionalHeader, this-&gt;artefacts);</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    }</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>        is_fixed = <a class="code hl_function" href="namespacepesieve.html#a294ac1ed36b2f8bbffab80b3314c7155">overwrite_opt_hdr&lt;IMAGE_OPTIONAL_HEADER32&gt;</a>(vBuf, vBufSize, &amp;nt32-&gt;OptionalHeader, this-&gt;artefacts);</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    }</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    <span class="keywordflow">if</span> (!is_fixed) {</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="foldopen" id="foldopen00272" data-start="{" data-end="}">
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno"><a class="line" href="classpesieve_1_1_pe_reconstructor.html#a8303cb8e9feccbd0d7c64e0626ab40a9">  272</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classpesieve_1_1_pe_reconstructor.html#a8303cb8e9feccbd0d7c64e0626ab40a9">pesieve::PeReconstructor::reconstructPeHdr</a>()</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>{</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    BYTE *vBuf = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBuf;</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> vBufSize = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">peBuffer</a>.vBufSize;</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    <span class="keywordflow">if</span> (!vBuf) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    <span class="keywordflow">if</span> (!this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.hasNtHdrs()) {</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    }</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    ULONGLONG nt_offset = this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.dropPeBase(this-&gt;<a class="code hl_variable" href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">artefacts</a>.ntFileHdrsOffset);</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    BYTE* nt_ptr = (BYTE*)((ULONGLONG)vBuf + nt_offset);</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    BYTE *pe_ptr = nt_ptr - <span class="keyword">sizeof</span>(DWORD);</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    <span class="keywordflow">if</span> (!peconv::validate_ptr(vBuf, vBufSize, pe_ptr, <span class="keyword">sizeof</span>(DWORD))) {</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    }</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    IMAGE_NT_HEADERS32 *nt32 = (IMAGE_NT_HEADERS32*)pe_ptr;</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    <span class="comment">//write signature:</span></div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    nt32-&gt;Signature = IMAGE_NT_SIGNATURE;</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    IMAGE_FILE_HEADER *file_hdr = &amp;nt32-&gt;FileHeader;</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    <span class="keywordtype">bool</span> is64bit = (file_hdr-&gt;Machine == IMAGE_FILE_MACHINE_AMD64) ? <span class="keyword">true</span> : <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    <span class="keywordflow">if</span> (nt32-&gt;FileHeader.SizeOfOptionalHeader == 0) {</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>        nt32-&gt;FileHeader.SizeOfOptionalHeader = is64bit ? <span class="keyword">sizeof</span>(IMAGE_OPTIONAL_HEADER64) : <span class="keyword">sizeof</span>(IMAGE_OPTIONAL_HEADER32);</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    }</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    LONG pe_offset = LONG((ULONGLONG)pe_ptr - (ULONGLONG)vBuf);</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    IMAGE_DOS_HEADER* dosHdr = (IMAGE_DOS_HEADER*) vBuf;</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    dosHdr-&gt;e_magic = IMAGE_DOS_SIGNATURE;</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    dosHdr-&gt;e_lfanew = pe_offset;</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    <span class="keywordtype">bool</span> is_fixed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    <span class="keywordflow">if</span> (is64bit) {</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>        is_fixed = <a class="code hl_function" href="namespacepesieve.html#a294ac1ed36b2f8bbffab80b3314c7155">overwrite_opt_hdr&lt;IMAGE_OPTIONAL_HEADER64&gt;</a>(vBuf, vBufSize, (IMAGE_OPTIONAL_HEADER64*)&amp;nt32-&gt;OptionalHeader, this-&gt;artefacts);</div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    }</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    <span class="keywordflow">if</span> (!peconv::get_nt_hdrs(vBuf, vBufSize)) {</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>        is_fixed = <a class="code hl_function" href="namespacepesieve.html#a294ac1ed36b2f8bbffab80b3314c7155">overwrite_opt_hdr&lt;IMAGE_OPTIONAL_HEADER32&gt;</a>(vBuf, vBufSize, &amp;nt32-&gt;OptionalHeader, this-&gt;artefacts);</div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    }</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>}</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    <span class="keywordflow">if</span> (!is_fixed) {</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    }</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    <span class="keywordflow">if</span> (!peconv::get_nt_hdrs(vBuf, vBufSize)) {</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>    }</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>}</div>
 </div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
 <div class="ttc" id="aartefact__scanner_8h_html_a56f8e75d6ce827dcee2b97f88852f991"><div class="ttname"><a href="artefact__scanner_8h.html#a56f8e75d6ce827dcee2b97f88852f991">INVALID_OFFSET</a></div><div class="ttdeci">#define INVALID_OFFSET</div><div class="ttdef"><b>Definition</b> <a href="artefact__scanner_8h_source.html#l00013">artefact_scanner.h:13</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_pe_artefacts_html"><div class="ttname"><a href="classpesieve_1_1_pe_artefacts.html">pesieve::PeArtefacts</a></div><div class="ttdoc">A report about the PE artefact detected in the workingset.</div><div class="ttdef"><b>Definition</b> <a href="artefact__scanner_8h_source.html#l00022">artefact_scanner.h:22</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_pe_artefacts_html_a4ad5f409b8a1c4f74e66e091b3da2861"><div class="ttname"><a href="classpesieve_1_1_pe_artefacts.html#a4ad5f409b8a1c4f74e66e091b3da2861">pesieve::PeArtefacts::ntFileHdrsOffset</a></div><div class="ttdeci">size_t ntFileHdrsOffset</div><div class="ttdef"><b>Definition</b> <a href="artefact__scanner_8h_source.html#l00107">artefact_scanner.h:107</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_pe_artefacts_html_ae89eb1e53f65ac81017b8fb3c87be5d0"><div class="ttname"><a href="classpesieve_1_1_pe_artefacts.html#ae89eb1e53f65ac81017b8fb3c87be5d0">pesieve::PeArtefacts::secHdrsOffset</a></div><div class="ttdeci">size_t secHdrsOffset</div><div class="ttdef"><b>Definition</b> <a href="artefact__scanner_8h_source.html#l00108">artefact_scanner.h:108</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_pe_reconstructor_html_a071ac1f5f01c749bb92fd4ac93c13774"><div class="ttname"><a href="classpesieve_1_1_pe_reconstructor.html#a071ac1f5f01c749bb92fd4ac93c13774">pesieve::PeReconstructor::shiftPeHeader</a></div><div class="ttdeci">size_t shiftPeHeader()</div><div class="ttdef"><b>Definition</b> <a href="#l00018">pe_reconstructor.cpp:18</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_pe_reconstructor_html_a12ecde5ccd9c8081192600f2b05e6bc9"><div class="ttname"><a href="classpesieve_1_1_pe_reconstructor.html#a12ecde5ccd9c8081192600f2b05e6bc9">pesieve::PeReconstructor::fixSectionsVirtualSize</a></div><div class="ttdeci">bool fixSectionsVirtualSize(HANDLE processHandle)</div><div class="ttdef"><b>Definition</b> <a href="#l00103">pe_reconstructor.cpp:103</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_pe_reconstructor_html_a12ecde5ccd9c8081192600f2b05e6bc9"><div class="ttname"><a href="classpesieve_1_1_pe_reconstructor.html#a12ecde5ccd9c8081192600f2b05e6bc9">pesieve::PeReconstructor::fixSectionsVirtualSize</a></div><div class="ttdeci">bool fixSectionsVirtualSize(HANDLE processHandle)</div><div class="ttdef"><b>Definition</b> <a href="#l00109">pe_reconstructor.cpp:109</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_pe_reconstructor_html_a5994fc1f72aef6649995a0c2ca244414"><div class="ttname"><a href="classpesieve_1_1_pe_reconstructor.html#a5994fc1f72aef6649995a0c2ca244414">pesieve::PeReconstructor::peBuffer</a></div><div class="ttdeci">PeBuffer &amp; peBuffer</div><div class="ttdef"><b>Definition</b> <a href="pe__reconstructor_8h_source.html#l00064">pe_reconstructor.h:64</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_pe_reconstructor_html_a8303cb8e9feccbd0d7c64e0626ab40a9"><div class="ttname"><a href="classpesieve_1_1_pe_reconstructor.html#a8303cb8e9feccbd0d7c64e0626ab40a9">pesieve::PeReconstructor::reconstructPeHdr</a></div><div class="ttdeci">bool reconstructPeHdr()</div><div class="ttdef"><b>Definition</b> <a href="#l00266">pe_reconstructor.cpp:266</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_pe_reconstructor_html_a9e12362010a44611c7bcdcc9d6608d45"><div class="ttname"><a href="classpesieve_1_1_pe_reconstructor.html#a9e12362010a44611c7bcdcc9d6608d45">pesieve::PeReconstructor::fixSectionsCharacteristics</a></div><div class="ttdeci">bool fixSectionsCharacteristics(HANDLE processHandle)</div><div class="ttdef"><b>Definition</b> <a href="#l00185">pe_reconstructor.cpp:185</a></div></div>
-<div class="ttc" id="aclasspesieve_1_1_pe_reconstructor_html_aa0d7088e0c017e177c2c487e48350ec4"><div class="ttname"><a href="classpesieve_1_1_pe_reconstructor.html#aa0d7088e0c017e177c2c487e48350ec4">pesieve::PeReconstructor::reconstructFileHdr</a></div><div class="ttdeci">bool reconstructFileHdr()</div><div class="ttdef"><b>Definition</b> <a href="#l00222">pe_reconstructor.cpp:222</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_pe_reconstructor_html_a8303cb8e9feccbd0d7c64e0626ab40a9"><div class="ttname"><a href="classpesieve_1_1_pe_reconstructor.html#a8303cb8e9feccbd0d7c64e0626ab40a9">pesieve::PeReconstructor::reconstructPeHdr</a></div><div class="ttdeci">bool reconstructPeHdr()</div><div class="ttdef"><b>Definition</b> <a href="#l00272">pe_reconstructor.cpp:272</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_pe_reconstructor_html_a9e12362010a44611c7bcdcc9d6608d45"><div class="ttname"><a href="classpesieve_1_1_pe_reconstructor.html#a9e12362010a44611c7bcdcc9d6608d45">pesieve::PeReconstructor::fixSectionsCharacteristics</a></div><div class="ttdeci">bool fixSectionsCharacteristics(HANDLE processHandle)</div><div class="ttdef"><b>Definition</b> <a href="#l00191">pe_reconstructor.cpp:191</a></div></div>
+<div class="ttc" id="aclasspesieve_1_1_pe_reconstructor_html_aa0d7088e0c017e177c2c487e48350ec4"><div class="ttname"><a href="classpesieve_1_1_pe_reconstructor.html#aa0d7088e0c017e177c2c487e48350ec4">pesieve::PeReconstructor::reconstructFileHdr</a></div><div class="ttdeci">bool reconstructFileHdr()</div><div class="ttdef"><b>Definition</b> <a href="#l00228">pe_reconstructor.cpp:228</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_pe_reconstructor_html_ab78eb881766488c20e6d8fe25909c3c1"><div class="ttname"><a href="classpesieve_1_1_pe_reconstructor.html#ab78eb881766488c20e6d8fe25909c3c1">pesieve::PeReconstructor::origArtefacts</a></div><div class="ttdeci">const PeArtefacts origArtefacts</div><div class="ttdef"><b>Definition</b> <a href="pe__reconstructor_8h_source.html#l00062">pe_reconstructor.h:62</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_pe_reconstructor_html_aecc81860235f996140714d2bfe72bc51"><div class="ttname"><a href="classpesieve_1_1_pe_reconstructor.html#aecc81860235f996140714d2bfe72bc51">pesieve::PeReconstructor::reconstruct</a></div><div class="ttdeci">bool reconstruct()</div><div class="ttdef"><b>Definition</b> <a href="#l00075">pe_reconstructor.cpp:75</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1_pe_reconstructor_html_aeef489ba832077cd3066c95f80762e28"><div class="ttname"><a href="classpesieve_1_1_pe_reconstructor.html#aeef489ba832077cd3066c95f80762e28">pesieve::PeReconstructor::artefacts</a></div><div class="ttdeci">PeArtefacts artefacts</div><div class="ttdef"><b>Definition</b> <a href="pe__reconstructor_8h_source.html#l00063">pe_reconstructor.h:63</a></div></div>
