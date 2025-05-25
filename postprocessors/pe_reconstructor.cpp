@@ -91,10 +91,16 @@ bool pesieve::PeReconstructor::reconstruct()
 	if (!is_pe_hdr) {
 		return false;
 	}
+
 	//do not modify section headers if the PE is in raw format, or no unmapping requested
 	if (!peconv::is_pe_raw(peBuffer.vBuf, peBuffer.vBufSize)) {
+
 		if (!fixSectionsVirtualSize(peBuffer.processHndl) || !fixSectionsCharacteristics(peBuffer.processHndl)) {
 			return false;
+		}
+		const ULONGLONG base_candidate = peconv::find_base_candidate(peBuffer.vBuf, peBuffer.vBufSize);
+		if (base_candidate) {
+			peconv::update_image_base(peBuffer.vBuf, (ULONGLONG)base_candidate);
 		}
 	}
 	return peBuffer.isValidPe();
@@ -154,7 +160,7 @@ bool pesieve::PeReconstructor::fixSectionsVirtualSize(HANDLE processHandle)
 		max_sec_size = (real_sec_size > max_sec_size) ? real_sec_size : max_sec_size;
 
 		if (prev_sec && curr_sec->Misc.VirtualSize > 0) {
-			ULONGLONG prev_sec_end = prev_sec->VirtualAddress + prev_sec->Misc.VirtualSize;
+			const ULONGLONG prev_sec_end = static_cast<ULONGLONG>(prev_sec->VirtualAddress) + static_cast<ULONGLONG>(prev_sec->Misc.VirtualSize);
 			if (prev_sec_end > curr_sec->VirtualAddress) {
 				if (curr_sec->VirtualAddress > prev_sec->VirtualAddress) {
 					DWORD diff = curr_sec->VirtualAddress - prev_sec->VirtualAddress;
@@ -309,4 +315,3 @@ bool pesieve::PeReconstructor::reconstructPeHdr()
 	}
 	return true;
 }
-
