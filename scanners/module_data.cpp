@@ -225,10 +225,14 @@ bool pesieve::ModuleData::reloadWow64()
 		original_module = peconv::load_pe_module(szModName, original_size, false, false);
 	}
 	if (!original_module) {
+#ifdef _DEBUG
 		std::cout << "[-] Failed to reload: " << szModName << "\n";
+#endif //_DEBUG
 		return false;
 	}
+#ifdef _DEBUG
 	std::cout << "[+] Reloaded: " << szModName << "\n";
+#endif //_DEBUG
 	return true;
 }
 
