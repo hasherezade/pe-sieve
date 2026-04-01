@@ -7,7 +7,7 @@ var searchData=
   ['patchedcode_4',['patchedCode',['../classpesieve_1_1_patch_analyzer.html#a6129a18c4f9cd277f6287487b1eabaed',1,'pesieve::PatchAnalyzer']]],
   ['patches_5',['patches',['../classpesieve_1_1_patch_list.html#a710aedad5735be4dd469bfd044b42205',1,'pesieve::PatchList']]],
   ['patcheslist_6',['patchesList',['../classpesieve_1_1_code_scan_report.html#a5f8a3a7e32ccea7994926dd5d9dd6db5',1,'pesieve::CodeScanReport']]],
-  ['pattern_5ffile_7',['pattern_file',['../structparams.html#a8dea4dae4e13f424fbee9dad0292de4f',1,'params']]],
+  ['pattern_5ffile_7',['pattern_file',['../structparams.html#a8dea4dae4e13f424fbee9dad0292de4f',1,'params::pattern_file'],['../namespacedemo.html#ab5bd7d7cf45ca9a8223d5c7c5b686dd9',1,'demo.pattern_file']]],
   ['patterns32_8',['patterns32',['../namespacepesieve.html#a5e80cc610b6e0817edb6aeb412f16be6',1,'pesieve']]],
   ['patterns64_9',['patterns64',['../namespacepesieve.html#aabf8b899f3fb06f158bb4888ff743016',1,'pesieve']]],
   ['patternstagfilename_10',['patternsTagFileName',['../classpesieve_1_1_module_dump_report.html#af89367018e9a8acd7d5b0eabcd354041',1,'pesieve::ModuleDumpReport']]],

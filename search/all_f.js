@@ -54,7 +54,7 @@ var searchData=
   ['path_5fconverter_2eh_51',['path_converter.h',['../path__converter_8h.html',1,'']]],
   ['path_5futil_2ecpp_52',['path_util.cpp',['../path__util_8cpp.html',1,'']]],
   ['path_5futil_2eh_53',['path_util.h',['../path__util_8h.html',1,'']]],
-  ['pattern_5ffile_54',['pattern_file',['../structparams.html#a8dea4dae4e13f424fbee9dad0292de4f',1,'params']]],
+  ['pattern_5ffile_54',['pattern_file',['../structparams.html#a8dea4dae4e13f424fbee9dad0292de4f',1,'params::pattern_file'],['../namespacedemo.html#ab5bd7d7cf45ca9a8223d5c7c5b686dd9',1,'demo.pattern_file']]],
   ['pattern_5fnot_5ffound_55',['PATTERN_NOT_FOUND',['../artefacts__util_8h.html#ac9cf0f4988dad099cb71d79c118d6adc',1,'artefacts_util.h']]],
   ['patternmatcher_56',['PatternMatcher',['../classpesieve_1_1_pattern_matcher.html',1,'pesieve']]],
   ['patterns32_57',['patterns32',['../namespacepesieve.html#a5e80cc610b6e0817edb6aeb412f16be6',1,'pesieve']]],
