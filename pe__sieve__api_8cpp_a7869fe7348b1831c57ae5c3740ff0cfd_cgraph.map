@@ -1,6 +1,6 @@
 <map id="PESieve_scan" name="PESieve_scan">
 <area shape="rect" id="Node000001" title="Performs a PE&#45;sieve scan with a supplied set of parameters (defined as a structure t_params)...." alt="" coords="5,5,112,31"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#abf1ea9906614a0fac7fd24715abb1bb3" title=" " alt="" coords="160,5,334,31"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#a9efa84a47ac893c5c9513c183642b6ea" title=" " alt="" coords="160,5,334,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,16,144,16,144,21,112,21"/>
 <area shape="rect" id="Node000003" href="$namespacepesieve.html#a2053c41480ba617357fa427bc8252c64" title=" " alt="" coords="382,5,468,31"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="334,16,366,16,366,21,334,21"/>
