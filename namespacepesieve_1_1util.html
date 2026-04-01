@@ -191,7 +191,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a282125458b003e9ab800b24552bd7242" id="r_a282125458b003e9ab800b24552bd7242"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a282125458b003e9ab800b24552bd7242">is_number</a> (const char *buf)</td></tr>
 <tr class="memitem:a980992e8baccca3371865922e85925be" id="r_a980992e8baccca3371865922e85925be"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a980992e8baccca3371865922e85925be">is_in_list</a> (std::string searched_string, std::set&lt; std::string &gt; &amp;string_list, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> to_lower=true)</td></tr>
 <tr class="memitem:a6bf8eed39c860ca4caf8dc081b57529e" id="r_a6bf8eed39c860ca4caf8dc081b57529e"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#a6bf8eed39c860ca4caf8dc081b57529e">string_to_list</a> (IN::std::string s, IN char _delim, OUT std::set&lt; std::string &gt; &amp;elements_list, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> to_lower=true)</td></tr>
-<tr class="memitem:a193f47d90a59d2001b4dff0e6e6fa6e0" id="r_a193f47d90a59d2001b4dff0e6e6fa6e0"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#a193f47d90a59d2001b4dff0e6e6fa6e0">enum_modules</a> (IN HANDLE hProcess, IN OUT HMODULE hMods[], IN const <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> hModsMax, IN <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> filters)</td></tr>
+<tr class="memitem:aadb390fe91332082b68e9dfdbf3c0afb" id="r_aadb390fe91332082b68e9dfdbf3c0afb"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#aadb390fe91332082b68e9dfdbf3c0afb">enum_modules</a> (IN HANDLE hProcess, OUT std::vector&lt; HMODULE &gt; &amp;hMods, IN <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> filters)</td></tr>
 <tr class="memitem:a7784404ead578981dc824836d8a59797" id="r_a7784404ead578981dc824836d8a59797"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a7784404ead578981dc824836d8a59797">init_syspaths</a> ()</td></tr>
 <tr class="memitem:ab5e5a042a6e2a1f7dae357fbcb254691" id="r_ab5e5a042a6e2a1f7dae357fbcb254691"><td class="memItemLeft">HANDLE&#160;</td><td class="memItemRight"><a class="el" href="#ab5e5a042a6e2a1f7dae357fbcb254691">nt_create_file</a> (PCWSTR filePath)</td></tr>
 <tr class="memitem:a03da40fa638bce14968666b16b16a971" id="r_a03da40fa638bce14968666b16b16a971"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a03da40fa638bce14968666b16b16a971">nt_retrieve_file_path</a> (HANDLE <a class="el" href="#abbfc80ee34aa4b5e1dfa78c1537fe405">hFile</a>)</td></tr>
@@ -946,8 +946,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a193f47d90a59d2001b4dff0e6e6fa6e0" name="a193f47d90a59d2001b4dff0e6e6fa6e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a193f47d90a59d2001b4dff0e6e6fa6e0">&#9670;&#160;</a></span>enum_modules()</h2>
+<a id="aadb390fe91332082b68e9dfdbf3c0afb" name="aadb390fe91332082b68e9dfdbf3c0afb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadb390fe91332082b68e9dfdbf3c0afb">&#9670;&#160;</a></span>enum_modules()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -960,12 +960,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">IN OUT HMODULE</td>          <td class="paramname"><span class="paramname"><em>hMods</em></span>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">IN const <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a></td>          <td class="paramname"><span class="paramname"><em>hModsMax</em></span>, </td>
+          <td class="paramtype">OUT std::vector&lt; HMODULE &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>hMods</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -974,13 +969,11 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="modules__enum_8cpp_source.html#l00006">6</a> of file <a class="el" href="modules__enum_8cpp_source.html">modules_enum.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="namespacepesieve_1_1util_a193f47d90a59d2001b4dff0e6e6fa6e0_cgraph.png" border="0" usemap="#anamespacepesieve_1_1util_a193f47d90a59d2001b4dff0e6e6fa6e0_cgraph" loading="lazy" alt=""/></div>
-<map name="anamespacepesieve_1_1util_a193f47d90a59d2001b4dff0e6e6fa6e0_cgraph" id="anamespacepesieve_1_1util_a193f47d90a59d2001b4dff0e6e6fa6e0_cgraph">
+<div class="center"><img src="namespacepesieve_1_1util_aadb390fe91332082b68e9dfdbf3c0afb_cgraph.png" border="0" usemap="#anamespacepesieve_1_1util_aadb390fe91332082b68e9dfdbf3c0afb_cgraph" loading="lazy" alt=""/></div>
+<map name="anamespacepesieve_1_1util_aadb390fe91332082b68e9dfdbf3c0afb_cgraph" id="anamespacepesieve_1_1util_aadb390fe91332082b68e9dfdbf3c0afb_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,133,46"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="181,13,325,38"/>
 <area shape="poly" title=" " alt="" coords="133,23,165,23,165,28,133,28"/>

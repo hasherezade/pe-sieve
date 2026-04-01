@@ -97,75 +97,78 @@ $(function() {
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordtype">size_t</span> level = 1;</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    std::string report_str = <a class="code hl_function" href="namespacepesieve.html#a90510c3aed6db4cb8169647fe0be23a2">report_to_json</a>(<a class="code hl_struct" href="structreport.html">report</a>, rtype, args.results_filter, args.json_lvl, level);</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> report_len = report_str.length();</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordflow">if</span> (json_buf &amp;&amp; json_buf_size) {</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        ::memset(json_buf, 0, json_buf_size);</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        <span class="keywordtype">size_t</span> max_len = report_len &lt;= (json_buf_size - 1) ? report_len : (json_buf_size - 1);</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        ::memcpy(json_buf, report_str.c_str(), max_len);</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    }</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">return</span> report_len;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordflow">if</span> (!report_len) <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> report_size = report_len + 1;<span class="comment">// including the &#39;\0&#39; terminator</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordflow">if</span> (json_buf &amp;&amp; json_buf_size) {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        ::memset(json_buf, 0, json_buf_size);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordtype">size_t</span> max_len = report_len &lt;= (json_buf_size - 1) ? report_len : (json_buf_size - 1);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        ::memcpy(json_buf, report_str.c_str(), max_len);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordflow">return</span> report_size;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
 </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="pe__sieve__api_8cpp.html#ab5ff4b4b18f55c344f1b946b9d9eb47b">   30</a></span><a class="code hl_typedef" href="pe__sieve__api_8h.html#ab9c9b0bb96563edfc03236f9b522dd91">PEsieve_report</a> <a class="code hl_define" href="pe__sieve__api_8h.html#af8a670441ca96827a2997727a85d9ca3">PESIEVE_API_FUNC</a> <a class="code hl_function" href="namespacepesieve.html#abf1ea9906614a0fac7fd24715abb1bb3">PESieve_scan_ex</a>(IN <span class="keyword">const</span> <a class="code hl_typedef" href="pe__sieve__api_8h.html#a6fd416fe2fa8efb29be1fd09956cbf31">PEsieve_params</a> &amp;args, IN <span class="keyword">const</span> <a class="code hl_typedef" href="pe__sieve__api_8h.html#a318ffb82c89dcbe1c7914790a2b0df41">PEsieve_rtype</a> rtype, OUT <span class="keywordtype">char</span>* json_buf, IN <span class="keywordtype">size_t</span> json_buf_size, OUT <span class="keywordtype">size_t</span>* needed_size)</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">if</span> (IsBadReadPtr((LPVOID)&amp;args, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="pe__sieve__api_8h.html#a6fd416fe2fa8efb29be1fd09956cbf31">PEsieve_params</a>)) ) {</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <a class="code hl_class" href="classpesieve_1_1t__report.html">pesieve::t_report</a> empty = { 0 };</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        empty.errors = 1;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordflow">return</span> empty;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    }</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">const</span> <a class="code hl_class" href="classpesieve_1_1_report_ex.html">pesieve::ReportEx</a>* <a class="code hl_struct" href="structreport.html">report</a> = <a class="code hl_function" href="namespacepesieve.html#ad71d3d82e248bd37f2becabe0ca00f55">pesieve::scan_and_dump</a>(args);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_class" href="classpesieve_1_1t__report.html">pesieve::t_report</a> summary = { 0 };</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    summary.pid = args.pid;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    summary.errors = <a class="code hl_variable" href="namespacepesieve.html#a267e690d8ed5004a62be6a7ce04f7617">pesieve::ERROR_SCAN_FAILURE</a>;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordflow">if</span> (!<a class="code hl_struct" href="structreport.html">report</a>) {</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="keywordflow">return</span> summary;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    }</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">if</span> (<a class="code hl_struct" href="structreport.html">report</a>-&gt;scan_report) {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        summary = <a class="code hl_struct" href="structreport.html">report</a>-&gt;scan_report-&gt;generateSummary();</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="pe__sieve__api_8cpp.html#a56c83ef4465513edee8ccaaaf19fcbff">   32</a></span><a class="code hl_typedef" href="pe__sieve__api_8h.html#ab9c9b0bb96563edfc03236f9b522dd91">PEsieve_report</a> <a class="code hl_define" href="pe__sieve__api_8h.html#af8a670441ca96827a2997727a85d9ca3">PESIEVE_API_FUNC</a> <a class="code hl_function" href="namespacepesieve.html#abf1ea9906614a0fac7fd24715abb1bb3">PESieve_scan_ex</a>(IN <span class="keyword">const</span> <a class="code hl_typedef" href="pe__sieve__api_8h.html#a6fd416fe2fa8efb29be1fd09956cbf31">PEsieve_params</a> *args, IN <span class="keyword">const</span> <a class="code hl_typedef" href="pe__sieve__api_8h.html#a318ffb82c89dcbe1c7914790a2b0df41">PEsieve_rtype</a> rtype, OUT <span class="keywordtype">char</span>* json_buf, IN <span class="keywordtype">size_t</span> json_buf_size, OUT <span class="keywordtype">size_t</span>* needed_size)</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">if</span> (!args || IsBadReadPtr((LPVOID)args, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="pe__sieve__api_8h.html#a6fd416fe2fa8efb29be1fd09956cbf31">PEsieve_params</a>))) {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <a class="code hl_class" href="classpesieve_1_1t__report.html">pesieve::t_report</a> empty = { 0 };</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        empty.errors = 1;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">return</span> empty;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="pe__sieve__api_8h.html#a6fd416fe2fa8efb29be1fd09956cbf31">PEsieve_params</a> _args = *args;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keyword">const</span> <a class="code hl_class" href="classpesieve_1_1_report_ex.html">pesieve::ReportEx</a>* <a class="code hl_struct" href="structreport.html">report</a> = <a class="code hl_function" href="namespacepesieve.html#ad71d3d82e248bd37f2becabe0ca00f55">pesieve::scan_and_dump</a>(_args);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_class" href="classpesieve_1_1t__report.html">pesieve::t_report</a> summary = { 0 };</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    summary.pid = _args.<a class="code hl_variable" href="structparams.html#a6002713892aecb1e58747924e456b4ac">pid</a>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    summary.errors = <a class="code hl_variable" href="namespacepesieve.html#a267e690d8ed5004a62be6a7ce04f7617">pesieve::ERROR_SCAN_FAILURE</a>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">if</span> (!<a class="code hl_struct" href="structreport.html">report</a>) {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keywordflow">return</span> summary;</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="comment">//check the pointers:</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">if</span> (json_buf) {</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordflow">if</span> (!json_buf_size || IsBadWritePtr(json_buf, json_buf_size)) {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            json_buf = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            json_buf_size = 0;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        }</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    }</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">if</span> (needed_size &amp;&amp; IsBadWritePtr(needed_size, <span class="keyword">sizeof</span>(<span class="keywordtype">size_t</span>))) {</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        needed_size = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">if</span> (<a class="code hl_struct" href="structreport.html">report</a>-&gt;scan_report) {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        summary = <a class="code hl_struct" href="structreport.html">report</a>-&gt;scan_report-&gt;generateSummary();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="comment">//check the pointers:</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">if</span> (json_buf) {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="keywordflow">if</span> (!json_buf_size || IsBadWritePtr(json_buf, json_buf_size)) {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            json_buf = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            json_buf_size = 0;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        }</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    }</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="comment">//print the report (only if any valid output buffer was passed)</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">if</span> (json_buf || needed_size) {</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keyword">const</span> <span class="keywordtype">size_t</span> report_size = <a class="code hl_function" href="pe__sieve__api_8cpp.html#a38a7c5d0933d4e53528f4a8589a0f7ed">print_report</a>(*<a class="code hl_struct" href="structreport.html">report</a>, args, rtype, json_buf, json_buf_size);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keywordflow">if</span> (needed_size) {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            *needed_size = report_size;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    }</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keyword">delete</span> <a class="code hl_struct" href="structreport.html">report</a>;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">return</span> summary;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">if</span> (needed_size &amp;&amp; IsBadWritePtr(needed_size, <span class="keyword">sizeof</span>(<span class="keywordtype">size_t</span>))) {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        needed_size = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">//print the report (only if any valid output buffer was passed)</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordflow">if</span> (json_buf || needed_size) {</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <span class="keyword">const</span> <span class="keywordtype">size_t</span> report_size = <a class="code hl_function" href="pe__sieve__api_8cpp.html#a38a7c5d0933d4e53528f4a8589a0f7ed">print_report</a>(*<a class="code hl_struct" href="structreport.html">report</a>, _args, rtype, json_buf, json_buf_size);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">if</span> (needed_size) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            *needed_size = report_size;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">delete</span> <a class="code hl_struct" href="structreport.html">report</a>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">return</span> summary;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
 </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="foldopen" id="foldopen00069" data-start="{" data-end="}">
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="pe__sieve__api_8h.html#a73a78415de92b2741cfadf2587ba2f85">   69</a></span><a class="code hl_typedef" href="pe__sieve__api_8h.html#ab9c9b0bb96563edfc03236f9b522dd91">PEsieve_report</a> <a class="code hl_define" href="pe__sieve__api_8h.html#af8a670441ca96827a2997727a85d9ca3">PESIEVE_API_FUNC</a> <a class="code hl_function" href="namespacepesieve.html#aeed6ae14ad4cbeebffc252503c14e774">PESieve_scan</a>(IN <span class="keyword">const</span> <a class="code hl_typedef" href="pe__sieve__api_8h.html#a6fd416fe2fa8efb29be1fd09956cbf31">PEsieve_params</a> &amp;args)</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>{</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacepesieve.html#abf1ea9906614a0fac7fd24715abb1bb3">PESieve_scan_ex</a>(args, <a class="code hl_enumvalue" href="pe__sieve__types_8h.html#ac8c9bbde52a2aaaa12a023d92a7d75b1a5c81ddc6d9cb0bcc993394f818d16ac2">REPORT_NONE</a>, <span class="keyword">nullptr</span>, 0, <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>}</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="foldopen" id="foldopen00072" data-start="{" data-end="}">
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="pe__sieve__api_8h.html#a7869fe7348b1831c57ae5c3740ff0cfd">   72</a></span><a class="code hl_typedef" href="pe__sieve__api_8h.html#ab9c9b0bb96563edfc03236f9b522dd91">PEsieve_report</a> <a class="code hl_define" href="pe__sieve__api_8h.html#af8a670441ca96827a2997727a85d9ca3">PESIEVE_API_FUNC</a> <a class="code hl_function" href="namespacepesieve.html#aeed6ae14ad4cbeebffc252503c14e774">PESieve_scan</a>(IN <span class="keyword">const</span> <a class="code hl_typedef" href="pe__sieve__api_8h.html#a6fd416fe2fa8efb29be1fd09956cbf31">PEsieve_params</a> *args)</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>{</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacepesieve.html#abf1ea9906614a0fac7fd24715abb1bb3">PESieve_scan_ex</a>(args, <a class="code hl_enumvalue" href="pe__sieve__types_8h.html#ac8c9bbde52a2aaaa12a023d92a7d75b1a5c81ddc6d9cb0bcc993394f818d16ac2">REPORT_NONE</a>, <span class="keyword">nullptr</span>, 0, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
 </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="foldopen" id="foldopen00074" data-start="{" data-end="}">
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="pe__sieve__api_8h.html#aaa092db8bd00f4bbda08c9b6a6663624">   74</a></span><span class="keywordtype">void</span> <a class="code hl_define" href="pe__sieve__api_8h.html#af8a670441ca96827a2997727a85d9ca3">PESIEVE_API_FUNC</a> <a class="code hl_function" href="namespacepesieve.html#a05d9c0188b809baa177a37739401a60e">PESieve_help</a>(<span class="keywordtype">void</span>)</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>{</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    std::string my_info = <a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">pesieve::info</a>();</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    std::cout &lt;&lt; my_info;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    MessageBox(NULL, my_info.c_str(), <a class="code hl_define" href="pe__sieve__api_8cpp.html#a6e43beaa714b1bf01ce2271440786e38">LIB_NAME</a>, MB_ICONINFORMATION);</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>}</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="}">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="pe__sieve__api_8h.html#aaa092db8bd00f4bbda08c9b6a6663624">   77</a></span><span class="keywordtype">void</span> <a class="code hl_define" href="pe__sieve__api_8h.html#af8a670441ca96827a2997727a85d9ca3">PESIEVE_API_FUNC</a> <a class="code hl_function" href="namespacepesieve.html#a05d9c0188b809baa177a37739401a60e">PESieve_help</a>(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>{</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    std::string my_info = <a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">pesieve::info</a>();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    std::cout &lt;&lt; my_info;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    MessageBox(NULL, my_info.c_str(), <a class="code hl_define" href="pe__sieve__api_8cpp.html#a6e43beaa714b1bf01ce2271440786e38">LIB_NAME</a>, MB_ICONINFORMATION);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>}</div>
 </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> <a class="code hl_define" href="pe__sieve__api_8h.html#ac572addbdbbff59edebf2e26544482e5">PESIEVE_API</a> <a class="code hl_variable" href="namespacepesieve.html#a909ddb0a64bdb58430cc192a985408ab">PESieve_version</a> = MAKELONG(MAKEWORD(<a class="code hl_define" href="pe__sieve__ver__short_8h.html#a0263888c2b1544b193d90467b74de852">PESIEVE_PATCH_VERSION</a>, <a class="code hl_define" href="pe__sieve__ver__short_8h.html#aa9b440c88301877c02e092306a39a7fc">PESIEVE_MICRO_VERSION</a>), MAKEWORD(<a class="code hl_define" href="pe__sieve__ver__short_8h.html#a24158745816b473d50f2a3582e2cb4cb">PESIEVE_MINOR_VERSION</a>, <a class="code hl_define" href="pe__sieve__ver__short_8h.html#a438266f22a2b5359707aa7f76f38f69b">PESIEVE_MAJOR_VERSION</a>));</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="keyword">extern</span> <span class="keyword">const</span> <a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> <a class="code hl_define" href="pe__sieve__api_8h.html#ac572addbdbbff59edebf2e26544482e5">PESIEVE_API</a> <a class="code hl_variable" href="namespacepesieve.html#a909ddb0a64bdb58430cc192a985408ab">PESieve_version</a> = MAKELONG(MAKEWORD(<a class="code hl_define" href="pe__sieve__ver__short_8h.html#a0263888c2b1544b193d90467b74de852">PESIEVE_PATCH_VERSION</a>, <a class="code hl_define" href="pe__sieve__ver__short_8h.html#aa9b440c88301877c02e092306a39a7fc">PESIEVE_MICRO_VERSION</a>), MAKEWORD(<a class="code hl_define" href="pe__sieve__ver__short_8h.html#a24158745816b473d50f2a3582e2cb4cb">PESIEVE_MINOR_VERSION</a>, <a class="code hl_define" href="pe__sieve__ver__short_8h.html#a438266f22a2b5359707aa7f76f38f69b">PESIEVE_MAJOR_VERSION</a>));</div>
 <div class="ttc" id="aclasspesieve_1_1_report_ex_html"><div class="ttname"><a href="classpesieve_1_1_report_ex.html">pesieve::ReportEx</a></div><div class="ttdoc">The final report about the actions performed on the process: scanning and dumping.</div><div class="ttdef"><b>Definition</b> <a href="pe__sieve__report_8h_source.html#l00029">pe_sieve_report.h:29</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1t__params_html"><div class="ttname"><a href="classpesieve_1_1t__params.html">pesieve.t_params</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00109">pesieve.py:109</a></div></div>
 <div class="ttc" id="aclasspesieve_1_1t__report__type_html"><div class="ttname"><a href="classpesieve_1_1t__report__type.html">pesieve.t_report_type</a></div><div class="ttdef"><b>Definition</b> <a href="pesieve_8py_source.html#l00097">pesieve.py:97</a></div></div>
@@ -194,6 +197,7 @@ $(function() {
 <div class="ttc" id="ape__sieve__ver__short_8h_html_a24158745816b473d50f2a3582e2cb4cb"><div class="ttname"><a href="pe__sieve__ver__short_8h.html#a24158745816b473d50f2a3582e2cb4cb">PESIEVE_MINOR_VERSION</a></div><div class="ttdeci">#define PESIEVE_MINOR_VERSION</div><div class="ttdef"><b>Definition</b> <a href="pe__sieve__ver__short_8h_source.html#l00004">pe_sieve_ver_short.h:4</a></div></div>
 <div class="ttc" id="ape__sieve__ver__short_8h_html_a438266f22a2b5359707aa7f76f38f69b"><div class="ttname"><a href="pe__sieve__ver__short_8h.html#a438266f22a2b5359707aa7f76f38f69b">PESIEVE_MAJOR_VERSION</a></div><div class="ttdeci">#define PESIEVE_MAJOR_VERSION</div><div class="ttdef"><b>Definition</b> <a href="pe__sieve__ver__short_8h_source.html#l00003">pe_sieve_ver_short.h:3</a></div></div>
 <div class="ttc" id="ape__sieve__ver__short_8h_html_aa9b440c88301877c02e092306a39a7fc"><div class="ttname"><a href="pe__sieve__ver__short_8h.html#aa9b440c88301877c02e092306a39a7fc">PESIEVE_MICRO_VERSION</a></div><div class="ttdeci">#define PESIEVE_MICRO_VERSION</div><div class="ttdef"><b>Definition</b> <a href="pe__sieve__ver__short_8h_source.html#l00005">pe_sieve_ver_short.h:5</a></div></div>
+<div class="ttc" id="astructparams_html_a6002713892aecb1e58747924e456b4ac"><div class="ttname"><a href="structparams.html#a6002713892aecb1e58747924e456b4ac">params::pid</a></div><div class="ttdeci">DWORD pid</div><div class="ttdoc">the PID of the process to be scanned</div><div class="ttdef"><b>Definition</b> <a href="pe__sieve__types_8h_source.html#l00125">pe_sieve_types.h:125</a></div></div>
 <div class="ttc" id="astructreport_html"><div class="ttname"><a href="structreport.html">report</a></div><div class="ttdoc">Final summary about the scanned process.</div><div class="ttdef"><b>Definition</b> <a href="pe__sieve__types_8h_source.html#l00150">pe_sieve_types.h:150</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

@@ -79,6 +79,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classpesieve_1_1_pattern_matcher-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">pesieve::PatternMatcher Class Reference</div></div>
@@ -95,6 +96,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5e48864847527d7d3b289fa3ddcf4aa6" id="r_a5e48864847527d7d3b289fa3ddcf4aa6"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#a5e48864847527d7d3b289fa3ddcf4aa6">findAllPatterns</a> (BYTE *loadedData, size_t loadedSize, ::std::vector&lt; sig_finder::Match &gt; &amp;allMatches)</td></tr>
 <tr class="memitem:aae3d9ba7483a3676ee3e93796c190620" id="r_aae3d9ba7483a3676ee3e93796c190620"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#aae3d9ba7483a3676ee3e93796c190620">filterCustom</a> (::std::vector&lt; sig_finder::Match &gt; &amp;allMatches, ::std::vector&lt; sig_finder::Match &gt; &amp;customPatternMatches)</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a7f0e2b9355ae41078d9d63b76d06857e" id="r_a7f0e2b9355ae41078d9d63b76d06857e"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a7f0e2b9355ae41078d9d63b76d06857e">_isReady</a> ()</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a16f44afd64af5f64d4273c2a57715a45" id="r_a16f44afd64af5f64d4273c2a57715a45"><td class="memItemLeft">sig_finder::Node&#160;</td><td class="memItemRight"><a class="el" href="#a16f44afd64af5f64d4273c2a57715a45">mainMatcher</a></td></tr>
@@ -104,6 +109,33 @@ Protected Attributes</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="artefacts__util_8h_source.html#l00041">41</a> of file <a class="el" href="artefacts__util_8h_source.html">artefacts_util.h</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a7f0e2b9355ae41078d9d63b76d06857e" name="a7f0e2b9355ae41078d9d63b76d06857e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f0e2b9355ae41078d9d63b76d06857e">&#9670;&#160;</a></span>_isReady()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::PatternMatcher::_isReady </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="artefacts__util_8h_source.html#l00055">55</a> of file <a class="el" href="artefacts__util_8h_source.html">artefacts_util.h</a>.</p>
+
+</div>
+</div>
 <a id="aae3d9ba7483a3676ee3e93796c190620" name="aae3d9ba7483a3676ee3e93796c190620"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aae3d9ba7483a3676ee3e93796c190620">&#9670;&#160;</a></span>filterCustom()</h2>
 
@@ -123,7 +155,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="artefacts__util_8cpp_source.html#l00194">194</a> of file <a class="el" href="artefacts__util_8cpp_source.html">artefacts_util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="artefacts__util_8cpp_source.html#l00195">195</a> of file <a class="el" href="artefacts__util_8cpp_source.html">artefacts_util.cpp</a>.</p>
 
 </div>
 </div>
@@ -158,7 +190,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classpesieve_1_1_pattern_matcher_a5e48864847527d7d3b289fa3ddcf4aa6_cgraph.png" border="0" usemap="#aclasspesieve_1_1_pattern_matcher_a5e48864847527d7d3b289fa3ddcf4aa6_cgraph" loading="lazy" alt=""/></div>
 <map name="aclasspesieve_1_1_pattern_matcher_a5e48864847527d7d3b289fa3ddcf4aa6_cgraph" id="aclasspesieve_1_1_pattern_matcher_a5e48864847527d7d3b289fa3ddcf4aa6_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,167,46"/>
-<area shape="rect" href="classpesieve_1_1_pattern_matcher.html#afa900e521f8021190efd3cd7840c051f" title=" " alt="" coords="215,5,376,46"/>
+<area shape="rect" href="classpesieve_1_1_pattern_matcher.html#a7f0e2b9355ae41078d9d63b76d06857e" title=" " alt="" coords="215,5,376,46"/>
 <area shape="poly" title=" " alt="" coords="167,23,199,23,199,28,167,28"/>
 </map>
 </div>
@@ -212,6 +244,16 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="artefacts__util_8cpp_source.html#l00145">145</a> of file <a class="el" href="artefacts__util_8cpp_source.html">artefacts_util.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classpesieve_1_1_pattern_matcher_afa900e521f8021190efd3cd7840c051f_cgraph.png" border="0" usemap="#aclasspesieve_1_1_pattern_matcher_afa900e521f8021190efd3cd7840c051f_cgraph" loading="lazy" alt=""/></div>
+<map name="aclasspesieve_1_1_pattern_matcher_afa900e521f8021190efd3cd7840c051f_cgraph" id="aclasspesieve_1_1_pattern_matcher_afa900e521f8021190efd3cd7840c051f_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,167,46"/>
+<area shape="rect" href="classpesieve_1_1_pattern_matcher.html#a7f0e2b9355ae41078d9d63b76d06857e" title=" " alt="" coords="215,5,376,46"/>
+<area shape="poly" title=" " alt="" coords="167,23,199,23,199,28,167,28"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -255,7 +297,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="artefacts__util_8h_source.html#l00055">55</a> of file <a class="el" href="artefacts__util_8h_source.html">artefacts_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="artefacts__util_8h_source.html#l00056">56</a> of file <a class="el" href="artefacts__util_8h_source.html">artefacts_util.h</a>.</p>
 
 </div>
 </div>
@@ -279,7 +321,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="artefacts__util_8h_source.html#l00056">56</a> of file <a class="el" href="artefacts__util_8h_source.html">artefacts_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="artefacts__util_8h_source.html#l00057">57</a> of file <a class="el" href="artefacts__util_8h_source.html">artefacts_util.h</a>.</p>
 
 </div>
 </div>

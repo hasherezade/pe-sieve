@@ -1,4 +1,4 @@
-<map id="pesieve::PatternMatcher::findAllPatterns" name="pesieve::PatternMatcher::findAllPatterns">
+<map id="pesieve::PatternMatcher::isReady" name="pesieve::PatternMatcher::isReady">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,167,46"/>
 <area shape="rect" id="Node000002" href="$classpesieve_1_1_pattern_matcher.html#a7f0e2b9355ae41078d9d63b76d06857e" title=" " alt="" coords="215,5,376,46"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,23,199,23,199,28,167,28"/>
