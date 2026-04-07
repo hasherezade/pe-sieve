@@ -180,7 +180,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ab5a500e51ff539294a3c71f6b95aa65b" id="r_ab5a500e51ff539294a3c71f6b95aa65b"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#ab5a500e51ff539294a3c71f6b95aa65b">is_executable</a> (<a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> mapping_type, <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> protection)</td></tr>
 <tr class="memitem:a57e9c1266c247784669f5ea0191e086d" id="r_a57e9c1266c247784669f5ea0191e086d"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a57e9c1266c247784669f5ea0191e086d">is_readable</a> (<a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> mapping_type, <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> protection)</td></tr>
 <tr class="memitem:a9bc0e707ae1cceda1678bc269f2870ea" id="r_a9bc0e707ae1cceda1678bc269f2870ea"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a9bc0e707ae1cceda1678bc269f2870ea">is_normal_inaccessible</a> (<a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> state, <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> mapping_type, <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> protection)</td></tr>
-<tr class="memitem:a3a202097bb77191265159f34903c4ccb" id="r_a3a202097bb77191265159f34903c4ccb"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a3a202097bb77191265159f34903c4ccb">get_current_color</a> (int descriptor, WORD &amp;color)</td></tr>
 <tr class="memitem:a7eca64fd4903e8fe4eebefd19e4a6614" id="r_a7eca64fd4903e8fe4eebefd19e4a6614"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a7eca64fd4903e8fe4eebefd19e4a6614">print_in_color</a> (int color, const std::string &amp;text, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> is_error=false)</td></tr>
 <tr class="memitem:a23447c87ce0d32d372ca0c4e3bc6e39b" id="r_a23447c87ce0d32d372ca0c4e3bc6e39b"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a23447c87ce0d32d372ca0c4e3bc6e39b">is_hex</a> (const char *buf, size_t len)</td></tr>
 <tr class="memitem:ae57bc6f959f2d79411087e1b8d3600f7" id="r_ae57bc6f959f2d79411087e1b8d3600f7"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#ae57bc6f959f2d79411087e1b8d3600f7">is_dec</a> (const char *buf, size_t len)</td></tr>
@@ -1320,39 +1319,6 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="artefacts__util_8cpp_source.html#l00010">10</a> of file <a class="el" href="artefacts__util_8cpp_source.html">artefacts_util.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a3a202097bb77191265159f34903c4ccb" name="a3a202097bb77191265159f34903c4ccb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a202097bb77191265159f34903c4ccb">&#9670;&#160;</a></span>get_current_color()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::util::get_current_color </td>
-          <td>(</td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>descriptor</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">WORD &amp;</td>          <td class="paramname"><span class="paramname"><em>color</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="console__color_8cpp_source.html#l00007">7</a> of file <a class="el" href="console__color_8cpp_source.html">console_color.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="namespacepesieve_1_1util_a3a202097bb77191265159f34903c4ccb_cgraph.png" border="0" usemap="#anamespacepesieve_1_1util_a3a202097bb77191265159f34903c4ccb_cgraph" loading="lazy" alt=""/></div>
-<map name="anamespacepesieve_1_1util_a3a202097bb77191265159f34903c4ccb_cgraph" id="anamespacepesieve_1_1util_a3a202097bb77191265159f34903c4ccb_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,119,46"/>
-<area shape="rect" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="167,13,260,38"/>
-<area shape="poly" title=" " alt="" coords="119,23,151,23,151,28,119,28"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -2562,19 +2528,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="console__color_8cpp_source.html#l00018">18</a> of file <a class="el" href="console__color_8cpp_source.html">console_color.cpp</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="namespacepesieve_1_1util_a7eca64fd4903e8fe4eebefd19e4a6614_cgraph.png" border="0" usemap="#anamespacepesieve_1_1util_a7eca64fd4903e8fe4eebefd19e4a6614_cgraph" loading="lazy" alt=""/></div>
-<map name="anamespacepesieve_1_1util_a7eca64fd4903e8fe4eebefd19e4a6614_cgraph" id="anamespacepesieve_1_1util_a7eca64fd4903e8fe4eebefd19e4a6614_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,126,46"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a3a202097bb77191265159f34903c4ccb" title=" " alt="" coords="174,5,287,46"/>
-<area shape="poly" title=" " alt="" coords="126,23,158,23,158,28,126,28"/>
-<area shape="rect" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="335,13,428,38"/>
-<area shape="poly" title=" " alt="" coords="287,23,319,23,319,28,287,28"/>
-</map>
-</div>
+<p class="definition">Definition at line <a class="el" href="console__color_8cpp_source.html#l00005">5</a> of file <a class="el" href="console__color_8cpp_source.html">console_color.cpp</a>.</p>
 
 </div>
 </div>
