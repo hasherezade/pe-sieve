@@ -10,6 +10,8 @@ var searchData=
   ['buffer_7',['Buffer',['../namespacepesieve_1_1util.html#adfb56cf97e3266792ba8cde322dda924',1,'pesieve::util']]],
   ['buffer_8',['buffer',['../struct___p_a_r_a_m___s_t_r_i_n_g.html#a861227dd2c82abcf462fe28d117d9548',1,'_PARAM_STRING::buffer'],['../namespacedemo.html#a0b4f91ddb00bef2d18d12ad24d44abc2',1,'demo.buffer']]],
   ['bufferlength_9',['BufferLength',['../namespacepesieve_1_1util.html#a8a530016bcf962946b8536574dcc5b4c',1,'pesieve::util']]],
-  ['byte_5fbuffer_2eh_10',['byte_buffer.h',['../byte__buffer_8h.html',1,'']]],
-  ['bytebuffer_11',['ByteBuffer',['../structpesieve_1_1util_1_1_byte_buffer.html',1,'pesieve::util::ByteBuffer'],['../structpesieve_1_1util_1_1_byte_buffer.html#a3cf218e57ff63963338a1b6322c4a992',1,'pesieve::util::ByteBuffer::ByteBuffer()'],['../structpesieve_1_1util_1_1_byte_buffer.html#a256d6de8f9d387028a2ddd5528e3a5b9',1,'pesieve::util::ByteBuffer::ByteBuffer(const ByteBuffer &amp;p1)']]]
+  ['buildsymbolpath_10',['BuildSymbolPath',['../class_process_symbols_manager.html#a1658fa51313aa965ef6c633eafd03269',1,'ProcessSymbolsManager']]],
+  ['buildsymoptions_11',['BuildSymOptions',['../class_process_symbols_manager.html#a5c5b5144b132e832d4218bf40de3f402',1,'ProcessSymbolsManager']]],
+  ['byte_5fbuffer_2eh_12',['byte_buffer.h',['../byte__buffer_8h.html',1,'']]],
+  ['bytebuffer_13',['ByteBuffer',['../structpesieve_1_1util_1_1_byte_buffer.html',1,'pesieve::util::ByteBuffer'],['../structpesieve_1_1util_1_1_byte_buffer.html#a3cf218e57ff63963338a1b6322c4a992',1,'pesieve::util::ByteBuffer::ByteBuffer()'],['../structpesieve_1_1util_1_1_byte_buffer.html#a256d6de8f9d387028a2ddd5528e3a5b9',1,'pesieve::util::ByteBuffer::ByteBuffer(const ByteBuffer &amp;p1)']]]
 ];

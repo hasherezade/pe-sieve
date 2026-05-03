@@ -121,8 +121,9 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a1a2abad091d1cfc78854731f26e776d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">operate on a process reflection rather than on the live process (this allows i.e. to force-read inaccessible pages)  <br /></td></tr>
 <tr class="memitem:a655b61e9b63465f9a41c6b9164345555" id="r_a655b61e9b63465f9a41c6b9164345555"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a655b61e9b63465f9a41c6b9164345555">use_cache</a></td></tr>
 <tr class="memdesc:a655b61e9b63465f9a41c6b9164345555"><td class="mdescLeft">&#160;</td><td class="mdescRight">enable cache for the scanned modules  <br /></td></tr>
+<tr class="memitem:a95f3db7ef846c0c3b0077a3f6d7d85ab" id="r_a95f3db7ef846c0c3b0077a3f6d7d85ab"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a95f3db7ef846c0c3b0077a3f6d7d85ab">download_symbols</a></td></tr>
 <tr class="memitem:a8612591e62e039621e80ceeae630cfd4" id="r_a8612591e62e039621e80ceeae630cfd4"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#af6093dc1d1fb0449adbc0fe4d909943d">t_json_level</a>&#160;</td><td class="memItemRight"><a class="el" href="#a8612591e62e039621e80ceeae630cfd4">json_lvl</a></td></tr>
-<tr class="memdesc:a8612591e62e039621e80ceeae630cfd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">level of the details of the JSON report  <br /></td></tr>
+<tr class="memdesc:a8612591e62e039621e80ceeae630cfd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; allow to download symbols when they are referenced  <br /></td></tr>
 <tr class="memitem:ac737bb7714cdc298bdab195c38a11d95" id="r_ac737bb7714cdc298bdab195c38a11d95"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#a372cb32a6ffd61ba01d553e362bb10df">t_results_filter</a>&#160;</td><td class="memItemRight"><a class="el" href="#ac737bb7714cdc298bdab195c38a11d95">results_filter</a></td></tr>
 <tr class="memdesc:ac737bb7714cdc298bdab195c38a11d95"><td class="mdescLeft">&#160;</td><td class="mdescRight">what type of results should be included in the report  <br /></td></tr>
 <tr class="memitem:a0aad09aa554613d2e1eaff125fc2c127" id="r_a0aad09aa554613d2e1eaff125fc2c127"><td class="memItemLeft">char&#160;</td><td class="memItemRight"><a class="el" href="#a0aad09aa554613d2e1eaff125fc2c127">output_dir</a> [MAX_PATH+1]</td></tr>
@@ -170,6 +171,22 @@ Public Attributes</h2></td></tr>
 <p>policy for scanning .NET modules </p>
 
 <p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00126">126</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+
+</div>
+</div>
+<a id="a95f3db7ef846c0c3b0077a3f6d7d85ab" name="a95f3db7ef846c0c3b0077a3f6d7d85ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95f3db7ef846c0c3b0077a3f6d7d85ab">&#9670;&#160;</a></span>download_symbols</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> params::download_symbols</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00142">142</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>
@@ -239,9 +256,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>&lt; allow to download symbols when they are referenced </p>
 <p>level of the details of the JSON report </p>
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00142">142</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00143">143</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>
@@ -313,7 +331,7 @@ Public Attributes</h2></td></tr>
 
 <p>a list of modules that will not be scanned, separated by PARAM_LIST_SEPARATOR </p>
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00145">145</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00146">146</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>
@@ -385,7 +403,7 @@ Public Attributes</h2></td></tr>
 
 <p>the root directory where the output should be saved (default: current directory) </p>
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00144">144</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00145">145</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>
@@ -403,7 +421,7 @@ Public Attributes</h2></td></tr>
 
 <p>a file with additional patterns for code recognition </p>
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00146">146</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00147">147</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>
@@ -475,7 +493,7 @@ Public Attributes</h2></td></tr>
 
 <p>what type of results should be included in the report </p>
 
-<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00143">143</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pe__sieve__types_8h_source.html#l00144">144</a> of file <a class="el" href="pe__sieve__types_8h_source.html">pe_sieve_types.h</a>.</p>
 
 </div>
 </div>

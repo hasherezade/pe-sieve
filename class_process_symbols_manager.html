@@ -75,6 +75,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_process_symbols_manager-members.html">List of all members</a>  </div>
@@ -88,11 +89,20 @@ $(function() {
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a12daa79c985a492c117fff26451434f3" id="r_a12daa79c985a492c117fff26451434f3"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a12daa79c985a492c117fff26451434f3">ProcessSymbolsManager</a> ()</td></tr>
 <tr class="memitem:a8c0370174c2618902c2ccf9ff6dcab3f" id="r_a8c0370174c2618902c2ccf9ff6dcab3f"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a8c0370174c2618902c2ccf9ff6dcab3f">~ProcessSymbolsManager</a> ()</td></tr>
-<tr class="memitem:a99ac137d11b68b281f8efc84fb1681da" id="r_a99ac137d11b68b281f8efc84fb1681da"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a99ac137d11b68b281f8efc84fb1681da">InitSymbols</a> (HANDLE _hProcess)</td></tr>
+<tr class="memitem:a433e4c2b15dd4338870972ba424a2cd8" id="r_a433e4c2b15dd4338870972ba424a2cd8"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a433e4c2b15dd4338870972ba424a2cd8">InitSymbols</a> (HANDLE _hProcess, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> enableAutoDownload)</td></tr>
 <tr class="memitem:ad6b1d880d0b5ae9618c8ac5452823704" id="r_ad6b1d880d0b5ae9618c8ac5452823704"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#ad6b1d880d0b5ae9618c8ac5452823704">IsInitialized</a> ()</td></tr>
-<tr class="memitem:af8934eeb7397191e5201fefdc29cc333" id="r_af8934eeb7397191e5201fefdc29cc333"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#af8934eeb7397191e5201fefdc29cc333">normalizeSyscallPrefix</a> (std::string &amp;funcName)</td></tr>
+<tr class="memitem:a761bdff2e1314d1e5f6b8b5675c8276d" id="r_a761bdff2e1314d1e5f6b8b5675c8276d"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a761bdff2e1314d1e5f6b8b5675c8276d">RefreshModules</a> ()</td></tr>
+<tr class="memitem:a805a6e226ddff14c2654f1e23060bd6e" id="r_a805a6e226ddff14c2654f1e23060bd6e"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a805a6e226ddff14c2654f1e23060bd6e">NormalizeNtZwPrefix</a> (std::string &amp;funcName)</td></tr>
 <tr class="memitem:ae14448a00440ad28c16be2ab16d56899" id="r_ae14448a00440ad28c16be2ab16d56899"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#ae14448a00440ad28c16be2ab16d56899">funcNameFromAddr</a> (IN const ULONG_PTR addr, OUT OPTIONAL size_t *displacement=nullptr)</td></tr>
 <tr class="memitem:a78f8074e9a746d53e8e5d8388e50abd0" id="r_a78f8074e9a746d53e8e5d8388e50abd0"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a78f8074e9a746d53e8e5d8388e50abd0">dumpSymbolInfo</a> (const ULONG_PTR addr)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a5c5b5144b132e832d4218bf40de3f402" id="r_a5c5b5144b132e832d4218bf40de3f402"><td class="memItemLeft">static DWORD&#160;</td><td class="memItemRight"><a class="el" href="#a5c5b5144b132e832d4218bf40de3f402">BuildSymOptions</a> ()</td></tr>
+<tr class="memitem:acdf4d18e544191b0fee02efa9f7076a2" id="r_acdf4d18e544191b0fee02efa9f7076a2"><td class="memItemLeft">static BOOL&#160;</td><td class="memItemRight"><a class="el" href="#acdf4d18e544191b0fee02efa9f7076a2">InitDbgHelpSession</a> (HANDLE process, const char *searchPath)</td></tr>
+<tr class="memitem:a44ebe75910dd26392802b9a5d71982ca" id="r_a44ebe75910dd26392802b9a5d71982ca"><td class="memItemLeft">static std::string&#160;</td><td class="memItemRight"><a class="el" href="#a44ebe75910dd26392802b9a5d71982ca">FilterSymbolPath</a> (const std::string &amp;input, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> allowDownload)</td></tr>
+<tr class="memitem:a1658fa51313aa965ef6c633eafd03269" id="r_a1658fa51313aa965ef6c633eafd03269"><td class="memItemLeft">static std::string&#160;</td><td class="memItemRight"><a class="el" href="#a1658fa51313aa965ef6c633eafd03269">BuildSymbolPath</a> (<a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> enableAutoDownload)</td></tr>
+<tr class="memitem:ae410aae0a62eba8092f8cf395641078b" id="r_ae410aae0a62eba8092f8cf395641078b"><td class="memItemLeft">static <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#ae410aae0a62eba8092f8cf395641078b">InitSymbolsWithPath</a> (HANDLE processHandle, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> enableAutoDownload)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -130,7 +140,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00011">11</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00138">138</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 
 </div>
 </div>
@@ -157,7 +167,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00016">16</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00143">143</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -172,6 +182,70 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a1658fa51313aa965ef6c633eafd03269" name="a1658fa51313aa965ef6c633eafd03269"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1658fa51313aa965ef6c633eafd03269">&#9670;&#160;</a></span>BuildSymbolPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string ProcessSymbolsManager::BuildSymbolPath </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a></td>          <td class="paramname"><span class="paramname"><em>enableAutoDownload</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00101">101</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_process_symbols_manager_a1658fa51313aa965ef6c633eafd03269_cgraph.png" border="0" usemap="#aclass_process_symbols_manager_a1658fa51313aa965ef6c633eafd03269_cgraph" loading="lazy" alt=""/></div>
+<map name="aclass_process_symbols_manager_a1658fa51313aa965ef6c633eafd03269_cgraph" id="aclass_process_symbols_manager_a1658fa51313aa965ef6c633eafd03269_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,175,46"/>
+<area shape="rect" href="class_process_symbols_manager.html#a44ebe75910dd26392802b9a5d71982ca" title=" " alt="" coords="223,5,392,46"/>
+<area shape="poly" title=" " alt="" coords="175,23,207,23,207,28,175,28"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a5c5b5144b132e832d4218bf40de3f402" name="a5c5b5144b132e832d4218bf40de3f402"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c5b5144b132e832d4218bf40de3f402">&#9670;&#160;</a></span>BuildSymOptions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">DWORD ProcessSymbolsManager::BuildSymOptions </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00012">12</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+
+</div>
+</div>
 <a id="a78f8074e9a746d53e8e5d8388e50abd0" name="a78f8074e9a746d53e8e5d8388e50abd0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a78f8074e9a746d53e8e5d8388e50abd0">&#9670;&#160;</a></span>dumpSymbolInfo()</h2>
 
@@ -195,7 +269,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00074">74</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00213">213</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -206,6 +280,37 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="175,23,207,23,207,28,175,28"/>
 </map>
 </div>
+
+</div>
+</div>
+<a id="a44ebe75910dd26392802b9a5d71982ca" name="a44ebe75910dd26392802b9a5d71982ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44ebe75910dd26392802b9a5d71982ca">&#9670;&#160;</a></span>FilterSymbolPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string ProcessSymbolsManager::FilterSymbolPath </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>input</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a></td>          <td class="paramname"><span class="paramname"><em>allowDownload</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00038">38</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 
 </div>
 </div>
@@ -232,7 +337,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00098">98</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00238">238</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 
 </div>
 </div>
@@ -263,7 +368,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00053">53</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00190">190</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -272,15 +377,56 @@ Here is the call graph for this function:</div>
 <area shape="rect" title=" " alt="" coords="5,39,175,79"/>
 <area shape="rect" href="class_process_symbols_manager.html#ad6b1d880d0b5ae9618c8ac5452823704" title=" " alt="" coords="223,5,392,46"/>
 <area shape="poly" title=" " alt="" coords="175,43,207,38,208,44,175,49"/>
-<area shape="rect" href="class_process_symbols_manager.html#af8934eeb7397191e5201fefdc29cc333" title=" " alt="" coords="223,71,392,111"/>
+<area shape="rect" href="class_process_symbols_manager.html#a805a6e226ddff14c2654f1e23060bd6e" title=" " alt="" coords="223,71,392,111"/>
 <area shape="poly" title=" " alt="" coords="175,69,208,74,207,79,175,74"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a99ac137d11b68b281f8efc84fb1681da" name="a99ac137d11b68b281f8efc84fb1681da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99ac137d11b68b281f8efc84fb1681da">&#9670;&#160;</a></span>InitSymbols()</h2>
+<a id="acdf4d18e544191b0fee02efa9f7076a2" name="acdf4d18e544191b0fee02efa9f7076a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdf4d18e544191b0fee02efa9f7076a2">&#9670;&#160;</a></span>InitDbgHelpSession()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">BOOL ProcessSymbolsManager::InitDbgHelpSession </td>
+          <td>(</td>
+          <td class="paramtype">HANDLE</td>          <td class="paramname"><span class="paramname"><em>process</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>searchPath</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00028">28</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_process_symbols_manager_acdf4d18e544191b0fee02efa9f7076a2_cgraph.png" border="0" usemap="#aclass_process_symbols_manager_acdf4d18e544191b0fee02efa9f7076a2_cgraph" loading="lazy" alt=""/></div>
+<map name="aclass_process_symbols_manager_acdf4d18e544191b0fee02efa9f7076a2_cgraph" id="aclass_process_symbols_manager_acdf4d18e544191b0fee02efa9f7076a2_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,175,46"/>
+<area shape="rect" href="class_process_symbols_manager.html#a5c5b5144b132e832d4218bf40de3f402" title=" " alt="" coords="223,5,392,46"/>
+<area shape="poly" title=" " alt="" coords="175,23,207,23,207,28,175,28"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a433e4c2b15dd4338870972ba424a2cd8" name="a433e4c2b15dd4338870972ba424a2cd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a433e4c2b15dd4338870972ba424a2cd8">&#9670;&#160;</a></span>InitSymbols()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -291,8 +437,12 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> ProcessSymbolsManager::InitSymbols </td>
           <td>(</td>
-          <td class="paramtype">HANDLE</td>          <td class="paramname"><span class="paramname"><em>_hProcess</em></span></td><td>)</td>
+          <td class="paramtype">HANDLE</td>          <td class="paramname"><span class="paramname"><em>_hProcess</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a></td>          <td class="paramname"><span class="paramname"><em>enableAutoDownload</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -302,7 +452,73 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00021">21</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00148">148</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_process_symbols_manager_a433e4c2b15dd4338870972ba424a2cd8_cgraph.png" border="0" usemap="#aclass_process_symbols_manager_a433e4c2b15dd4338870972ba424a2cd8_cgraph" loading="lazy" alt=""/></div>
+<map name="aclass_process_symbols_manager_a433e4c2b15dd4338870972ba424a2cd8_cgraph" id="aclass_process_symbols_manager_a433e4c2b15dd4338870972ba424a2cd8_cgraph">
+<area shape="rect" title=" " alt="" coords="5,35,175,75"/>
+<area shape="rect" href="class_process_symbols_manager.html#acdf4d18e544191b0fee02efa9f7076a2" title=" " alt="" coords="440,5,609,46"/>
+<area shape="poly" title=" " alt="" coords="175,47,424,30,424,35,175,52"/>
+<area shape="rect" href="class_process_symbols_manager.html#ae410aae0a62eba8092f8cf395641078b" title=" " alt="" coords="223,63,392,103"/>
+<area shape="poly" title=" " alt="" coords="175,63,208,67,207,73,175,69"/>
+<area shape="rect" href="class_process_symbols_manager.html#a5c5b5144b132e832d4218bf40de3f402" title=" " alt="" coords="657,5,827,46"/>
+<area shape="poly" title=" " alt="" coords="610,23,642,23,642,28,610,28"/>
+<area shape="poly" title=" " alt="" coords="386,60,430,48,431,53,387,65"/>
+<area shape="rect" href="class_process_symbols_manager.html#a1658fa51313aa965ef6c633eafd03269" title=" " alt="" coords="440,71,609,111"/>
+<area shape="poly" title=" " alt="" coords="392,83,425,85,424,90,392,89"/>
+<area shape="rect" href="class_process_symbols_manager.html#a44ebe75910dd26392802b9a5d71982ca" title=" " alt="" coords="657,71,827,111"/>
+<area shape="poly" title=" " alt="" coords="610,88,642,88,642,94,610,94"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ae410aae0a62eba8092f8cf395641078b" name="ae410aae0a62eba8092f8cf395641078b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae410aae0a62eba8092f8cf395641078b">&#9670;&#160;</a></span>InitSymbolsWithPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> ProcessSymbolsManager::InitSymbolsWithPath </td>
+          <td>(</td>
+          <td class="paramtype">HANDLE</td>          <td class="paramname"><span class="paramname"><em>processHandle</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a></td>          <td class="paramname"><span class="paramname"><em>enableAutoDownload</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00123">123</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_process_symbols_manager_ae410aae0a62eba8092f8cf395641078b_cgraph.png" border="0" usemap="#aclass_process_symbols_manager_ae410aae0a62eba8092f8cf395641078b_cgraph" loading="lazy" alt=""/></div>
+<map name="aclass_process_symbols_manager_ae410aae0a62eba8092f8cf395641078b_cgraph" id="aclass_process_symbols_manager_ae410aae0a62eba8092f8cf395641078b_cgraph">
+<area shape="rect" title=" " alt="" coords="5,39,175,79"/>
+<area shape="rect" href="class_process_symbols_manager.html#a1658fa51313aa965ef6c633eafd03269" title=" " alt="" coords="223,5,392,46"/>
+<area shape="poly" title=" " alt="" coords="175,43,207,38,208,44,175,49"/>
+<area shape="rect" href="class_process_symbols_manager.html#acdf4d18e544191b0fee02efa9f7076a2" title=" " alt="" coords="223,71,392,111"/>
+<area shape="poly" title=" " alt="" coords="175,69,208,74,207,79,175,74"/>
+<area shape="rect" href="class_process_symbols_manager.html#a44ebe75910dd26392802b9a5d71982ca" title=" " alt="" coords="440,5,609,46"/>
+<area shape="poly" title=" " alt="" coords="392,23,424,23,424,28,392,28"/>
+<area shape="rect" href="class_process_symbols_manager.html#a5c5b5144b132e832d4218bf40de3f402" title=" " alt="" coords="440,71,609,111"/>
+<area shape="poly" title=" " alt="" coords="392,88,424,88,424,94,392,94"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -329,12 +545,12 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00037">37</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00165">165</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 
 </div>
 </div>
-<a id="af8934eeb7397191e5201fefdc29cc333" name="af8934eeb7397191e5201fefdc29cc333"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8934eeb7397191e5201fefdc29cc333">&#9670;&#160;</a></span>normalizeSyscallPrefix()</h2>
+<a id="a805a6e226ddff14c2654f1e23060bd6e" name="a805a6e226ddff14c2654f1e23060bd6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a805a6e226ddff14c2654f1e23060bd6e">&#9670;&#160;</a></span>NormalizeNtZwPrefix()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -343,7 +559,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string ProcessSymbolsManager::normalizeSyscallPrefix </td>
+          <td class="memname">void ProcessSymbolsManager::NormalizeNtZwPrefix </td>
           <td>(</td>
           <td class="paramtype">std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>funcName</em></span></td><td>)</td>
           <td></td>
@@ -356,7 +572,34 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00044">44</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00179">179</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+
+</div>
+</div>
+<a id="a761bdff2e1314d1e5f6b8b5675c8276d" name="a761bdff2e1314d1e5f6b8b5675c8276d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a761bdff2e1314d1e5f6b8b5675c8276d">&#9670;&#160;</a></span>RefreshModules()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> ProcessSymbolsManager::RefreshModules </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00170">170</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 
 </div>
 </div>
@@ -381,7 +624,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00108">108</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00248">248</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 
 </div>
 </div>
@@ -405,7 +648,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00109">109</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00249">249</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 
 </div>
 </div>

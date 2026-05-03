@@ -7,9 +7,10 @@ var searchData=
   ['dos_5fhdr_4',['dos_hdr',['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#ae3f50215455e56b7c5edd7e6bdebd729',1,'pesieve::ArtefactScanner::ArtefactsMapping']]],
   ['doshdrmodified_5',['dosHdrModified',['../classpesieve_1_1_headers_scan_report.html#a512279afadee34e4a1602ee041a0df57',1,'pesieve::HeadersScanReport']]],
   ['dotnet_5fpolicy_6',['dotnet_policy',['../structparams.html#a5628d934885bfc49c0ae2fd7983595ff',1,'params::dotnet_policy'],['../namespacedemo.html#a0ff69f1715e1c697798d9395707799be',1,'demo.dotnet_policy']]],
-  ['dump_5fmode_7',['dump_mode',['../structparams.html#a105bfcba452a64a5f9c14599e8f3a9b5',1,'params::dump_mode'],['../namespacedemo.html#a9996097b28d5325876347887ab47a663',1,'demo.dump_mode']]],
-  ['dump_5freport_8',['dump_report',['../classpesieve_1_1_report_ex.html#a69ab643d4ed2e161c6787ea539ee36a5',1,'pesieve::ReportEx']]],
-  ['dumpdir_9',['dumpDir',['../classpesieve_1_1_results_dumper.html#af6b1d45c903e72f5efc36afa2247a2c8',1,'pesieve::ResultsDumper']]],
-  ['dumpfilename_10',['dumpFileName',['../classpesieve_1_1_module_dump_report.html#ad9ffe25caa0688a2951d0695c8f012c5',1,'pesieve::ModuleDumpReport']]],
-  ['dumptype_11',['DumpType',['../namespacepesieve_1_1util.html#a139ea0310394c05aebb1940805bb1285',1,'pesieve::util']]]
+  ['download_5fsymbols_7',['download_symbols',['../structparams.html#a95f3db7ef846c0c3b0077a3f6d7d85ab',1,'params']]],
+  ['dump_5fmode_8',['dump_mode',['../structparams.html#a105bfcba452a64a5f9c14599e8f3a9b5',1,'params::dump_mode'],['../namespacedemo.html#a9996097b28d5325876347887ab47a663',1,'demo.dump_mode']]],
+  ['dump_5freport_9',['dump_report',['../classpesieve_1_1_report_ex.html#a69ab643d4ed2e161c6787ea539ee36a5',1,'pesieve::ReportEx']]],
+  ['dumpdir_10',['dumpDir',['../classpesieve_1_1_results_dumper.html#af6b1d45c903e72f5efc36afa2247a2c8',1,'pesieve::ResultsDumper']]],
+  ['dumpfilename_11',['dumpFileName',['../classpesieve_1_1_module_dump_report.html#ad9ffe25caa0688a2951d0695c8f012c5',1,'pesieve::ModuleDumpReport']]],
+  ['dumptype_12',['DumpType',['../namespacepesieve_1_1util.html#a139ea0310394c05aebb1940805bb1285',1,'pesieve::util']]]
 ];
