@@ -19,6 +19,7 @@ using namespace pesieve;
 #define PARAM_MODULES_IGNORE "mignore"
 #define PARAM_REFLECTION "refl"
 #define PARAM_DOTNET_POLICY "dnet"
+#define PARAM_SYMBOLS "sym"
 
 //dump options:
 #define PARAM_IMP_REC "imp"
@@ -164,6 +165,11 @@ public:
 			std::string(INFO_SPACER) + "This allows i.e. to force-read inaccessible pages."
 		);
 
+		//PARAM_SYMBOLS
+		this->addParam(new BoolParam(PARAM_SYMBOLS, false));
+		this->setInfo(PARAM_SYMBOLS,
+			"Autodownload symbols for scanned modules."
+		);
 		//PARAM_IAT
 		enumParam = new EnumParam(PARAM_IAT, "iat_scan_mode", false);
 		if (enumParam) {
@@ -225,6 +231,7 @@ public:
 		this->addGroup(new ParamGroup(str_group));
 		this->addParamToGroup(PARAM_QUIET, str_group);
 		this->addParamToGroup(PARAM_REFLECTION, str_group);
+		this->addParamToGroup(PARAM_SYMBOLS, str_group);
 
 		str_group = "3. scan options";
 		this->addGroup(new ParamGroup(str_group));
@@ -294,6 +301,8 @@ public:
 
 		copyCStr<StringParam>(PARAM_DIR, ps.output_dir, _countof(ps.output_dir));
 		fillStringParam(PARAM_PATTERN, ps.pattern_file);
+
+		copyVal<BoolParam>(PARAM_SYMBOLS, ps.download_symbols);
 	}
 
 	void printBanner()

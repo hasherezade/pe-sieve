@@ -446,7 +446,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 	}
 	const size_t modules_count = hMods.size();
 	if (!args.quiet) {
-		std::cout << "Scanning for IAT hooks: " << modules_count << " modules." << std::endl;
+		std::cout << "Scanning for IAT hooks: " << std::dec << modules_count << " modules." << std::endl;
 	}
 
 	DWORD start_tick = GetTickCount();

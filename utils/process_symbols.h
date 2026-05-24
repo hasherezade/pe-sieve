@@ -61,16 +61,13 @@ public:
 			}
 			const bool isSrv = (_strnicmp(token.c_str(), "srv*", 4) == 0);
 
-			if (isSrv)
-			{
-				if (allowDownload)
-				{
+			if (isSrv) {
+				if (allowDownload) {
 					// Keep full srv* entry
 					if (!result.empty()) result += ";";
 					result += token;
 				}
-				else
-				{
+				else {
 					// Extract cache path: srv*<cache>*<server>
 					size_t first = token.find('*');
 					size_t second = token.find('*', first + 1);
@@ -86,8 +83,7 @@ public:
 					}
 				}
 			}
-			else
-			{
+			else {
 				// Non-srv entries are always safe
 				if (!result.empty()) result += ";";
 				result += token;
