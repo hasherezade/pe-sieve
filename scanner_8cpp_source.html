@@ -559,7 +559,7 @@ $(function() {
 <div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>    }</div>
 <div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> modules_count = hMods.size();</div>
 <div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classpesieve_1_1_process_scanner.html#a64d6658454d4ef1b71102750d1e0f630">args</a>.quiet) {</div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;Scanning for IAT hooks: &quot;</span> &lt;&lt; modules_count &lt;&lt; <span class="stringliteral">&quot; modules.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;Scanning for IAT hooks: &quot;</span> &lt;&lt; std::dec &lt;&lt; modules_count &lt;&lt; <span class="stringliteral">&quot; modules.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>    }</div>
 <div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span> </div>
 <div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>    <a class="code hl_function" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> start_tick = GetTickCount();</div>
