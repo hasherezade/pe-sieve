@@ -8,7 +8,6 @@
 		</dependentAssembly>
 	</dependency>
 	<file name="imagehlp.dll" loadFrom="%SystemRoot%\System32\"></file>
-	<file name="dbghelp.dll" loadFrom="%SystemRoot%\System32\"></file>
 	<file name="USERENV.dll" loadFrom="%SystemRoot%\System32\"></file>
 	<file name="VERSION.dll" loadFrom="%SystemRoot%\System32\"></file>
 	<file name="oleaut32.dll" loadFrom="%SystemRoot%\System32\"></file>

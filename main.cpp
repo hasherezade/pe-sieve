@@ -47,6 +47,8 @@ void free_params(t_params &args)
 
 int main(int argc, char *argv[])
 {
+	SetDefaultDllDirectories(LOAD_LIBRARY_SEARCH_SYSTEM32 | LOAD_LIBRARY_SEARCH_USER_DIRS);
+
 	t_params args = { 0 };
 	args.results_filter = SHOW_SUSPICIOUS;
 

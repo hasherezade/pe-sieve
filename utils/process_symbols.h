@@ -4,7 +4,6 @@
 #include <dbghelp.h>
 #pragma comment(lib, "dbghelp")
 
-
 class ProcessSymbolsManager
 {
 public:
@@ -25,13 +24,18 @@ public:
 		return symOptions;
 	}
 
-	static BOOL InitDbgHelpSession(HANDLE process, const char* searchPath)
+	static BOOL InitDbgHelpSession(HANDLE hProcess, const char* searchPath, bool enableAutoDownload)
 	{
 		SymSetOptions(BuildSymOptions());
 
-		if (!SymInitialize(process, searchPath, TRUE)) {
-			return FALSE;
+		if (!SymInitialize(hProcess, nullptr, FALSE)) {
+			return false;
 		}
+		SymSetOptions(SYMOPT_DEBUG);
+		std::string fullPath = BuildSymbolPath(enableAutoDownload);
+
+		SymSetSearchPath(hProcess, fullPath.c_str());
+		SymRefreshModuleList(hProcess);
 		return TRUE;
 	}
 
@@ -40,8 +44,7 @@ public:
 		std::string result;
 		size_t start = 0;
 
-		while (start < input.size())
-		{
+		while (start < input.size()) {
 			size_t end = input.find(';', start);
 			if (end == std::string::npos) end = input.size();
 
@@ -122,7 +125,7 @@ public:
 		char buffer[bufferSize] = { 0 };
 		const std::string fullPathStr = BuildSymbolPath(enableAutoDownload);
 		const char* pathPtr = fullPathStr.empty() ? nullptr : fullPathStr.c_str();
-		const BOOL isOk = InitDbgHelpSession(processHandle, pathPtr);
+		const BOOL isOk = InitDbgHelpSession(processHandle, pathPtr, enableAutoDownload);
 #ifdef _DEBUG
 		if (isOk) {
 			printf("Symbols initialized with path: %s\n", fullPathStr.c_str());
@@ -150,7 +153,7 @@ public:
 		}
 		isInit = InitSymbolsWithPath(_hProcess, enableAutoDownload);
 		if (!isInit) {
-			if (InitDbgHelpSession(_hProcess, nullptr)) {
+			if (InitDbgHelpSession(_hProcess, nullptr, enableAutoDownload)) {
 				isInit = true;
 			}
 		}
@@ -158,6 +161,7 @@ public:
 			hProcess = _hProcess;
 		}
 		return isInit;
+
 	}
 	
 	bool IsInitialized()
