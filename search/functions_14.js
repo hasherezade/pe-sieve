@@ -5,5 +5,5 @@ var searchData=
   ['validateptr_2',['validatePtr',['../classpesieve_1_1_mem_page_data.html#aa2d9e7295a7b0f82d3492850f3e8dca1',1,'pesieve::MemPageData']]],
   ['valuesnotbelowmean_3',['valuesNotBelowMean',['../namespacepesieve_1_1stats.html#a4538d419f1a630f17555866be8325532',1,'pesieve::stats']]],
   ['vatorva_4',['vaToRva',['../classpesieve_1_1_module_data.html#a50cd3da410a2dc2ca30ba03addcf5c39',1,'pesieve::ModuleData']]],
-  ['version_5fto_5fstr_5',['version_to_str',['../namespacepesieve.html#a5bc445e48dd401d29d9caaeb1dd8753e',1,'pesieve']]]
+  ['version_5fto_5fstr_5',['version_to_str',['../namespacepesieve.html#a51cd13779a67fe18611b9bfe32ab52ae',1,'pesieve']]]
 ];

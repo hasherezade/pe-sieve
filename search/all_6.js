@@ -55,7 +55,8 @@ var searchData=
   ['freefullimage_52',['freeFullImage',['../classpesieve_1_1_remote_module_data.html#aec7840414faf08a309da0a2bbeae7e1e',1,'pesieve::RemoteModuleData']]],
   ['freesymbols_53',['FreeSymbols',['../class_process_symbols_manager.html#ac0971d7bd0f98cfe609c1f1a1001e80f',1,'ProcessSymbolsManager']]],
   ['frequencies_54',['frequencies',['../structpesieve_1_1_chunk_stats.html#a01822b739bd2ef3e241756673c8c937e',1,'pesieve::ChunkStats']]],
-  ['funccount_55',['funcCount',['../classpesieve_1_1_i_a_t_thunks_series.html#ae0431a64f7ed06cf1e0b9fdddb63c50d',1,'pesieve::IATThunksSeries']]],
-  ['funcnamefromaddr_56',['funcNameFromAddr',['../class_process_symbols_manager.html#ae14448a00440ad28c16be2ab16d56899',1,'ProcessSymbolsManager']]],
-  ['functions_57',['functions',['../classpesieve_1_1_i_a_t_block.html#a13ff609da02dbf051d6702cda326b1e4',1,'pesieve::IATBlock']]]
+  ['fromaddress_55',['FromAddress',['../class_dbg_help_wrapper.html#a084a801d412dc49cf179f0700d40f008',1,'DbgHelpWrapper']]],
+  ['funccount_56',['funcCount',['../classpesieve_1_1_i_a_t_thunks_series.html#ae0431a64f7ed06cf1e0b9fdddb63c50d',1,'pesieve::IATThunksSeries']]],
+  ['funcnamefromaddr_57',['funcNameFromAddr',['../class_process_symbols_manager.html#a30c55c64d80a7a1819a8c7d1640a64d8',1,'ProcessSymbolsManager']]],
+  ['functions_58',['functions',['../classpesieve_1_1_i_a_t_block.html#a13ff609da02dbf051d6702cda326b1e4',1,'pesieve::IATBlock']]]
 ];

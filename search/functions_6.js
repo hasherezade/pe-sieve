@@ -48,6 +48,7 @@ var searchData=
   ['freebuffer_45',['freeBuffer',['../classpesieve_1_1_pe_buffer.html#a23c8cf5875b9d0e63d1e5080d0fe7787',1,'pesieve::PeBuffer::freeBuffer()'],['../structpesieve_1_1util_1_1_byte_buffer.html#ab61c789fa430d217951c03f5a8dff658',1,'pesieve::util::ByteBuffer::freeBuffer()']]],
   ['freefullimage_46',['freeFullImage',['../classpesieve_1_1_remote_module_data.html#aec7840414faf08a309da0a2bbeae7e1e',1,'pesieve::RemoteModuleData']]],
   ['freesymbols_47',['FreeSymbols',['../class_process_symbols_manager.html#ac0971d7bd0f98cfe609c1f1a1001e80f',1,'ProcessSymbolsManager']]],
-  ['funccount_48',['funcCount',['../classpesieve_1_1_i_a_t_thunks_series.html#ae0431a64f7ed06cf1e0b9fdddb63c50d',1,'pesieve::IATThunksSeries']]],
-  ['funcnamefromaddr_49',['funcNameFromAddr',['../class_process_symbols_manager.html#ae14448a00440ad28c16be2ab16d56899',1,'ProcessSymbolsManager']]]
+  ['fromaddress_48',['FromAddress',['../class_dbg_help_wrapper.html#a084a801d412dc49cf179f0700d40f008',1,'DbgHelpWrapper']]],
+  ['funccount_49',['funcCount',['../classpesieve_1_1_i_a_t_thunks_series.html#ae0431a64f7ed06cf1e0b9fdddb63c50d',1,'pesieve::IATThunksSeries']]],
+  ['funcnamefromaddr_50',['funcNameFromAddr',['../class_process_symbols_manager.html#a30c55c64d80a7a1819a8c7d1640a64d8',1,'ProcessSymbolsManager']]]
 ];
