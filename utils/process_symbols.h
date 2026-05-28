@@ -1,140 +1,15 @@
 #pragma once
 
-#include <windows.h>
-#include <dbghelp.h>
-#pragma comment(lib, "dbghelp")
+#include <string>
+#include <iostream>
 
+#include <dbghelp.h>
+#include "dbg_help_wrapper.h"
+
+//---
 class ProcessSymbolsManager
 {
 public:
-
-	static DWORD BuildSymOptions()
-	{
-		DWORD symOptions =
-			SYMOPT_CASE_INSENSITIVE |
-			SYMOPT_UNDNAME |
-			SYMOPT_DEFERRED_LOADS |
-			SYMOPT_FAIL_CRITICAL_ERRORS |
-			SYMOPT_AUTO_PUBLICS |
-			SYMOPT_INCLUDE_32BIT_MODULES |
-			SYMOPT_NO_PROMPTS;
-#ifdef _DEBUG
-		symOptions |= SYMOPT_DEBUG;
-#endif
-		return symOptions;
-	}
-
-	static BOOL InitDbgHelpSession(HANDLE hProcess, const char* searchPath, bool enableAutoDownload)
-	{
-		SymSetOptions(BuildSymOptions());
-
-		if (!SymInitialize(hProcess, nullptr, FALSE)) {
-			return false;
-		}
-		SymSetOptions(SYMOPT_DEBUG);
-		std::string fullPath = BuildSymbolPath(enableAutoDownload);
-
-		SymSetSearchPath(hProcess, fullPath.c_str());
-		SymRefreshModuleList(hProcess);
-		return TRUE;
-	}
-
-	static std::string FilterSymbolPath(const std::string& input, bool allowDownload)
-	{
-		std::string result;
-		size_t start = 0;
-
-		while (start < input.size()) {
-			size_t end = input.find(';', start);
-			if (end == std::string::npos) end = input.size();
-
-			std::string token = input.substr(start, end - start);
-
-			token.erase(0, token.find_first_not_of(" \t"));
-
-			size_t last = token.find_last_not_of(" \t");
-			if (last != std::string::npos)
-				token.erase(last + 1);
-			else
-				token.clear();
-
-			if (token.empty()) {
-				start = end + 1;
-				continue;
-			}
-			const bool isSrv = (_strnicmp(token.c_str(), "srv*", 4) == 0);
-
-			if (isSrv) {
-				if (allowDownload) {
-					// Keep full srv* entry
-					if (!result.empty()) result += ";";
-					result += token;
-				}
-				else {
-					// Extract cache path: srv*<cache>*<server>
-					size_t first = token.find('*');
-					size_t second = token.find('*', first + 1);
-
-					if (first != std::string::npos && second != std::string::npos && second > first + 1)
-					{
-						std::string cache = token.substr(first + 1, second - first - 1);
-
-						if (!cache.empty()) {
-							if (!result.empty()) result += ";";
-							result += cache;
-						}
-					}
-				}
-			}
-			else {
-				// Non-srv entries are always safe
-				if (!result.empty()) result += ";";
-				result += token;
-			}
-
-			start = end + 1;
-		}
-		return result;
-	}
-
-	static std::string BuildSymbolPath(bool enableAutoDownload)
-	{
-		const size_t bufferSize = 4096;
-		char envBuffer[bufferSize] = { 0 };
-
-		std::string path;
-
-		if (GetEnvironmentVariableA("_NT_SYMBOL_PATH", envBuffer, bufferSize)) {
-			path += FilterSymbolPath(envBuffer, enableAutoDownload);
-		}
-
-		if (GetEnvironmentVariableA("_NT_ALTERNATE_SYMBOL_PATH", envBuffer, bufferSize)) {
-			std::string filtered = FilterSymbolPath(envBuffer, enableAutoDownload);
-
-			if (!filtered.empty()) {
-				if (!path.empty()) path += ";";
-				path += filtered;
-			}
-		}
-		return path;
-	}
-
-	static bool InitSymbolsWithPath(HANDLE processHandle, bool enableAutoDownload)
-	{
-		const size_t bufferSize = MAX_PATH * 4;
-		char buffer[bufferSize] = { 0 };
-		const std::string fullPathStr = BuildSymbolPath(enableAutoDownload);
-		const char* pathPtr = fullPathStr.empty() ? nullptr : fullPathStr.c_str();
-		const BOOL isOk = InitDbgHelpSession(processHandle, pathPtr, enableAutoDownload);
-#ifdef _DEBUG
-		if (isOk) {
-			printf("Symbols initialized with path: %s\n", fullPathStr.c_str());
-		}
-#endif // _DEBUG
-		return isOk == TRUE;
-	}
-
-//---
 
 	ProcessSymbolsManager()
 		: hProcess(NULL), isInit(false)
@@ -146,106 +21,265 @@ public:
 		FreeSymbols();
 	}
 
-	bool InitSymbols(HANDLE _hProcess, bool enableAutoDownload)
+	ProcessSymbolsManager(const ProcessSymbolsManager&) = delete;
+
+	ProcessSymbolsManager& operator=(const ProcessSymbolsManager&) = delete;
+
+	//---
+#ifdef _TEST
+	void ForceRealSymbolDownload(HANDLE hProcess)
 	{
-		if (!_hProcess || _hProcess == INVALID_HANDLE_VALUE) {
-			return false;
-		}
-		isInit = InitSymbolsWithPath(_hProcess, enableAutoDownload);
-		if (!isInit) {
-			if (InitDbgHelpSession(_hProcess, nullptr, enableAutoDownload)) {
-				isInit = true;
-			}
-		}
-		if (isInit) {
-			hProcess = _hProcess;
-		}
-		return isInit;
+		HMODULE ntdll_hndl = GetModuleHandleA("ntdll.dll");
+		std::cout << "\n[+] Try export first...\n";
+		dumpSymbolInfo((DWORD64)GetProcAddress(ntdll_hndl, "NtLoadKeyEx"));
+		std::cout << "\n[+] Forcing SymFromAddr on non-export address...\n";
+		dumpSymbolInfo((DWORD64)GetModuleHandleA("kernel32.dll") + 0x20000);
+		dumpSymbolInfo((DWORD64)ntdll_hndl + 0x7A80);
 
 	}
-	
-	bool IsInitialized()
+#endif //_TEST
+	//---
+
+	static DWORD BuildSymOptions()
 	{
-		return isInit;
+		DWORD symOptions =
+			SYMOPT_CASE_INSENSITIVE |
+			SYMOPT_UNDNAME |
+			SYMOPT_DEFERRED_LOADS |
+			SYMOPT_FAIL_CRITICAL_ERRORS |
+			SYMOPT_AUTO_PUBLICS |
+			SYMOPT_INCLUDE_32BIT_MODULES |
+			SYMOPT_NO_PROMPTS;
+//#ifdef _DEBUG
+		symOptions |= SYMOPT_DEBUG;
+//#endif
+		return symOptions;
+	}
+
+	static std::string FilterSymbolPath(const std::string& input, bool allowDownload)
+	{
+		std::string result;
+
+		size_t start = 0;
+
+		while (start < input.size()) {
+			size_t end =
+				input.find(';', start);
+
+			if (end == std::string::npos) {
+				end = input.size();
+			}
+
+			std::string token = input.substr(start, end - start);
+			token.erase(0, token.find_first_not_of(" \t"));
+
+			size_t last = token.find_last_not_of(" \t");
+			if (last != std::string::npos) {
+				token.erase(last + 1);
+			}
+			else {
+				token.clear();
+			}
+
+			if (token.empty()) {
+				start = end + 1;
+				continue;
+			}
+
+			const bool isSrv = (_strnicmp(token.c_str(), "srv*", 4) == 0);
+			if (isSrv) {
+				if (allowDownload) {
+					if (!result.empty()) {
+						result += ";";
+					}
+					result += token;
+				}
+				else {
+					size_t first = token.find('*');
+					size_t second = token.find('*', first + 1);
+
+					if (first != std::string::npos &&
+						second != std::string::npos &&
+						second > first + 1)
+					{
+						std::string cache =
+							token.substr(
+								first + 1,
+								second - first - 1);
+
+						if (!cache.empty()) {
+							if (!result.empty()) {
+								result += ";";
+							}
+							result += cache;
+						}
+					}
+				}
+			}
+			else {
+				if (!result.empty()) {
+					result += ";";
+				}
+				result += token;
+			}
+			start = end + 1;
+		}
+		return result;
+	}
+
+	static std::string BuildSymbolPath(bool enableAutoDownload)
+	{
+		const DWORD bufferSize = 4096;
+		char envBuffer[bufferSize] = { 0 };
+		std::string path;
+
+		if (GetEnvironmentVariableA("_NT_SYMBOL_PATH", envBuffer, bufferSize)) {
+			path += FilterSymbolPath(envBuffer, enableAutoDownload);
+		}
+
+		if (GetEnvironmentVariableA("_NT_ALTERNATE_SYMBOL_PATH", envBuffer, bufferSize)) {
+			const std::string filtered = FilterSymbolPath(envBuffer, enableAutoDownload);
+			if (!filtered.empty()) {
+				if (!path.empty()) {
+					path += ";";
+				}
+				path += filtered;
+			}
+		}
+		return path;
+	}
+
+	bool InitSymbols(HANDLE process, bool enableAutoDownload)
+	{
+		if (!process || process == INVALID_HANDLE_VALUE) {
+			return false;
+		}
+
+		if (isInit) {
+			return true;
+		}
+
+		DWORD options = BuildSymOptions();
+
+		if (enableAutoDownload) {
+			options &= ~SYMOPT_DISABLE_SYMSRV_AUTODETECT;
+		}
+		else {
+			options |= SYMOPT_DISABLE_SYMSRV_AUTODETECT;
+		}
+
+		const std::string path = BuildSymbolPath(enableAutoDownload);
+
+		if (!DbgHelpWrapper::InitializeProcess(process, path, options)) {
+			return false;
+		}
+
+		DbgHelpWrapper::RefreshModuleList(process);
+
+		hProcess = process;
+		isInit = true;
+#ifdef _TEST
+		ForceRealSymbolDownload(process);
+#endif
+		return true;
 	}
 
 	bool RefreshModules()
 	{
-		if (!isInit || !hProcess)
+		if (!isInit) {
 			return false;
-
-		return SymRefreshModuleList(hProcess) == TRUE;
+		}
+		return DbgHelpWrapper::RefreshModuleList(hProcess);
 	}
 
-	//---
+	bool IsInitialized() const
+	{
+		return isInit;
+	}
+
 	void NormalizeNtZwPrefix(std::string& funcName)
 	{
 		if (funcName.size() < 2) {
 			return;
 		}
+
 		if (funcName[0] == 'Z' && funcName[1] == 'w') {
 			funcName[0] = 'N';
 			funcName[1] = 't';
 		}
 	}
 
-	std::string funcNameFromAddr(IN const ULONG_PTR addr, OUT OPTIONAL size_t* displacement = nullptr)
+	std::string funcNameFromAddr(ULONG_PTR addr, size_t* displacement = NULL)
 	{
-		if (!IsInitialized()) {
+		if (!isInit) {
 			return "";
 		}
-		CHAR buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME] = { 0 };
-		PSYMBOL_INFO pSymbol = (PSYMBOL_INFO)buffer;
-		pSymbol->SizeOfStruct = sizeof(SYMBOL_INFO);
-		pSymbol->MaxNameLen = MAX_SYM_NAME;
 
-		DWORD64 Displacement = 0;
-		
-		if (!SymFromAddr(hProcess, addr, &Displacement, pSymbol)) {
+		__declspec(align(8)) char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME] = { 0 };
+
+		PSYMBOL_INFO symbol = reinterpret_cast<PSYMBOL_INFO>(buffer);
+		symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+		symbol->MaxNameLen =MAX_SYM_NAME;
+
+		DWORD64 disp = 0;
+
+		if (!DbgHelpWrapper::FromAddress(hProcess, static_cast<DWORD64>(addr),symbol, &disp)) {
 			return "";
 		}
+
 		if (displacement) {
-			(*displacement) = static_cast<size_t>(Displacement);
+			*displacement = static_cast<size_t>(disp);
 		}
-		std::string funcName(pSymbol->Name);
+
+		std::string funcName(symbol->Name);
+
 		NormalizeNtZwPrefix(funcName);
 		return funcName;
 	}
 
-	bool dumpSymbolInfo(const ULONG_PTR addr)
+	bool dumpSymbolInfo(ULONG_PTR va)
 	{
-		if (!IsInitialized()) return false;
+		if (!isInit) {
+			return false;
+		}
 
-		CHAR buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME] = { 0 };
-		PSYMBOL_INFO pSymbol = (PSYMBOL_INFO)buffer;
-		pSymbol->SizeOfStruct = sizeof(SYMBOL_INFO);
-		pSymbol->MaxNameLen = MAX_SYM_NAME;
+		__declspec(align(8)) char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME ] = { 0 };
 
-		DWORD64 Displacement = 0;
-		BOOLEAN result = SymFromAddr(hProcess, addr, &Displacement, pSymbol);
-		std::cout << std::dec << "[" << GetProcessId(hProcess) << "] " << std::hex << addr;
+		PSYMBOL_INFO symbol = reinterpret_cast<PSYMBOL_INFO>(buffer);
+		symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+		symbol->MaxNameLen = MAX_SYM_NAME;
+
+		DWORD64 displacement = 0;
+
+		BOOL result = DbgHelpWrapper::FromAddress(hProcess, static_cast<DWORD64>(va), symbol, &displacement);
+		std::cout << std::dec << "[" << GetProcessId(hProcess) << "] " << std::hex << va;
+
 		if (result) {
-			std::cout << " Sym: " << pSymbol->TypeIndex << " Base: " << pSymbol->ModBase << " : " << pSymbol->Name << " +0x" << std::hex << Displacement
-			//std::cout << " Sym: " << pSymbol->ModBase << " : " << pSymbol->Name << " disp: " << Displacement
-				<< " Flags: " << pSymbol->Flags << " Tag: " << pSymbol->Tag << std::endl;
-			if (pSymbol->Flags == SYMFLAG_CLR_TOKEN) std::cout << " CLR token!\n";
+			std::cout << " Base: " << symbol->ModBase << " : " << symbol->Name
+					<< " +0x" << displacement << " Flags: " << symbol->Flags << " Tag: " << symbol->Tag << std::endl;
 		}
 		else {
-			std::cout << " UNK \n";
+			std::cout << " UNK" << std::endl;
 		}
 		return result == TRUE;
 	}
 
 protected:
+
 	bool FreeSymbols()
 	{
-		if (!isInit) return true;
-		if (SymCleanup(hProcess)) {
-			isInit = false;
+		if (!isInit) {
 			return true;
 		}
-		return false;
+		if (!DbgHelpWrapper::CleanupProcess(hProcess)) {
+			return false;
+		}
+		isInit = false;
+		hProcess = NULL;
+		return true;
 	}
+
+protected:
 
 	HANDLE hProcess;
 	bool isInit;
