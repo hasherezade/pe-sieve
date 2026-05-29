@@ -120,6 +120,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1438d9b5064e2f5f096a7c83f67b93fc" id="r_a1438d9b5064e2f5f096a7c83f67b93fc"><td class="memItemLeft"><a class="el" href="class_process_symbols_manager.html">ProcessSymbolsManager</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a1438d9b5064e2f5f096a7c83f67b93fc">operator=</a> (const <a class="el" href="class_process_symbols_manager.html">ProcessSymbolsManager</a> &amp;)=delete</td></tr>
 <tr class="memitem:ac75e99e990800c54427ff6c38e03c053" id="r_ac75e99e990800c54427ff6c38e03c053"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#ac75e99e990800c54427ff6c38e03c053">InitSymbols</a> (HANDLE process, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> enableAutoDownload, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> lazy)</td></tr>
 <tr class="memitem:a761bdff2e1314d1e5f6b8b5675c8276d" id="r_a761bdff2e1314d1e5f6b8b5675c8276d"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a761bdff2e1314d1e5f6b8b5675c8276d">RefreshModules</a> ()</td></tr>
+<tr class="memitem:ae76f955680e3cd14e09bac3d01903650" id="r_ae76f955680e3cd14e09bac3d01903650"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#ae76f955680e3cd14e09bac3d01903650">RunStackWalk</a> (_In_ DWORD MachineType, _In_ HANDLE hThread, _Inout_ LPSTACKFRAME StackFrame, _Inout_ PVOID ContextRecord, _In_opt_ PREAD_PROCESS_MEMORY_ROUTINE64 ReadMemoryRoutine, _In_opt_ PFUNCTION_TABLE_ACCESS_ROUTINE64 FunctionTableAccessRoutine, _In_opt_ PGET_MODULE_BASE_ROUTINE64 GetModuleBaseRoutine, _In_opt_ PTRANSLATE_ADDRESS_ROUTINE64 TranslateAddress)</td></tr>
 <tr class="memitem:aa033a0bcbb58f91b9e371bbc0dfe45b1" id="r_aa033a0bcbb58f91b9e371bbc0dfe45b1"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#aa033a0bcbb58f91b9e371bbc0dfe45b1">IsInitialized</a> () const</td></tr>
 <tr class="memitem:a805a6e226ddff14c2654f1e23060bd6e" id="r_a805a6e226ddff14c2654f1e23060bd6e"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a805a6e226ddff14c2654f1e23060bd6e">NormalizeNtZwPrefix</a> (std::string &amp;funcName)</td></tr>
 <tr class="memitem:a30c55c64d80a7a1819a8c7d1640a64d8" id="r_a30c55c64d80a7a1819a8c7d1640a64d8"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a30c55c64d80a7a1819a8c7d1640a64d8">funcNameFromAddr</a> (ULONG_PTR addr, size_t *displacement=NULL)</td></tr>
@@ -333,7 +334,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00246">246</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00271">271</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -401,7 +402,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00275">275</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00300">300</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -442,7 +443,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00218">218</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00243">243</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -535,7 +536,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00201">201</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00226">226</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 
 </div>
 </div>
@@ -562,7 +563,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00206">206</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00231">231</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 
 </div>
 </div>
@@ -642,6 +643,77 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="ae76f955680e3cd14e09bac3d01903650" name="ae76f955680e3cd14e09bac3d01903650"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae76f955680e3cd14e09bac3d01903650">&#9670;&#160;</a></span>RunStackWalk()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> ProcessSymbolsManager::RunStackWalk </td>
+          <td>(</td>
+          <td class="paramtype">_In_ DWORD</td>          <td class="paramname"><span class="paramname"><em>MachineType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_In_ HANDLE</td>          <td class="paramname"><span class="paramname"><em>hThread</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_Inout_ LPSTACKFRAME</td>          <td class="paramname"><span class="paramname"><em>StackFrame</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_Inout_ PVOID</td>          <td class="paramname"><span class="paramname"><em>ContextRecord</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_In_opt_ PREAD_PROCESS_MEMORY_ROUTINE64</td>          <td class="paramname"><span class="paramname"><em>ReadMemoryRoutine</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_In_opt_ PFUNCTION_TABLE_ACCESS_ROUTINE64</td>          <td class="paramname"><span class="paramname"><em>FunctionTableAccessRoutine</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_In_opt_ PGET_MODULE_BASE_ROUTINE64</td>          <td class="paramname"><span class="paramname"><em>GetModuleBaseRoutine</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_In_opt_ PTRANSLATE_ADDRESS_ROUTINE64</td>          <td class="paramname"><span class="paramname"><em>TranslateAddress</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00201">201</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="class_process_symbols_manager_ae76f955680e3cd14e09bac3d01903650_cgraph.png" border="0" usemap="#aclass_process_symbols_manager_ae76f955680e3cd14e09bac3d01903650_cgraph" loading="lazy" alt=""/></div>
+<map name="aclass_process_symbols_manager_ae76f955680e3cd14e09bac3d01903650_cgraph" id="aclass_process_symbols_manager_ae76f955680e3cd14e09bac3d01903650_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,175,46"/>
+<area shape="rect" href="class_dbg_help_wrapper.html#aa99fa0cc9446a5ea21747ef2f291a2fc" title=" " alt="" coords="223,13,434,38"/>
+<area shape="poly" title=" " alt="" coords="175,23,207,23,207,28,175,28"/>
+</map>
+</div>
+
+</div>
+</div>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
 <a id="afbc6ee9e01329ead375d2bacd2e09a48" name="afbc6ee9e01329ead375d2bacd2e09a48"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afbc6ee9e01329ead375d2bacd2e09a48">&#9670;&#160;</a></span>hProcess</h2>
@@ -663,7 +735,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00290">290</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00315">315</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 
 </div>
 </div>
@@ -687,7 +759,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00291">291</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="process__symbols_8h_source.html#l00316">316</a> of file <a class="el" href="process__symbols_8h_source.html">process_symbols.h</a>.</p>
 
 </div>
 </div>

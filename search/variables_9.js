@@ -35,7 +35,7 @@ var searchData=
   ['is_5flisted_5fmodule_32',['is_listed_module',['../classpesieve_1_1_mem_page_data.html#adc986006810f6248a2d7e6e568ada735',1,'pesieve::MemPageData::is_listed_module'],['../classpesieve_1_1_working_set_scan_report.html#a9167635c76bcba07d274133c8af95f17',1,'pesieve::WorkingSetScanReport::is_listed_module']]],
   ['is_5fmanaged_33',['is_managed',['../structreport.html#ac67fcb03e111ef23c331793ba07902f5',1,'report::is_managed'],['../structpesieve_1_1__ctx__details.html#a8add5038bb0b71c10646482ba2bbcaaa',1,'pesieve::_ctx_details::is_managed']]],
   ['is_5fmodule_5fnamed_34',['is_module_named',['../classpesieve_1_1_module_data.html#abe700fd542ce7c24cfe82028e1c49961',1,'pesieve::ModuleData']]],
-  ['is_5fok_35',['is_ok',['../struct__t__stack__enum__params.html#a61d74c02774139f2cccf850af389735c',1,'_t_stack_enum_params::is_ok'],['../structpesieve_1_1util_1_1t__refl__args.html#a5bfa172f10a03190cb3dadf2e6ff623e',1,'pesieve::util::t_refl_args::is_ok']]],
+  ['is_5fok_35',['is_ok',['../structpesieve_1_1util_1_1t__refl__args.html#a5bfa172f10a03190cb3dadf2e6ff623e',1,'pesieve::util::t_refl_args']]],
   ['is_5fprivate_36',['is_private',['../classpesieve_1_1_mem_page_data.html#acccbcee56b0c039264705e102bce814d',1,'pesieve::MemPageData']]],
   ['is_5fprocess_5frefl_37',['is_process_refl',['../classpesieve_1_1_mem_page_data.html#a4baeb4ff99b47933d66f057745b43541',1,'pesieve::MemPageData']]],
   ['is_5freflection_38',['is_reflection',['../structreport.html#a31eeb7f48250fc3d175bcf9684634fb8',1,'report']]],

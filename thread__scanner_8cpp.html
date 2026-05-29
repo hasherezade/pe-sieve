@@ -105,10 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
 <div id="doc-content">
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">thread_scanner.cpp File Reference</div></div>
@@ -126,10 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 <p><a href="thread__scanner_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:_5Ft_5Fstack_5Fenum_5Fparams" id="r__5Ft_5Fstack_5Fenum_5Fparams"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="struct__t__stack__enum__params.html">_t_stack_enum_params</a></td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:pesieve" id="r_pesieve"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacepesieve.html">pesieve</a></td></tr>
@@ -138,15 +132,12 @@ Namespaces</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:acaf6cb2ff8299b9b3c55905f936d38a9" id="r_acaf6cb2ff8299b9b3c55905f936d38a9"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#acaf6cb2ff8299b9b3c55905f936d38a9">ENTROPY_TRESHOLD</a>&#160;&#160;&#160;3.0</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a5fd1bfb68319bb2bf608046d60a2e7a0" id="r_a5fd1bfb68319bb2bf608046d60a2e7a0"><td class="memItemLeft">typedef struct <a class="el" href="struct__t__stack__enum__params.html">_t_stack_enum_params</a>&#160;</td><td class="memItemRight"><a class="el" href="#a5fd1bfb68319bb2bf608046d60a2e7a0">t_stack_enum_params</a></td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a7c9c19e3f0ce1362c7e404893a1163f6" id="r_a7c9c19e3f0ce1362c7e404893a1163f6"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="namespacepesieve.html#a7c9c19e3f0ce1362c7e404893a1163f6">pesieve::is_thread_running</a> (HANDLE hThread)</td></tr>
 <tr class="memitem:a7b9ade21d4de016d2a048bf6cc42dbc0" id="r_a7b9ade21d4de016d2a048bf6cc42dbc0"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a7b9ade21d4de016d2a048bf6cc42dbc0">get_page_details</a> (HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORMATION &amp;page_info)</td></tr>
-<tr class="memitem:a576101dbc930d3c05b1c6a1f9e3f8356" id="r_a576101dbc930d3c05b1c6a1f9e3f8356"><td class="memItemLeft">DWORD WINAPI&#160;</td><td class="memItemRight"><a class="el" href="#a576101dbc930d3c05b1c6a1f9e3f8356">enum_stack_thread</a> (<a class="el" href="#a5fd1bfb68319bb2bf608046d60a2e7a0">t_stack_enum_params</a> *args)</td></tr>
+<tr class="memitem:a1a60000166ce4d9e697ac4532f37b3c4" id="r_a1a60000166ce4d9e697ac4532f37b3c4"><td class="memTemplParams" colspan="2">template&lt;typename T_STACKFRAME&gt; </td></tr>
+<tr class="memitem:a1a60000166ce4d9e697ac4532f37b3c4 template"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#a1a60000166ce4d9e697ac4532f37b3c4">enum_callstack</a> (IN <a class="el" href="class_process_symbols_manager.html">ProcessSymbolsManager</a> *symbols, const <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">pesieve::ctx_details</a> &amp;cDetails, IN HANDLE hThread, IN LPVOID ctx, DWORD MachineType, std::vector&lt; ULONGLONG &gt; &amp;callStack)</td></tr>
 <tr class="memitem:a770c327ea58c4852792d616a6dc1d4b5" id="r_a770c327ea58c4852792d616a6dc1d4b5"><td class="memTemplParams" colspan="2">template&lt;typename PTR_T&gt; </td></tr>
 <tr class="memitem:a770c327ea58c4852792d616a6dc1d4b5 template"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="namespacepesieve.html#a770c327ea58c4852792d616a6dc1d4b5">pesieve::read_return_ptr</a> (IN HANDLE hProcess, IN OUT <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a> &amp;cDetails)</td></tr>
 <tr class="memitem:acde231c42b9527dcc026402dcb8b9d87" id="r_acde231c42b9527dcc026402dcb8b9d87"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#acde231c42b9527dcc026402dcb8b9d87">should_scan_context</a> (const <a class="el" href="namespacepesieve_1_1util.html#ad14df902e4cf78a24e85c3984b8d9e74">util::thread_info</a> &amp;info)</td></tr>
@@ -172,38 +163,49 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
-<a id="a5fd1bfb68319bb2bf608046d60a2e7a0" name="a5fd1bfb68319bb2bf608046d60a2e7a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fd1bfb68319bb2bf608046d60a2e7a0">&#9670;&#160;</a></span>t_stack_enum_params</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="struct__t__stack__enum__params.html">_t_stack_enum_params</a> <a class="el" href="#a5fd1bfb68319bb2bf608046d60a2e7a0">t_stack_enum_params</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="a576101dbc930d3c05b1c6a1f9e3f8356" name="a576101dbc930d3c05b1c6a1f9e3f8356"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a576101dbc930d3c05b1c6a1f9e3f8356">&#9670;&#160;</a></span>enum_stack_thread()</h2>
+<a id="a1a60000166ce4d9e697ac4532f37b3c4" name="a1a60000166ce4d9e697ac4532f37b3c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a60000166ce4d9e697ac4532f37b3c4">&#9670;&#160;</a></span>enum_callstack()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename T_STACKFRAME&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">DWORD WINAPI enum_stack_thread </td>
+          <td class="memname">size_t enum_callstack </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="#a5fd1bfb68319bb2bf608046d60a2e7a0">t_stack_enum_params</a> *</td>          <td class="paramname"><span class="paramname"><em>args</em></span></td><td>)</td>
+          <td class="paramtype">IN <a class="el" href="class_process_symbols_manager.html">ProcessSymbolsManager</a> *</td>          <td class="paramname"><span class="paramname"><em>symbols</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">pesieve::ctx_details</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>cDetails</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IN HANDLE</td>          <td class="paramname"><span class="paramname"><em>hThread</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IN LPVOID</td>          <td class="paramname"><span class="paramname"><em>ctx</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DWORD</td>          <td class="paramname"><span class="paramname"><em>MachineType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; ULONGLONG &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>callStack</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00071">71</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00316">316</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 
 </div>
 </div>
@@ -231,7 +233,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00058">58</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00042">42</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 
 </div>
 </div>
@@ -250,7 +252,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00620">620</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00605">605</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

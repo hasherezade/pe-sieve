@@ -35,5 +35,6 @@ var searchData=
   ['rtrim_32',['rtrim',['../namespacepesieve_1_1util.html#a31052004d33cccf72236cd5bd451fa91',1,'pesieve::util']]],
   ['rulematcher_33',['RuleMatcher',['../classpesieve_1_1_rule_matcher.html#a977717986c584a95b87ffd73da2e8905',1,'pesieve::RuleMatcher']]],
   ['rulematchersset_34',['RuleMatchersSet',['../structpesieve_1_1_rule_matchers_set.html#aff5025d1a45e27e0f98cb4da745b3ff8',1,'pesieve::RuleMatchersSet']]],
-  ['rvatova_35',['rvaToVa',['../classpesieve_1_1_module_data.html#a1227c638b7039f75d3bf31b61fe13bf9',1,'pesieve::ModuleData']]]
+  ['runstackwalk_35',['RunStackWalk',['../class_dbg_help_wrapper.html#aa99fa0cc9446a5ea21747ef2f291a2fc',1,'DbgHelpWrapper::RunStackWalk()'],['../class_process_symbols_manager.html#ae76f955680e3cd14e09bac3d01903650',1,'ProcessSymbolsManager::RunStackWalk()']]],
+  ['rvatova_36',['rvaToVa',['../classpesieve_1_1_module_data.html#a1227c638b7039f75d3bf31b61fe13bf9',1,'pesieve::ModuleData']]]
 ];

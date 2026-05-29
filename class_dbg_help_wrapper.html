@@ -114,6 +114,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:acf0b791680d511a94cee4a2edebac124" id="r_acf0b791680d511a94cee4a2edebac124"><td class="memItemLeft">static <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#acf0b791680d511a94cee4a2edebac124">InitializeProcess</a> (HANDLE hProcess, const std::string &amp;symbolPath, DWORD symOptions)</td></tr>
 <tr class="memitem:a17ca38ddb1b0a8368f822b4649c5a76d" id="r_a17ca38ddb1b0a8368f822b4649c5a76d"><td class="memItemLeft">static <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a17ca38ddb1b0a8368f822b4649c5a76d">CleanupProcess</a> (HANDLE hProcess)</td></tr>
 <tr class="memitem:a63a2b4e69365b16bc762f057573d9a45" id="r_a63a2b4e69365b16bc762f057573d9a45"><td class="memItemLeft">static <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a63a2b4e69365b16bc762f057573d9a45">RefreshModuleList</a> (HANDLE hProcess)</td></tr>
+<tr class="memitem:aa99fa0cc9446a5ea21747ef2f291a2fc" id="r_aa99fa0cc9446a5ea21747ef2f291a2fc"><td class="memItemLeft">static <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#aa99fa0cc9446a5ea21747ef2f291a2fc">RunStackWalk</a> (_In_ DWORD MachineType, _In_ HANDLE hProcess, _In_ HANDLE hThread, _Inout_ LPSTACKFRAME StackFrame, _Inout_ PVOID ContextRecord, _In_opt_ PREAD_PROCESS_MEMORY_ROUTINE64 ReadMemoryRoutine, _In_opt_ PFUNCTION_TABLE_ACCESS_ROUTINE64 FunctionTableAccessRoutine, _In_opt_ PGET_MODULE_BASE_ROUTINE64 GetModuleBaseRoutine, _In_opt_ PTRANSLATE_ADDRESS_ROUTINE64 TranslateAddress)</td></tr>
 <tr class="memitem:a084a801d412dc49cf179f0700d40f008" id="r_a084a801d412dc49cf179f0700d40f008"><td class="memItemLeft">static <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a084a801d412dc49cf179f0700d40f008">FromAddress</a> (HANDLE hProcess, DWORD64 address, PSYMBOL_INFO symbol, DWORD64 *displacement)</td></tr>
 <tr class="memitem:a55b56ee94992881b988b4b2d9523b4f8" id="r_a55b56ee94992881b988b4b2d9523b4f8"><td class="memItemLeft">static <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a55b56ee94992881b988b4b2d9523b4f8">GetModuleInfo</a> (HANDLE hProcess, DWORD64 address, IMAGEHLP_MODULE64 *moduleInfo)</td></tr>
 <tr class="memitem:a9cf128954bf3ce70fd36fda886481630" id="r_a9cf128954bf3ce70fd36fda886481630"><td class="memItemLeft">static DWORD&#160;</td><td class="memItemRight"><a class="el" href="#a9cf128954bf3ce70fd36fda886481630">GetLastErrorForProcess</a> (HANDLE hProcess)</td></tr>
@@ -186,7 +187,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dbg__help__wrapper_8h_source.html#l00081">81</a> of file <a class="el" href="dbg__help__wrapper_8h_source.html">dbg_help_wrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dbg__help__wrapper_8h_source.html#l00100">100</a> of file <a class="el" href="dbg__help__wrapper_8h_source.html">dbg_help_wrapper.h</a>.</p>
 
 </div>
 </div>
@@ -213,7 +214,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dbg__help__wrapper_8h_source.html#l00101">101</a> of file <a class="el" href="dbg__help__wrapper_8h_source.html">dbg_help_wrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dbg__help__wrapper_8h_source.html#l00120">120</a> of file <a class="el" href="dbg__help__wrapper_8h_source.html">dbg_help_wrapper.h</a>.</p>
 
 </div>
 </div>
@@ -249,7 +250,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dbg__help__wrapper_8h_source.html#l00090">90</a> of file <a class="el" href="dbg__help__wrapper_8h_source.html">dbg_help_wrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dbg__help__wrapper_8h_source.html#l00109">109</a> of file <a class="el" href="dbg__help__wrapper_8h_source.html">dbg_help_wrapper.h</a>.</p>
 
 </div>
 </div>
@@ -313,6 +314,72 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="dbg__help__wrapper_8h_source.html#l00071">71</a> of file <a class="el" href="dbg__help__wrapper_8h_source.html">dbg_help_wrapper.h</a>.</p>
+
+</div>
+</div>
+<a id="aa99fa0cc9446a5ea21747ef2f291a2fc" name="aa99fa0cc9446a5ea21747ef2f291a2fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa99fa0cc9446a5ea21747ef2f291a2fc">&#9670;&#160;</a></span>RunStackWalk()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> DbgHelpWrapper::RunStackWalk </td>
+          <td>(</td>
+          <td class="paramtype">_In_ DWORD</td>          <td class="paramname"><span class="paramname"><em>MachineType</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_In_ HANDLE</td>          <td class="paramname"><span class="paramname"><em>hProcess</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_In_ HANDLE</td>          <td class="paramname"><span class="paramname"><em>hThread</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_Inout_ LPSTACKFRAME</td>          <td class="paramname"><span class="paramname"><em>StackFrame</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_Inout_ PVOID</td>          <td class="paramname"><span class="paramname"><em>ContextRecord</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_In_opt_ PREAD_PROCESS_MEMORY_ROUTINE64</td>          <td class="paramname"><span class="paramname"><em>ReadMemoryRoutine</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_In_opt_ PFUNCTION_TABLE_ACCESS_ROUTINE64</td>          <td class="paramname"><span class="paramname"><em>FunctionTableAccessRoutine</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_In_opt_ PGET_MODULE_BASE_ROUTINE64</td>          <td class="paramname"><span class="paramname"><em>GetModuleBaseRoutine</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">_In_opt_ PTRANSLATE_ADDRESS_ROUTINE64</td>          <td class="paramname"><span class="paramname"><em>TranslateAddress</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dbg__help__wrapper_8h_source.html#l00081">81</a> of file <a class="el" href="dbg__help__wrapper_8h_source.html">dbg_help_wrapper.h</a>.</p>
 
 </div>
 </div>

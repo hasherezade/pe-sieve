@@ -104,7 +104,7 @@ var searchData=
   ['is_5fmodule_5fnamed_101',['is_module_named',['../classpesieve_1_1_module_data.html#abe700fd542ce7c24cfe82028e1c49961',1,'pesieve::ModuleData']]],
   ['is_5fnormal_5finaccessible_102',['is_normal_inaccessible',['../namespacepesieve_1_1util.html#a9bc0e707ae1cceda1678bc269f2870ea',1,'pesieve::util']]],
   ['is_5fnumber_103',['is_number',['../namespacepesieve_1_1util.html#a282125458b003e9ab800b24552bd7242',1,'pesieve::util']]],
-  ['is_5fok_104',['is_ok',['../struct__t__stack__enum__params.html#a61d74c02774139f2cccf850af389735c',1,'_t_stack_enum_params::is_ok'],['../structpesieve_1_1util_1_1t__refl__args.html#a5bfa172f10a03190cb3dadf2e6ff623e',1,'pesieve::util::t_refl_args::is_ok']]],
+  ['is_5fok_104',['is_ok',['../structpesieve_1_1util_1_1t__refl__args.html#a5bfa172f10a03190cb3dadf2e6ff623e',1,'pesieve::util::t_refl_args']]],
   ['is_5fprintable_105',['IS_PRINTABLE',['../strings__util_8h.html#a1a739e1f368dc1b3b122572eec3d12ab',1,'strings_util.h']]],
   ['is_5fprivate_106',['is_private',['../classpesieve_1_1_mem_page_data.html#acccbcee56b0c039264705e102bce814d',1,'pesieve::MemPageData']]],
   ['is_5fprocess_5f64bit_107',['is_process_64bit',['../namespacepesieve_1_1util.html#a015be6a0937814caf43586043817d922',1,'pesieve::util']]],
