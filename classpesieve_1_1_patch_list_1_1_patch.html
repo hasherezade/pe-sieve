@@ -123,7 +123,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af34616cf2855636a928dbac68cfae3e0" id="r_af34616cf2855636a928dbac68cfae3e0"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af34616cf2855636a928dbac68cfae3e0">setEnd</a> (DWORD end_rva)</td></tr>
 <tr class="memitem:a0ef11444af2c99e07e5db6e97c598734" id="r_a0ef11444af2c99e07e5db6e97c598734"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a0ef11444af2c99e07e5db6e97c598734">setHookTarget</a> (ULONGLONG target_va, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> is_direct=true, <a class="el" href="namespacepesieve.html#aef1981236931c047e3b21059e717ea64">t_patch_type</a> hook_type=<a class="el" href="namespacepesieve.html#aef1981236931c047e3b21059e717ea64a3ce6a9e364e0bd15f0c7bee26a0729c3">pesieve::HOOK_INLINE</a>)</td></tr>
 <tr class="memitem:abefc01f22610a8bfa9c06e76323f685f" id="r_abefc01f22610a8bfa9c06e76323f685f"><td class="memItemLeft">ULONGLONG&#160;</td><td class="memItemRight"><a class="el" href="#abefc01f22610a8bfa9c06e76323f685f">getHookTargetVA</a> ()</td></tr>
-<tr class="memitem:a7995c01369861207268c6d18f6ed3934" id="r_a7995c01369861207268c6d18f6ed3934"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a7995c01369861207268c6d18f6ed3934">setHookTargetInfo</a> (ULONGLONG targetModuleBase, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> isSuspiocious, std::string targetModuleName)</td></tr>
+<tr class="memitem:ab0c79dabbeed28de63bf3f31844fb708" id="r_ab0c79dabbeed28de63bf3f31844fb708"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#ab0c79dabbeed28de63bf3f31844fb708">setHookTargetInfo</a> (ULONGLONG targetModuleBase, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> isSuspicious, std::string targetModuleName)</td></tr>
 <tr class="memitem:a9d85af3c5c28cb144451ebf5e5f4e303" id="r_a9d85af3c5c28cb144451ebf5e5f4e303"><td class="memItemLeft">const <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a9d85af3c5c28cb144451ebf5e5f4e303">toTAG</a> (std::ofstream &amp;patch_report, const char delimiter)</td></tr>
 <tr class="memitem:acd12fcb93ee45e8a045c3217b49f350b" id="r_acd12fcb93ee45e8a045c3217b49f350b"><td class="memItemLeft">const <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#acd12fcb93ee45e8a045c3217b49f350b">toJSON</a> (std::stringstream &amp;outs, size_t level, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> short_info)</td></tr>
 </table><table class="memberdecls">
@@ -374,8 +374,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a7995c01369861207268c6d18f6ed3934" name="a7995c01369861207268c6d18f6ed3934"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7995c01369861207268c6d18f6ed3934">&#9670;&#160;</a></span>setHookTargetInfo()</h2>
+<a id="ab0c79dabbeed28de63bf3f31844fb708" name="ab0c79dabbeed28de63bf3f31844fb708"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0c79dabbeed28de63bf3f31844fb708">&#9670;&#160;</a></span>setHookTargetInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -391,7 +391,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a></td>          <td class="paramname"><span class="paramname"><em>isSuspiocious</em></span>, </td>
+          <td class="paramtype"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a></td>          <td class="paramname"><span class="paramname"><em>isSuspicious</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
