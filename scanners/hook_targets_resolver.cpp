@@ -21,6 +21,15 @@ bool pesieve::HookTargetResolver::resolveTarget(PatchList::Patch* currPatch)
 			currPatch->setHookTargetInfo(foundMod->getStart(), foundMod->isSuspicious(), targetName);
 			return true;
 		}
+		else {
+			if (sym && sym->IsInitialized()) {
+				size_t disp = 0;
+				const std::string targetName = sym->funcNameFromAddr(searchedAddr,&disp);
+				std::cout << "Hook target fetched from symbols!\n";
+				currPatch->setHookTargetInfo(foundMod->getStart(), foundMod->isSuspicious(), targetName);
+				return true;
+			}
+		}
 	}
 	currPatch->setHookTargetInfo(foundMod->getStart(), foundMod->isSuspicious(), foundMod->getModName());
 	return true;

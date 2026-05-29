@@ -146,9 +146,9 @@ t_scan_status pesieve::ProcessScanner::scanForIATHooks(HANDLE processHandle, Mod
 	return scan_res;
 }
 
-t_scan_status pesieve::ProcessScanner::scanForHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report, bool scan_data, bool scan_inaccessible)
+t_scan_status pesieve::ProcessScanner::scanForHooks(HANDLE processHandle, ModuleData& modData, RemoteModuleData &remoteModData, ProcessScanReport& process_report, bool scan_data, bool scan_inaccessible, ProcessSymbolsManager* _symbols)
 {
-	CodeScanner scanner(processHandle, modData, remoteModData);
+	CodeScanner scanner(processHandle, modData, remoteModData, _symbols);
 	scanner.setScanData(scan_data);
 	scanner.setScanInaccessible(scan_inaccessible);
 	CodeScanReport *scan_report = scanner.scanRemote();
@@ -164,7 +164,7 @@ t_scan_status pesieve::ProcessScanner::scanForHooks(HANDLE processHandle, Module
 
 bool pesieve::ProcessScanner::resolveHooksTargets(ProcessScanReport& process_report)
 {
-	HookTargetResolver hookResolver(process_report);
+	HookTargetResolver hookResolver(process_report, &this->symbols);
 	std::set<ModuleScanReport*> &code_reports = process_report.reportsByType[ProcessScanReport::REPORT_CODE_SCAN];
 	size_t resolved_count = hookResolver.resolveAllHooks(code_reports);
 	return (resolved_count > 0);
@@ -316,7 +316,7 @@ size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //thr
 	for (auto set_itr = region_bases.begin(); set_itr != region_bases.end() && is_running(this->processHandle); ++set_itr, ++counter) {
 		const mem_region_info region = *set_itr;
 
-		WorkingSetScanner scanner(this->processHandle, proc_details, region, this->args, pReport);
+		WorkingSetScanner scanner(this->processHandle, proc_details, region, this->args, pReport, &this->symbols);
 		WorkingSetScanReport *my_report = scanner.scanRemote();
 		if (!my_report) {
 			continue;
@@ -430,7 +430,7 @@ size_t pesieve::ProcessScanner::scanModules(ProcessScanReport &pReport) //throws
 				|| (!this->isDEP && (this->args.data == pesieve::PE_DATA_SCAN_NO_DEP));
 			
 			const bool scan_inaccessible = (this->isReflection && (this->args.data >= PE_DATA_SCAN_INACCESSIBLE));
-			scanForHooks(processHandle, modData, remoteModData, pReport, scan_data, scan_inaccessible);
+			scanForHooks(processHandle, modData, remoteModData, pReport, scan_data, scan_inaccessible, &this->symbols);
 		}
 	}
 	return counter;

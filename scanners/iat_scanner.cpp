@@ -179,7 +179,6 @@ bool pesieve::IATScanner::isValidFuncFilled(ULONGLONG filled_val, const peconv::
 	}
 	// check for a common redirection to another system DLL:
 	const std::string fullName = exportsMap.get_dll_path(dll_base);
-	//std::cout << std::hex << filled_val << " : " << dll_base << " : " << fullName << " : " << definedFunc.toString() << " : " << defined_short  << " vs " << possible_short << "\n";
 	if (isInSystemDir(fullName)) {
 		return true;
 	}

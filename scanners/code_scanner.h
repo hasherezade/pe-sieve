@@ -107,9 +107,9 @@ namespace pesieve {
 	class CodeScanner : public ModuleScanner {
 	public:
 
-		CodeScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData)
+		CodeScanner(HANDLE hProc, ModuleData &moduleData, RemoteModuleData &remoteModData, ProcessSymbolsManager* _symbols)
 			: ModuleScanner(hProc, moduleData, remoteModData),
-			isScanData(false), isScanInaccessible(false)
+			isScanData(false), isScanInaccessible(false), symbols(_symbols)
 		{
 		}
 
@@ -140,6 +140,7 @@ namespace pesieve {
 
 		bool isScanData;
 		bool isScanInaccessible;
+		ProcessSymbolsManager *symbols;
 	};
 
 }; //namespace pesieve

@@ -5,6 +5,7 @@
 #include <fstream>
 
 #include <peconv.h>
+#include "../utils/process_symbols.h"
 
 namespace pesieve {
 
@@ -27,7 +28,7 @@ namespace pesieve {
 				type(pesieve::PATCH_UNKNOWN),
 				isDirect(true), 
 				hookTargetVA(0), hookTargetModule(0), isTargetSuspicious(false),
-				paddingVal(0)
+				paddingVal(0), hookTargetDiplacement(0)
 			{
 			}
 
@@ -47,6 +48,7 @@ namespace pesieve {
 				isTargetSuspicious = other.isTargetSuspicious;
 				hookTargetModName = other.hookTargetModName;
 				paddingVal = other.paddingVal;
+				hookTargetDiplacement = other.hookTargetDiplacement;
 			}
 
 			void setEnd(DWORD end_rva)
@@ -66,7 +68,7 @@ namespace pesieve {
 				return hookTargetVA;
 			}
 
-			bool setHookTargetInfo(ULONGLONG targetModuleBase, bool isSuspicious, std::string targetModuleName)
+			bool setHookTargetInfo(ULONGLONG targetModuleBase, bool isSuspicious, std::string targetModuleName, size_t targetDisp = 0)
 			{
 				if (type == pesieve::PATCH_UNKNOWN || targetModuleBase == 0 || targetModuleBase > this->hookTargetVA) {
 					return false;
@@ -74,6 +76,7 @@ namespace pesieve {
 				this->hookTargetModule = targetModuleBase;
 				this->isTargetSuspicious = isSuspicious;
 				this->hookTargetModName = targetModuleName;
+				this->hookTargetDiplacement = targetDisp;
 				return true;
 			}
 
@@ -81,7 +84,7 @@ namespace pesieve {
 			const bool toJSON(std::stringstream &outs, size_t level, bool short_info);
 
 		protected:
-			bool resolveHookedExport(peconv::ExportsMapper &expMap);
+			bool resolveHookedExport(peconv::ExportsMapper &expMap, ProcessSymbolsManager *sym);
 
 			std::string getFormattedName();
 
@@ -99,6 +102,7 @@ namespace pesieve {
 			ULONGLONG hookTargetModule;
 			bool isTargetSuspicious;
 			std::string hookTargetModName;
+			size_t hookTargetDiplacement;
 
 			friend class PatchList;
 			friend class PatchAnalyzer;
@@ -139,7 +143,7 @@ namespace pesieve {
 		const bool toJSON(std::stringstream &outs, size_t level, bool short_info);
 
 		//checks what are the names of the functions that have been hooked
-		size_t checkForHookedExports(peconv::ExportsMapper &expMap);
+		size_t checkForHookedExports(peconv::ExportsMapper &expMap, ProcessSymbolsManager* sym);
 
 		void deletePatches();
 

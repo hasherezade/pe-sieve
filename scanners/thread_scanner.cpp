@@ -68,7 +68,7 @@ bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORM
 	return true;
 }
 
-DWORD WINAPI enum_stack_thread(t_stack_enum_params *args)
+DWORD WINAPI enum_stack_thread(t_stack_enum_params* args)
 {
 	if (!args || !args->cDetails || !args->ctx) {
 		return STATUS_INVALID_PARAMETER;
@@ -782,6 +782,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 
 	bool is_unnamed = !isAddrInNamedModule(info.start_addr);
 	if (is_unnamed) {
+		size_t disp = 0;
 		if (reportSuspiciousAddr(my_report, info.start_addr)) {
 			if (my_report->status == SCAN_SUSPICIOUS) {
 				my_report->indicators.insert(THI_SUS_START);

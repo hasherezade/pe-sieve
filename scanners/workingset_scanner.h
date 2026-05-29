@@ -11,6 +11,8 @@
 
 #include "../utils/format_util.h"
 #include "../utils/workingset_enum.h"
+#include "../utils/process_symbols.h"
+
 #include "process_feature_scanner.h"
 #include "process_details.h"
 
@@ -146,11 +148,11 @@ namespace pesieve {
 	//!  A scanner for detection of code implants in the process workingset.
 	class WorkingSetScanner : public ProcessFeatureScanner {
 	public:
-		WorkingSetScanner(HANDLE _procHndl, process_details _proc_details, const util::mem_region_info _mem_region, pesieve::t_params _args, ProcessScanReport& _process_report)
+		WorkingSetScanner(HANDLE _procHndl, process_details _proc_details, const util::mem_region_info _mem_region, pesieve::t_params _args, ProcessScanReport& _process_report, ProcessSymbolsManager* _symbols)
 			: ProcessFeatureScanner(_procHndl), pDetails(_proc_details),
 			memRegion(_mem_region),
 			args(_args),
-			processReport(_process_report)
+			processReport(_process_report), symbols(_symbols)
 		{
 		}
 
@@ -171,6 +173,7 @@ namespace pesieve {
 		const util::mem_region_info memRegion;
 
 		ProcessScanReport& processReport;
+		ProcessSymbolsManager* symbols;
 		pesieve::t_params args;
 	};
 

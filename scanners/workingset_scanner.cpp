@@ -296,7 +296,7 @@ bool pesieve::WorkingSetScanner::scanImg(MemPageData& memPage)
 		const bool scan_data = (this->args.data >= pesieve::PE_DATA_SCAN_ALWAYS && this->args.data != PE_DATA_SCAN_INACCESSIBLE_ONLY)
 			|| (!this->pDetails.isDEP && (this->args.data == pesieve::PE_DATA_SCAN_NO_DEP));
 		const bool scan_inaccessible = (this->pDetails.isReflection && (this->args.data >= pesieve::PE_DATA_SCAN_INACCESSIBLE));
-		scan_status = ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport, scan_data, scan_inaccessible);
+		scan_status = ProcessScanner::scanForHooks(processHandle, modData, remoteModData, processReport, scan_data, scan_inaccessible, this->symbols);
 #ifdef _DEBUG
 		std::cout << "[*] Scanned for hooks. Status: " << scan_status << std::endl;
 #endif

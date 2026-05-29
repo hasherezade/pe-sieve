@@ -121,15 +121,24 @@ const bool pesieve::PatchList::Patch::toJSON(std::stringstream &outs, size_t lev
 	return true;
 }
 
-bool  pesieve::PatchList::Patch::resolveHookedExport(peconv::ExportsMapper &expMap)
+bool  pesieve::PatchList::Patch::resolveHookedExport(peconv::ExportsMapper &expMap, ProcessSymbolsManager* sym)
 {
 	ULONGLONG patch_va = (ULONGLONG) this->moduleBase + this->startRva;
 	const peconv::ExportedFunc *func = expMap.find_export_by_va(patch_va);
-	if (func == nullptr) {
-		return false; // not found
+	if (func) {
+		this->hooked_func = func->nameToString();
+		return true;
 	}
-	this->hooked_func = func->nameToString();
-	return true;
+	if (sym && sym->IsInitialized()) {
+		size_t disp = 0;
+		std::string name = sym->funcNameFromAddr(patch_va, &disp);
+		if (!name.empty()) {
+			this->hooked_func = name;
+			return true;
+		}
+	}
+	return false; // not found
+	
 }
 
 const size_t pesieve::PatchList::toTAGs(std::ofstream &patch_report, const char delimiter)
@@ -164,13 +173,13 @@ const bool pesieve::PatchList::toJSON(std::stringstream &outs, size_t level, boo
 	return true;
 }
 
-size_t  pesieve::PatchList::checkForHookedExports(peconv::ExportsMapper &expMap)
+size_t  pesieve::PatchList::checkForHookedExports(peconv::ExportsMapper &expMap, ProcessSymbolsManager* sym)
 {
 	size_t hookes_exports = 0;
 	std::vector<Patch*>::iterator itr;
 	for (itr = patches.begin(); itr != patches.end(); ++itr) {
 		Patch *patch = *itr;
-		if (patch->resolveHookedExport(expMap)) {
+		if (patch->resolveHookedExport(expMap, sym)) {
 			hookes_exports++;
 		}
 	}

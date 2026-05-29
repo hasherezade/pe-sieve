@@ -400,6 +400,6 @@ bool pesieve::CodeScanner::postProcessScan(IN OUT CodeScanReport &report)
 	}
 	peconv::ExportsMapper local_mapper;
 	local_mapper.add_to_lookup(moduleData.szModName, (HMODULE) moduleData.original_module, (ULONGLONG) moduleData.moduleHandle);
-	report.patchesList.checkForHookedExports(local_mapper);
+	report.patchesList.checkForHookedExports(local_mapper, this->symbols);
 	return true;
 }

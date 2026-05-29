@@ -2,6 +2,7 @@
 
 #include "scan_report.h"
 #include "code_scanner.h"
+#include "../utils/process_symbols.h"
 
 namespace pesieve {
 
@@ -9,8 +10,8 @@ namespace pesieve {
 	class HookTargetResolver
 	{
 	public:
-		HookTargetResolver(IN ProcessScanReport& process_report)
-			: processReport(process_report)
+		HookTargetResolver(IN ProcessScanReport& process_report, ProcessSymbolsManager *symbols)
+			: processReport(process_report), sym(symbols)
 		{
 		}
 
@@ -22,6 +23,7 @@ namespace pesieve {
 
 	protected:
 		ProcessScanReport& processReport;
+		ProcessSymbolsManager* sym;
 	};
 
 }; //namespace pesieve
