@@ -47,7 +47,7 @@ namespace pesieve {
 			returnedLen = 0;
 			THREAD_LAST_SYSCALL_INFORMATION syscallInfo = { 0 };
 			status = pNtQueryInformationThread(hThread, ThreadLastSystemCall, &syscallInfo, sizeof(syscallInfo), &returnedLen);
-			if (status == 0 && returnedLen == sizeof(syscallInfo)) {
+			if (status == 0 && returnedLen >= sizeof(syscallInfo)) {
 				info.last_syscall = syscallInfo.SystemCallNumber;
 				isOk = true;
 			}

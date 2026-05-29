@@ -105,7 +105,7 @@ std::string pesieve::ThreadScanner::choosePreferredFunctionName(const std::strin
 			return manualSymbol;
 		}
 	}
-	//oterwise use the debug symbol
+	//otherwise use the debug symbol
 	return dbgSymbol;
 }
 
