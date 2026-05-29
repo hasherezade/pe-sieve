@@ -39,12 +39,13 @@ namespace pesieve {
 			ULONGLONG start_addr;
 			DWORD last_syscall;
 			bool is_extended;
+			bool is_filled;
 			thread_info_ext ext;
 
 			_thread_info(DWORD _tid = 0)
-				: tid(_tid), 
+				: tid(_tid),
 				start_addr(0), last_syscall(INVALID_SYSCALL),
-				is_extended(false)
+				is_extended(false), is_filled(false)
 			{
 			}
 			
@@ -55,11 +56,12 @@ namespace pesieve {
 				this->last_syscall = other.last_syscall;
 				this->is_extended = other.is_extended;
 				this->ext = other.ext;
+				this->is_filled = other.is_filled;
 			}
 
 		} thread_info;
 
-		bool query_threads_details(IN OUT std::map<DWORD, thread_info>& threads_info);
+		size_t query_threads_details(IN OUT std::map<DWORD, thread_info>& threads_info);
 
 		bool fetch_threads_info(IN DWORD pid, OUT std::map<DWORD, thread_info>& threads_info);
 

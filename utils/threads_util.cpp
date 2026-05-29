@@ -52,6 +52,7 @@ namespace pesieve {
 				isOk = true;
 			}
 			CloseHandle(hThread);
+			info.is_filled = isOk;
 			return isOk;
 		}
 
@@ -59,13 +60,14 @@ namespace pesieve {
 }; // namespace pesieve
 
 
-bool pesieve::util::query_threads_details(IN OUT std::map<DWORD, pesieve::util::thread_info>& threads_info)
+size_t pesieve::util::query_threads_details(IN OUT std::map<DWORD, pesieve::util::thread_info>& threads_info)
 {
+	size_t queried_count = 0;
 	for (auto itr = threads_info.begin(); itr != threads_info.end(); ++itr) {
 		pesieve::util::thread_info& info = itr->second;
-		if (!query_thread_details(info.tid, info)) return false;
+		if (query_thread_details(info.tid, info)) queried_count++;
 	}
-	return true;
+	return queried_count;
 }
 
 bool pesieve::util::fetch_threads_info(IN DWORD pid, OUT std::map<DWORD, thread_info>& threads_info)
@@ -131,6 +133,7 @@ bool pesieve::util::fetch_threads_info(IN DWORD pid, OUT std::map<DWORD, thread_
 		threadi.ext.state = info->Threads[i].ThreadState;
 		threadi.ext.wait_reason = info->Threads[i].WaitReason;
 		threadi.ext.wait_time  = info->Threads[i].WaitTime;
+		threadi.is_filled = true;
 	}
 	return true;
 }

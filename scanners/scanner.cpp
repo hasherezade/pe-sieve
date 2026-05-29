@@ -515,7 +515,8 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 			return 0;
 		}
 	}
-	if (!pesieve::util::query_threads_details(threads_info)) {
+	const size_t queried_count = pesieve::util::query_threads_details(threads_info);
+	if (queried_count == 0) {
 		if (!args.quiet) {
 			std::cout << "[-] Failed quering thread details." << std::endl;
 		}
@@ -523,6 +524,7 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 	size_t scanned_count = 0;
 	for (auto itr = threads_info.begin(); itr != threads_info.end() && is_running(this->processHandle); ++itr) {
 		const thread_info &info = itr->second;
+		if (!info.is_filled) continue;
 		
 		ThreadScanner scanner(this->processHandle, this->isReflection, pReport.isManaged, info, pReport.modulesInfo, pReport.exportsMap, &symbols);
 		ThreadScanReport* report = scanner.scanRemote();
