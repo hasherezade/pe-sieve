@@ -68,9 +68,8 @@ bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORM
 	return true;
 }
 
-DWORD WINAPI enum_stack_thread(LPVOID lpParam)
+DWORD WINAPI enum_stack_thread(t_stack_enum_params *args)
 {
-	t_stack_enum_params* args = static_cast<t_stack_enum_params*>(lpParam);
 	if (!args || !args->cDetails || !args->ctx) {
 		return STATUS_INVALID_PARAMETER;
 	}
@@ -383,28 +382,7 @@ size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE h
 {
 	// do it in a new thread to prevent stucking...
 	t_stack_enum_params args(hProcess, hThread, ctx, &my_report.cDetails);
-
-	const size_t max_wait = 1000;
-	{
-		HANDLE enumThread = CreateThread(
-			NULL,                   // default security attributes
-			0,                      // use default stack size  
-			enum_stack_thread,       // thread function name
-			&args,          // argument to thread function 
-			0,                      // use default creation flags 
-			0);   // returns the thread identifiee
-
-		if (enumThread) {
-			DWORD wait_result = WaitForSingleObject(enumThread, max_wait);
-			if (wait_result == WAIT_TIMEOUT) {
-				std::cerr << "[!] Cannot retrieve stack frame: timeout passed!\n";
-				TerminateThread(enumThread, 0);
-				CloseHandle(enumThread);
-				return 0;
-			}
-			CloseHandle(enumThread);
-		}
-	}
+	enum_stack_thread(&args);
 	if (!args.is_ok) {
 		return 0;
 	}
@@ -794,6 +772,7 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 	if (!my_report) {
 		return nullptr;
 	}
+
 	initReport(*my_report);
 
 #ifdef _SHOW_THREAD_INFO
@@ -830,6 +809,5 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 
 	filterDotNet(*my_report);
 	reportResolvedCallstack(*my_report);
-
 	return my_report;
 }

@@ -45,7 +45,6 @@ public:
 		DWORD symOptions =
 			SYMOPT_CASE_INSENSITIVE |
 			SYMOPT_UNDNAME |
-			SYMOPT_DEFERRED_LOADS |
 			SYMOPT_FAIL_CRITICAL_ERRORS |
 			SYMOPT_AUTO_PUBLICS |
 			SYMOPT_INCLUDE_32BIT_MODULES |
@@ -149,7 +148,7 @@ public:
 		return path;
 	}
 
-	bool InitSymbols(HANDLE process, bool enableAutoDownload)
+	bool InitSymbols(HANDLE process, bool enableAutoDownload, bool lazy)
 	{
 		if (!process || process == INVALID_HANDLE_VALUE) {
 			return false;
@@ -166,6 +165,13 @@ public:
 		}
 		else {
 			options |= SYMOPT_DISABLE_SYMSRV_AUTODETECT;
+		}
+
+		if (lazy) {
+			options |= ~SYMOPT_DEFERRED_LOADS;
+		}
+		else {
+			options &= ~SYMOPT_DEFERRED_LOADS;
 		}
 
 		const std::string path = BuildSymbolPath(enableAutoDownload);

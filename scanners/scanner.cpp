@@ -83,7 +83,8 @@ pesieve::ProcessScanner::ProcessScanner(HANDLE procHndl, bool is_reflection, pes
 	: processHandle(procHndl), isDEP(false), isReflection(is_reflection),
 	args(_args)
 {
-	symbols.InitSymbols(this->processHandle, _args.download_symbols);
+	const bool lazy_sym = _args.threads ? false : true;
+	symbols.InitSymbols(this->processHandle, _args.download_symbols, lazy_sym);
 	if (validate_param_str(args.modules_ignored)) {
 		pesieve::util::string_to_list(args.modules_ignored.buffer, PARAM_LIST_SEPARATOR, ignoredModules);
 	}
