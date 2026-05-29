@@ -19,22 +19,6 @@ extern pesieve::SyscallTable g_SyscallTable;
 
 using namespace pesieve;
 
-typedef struct _t_stack_enum_params {
-	bool is_ok;
-	HANDLE hProcess;
-	HANDLE hThread;
-	LPVOID ctx;
-	const pesieve::ctx_details* cDetails;
-	std::vector<ULONGLONG> callStack;
-
-	_t_stack_enum_params(IN HANDLE _hProcess = NULL, IN HANDLE _hThread = NULL, IN LPVOID _ctx = NULL, IN const pesieve::ctx_details* _cDetails = NULL)
-		: is_ok(false),
-		hProcess(_hProcess), hThread(_hThread), ctx(_ctx), cDetails(_cDetails)
-	{
-	}
-
-} t_stack_enum_params;
-
 //---
 
 namespace pesieve {
@@ -67,56 +51,6 @@ bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORM
 	}
 	return true;
 }
-
-DWORD WINAPI enum_stack_thread(t_stack_enum_params *args)
-{
-	if (!args || !args->cDetails || !args->ctx) {
-		return STATUS_INVALID_PARAMETER;
-	}
-	size_t fetched = 0;
-	const pesieve::ctx_details& cDetails = *(args->cDetails);
-#ifdef _WIN64
-	if (cDetails.is64b) {
-		STACKFRAME64 frame = { 0 };
-
-		frame.AddrPC.Offset = cDetails.rip;
-		frame.AddrPC.Mode = AddrModeFlat;
-		frame.AddrStack.Offset = cDetails.rsp;
-		frame.AddrStack.Mode = AddrModeFlat;
-		frame.AddrFrame.Offset = cDetails.rbp;
-		frame.AddrFrame.Mode = AddrModeFlat;
-
-		while (StackWalk64(IMAGE_FILE_MACHINE_AMD64, args->hProcess, args->hThread, &frame, args->ctx, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL)) {
-			const ULONGLONG next_addr = frame.AddrPC.Offset;
-			args->callStack.push_back(next_addr);
-			fetched++;
-		}
-	}
-#endif
-	if (!cDetails.is64b) {
-		STACKFRAME frame = { 0 };
-
-		frame.AddrPC.Offset = cDetails.rip;
-		frame.AddrPC.Mode = AddrModeFlat;
-		frame.AddrStack.Offset = cDetails.rsp;
-		frame.AddrStack.Mode = AddrModeFlat;
-		frame.AddrFrame.Offset = cDetails.rbp;
-		frame.AddrFrame.Mode = AddrModeFlat;
-
-		while (StackWalk(IMAGE_FILE_MACHINE_I386, args->hProcess, args->hThread, &frame, args->ctx, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL)) {
-			const ULONGLONG next_return = frame.AddrPC.Offset;
-			args->callStack.push_back(next_return);
-			fetched++;
-		}
-	}
-	if (fetched) {
-		args->is_ok = true;
-		return STATUS_SUCCESS;
-	}
-	return STATUS_UNSUCCESSFUL;
-}
-
-//---
 
 std::string ThreadScanReport::translate_wait_reason(DWORD thread_wait_reason)
 {
@@ -378,16 +312,67 @@ size_t pesieve::ThreadScanner::analyzeCallStackInfo(IN OUT ThreadScanReport& my_
 	return analyzedCount;
 }
 
-size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ThreadScanReport& my_report)
+template<typename T_STACKFRAME>
+size_t enum_callstack(IN ProcessSymbolsManager* symbols, const pesieve::ctx_details& cDetails,IN HANDLE hThread, IN LPVOID ctx, DWORD MachineType, std::vector<ULONGLONG> &callStack)
 {
-	// do it in a new thread to prevent stucking...
-	t_stack_enum_params args(hProcess, hThread, ctx, &my_report.cDetails);
-	enum_stack_thread(&args);
-	if (!args.is_ok) {
+	if (!ctx || !symbols || !symbols->IsInitialized()) {
 		return 0;
 	}
-	my_report.cDetails.callStack = args.callStack;
-	return args.callStack.size();
+	const size_t max_frames = 128;
+
+	size_t fetched = 0;
+	T_STACKFRAME frame = { 0 };
+
+	frame.AddrPC.Offset = cDetails.rip;
+	frame.AddrPC.Mode = AddrModeFlat;
+	frame.AddrStack.Offset = cDetails.rsp;
+	frame.AddrStack.Mode = AddrModeFlat;
+	frame.AddrFrame.Offset = cDetails.rbp;
+	frame.AddrFrame.Mode = AddrModeFlat;
+	
+	DWORD64 prevPc = 0;
+	size_t frameCount = 0;
+
+	while (symbols->RunStackWalk(MachineType, hThread, &frame, ctx, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL)) {
+
+		DWORD64 next_return = frame.AddrPC.Offset;
+		if (next_return == 0) break;
+
+		if (next_return == prevPc) break;
+
+		prevPc = next_return;
+		if (++frameCount > max_frames) break;
+
+		callStack.push_back(next_return);
+		fetched++;
+	}
+	return fetched;
+}
+
+size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE hThread, IN const LPVOID ctx, IN OUT ThreadScanReport& my_report)
+{
+	if (!ctx ||
+		!this->symbols || !this->symbols->IsInitialized())
+	{
+		return 0;
+	}
+	std::vector<ULONGLONG> callStack;
+	size_t fetched = 0;
+
+	const pesieve::ctx_details& cDetails = my_report.cDetails;
+#ifdef _WIN64
+	if (cDetails.is64b) {
+		fetched = enum_callstack< STACKFRAME64>(this->symbols, cDetails, hThread, ctx, IMAGE_FILE_MACHINE_AMD64, callStack);
+	}
+#endif
+	if (!cDetails.is64b) {
+		fetched = enum_callstack<STACKFRAME>(this->symbols, cDetails, hThread, ctx, IMAGE_FILE_MACHINE_I386, callStack);
+	}
+	if (!fetched) {
+		return 0;
+	}
+	my_report.cDetails.callStack = callStack;
+	return callStack.size();
 }
 
 namespace pesieve {

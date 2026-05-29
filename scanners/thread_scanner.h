@@ -282,7 +282,7 @@ namespace pesieve {
 		std::string resolveLowLevelFuncName(IN const ULONGLONG addr, OUT OPTIONAL size_t* disp = nullptr);
 		std::string resolveAddrToString(IN ULONGLONG addr);
 		bool printResolvedAddr(const ULONGLONG addr);
-		size_t fillCallStackInfo(IN HANDLE hProcess, IN HANDLE hThread, IN LPVOID ctx, IN OUT ThreadScanReport& my_report);
+		size_t fillCallStackInfo(IN HANDLE hProcess, IN HANDLE hThread, const IN LPVOID ctx, IN OUT ThreadScanReport& my_report);
 		size_t analyzeCallStackInfo(IN OUT ThreadScanReport& my_report);
 		size_t _analyzeCallStack(IN OUT ctx_details& cDetails, OUT IN std::set<ULONGLONG>& shcCandidates);
 
