@@ -272,7 +272,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a9a0b78302afec18f94651ab7426d847a" id="r_a9a0b78302afec18f94651ab7426d847a"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#a9a0b78302afec18f94651ab7426d847a">extract_from_dll</a> (IN const std::string &amp;path, size_t startSyscallID, OUT std::map&lt; <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>, std::string &gt; &amp;syscallToName)</td></tr>
 <tr class="memitem:ac95cf6c6c1068bc672275290965c0350" id="r_ac95cf6c6c1068bc672275290965c0350"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#ac95cf6c6c1068bc672275290965c0350">extract_syscall_table</a> (OUT std::map&lt; <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>, std::string &gt; &amp;syscallToName)</td></tr>
 <tr class="memitem:a741d532faf993963835fce715ccbeffa" id="r_a741d532faf993963835fce715ccbeffa"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a741d532faf993963835fce715ccbeffa">query_thread_details</a> (IN <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> tid, OUT <a class="el" href="#ad14df902e4cf78a24e85c3984b8d9e74">pesieve::util::thread_info</a> &amp;info)</td></tr>
-<tr class="memitem:a5258d6e6ebd34e2239fdb335abc7cdad" id="r_a5258d6e6ebd34e2239fdb335abc7cdad"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a5258d6e6ebd34e2239fdb335abc7cdad">query_threads_details</a> (IN OUT std::map&lt; <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>, <a class="el" href="#ad14df902e4cf78a24e85c3984b8d9e74">thread_info</a> &gt; &amp;threads_info)</td></tr>
+<tr class="memitem:a972b416698f31b6f118234aca61957d4" id="r_a972b416698f31b6f118234aca61957d4"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#a972b416698f31b6f118234aca61957d4">query_threads_details</a> (IN OUT std::map&lt; <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>, <a class="el" href="#ad14df902e4cf78a24e85c3984b8d9e74">thread_info</a> &gt; &amp;threads_info)</td></tr>
 <tr class="memitem:aef9d6cd060d349c27721f679bc2e2824" id="r_aef9d6cd060d349c27721f679bc2e2824"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#aef9d6cd060d349c27721f679bc2e2824">fetch_threads_info</a> (IN <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> pid, OUT std::map&lt; <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>, <a class="el" href="#ad14df902e4cf78a24e85c3984b8d9e74">thread_info</a> &gt; &amp;threads_info)</td></tr>
 <tr class="memitem:a1274c2cd0b2ebfc7fac5ecc87330a579" id="r_a1274c2cd0b2ebfc7fac5ecc87330a579"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a1274c2cd0b2ebfc7fac5ecc87330a579">fetch_threads_by_snapshot</a> (IN <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> pid, OUT std::map&lt; <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>, <a class="el" href="#ad14df902e4cf78a24e85c3984b8d9e74">thread_info</a> &gt; &amp;threads_info)</td></tr>
 <tr class="memitem:a7b470a0106a3ad9352e64d1295bd9870" id="r_a7b470a0106a3ad9352e64d1295bd9870"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a7b470a0106a3ad9352e64d1295bd9870">get_next_commited_region</a> (HANDLE processHandle, ULONGLONG start_va, MEMORY_BASIC_INFORMATION &amp;page_info)</td></tr>
@@ -1258,7 +1258,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="threads__util_8cpp_source.html#l00138">138</a> of file <a class="el" href="threads__util_8cpp_source.html">threads_util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="threads__util_8cpp_source.html#l00141">141</a> of file <a class="el" href="threads__util_8cpp_source.html">threads_util.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1291,7 +1291,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="threads__util_8cpp_source.html#l00071">71</a> of file <a class="el" href="threads__util_8cpp_source.html">threads_util.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="threads__util_8cpp_source.html#l00073">73</a> of file <a class="el" href="threads__util_8cpp_source.html">threads_util.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2619,14 +2619,14 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a5258d6e6ebd34e2239fdb335abc7cdad" name="a5258d6e6ebd34e2239fdb335abc7cdad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5258d6e6ebd34e2239fdb335abc7cdad">&#9670;&#160;</a></span>query_threads_details()</h2>
+<a id="a972b416698f31b6f118234aca61957d4" name="a972b416698f31b6f118234aca61957d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a972b416698f31b6f118234aca61957d4">&#9670;&#160;</a></span>query_threads_details()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::util::query_threads_details </td>
+          <td class="memname">size_t pesieve::util::query_threads_details </td>
           <td>(</td>
           <td class="paramtype">IN OUT std::map&lt; <a class="el" href="#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>, <a class="el" href="#ad14df902e4cf78a24e85c3984b8d9e74">thread_info</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>threads_info</em></span></td><td>)</td>
           <td></td>
@@ -2636,8 +2636,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="namespacepesieve_1_1util_a5258d6e6ebd34e2239fdb335abc7cdad_cgraph.png" border="0" usemap="#anamespacepesieve_1_1util_a5258d6e6ebd34e2239fdb335abc7cdad_cgraph" loading="lazy" alt=""/></div>
-<map name="anamespacepesieve_1_1util_a5258d6e6ebd34e2239fdb335abc7cdad_cgraph" id="anamespacepesieve_1_1util_a5258d6e6ebd34e2239fdb335abc7cdad_cgraph">
+<div class="center"><img src="namespacepesieve_1_1util_a972b416698f31b6f118234aca61957d4_cgraph.png" border="0" usemap="#anamespacepesieve_1_1util_a972b416698f31b6f118234aca61957d4_cgraph" loading="lazy" alt=""/></div>
+<map name="anamespacepesieve_1_1util_a972b416698f31b6f118234aca61957d4_cgraph" id="anamespacepesieve_1_1util_a972b416698f31b6f118234aca61957d4_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,132,46"/>
 <area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="180,13,324,38"/>
 <area shape="poly" title=" " alt="" coords="132,23,164,23,164,28,132,28"/>
