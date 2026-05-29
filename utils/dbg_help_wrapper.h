@@ -84,8 +84,8 @@ public:
 		_In_ HANDLE hThread,
 		_Inout_ LPSTACKFRAME StackFrame,
 		_Inout_ PVOID ContextRecord,
-		_In_opt_ PREAD_PROCESS_MEMORY_ROUTINE64 ReadMemoryRoutine,
-		_In_opt_ PFUNCTION_TABLE_ACCESS_ROUTINE64 FunctionTableAccessRoutine,
+		_In_opt_ PREAD_PROCESS_MEMORY_ROUTINE ReadMemoryRoutine,
+		_In_opt_ PFUNCTION_TABLE_ACCESS_ROUTINE FunctionTableAccessRoutine,
 		_In_opt_ PGET_MODULE_BASE_ROUTINE64 GetModuleBaseRoutine,
 		_In_opt_ PTRANSLATE_ADDRESS_ROUTINE64 TranslateAddress
 	)
