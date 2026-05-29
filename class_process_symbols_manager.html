@@ -120,7 +120,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1438d9b5064e2f5f096a7c83f67b93fc" id="r_a1438d9b5064e2f5f096a7c83f67b93fc"><td class="memItemLeft"><a class="el" href="class_process_symbols_manager.html">ProcessSymbolsManager</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a1438d9b5064e2f5f096a7c83f67b93fc">operator=</a> (const <a class="el" href="class_process_symbols_manager.html">ProcessSymbolsManager</a> &amp;)=delete</td></tr>
 <tr class="memitem:ac75e99e990800c54427ff6c38e03c053" id="r_ac75e99e990800c54427ff6c38e03c053"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#ac75e99e990800c54427ff6c38e03c053">InitSymbols</a> (HANDLE process, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> enableAutoDownload, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> lazy)</td></tr>
 <tr class="memitem:a761bdff2e1314d1e5f6b8b5675c8276d" id="r_a761bdff2e1314d1e5f6b8b5675c8276d"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a761bdff2e1314d1e5f6b8b5675c8276d">RefreshModules</a> ()</td></tr>
-<tr class="memitem:ae76f955680e3cd14e09bac3d01903650" id="r_ae76f955680e3cd14e09bac3d01903650"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#ae76f955680e3cd14e09bac3d01903650">RunStackWalk</a> (_In_ DWORD MachineType, _In_ HANDLE hThread, _Inout_ LPSTACKFRAME StackFrame, _Inout_ PVOID ContextRecord, _In_opt_ PREAD_PROCESS_MEMORY_ROUTINE64 ReadMemoryRoutine, _In_opt_ PFUNCTION_TABLE_ACCESS_ROUTINE64 FunctionTableAccessRoutine, _In_opt_ PGET_MODULE_BASE_ROUTINE64 GetModuleBaseRoutine, _In_opt_ PTRANSLATE_ADDRESS_ROUTINE64 TranslateAddress)</td></tr>
+<tr class="memitem:a5db1848c8092e7665c6c736709e5d37c" id="r_a5db1848c8092e7665c6c736709e5d37c"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a5db1848c8092e7665c6c736709e5d37c">RunStackWalk</a> (_In_ DWORD MachineType, _In_ HANDLE hThread, _Inout_ LPSTACKFRAME StackFrame, _Inout_ PVOID ContextRecord, _In_opt_ PREAD_PROCESS_MEMORY_ROUTINE ReadMemoryRoutine, _In_opt_ PFUNCTION_TABLE_ACCESS_ROUTINE FunctionTableAccessRoutine, _In_opt_ PGET_MODULE_BASE_ROUTINE GetModuleBaseRoutine, _In_opt_ PTRANSLATE_ADDRESS_ROUTINE TranslateAddress)</td></tr>
 <tr class="memitem:aa033a0bcbb58f91b9e371bbc0dfe45b1" id="r_aa033a0bcbb58f91b9e371bbc0dfe45b1"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#aa033a0bcbb58f91b9e371bbc0dfe45b1">IsInitialized</a> () const</td></tr>
 <tr class="memitem:a805a6e226ddff14c2654f1e23060bd6e" id="r_a805a6e226ddff14c2654f1e23060bd6e"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a805a6e226ddff14c2654f1e23060bd6e">NormalizeNtZwPrefix</a> (std::string &amp;funcName)</td></tr>
 <tr class="memitem:a30c55c64d80a7a1819a8c7d1640a64d8" id="r_a30c55c64d80a7a1819a8c7d1640a64d8"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a30c55c64d80a7a1819a8c7d1640a64d8">funcNameFromAddr</a> (ULONG_PTR addr, size_t *displacement=NULL)</td></tr>
@@ -643,8 +643,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="ae76f955680e3cd14e09bac3d01903650" name="ae76f955680e3cd14e09bac3d01903650"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae76f955680e3cd14e09bac3d01903650">&#9670;&#160;</a></span>RunStackWalk()</h2>
+<a id="a5db1848c8092e7665c6c736709e5d37c" name="a5db1848c8092e7665c6c736709e5d37c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5db1848c8092e7665c6c736709e5d37c">&#9670;&#160;</a></span>RunStackWalk()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -675,22 +675,22 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">_In_opt_ PREAD_PROCESS_MEMORY_ROUTINE64</td>          <td class="paramname"><span class="paramname"><em>ReadMemoryRoutine</em></span>, </td>
+          <td class="paramtype">_In_opt_ PREAD_PROCESS_MEMORY_ROUTINE</td>          <td class="paramname"><span class="paramname"><em>ReadMemoryRoutine</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">_In_opt_ PFUNCTION_TABLE_ACCESS_ROUTINE64</td>          <td class="paramname"><span class="paramname"><em>FunctionTableAccessRoutine</em></span>, </td>
+          <td class="paramtype">_In_opt_ PFUNCTION_TABLE_ACCESS_ROUTINE</td>          <td class="paramname"><span class="paramname"><em>FunctionTableAccessRoutine</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">_In_opt_ PGET_MODULE_BASE_ROUTINE64</td>          <td class="paramname"><span class="paramname"><em>GetModuleBaseRoutine</em></span>, </td>
+          <td class="paramtype">_In_opt_ PGET_MODULE_BASE_ROUTINE</td>          <td class="paramname"><span class="paramname"><em>GetModuleBaseRoutine</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">_In_opt_ PTRANSLATE_ADDRESS_ROUTINE64</td>          <td class="paramname"><span class="paramname"><em>TranslateAddress</em></span>&#160;)</td>
+          <td class="paramtype">_In_opt_ PTRANSLATE_ADDRESS_ROUTINE</td>          <td class="paramname"><span class="paramname"><em>TranslateAddress</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -704,10 +704,10 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="class_process_symbols_manager_ae76f955680e3cd14e09bac3d01903650_cgraph.png" border="0" usemap="#aclass_process_symbols_manager_ae76f955680e3cd14e09bac3d01903650_cgraph" loading="lazy" alt=""/></div>
-<map name="aclass_process_symbols_manager_ae76f955680e3cd14e09bac3d01903650_cgraph" id="aclass_process_symbols_manager_ae76f955680e3cd14e09bac3d01903650_cgraph">
+<div class="center"><img src="class_process_symbols_manager_a5db1848c8092e7665c6c736709e5d37c_cgraph.png" border="0" usemap="#aclass_process_symbols_manager_a5db1848c8092e7665c6c736709e5d37c_cgraph" loading="lazy" alt=""/></div>
+<map name="aclass_process_symbols_manager_a5db1848c8092e7665c6c736709e5d37c_cgraph" id="aclass_process_symbols_manager_a5db1848c8092e7665c6c736709e5d37c_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,175,46"/>
-<area shape="rect" href="class_dbg_help_wrapper.html#aa99fa0cc9446a5ea21747ef2f291a2fc" title=" " alt="" coords="223,13,434,38"/>
+<area shape="rect" href="class_dbg_help_wrapper.html#aaea8ea0f2f4da44ecb1c95f215d241e7" title=" " alt="" coords="223,13,434,38"/>
 <area shape="poly" title=" " alt="" coords="175,23,207,23,207,28,175,28"/>
 </map>
 </div>
