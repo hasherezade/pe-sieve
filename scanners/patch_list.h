@@ -66,13 +66,13 @@ namespace pesieve {
 				return hookTargetVA;
 			}
 
-			bool setHookTargetInfo(ULONGLONG targetModuleBase, bool isSuspiocious, std::string targetModuleName)
+			bool setHookTargetInfo(ULONGLONG targetModuleBase, bool isSuspicious, std::string targetModuleName)
 			{
 				if (type == pesieve::PATCH_UNKNOWN || targetModuleBase == 0 || targetModuleBase > this->hookTargetVA) {
 					return false;
 				}
 				this->hookTargetModule = targetModuleBase;
-				this->isTargetSuspicious = isSuspiocious;
+				this->isTargetSuspicious = isSuspicious;
 				this->hookTargetModName = targetModuleName;
 				return true;
 			}
