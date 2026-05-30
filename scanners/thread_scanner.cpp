@@ -649,9 +649,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	if (is_unnamed) {
 		my_report.indicators.insert(THI_SUS_IP);
 		if (reportSuspiciousAddr(&my_report, cDetails.rip)) {
-			if (my_report.status == SCAN_SUSPICIOUS) {
-				my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
-			}
+			my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
 		}
 	}
 
@@ -662,16 +660,10 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 #endif //_SHOW_THREAD_INFO
 		//automatically verifies if the address is legit:
 		if (reportSuspiciousAddr(&my_report, addr)) {
-			if (my_report.status == SCAN_SUSPICIOUS) {
-				my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
+			my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
 #ifdef _DEBUG
-				std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << " Entropy: " << std::dec << my_report.stats.entropy << " : " << my_report.is_code << std::endl;
+				std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << std::endl;
 #endif //_DEBUG
-
-#ifdef _SHOW_THREAD_INFO
-				std::cout << "Found! " << std::hex << addr << "\n";
-#endif //_SHOW_THREAD_INFO
-			}
 		}
 	}
 
@@ -684,13 +676,10 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		std::cout << "Return addr: " << std::hex << ret_addr << "\n";
 		printResolvedAddr(ret_addr);
 #endif //_SHOW_THREAD_INFO
-		if (is_unnamed && reportSuspiciousAddr(&my_report, (ULONGLONG)ret_addr)) {
+		if (is_unnamed) {
 			my_report.indicators.insert(THI_SUS_RET);
-			if (my_report.status == SCAN_SUSPICIOUS) {
+			if (reportSuspiciousAddr(&my_report, (ULONGLONG)ret_addr)) {
 				my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
-			}
-			else {
-				my_report.status = SCAN_SUSPICIOUS;
 			}
 		}
 	}
@@ -804,8 +793,6 @@ bool pesieve::ThreadScanner::assessIndicators(HANDLE hThread, ThreadScanReport& 
 		const ThSusIndicator& indicator = *itr;
 		switch (indicator) {
 		case THI_SUS_CALLSTACK_SHC:
-		case THI_SUS_IP:
-		case THI_SUS_START:
 			if (best_base) {
 				validatedIndicators.insert(indicator);
 			}
@@ -864,10 +851,9 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 
 	bool is_unnamed = !isAddrInNamedModule(info.start_addr);
 	if (is_unnamed) {
+		my_report->indicators.insert(THI_SUS_START);
 		if (reportSuspiciousAddr(my_report, info.start_addr)) {
-			if (my_report->status == SCAN_SUSPICIOUS) {
-				my_report->indicators.insert(THI_SUS_START);
-			}
+			my_report->indicators.insert(THI_SUS_CALLSTACK_SHC);
 		}
 	}
 	if (!should_scan_context(info)) {
