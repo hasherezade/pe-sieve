@@ -123,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <code>#include &quot;<a class="el" href="modules__enum_8h_source.html">../utils/modules_enum.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="process__privilege_8h_source.html">../utils/process_privilege.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="process__util_8h_source.html">../utils/process_util.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="process__reflection_8h_source.html">../utils/process_reflection.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="headers__scanner_8h_source.html">headers_scanner.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="code__scanner_8h_source.html">code_scanner.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="iat__scanner_8h_source.html">iat_scanner.h</a>&quot;</code><br />
@@ -145,8 +146,54 @@ Functions</h2></td></tr>
 <tr class="memitem:a56f68849d06a2630a2c87ed53f17193b" id="r_a56f68849d06a2630a2c87ed53f17193b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="namespacepesieve.html#a56f68849d06a2630a2c87ed53f17193b">pesieve::print_scan_time</a> (const char *scanned_element, size_t total_time)</td></tr>
 <tr class="memitem:a5de73d5ffa8f7073fdf5fd6b7c6deea5" id="r_a5de73d5ffa8f7073fdf5fd6b7c6deea5"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="namespacepesieve.html#a5de73d5ffa8f7073fdf5fd6b7c6deea5">pesieve::is_running</a> (HANDLE processHandle)</td></tr>
 <tr class="memitem:abe4faa4c4347c0bfc6691847fd84a48f" id="r_abe4faa4c4347c0bfc6691847fd84a48f"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#abe4faa4c4347c0bfc6691847fd84a48f">set_non_suspicious</a> (const std::set&lt; <a class="el" href="classpesieve_1_1_module_scan_report.html">ModuleScanReport</a> * &gt; &amp;scan_reports, <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> dnet_modules_only)</td></tr>
+<tr class="memitem:a4d9c8c32eb7fd71f9f64e53dd15180a3" id="r_a4d9c8c32eb7fd71f9f64e53dd15180a3"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a4d9c8c32eb7fd71f9f64e53dd15180a3">fill_threads_info</a> (IN const <a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a> pid, OUT std::map&lt; <a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>, <a class="el" href="namespacepesieve_1_1util.html#ad14df902e4cf78a24e85c3984b8d9e74">thread_info</a> &gt; &amp;threads_info)</td></tr>
 </table>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="a4d9c8c32eb7fd71f9f64e53dd15180a3" name="a4d9c8c32eb7fd71f9f64e53dd15180a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d9c8c32eb7fd71f9f64e53dd15180a3">&#9670;&#160;</a></span>fill_threads_info()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> fill_threads_info </td>
+          <td>(</td>
+          <td class="paramtype">IN const <a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a></td>          <td class="paramname"><span class="paramname"><em>pid</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OUT std::map&lt; <a class="el" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae">DWORD</a>, <a class="el" href="namespacepesieve_1_1util.html#ad14df902e4cf78a24e85c3984b8d9e74">thread_info</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>threads_info</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="scanner_8cpp_source.html#l00492">492</a> of file <a class="el" href="scanner_8cpp_source.html">scanner.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="scanner_8cpp_a4d9c8c32eb7fd71f9f64e53dd15180a3_cgraph.png" border="0" usemap="#ascanner_8cpp_a4d9c8c32eb7fd71f9f64e53dd15180a3_cgraph" loading="lazy" alt=""/></div>
+<map name="ascanner_8cpp_a4d9c8c32eb7fd71f9f64e53dd15180a3_cgraph" id="ascanner_8cpp_a4d9c8c32eb7fd71f9f64e53dd15180a3_cgraph">
+<area shape="rect" title=" " alt="" coords="5,32,117,57"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="375,6,519,32"/>
+<area shape="poly" title=" " alt="" coords="95,28,128,18,164,10,214,4,266,3,360,7,360,12,266,8,215,10,165,15,130,23,97,33"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a1274c2cd0b2ebfc7fac5ecc87330a579" title=" " alt="" coords="165,24,316,65"/>
+<area shape="poly" title=" " alt="" coords="117,42,150,42,150,47,117,47"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#aef9d6cd060d349c27721f679bc2e2824" title=" " alt="" coords="178,89,302,130"/>
+<area shape="poly" title=" " alt="" coords="99,55,169,81,167,86,98,60"/>
+<area shape="poly" title=" " alt="" coords="316,32,359,27,360,32,317,38"/>
+<area shape="poly" title=" " alt="" coords="290,86,315,74,338,58,363,42,379,35,381,40,365,47,341,62,317,79,293,91"/>
+<area shape="rect" href="structpesieve_1_1util_1_1_auto_buffer.html#a51e759319aa779ac904b8982f771dc29" title=" " alt="" coords="369,56,525,97"/>
+<area shape="poly" title=" " alt="" coords="302,97,353,89,354,94,303,102"/>
+<area shape="rect" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="400,121,494,147"/>
+<area shape="poly" title=" " alt="" coords="303,114,385,124,385,129,303,120"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a31ce9e0299d60a275b024faa3e45ef62" title=" " alt="" coords="364,170,530,196"/>
+<area shape="poly" title=" " alt="" coords="291,128,365,157,383,163,382,168,363,162,289,133"/>
+</map>
+</div>
+
+</div>
+</div>
 <a id="abe4faa4c4347c0bfc6691847fd84a48f" name="abe4faa4c4347c0bfc6691847fd84a48f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abe4faa4c4347c0bfc6691847fd84a48f">&#9670;&#160;</a></span>set_non_suspicious()</h2>
 
@@ -174,7 +221,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scanner_8cpp_source.html#l00178">178</a> of file <a class="el" href="scanner_8cpp_source.html">scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scanner_8cpp_source.html#l00179">179</a> of file <a class="el" href="scanner_8cpp_source.html">scanner.cpp</a>.</p>
 
 </div>
 </div>
