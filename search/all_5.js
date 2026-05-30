@@ -11,7 +11,7 @@ var searchData=
   ['entropy_5fenc_5ftreshold_8',['ENTROPY_ENC_TRESHOLD',['../stats__analyzer_8cpp.html#ad3baffe4182941c218a496a002fd6cca',1,'stats_analyzer.cpp']]],
   ['entropy_5fstats_2eh_9',['entropy_stats.h',['../entropy__stats_8h.html',1,'']]],
   ['entropy_5fstrong_5fenc_5ftreshold_10',['ENTROPY_STRONG_ENC_TRESHOLD',['../stats__analyzer_8cpp.html#ad1efdc94fd1b78318300d7c8228252d9',1,'stats_analyzer.cpp']]],
-  ['entropy_5ftreshold_11',['ENTROPY_TRESHOLD',['../thread__scanner_8cpp.html#acaf6cb2ff8299b9b3c55905f936d38a9',1,'thread_scanner.cpp']]],
+  ['entropy_5fthreshold_11',['ENTROPY_THRESHOLD',['../thread__scanner_8cpp.html#aa885acd4f4e58e142e3ee2ec798d470d',1,'thread_scanner.cpp']]],
   ['enum_5fcallstack_12',['enum_callstack',['../thread__scanner_8cpp.html#a1a60000166ce4d9e697ac4532f37b3c4',1,'thread_scanner.cpp']]],
   ['enum_5fmodules_13',['enum_modules',['../namespacepesieve_1_1util.html#aadb390fe91332082b68e9dfdbf3c0afb',1,'pesieve::util']]],
   ['enum_5fworkingset_14',['enum_workingset',['../namespacepesieve_1_1util.html#a8c6b940f49f776606ee1c88ba5f1982d',1,'pesieve::util']]],
