@@ -28,7 +28,7 @@ var searchData=
   ['regionstart_25',['regionStart',['../classpesieve_1_1_pe_artefacts.html#ace73d07e94c6cbb1367b8734a11e66d7',1,'pesieve::PeArtefacts']]],
   ['relative_5fto_5fabsolute_5fpath_26',['relative_to_absolute_path',['../namespacepesieve_1_1util.html#aef45bac1fce06bb27d1c8bdb41d0d84c',1,'pesieve::util']]],
   ['release_5fprocess_5freflection_27',['release_process_reflection',['../namespacepesieve_1_1util.html#ac39000bfb52a6dbdacb7a5b68bb21674',1,'pesieve::util']]],
-  ['release_5fprocess_5fsnapshot_28',['release_process_snapshot',['../namespacepesieve_1_1util.html#a905cd117f8d7e19b984bc395defc3b63',1,'pesieve::util']]],
+  ['release_5fprocess_5fsnapshot_28',['release_process_snapshot',['../namespacepesieve_1_1util.html#a621f2ea14f24c20ec76f4a34f079236c',1,'pesieve::util']]],
   ['reloadwow64_29',['reloadWow64',['../classpesieve_1_1_module_data.html#a1fab06ced58f5432dae107aed4063a32',1,'pesieve::ModuleData']]],
   ['relocatetobase_30',['relocateToBase',['../classpesieve_1_1_module_data.html#a39d37446bca2041d5fb9c0cc64998f15',1,'pesieve::ModuleData']]],
   ['relocbase_31',['relocBase',['../classpesieve_1_1_pe_buffer.html#af82f09c9cf7265dd990b5fe299864838',1,'pesieve::PeBuffer::relocBase'],['../classpesieve_1_1_module_scan_report.html#a65db46896baa89ad7718d33daa449024',1,'pesieve::ModuleScanReport::relocBase']]],
