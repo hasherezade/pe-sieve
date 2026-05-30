@@ -584,29 +584,24 @@ bool pesieve::ThreadScanner::fillAreaStats(SuspAddrReport* report)
 
 bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr)
 {
-	MEMORY_BASIC_INFORMATION page_info = { 0 };
-	if (!get_page_details(processHandle, (LPVOID)susp_addr, page_info)) {
-		return false;
-	}
-	if (!(page_info.State & MEM_COMMIT)) {
-		return false;
-	}
-	ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
-	auto found = my_report->suspAreaReports.find(base);
-
-	SuspAddrReport* susRep = nullptr;
-	if (found != my_report->suspAreaReports.end()) {
-		susRep = found->second;
-	}
-	else {
+	SuspAddrReport* susRep = my_report->findAreaForAddress(susp_addr);
+	if (!susRep) {
+		MEMORY_BASIC_INFORMATION page_info = { 0 };
+		if (!get_page_details(processHandle, (LPVOID)susp_addr, page_info)) {
+			return false;
+		}
+		if (!(page_info.State & MEM_COMMIT)) {
+			return false;
+		}
+		ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
 		susRep = new SuspAddrReport(base, page_info.RegionSize, page_info.AllocationProtect);
+		susRep->curr_protection = page_info.Protect;
 		my_report->suspAreaReports[base] = susRep;
 		fillAreaStats(susRep);
 	}
 	if (!susRep) {
 		return false;
 	}
-	susRep->curr_protection = page_info.Protect;
 	susRep->addSuspAddr(susp_addr);
 #ifdef _DEBUG
 	susRep->print();

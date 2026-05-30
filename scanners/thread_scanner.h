@@ -199,6 +199,22 @@ namespace pesieve {
 			}
 			suspAreaReports.clear();
 		}
+		
+		SuspAddrReport* findAreaForAddress(const ULONGLONG &susp_addr)
+		{
+			auto found = this->suspAreaReports.find(susp_addr);
+			if (found != this->suspAreaReports.end()) {
+				return found->second;
+			}
+			for (auto itr = this->suspAreaReports.begin(); itr != this->suspAreaReports.end(); ++itr) {
+				SuspAddrReport* rep = itr->second;
+				if (!rep) continue;
+				if (susp_addr >= rep->module && susp_addr < (rep->module + rep->moduleSize)) {
+					return rep;
+				}
+			}
+			return nullptr;
+		}
 
 		const virtual void callstackToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails)
 		{
