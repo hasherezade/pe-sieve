@@ -186,6 +186,11 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	}
 
 	if (this->info.ext.wait_reason == UserRequest) {
+		if (syscallFuncName.rfind("NtDxgkGet", 0) == 0 &&
+			lastFuncCalled.rfind("NtWaitFor", 0) == 0)
+		{
+			return true;
+		}
 		if (syscallFuncName.find("WaitFor", 0) != std::string::npos &&
 			(lastFuncCalled.find("WaitFor", 0) != std::string::npos))
 		{
@@ -792,6 +797,7 @@ bool pesieve::ThreadScanner::assessIndicators(HANDLE hThread, ThreadScanReport& 
 	{
 		const ThSusIndicator& indicator = *itr;
 		switch (indicator) {
+		case THI_SUS_START:
 		case THI_SUS_CALLSTACK_SHC:
 			if (best_base) {
 				validatedIndicators.insert(indicator);
