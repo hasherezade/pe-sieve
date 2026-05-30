@@ -11,6 +11,7 @@
 extern pesieve::SyscallTable g_SyscallTable;
 
 #define ENTROPY_THRESHOLD 3.0
+#define ENTROPY_ENC_THRESHOLD 6.0
 //#define NO_ENTROPY_CHECK
 
 #ifdef _DEBUG
@@ -185,6 +186,11 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	}
 
 	if (this->info.ext.wait_reason == UserRequest) {
+		if (syscallFuncName.rfind("NtDxgkGet", 0) == 0 &&
+			lastFuncCalled.rfind("NtWaitFor", 0) == 0)
+		{
+			return true;
+		}
 		if (syscallFuncName.find("WaitFor", 0) != std::string::npos &&
 			(lastFuncCalled.find("WaitFor", 0) != std::string::npos))
 		{
@@ -568,37 +574,45 @@ void pesieve::ThreadScanner::printThreadInfo(const pesieve::util::thread_info& t
 	std::cout << "\n";
 }
 
-bool pesieve::ThreadScanner::fillAreaStats(ThreadScanReport* my_report)
+bool pesieve::ThreadScanner::fillAreaStats(SuspAddrReport* report)
 {
-	if (!my_report) return false;
+	if (!report) return false;
 
-	ULONG_PTR end_va = (ULONG_PTR)my_report->module + my_report->moduleSize;
-	MemPageData mem(this->processHandle, this->isReflection, (ULONG_PTR)my_report->module, end_va);
+	ULONG_PTR end_va = (ULONG_PTR)report->module + report->moduleSize;
+	MemPageData mem(this->processHandle, this->isReflection, (ULONG_PTR)report->module, end_va);
 	if (!mem.fillInfo() || !mem.load()) {
 		return false;
 	}
-	my_report->is_code = util::is_code(mem.loadedData.getData(true), mem.loadedData.getDataSize(true));
+	report->is_code = util::is_code(mem.loadedData.getData(true), mem.loadedData.getDataSize(true));
 	AreaStatsCalculator calc(mem.loadedData);
-	return calc.fill(my_report->stats, nullptr);
+	return calc.fill(report->stats, nullptr);
 }
 
 bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, ULONGLONG susp_addr)
 {
-	MEMORY_BASIC_INFORMATION page_info = { 0 };
-	if (!get_page_details(processHandle, (LPVOID)susp_addr, page_info)) {
+	SuspAddrReport* susRep = my_report->findAreaForAddress(susp_addr);
+	if (!susRep) {
+		MEMORY_BASIC_INFORMATION page_info = { 0 };
+		if (!get_page_details(processHandle, (LPVOID)susp_addr, page_info)) {
+			return false;
+		}
+		if (!(page_info.State & MEM_COMMIT)) {
+			return false;
+		}
+		ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
+		susRep = new SuspAddrReport(base, page_info.RegionSize, page_info.AllocationProtect);
+		susRep->curr_protection = page_info.Protect;
+		my_report->suspAreaReports[base] = susRep;
+		fillAreaStats(susRep);
+	}
+	if (!susRep) {
 		return false;
 	}
-	if (!(page_info.State & MEM_COMMIT)) {
-		return false;
-	}
-	ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
-	my_report->module = (HMODULE)base;
-	my_report->moduleSize = page_info.RegionSize;
-	my_report->alloc_protection = page_info.AllocationProtect;
-	my_report->curr_protection = page_info.Protect;
-	my_report->susp_addr = susp_addr;
+	susRep->addSuspAddr(susp_addr);
+#ifdef _DEBUG
+	susRep->print();
+#endif //_DEBUG
 	my_report->status = SCAN_SUSPICIOUS;
-	fillAreaStats(my_report);
 	return true;
 }
 
@@ -640,9 +654,7 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 	if (is_unnamed) {
 		my_report.indicators.insert(THI_SUS_IP);
 		if (reportSuspiciousAddr(&my_report, cDetails.rip)) {
-			if (my_report.status == SCAN_SUSPICIOUS) {
-				my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
-			}
+			my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
 		}
 	}
 
@@ -653,18 +665,10 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 #endif //_SHOW_THREAD_INFO
 		//automatically verifies if the address is legit:
 		if (reportSuspiciousAddr(&my_report, addr)) {
-			if (my_report.status == SCAN_SUSPICIOUS) {
-				my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
+			my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
 #ifdef _DEBUG
-				std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << " Entropy: " << std::dec << my_report.stats.entropy << " : " << my_report.is_code << std::endl;
+				std::cout << "[@]" << std::dec << tid << " : " << "Suspicious, possible shc: " << std::hex << addr << std::endl;
 #endif //_DEBUG
-				if (my_report.is_code) {
-					break;
-				}
-#ifdef _SHOW_THREAD_INFO
-				std::cout << "Found! " << std::hex << addr << "\n";
-#endif //_SHOW_THREAD_INFO
-			}
 		}
 	}
 
@@ -677,17 +681,10 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		std::cout << "Return addr: " << std::hex << ret_addr << "\n";
 		printResolvedAddr(ret_addr);
 #endif //_SHOW_THREAD_INFO
-		if (is_unnamed && reportSuspiciousAddr(&my_report, (ULONGLONG)ret_addr)) {
+		if (is_unnamed) {
 			my_report.indicators.insert(THI_SUS_RET);
-			if (my_report.status == SCAN_SUSPICIOUS) {
+			if (reportSuspiciousAddr(&my_report, (ULONGLONG)ret_addr)) {
 				my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
-			}
-			else {
-				my_report.status = SCAN_SUSPICIOUS;
-				if (my_report.stats.entropy < 1) { // discard, do not dump
-					my_report.module = 0;
-					my_report.moduleSize = 0;
-				}
 			}
 		}
 	}
@@ -725,7 +722,7 @@ bool pesieve::ThreadScanner::filterDotNet(ThreadScanReport& my_report)
 		switch (indicator) {
 		case THI_SUS_CALLSTACK_SHC:
 		case THI_SUS_IP:
-		case THI_SUS_RET:
+		case THI_SUS_START:
 			dnet_common++;
 			break;
 		default:
@@ -739,6 +736,25 @@ bool pesieve::ThreadScanner::filterDotNet(ThreadScanReport& my_report)
 	return false;
 }
 
+static int scoreArea(const SuspAddrReport& area)
+{
+	int score = 0;
+
+	if (area.is_code) {
+		score += 10;
+	}
+
+	if (area.stats.isFilled()) {
+		if (area.stats.entropy >= ENTROPY_THRESHOLD) {
+			score += 10;
+		}
+		if (area.stats.entropy >= ENTROPY_ENC_THRESHOLD) {
+			score += 10;
+		}
+	}
+	return score;
+}
+
 bool pesieve::ThreadScanner::assessIndicators(HANDLE hThread, ThreadScanReport& my_report)
 {
 	if (my_report.status == SCAN_NOT_SUSPICIOUS) {
@@ -748,8 +764,30 @@ bool pesieve::ThreadScanner::assessIndicators(HANDLE hThread, ThreadScanReport& 
 		my_report.status = SCAN_NOT_SUSPICIOUS;
 		return true;
 	}
+	
 	if (filterDotNet(my_report)) {
 		return true;
+	}
+	ULONGLONG best_base = 0;
+	size_t best_module_size = 0;
+	int best_score = 0;
+	double best_entropy = 0;
+	for (auto itr1 = my_report.suspAreaReports.begin(); itr1 != my_report.suspAreaReports.end(); ++itr1) {
+		ULONGLONG base = itr1->first;
+		const SuspAddrReport* rep = itr1->second;
+		if (!rep) continue;
+
+		const int score = scoreArea(*rep);
+		if (score == 0) continue;
+
+		if (score > best_score 
+			|| (score == best_score && rep->stats.entropy > best_entropy))
+		{
+			best_base = rep->module;
+			best_module_size = rep->moduleSize;
+			best_score = score;
+			best_entropy = rep->stats.entropy;
+		}
 	}
 
 	std::set< ThSusIndicator> validatedIndicators;
@@ -758,23 +796,25 @@ bool pesieve::ThreadScanner::assessIndicators(HANDLE hThread, ThreadScanReport& 
 		++itr)
 	{
 		const ThSusIndicator& indicator = *itr;
-
-		if (!my_report.susp_addr) {
+		switch (indicator) {
+		case THI_SUS_START:
+		case THI_SUS_CALLSTACK_SHC:
+			if (best_base) {
+				validatedIndicators.insert(indicator);
+			}
+			break;
+		default:
 			validatedIndicators.insert(indicator);
-			continue;
-		}
-
-		if (my_report.stats.isFilled()
-			&& my_report.stats.entropy >= ENTROPY_THRESHOLD)
-		{
-			validatedIndicators.insert(indicator);
+			break;
 		}
 	}
 	if (!validatedIndicators.size()) {
 		my_report.status = SCAN_NOT_SUSPICIOUS;
 		return true;
 	}
-	return false;
+	my_report.module = (HMODULE)best_base;
+	my_report.moduleSize = best_module_size;
+	return true;
 }
 
 void pesieve::ThreadScanner::initReport(ThreadScanReport& my_report)
@@ -817,10 +857,9 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 
 	bool is_unnamed = !isAddrInNamedModule(info.start_addr);
 	if (is_unnamed) {
+		my_report->indicators.insert(THI_SUS_START);
 		if (reportSuspiciousAddr(my_report, info.start_addr)) {
-			if (my_report->status == SCAN_SUSPICIOUS) {
-				my_report->indicators.insert(THI_SUS_START);
-			}
+			my_report->indicators.insert(THI_SUS_CALLSTACK_SHC);
 		}
 	}
 	if (!should_scan_context(info)) {

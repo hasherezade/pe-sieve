@@ -35,7 +35,7 @@ namespace pesieve {
 			area_size++;
 		}
 
-		const virtual void fieldsToJSON(std::stringstream& outs, size_t level) = 0;
+		virtual void fieldsToJSON(std::stringstream& outs, size_t level) const = 0;
 
 		bool isFilled() const
 		{
@@ -46,7 +46,7 @@ namespace pesieve {
 
 		virtual bool fillSettings(StatsSettings* _settings) { return false; }
 
-		const virtual bool toJSON(std::stringstream& outs, size_t level)
+		virtual bool toJSON(std::stringstream& outs, size_t level) const
 		{
 			if (!isFilled()) {
 				return false;

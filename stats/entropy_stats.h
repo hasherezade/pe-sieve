@@ -35,7 +35,7 @@ namespace pesieve {
 		double entropy;
 
 	protected:
-		const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
+		virtual void fieldsToJSON(std::stringstream& outs, size_t level) const
 		{
 			OUT_PADDED(outs, level, "\"area_start\" : ");
 			outs << "\"" << std::hex << area_start << "\"";
