@@ -83,10 +83,15 @@ pesieve::ProcessScanner::ProcessScanner(HANDLE procHndl, bool is_reflection, pes
 	: processHandle(procHndl), isDEP(false), isReflection(is_reflection),
 	args(_args)
 {
-	const bool lazy_sym = _args.threads ? false : true;
-	symbols.InitSymbols(this->processHandle, _args.download_symbols, lazy_sym);
 	if (validate_param_str(args.modules_ignored)) {
 		pesieve::util::string_to_list(args.modules_ignored.buffer, PARAM_LIST_SEPARATOR, ignoredModules);
+	}
+	const bool lazy_sym = args.threads ? false : true;
+	this->symbols.InitSymbols(this->processHandle, args.download_symbols, lazy_sym);
+	if (!this->symbols.IsInitialized()) {
+		if (!args.quiet) {
+			std::cerr << "[-] Failed to initialize symbols!\n";
+		}
 	}
 }
 
@@ -485,15 +490,7 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 
 size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws exceptions
 {
-	if (!this->symbols.IsInitialized()) {
-		if (!args.quiet) {
-			std::cerr << "[-] Failed to initialize symbols!\n";
-		}
-		return 0;
-	}
-
 	const DWORD pid = pReport.pid; //original PID, not a reflection!
-
 	const bool is_64bit = pesieve::util::is_process_64bit(this->processHandle);
 #ifndef _WIN64
 	if (is_64bit) return 0;

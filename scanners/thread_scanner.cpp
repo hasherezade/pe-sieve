@@ -250,8 +250,9 @@ size_t pesieve::ThreadScanner::_analyzeCallStack(IN OUT ctx_details& cDetails, O
 		if (cDetails.ret_on_stack == next_return) {
 			cDetails.is_ret_in_frame = true;
 		}
+		
 #ifdef _SHOW_THREAD_INFO
-		if (symbols) {
+		if (symbols && symbols->IsInitialized()) {
 			symbols->dumpSymbolInfo(next_return);
 		}
 		std::cout << "\t";
@@ -299,12 +300,14 @@ size_t pesieve::ThreadScanner::analyzeCallStackInfo(IN OUT ThreadScanReport& my_
 	if (my_report.cDetails.is_managed) {
 		checkCalls = false;
 	}
-	if (info.ext.wait_reason > WrQueue ||
-		info.ext.wait_reason == WrFreePage || info.ext.wait_reason == WrPageIn || info.ext.wait_reason == WrPoolAllocation ||
-		info.ext.wait_reason == FreePage || info.ext.wait_reason == PageIn || info.ext.wait_reason == PoolAllocation ||
-		info.ext.wait_reason == Suspended)// there can be last func. vs last syscall mismatch in case of suspended threads
-	{
-		checkCalls = false; 
+	if (info.is_extended) {
+		if (info.ext.wait_reason > WrQueue ||
+			info.ext.wait_reason == WrFreePage || info.ext.wait_reason == WrPageIn || info.ext.wait_reason == WrPoolAllocation ||
+			info.ext.wait_reason == FreePage || info.ext.wait_reason == PageIn || info.ext.wait_reason == PoolAllocation ||
+			info.ext.wait_reason == Suspended)// there can be last func. vs last syscall mismatch in case of suspended threads
+		{
+			checkCalls = false;
+		}
 	}
 	if (checkCalls) {
 		my_report.cDetails.is_ret_as_syscall = checkReturnAddrIntegrity(my_report.cDetails.callStack, my_report);
