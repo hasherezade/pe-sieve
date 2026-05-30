@@ -90,7 +90,7 @@ namespace pesieve {
 			std::cout << " ]" << std::endl;
 		}
 
-		const bool toJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails)
+		const bool toJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails) const
 		{
 			if (addressesToJSON(outs, level, jdetails)) {
 				outs << ",\n";
@@ -104,7 +104,7 @@ namespace pesieve {
 			this->suspAddresses.insert(addr);
 		}
 
-		const bool addressesToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails)
+		bool addressesToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails) const
 		{
 			if (!suspAddresses.size()) {
 				return false;
@@ -127,7 +127,7 @@ namespace pesieve {
 			return true;
 		}
 
-		const bool moduleInfoToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails)
+		bool moduleInfoToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails) const
 		{
 			if (!this->module) {
 				return false;
@@ -157,8 +157,8 @@ namespace pesieve {
 			if (stats.isFilled()) {
 				outs << ",\n";
 				stats.toJSON(outs, level);
-				outs << "\n";
 			}
+			outs << "\n";
 			return true;
 		}
 
@@ -323,14 +323,27 @@ namespace pesieve {
 			OUT_PADDED(outs, level, "}");
 			outs << ",\n";
 			indicatorsToJSON(outs, level, jdetails);
-			for (auto itr = suspAreaReports.begin(); itr != suspAreaReports.end();++itr) {
+
+			if (!suspAreaReports.empty()) {
 				outs << ",\n";
-				OUT_PADDED(outs, level, "\"susp_area\" : {\n");
-				SuspAddrReport* suspr = itr->second;
-				if (suspr) {
-					suspr->toJSON(outs, level + 1, jdetails);
+				OUT_PADDED(outs, level, "\"susp_areas\" : [\n");
+
+				bool isFirst = true;
+				for (const auto& entry : suspAreaReports) {
+					const SuspAddrReport* suspr = entry.second;
+					if (!suspr) {
+						continue;
+					}
+					if (!isFirst) {
+						outs << ",\n";
+					}
+					OUT_PADDED(outs, level + 1, "{\n");
+					suspr->toJSON(outs, level + 2, jdetails);
+					OUT_PADDED(outs, level + 1, "}");
+					isFirst = false;
 				}
-				OUT_PADDED(outs, level, "}");
+				outs << "\n";
+				OUT_PADDED(outs, level, "]");
 			}
 		}
 

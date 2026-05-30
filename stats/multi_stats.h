@@ -129,7 +129,7 @@ namespace pesieve {
 			lastStr.clear();
 		}
 
-		const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
+		virtual void fieldsToJSON(std::stringstream& outs, size_t level) const
 		{
 			OUT_PADDED(outs, level, "\"offset\" : ");
 			outs << std::hex << "\"" << offset << "\"";
@@ -208,7 +208,7 @@ namespace pesieve {
 			return true;
 		}
 
-		const virtual void fieldsToJSON(std::stringstream& outs, size_t level)
+		virtual void fieldsToJSON(std::stringstream& outs, size_t level) const
 		{
 			OUT_PADDED(outs, level, "\"full_area\" : {\n");
 			currArea.fieldsToJSON(outs, level + 1);
