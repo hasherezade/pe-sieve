@@ -729,7 +729,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="thread__scanner_8cpp.html#a7b9ade21d4de016d2a048bf6cc42dbc0">get_page_details</a>(<a class="code hl_variable" href="classpesieve_1_1_process_feature_scanner.html#a46f463f3d04c8748d6a7d36cd6b40256">processHandle</a>, (LPVOID)susp_addr, page_info)) {</div>
 <div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>    }</div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>    <span class="keywordflow">if</span> (page_info.State &amp; MEM_FREE) {</div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>    <span class="keywordflow">if</span> (!(page_info.State &amp; MEM_COMMIT)) {</div>
 <div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>    }</div>
 <div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>    ULONGLONG base = (ULONGLONG)page_info.BaseAddress;</div>
