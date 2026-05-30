@@ -21,13 +21,14 @@ var searchData=
   ['_7epesection_18',['~PeSection',['../classpesieve_1_1_pe_section.html#ab76981bf1845ae3ca5779c715af41dfd',1,'pesieve::PeSection']]],
   ['_7eprocessdumpreport_19',['~ProcessDumpReport',['../classpesieve_1_1_process_dump_report.html#a88ab049b4e525d1dec759acca50a3836',1,'pesieve::ProcessDumpReport']]],
   ['_7eprocessfeaturescanner_20',['~ProcessFeatureScanner',['../classpesieve_1_1_process_feature_scanner.html#a4c45dedbdd008e2468a7900300bc5d88',1,'pesieve::ProcessFeatureScanner']]],
-  ['_7eprocessscanner_21',['~ProcessScanner',['../classpesieve_1_1_process_scanner.html#a03ee14223d5503d0df6aeb7032f39d03',1,'pesieve::ProcessScanner']]],
-  ['_7eprocessscanreport_22',['~ProcessScanReport',['../classpesieve_1_1_process_scan_report.html#a008b5e3596c77be7ecaa1373ee02b432',1,'pesieve::ProcessScanReport']]],
-  ['_7eprocesssymbolsmanager_23',['~ProcessSymbolsManager',['../class_process_symbols_manager.html#a8c0370174c2618902c2ccf9ff6dcab3f',1,'ProcessSymbolsManager']]],
-  ['_7eremotemoduledata_24',['~RemoteModuleData',['../classpesieve_1_1_remote_module_data.html#a31309be42d854497766a0ac879fc5528',1,'pesieve::RemoteModuleData']]],
-  ['_7ereportex_25',['~ReportEx',['../classpesieve_1_1_report_ex.html#a85c5168710b9d9c32eac2de241d6f282',1,'pesieve::ReportEx']]],
-  ['_7erulematchersset_26',['~RuleMatchersSet',['../structpesieve_1_1_rule_matchers_set.html#a746123a69dfc09350f110b30fbb99810',1,'pesieve::RuleMatchersSet']]],
-  ['_7escannedmodule_27',['~ScannedModule',['../classpesieve_1_1_scanned_module.html#a34b8bb37bb347662772d4df56c53eecd',1,'pesieve::ScannedModule']]],
-  ['_7ethreadscanreport_28',['~ThreadScanReport',['../classpesieve_1_1_thread_scan_report.html#a35f8fd69fd8c41316a8c85a5b84d3778',1,'pesieve::ThreadScanReport']]],
-  ['_7eworkingsetscanner_29',['~WorkingSetScanner',['../classpesieve_1_1_working_set_scanner.html#a11a9a3166d095e19d9319d4d6d653713',1,'pesieve::WorkingSetScanner']]]
+  ['_7eprocessrefl_21',['~ProcessRefl',['../structpesieve_1_1util_1_1_process_refl.html#ad0e82304cd6ba3fd37a7af0c4e434b04',1,'pesieve::util::ProcessRefl']]],
+  ['_7eprocessscanner_22',['~ProcessScanner',['../classpesieve_1_1_process_scanner.html#a03ee14223d5503d0df6aeb7032f39d03',1,'pesieve::ProcessScanner']]],
+  ['_7eprocessscanreport_23',['~ProcessScanReport',['../classpesieve_1_1_process_scan_report.html#a008b5e3596c77be7ecaa1373ee02b432',1,'pesieve::ProcessScanReport']]],
+  ['_7eprocesssymbolsmanager_24',['~ProcessSymbolsManager',['../class_process_symbols_manager.html#a8c0370174c2618902c2ccf9ff6dcab3f',1,'ProcessSymbolsManager']]],
+  ['_7eremotemoduledata_25',['~RemoteModuleData',['../classpesieve_1_1_remote_module_data.html#a31309be42d854497766a0ac879fc5528',1,'pesieve::RemoteModuleData']]],
+  ['_7ereportex_26',['~ReportEx',['../classpesieve_1_1_report_ex.html#a85c5168710b9d9c32eac2de241d6f282',1,'pesieve::ReportEx']]],
+  ['_7erulematchersset_27',['~RuleMatchersSet',['../structpesieve_1_1_rule_matchers_set.html#a746123a69dfc09350f110b30fbb99810',1,'pesieve::RuleMatchersSet']]],
+  ['_7escannedmodule_28',['~ScannedModule',['../classpesieve_1_1_scanned_module.html#a34b8bb37bb347662772d4df56c53eecd',1,'pesieve::ScannedModule']]],
+  ['_7ethreadscanreport_29',['~ThreadScanReport',['../classpesieve_1_1_thread_scan_report.html#a35f8fd69fd8c41316a8c85a5b84d3778',1,'pesieve::ThreadScanReport']]],
+  ['_7eworkingsetscanner_30',['~WorkingSetScanner',['../classpesieve_1_1_working_set_scanner.html#a11a9a3166d095e19d9319d4d6d653713',1,'pesieve::WorkingSetScanner']]]
 ];

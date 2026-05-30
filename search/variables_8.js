@@ -13,5 +13,6 @@ var searchData=
   ['hooktargetmodname_10',['hookTargetModName',['../classpesieve_1_1_patch_list_1_1_patch.html#a539b13c352084f0c62380fd35f388d83',1,'pesieve::PatchList::Patch']]],
   ['hooktargetmodule_11',['hookTargetModule',['../classpesieve_1_1_patch_list_1_1_patch.html#acec7a5d8080e88233a3df43d8baf22b5',1,'pesieve::PatchList::Patch']]],
   ['hooktargetva_12',['hookTargetVA',['../classpesieve_1_1_patch_list_1_1_patch.html#a88a970b68970e94884d5f4e2efd80359',1,'pesieve::PatchList::Patch']]],
-  ['hprocess_13',['hProcess',['../class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48',1,'ProcessSymbolsManager']]]
+  ['hprocess_13',['hProcess',['../class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48',1,'ProcessSymbolsManager']]],
+  ['hreflhndl_14',['hReflHndl',['../structpesieve_1_1util_1_1_process_refl.html#ab9c8e4ed8ba8ab11f380de186c78e253',1,'pesieve::util::ProcessRefl']]]
 ];

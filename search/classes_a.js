@@ -13,8 +13,9 @@ var searchData=
   ['pesieveparams_10',['PEsieveParams',['../class_p_esieve_params.html',1,'']]],
   ['processdumpreport_11',['ProcessDumpReport',['../classpesieve_1_1_process_dump_report.html',1,'pesieve']]],
   ['processfeaturescanner_12',['ProcessFeatureScanner',['../classpesieve_1_1_process_feature_scanner.html',1,'pesieve']]],
-  ['processscanner_13',['ProcessScanner',['../classpesieve_1_1_process_scanner.html',1,'pesieve']]],
-  ['processscanreport_14',['ProcessScanReport',['../classpesieve_1_1_process_scan_report.html',1,'pesieve']]],
-  ['processsymbolsmanager_15',['ProcessSymbolsManager',['../class_process_symbols_manager.html',1,'']]],
-  ['pss_5fva_5fclone_5finformation_16',['PSS_VA_CLONE_INFORMATION',['../structpesieve_1_1util_1_1_p_s_s___v_a___c_l_o_n_e___i_n_f_o_r_m_a_t_i_o_n.html',1,'pesieve::util']]]
+  ['processrefl_13',['ProcessRefl',['../structpesieve_1_1util_1_1_process_refl.html',1,'pesieve::util']]],
+  ['processscanner_14',['ProcessScanner',['../classpesieve_1_1_process_scanner.html',1,'pesieve']]],
+  ['processscanreport_15',['ProcessScanReport',['../classpesieve_1_1_process_scan_report.html',1,'pesieve']]],
+  ['processsymbolsmanager_16',['ProcessSymbolsManager',['../class_process_symbols_manager.html',1,'']]],
+  ['pss_5fva_5fclone_5finformation_17',['PSS_VA_CLONE_INFORMATION',['../structpesieve_1_1util_1_1_p_s_s___v_a___c_l_o_n_e___i_n_f_o_r_m_a_t_i_o_n.html',1,'pesieve::util']]]
 ];

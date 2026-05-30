@@ -34,7 +34,8 @@ var searchData=
   ['printthreadinfo_31',['printThreadInfo',['../classpesieve_1_1_thread_scanner.html#a75c0be0ec6ea82b700f3ca5e846a0675',1,'pesieve::ThreadScanner']]],
   ['processdumpreport_32',['ProcessDumpReport',['../classpesieve_1_1_process_dump_report.html#ad0827416439dc6cc1a105a938244e236',1,'pesieve::ProcessDumpReport']]],
   ['processfeaturescanner_33',['ProcessFeatureScanner',['../classpesieve_1_1_process_feature_scanner.html#adeebfab417cce25451dde92fd6066bc5',1,'pesieve::ProcessFeatureScanner']]],
-  ['processscanner_34',['ProcessScanner',['../classpesieve_1_1_process_scanner.html#a417b205292393e667d95cd7b881159d2',1,'pesieve::ProcessScanner']]],
-  ['processscanreport_35',['ProcessScanReport',['../classpesieve_1_1_process_scan_report.html#a2dd00994d97a975dbfbe3b5e6c743552',1,'pesieve::ProcessScanReport']]],
-  ['processsymbolsmanager_36',['ProcessSymbolsManager',['../class_process_symbols_manager.html#a12daa79c985a492c117fff26451434f3',1,'ProcessSymbolsManager::ProcessSymbolsManager()'],['../class_process_symbols_manager.html#a74352a54ee09258a9cc661af865c1a22',1,'ProcessSymbolsManager::ProcessSymbolsManager(const ProcessSymbolsManager &amp;)=delete']]]
+  ['processrefl_34',['ProcessRefl',['../structpesieve_1_1util_1_1_process_refl.html#a17129fb2f5ffa9584d7a59fac23a5cc6',1,'pesieve::util::ProcessRefl']]],
+  ['processscanner_35',['ProcessScanner',['../classpesieve_1_1_process_scanner.html#a417b205292393e667d95cd7b881159d2',1,'pesieve::ProcessScanner']]],
+  ['processscanreport_36',['ProcessScanReport',['../classpesieve_1_1_process_scan_report.html#a2dd00994d97a975dbfbe3b5e6c743552',1,'pesieve::ProcessScanReport']]],
+  ['processsymbolsmanager_37',['ProcessSymbolsManager',['../class_process_symbols_manager.html#a12daa79c985a492c117fff26451434f3',1,'ProcessSymbolsManager::ProcessSymbolsManager()'],['../class_process_symbols_manager.html#a74352a54ee09258a9cc661af865c1a22',1,'ProcessSymbolsManager::ProcessSymbolsManager(const ProcessSymbolsManager &amp;)=delete']]]
 ];

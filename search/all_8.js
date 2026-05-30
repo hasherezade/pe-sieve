@@ -36,5 +36,6 @@ var searchData=
   ['hooktargetresolver_33',['HookTargetResolver',['../classpesieve_1_1_hook_target_resolver.html',1,'pesieve::HookTargetResolver'],['../classpesieve_1_1_hook_target_resolver.html#a67f45c79aabc8609ff844bfde436bc4d',1,'pesieve::HookTargetResolver::HookTargetResolver()']]],
   ['hooktargetva_34',['hookTargetVA',['../classpesieve_1_1_patch_list_1_1_patch.html#a88a970b68970e94884d5f4e2efd80359',1,'pesieve::PatchList::Patch']]],
   ['hprocess_35',['hProcess',['../class_process_symbols_manager.html#afbc6ee9e01329ead375d2bacd2e09a48',1,'ProcessSymbolsManager']]],
-  ['hpss_36',['HPSS',['../process__reflection_8cpp.html#a245cc83fbf7f180ff454a487cae263ea',1,'process_reflection.cpp']]]
+  ['hpss_36',['HPSS',['../process__reflection_8cpp.html#a245cc83fbf7f180ff454a487cae263ea',1,'process_reflection.cpp']]],
+  ['hreflhndl_37',['hReflHndl',['../structpesieve_1_1util_1_1_process_refl.html#ab9c8e4ed8ba8ab11f380de186c78e253',1,'pesieve::util::ProcessRefl']]]
 ];
