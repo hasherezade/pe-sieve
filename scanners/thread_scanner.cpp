@@ -718,15 +718,28 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 
 bool pesieve::ThreadScanner::filterDotNet(ThreadScanReport& my_report)
 {
-	if (!isManaged) return false;
+	if (!isManaged) {
+		return false;
+	}
 
-	const size_t count = my_report.indicators.size();
-	if (count > 1) return false;
+	size_t dnet_common = 0; //common indicators present in .NET executables
 
-	auto itr = my_report.indicators.begin();
-	if (itr == my_report.indicators.end()) return false;
-
-	if (*itr == THI_SUS_CALLSTACK_SHC) {
+	for (auto itr = my_report.indicators.begin();
+		itr != my_report.indicators.end();
+		++itr)
+	{
+		const ThSusIndicator& indicator = *itr;
+		switch (indicator) {
+		case THI_SUS_CALLSTACK_SHC:
+		case THI_SUS_IP:
+		case THI_SUS_RET:
+			dnet_common++;
+			break;
+		default:
+			break;
+		}
+	}
+	if (dnet_common == my_report.indicators.size()) {
 		my_report.status = SCAN_NOT_SUSPICIOUS;
 		return true;
 	}
