@@ -114,14 +114,17 @@ namespace pesieve {
 				addrTypeStr = "susp_addr";
 			}
 			OUT_PADDED(outs, level, "\"" << addrTypeStr << "\" : [");
+			OUT_PADDED(outs, level, "\"" << addrTypeStr << "\" : [");
+			bool isFirst = true;
 			for (auto itr = suspAddresses.begin(); itr != suspAddresses.end(); ++itr) {
 				ULONGLONG susp_addr = *itr;
 				if (!susp_addr) continue;
 
-				if (itr != suspAddresses.begin()) {
+				if (!isFirst) {
 					outs << ", ";
 				}
 				outs << "\"" << std::hex << susp_addr << "\"";
+				isFirst = false;
 			}
 			outs << "]";
 			return true;
