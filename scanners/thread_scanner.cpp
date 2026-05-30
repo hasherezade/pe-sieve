@@ -11,6 +11,7 @@
 extern pesieve::SyscallTable g_SyscallTable;
 
 #define ENTROPY_THRESHOLD 3.0
+#define ENTROPY_ENC_THRESHOLD 6.0
 //#define NO_ENTROPY_CHECK
 
 #ifdef _DEBUG
@@ -727,7 +728,7 @@ bool pesieve::ThreadScanner::filterDotNet(ThreadScanReport& my_report)
 		switch (indicator) {
 		case THI_SUS_CALLSTACK_SHC:
 		case THI_SUS_IP:
-		case THI_SUS_RET:
+		case THI_SUS_START:
 			dnet_common++;
 			break;
 		default:
@@ -739,6 +740,25 @@ bool pesieve::ThreadScanner::filterDotNet(ThreadScanReport& my_report)
 		return true;
 	}
 	return false;
+}
+
+static int scoreArea(const SuspAddrReport& area)
+{
+	int score = 0;
+
+	if (area.is_code) {
+		score += 10;
+	}
+
+	if (area.stats.isFilled()) {
+		if (area.stats.entropy >= ENTROPY_THRESHOLD) {
+			score += 10;
+		}
+		if (area.stats.entropy >= ENTROPY_ENC_THRESHOLD) {
+			score += 10;
+		}
+	}
+	return score;
 }
 
 bool pesieve::ThreadScanner::assessIndicators(HANDLE hThread, ThreadScanReport& my_report)
@@ -756,23 +776,22 @@ bool pesieve::ThreadScanner::assessIndicators(HANDLE hThread, ThreadScanReport& 
 	}
 	ULONGLONG best_base = 0;
 	size_t best_module_size = 0;
+	int best_score = 0;
 	double best_entropy = 0;
 	for (auto itr1 = my_report.suspAreaReports.begin(); itr1 != my_report.suspAreaReports.end(); ++itr1) {
 		ULONGLONG base = itr1->first;
 		const SuspAddrReport* rep = itr1->second;
 		if (!rep) continue;
 
-		if (!best_base && rep->is_code) {
-			best_base = rep->module;
-			best_module_size = rep->moduleSize;
-		}
+		const int score = scoreArea(*rep);
+		if (score == 0) continue;
 
-		if (rep->stats.isFilled() && rep->stats.entropy < ENTROPY_THRESHOLD) {
-			continue;
-		}
-		if (rep->stats.entropy > best_entropy) {
+		if (score > best_score 
+			|| (score == best_score && rep->stats.entropy > best_entropy))
+		{
 			best_base = rep->module;
 			best_module_size = rep->moduleSize;
+			best_score = score;
 			best_entropy = rep->stats.entropy;
 		}
 	}
@@ -783,11 +802,17 @@ bool pesieve::ThreadScanner::assessIndicators(HANDLE hThread, ThreadScanReport& 
 		++itr)
 	{
 		const ThSusIndicator& indicator = *itr;
-		if (indicator == THI_SUS_CALLSTACK_SHC) {
-			if (!best_base) {
-				continue;
+		switch (indicator) {
+		case THI_SUS_CALLSTACK_SHC:
+		case THI_SUS_IP:
+		case THI_SUS_START:
+			if (best_base) {
+				validatedIndicators.insert(indicator);
 			}
+			break;
+		default:
 			validatedIndicators.insert(indicator);
+			break;
 		}
 	}
 	if (!validatedIndicators.size()) {

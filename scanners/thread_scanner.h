@@ -246,7 +246,6 @@ namespace pesieve {
 							if (!sym.empty()) {
 								outs << ";" << sym;
 							}
-							
 						}
 						outs << "\"";
 					}
