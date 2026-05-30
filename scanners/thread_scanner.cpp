@@ -618,7 +618,7 @@ bool should_scan_context(const util::thread_info& info)
 	if (state == Terminated) {
 		return false;
 	}
-	if (state == Waiting && info.ext.wait_reason <= WrQueue) {
+	if (state == Waiting && info.ext.wait_reason < MaximumWaitReason) {
 		return true;
 	}
 	return false;
