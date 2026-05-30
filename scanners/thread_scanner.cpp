@@ -10,7 +10,7 @@
 
 extern pesieve::SyscallTable g_SyscallTable;
 
-#define ENTROPY_TRESHOLD 3.0
+#define ENTROPY_THRESHOLD 3.0
 //#define NO_ENTROPY_CHECK
 
 #ifdef _DEBUG
@@ -600,7 +600,7 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 	my_report->status = SCAN_SUSPICIOUS;
 	const bool isStatFilled = fillAreaStats(my_report);
 #ifndef NO_ENTROPY_CHECK
-	if (isStatFilled && (my_report->stats.entropy < ENTROPY_TRESHOLD)) {
+	if (isStatFilled && (my_report->stats.entropy < ENTROPY_THRESHOLD)) {
 		my_report->status = SCAN_NOT_SUSPICIOUS;
 	}
 #endif
