@@ -213,7 +213,9 @@ namespace pesieve {
 
 			DWORD wait_result = WaitForSingleObject(hThead, max_wait);
 			if (wait_result == WAIT_TIMEOUT) {
+#ifdef _DEBUG
 				std::cerr << "[!] [" << GetProcessId(orig_hndl) << "] Cannot create reflection: timeout passed!\n";
+#endif
 				TerminateThread(hThead, 0);
 				CloseHandle(hThead);
 				return NULL;
@@ -243,8 +245,8 @@ namespace pesieve {
 				| PSS_CAPTURE_HANDLE_TYPE_SPECIFIC_INFORMATION
 				//| PSS_CAPTURE_HANDLE_TRACE
 				| PSS_CAPTURE_THREADS
-				//| PSS_CAPTURE_THREAD_CONTEXT
-				//| PSS_CAPTURE_THREAD_CONTEXT_EXTENDED
+				| PSS_CAPTURE_THREAD_CONTEXT
+				| PSS_CAPTURE_THREAD_CONTEXT_EXTENDED
 				| PSS_CAPTURE_VA_SPACE
 				| PSS_CAPTURE_VA_SPACE_SECTION_INFORMATION
 				| PSS_CREATE_BREAKAWAY

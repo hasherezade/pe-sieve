@@ -14,6 +14,7 @@
 #include "../utils/modules_enum.h"
 #include "../utils/process_privilege.h"
 #include "../utils/process_util.h"
+#include "../utils/process_reflection.h"
 
 #include "headers_scanner.h"
 #include "code_scanner.h"
@@ -488,9 +489,24 @@ size_t pesieve::ProcessScanner::scanModulesIATs(ProcessScanReport &pReport) //th
 	return counter;
 }
 
+bool fill_threads_info(IN const DWORD pid, OUT std::map<DWORD, thread_info>& threads_info)
+{
+	if (!pesieve::util::fetch_threads_info(pid, threads_info)) { //extended info, but doesn't work on old Windows...
+
+		if (!pesieve::util::fetch_threads_by_snapshot(pid, threads_info)) { // works on old Windows, but gives less data..
+			return false;
+		}
+	}
+	return true;
+}
+
 size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws exceptions
 {
-	const DWORD pid = pReport.pid; //original PID, not a reflection!
+#ifndef USE_PROCESS_SNAPSHOT
+	DWORD pid = pReport.pid; //original PID, not a reflection!
+#else
+	DWORD pid = GetProcessId(this->processHandle); // PID from the handle (it may be a process reflection)
+#endif
 	const bool is_64bit = pesieve::util::is_process_64bit(this->processHandle);
 #ifndef _WIN64
 	if (is_64bit) return 0;
@@ -499,18 +515,20 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 	if (!args.quiet) {
 		std::cout << "Scanning threads." << std::endl;
 	}
-	DWORD start_tick = GetTickCount();
+
+	const DWORD start_tick = GetTickCount();
 
 	std::map<DWORD, thread_info> threads_info;
-	if (!pesieve::util::fetch_threads_info(pid, threads_info)) { //extended info, but doesn't work on old Windows...
-
-		if (!pesieve::util::fetch_threads_by_snapshot(pid, threads_info)) { // works on old Windows, but gives less data..
-
-			if (!args.quiet) {
-				std::cerr << "[-] Failed enumerating threads." << std::endl;
-			}
-			return 0;
+	bool is_filled = fill_threads_info(pid, threads_info);
+	if (!is_filled && (pid != pReport.pid)) {
+		pid = pReport.pid; //use the original PID
+		is_filled = fill_threads_info(pid, threads_info);
+	}
+	if (!is_filled) {
+		if (!args.quiet) {
+			std::cerr << "[-] Failed enumerating threads." << std::endl;
 		}
+		return 0;
 	}
 	const size_t queried_count = pesieve::util::query_threads_details(threads_info);
 	if (queried_count == 0) {
