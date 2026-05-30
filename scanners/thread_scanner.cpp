@@ -598,12 +598,7 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 	my_report->curr_protection = page_info.Protect;
 	my_report->susp_addr = susp_addr;
 	my_report->status = SCAN_SUSPICIOUS;
-	const bool isStatFilled = fillAreaStats(my_report);
-#ifndef NO_ENTROPY_CHECK
-	if (isStatFilled && (my_report->stats.entropy < ENTROPY_THRESHOLD)) {
-		my_report->status = SCAN_NOT_SUSPICIOUS;
-	}
-#endif
+	fillAreaStats(my_report);
 	return true;
 }
 
@@ -633,12 +628,10 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 
 	const bool is_ok = fetchThreadCtxDetails(processHandle, hThread, my_report);
 	if (!pesieve::is_thread_running(hThread)) {
-		my_report.status = SCAN_NOT_SUSPICIOUS;
 		return false;
 	}
 	if (!is_ok || !analyzeCallStackInfo(my_report)) {
 		// could not fetch the thread context and information
-		my_report.status = SCAN_ERROR;
 		return false;
 	}
 	
@@ -746,6 +739,44 @@ bool pesieve::ThreadScanner::filterDotNet(ThreadScanReport& my_report)
 	return false;
 }
 
+bool pesieve::ThreadScanner::assessIndicators(HANDLE hThread, ThreadScanReport& my_report)
+{
+	if (my_report.status == SCAN_NOT_SUSPICIOUS) {
+		return false;
+	}
+	if (!pesieve::is_thread_running(hThread)) {
+		my_report.status = SCAN_NOT_SUSPICIOUS;
+		return true;
+	}
+	if (filterDotNet(my_report)) {
+		return true;
+	}
+
+	std::set< ThSusIndicator> validatedIndicators;
+	for (auto itr = my_report.indicators.begin();
+		itr != my_report.indicators.end();
+		++itr)
+	{
+		const ThSusIndicator& indicator = *itr;
+
+		if (!my_report.susp_addr) {
+			validatedIndicators.insert(indicator);
+			continue;
+		}
+
+		if (my_report.stats.isFilled()
+			&& my_report.stats.entropy >= ENTROPY_THRESHOLD)
+		{
+			validatedIndicators.insert(indicator);
+		}
+	}
+	if (!validatedIndicators.size()) {
+		my_report.status = SCAN_NOT_SUSPICIOUS;
+		return true;
+	}
+	return false;
+}
+
 void pesieve::ThreadScanner::initReport(ThreadScanReport& my_report)
 {
 	if (!this->info.is_extended) {
@@ -809,9 +840,9 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 		return my_report;
 	}
 	scanRemoteThreadCtx(hThread, *my_report);
+	assessIndicators(hThread, *my_report);
 	CloseHandle(hThread);
 
-	filterDotNet(*my_report);
 	reportResolvedCallstack(*my_report);
 	return my_report;
 }
