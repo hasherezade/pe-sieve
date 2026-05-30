@@ -589,7 +589,8 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 	ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
 	my_report->module = (HMODULE)base;
 	my_report->moduleSize = page_info.RegionSize;
-	my_report->protection = page_info.AllocationProtect;
+	my_report->alloc_protection = page_info.AllocationProtect;
+	my_report->curr_protection = page_info.Protect;
 	my_report->susp_addr = susp_addr;
 	my_report->status = SCAN_SUSPICIOUS;
 	const bool isStatFilled = fillAreaStats(my_report);

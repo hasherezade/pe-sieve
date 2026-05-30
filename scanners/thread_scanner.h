@@ -81,7 +81,7 @@ namespace pesieve {
 		ThreadScanReport(DWORD _tid)
 			: ModuleScanReport(0, 0), 
 			tid(_tid), 
-			susp_addr(0), protection(0), stack_ptr(0),
+			susp_addr(0), alloc_protection(0), curr_protection(0), stack_ptr(0),
 			thread_state(THREAD_STATE_UNKNOWN), 
 			thread_wait_reason(0), thread_wait_time(0), is_code(false)
 		{
@@ -137,8 +137,11 @@ namespace pesieve {
 				outs << "\"" << std::hex << (ULONGLONG)moduleSize << "\"";
 			}
 			outs << ",\n";
-			OUT_PADDED(outs, level, "\"protection\" : ");
-			outs << "\"" << std::hex << protection << "\"";
+			OUT_PADDED(outs, level, "\"alloc_protection\" : ");
+			outs << "\"" << std::hex << alloc_protection << "\"";
+			outs << ",\n";
+			OUT_PADDED(outs, level, "\"curr_protection\" : ");
+			outs << "\"" << std::hex << curr_protection << "\"";
 			if (stats.isFilled()) {
 				outs << ",\n";
 				stats.toJSON(outs, level);
@@ -239,7 +242,8 @@ namespace pesieve {
 
 		DWORD tid;
 		ULONGLONG susp_addr;
-		DWORD protection;
+		DWORD alloc_protection;
+		DWORD curr_protection;
 		ULONGLONG stack_ptr;
 		DWORD thread_state;
 		DWORD thread_wait_reason;
