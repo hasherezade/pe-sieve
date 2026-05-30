@@ -192,7 +192,7 @@ var searchData=
   ['prolog64_5f6_5fpattern_189',['prolog64_6_pattern',['../namespacepesieve.html#a7bc7e99e76932731b2ff9db7bdd3d4f0',1,'pesieve']]],
   ['prolog64_5f7_5fpattern_190',['prolog64_7_pattern',['../namespacepesieve.html#ae9c459757f9e7426ffe0b19023484c1f',1,'pesieve']]],
   ['prolog64_5fpattern_191',['prolog64_pattern',['../namespacepesieve.html#a80ef2797959c8f2e5d2d5f88e9041b3a',1,'pesieve']]],
-  ['protection_192',['protection',['../classpesieve_1_1_mem_page_data.html#a1615e3c8ce39d75e38128a24748ab6ce',1,'pesieve::MemPageData::protection'],['../classpesieve_1_1_thread_scan_report.html#a5419a44653c87acb8b8b49a53a2e67eb',1,'pesieve::ThreadScanReport::protection'],['../classpesieve_1_1_working_set_scan_report.html#a5c4089baf7e7eefda27be99c1b40b298',1,'pesieve::WorkingSetScanReport::protection']]],
+  ['protection_192',['protection',['../classpesieve_1_1_mem_page_data.html#a1615e3c8ce39d75e38128a24748ab6ce',1,'pesieve::MemPageData::protection'],['../classpesieve_1_1_working_set_scan_report.html#a5c4089baf7e7eefda27be99c1b40b298',1,'pesieve::WorkingSetScanReport::protection']]],
   ['pss_5fcapture_5fflags_193',['PSS_CAPTURE_FLAGS',['../namespacepesieve_1_1util.html#a65077456d7995ca8fd9d1a9e794a099d',1,'pesieve::util']]],
   ['pss_5fcapture_5fhandle_5fbasic_5finformation_194',['PSS_CAPTURE_HANDLE_BASIC_INFORMATION',['../namespacepesieve_1_1util.html#a65077456d7995ca8fd9d1a9e794a099dabeea35b15532cd24ac0a6152716678a1',1,'pesieve::util']]],
   ['pss_5fcapture_5fhandle_5fname_5finformation_195',['PSS_CAPTURE_HANDLE_NAME_INFORMATION',['../namespacepesieve_1_1util.html#a65077456d7995ca8fd9d1a9e794a099da0a61e8cae5bab3855cf0d8edf90b1228',1,'pesieve::util']]],

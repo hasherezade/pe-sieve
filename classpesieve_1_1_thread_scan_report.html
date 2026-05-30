@@ -158,7 +158,8 @@ Static Public Member Functions</h2></td></tr>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a2e82b6e9f722d48ca9cef31707fbfc80" id="r_a2e82b6e9f722d48ca9cef31707fbfc80"><td class="memItemLeft">DWORD&#160;</td><td class="memItemRight"><a class="el" href="#a2e82b6e9f722d48ca9cef31707fbfc80">tid</a></td></tr>
 <tr class="memitem:a5a930aaa32e9de46d95b25018a373cbc" id="r_a5a930aaa32e9de46d95b25018a373cbc"><td class="memItemLeft">ULONGLONG&#160;</td><td class="memItemRight"><a class="el" href="#a5a930aaa32e9de46d95b25018a373cbc">susp_addr</a></td></tr>
-<tr class="memitem:a5419a44653c87acb8b8b49a53a2e67eb" id="r_a5419a44653c87acb8b8b49a53a2e67eb"><td class="memItemLeft">DWORD&#160;</td><td class="memItemRight"><a class="el" href="#a5419a44653c87acb8b8b49a53a2e67eb">protection</a></td></tr>
+<tr class="memitem:a1a9f014b67f07f14598e6d305aeeb56b" id="r_a1a9f014b67f07f14598e6d305aeeb56b"><td class="memItemLeft">DWORD&#160;</td><td class="memItemRight"><a class="el" href="#a1a9f014b67f07f14598e6d305aeeb56b">alloc_protection</a></td></tr>
+<tr class="memitem:a46de5ef1181352bce9e118a1ffcc81b8" id="r_a46de5ef1181352bce9e118a1ffcc81b8"><td class="memItemLeft">DWORD&#160;</td><td class="memItemRight"><a class="el" href="#a46de5ef1181352bce9e118a1ffcc81b8">curr_protection</a></td></tr>
 <tr class="memitem:af76335a4fb14998bd3fb0540bfd35473" id="r_af76335a4fb14998bd3fb0540bfd35473"><td class="memItemLeft">ULONGLONG&#160;</td><td class="memItemRight"><a class="el" href="#af76335a4fb14998bd3fb0540bfd35473">stack_ptr</a></td></tr>
 <tr class="memitem:aa4cc4cdcfd7be649a00dd57d46b70317" id="r_aa4cc4cdcfd7be649a00dd57d46b70317"><td class="memItemLeft">DWORD&#160;</td><td class="memItemRight"><a class="el" href="#aa4cc4cdcfd7be649a00dd57d46b70317">thread_state</a></td></tr>
 <tr class="memitem:acfe24bd84475b4de990f163e131a99e4" id="r_acfe24bd84475b4de990f163e131a99e4"><td class="memItemLeft">DWORD&#160;</td><td class="memItemRight"><a class="el" href="#acfe24bd84475b4de990f163e131a99e4">thread_wait_reason</a></td></tr>
@@ -306,7 +307,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00205">205</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00208">208</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -366,7 +367,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00192">192</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00195">195</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -448,7 +449,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00149">149</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00152">152</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -500,7 +501,7 @@ Here is the call graph for this function:</div>
 
 <p>Implements <a class="el" href="classpesieve_1_1_module_scan_report.html#a25e97f444bf7df224380c0f7b112443f">pesieve::ModuleScanReport</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00231">231</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00234">234</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -597,7 +598,23 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00252">252</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00256">256</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+
+</div>
+</div>
+<a id="a1a9f014b67f07f14598e6d305aeeb56b" name="a1a9f014b67f07f14598e6d305aeeb56b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a9f014b67f07f14598e6d305aeeb56b">&#9670;&#160;</a></span>alloc_protection</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DWORD pesieve::ThreadScanReport::alloc_protection</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00245">245</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -613,7 +630,23 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00251">251</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00255">255</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+
+</div>
+</div>
+<a id="a46de5ef1181352bce9e118a1ffcc81b8" name="a46de5ef1181352bce9e118a1ffcc81b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46de5ef1181352bce9e118a1ffcc81b8">&#9670;&#160;</a></span>curr_protection</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DWORD pesieve::ThreadScanReport::curr_protection</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00246">246</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -629,7 +662,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00254">254</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00258">258</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -645,7 +678,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00257">257</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00261">261</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -661,7 +694,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00249">249</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00253">253</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -677,23 +710,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00248">248</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
-
-</div>
-</div>
-<a id="a5419a44653c87acb8b8b49a53a2e67eb" name="a5419a44653c87acb8b8b49a53a2e67eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5419a44653c87acb8b8b49a53a2e67eb">&#9670;&#160;</a></span>protection</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">DWORD pesieve::ThreadScanReport::protection</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00242">242</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00252">252</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -709,7 +726,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00253">253</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00257">257</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -725,7 +742,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00243">243</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00247">247</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -741,7 +758,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00256">256</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00260">260</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -757,7 +774,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00241">241</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00244">244</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -773,7 +790,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00244">244</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00248">248</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -837,7 +854,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00245">245</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00249">249</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -853,7 +870,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00246">246</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00250">250</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -869,7 +886,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00240">240</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00243">243</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
