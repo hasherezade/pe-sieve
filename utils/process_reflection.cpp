@@ -238,22 +238,13 @@ namespace pesieve {
 			if (!load_PssCaptureFreeSnapshot()) {
 				return NULL;
 			}
-			pesieve::util::PSS_CAPTURE_FLAGS capture_flags = (pesieve::util::PSS_CAPTURE_FLAGS) (PSS_CAPTURE_VA_CLONE
-				| PSS_CAPTURE_HANDLES
-				| PSS_CAPTURE_HANDLE_NAME_INFORMATION
-				| PSS_CAPTURE_HANDLE_BASIC_INFORMATION
-				| PSS_CAPTURE_HANDLE_TYPE_SPECIFIC_INFORMATION
-				//| PSS_CAPTURE_HANDLE_TRACE
-				| PSS_CAPTURE_THREADS
-				| PSS_CAPTURE_THREAD_CONTEXT
-				| PSS_CAPTURE_THREAD_CONTEXT_EXTENDED
-				| PSS_CAPTURE_VA_SPACE
-				| PSS_CAPTURE_VA_SPACE_SECTION_INFORMATION
-				| PSS_CREATE_BREAKAWAY
-				//| PSS_CREATE_BREAKAWAY_OPTIONAL
-				| PSS_CREATE_USE_VM_ALLOCATIONS
-				//| PSS_CREATE_RELEASE_SECTION
-				);
+			const auto capture_flags =
+				static_cast<pesieve::util::PSS_CAPTURE_FLAGS>(
+					PSS_CAPTURE_VA_CLONE
+					| PSS_CREATE_BREAKAWAY
+					| PSS_CREATE_BREAKAWAY_OPTIONAL
+					| PSS_CREATE_USE_VM_ALLOCATIONS
+					);
 
 			HPSS snapShot = { 0 };
 			DWORD ret = _PssCaptureSnapshot(orig_hndl, capture_flags, 0, &snapShot);
@@ -266,16 +257,15 @@ namespace pesieve {
 			return snapShot;
 		}
 
-		bool release_process_snapshot(HANDLE procHndl, HPSS snapshot)
+		bool release_process_snapshot(HPSS snapshot)
 		{
-			if (procHndl && snapshot) {
-				BOOL is_ok = _PssFreeSnapshot(procHndl, snapshot);
+			if (!snapshot) return false;
+			DWORD ret = _PssFreeSnapshot(GetCurrentProcess(), snapshot);
+			const BOOL is_ok = (ret == ERROR_SUCCESS) ? true : false;
 #ifdef _DEBUG
-				if (is_ok) std::cout << "Released process snapshot\n";
+			if (is_ok) std::cout << "Released process snapshot\n";
 #endif
-				return is_ok ? true : false;
-			}
-			return false;
+			return is_ok;
 		}
 
 		HANDLE make_process_reflection2(HPSS snapshot)
@@ -321,7 +311,7 @@ HANDLE pesieve::util::make_process_reflection(HANDLE orig_hndl)
 	if (load_PssCaptureFreeSnapshot()) {
 		HPSS snapshot = make_process_snapshot(orig_hndl);
 		clone = make_process_reflection2(snapshot);
-		release_process_snapshot(orig_hndl, snapshot);
+		release_process_snapshot(snapshot);
 		if (clone) {
 			return clone;
 		}

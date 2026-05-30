@@ -14,7 +14,6 @@
 #include "../utils/modules_enum.h"
 #include "../utils/process_privilege.h"
 #include "../utils/process_util.h"
-#include "../utils/process_reflection.h"
 
 #include "headers_scanner.h"
 #include "code_scanner.h"
@@ -502,11 +501,7 @@ bool fill_threads_info(IN const DWORD pid, OUT std::map<DWORD, thread_info>& thr
 
 size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws exceptions
 {
-#ifndef USE_PROCESS_SNAPSHOT
-	DWORD pid = pReport.pid; //original PID, not a reflection!
-#else
-	DWORD pid = GetProcessId(this->processHandle); // PID from the handle (it may be a process reflection)
-#endif
+	const DWORD pid = pReport.pid; //original PID, not a reflection!
 	const bool is_64bit = pesieve::util::is_process_64bit(this->processHandle);
 #ifndef _WIN64
 	if (is_64bit) return 0;
@@ -519,14 +514,9 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 	const DWORD start_tick = GetTickCount();
 
 	std::map<DWORD, thread_info> threads_info;
-	bool is_filled = fill_threads_info(pid, threads_info);
-	if (!is_filled && (pid != pReport.pid)) {
-		pid = pReport.pid; //use the original PID
-		is_filled = fill_threads_info(pid, threads_info);
-	}
-	if (!is_filled) {
+	if (!fill_threads_info(pid, threads_info)) {
 		if (!args.quiet) {
-			std::cerr << "[-] Failed enumerating threads." << std::endl;
+			std::cerr << "[-] Failed enumerating threads or no live threads found." << std::endl;
 		}
 		return 0;
 	}
@@ -537,7 +527,10 @@ size_t pesieve::ProcessScanner::scanThreads(ProcessScanReport& pReport) //throws
 		}
 	}
 	size_t scanned_count = 0;
-	for (auto itr = threads_info.begin(); itr != threads_info.end() && is_running(this->processHandle); ++itr) {
+	for (auto itr = threads_info.begin();
+		itr != threads_info.end() && is_running(this->processHandle);
+		++itr)
+	{
 		const thread_info &info = itr->second;
 		if (!info.is_filled) continue;
 		

@@ -73,8 +73,8 @@ size_t pesieve::util::query_threads_details(IN OUT std::map<DWORD, pesieve::util
 bool pesieve::util::fetch_threads_info(IN DWORD pid, OUT std::map<DWORD, thread_info>& threads_info)
 {
 	AutoBuffer bBuf;
-
 	NTSTATUS status = STATUS_UNSUCCESSFUL;
+
 	while (status != STATUS_SUCCESS) {
 		ULONG ret_len = 0;
 		status = NtQuerySystemInformation(SystemProcessInformation, bBuf.buf, bBuf.buf_size, &ret_len);
@@ -91,11 +91,11 @@ bool pesieve::util::fetch_threads_info(IN DWORD pid, OUT std::map<DWORD, thread_
 		return false;
 	}
 
-	bool found = false;
+	bool pid_found = false;
 	SYSTEM_PROCESS_INFORMATION* info = (SYSTEM_PROCESS_INFORMATION*)bBuf.buf;
 	while (info) {
 		if (info->UniqueProcessId == pid) {
-			found = true;
+			pid_found = true;
 			break;
 		}
 		if (!info->NextEntryOffset) {
@@ -114,20 +114,21 @@ bool pesieve::util::fetch_threads_info(IN DWORD pid, OUT std::map<DWORD, thread_
 			break;
 		}
 	}
-
-	if (!found) {
+	if (!pid_found) {
 		return false;
 	}
 	const size_t thread_count = info->NumberOfThreads;
 	if (!peconv::validate_ptr(bBuf.buf, bBuf.buf_size, info->Threads, thread_count * sizeof(info->Threads[0]))) {
 		return false;
 	}
+	bool fetched = false;
 	for (size_t i = 0; i < thread_count; i++) {
 		const DWORD tid = MASK_TO_DWORD((ULONGLONG)info->Threads[i].ClientId.UniqueThread);
 		auto itr = threads_info.find(tid);
 		if (itr == threads_info.end()) {
 			threads_info[tid] = thread_info(tid);
 		}
+		fetched = true;
 		thread_info &threadi = threads_info[tid];
 		threadi.is_extended = true;
 		threadi.ext.sys_start_addr = (ULONG_PTR)info->Threads[i].StartAddress;
@@ -136,15 +137,15 @@ bool pesieve::util::fetch_threads_info(IN DWORD pid, OUT std::map<DWORD, thread_
 		threadi.ext.wait_time  = info->Threads[i].WaitTime;
 		threadi.is_filled = true;
 	}
-	return true;
+	return fetched;
 }
 
 bool pesieve::util::fetch_threads_by_snapshot(IN DWORD pid, OUT std::map<DWORD, thread_info>& threads_info)
 {
 	HANDLE hThreadSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 	if (hThreadSnapShot == INVALID_HANDLE_VALUE) {
-		const DWORD err = GetLastError();
 #ifdef _DEBUG
+		const DWORD err = GetLastError();
 		std::cerr << "[-] Could not create threads snapshot. Error: " << std::dec << err << std::endl;
 #endif
 		return false;
@@ -160,10 +161,15 @@ bool pesieve::util::fetch_threads_by_snapshot(IN DWORD pid, OUT std::map<DWORD, 
 #endif
 		return false;
 	}
+
+	bool fetched = false;
 	do {
 		if (th32.th32OwnerProcessID != pid) {
 			continue;
 		}
+		
+		fetched = true;
+
 		const DWORD tid = th32.th32ThreadID;
 		auto itr = threads_info.find(tid);
 		if (itr == threads_info.end()) {
@@ -172,5 +178,5 @@ bool pesieve::util::fetch_threads_by_snapshot(IN DWORD pid, OUT std::map<DWORD, 
 	} while (Thread32Next(hThreadSnapShot, &th32));
 
 	CloseHandle(hThreadSnapShot);
-	return true;
+	return fetched;
 }
