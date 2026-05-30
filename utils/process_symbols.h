@@ -6,6 +6,12 @@
 #include <dbghelp.h>
 #include "dbg_help_wrapper.h"
 
+#ifdef _MSC_VER
+    #define ALIGNED8 __declspec(align(8))
+#else
+    #define ALIGNED8 __attribute__((aligned(8)))
+#endif
+
 //---
 class ProcessSymbolsManager
 {
@@ -246,7 +252,7 @@ public:
 			return "";
 		}
 
-		__declspec(align(8)) char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME] = { 0 };
+		ALIGNED8 char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME] = { 0 };
 
 		PSYMBOL_INFO symbol = reinterpret_cast<PSYMBOL_INFO>(buffer);
 		symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
@@ -274,7 +280,7 @@ public:
 			return false;
 		}
 
-		__declspec(align(8)) char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME ] = { 0 };
+		ALIGNED8 char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME ] = { 0 };
 
 		PSYMBOL_INFO symbol = reinterpret_cast<PSYMBOL_INFO>(buffer);
 		symbol->SizeOfStruct = sizeof(SYMBOL_INFO);

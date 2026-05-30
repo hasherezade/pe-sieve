@@ -328,6 +328,7 @@ set (used_libs
 	ntdll.lib
 	shlwapi
 	imagehlp
+	dbghelp
 )
 
 # dependencies
