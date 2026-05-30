@@ -118,10 +118,11 @@ bool pesieve::util::fetch_threads_info(IN DWORD pid, OUT std::map<DWORD, thread_
 	if (!found) {
 		return false;
 	}
-
 	const size_t thread_count = info->NumberOfThreads;
+	if (!peconv::validate_ptr(bBuf.buf, bBuf.buf_size, info->Threads, thread_count * sizeof(info->Threads[0]))) {
+		return false;
+	}
 	for (size_t i = 0; i < thread_count; i++) {
-		
 		const DWORD tid = MASK_TO_DWORD((ULONGLONG)info->Threads[i].ClientId.UniqueThread);
 		auto itr = threads_info.find(tid);
 		if (itr == threads_info.end()) {
