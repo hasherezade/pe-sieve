@@ -104,22 +104,25 @@ namespace pesieve {
 			this->suspAddresses.insert(addr);
 		}
 
-		bool addressesToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails) const
+		bool addressesToJSON(std::stringstream& outs,size_t level,const pesieve::t_json_level& jdetails) const
 		{
 			if (!suspAddresses.size()) {
 				return false;
 			}
+
 			std::string addrTypeStr = "susp_return_addr";
 			if (this->module && this->moduleSize) {
 				addrTypeStr = "susp_addr";
 			}
+
 			OUT_PADDED(outs, level, "\"" << addrTypeStr << "\" : [");
-			OUT_PADDED(outs, level, "\"" << addrTypeStr << "\" : [");
+
 			bool isFirst = true;
 			for (auto itr = suspAddresses.begin(); itr != suspAddresses.end(); ++itr) {
-				ULONGLONG susp_addr = *itr;
-				if (!susp_addr) continue;
-
+				const ULONGLONG susp_addr = *itr;
+				if (!susp_addr) {
+					continue;
+				}
 				if (!isFirst) {
 					outs << ", ";
 				}

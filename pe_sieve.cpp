@@ -203,7 +203,7 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 		return nullptr;
 	}
 	HANDLE orig_proc = nullptr; // original process handle
-	HANDLE cloned_proc = nullptr; // process reflection handle
+	ProcessRefl *refl = nullptr; // process reflection
 
 	if (!set_debug_privilege()) {
 		if (!args.quiet) std::cerr << "[-] Could not set debug privilege" << std::endl;
@@ -225,9 +225,9 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 		HANDLE target_proc = orig_proc;
 
 		if (args.make_reflection) {
-			cloned_proc = make_process_reflection(orig_proc);
-			if (cloned_proc) {
-				target_proc = cloned_proc;
+			refl = make_process_reflection(orig_proc);
+			if (refl && refl->hReflHndl) {
+				target_proc = refl->hReflHndl;
 			}
 			else {
 				if (!args.quiet) std::cerr << "[-] Failed to create the process reflection" << std::endl;
@@ -235,7 +235,7 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 		}
 
 		if (!args.quiet) {
-			if (cloned_proc) {
+			if (refl) {
 				std::cout << "[*] Using process reflection!\n";
 			}
 			else {
@@ -246,7 +246,7 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 			}
 		}
 
-		const bool is_reflection = (cloned_proc) ? true : false;
+		const bool is_reflection = (refl) ? true : false;
 		ProcessScanner scanner(target_proc, is_reflection, args);
 		report->scan_report = scanner.scanRemote();
 		if (report->scan_report) {
@@ -264,8 +264,9 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 			std::cout << "[+] Report dumped to: " << dumper.getOutputDir() << std::endl;
 		}
 	}
-	if (cloned_proc) {
-		release_process_reflection(&cloned_proc);
+	if (refl) {
+		delete refl;
+		refl = nullptr;
 	}
 	CloseHandle(orig_proc);
 	return report;

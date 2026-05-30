@@ -211,7 +211,7 @@ namespace pesieve {
 				0,                      // use default creation flags 
 				0);   // returns the thread identifier 
 
-			DWORD wait_result = WaitForSingleObject(hThead, max_wait);
+			const DWORD wait_result = WaitForSingleObject(hThead, max_wait);
 			if (wait_result == WAIT_TIMEOUT) {
 #ifdef _DEBUG
 				std::cerr << "[!] [" << GetProcessId(orig_hndl) << "] Cannot create reflection: timeout passed!\n";
@@ -238,6 +238,7 @@ namespace pesieve {
 			if (!load_PssCaptureFreeSnapshot()) {
 				return NULL;
 			}
+
 			const auto capture_flags =
 				static_cast<pesieve::util::PSS_CAPTURE_FLAGS>(
 					PSS_CAPTURE_VA_CLONE
@@ -263,7 +264,7 @@ namespace pesieve {
 			DWORD ret = _PssFreeSnapshot(GetCurrentProcess(), snapshot);
 			const BOOL is_ok = (ret == ERROR_SUCCESS) ? true : false;
 #ifdef _DEBUG
-			if (is_ok) std::cout << "Released process snapshot\n";
+			std::cout << "Released process snapshot, res: " << std::hex << ret << "\n";
 #endif
 			return is_ok;
 		}
@@ -301,19 +302,19 @@ bool pesieve::util::can_make_process_reflection()
 	return false;
 }
 
-HANDLE pesieve::util::make_process_reflection(HANDLE orig_hndl)
+pesieve::util::ProcessRefl* pesieve::util::make_process_reflection(HANDLE orig_hndl)
 {
-	if (orig_hndl == NULL) {
-		return NULL;
+	if (!orig_hndl) {
+		return nullptr;
 	}
 	HANDLE clone = NULL;
 #ifdef USE_PROCESS_SNAPSHOT
 	if (load_PssCaptureFreeSnapshot()) {
 		HPSS snapshot = make_process_snapshot(orig_hndl);
 		clone = make_process_reflection2(snapshot);
-		release_process_snapshot(snapshot);
+		
 		if (clone) {
-			return clone;
+			return new ProcessRefl(clone, snapshot);
 		}
 	}
 #endif
@@ -322,21 +323,32 @@ HANDLE pesieve::util::make_process_reflection(HANDLE orig_hndl)
 		clone = make_process_reflection1(orig_hndl);
 	}
 #endif
-	return clone;
+	return new ProcessRefl(clone);
 }
 
-bool pesieve::util::release_process_reflection(HANDLE* procHndl)
+//---
+
+pesieve::util::ProcessRefl::~ProcessRefl()
 {
-	if (procHndl == NULL || *procHndl == NULL) {
+	releaseReflectedHndl();
+	if (snapshot) {
+		release_process_snapshot(snapshot);
+		snapshot = NULL;
+	}
+}
+
+bool pesieve::util::ProcessRefl::releaseReflectedHndl()
+{
+	if (!hReflHndl) {
 		return false;
 	}
 #ifdef _DEBUG
-	DWORD clone_pid = GetProcessId(*procHndl);
+	DWORD clone_pid = GetProcessId(hReflHndl);
 	std::cout << "Releasing Clone, PID = " << std::dec << clone_pid << "\n";
 #endif
-	BOOL is_ok = TerminateProcess(*procHndl, 0);
-	CloseHandle(*procHndl);
-	*procHndl = NULL;
+	BOOL is_ok = TerminateProcess(hReflHndl, 0);
+	CloseHandle(hReflHndl);
+	hReflHndl = NULL;
 
 #ifdef _DEBUG
 	std::cout << "Released process reflection\n";

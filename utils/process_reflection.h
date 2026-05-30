@@ -8,6 +8,22 @@
 namespace pesieve {
 	namespace util {
 
+		struct ProcessRefl
+		{
+		public:
+			ProcessRefl(HANDLE _hReflHndl, HANDLE _snapshot = NULL)
+				: hReflHndl(_hReflHndl), snapshot(_snapshot)
+			{
+			}
+
+			virtual ~ProcessRefl();
+
+			bool releaseReflectedHndl();
+
+			HANDLE hReflHndl;
+			HANDLE snapshot;
+		};
+
 		// required by RtlCreateProcessReflection:
 		const DWORD reflection_access1 = PROCESS_CREATE_THREAD | PROCESS_VM_OPERATION | PROCESS_DUP_HANDLE;
 
@@ -21,8 +37,6 @@ namespace pesieve {
 #endif
 
 		bool can_make_process_reflection();
-		HANDLE make_process_reflection(HANDLE orig_hndl);
-		bool release_process_reflection(HANDLE* reflection_hndl);
-
+		ProcessRefl* make_process_reflection(HANDLE orig_hndl);
 	};
 };
