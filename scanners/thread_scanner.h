@@ -243,8 +243,10 @@ namespace pesieve {
 						auto sItr = this->addrToSymbol.find(addr);
 						if (sItr != this->addrToSymbol.end()) {
 							const std::string &sym = sItr->second;
-							if (sym.empty()) continue;
-							outs << ";" << sym;
+							if (!sym.empty()) {
+								outs << ";" << sym;
+							}
+							
 						}
 						outs << "\"";
 					}
