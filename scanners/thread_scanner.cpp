@@ -365,7 +365,7 @@ size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE h
 	const pesieve::ctx_details& cDetails = my_report.cDetails;
 #ifdef _WIN64
 	if (cDetails.is64b) {
-		fetched = enum_callstack< STACKFRAME64>(this->symbols, cDetails, hThread, ctx, IMAGE_FILE_MACHINE_AMD64, callStack);
+		fetched = enum_callstack<STACKFRAME64>(this->symbols, cDetails, hThread, ctx, IMAGE_FILE_MACHINE_AMD64, callStack);
 	}
 #endif
 	if (!cDetails.is64b) {
@@ -426,7 +426,9 @@ bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE
 			retrieved = fillCallStackInfo(hProcess, hThread, &ctx, my_report);
 		}
 	}
-	if (!retrieved) is_ok = false;
+#ifdef _DEBUG
+	std::cout << std::dec << "[" << GetThreadId(hThread) << "] Retrieved callstack: " << retrieved << std::endl;
+#endif //_DEBUG
 	return is_ok;
 }
 
