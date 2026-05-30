@@ -766,7 +766,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>    <span class="keywordflow">if</span> (state == Terminated) {</div>
 <div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>    }</div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>    <span class="keywordflow">if</span> (state == Waiting &amp;&amp; <a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>.ext.wait_reason &lt;= WrQueue) {</div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>    <span class="keywordflow">if</span> (state == Waiting &amp;&amp; <a class="code hl_function" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84">info</a>.ext.wait_reason &lt; MaximumWaitReason) {</div>
 <div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>    }</div>
 <div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
