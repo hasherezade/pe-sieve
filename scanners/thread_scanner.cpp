@@ -583,7 +583,7 @@ bool pesieve::ThreadScanner::reportSuspiciousAddr(ThreadScanReport* my_report, U
 	if (!get_page_details(processHandle, (LPVOID)susp_addr, page_info)) {
 		return false;
 	}
-	if (page_info.State & MEM_FREE) {
+	if (!(page_info.State & MEM_COMMIT)) {
 		return false;
 	}
 	ULONGLONG base = (ULONGLONG)page_info.BaseAddress;
