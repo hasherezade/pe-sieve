@@ -149,7 +149,7 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a26dce77279491e0e3f78241052eb8862" id="r_a26dce77279491e0e3f78241052eb8862"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#a26dce77279491e0e3f78241052eb8862">analyzeCallStackInfo</a> (IN OUT <a class="el" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a> &amp;my_report)</td></tr>
 <tr class="memitem:a62ea6b15f3ddbd98ba28ce8d3150d6da" id="r_a62ea6b15f3ddbd98ba28ce8d3150d6da"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#a62ea6b15f3ddbd98ba28ce8d3150d6da">_analyzeCallStack</a> (IN OUT <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a> &amp;cDetails, OUT IN std::set&lt; ULONGLONG &gt; &amp;shcCandidates)</td></tr>
 <tr class="memitem:a1c1fd96c4b0adadecb460db246b16c25" id="r_a1c1fd96c4b0adadecb460db246b16c25"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a1c1fd96c4b0adadecb460db246b16c25">checkReturnAddrIntegrity</a> (IN const std::vector&lt; ULONGLONG &gt; &amp;callStack, IN OUT <a class="el" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a> &amp;my_report)</td></tr>
-<tr class="memitem:a79df00ed9c178f7eab47cbb8ee43dd42" id="r_a79df00ed9c178f7eab47cbb8ee43dd42"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a79df00ed9c178f7eab47cbb8ee43dd42">fillAreaStats</a> (<a class="el" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a> *my_report)</td></tr>
+<tr class="memitem:a92bf983edebcf45694d3be062eea468c" id="r_a92bf983edebcf45694d3be062eea468c"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a92bf983edebcf45694d3be062eea468c">fillAreaStats</a> (<a class="el" href="classpesieve_1_1_susp_addr_report.html">SuspAddrReport</a> *my_report)</td></tr>
 <tr class="memitem:a36850edb808d4be733631fa2bcd3b7b4" id="r_a36850edb808d4be733631fa2bcd3b7b4"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a36850edb808d4be733631fa2bcd3b7b4">reportSuspiciousAddr</a> (<a class="el" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a> *my_report, ULONGLONG susp_addr)</td></tr>
 <tr class="memitem:a9b67e2e82730d601e7d352408fbe2262" id="r_a9b67e2e82730d601e7d352408fbe2262"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a9b67e2e82730d601e7d352408fbe2262">filterDotNet</a> (<a class="el" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a> &amp;my_report)</td></tr>
 <tr class="memitem:a27f4c5a5455845e2b9a86f94ade91c18" id="r_a27f4c5a5455845e2b9a86f94ade91c18"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a27f4c5a5455845e2b9a86f94ade91c18">assessIndicators</a> (HANDLE hThread, <a class="el" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a> &amp;my_report)</td></tr>
@@ -172,7 +172,7 @@ Protected Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A scanner for threads Stack-scan inspired by the idea presented here: <a href="https://github.com/thefLink/Hunt-Sleeping-Beacons">https://github.com/thefLink/Hunt-Sleeping-Beacons</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00266">266</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00376">376</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8375f8f91c9341d0d7ff40dc216b4d12" name="a8375f8f91c9341d0d7ff40dc216b4d12"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8375f8f91c9341d0d7ff40dc216b4d12">&#9670;&#160;</a></span>ThreadScanner()</h2>
@@ -226,7 +226,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00268">268</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00378">378</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -268,7 +268,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00239">239</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00245">245</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -315,7 +315,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00295">295</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00301">301</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -396,19 +396,17 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00742">742</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00758">758</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_thread_scanner_a27f4c5a5455845e2b9a86f94ade91c18_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scanner_a27f4c5a5455845e2b9a86f94ade91c18_cgraph" loading="lazy" alt=""/></div>
 <map name="aclasspesieve_1_1_thread_scanner_a27f4c5a5455845e2b9a86f94ade91c18_cgraph" id="aclasspesieve_1_1_thread_scanner_a27f4c5a5455845e2b9a86f94ade91c18_cgraph">
-<area shape="rect" title=" " alt="" coords="5,71,166,111"/>
+<area shape="rect" title=" " alt="" coords="5,39,166,79"/>
 <area shape="rect" href="classpesieve_1_1_thread_scanner.html#a9b67e2e82730d601e7d352408fbe2262" title=" " alt="" coords="214,5,374,46"/>
-<area shape="poly" title=" " alt="" coords="152,68,211,49,213,54,153,73"/>
+<area shape="poly" title=" " alt="" coords="165,44,198,38,198,44,166,49"/>
 <area shape="rect" href="namespacepesieve.html#a7c9c19e3f0ce1362c7e404893a1163f6" title=" " alt="" coords="231,71,356,111"/>
-<area shape="poly" title=" " alt="" coords="166,88,215,88,215,94,166,94"/>
-<area shape="rect" href="classpesieve_1_1_area_stats.html#a3005dfc8cd36c15290a724a29ee09a63" title=" " alt="" coords="229,136,359,177"/>
-<area shape="poly" title=" " alt="" coords="153,109,215,129,213,134,152,114"/>
+<area shape="poly" title=" " alt="" coords="166,69,216,76,216,82,165,74"/>
 </map>
 </div>
 
@@ -441,7 +439,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00112">112</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00113">113</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -516,7 +514,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00093">93</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00094">94</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -562,7 +560,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00394">394</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00400">400</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -590,8 +588,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a79df00ed9c178f7eab47cbb8ee43dd42" name="a79df00ed9c178f7eab47cbb8ee43dd42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79df00ed9c178f7eab47cbb8ee43dd42">&#9670;&#160;</a></span>fillAreaStats()</h2>
+<a id="a92bf983edebcf45694d3be062eea468c" name="a92bf983edebcf45694d3be062eea468c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92bf983edebcf45694d3be062eea468c">&#9670;&#160;</a></span>fillAreaStats()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -602,7 +600,7 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::ThreadScanner::fillAreaStats </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classpesieve_1_1_thread_scan_report.html">ThreadScanReport</a> *</td>          <td class="paramname"><span class="paramname"><em>my_report</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classpesieve_1_1_susp_addr_report.html">SuspAddrReport</a> *</td>          <td class="paramname"><span class="paramname"><em>my_report</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -613,12 +611,12 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00571">571</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00577">577</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classpesieve_1_1_thread_scanner_a79df00ed9c178f7eab47cbb8ee43dd42_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scanner_a79df00ed9c178f7eab47cbb8ee43dd42_cgraph" loading="lazy" alt=""/></div>
-<map name="aclasspesieve_1_1_thread_scanner_a79df00ed9c178f7eab47cbb8ee43dd42_cgraph" id="aclasspesieve_1_1_thread_scanner_a79df00ed9c178f7eab47cbb8ee43dd42_cgraph">
+<div class="center"><img src="classpesieve_1_1_thread_scanner_a92bf983edebcf45694d3be062eea468c_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scanner_a92bf983edebcf45694d3be062eea468c_cgraph" loading="lazy" alt=""/></div>
+<map name="aclasspesieve_1_1_thread_scanner_a92bf983edebcf45694d3be062eea468c_cgraph" id="aclasspesieve_1_1_thread_scanner_a92bf983edebcf45694d3be062eea468c_cgraph">
 <area shape="rect" title=" " alt="" coords="5,169,166,210"/>
 <area shape="rect" href="classpesieve_1_1_area_stats_calculator.html#a5f85d093b7ddc31bb358a19917f6b4c2" title=" " alt="" coords="214,5,402,46"/>
 <area shape="poly" title=" " alt="" coords="100,167,147,113,178,83,212,57,222,51,225,55,215,61,181,87,150,116,104,170"/>
@@ -684,7 +682,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00355">355</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00361">361</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -721,7 +719,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00712">712</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00709">709</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 
 </div>
 </div>
@@ -748,7 +746,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00780">780</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00820">820</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 
 </div>
 </div>
@@ -775,7 +773,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00435">435</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00441">441</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -812,7 +810,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00536">536</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00542">542</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -856,7 +854,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00550">550</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00556">556</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -906,7 +904,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00793">793</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00833">833</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -958,39 +956,45 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00585">585</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00591">591</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_thread_scanner_a36850edb808d4be733631fa2bcd3b7b4_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scanner_a36850edb808d4be733631fa2bcd3b7b4_cgraph" loading="lazy" alt=""/></div>
 <map name="aclasspesieve_1_1_thread_scanner_a36850edb808d4be733631fa2bcd3b7b4_cgraph" id="aclasspesieve_1_1_thread_scanner_a36850edb808d4be733631fa2bcd3b7b4_cgraph">
-<area shape="rect" title=" " alt="" coords="5,199,166,239"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a79df00ed9c178f7eab47cbb8ee43dd42" title=" " alt="" coords="214,169,374,210"/>
-<area shape="poly" title=" " alt="" coords="165,205,198,201,198,206,166,210"/>
-<area shape="rect" href="thread__scanner_8cpp.html#a7b9ade21d4de016d2a048bf6cc42dbc0" title=" " alt="" coords="234,234,354,260"/>
-<area shape="poly" title=" " alt="" coords="166,227,219,234,219,240,165,232"/>
-<area shape="rect" href="classpesieve_1_1_area_stats_calculator.html#a5f85d093b7ddc31bb358a19917f6b4c2" title=" " alt="" coords="422,5,610,46"/>
-<area shape="poly" title=" " alt="" coords="308,167,355,113,386,83,421,57,431,51,433,55,423,61,390,87,359,116,313,170"/>
-<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a59ed1087d268c1742139c7240ab5854f" title=" " alt="" coords="437,71,595,111"/>
-<area shape="poly" title=" " alt="" coords="331,167,421,122,438,115,440,120,423,127,333,171"/>
-<area shape="rect" href="structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="435,136,597,177"/>
-<area shape="poly" title=" " alt="" coords="374,175,419,168,420,173,375,180"/>
-<area shape="rect" href="structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2" title=" " alt="" coords="435,201,597,242"/>
-<area shape="poly" title=" " alt="" coords="375,199,420,205,419,210,374,204"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a05b674350e2962e6a6c94fefd88dfa4d" title=" " alt="" coords="446,266,586,292"/>
-<area shape="poly" title=" " alt="" coords="352,208,375,219,399,236,423,251,441,258,439,263,421,256,396,240,373,224,350,213"/>
-<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a01d3a9dc59b2965fa6defbc4dfda8524" title=" " alt="" coords="437,320,595,361"/>
-<area shape="poly" title=" " alt="" coords="360,208,376,220,393,241,400,262,408,282,424,302,434,310,431,314,420,306,403,285,395,264,388,244,372,224,357,213"/>
-<area shape="rect" href="namespacepesieve.html#a1b4dba41ddf56a7365eefc3cab744572" title=" " alt="" coords="658,188,823,213"/>
-<area shape="poly" title=" " alt="" coords="576,263,609,251,633,237,657,222,671,216,673,221,660,227,636,241,611,256,578,268"/>
-<area shape="rect" href="namespacepesieve.html#ae48407b62138601a97bbfb8fa8723fe8" title=" " alt="" coords="658,237,823,262"/>
-<area shape="poly" title=" " alt="" coords="586,267,642,260,643,265,587,273"/>
-<area shape="rect" href="namespacepesieve.html#a610881f75eb095edddd9001fba5793db" title=" " alt="" coords="675,287,806,327"/>
-<area shape="poly" title=" " alt="" coords="587,285,660,294,659,300,586,290"/>
-<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="661,352,820,393"/>
-<area shape="poly" title=" " alt="" coords="596,349,646,356,645,361,595,354"/>
-<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a6cbf6c12b0cbfd5e9211523fe89cd70d" title=" " alt="" coords="871,352,1029,393"/>
-<area shape="poly" title=" " alt="" coords="820,370,855,370,855,375,820,375"/>
+<area shape="rect" title=" " alt="" coords="5,233,166,274"/>
+<area shape="rect" href="classpesieve_1_1_susp_addr_report.html#a54981618014f557b7ffc3b0a041b9e5d" title=" " alt="" coords="220,103,388,143"/>
+<area shape="poly" title=" " alt="" coords="108,231,154,193,212,154,225,148,227,152,215,159,158,197,111,235"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a92bf983edebcf45694d3be062eea468c" title=" " alt="" coords="224,168,384,209"/>
+<area shape="poly" title=" " alt="" coords="155,230,218,211,220,216,156,235"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#ab245edaa16cc81ced1505d61c6b7f812" title=" " alt="" coords="214,233,394,274"/>
+<area shape="poly" title=" " alt="" coords="166,251,198,251,198,256,166,256"/>
+<area shape="rect" href="thread__scanner_8cpp.html#a7b9ade21d4de016d2a048bf6cc42dbc0" title=" " alt="" coords="244,298,364,324"/>
+<area shape="poly" title=" " alt="" coords="166,272,238,291,237,296,165,277"/>
+<area shape="rect" href="classpesieve_1_1_susp_addr_report.html#a5eeca92982a2b1df04a4b9d6328f8248" title=" " alt="" coords="220,348,388,389"/>
+<area shape="poly" title=" " alt="" coords="116,272,161,303,215,334,226,339,224,344,212,339,158,308,113,277"/>
+<area shape="rect" href="classpesieve_1_1_area_stats_calculator.html#a5f85d093b7ddc31bb358a19917f6b4c2" title=" " alt="" coords="442,5,630,46"/>
+<area shape="poly" title=" " alt="" coords="375,165,392,153,409,130,415,106,422,82,440,57,446,53,449,57,444,61,427,84,420,108,414,132,396,157,378,170"/>
+<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a59ed1087d268c1742139c7240ab5854f" title=" " alt="" coords="457,71,615,111"/>
+<area shape="poly" title=" " alt="" coords="365,165,393,153,417,137,441,122,455,115,458,120,443,127,419,142,395,157,367,170"/>
+<area shape="rect" href="structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="455,136,617,177"/>
+<area shape="poly" title=" " alt="" coords="384,175,439,167,440,172,385,180"/>
+<area shape="rect" href="structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2" title=" " alt="" coords="455,201,617,242"/>
+<area shape="poly" title=" " alt="" coords="385,197,440,205,439,211,384,202"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a05b674350e2962e6a6c94fefd88dfa4d" title=" " alt="" coords="466,266,606,292"/>
+<area shape="poly" title=" " alt="" coords="368,207,395,219,419,236,443,251,461,258,459,263,441,256,416,240,393,224,366,212"/>
+<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a01d3a9dc59b2965fa6defbc4dfda8524" title=" " alt="" coords="457,320,615,361"/>
+<area shape="poly" title=" " alt="" coords="377,207,396,220,413,241,421,262,428,282,444,302,454,310,451,314,440,306,423,285,416,264,408,244,392,224,374,211"/>
+<area shape="rect" href="namespacepesieve.html#a1b4dba41ddf56a7365eefc3cab744572" title=" " alt="" coords="678,188,843,213"/>
+<area shape="poly" title=" " alt="" coords="596,263,629,251,653,237,677,222,691,216,693,221,680,227,656,241,631,256,598,268"/>
+<area shape="rect" href="namespacepesieve.html#ae48407b62138601a97bbfb8fa8723fe8" title=" " alt="" coords="678,237,843,262"/>
+<area shape="poly" title=" " alt="" coords="606,267,662,260,663,265,607,273"/>
+<area shape="rect" href="namespacepesieve.html#a610881f75eb095edddd9001fba5793db" title=" " alt="" coords="695,287,826,327"/>
+<area shape="poly" title=" " alt="" coords="607,285,680,294,679,300,606,290"/>
+<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="681,352,840,393"/>
+<area shape="poly" title=" " alt="" coords="616,349,666,356,665,361,615,354"/>
+<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a6cbf6c12b0cbfd5e9211523fe89cd70d" title=" " alt="" coords="891,352,1049,393"/>
+<area shape="poly" title=" " alt="" coords="840,370,875,370,875,375,840,375"/>
 </map>
 </div>
 
@@ -1019,7 +1023,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00496">496</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00502">502</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1069,7 +1073,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00447">447</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00453">453</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1113,130 +1117,132 @@ Here is the call graph for this function:</div>
 
 <p>Implements <a class="el" href="classpesieve_1_1_process_feature_scanner.html#a8c85491f592bbfe32e4906dddea8973f">pesieve::ProcessFeatureScanner</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00801">801</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00841">841</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_thread_scanner_a23839353374eedcda7c92b0c7ce6b3bf_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scanner_a23839353374eedcda7c92b0c7ce6b3bf_cgraph" loading="lazy" alt=""/></div>
 <map name="aclasspesieve_1_1_thread_scanner_a23839353374eedcda7c92b0c7ce6b3bf_cgraph" id="aclasspesieve_1_1_thread_scanner_a23839353374eedcda7c92b0c7ce6b3bf_cgraph">
-<area shape="rect" title=" " alt="" coords="5,421,166,462"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a27f4c5a5455845e2b9a86f94ade91c18" title=" " alt="" coords="214,104,374,145"/>
-<area shape="poly" title=" " alt="" coords="93,420,139,324,173,263,212,204,256,154,260,157,216,207,177,266,144,326,98,422"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#aa0d5a74a39d77980ba967a8b80bfd047" title=" " alt="" coords="214,557,374,598"/>
-<area shape="poly" title=" " alt="" coords="113,461,159,498,215,537,234,548,231,552,212,541,156,502,109,465"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#ab10455cb1d90db959abbebc40f5789d9" title=" " alt="" coords="422,201,582,242"/>
-<area shape="poly" title=" " alt="" coords="92,420,109,384,134,339,169,294,189,275,212,258,259,236,309,223,359,215,406,213,406,218,360,221,310,228,261,241,215,263,193,279,173,298,139,342,113,386,97,422"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a75c0be0ec6ea82b700f3ca5e846a0675" title=" " alt="" coords="866,163,1026,203"/>
-<area shape="poly" title=" " alt="" coords="124,418,213,378,386,319,562,269,722,229,850,200,851,205,723,234,563,274,388,324,215,383,127,423"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a7e91a62635529fee90814d71355d84e4" title=" " alt="" coords="633,479,801,519"/>
-<area shape="poly" title=" " alt="" coords="166,446,618,487,617,493,166,452"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a36850edb808d4be733631fa2bcd3b7b4" title=" " alt="" coords="422,593,582,634"/>
-<area shape="poly" title=" " alt="" coords="144,460,215,486,296,512,375,543,423,573,444,584,442,588,421,577,373,548,294,517,213,491,142,465"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#adac63f0f7ff5e85e48be844c9504766a" title=" " alt="" coords="214,392,374,433"/>
-<area shape="poly" title=" " alt="" coords="165,428,198,423,198,428,166,433"/>
-<area shape="rect" href="thread__scanner_8cpp.html#acde231c42b9527dcc026402dcb8b9d87" title=" " alt="" coords="222,629,366,654"/>
-<area shape="poly" title=" " alt="" coords="100,461,145,532,177,572,215,608,235,620,232,624,212,612,173,576,140,535,95,464"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a9b67e2e82730d601e7d352408fbe2262" title=" " alt="" coords="422,5,582,46"/>
-<area shape="poly" title=" " alt="" coords="332,101,421,57,435,50,437,55,423,61,335,106"/>
-<area shape="rect" href="namespacepesieve.html#a7c9c19e3f0ce1362c7e404893a1163f6" title=" " alt="" coords="440,136,565,177"/>
-<area shape="poly" title=" " alt="" coords="375,134,425,142,424,147,374,139"/>
-<area shape="rect" href="classpesieve_1_1_area_stats.html#a3005dfc8cd36c15290a724a29ee09a63" title=" " alt="" coords="437,71,567,111"/>
-<area shape="poly" title=" " alt="" coords="374,109,421,101,422,106,375,114"/>
-<area shape="rect" href="classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="1572,400,1737,441"/>
-<area shape="poly" title=" " alt="" coords="561,198,636,175,731,150,837,131,944,123,1180,123,1217,125,1253,131,1324,154,1391,186,1453,226,1509,270,1558,313,1628,387,1624,390,1554,317,1506,274,1450,231,1389,191,1322,158,1252,136,1216,130,1179,128,945,128,838,136,732,155,638,180,562,203"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a860b68e95b44648888125c84038e90b6" title=" " alt="" coords="1098,364,1258,405"/>
-<area shape="poly" title=" " alt="" coords="973,202,1143,352,1140,356,969,206"/>
-<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#af30839203957e838bc299232e05ab735" title=" " alt="" coords="1088,163,1268,203"/>
-<area shape="poly" title=" " alt="" coords="1026,180,1072,180,1072,186,1026,186"/>
-<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#a6d190b1f19a3a9fe2c81cd18abb6a72f" title=" " alt="" coords="1088,228,1268,269"/>
-<area shape="poly" title=" " alt="" coords="1021,201,1089,221,1088,226,1020,206"/>
-<area shape="poly" title=" " alt="" coords="1259,388,1556,410,1556,416,1259,393"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a5e058f740bc7e0ed395de211d2eeac8d" title=" " alt="" coords="1325,487,1515,527"/>
-<area shape="poly" title=" " alt="" coords="1221,403,1366,477,1363,481,1219,408"/>
-<area shape="poly" title=" " alt="" coords="1476,484,1582,444,1584,449,1478,489"/>
-<area shape="rect" href="structpesieve_1_1_syscall_table.html#a8e3f90d691f666c516605f4cd0afd247" title=" " alt="" coords="1581,749,1728,790"/>
-<area shape="poly" title=" " alt="" coords="1456,526,1491,553,1526,588,1542,614,1551,637,1559,659,1574,685,1620,737,1616,740,1569,689,1554,662,1546,639,1538,616,1522,591,1488,557,1452,530"/>
-<area shape="rect" href="structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08" title=" " alt="" coords="1581,635,1728,675"/>
-<area shape="poly" title=" " alt="" coords="1455,526,1609,624,1606,628,1453,530"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a52bff18b2001eea66d8a68f20b0400dd" title=" " alt="" coords="1098,544,1258,585"/>
-<area shape="poly" title=" " alt="" coords="776,518,805,536,820,552,829,568,837,582,853,594,885,606,918,612,986,614,1052,603,1110,588,1111,593,1054,609,987,619,917,618,883,611,850,599,833,586,824,571,816,555,802,540,773,522"/>
-<area shape="poly" title=" " alt="" coords="1259,570,1319,572,1386,569,1456,558,1523,537,1553,519,1582,498,1626,451,1630,455,1585,502,1556,524,1525,541,1457,563,1387,574,1319,577,1259,576"/>
-<area shape="poly" title=" " alt="" coords="1258,543,1316,529,1317,534,1259,548"/>
-<area shape="rect" href="classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="1337,601,1503,642"/>
-<area shape="poly" title=" " alt="" coords="1259,581,1323,596,1322,601,1258,586"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a79df00ed9c178f7eab47cbb8ee43dd42" title=" " alt="" coords="637,1127,797,1167"/>
-<area shape="poly" title=" " alt="" coords="571,633,584,644,625,700,657,763,681,829,698,896,709,961,715,1020,719,1111,714,1112,710,1020,704,961,693,897,676,831,652,765,621,703,580,647,568,637"/>
-<area shape="rect" href="thread__scanner_8cpp.html#a7b9ade21d4de016d2a048bf6cc42dbc0" title=" " alt="" coords="657,601,777,626"/>
-<area shape="poly" title=" " alt="" coords="583,611,642,611,642,616,583,616"/>
-<area shape="rect" href="classpesieve_1_1_area_stats_calculator.html#a5f85d093b7ddc31bb358a19917f6b4c2" title=" " alt="" coords="852,1249,1040,1290"/>
-<area shape="poly" title=" " alt="" coords="747,1166,795,1200,853,1234,867,1241,865,1245,850,1239,792,1204,744,1170"/>
-<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a59ed1087d268c1742139c7240ab5854f" title=" " alt="" coords="867,1315,1025,1355"/>
-<area shape="poly" title=" " alt="" coords="733,1166,781,1231,815,1268,853,1300,862,1305,859,1310,850,1304,811,1272,777,1235,729,1169"/>
-<area shape="rect" href="structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="865,1004,1027,1045"/>
-<area shape="poly" title=" " alt="" coords="744,1124,792,1090,850,1055,865,1049,867,1053,853,1060,795,1094,747,1128"/>
-<area shape="rect" href="structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2" title=" " alt="" coords="865,1069,1027,1110"/>
-<area shape="poly" title=" " alt="" coords="797,1124,849,1111,850,1116,798,1130"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a05b674350e2962e6a6c94fefd88dfa4d" title=" " alt="" coords="876,1134,1016,1160"/>
-<area shape="poly" title=" " alt="" coords="797,1144,860,1144,860,1150,797,1150"/>
-<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a01d3a9dc59b2965fa6defbc4dfda8524" title=" " alt="" coords="867,1184,1025,1225"/>
-<area shape="poly" title=" " alt="" coords="798,1164,852,1178,851,1183,797,1170"/>
-<area shape="rect" href="namespacepesieve.html#a1b4dba41ddf56a7365eefc3cab744572" title=" " alt="" coords="1096,1162,1260,1188"/>
-<area shape="poly" title=" " alt="" coords="1016,1153,1081,1161,1080,1166,1016,1158"/>
-<area shape="rect" href="namespacepesieve.html#ae48407b62138601a97bbfb8fa8723fe8" title=" " alt="" coords="1096,1048,1260,1073"/>
-<area shape="poly" title=" " alt="" coords="1008,1131,1039,1119,1062,1102,1087,1083,1103,1076,1105,1081,1089,1088,1066,1106,1041,1124,1010,1136"/>
-<area shape="rect" href="namespacepesieve.html#a610881f75eb095edddd9001fba5793db" title=" " alt="" coords="1112,1097,1244,1138"/>
-<area shape="poly" title=" " alt="" coords="1016,1136,1096,1125,1097,1131,1016,1141"/>
-<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="1099,1212,1257,1253"/>
-<area shape="poly" title=" " alt="" coords="1026,1211,1084,1218,1083,1224,1025,1217"/>
-<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a6cbf6c12b0cbfd5e9211523fe89cd70d" title=" " alt="" coords="1341,1212,1499,1253"/>
-<area shape="poly" title=" " alt="" coords="1258,1230,1325,1230,1325,1235,1258,1235"/>
-<area shape="poly" title=" " alt="" coords="299,391,315,349,341,295,376,238,420,188,426,183,429,187,424,192,380,241,345,298,320,351,304,393"/>
-<area shape="poly" title=" " alt="" coords="316,390,466,251,469,255,319,394"/>
-<area shape="poly" title=" " alt="" coords="365,389,422,378,605,363,787,360,952,365,1083,373,1082,379,952,371,787,366,605,368,422,383,366,394"/>
-<area shape="poly" title=" " alt="" coords="317,432,376,500,398,539,408,555,424,573,437,583,434,587,420,577,403,559,394,542,372,503,313,435"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a26dce77279491e0e3f78241052eb8862" title=" " alt="" coords="422,392,582,433"/>
-<area shape="poly" title=" " alt="" coords="374,410,406,410,406,415,374,415"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#afc121ff5d20c249d4ceeef347c742fc7" title=" " alt="" coords="866,836,1026,877"/>
-<area shape="poly" title=" " alt="" coords="354,431,631,528,683,540,726,544,766,555,785,567,806,587,825,616,834,645,835,673,832,702,829,729,829,757,836,786,854,815,864,825,860,829,850,818,831,788,824,758,823,729,826,701,829,673,828,646,820,618,802,590,782,572,763,560,725,549,682,545,630,534,352,436"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a62ea6b15f3ddbd98ba28ce8d3150d6da" title=" " alt="" coords="866,277,1026,318"/>
-<area shape="poly" title=" " alt="" coords="582,389,850,320,851,325,584,394"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a1c1fd96c4b0adadecb460db246b16c25" title=" " alt="" coords="630,413,804,454"/>
-<area shape="poly" title=" " alt="" coords="583,418,615,421,614,426,582,423"/>
-<area shape="poly" title=" " alt="" coords="1027,303,1251,332,1388,354,1524,380,1573,393,1572,398,1523,386,1387,359,1251,338,1026,309"/>
-<area shape="poly" title=" " alt="" coords="1004,316,1108,356,1106,361,1002,321"/>
-<area shape="poly" title=" " alt="" coords="804,430,1557,419,1557,424,804,435"/>
-<area shape="poly" title=" " alt="" coords="724,412,741,372,769,321,805,267,850,220,865,209,868,213,853,224,809,271,773,324,746,375,729,414"/>
-<area shape="poly" title=" " alt="" coords="804,422,1083,392,1083,397,804,427"/>
-<area shape="poly" title=" " alt="" coords="775,452,852,472,974,490,1097,500,1310,506,1309,511,1096,505,973,495,851,478,774,457"/>
-<area shape="poly" title=" " alt="" coords="792,453,806,465,824,494,836,521,843,549,845,576,839,629,826,682,814,733,810,784,813,810,821,835,834,861,854,887,876,906,905,923,940,937,981,950,1073,967,1175,976,1279,977,1376,969,1460,954,1522,933,1560,906,1592,872,1617,836,1635,802,1640,805,1622,838,1596,875,1564,910,1525,937,1461,959,1377,974,1279,982,1175,981,1073,972,979,955,938,942,903,927,873,910,850,890,829,864,816,837,808,811,805,784,809,732,821,680,834,628,839,576,837,550,831,523,819,496,802,469,789,457"/>
-<area shape="poly" title=" " alt="" coords="725,412,743,377,770,336,806,295,850,263,905,243,962,232,1019,228,1072,230,1072,235,1019,234,963,237,906,248,853,268,810,299,775,339,748,380,730,414"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#ab34204d27d4605503dd94dd009fbc7ec" title=" " alt="" coords="1316,781,1524,822"/>
-<area shape="poly" title=" " alt="" coords="792,453,806,465,825,497,833,529,833,560,829,591,825,621,825,650,833,680,854,709,900,749,952,779,1010,800,1070,814,1132,822,1192,824,1301,818,1301,823,1192,829,1131,827,1069,819,1008,805,950,784,897,753,850,713,829,682,820,651,819,620,823,590,828,560,828,530,821,500,802,469,788,457"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a8d7eb7eb1b3e3c05251341d0c14d82be" title=" " alt="" coords="870,659,1022,699"/>
-<area shape="poly" title=" " alt="" coords="789,453,806,465,819,482,827,498,833,529,838,560,854,595,877,623,904,647,901,651,874,627,849,598,833,562,828,530,822,499,814,484,802,469,786,457"/>
-<area shape="rect" href="structpesieve_1_1_syscall_table.html#a866739a072d312c6bb6b2d4414a872ba" title=" " alt="" coords="873,544,1019,585"/>
-<area shape="poly" title=" " alt="" coords="784,452,805,465,821,480,830,495,839,509,853,524,870,534,867,539,850,528,835,512,825,498,817,483,802,469,781,457"/>
-<area shape="poly" title=" " alt="" coords="1496,778,1522,766,1577,727,1622,685,1626,689,1581,731,1525,771,1498,783"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="1354,666,1486,692"/>
-<area shape="poly" title=" " alt="" coords="1022,656,1088,644,1178,638,1269,644,1354,659,1353,665,1268,650,1178,643,1088,650,1023,661"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a43b6faf00b6a97279f2d67f4a3fd2513" title=" " alt="" coords="1099,659,1257,699"/>
-<area shape="poly" title=" " alt="" coords="1022,676,1083,676,1083,682,1022,682"/>
-<area shape="poly" title=" " alt="" coords="1258,676,1338,676,1338,682,1258,682"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="1363,716,1477,757"/>
-<area shape="poly" title=" " alt="" coords="1258,695,1349,717,1347,722,1257,700"/>
-<area shape="poly" title=" " alt="" coords="961,834,1012,773,1048,740,1087,710,1096,704,1099,709,1089,715,1051,744,1016,777,965,837"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a2f1eee83b53e8aed37a2946978408d0c" title=" " alt="" coords="1098,889,1258,930"/>
-<area shape="poly" title=" " alt="" coords="1027,872,1083,885,1082,890,1026,877"/>
-<area shape="rect" href="namespacepesieve.html#a770c327ea58c4852792d616a6dc1d4b5" title=" " alt="" coords="1098,840,1258,865"/>
-<area shape="poly" title=" " alt="" coords="1026,852,1083,851,1083,857,1026,858"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#adafdd61439fc2750cec84fb15d59ecf8" title=" " alt="" coords="1109,724,1247,765"/>
-<area shape="poly" title=" " alt="" coords="989,833,1119,769,1122,774,991,838"/>
-<area shape="rect" href="thread__scanner_8cpp.html#a1a60000166ce4d9e697ac4532f37b3c4" title=" " alt="" coords="1364,897,1476,922"/>
-<area shape="poly" title=" " alt="" coords="1258,907,1348,907,1348,912,1258,912"/>
-<area shape="poly" title=" " alt="" coords="1247,721,1316,702,1347,694,1349,699,1317,707,1249,726"/>
-<area shape="poly" title=" " alt="" coords="1247,739,1348,736,1348,741,1247,745"/>
-<area shape="rect" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="456,658,549,684"/>
-<area shape="poly" title=" " alt="" coords="366,649,441,660,440,665,366,654"/>
+<area shape="rect" title=" " alt="" coords="5,802,166,842"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a27f4c5a5455845e2b9a86f94ade91c18" title=" " alt="" coords="218,507,378,548"/>
+<area shape="poly" title=" " alt="" coords="99,800,271,559,275,562,104,803"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#aa0d5a74a39d77980ba967a8b80bfd047" title=" " alt="" coords="218,938,378,978"/>
+<area shape="poly" title=" " alt="" coords="112,841,159,878,215,917,235,928,232,933,212,922,155,882,109,845"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#ab10455cb1d90db959abbebc40f5789d9" title=" " alt="" coords="430,924,590,965"/>
+<area shape="poly" title=" " alt="" coords="145,840,214,864,415,919,414,924,213,869,143,846"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a75c0be0ec6ea82b700f3ca5e846a0675" title=" " alt="" coords="881,355,1041,396"/>
+<area shape="poly" title=" " alt="" coords="86,801,95,741,116,659,132,614,153,570,180,529,212,494,247,464,286,439,326,417,368,399,457,372,548,356,638,348,723,348,800,351,866,358,865,363,800,357,723,353,638,354,549,361,458,377,370,404,328,422,288,443,251,468,216,497,184,533,158,573,137,616,121,660,100,742,91,802"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a7e91a62635529fee90814d71355d84e4" title=" " alt="" coords="214,772,382,813"/>
+<area shape="poly" title=" " alt="" coords="166,808,198,804,199,809,166,814"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a36850edb808d4be733631fa2bcd3b7b4" title=" " alt="" coords="430,859,590,900"/>
+<area shape="poly" title=" " alt="" coords="167,830,415,864,414,869,166,836"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#adac63f0f7ff5e85e48be844c9504766a" title=" " alt="" coords="218,679,378,720"/>
+<area shape="poly" title=" " alt="" coords="121,799,246,726,249,730,124,804"/>
+<area shape="rect" href="thread__scanner_8cpp.html#acde231c42b9527dcc026402dcb8b9d87" title=" " alt="" coords="226,1003,370,1028"/>
+<area shape="poly" title=" " alt="" coords="99,842,143,914,176,954,215,988,224,994,221,998,212,992,172,957,139,917,95,844"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a9b67e2e82730d601e7d352408fbe2262" title=" " alt="" coords="430,442,590,482"/>
+<area shape="poly" title=" " alt="" coords="365,504,426,485,428,490,367,509"/>
+<area shape="rect" href="namespacepesieve.html#a7c9c19e3f0ce1362c7e404893a1163f6" title=" " alt="" coords="448,507,573,548"/>
+<area shape="poly" title=" " alt="" coords="378,525,432,525,432,530,378,530"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="1587,755,1752,796"/>
+<area shape="poly" title=" " alt="" coords="563,964,592,988,606,1010,614,1031,618,1070,621,1109,628,1129,641,1150,708,1233,741,1264,775,1289,812,1307,854,1319,903,1327,960,1329,1194,1329,1244,1324,1291,1312,1335,1291,1376,1265,1414,1233,1450,1197,1512,1115,1564,1027,1605,942,1635,867,1655,809,1660,811,1640,869,1610,944,1569,1030,1517,1118,1454,1200,1418,1237,1379,1269,1337,1296,1293,1317,1245,1330,1195,1334,959,1334,902,1332,853,1325,811,1312,772,1293,738,1269,704,1237,636,1153,623,1131,616,1110,612,1070,609,1032,602,1013,588,992,559,968"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a860b68e95b44648888125c84038e90b6" title=" " alt="" coords="1113,651,1273,692"/>
+<area shape="poly" title=" " alt="" coords="980,395,1169,637,1164,640,976,398"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#af30839203957e838bc299232e05ab735" title=" " alt="" coords="1103,351,1283,392"/>
+<area shape="poly" title=" " alt="" coords="1041,371,1087,371,1087,376,1041,377"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#a6d190b1f19a3a9fe2c81cd18abb6a72f" title=" " alt="" coords="1103,416,1283,457"/>
+<area shape="poly" title=" " alt="" coords="1041,394,1100,409,1098,415,1040,399"/>
+<area shape="poly" title=" " alt="" coords="1274,679,1399,699,1539,729,1599,747,1598,752,1538,734,1398,704,1273,684"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a5e058f740bc7e0ed395de211d2eeac8d" title=" " alt="" coords="1340,622,1530,662"/>
+<area shape="poly" title=" " alt="" coords="1273,659,1324,653,1325,658,1274,664"/>
+<area shape="poly" title=" " alt="" coords="1501,661,1540,678,1590,710,1634,743,1631,747,1587,715,1537,683,1499,665"/>
+<area shape="rect" href="structpesieve_1_1_syscall_table.html#a8e3f90d691f666c516605f4cd0afd247" title=" " alt="" coords="1596,594,1742,634"/>
+<area shape="poly" title=" " alt="" coords="1530,628,1580,622,1581,627,1531,633"/>
+<area shape="rect" href="structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08" title=" " alt="" coords="1596,399,1742,440"/>
+<area shape="poly" title=" " alt="" coords="1456,619,1634,448,1638,452,1460,623"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a52bff18b2001eea66d8a68f20b0400dd" title=" " alt="" coords="1113,838,1273,878"/>
+<area shape="poly" title=" " alt="" coords="383,798,867,837,1098,851,1098,856,866,842,382,803"/>
+<area shape="poly" title=" " alt="" coords="1274,851,1399,840,1538,817,1600,799,1602,804,1539,822,1399,845,1274,857"/>
+<area shape="poly" title=" " alt="" coords="1216,835,1398,671,1401,675,1219,839"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="1352,888,1518,929"/>
+<area shape="poly" title=" " alt="" coords="1274,872,1338,886,1337,891,1273,878"/>
+<area shape="rect" href="classpesieve_1_1_susp_addr_report.html#a54981618014f557b7ffc3b0a041b9e5d" title=" " alt="" coords="645,968,812,1009"/>
+<area shape="poly" title=" " alt="" coords="569,898,592,911,616,932,640,953,650,959,648,964,637,958,612,936,589,915,566,903"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a92bf983edebcf45694d3be062eea468c" title=" " alt="" coords="648,1099,809,1140"/>
+<area shape="poly" title=" " alt="" coords="577,898,592,911,608,934,615,957,617,1000,618,1042,625,1063,640,1084,644,1088,640,1092,636,1088,621,1065,613,1043,611,1000,610,957,603,936,588,915,574,902"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#ab245edaa16cc81ced1505d61c6b7f812" title=" " alt="" coords="638,1034,819,1074"/>
+<area shape="poly" title=" " alt="" coords="575,898,592,911,604,925,611,939,617,967,622,993,629,1006,640,1019,645,1023,641,1027,636,1023,625,1009,617,995,611,968,606,941,599,928,588,915,572,902"/>
+<area shape="rect" href="thread__scanner_8cpp.html#a7b9ade21d4de016d2a048bf6cc42dbc0" title=" " alt="" coords="669,853,788,879"/>
+<area shape="poly" title=" " alt="" coords="590,872,653,868,653,873,591,877"/>
+<area shape="rect" href="classpesieve_1_1_susp_addr_report.html#a5eeca92982a2b1df04a4b9d6328f8248" title=" " alt="" coords="645,903,812,944"/>
+<area shape="poly" title=" " alt="" coords="591,893,630,901,629,906,590,898"/>
+<area shape="rect" href="classpesieve_1_1_area_stats_calculator.html#a5f85d093b7ddc31bb358a19917f6b4c2" title=" " alt="" coords="867,1058,1055,1098"/>
+<area shape="poly" title=" " alt="" coords="808,1103,851,1095,852,1100,809,1108"/>
+<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a59ed1087d268c1742139c7240ab5854f" title=" " alt="" coords="882,1123,1040,1164"/>
+<area shape="poly" title=" " alt="" coords="809,1125,866,1131,866,1136,809,1130"/>
+<area shape="rect" href="structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="880,1188,1042,1229"/>
+<area shape="poly" title=" " alt="" coords="780,1138,868,1173,887,1180,885,1185,866,1178,778,1143"/>
+<area shape="rect" href="structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2" title=" " alt="" coords="880,1254,1042,1294"/>
+<area shape="poly" title=" " alt="" coords="750,1138,801,1188,833,1215,868,1239,879,1245,877,1249,865,1243,830,1219,797,1192,746,1142"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a05b674350e2962e6a6c94fefd88dfa4d" title=" " alt="" coords="891,943,1031,968"/>
+<area shape="poly" title=" " alt="" coords="800,1097,817,1084,828,1071,834,1059,839,1032,845,1005,853,992,865,979,875,972,878,976,868,983,857,995,850,1007,845,1033,839,1060,832,1074,820,1088,803,1101"/>
+<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a01d3a9dc59b2965fa6defbc4dfda8524" title=" " alt="" coords="882,992,1040,1033"/>
+<area shape="poly" title=" " alt="" coords="792,1096,817,1084,841,1064,865,1044,877,1038,880,1042,868,1048,844,1068,820,1088,795,1101"/>
+<area shape="rect" href="namespacepesieve.html#a1b4dba41ddf56a7365eefc3cab744572" title=" " alt="" coords="1111,968,1275,994"/>
+<area shape="poly" title=" " alt="" coords="1031,960,1096,968,1095,973,1031,966"/>
+<area shape="rect" href="namespacepesieve.html#ae48407b62138601a97bbfb8fa8723fe8" title=" " alt="" coords="1111,1017,1275,1043"/>
+<area shape="poly" title=" " alt="" coords="1020,966,1056,978,1080,991,1104,1004,1121,1010,1119,1015,1102,1009,1078,996,1054,983,1018,971"/>
+<area shape="rect" href="namespacepesieve.html#a610881f75eb095edddd9001fba5793db" title=" " alt="" coords="1128,903,1259,944"/>
+<area shape="poly" title=" " alt="" coords="1031,943,1111,932,1112,937,1031,949"/>
+<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="1114,1067,1272,1108"/>
+<area shape="poly" title=" " alt="" coords="1028,1031,1114,1059,1112,1064,1026,1036"/>
+<area shape="poly" title=" " alt="" coords="314,677,362,623,394,592,428,564,445,553,448,558,432,568,398,596,366,626,318,681"/>
+<area shape="poly" title=" " alt="" coords="339,718,363,736,384,759,396,781,403,801,406,838,411,873,418,891,432,910,435,913,432,917,428,913,414,894,406,875,401,838,397,802,391,783,380,762,359,740,336,723"/>
+<area shape="poly" title=" " alt="" coords="378,694,1098,672,1098,677,378,700"/>
+<area shape="poly" title=" " alt="" coords="331,718,384,759,479,846,475,850,380,763,327,722"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a26dce77279491e0e3f78241052eb8862" title=" " alt="" coords="430,622,590,662"/>
+<area shape="poly" title=" " alt="" coords="375,676,417,665,418,670,376,681"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#afc121ff5d20c249d4ceeef347c742fc7" title=" " alt="" coords="881,120,1041,161"/>
+<area shape="poly" title=" " alt="" coords="323,676,371,642,429,608,475,592,513,587,549,580,568,571,589,557,606,540,615,522,623,502,636,479,695,403,744,346,865,223,922,170,926,174,869,227,748,349,699,406,641,482,627,505,620,524,610,543,592,562,571,576,551,585,514,592,476,598,431,613,374,646,326,681"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a62ea6b15f3ddbd98ba28ce8d3150d6da" title=" " alt="" coords="881,787,1041,828"/>
+<area shape="poly" title=" " alt="" coords="569,661,890,779,888,784,567,666"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a1c1fd96c4b0adadecb460db246b16c25" title=" " alt="" coords="642,492,815,533"/>
+<area shape="poly" title=" " alt="" coords="555,619,589,601,684,540,687,545,592,606,558,624"/>
+<area shape="poly" title=" " alt="" coords="1041,801,1571,777,1571,783,1042,807"/>
+<area shape="poly" title=" " alt="" coords="996,784,1142,698,1145,702,999,789"/>
+<area shape="poly" title=" " alt="" coords="744,532,764,563,792,600,827,636,868,665,907,678,975,692,1167,719,1571,764,1571,769,1166,725,974,697,906,683,865,670,823,640,788,603,759,566,739,535"/>
+<area shape="poly" title=" " alt="" coords="753,490,804,452,865,412,889,400,891,405,868,416,807,456,756,494"/>
+<area shape="poly" title=" " alt="" coords="752,532,802,575,834,597,868,614,925,635,985,649,1098,665,1097,670,984,655,924,640,866,619,831,601,799,579,749,536"/>
+<area shape="poly" title=" " alt="" coords="816,507,867,506,961,500,1003,500,1055,506,1146,527,1234,555,1377,613,1375,618,1232,560,1144,532,1055,511,1002,505,961,506,867,511,816,513"/>
+<area shape="poly" title=" " alt="" coords="769,531,815,553,867,570,980,582,1177,593,1581,609,1580,614,1176,598,979,587,866,575,813,558,766,536"/>
+<area shape="poly" title=" " alt="" coords="779,489,821,475,866,462,980,445,1087,436,1088,442,981,450,867,467,822,480,781,494"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#ab34204d27d4605503dd94dd009fbc7ec" title=" " alt="" coords="1331,346,1539,386"/>
+<area shape="poly" title=" " alt="" coords="737,491,755,456,783,414,820,373,842,355,866,341,928,317,994,303,1062,297,1129,298,1194,304,1255,314,1357,338,1356,344,1254,319,1193,310,1129,304,1062,303,995,308,930,322,868,346,845,360,824,377,787,417,760,459,741,494"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a8d7eb7eb1b3e3c05251341d0c14d82be" title=" " alt="" coords="885,236,1037,277"/>
+<area shape="poly" title=" " alt="" coords="741,491,816,372,837,330,847,312,865,293,880,283,883,287,868,298,851,315,842,332,821,374,745,493"/>
+<area shape="rect" href="structpesieve_1_1_syscall_table.html#a866739a072d312c6bb6b2d4414a872ba" title=" " alt="" coords="888,520,1034,561"/>
+<area shape="poly" title=" " alt="" coords="816,521,873,528,872,533,815,526"/>
+<area shape="poly" title=" " alt="" coords="1528,384,1582,397,1580,402,1527,390"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="1369,193,1501,219"/>
+<area shape="poly" title=" " alt="" coords="1037,253,1153,248,1283,236,1365,220,1366,226,1284,241,1153,253,1037,258"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a43b6faf00b6a97279f2d67f4a3fd2513" title=" " alt="" coords="1114,186,1272,226"/>
+<area shape="poly" title=" " alt="" coords="1037,238,1098,224,1100,229,1038,243"/>
+<area shape="poly" title=" " alt="" coords="1273,204,1353,204,1353,209,1273,209"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="1378,124,1492,165"/>
+<area shape="poly" title=" " alt="" coords="1272,184,1362,160,1364,166,1273,189"/>
+<area shape="poly" title=" " alt="" coords="1036,159,1104,178,1103,184,1035,164"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a2f1eee83b53e8aed37a2946978408d0c" title=" " alt="" coords="1113,55,1273,96"/>
+<area shape="poly" title=" " alt="" coords="1035,117,1103,98,1104,103,1036,123"/>
+<area shape="rect" href="namespacepesieve.html#a770c327ea58c4852792d616a6dc1d4b5" title=" " alt="" coords="1114,5,1273,31"/>
+<area shape="poly" title=" " alt="" coords="985,118,1037,79,1102,41,1119,34,1121,39,1104,46,1040,84,988,122"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#adafdd61439fc2750cec84fb15d59ecf8" title=" " alt="" coords="1124,120,1262,161"/>
+<area shape="poly" title=" " alt="" coords="1041,138,1108,138,1108,144,1041,144"/>
+<area shape="rect" href="thread__scanner_8cpp.html#a1a60000166ce4d9e697ac4532f37b3c4" title=" " alt="" coords="1379,63,1491,88"/>
+<area shape="poly" title=" " alt="" coords="1273,73,1363,73,1363,78,1273,78"/>
+<area shape="poly" title=" " alt="" coords="1263,157,1371,186,1369,191,1262,162"/>
+<area shape="poly" title=" " alt="" coords="1262,139,1363,141,1363,146,1262,145"/>
+<area shape="rect" href="namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="464,1003,557,1028"/>
+<area shape="poly" title=" " alt="" coords="370,1013,448,1013,448,1018,370,1018"/>
 </map>
 </div>
 
@@ -1269,104 +1275,110 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00624">624</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8cpp_source.html#l00638">638</a> of file <a class="el" href="thread__scanner_8cpp_source.html">thread_scanner.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_thread_scanner_adac63f0f7ff5e85e48be844c9504766a_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scanner_adac63f0f7ff5e85e48be844c9504766a_cgraph" loading="lazy" alt=""/></div>
 <map name="aclasspesieve_1_1_thread_scanner_adac63f0f7ff5e85e48be844c9504766a_cgraph" id="aclasspesieve_1_1_thread_scanner_adac63f0f7ff5e85e48be844c9504766a_cgraph">
-<area shape="rect" title=" " alt="" coords="5,688,166,729"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a26dce77279491e0e3f78241052eb8862" title=" " alt="" coords="214,507,374,547"/>
-<area shape="poly" title=" " alt="" coords="109,686,256,555,260,559,112,690"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a860b68e95b44648888125c84038e90b6" title=" " alt="" coords="890,317,1050,358"/>
-<area shape="poly" title=" " alt="" coords="90,687,105,645,129,592,165,538,187,513,212,493,254,467,294,446,332,431,369,421,439,411,509,411,579,415,654,417,737,411,831,391,910,362,912,367,832,396,738,416,655,422,579,420,508,417,440,417,370,426,334,436,296,451,257,471,215,497,191,517,169,541,134,594,110,647,95,689"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#afc121ff5d20c249d4ceeef347c742fc7" title=" " alt="" coords="657,659,818,699"/>
-<area shape="poly" title=" " alt="" coords="166,702,641,681,642,686,166,707"/>
-<area shape="rect" href="namespacepesieve.html#a7c9c19e3f0ce1362c7e404893a1163f6" title=" " alt="" coords="231,716,356,757"/>
-<area shape="poly" title=" " alt="" coords="166,716,216,723,216,729,165,722"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#ab10455cb1d90db959abbebc40f5789d9" title=" " alt="" coords="428,784,589,825"/>
-<area shape="poly" title=" " alt="" coords="124,727,167,748,214,766,316,787,413,798,413,803,315,793,213,771,164,753,122,732"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a36850edb808d4be733631fa2bcd3b7b4" title=" " alt="" coords="214,883,374,923"/>
-<area shape="poly" title=" " alt="" coords="111,727,261,870,258,874,107,731"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a62ea6b15f3ddbd98ba28ce8d3150d6da" title=" " alt="" coords="657,507,818,547"/>
-<area shape="poly" title=" " alt="" coords="375,524,642,524,642,530,375,530"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a1c1fd96c4b0adadecb460db246b16c25" title=" " alt="" coords="422,256,595,297"/>
-<area shape="poly" title=" " alt="" coords="311,504,478,307,482,310,315,508"/>
-<area shape="rect" href="classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="1363,399,1529,439"/>
-<area shape="poly" title=" " alt="" coords="818,512,1348,431,1349,436,818,518"/>
-<area shape="poly" title=" " alt="" coords="798,504,830,486,864,459,895,428,943,369,947,372,899,432,867,463,833,491,801,509"/>
-<area shape="poly" title=" " alt="" coords="1051,349,1348,400,1348,405,1050,354"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a5e058f740bc7e0ed395de211d2eeac8d" title=" " alt="" coords="1116,140,1307,181"/>
-<area shape="poly" title=" " alt="" coords="1018,315,1059,291,1124,240,1178,190,1182,194,1128,244,1061,296,1020,319"/>
-<area shape="poly" title=" " alt="" coords="1234,179,1418,385,1414,389,1230,183"/>
-<area shape="rect" href="structpesieve_1_1_syscall_table.html#a8e3f90d691f666c516605f4cd0afd247" title=" " alt="" coords="1373,32,1519,73"/>
-<area shape="poly" title=" " alt="" coords="1283,137,1314,125,1399,79,1401,84,1316,129,1285,142"/>
-<area shape="rect" href="structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08" title=" " alt="" coords="1373,125,1519,166"/>
-<area shape="poly" title=" " alt="" coords="1307,152,1357,149,1357,154,1307,157"/>
-<area shape="poly" title=" " alt="" coords="528,295,576,346,608,372,644,391,703,407,781,418,873,425,974,428,1178,427,1348,421,1348,427,1178,432,973,433,873,430,780,423,702,412,642,396,605,376,572,350,524,299"/>
-<area shape="poly" title=" " alt="" coords="596,285,875,322,874,328,595,290"/>
-<area shape="poly" title=" " alt="" coords="531,254,580,216,610,198,642,183,701,165,762,153,885,139,1002,138,1101,144,1101,149,1002,143,886,145,763,158,702,171,644,188,613,202,583,221,534,258"/>
-<area shape="poly" title=" " alt="" coords="517,254,535,219,562,177,598,134,642,99,686,76,732,56,829,27,928,11,1027,4,1123,4,1213,10,1358,31,1357,36,1212,16,1123,10,1028,9,929,16,830,33,734,61,688,81,645,104,602,138,567,180,540,222,522,257"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#ab34204d27d4605503dd94dd009fbc7ec" title=" " alt="" coords="1108,75,1315,115"/>
-<area shape="poly" title=" " alt="" coords="522,254,570,197,604,168,642,145,698,122,757,105,817,93,877,85,992,78,1093,81,1092,86,992,84,877,90,818,98,758,110,700,127,645,149,607,172,574,201,526,257"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a8d7eb7eb1b3e3c05251341d0c14d82be" title=" " alt="" coords="661,572,814,613"/>
-<area shape="poly" title=" " alt="" coords="517,296,530,348,555,418,592,493,617,527,645,557,650,561,647,565,642,561,613,530,588,495,550,420,525,350,511,298"/>
-<area shape="rect" href="structpesieve_1_1_syscall_table.html#a866739a072d312c6bb6b2d4414a872ba" title=" " alt="" coords="664,341,811,382"/>
-<area shape="poly" title=" " alt="" coords="566,295,668,333,666,338,564,300"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a75c0be0ec6ea82b700f3ca5e846a0675" title=" " alt="" coords="657,227,818,267"/>
-<area shape="poly" title=" " alt="" coords="595,263,641,257,642,262,596,268"/>
-<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#a6d190b1f19a3a9fe2c81cd18abb6a72f" title=" " alt="" coords="880,176,1060,217"/>
-<area shape="poly" title=" " alt="" coords="544,253,590,231,643,212,699,201,756,194,864,190,864,195,757,200,700,207,644,218,592,236,547,258"/>
-<area shape="poly" title=" " alt="" coords="1309,113,1358,124,1357,129,1308,119"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="1146,565,1278,591"/>
-<area shape="poly" title=" " alt="" coords="795,569,879,543,930,536,970,535,1060,543,1146,558,1145,563,1060,548,970,540,930,542,880,548,797,574"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a43b6faf00b6a97279f2d67f4a3fd2513" title=" " alt="" coords="891,557,1049,598"/>
-<area shape="poly" title=" " alt="" coords="814,585,875,581,875,586,814,590"/>
-<area shape="poly" title=" " alt="" coords="1049,575,1130,575,1130,580,1049,580"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="1155,619,1268,659"/>
-<area shape="poly" title=" " alt="" coords="1050,595,1140,618,1139,624,1049,600"/>
-<area shape="poly" title=" " alt="" coords="793,265,903,309,901,314,791,270"/>
-<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#af30839203957e838bc299232e05ab735" title=" " alt="" coords="880,241,1060,282"/>
-<area shape="poly" title=" " alt="" coords="818,249,864,252,864,258,818,255"/>
-<area shape="poly" title=" " alt="" coords="817,227,864,217,865,222,818,232"/>
-<area shape="poly" title=" " alt="" coords="779,656,879,609,895,602,897,607,881,613,781,661"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a2f1eee83b53e8aed37a2946978408d0c" title=" " alt="" coords="890,737,1050,778"/>
-<area shape="poly" title=" " alt="" coords="801,697,894,729,892,734,799,702"/>
-<area shape="rect" href="namespacepesieve.html#a770c327ea58c4852792d616a6dc1d4b5" title=" " alt="" coords="890,688,1050,713"/>
-<area shape="poly" title=" " alt="" coords="818,684,875,689,875,694,818,689"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#adafdd61439fc2750cec84fb15d59ecf8" title=" " alt="" coords="901,623,1039,663"/>
-<area shape="poly" title=" " alt="" coords="817,664,885,653,886,659,818,669"/>
-<area shape="rect" href="thread__scanner_8cpp.html#a1a60000166ce4d9e697ac4532f37b3c4" title=" " alt="" coords="1156,745,1268,771"/>
-<area shape="poly" title=" " alt="" coords="1050,755,1140,755,1140,760,1050,760"/>
-<area shape="poly" title=" " alt="" coords="1038,622,1146,593,1147,598,1040,627"/>
-<area shape="poly" title=" " alt="" coords="1039,639,1139,638,1139,643,1039,645"/>
-<area shape="poly" title=" " alt="" coords="590,811,763,825,977,833,1083,831,1179,823,1258,806,1289,795,1314,781,1350,748,1378,708,1400,664,1416,617,1435,526,1442,454,1447,455,1441,527,1422,619,1405,666,1383,711,1354,751,1317,785,1292,800,1260,811,1180,828,1083,836,977,839,763,831,589,816"/>
-<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a79df00ed9c178f7eab47cbb8ee43dd42" title=" " alt="" coords="428,983,589,1023"/>
-<area shape="poly" title=" " alt="" coords="341,922,450,973,448,978,339,926"/>
-<area shape="rect" href="thread__scanner_8cpp.html#a7b9ade21d4de016d2a048bf6cc42dbc0" title=" " alt="" coords="449,890,568,916"/>
-<area shape="poly" title=" " alt="" coords="374,900,434,900,434,906,374,906"/>
-<area shape="rect" href="classpesieve_1_1_area_stats_calculator.html#a5f85d093b7ddc31bb358a19917f6b4c2" title=" " alt="" coords="643,917,832,958"/>
-<area shape="poly" title=" " alt="" coords="581,980,648,960,650,965,583,985"/>
-<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a59ed1087d268c1742139c7240ab5854f" title=" " alt="" coords="658,983,817,1023"/>
-<area shape="poly" title=" " alt="" coords="589,1000,643,1000,643,1006,589,1006"/>
-<area shape="rect" href="structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="656,1048,819,1089"/>
-<area shape="poly" title=" " alt="" coords="583,1021,650,1041,648,1046,581,1026"/>
-<area shape="rect" href="structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2" title=" " alt="" coords="656,1113,819,1154"/>
-<area shape="poly" title=" " alt="" coords="536,1022,585,1060,645,1098,658,1105,656,1109,642,1103,581,1064,532,1026"/>
-<area shape="rect" href="namespacepesieve_1_1util.html#a05b674350e2962e6a6c94fefd88dfa4d" title=" " alt="" coords="667,1178,808,1204"/>
-<area shape="poly" title=" " alt="" coords="524,1023,570,1092,605,1131,645,1164,655,1169,652,1174,642,1168,601,1135,566,1096,519,1026"/>
-<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a01d3a9dc59b2965fa6defbc4dfda8524" title=" " alt="" coords="658,852,817,893"/>
-<area shape="poly" title=" " alt="" coords="532,980,581,942,642,903,656,897,658,902,645,908,585,946,536,984"/>
-<area shape="rect" href="namespacepesieve.html#a1b4dba41ddf56a7365eefc3cab744572" title=" " alt="" coords="888,1236,1052,1261"/>
-<area shape="poly" title=" " alt="" coords="793,1202,900,1229,899,1234,792,1207"/>
-<area shape="rect" href="namespacepesieve.html#ae48407b62138601a97bbfb8fa8723fe8" title=" " alt="" coords="888,1121,1052,1147"/>
-<area shape="poly" title=" " alt="" coords="792,1175,899,1148,900,1153,793,1180"/>
-<area shape="rect" href="namespacepesieve.html#a610881f75eb095edddd9001fba5793db" title=" " alt="" coords="904,1171,1036,1211"/>
-<area shape="poly" title=" " alt="" coords="808,1188,888,1188,888,1194,808,1194"/>
-<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="891,852,1049,893"/>
-<area shape="poly" title=" " alt="" coords="817,870,875,870,875,875,817,875"/>
-<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a6cbf6c12b0cbfd5e9211523fe89cd70d" title=" " alt="" coords="1132,852,1291,893"/>
-<area shape="poly" title=" " alt="" coords="1049,870,1117,870,1117,875,1049,875"/>
+<area shape="rect" title=" " alt="" coords="5,397,166,438"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a26dce77279491e0e3f78241052eb8862" title=" " alt="" coords="214,368,374,409"/>
+<area shape="poly" title=" " alt="" coords="165,404,198,399,198,404,166,409"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a860b68e95b44648888125c84038e90b6" title=" " alt="" coords="897,205,1057,246"/>
+<area shape="poly" title=" " alt="" coords="111,395,196,333,324,250,399,207,480,167,564,132,650,106,702,93,745,87,788,91,840,106,873,122,904,145,952,192,948,195,900,149,870,127,838,111,787,96,746,92,703,98,651,111,566,138,482,172,402,212,327,254,199,337,114,399"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#afc121ff5d20c249d4ceeef347c742fc7" title=" " alt="" coords="664,732,825,773"/>
+<area shape="poly" title=" " alt="" coords="166,420,268,435,323,449,375,469,448,512,541,582,709,720,706,724,538,586,445,517,373,473,321,454,267,440,166,425"/>
+<area shape="rect" href="namespacepesieve.html#a7c9c19e3f0ce1362c7e404893a1163f6" title=" " alt="" coords="231,483,356,523"/>
+<area shape="poly" title=" " alt="" coords="138,436,229,474,227,479,136,441"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#ab10455cb1d90db959abbebc40f5789d9" title=" " alt="" coords="214,5,374,46"/>
+<area shape="poly" title=" " alt="" coords="86,397,96,334,117,246,133,198,154,150,180,104,212,63,222,53,226,57,216,66,185,107,159,152,138,200,122,247,101,335,91,397"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a36850edb808d4be733631fa2bcd3b7b4" title=" " alt="" coords="214,1017,374,1058"/>
+<area shape="poly" title=" " alt="" coords="96,438,283,1002,278,1003,91,439"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a62ea6b15f3ddbd98ba28ce8d3150d6da" title=" " alt="" coords="664,120,825,161"/>
+<area shape="poly" title=" " alt="" coords="326,365,464,279,555,227,649,177,675,165,677,169,652,181,558,231,467,284,329,370"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a1c1fd96c4b0adadecb460db246b16c25" title=" " alt="" coords="426,368,599,409"/>
+<area shape="poly" title=" " alt="" coords="374,386,410,386,410,391,374,391"/>
+<area shape="rect" href="classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="1370,148,1536,189"/>
+<area shape="poly" title=" " alt="" coords="825,136,1049,135,1186,139,1323,147,1355,150,1355,156,1322,152,1185,144,1049,141,825,141"/>
+<area shape="poly" title=" " alt="" coords="803,159,906,197,904,202,801,164"/>
+<area shape="poly" title=" " alt="" coords="1057,215,1322,184,1355,180,1355,185,1323,190,1058,220"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a5e058f740bc7e0ed395de211d2eeac8d" title=" " alt="" coords="1124,387,1314,427"/>
+<area shape="poly" title=" " alt="" coords="1045,244,1068,257,1105,284,1139,314,1193,373,1189,376,1136,318,1102,288,1066,261,1042,249"/>
+<area shape="poly" title=" " alt="" coords="1238,384,1419,198,1423,201,1242,388"/>
+<area shape="rect" href="structpesieve_1_1_syscall_table.html#a8e3f90d691f666c516605f4cd0afd247" title=" " alt="" coords="1380,405,1526,446"/>
+<area shape="poly" title=" " alt="" coords="1314,412,1364,416,1364,421,1314,417"/>
+<area shape="rect" href="structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08" title=" " alt="" coords="1380,509,1526,550"/>
+<area shape="poly" title=" " alt="" coords="1261,425,1400,499,1398,504,1258,430"/>
+<area shape="poly" title=" " alt="" coords="539,365,570,339,600,308,614,287,621,267,630,249,649,232,674,218,705,206,781,188,873,175,974,166,1181,160,1354,162,1354,167,1181,166,975,172,874,180,782,193,706,211,676,223,652,236,635,252,626,270,618,289,604,311,574,343,543,369"/>
+<area shape="poly" title=" " alt="" coords="530,365,580,317,613,292,649,271,707,250,767,236,827,228,881,223,881,229,827,233,768,242,709,255,651,276,616,296,583,321,533,369"/>
+<area shape="poly" title=" " alt="" coords="600,388,1108,401,1108,407,599,393"/>
+<area shape="poly" title=" " alt="" coords="599,394,651,399,986,433,1133,441,1322,436,1364,433,1364,439,1322,442,1133,446,986,439,650,404,599,400"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#ab34204d27d4605503dd94dd009fbc7ec" title=" " alt="" coords="1115,529,1322,570"/>
+<area shape="poly" title=" " alt="" coords="580,407,604,425,617,442,623,460,626,494,630,525,638,539,652,551,685,566,730,576,785,581,847,582,978,575,1099,563,1100,569,978,581,847,587,785,586,729,581,683,571,649,556,634,542,625,526,621,494,618,461,612,445,600,429,577,411"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a8d7eb7eb1b3e3c05251341d0c14d82be" title=" " alt="" coords="668,616,821,657"/>
+<area shape="poly" title=" " alt="" coords="582,407,604,425,620,448,627,470,629,512,631,554,638,575,652,596,662,605,659,609,648,599,633,577,625,555,623,513,622,471,615,450,600,429,578,411"/>
+<area shape="rect" href="structpesieve_1_1_syscall_table.html#a866739a072d312c6bb6b2d4414a872ba" title=" " alt="" coords="671,501,818,542"/>
+<area shape="poly" title=" " alt="" coords="573,407,604,425,619,440,629,454,637,467,652,481,669,492,666,496,649,485,633,471,624,457,615,443,601,429,571,412"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a75c0be0ec6ea82b700f3ca5e846a0675" title=" " alt="" coords="664,285,825,326"/>
+<area shape="poly" title=" " alt="" coords="571,365,670,329,671,334,572,370"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#a6d190b1f19a3a9fe2c81cd18abb6a72f" title=" " alt="" coords="887,336,1067,377"/>
+<area shape="poly" title=" " alt="" coords="599,380,871,361,871,366,600,385"/>
+<area shape="poly" title=" " alt="" coords="1323,538,1364,535,1364,540,1323,543"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c" title=" " alt="" coords="1152,674,1285,700"/>
+<area shape="poly" title=" " alt="" coords="821,635,937,640,1067,652,1149,668,1148,673,1067,658,937,645,821,640"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a43b6faf00b6a97279f2d67f4a3fd2513" title=" " alt="" coords="898,667,1056,707"/>
+<area shape="poly" title=" " alt="" coords="822,650,883,664,882,669,820,656"/>
+<area shape="poly" title=" " alt="" coords="1056,684,1137,684,1137,690,1056,690"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a86a2a1d5b1cd1861d424c2b06a3b961e" title=" " alt="" coords="1162,728,1275,769"/>
+<area shape="poly" title=" " alt="" coords="1057,704,1147,728,1146,733,1056,710"/>
+<area shape="poly" title=" " alt="" coords="805,282,900,249,902,254,806,287"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#af30839203957e838bc299232e05ab735" title=" " alt="" coords="887,271,1067,311"/>
+<area shape="poly" title=" " alt="" coords="825,298,871,295,871,300,825,303"/>
+<area shape="poly" title=" " alt="" coords="825,320,872,331,871,336,824,326"/>
+<area shape="poly" title=" " alt="" coords="818,729,886,710,888,715,820,734"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a2f1eee83b53e8aed37a2946978408d0c" title=" " alt="" coords="897,847,1057,887"/>
+<area shape="poly" title=" " alt="" coords="779,771,829,802,888,833,900,838,898,843,886,837,827,806,776,775"/>
+<area shape="rect" href="namespacepesieve.html#a770c327ea58c4852792d616a6dc1d4b5" title=" " alt="" coords="897,797,1056,822"/>
+<area shape="poly" title=" " alt="" coords="826,769,908,790,906,795,824,775"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#adafdd61439fc2750cec84fb15d59ecf8" title=" " alt="" coords="908,732,1046,773"/>
+<area shape="poly" title=" " alt="" coords="825,750,892,750,892,755,825,755"/>
+<area shape="rect" href="thread__scanner_8cpp.html#a1a60000166ce4d9e697ac4532f37b3c4" title=" " alt="" coords="1162,854,1275,880"/>
+<area shape="poly" title=" " alt="" coords="1057,864,1147,864,1147,870,1057,870"/>
+<area shape="poly" title=" " alt="" coords="1045,731,1153,702,1154,707,1047,736"/>
+<area shape="poly" title=" " alt="" coords="1046,749,1146,747,1146,752,1046,754"/>
+<area shape="poly" title=" " alt="" coords="374,24,743,27,978,27,1038,30,1098,39,1215,68,1318,104,1398,139,1396,144,1316,109,1213,73,1097,44,1037,35,978,32,743,32,374,29"/>
+<area shape="rect" href="classpesieve_1_1_susp_addr_report.html#a54981618014f557b7ffc3b0a041b9e5d" title=" " alt="" coords="428,920,596,961"/>
+<area shape="poly" title=" " alt="" coords="332,1015,421,971,437,964,439,969,423,976,335,1019"/>
+<area shape="rect" href="classpesieve_1_1_thread_scanner.html#a92bf983edebcf45694d3be062eea468c" title=" " alt="" coords="432,985,592,1026"/>
+<area shape="poly" title=" " alt="" coords="374,1023,416,1017,417,1022,375,1029"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#ab245edaa16cc81ced1505d61c6b7f812" title=" " alt="" coords="422,1051,602,1091"/>
+<area shape="poly" title=" " alt="" coords="375,1047,407,1052,406,1058,374,1053"/>
+<area shape="rect" href="thread__scanner_8cpp.html#a7b9ade21d4de016d2a048bf6cc42dbc0" title=" " alt="" coords="452,1116,572,1141"/>
+<area shape="poly" title=" " alt="" coords="332,1056,423,1101,444,1108,442,1113,421,1105,330,1061"/>
+<area shape="rect" href="classpesieve_1_1_susp_addr_report.html#a5eeca92982a2b1df04a4b9d6328f8248" title=" " alt="" coords="428,1165,596,1206"/>
+<area shape="poly" title=" " alt="" coords="315,1056,361,1104,391,1129,423,1151,431,1156,428,1160,421,1156,388,1133,358,1108,311,1060"/>
+<area shape="rect" href="classpesieve_1_1_area_stats_calculator.html#a5f85d093b7ddc31bb358a19917f6b4c2" title=" " alt="" coords="650,920,839,961"/>
+<area shape="poly" title=" " alt="" coords="586,982,654,963,656,968,588,987"/>
+<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a59ed1087d268c1742139c7240ab5854f" title=" " alt="" coords="665,985,824,1026"/>
+<area shape="poly" title=" " alt="" coords="593,1003,650,1003,650,1008,593,1008"/>
+<area shape="rect" href="structpesieve_1_1util_1_1_basic_buffer.html#a644bab878da80328bd1e4c9d22027456" title=" " alt="" coords="663,1051,826,1091"/>
+<area shape="poly" title=" " alt="" coords="588,1024,656,1043,654,1048,586,1029"/>
+<area shape="rect" href="structpesieve_1_1util_1_1_basic_buffer.html#a1a88d2e0541a73ab2f90addf8ea2acb2" title=" " alt="" coords="663,1116,826,1157"/>
+<area shape="poly" title=" " alt="" coords="583,1024,604,1037,620,1053,629,1070,637,1086,652,1101,660,1106,657,1111,649,1105,633,1089,624,1072,616,1057,601,1041,580,1029"/>
+<area shape="rect" href="namespacepesieve_1_1util.html#a05b674350e2962e6a6c94fefd88dfa4d" title=" " alt="" coords="674,1181,815,1206"/>
+<area shape="poly" title=" " alt="" coords="588,1024,604,1037,617,1054,624,1071,628,1104,632,1136,639,1151,652,1166,662,1174,659,1178,649,1170,635,1154,627,1138,623,1105,619,1072,613,1057,600,1041,585,1029"/>
+<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a01d3a9dc59b2965fa6defbc4dfda8524" title=" " alt="" coords="665,855,824,895"/>
+<area shape="poly" title=" " alt="" coords="580,983,601,970,616,955,624,939,633,923,649,906,657,901,660,905,652,910,637,926,629,942,620,958,604,974,583,987"/>
+<area shape="rect" href="namespacepesieve.html#a1b4dba41ddf56a7365eefc3cab744572" title=" " alt="" coords="895,1238,1059,1264"/>
+<area shape="poly" title=" " alt="" coords="800,1205,907,1231,906,1236,799,1210"/>
+<area shape="rect" href="namespacepesieve.html#ae48407b62138601a97bbfb8fa8723fe8" title=" " alt="" coords="895,1124,1059,1149"/>
+<area shape="poly" title=" " alt="" coords="799,1178,906,1151,907,1156,800,1183"/>
+<area shape="rect" href="namespacepesieve.html#a610881f75eb095edddd9001fba5793db" title=" " alt="" coords="911,1173,1042,1214"/>
+<area shape="poly" title=" " alt="" coords="815,1191,895,1191,895,1196,815,1196"/>
+<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a1ebfdbf5e10adf41d1fdb4effb406ef2" title=" " alt="" coords="898,912,1056,953"/>
+<area shape="poly" title=" " alt="" coords="825,892,883,907,882,912,824,897"/>
+<area shape="rect" href="classpesieve_1_1_mem_page_data.html#a6cbf6c12b0cbfd5e9211523fe89cd70d" title=" " alt="" coords="1140,912,1298,953"/>
+<area shape="poly" title=" " alt="" coords="1056,930,1124,930,1124,935,1056,935"/>
 </map>
 </div>
 
@@ -1393,7 +1405,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00306">306</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00416">416</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -1417,7 +1429,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00304">304</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00414">414</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -1441,7 +1453,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00303">303</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00413">413</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -1465,7 +1477,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00302">302</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00412">412</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -1489,7 +1501,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00305">305</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00415">415</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -1513,7 +1525,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00307">307</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00417">417</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>

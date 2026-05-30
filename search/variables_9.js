@@ -26,7 +26,7 @@ var searchData=
   ['is64b_23',['is64b',['../structpesieve_1_1__ctx__details.html#ad0c5e14eb1bb6d1bef2421752eb5e298',1,'pesieve::_ctx_details']]],
   ['is64bit_24',['is64bit',['../classpesieve_1_1_i_a_t_block.html#a9fde3c1cd2c44098c208584fee41799f',1,'pesieve::IATBlock::is64bit'],['../classpesieve_1_1_pe_artefacts.html#acd7954a8abe0d68cd63d27a195b84cf1',1,'pesieve::PeArtefacts::is64bit'],['../classpesieve_1_1_artefact_scanner_1_1_artefacts_mapping.html#ad55e78028adc97cababb78d404c92603',1,'pesieve::ArtefactScanner::ArtefactsMapping::is64bit'],['../classpesieve_1_1_process_scan_report.html#aeefd5e85ac012b3b9f84fbd2b7c2d181',1,'pesieve::ProcessScanReport::is64bit']]],
   ['is_5f64bit_25',['is_64bit',['../structreport.html#a7f88f3fe475781f3d1825a3c63791a7b',1,'report']]],
-  ['is_5fcode_26',['is_code',['../classpesieve_1_1_thread_scan_report.html#a67ee69cb024aef8a043de08def9859b4',1,'pesieve::ThreadScanReport']]],
+  ['is_5fcode_26',['is_code',['../classpesieve_1_1_susp_addr_report.html#aac0e8cf9ea338a4e631bbcaf526951d4',1,'pesieve::SuspAddrReport']]],
   ['is_5fcorrupt_5fpe_27',['is_corrupt_pe',['../classpesieve_1_1_module_dump_report.html#aadf8118269fad055196034c7daeca382',1,'pesieve::ModuleDumpReport']]],
   ['is_5fdot_5fnet_28',['is_dot_net',['../classpesieve_1_1_module_data.html#a7f242e23b293e9741c8b4821a5df9dc4',1,'pesieve::ModuleData']]],
   ['is_5fexecutable_29',['is_executable',['../classpesieve_1_1_working_set_scan_report.html#aa036516e8290539cbb74245285805754',1,'pesieve::WorkingSetScanReport']]],

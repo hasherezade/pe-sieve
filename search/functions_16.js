@@ -28,5 +28,6 @@ var searchData=
   ['_7ereportex_25',['~ReportEx',['../classpesieve_1_1_report_ex.html#a85c5168710b9d9c32eac2de241d6f282',1,'pesieve::ReportEx']]],
   ['_7erulematchersset_26',['~RuleMatchersSet',['../structpesieve_1_1_rule_matchers_set.html#a746123a69dfc09350f110b30fbb99810',1,'pesieve::RuleMatchersSet']]],
   ['_7escannedmodule_27',['~ScannedModule',['../classpesieve_1_1_scanned_module.html#a34b8bb37bb347662772d4df56c53eecd',1,'pesieve::ScannedModule']]],
-  ['_7eworkingsetscanner_28',['~WorkingSetScanner',['../classpesieve_1_1_working_set_scanner.html#a11a9a3166d095e19d9319d4d6d653713',1,'pesieve::WorkingSetScanner']]]
+  ['_7ethreadscanreport_28',['~ThreadScanReport',['../classpesieve_1_1_thread_scan_report.html#a35f8fd69fd8c41316a8c85a5b84d3778',1,'pesieve::ThreadScanReport']]],
+  ['_7eworkingsetscanner_29',['~WorkingSetScanner',['../classpesieve_1_1_working_set_scanner.html#a11a9a3166d095e19d9319d4d6d653713',1,'pesieve::WorkingSetScanner']]]
 ];

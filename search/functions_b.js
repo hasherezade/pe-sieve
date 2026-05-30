@@ -22,7 +22,7 @@ var searchData=
   ['mempagedata_19',['MemPageData',['../classpesieve_1_1_mem_page_data.html#a26fde7b75da2faecc8162704d0d65163',1,'pesieve::MemPageData']]],
   ['moduledata_20',['ModuleData',['../classpesieve_1_1_module_data.html#a1fb74377c82598834ea2a59f62a3c775',1,'pesieve::ModuleData']]],
   ['moduledumpreport_21',['ModuleDumpReport',['../classpesieve_1_1_module_dump_report.html#af6c954c3af9be929c2b177015e6f056d',1,'pesieve::ModuleDumpReport']]],
-  ['moduleinfotojson_22',['moduleInfoToJSON',['../classpesieve_1_1_thread_scan_report.html#a5fb145bbde075a7a28b05c6068aaccc9',1,'pesieve::ThreadScanReport']]],
+  ['moduleinfotojson_22',['moduleInfoToJSON',['../classpesieve_1_1_susp_addr_report.html#aefc1f5c9a0762b3aa1e645cdb5164cbe',1,'pesieve::SuspAddrReport']]],
   ['modulescache_23',['ModulesCache',['../classpesieve_1_1_modules_cache.html#a75dbc306df755b0178cd8c0fec0bab80',1,'pesieve::ModulesCache']]],
   ['modulescanner_24',['ModuleScanner',['../classpesieve_1_1_module_scanner.html#a89867c3a3b2a85f1fd03f1cb0f2228a6',1,'pesieve::ModuleScanner']]],
   ['modulescanreport_25',['ModuleScanReport',['../classpesieve_1_1_module_scan_report.html#a414cc9a435e507f082e4f8e649de40dc',1,'pesieve::ModuleScanReport']]],

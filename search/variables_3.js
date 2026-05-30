@@ -10,7 +10,7 @@ var searchData=
   ['cdetails_7',['cDetails',['../classpesieve_1_1_thread_scan_report.html#a60b70ce2e218c7a647878b7d18c920b0',1,'pesieve::ThreadScanReport']]],
   ['cleanstringscount_8',['cleanStringsCount',['../structpesieve_1_1_chunk_stats.html#af9f5a428e5c71557e9d0cb4b54609b32',1,'pesieve::ChunkStats']]],
   ['codesize_9',['codeSize',['../classpesieve_1_1_patch_analyzer.html#ab9e470a2c5b4de696cfdabaa8346284e',1,'pesieve::PatchAnalyzer']]],
-  ['curr_5fprotection_10',['curr_protection',['../classpesieve_1_1_thread_scan_report.html#a46de5ef1181352bce9e118a1ffcc81b8',1,'pesieve::ThreadScanReport']]],
+  ['curr_5fprotection_10',['curr_protection',['../classpesieve_1_1_susp_addr_report.html#ae19027aa911547a24061cb5144902cb1',1,'pesieve::SuspAddrReport']]],
   ['currarea_11',['currArea',['../classpesieve_1_1_area_multi_stats.html#a48c41baba037ab57bcdc92c1428dee5f',1,'pesieve::AreaMultiStats']]],
   ['custom_5fmatched_12',['custom_matched',['../classpesieve_1_1_working_set_scan_report.html#a69078211811766e7b0301c8c99417af4',1,'pesieve::WorkingSetScanReport']]]
 ];

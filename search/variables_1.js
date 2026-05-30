@@ -4,7 +4,7 @@ var searchData=
   ['addrtosymbol_1',['addrToSymbol',['../classpesieve_1_1_thread_scan_report.html#a2f53bcd66f9ad39feacb66a0de9db5e4',1,'pesieve::ThreadScanReport']]],
   ['all_5fmatched_5fcount_2',['all_matched_count',['../classpesieve_1_1_working_set_scan_report.html#adcd3e44cc3ce233724f9cccf7ea41b98',1,'pesieve::WorkingSetScanReport']]],
   ['alloc_5fbase_3',['alloc_base',['../classpesieve_1_1_mem_page_data.html#a4c0656b24255503c6faa643ec7e9a464',1,'pesieve::MemPageData::alloc_base'],['../structpesieve_1_1util_1_1__mem__region__info.html#acdb4430af2a19516acd9f83c3a1847a7',1,'pesieve::util::_mem_region_info::alloc_base']]],
-  ['alloc_5fprotection_4',['alloc_protection',['../classpesieve_1_1_thread_scan_report.html#a1a9f014b67f07f14598e6d305aeeb56b',1,'pesieve::ThreadScanReport']]],
+  ['alloc_5fprotection_4',['alloc_protection',['../classpesieve_1_1_susp_addr_report.html#a0af54d4af61aea2fc43e2db93ccd82fe',1,'pesieve::SuspAddrReport']]],
   ['archmismatch_5',['archMismatch',['../classpesieve_1_1_headers_scan_report.html#a8134d9f880884e091813528e08683672',1,'pesieve::HeadersScanReport']]],
   ['area_5finfo_6',['area_info',['../classpesieve_1_1_working_set_scan_report.html#a65e0771807b961fcb9ca8a322eaeadb0',1,'pesieve::WorkingSetScanReport']]],
   ['area_5fsize_7',['area_size',['../classpesieve_1_1_area_stats.html#a7d4be9e25d4e790df3be8d52bf752775',1,'pesieve::AreaStats']]],
