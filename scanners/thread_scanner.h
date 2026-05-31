@@ -197,7 +197,8 @@ namespace pesieve {
 			: ModuleScanReport(0, 0), 
 			tid(_tid), stack_ptr(0),
 			thread_state(THREAD_STATE_UNKNOWN), 
-			thread_wait_reason(0), thread_wait_time(0)
+			thread_wait_reason(0), thread_wait_time(0),
+			has_native_wow64_context(false)
 		{
 		}
 
@@ -226,7 +227,7 @@ namespace pesieve {
 			return nullptr;
 		}
 
-		const virtual void callstackToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails)
+		const virtual void callstackToJSON(std::stringstream& outs, size_t level, const pesieve::t_json_level& jdetails, const ctx_details& details)
 		{
 			bool printCallstack = (jdetails >= JSON_DETAILS) ? true : false;
 			if (this->indicators.find(THI_SUS_CALLSTACK_CORRUPT) != this->indicators.end()) {
@@ -236,16 +237,16 @@ namespace pesieve {
 				printCallstack = true;
 			}
 			OUT_PADDED(outs, level, "\"stack_ptr\" : ");
-			outs << "\"" << std::hex << stack_ptr << "\"";
-			if (cDetails.callStack.size()) {
+			outs << "\"" << std::hex << details.rsp << "\"";
+			if (details.callStack.size()) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"frames_count\" : ");
-				outs << std::dec << cDetails.callStack.size();
+				outs << std::dec << details.callStack.size();
 				if (printCallstack) {
 					outs << ",\n";
 					OUT_PADDED(outs, level, "\"frames\" : [");
-					for (auto itr = cDetails.callStack.rbegin(); itr != cDetails.callStack.rend(); ++itr) {
-						if (itr != cDetails.callStack.rbegin()) {
+					for (auto itr = details.callStack.rbegin(); itr != details.callStack.rend(); ++itr) {
+						if (itr != details.callStack.rbegin()) {
 							outs << ", ";
 						}
 						const ULONGLONG addr = *itr;
@@ -281,7 +282,14 @@ namespace pesieve {
 			if (stack_ptr) {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"callstack\" : {\n");
-				callstackToJSON(outs, level + 1, jdetails);
+				callstackToJSON(outs, level + 1, jdetails, cDetails);
+				outs << "\n";
+				OUT_PADDED(outs, level, "}");
+			}
+			if (has_native_wow64_context && nativeWow64Details.rsp) {
+				outs << ",\n";
+				OUT_PADDED(outs, level, "\"native_callstack\" : {\n");
+				callstackToJSON(outs, level + 1, jdetails, nativeWow64Details);
 				outs << "\n";
 				OUT_PADDED(outs, level, "}");
 			}
@@ -374,7 +382,15 @@ namespace pesieve {
 		std::string lastSyscall;
 		std::string lastFunction;
 
+		// Primary context used by the existing analysis logic. For a WOW64 target
+		// scanned by a 64-bit build, this remains the 32-bit guest context.
 		ctx_details cDetails;
+
+		// Additional native AMD64 context exposed for WOW64 targets. It is report-only
+		// in this narrow refactor; indicator semantics remain unchanged.
+		bool has_native_wow64_context;
+		ctx_details nativeWow64Details;
+
 		std::map<ULONGLONG, std::string> addrToSymbol;
 		std::set<ULONGLONG> shcCandidates;
 		std::set<ThSusIndicator> indicators;
@@ -406,7 +422,11 @@ namespace pesieve {
 		std::string resolveLowLevelFuncName(IN const ULONGLONG addr, OUT OPTIONAL size_t* disp = nullptr);
 		std::string resolveAddrToString(IN ULONGLONG addr);
 		bool printResolvedAddr(const ULONGLONG addr);
-		size_t fillCallStackInfo(IN HANDLE hProcess, IN HANDLE hThread, const IN LPVOID ctx, IN OUT ThreadScanReport& my_report);
+		size_t fillCallStackInfo(IN HANDLE hThread, const IN LPVOID ctx, IN OUT ctx_details& cDetails);
+		bool fetchNativeThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, IN OUT ctx_details& cDetails);
+#ifdef _WIN64
+		bool fetchWow64ThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, IN OUT ctx_details& cDetails);
+#endif
 		size_t analyzeCallStackInfo(IN OUT ThreadScanReport& my_report);
 		size_t _analyzeCallStack(IN OUT ctx_details& cDetails, OUT IN std::set<ULONGLONG>& shcCandidates);
 

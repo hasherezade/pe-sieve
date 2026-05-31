@@ -78,20 +78,20 @@ public:
 		return true;
 	}
 
-	static bool RunStackWalk(
+	static bool RunStackWalk64(
 		_In_ DWORD MachineType,
 		_In_ HANDLE hProcess,
 		_In_ HANDLE hThread,
-		_Inout_ LPSTACKFRAME StackFrame,
+		_Inout_ LPSTACKFRAME64 StackFrame,
 		_Inout_ PVOID ContextRecord,
-		_In_opt_ PREAD_PROCESS_MEMORY_ROUTINE ReadMemoryRoutine,
-		_In_opt_ PFUNCTION_TABLE_ACCESS_ROUTINE FunctionTableAccessRoutine,
-		_In_opt_ PGET_MODULE_BASE_ROUTINE GetModuleBaseRoutine,
-		_In_opt_ PTRANSLATE_ADDRESS_ROUTINE TranslateAddress
+		_In_opt_ PREAD_PROCESS_MEMORY_ROUTINE64 ReadMemoryRoutine,
+		_In_opt_ PFUNCTION_TABLE_ACCESS_ROUTINE64 FunctionTableAccessRoutine,
+		_In_opt_ PGET_MODULE_BASE_ROUTINE64 GetModuleBaseRoutine,
+		_In_opt_ PTRANSLATE_ADDRESS_ROUTINE64 TranslateAddress
 	)
 	{
 		std::lock_guard<std::mutex> guard(m_Mutex);
-		if (StackWalk(MachineType, hProcess, hThread, StackFrame, ContextRecord, ReadMemoryRoutine, FunctionTableAccessRoutine, GetModuleBaseRoutine, TranslateAddress)) {
+		if (StackWalk64(MachineType, hProcess, hThread, StackFrame, ContextRecord, ReadMemoryRoutine, FunctionTableAccessRoutine, GetModuleBaseRoutine, TranslateAddress)) {
 			return true;
 		}
 		return false;

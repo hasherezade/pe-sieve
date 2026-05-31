@@ -204,21 +204,21 @@ public:
 		return DbgHelpWrapper::RefreshModuleList(hProcess);
 	}
 
-	bool RunStackWalk(
+	bool RunStackWalk64(
 		_In_ DWORD MachineType,
 		_In_ HANDLE hThread,
-		_Inout_ LPSTACKFRAME StackFrame,
+		_Inout_ LPSTACKFRAME64 StackFrame,
 		_Inout_ PVOID ContextRecord,
-		_In_opt_ PREAD_PROCESS_MEMORY_ROUTINE ReadMemoryRoutine,
-		_In_opt_ PFUNCTION_TABLE_ACCESS_ROUTINE FunctionTableAccessRoutine,
-		_In_opt_ PGET_MODULE_BASE_ROUTINE GetModuleBaseRoutine,
-		_In_opt_ PTRANSLATE_ADDRESS_ROUTINE TranslateAddress
+		_In_opt_ PREAD_PROCESS_MEMORY_ROUTINE64 ReadMemoryRoutine,
+		_In_opt_ PFUNCTION_TABLE_ACCESS_ROUTINE64 FunctionTableAccessRoutine,
+		_In_opt_ PGET_MODULE_BASE_ROUTINE64 GetModuleBaseRoutine,
+		_In_opt_ PTRANSLATE_ADDRESS_ROUTINE64 TranslateAddress
 	)
 	{
 		if (!isInit) {
 			return false;
 		}
-		return DbgHelpWrapper::RunStackWalk(MachineType,
+		return DbgHelpWrapper::RunStackWalk64(MachineType,
 			this->hProcess,
 			hThread,
 			StackFrame,
