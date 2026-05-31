@@ -761,7 +761,7 @@ static int scoreArea(const SuspAddrReport& area)
 	int score = 0;
 
 	if (area.is_code) {
-		score += 10;
+		score += 15;
 	}
 
 	if (area.stats.isFilled()) {
