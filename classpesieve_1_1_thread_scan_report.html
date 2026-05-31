@@ -136,7 +136,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5f807639cdc90411a6a4575c2091344d" id="r_a5f807639cdc90411a6a4575c2091344d"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a5f807639cdc90411a6a4575c2091344d">ThreadScanReport</a> (DWORD _tid)</td></tr>
 <tr class="memitem:a35f8fd69fd8c41316a8c85a5b84d3778" id="r_a35f8fd69fd8c41316a8c85a5b84d3778"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a35f8fd69fd8c41316a8c85a5b84d3778">~ThreadScanReport</a> ()</td></tr>
 <tr class="memitem:ab245edaa16cc81ced1505d61c6b7f812" id="r_ab245edaa16cc81ced1505d61c6b7f812"><td class="memItemLeft"><a class="el" href="classpesieve_1_1_susp_addr_report.html">SuspAddrReport</a> *&#160;</td><td class="memItemRight"><a class="el" href="#ab245edaa16cc81ced1505d61c6b7f812">findAreaForAddress</a> (const ULONGLONG &amp;susp_addr)</td></tr>
-<tr class="memitem:a1201112cdfed07783e13601e22fb48cb" id="r_a1201112cdfed07783e13601e22fb48cb"><td class="memItemLeft">virtual const void&#160;</td><td class="memItemRight"><a class="el" href="#a1201112cdfed07783e13601e22fb48cb">callstackToJSON</a> (std::stringstream &amp;outs, size_t level, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails)</td></tr>
+<tr class="memitem:a06b4b96487881484f78c5f8ef8086488" id="r_a06b4b96487881484f78c5f8ef8086488"><td class="memItemLeft">virtual const void&#160;</td><td class="memItemRight"><a class="el" href="#a06b4b96487881484f78c5f8ef8086488">callstackToJSON</a> (std::stringstream &amp;outs, size_t level, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails, const <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a> &amp;details)</td></tr>
 <tr class="memitem:a7422320719afe0302302bc7c2118cc45" id="r_a7422320719afe0302302bc7c2118cc45"><td class="memItemLeft">const <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a7422320719afe0302302bc7c2118cc45">threadInfoToJSON</a> (std::stringstream &amp;outs, size_t level, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails)</td></tr>
 <tr class="memitem:a9dd248944d92c6273c33fd9773931444" id="r_a9dd248944d92c6273c33fd9773931444"><td class="memItemLeft">const <a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a9dd248944d92c6273c33fd9773931444">indicatorsToJSON</a> (std::stringstream &amp;outs, size_t level, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails)</td></tr>
 <tr class="memitem:a55f35dcaff1d2c423b6425c75f9074ab" id="r_a55f35dcaff1d2c423b6425c75f9074ab"><td class="memItemLeft">virtual const void&#160;</td><td class="memItemRight"><a class="el" href="#a55f35dcaff1d2c423b6425c75f9074ab">fieldsToJSON</a> (std::stringstream &amp;outs, size_t level, const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;jdetails)</td></tr>
@@ -165,6 +165,8 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ac3642a0ae1f4bb488da98ee2af10b3c1" id="r_ac3642a0ae1f4bb488da98ee2af10b3c1"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#ac3642a0ae1f4bb488da98ee2af10b3c1">lastSyscall</a></td></tr>
 <tr class="memitem:a0e9ef0ae3909540a0eb7257b895a2c2c" id="r_a0e9ef0ae3909540a0eb7257b895a2c2c"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a0e9ef0ae3909540a0eb7257b895a2c2c">lastFunction</a></td></tr>
 <tr class="memitem:a60b70ce2e218c7a647878b7d18c920b0" id="r_a60b70ce2e218c7a647878b7d18c920b0"><td class="memItemLeft"><a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a>&#160;</td><td class="memItemRight"><a class="el" href="#a60b70ce2e218c7a647878b7d18c920b0">cDetails</a></td></tr>
+<tr class="memitem:a4b1b8153f36312768815230858f1ed6a" id="r_a4b1b8153f36312768815230858f1ed6a"><td class="memItemLeft"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a4b1b8153f36312768815230858f1ed6a">has_native_wow64_context</a></td></tr>
+<tr class="memitem:a12c157c2f8af22dcec65698079bd9981" id="r_a12c157c2f8af22dcec65698079bd9981"><td class="memItemLeft"><a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a>&#160;</td><td class="memItemRight"><a class="el" href="#a12c157c2f8af22dcec65698079bd9981">nativeWow64Details</a></td></tr>
 <tr class="memitem:a2f53bcd66f9ad39feacb66a0de9db5e4" id="r_a2f53bcd66f9ad39feacb66a0de9db5e4"><td class="memItemLeft">std::map&lt; ULONGLONG, std::string &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a2f53bcd66f9ad39feacb66a0de9db5e4">addrToSymbol</a></td></tr>
 <tr class="memitem:ac62da71ae405ba5c4faaecf0da2d3907" id="r_ac62da71ae405ba5c4faaecf0da2d3907"><td class="memItemLeft">std::set&lt; ULONGLONG &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ac62da71ae405ba5c4faaecf0da2d3907">shcCandidates</a></td></tr>
 <tr class="memitem:a2635a4a34fb75863a79a496a68727eea" id="r_a2635a4a34fb75863a79a496a68727eea"><td class="memItemLeft">std::set&lt; <a class="el" href="namespacepesieve.html#ad7ea85bd66840b769e4e5a59b0f3e4c0">ThSusIndicator</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a2635a4a34fb75863a79a496a68727eea">indicators</a></td></tr>
@@ -258,13 +260,13 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00204">204</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00205">205</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="a1201112cdfed07783e13601e22fb48cb" name="a1201112cdfed07783e13601e22fb48cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1201112cdfed07783e13601e22fb48cb">&#9670;&#160;</a></span>callstackToJSON()</h2>
+<a id="a06b4b96487881484f78c5f8ef8086488" name="a06b4b96487881484f78c5f8ef8086488"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06b4b96487881484f78c5f8ef8086488">&#9670;&#160;</a></span>callstackToJSON()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -285,7 +287,12 @@ Here is the call graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>jdetails</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classpesieve_1_1t__json__level.html">pesieve::t_json_level</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>jdetails</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>details</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -295,7 +302,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00229">229</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00230">230</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -331,7 +338,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00323">323</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00331">331</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -348,7 +355,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="128,143,286,255,283,260,125,147"/>
 <area shape="rect" href="namespacepesieve.html#ac993ea54598eedc07ad1801b9a565153" title=" " alt="" coords="498,5,620,46"/>
 <area shape="poly" title=" " alt="" coords="401,68,483,44,484,49,403,73"/>
-<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#a1201112cdfed07783e13601e22fb48cb" title=" " alt="" coords="469,71,649,111"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#a06b4b96487881484f78c5f8ef8086488" title=" " alt="" coords="469,71,649,111"/>
 <area shape="poly" title=" " alt="" coords="401,133,469,114,470,119,403,138"/>
 <area shape="rect" href="classpesieve_1_1_thread_scan_report.html#af30839203957e838bc299232e05ab735" title=" " alt="" coords="469,136,649,177"/>
 <area shape="poly" title=" " alt="" coords="418,154,453,154,453,159,418,159"/>
@@ -386,7 +393,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00213">213</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00214">214</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -422,7 +429,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00310">310</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00318">318</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -468,14 +475,14 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00267">267</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00268">268</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpesieve_1_1_thread_scan_report_a7422320719afe0302302bc7c2118cc45_cgraph.png" border="0" usemap="#aclasspesieve_1_1_thread_scan_report_a7422320719afe0302302bc7c2118cc45_cgraph" loading="lazy" alt=""/></div>
 <map name="aclasspesieve_1_1_thread_scan_report_a7422320719afe0302302bc7c2118cc45_cgraph" id="aclasspesieve_1_1_thread_scan_report_a7422320719afe0302302bc7c2118cc45_cgraph">
 <area shape="rect" title=" " alt="" coords="5,71,186,111"/>
-<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#a1201112cdfed07783e13601e22fb48cb" title=" " alt="" coords="234,5,414,46"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#a06b4b96487881484f78c5f8ef8086488" title=" " alt="" coords="234,5,414,46"/>
 <area shape="poly" title=" " alt="" coords="168,68,235,48,236,53,170,73"/>
 <area shape="rect" href="classpesieve_1_1_thread_scan_report.html#af30839203957e838bc299232e05ab735" title=" " alt="" coords="234,71,414,111"/>
 <area shape="poly" title=" " alt="" coords="186,88,218,88,218,94,186,94"/>
@@ -520,7 +527,7 @@ Here is the call graph for this function:</div>
 
 <p>Implements <a class="el" href="classpesieve_1_1_module_scan_report.html#a25e97f444bf7df224380c0f7b112443f">pesieve::ModuleScanReport</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00359">359</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00367">367</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -539,7 +546,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="356,143,514,255,511,260,353,147"/>
 <area shape="rect" href="namespacepesieve.html#ac993ea54598eedc07ad1801b9a565153" title=" " alt="" coords="727,5,848,46"/>
 <area shape="poly" title=" " alt="" coords="629,68,711,44,713,49,631,73"/>
-<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#a1201112cdfed07783e13601e22fb48cb" title=" " alt="" coords="697,71,878,111"/>
+<area shape="rect" href="classpesieve_1_1_thread_scan_report.html#a06b4b96487881484f78c5f8ef8086488" title=" " alt="" coords="697,71,878,111"/>
 <area shape="poly" title=" " alt="" coords="629,133,697,114,699,119,631,138"/>
 <area shape="rect" href="classpesieve_1_1_thread_scan_report.html#af30839203957e838bc299232e05ab735" title=" " alt="" coords="697,136,878,177"/>
 <area shape="poly" title=" " alt="" coords="646,154,681,154,681,159,646,159"/>
@@ -621,7 +628,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00378">378</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00394">394</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -637,7 +644,23 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00377">377</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00387">387</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+
+</div>
+</div>
+<a id="a4b1b8153f36312768815230858f1ed6a" name="a4b1b8153f36312768815230858f1ed6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b1b8153f36312768815230858f1ed6a">&#9670;&#160;</a></span>has_native_wow64_context</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="pe__sieve__types_8h.html#ad5c9d4ba3dc37783a528b0925dc981a0">bool</a> pesieve::ThreadScanReport::has_native_wow64_context</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00391">391</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -653,7 +676,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00380">380</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00396">396</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -669,7 +692,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00375">375</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00383">383</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -685,7 +708,23 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00374">374</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00382">382</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+
+</div>
+</div>
+<a id="a12c157c2f8af22dcec65698079bd9981" name="a12c157c2f8af22dcec65698079bd9981"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12c157c2f8af22dcec65698079bd9981">&#9670;&#160;</a></span>nativeWow64Details</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepesieve.html#a7a37f9e361f80961af26f92053c89f36">ctx_details</a> pesieve::ThreadScanReport::nativeWow64Details</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00392">392</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -701,7 +740,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00379">379</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00395">395</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -717,7 +756,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00369">369</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00377">377</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -733,7 +772,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00381">381</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00397">397</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -749,7 +788,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00370">370</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00378">378</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -813,7 +852,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00371">371</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00379">379</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -829,7 +868,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00372">372</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00380">380</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>
@@ -845,7 +884,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00368">368</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="thread__scanner_8h_source.html#l00376">376</a> of file <a class="el" href="thread__scanner_8h_source.html">thread_scanner.h</a>.</p>
 
 </div>
 </div>

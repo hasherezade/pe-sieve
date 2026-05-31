@@ -35,6 +35,6 @@ var searchData=
   ['rtrim_32',['rtrim',['../namespacepesieve_1_1util.html#a31052004d33cccf72236cd5bd451fa91',1,'pesieve::util']]],
   ['rulematcher_33',['RuleMatcher',['../classpesieve_1_1_rule_matcher.html#a977717986c584a95b87ffd73da2e8905',1,'pesieve::RuleMatcher']]],
   ['rulematchersset_34',['RuleMatchersSet',['../structpesieve_1_1_rule_matchers_set.html#aff5025d1a45e27e0f98cb4da745b3ff8',1,'pesieve::RuleMatchersSet']]],
-  ['runstackwalk_35',['RunStackWalk',['../class_dbg_help_wrapper.html#a77e5cc384df6c4dc119324edcdd00371',1,'DbgHelpWrapper::RunStackWalk()'],['../class_process_symbols_manager.html#a5db1848c8092e7665c6c736709e5d37c',1,'ProcessSymbolsManager::RunStackWalk()']]],
+  ['runstackwalk64_35',['RunStackWalk64',['../class_dbg_help_wrapper.html#adec76bc9ffb0afc56e12b604e2ec6e24',1,'DbgHelpWrapper::RunStackWalk64()'],['../class_process_symbols_manager.html#a64a1afe182b7d165c09ae025c43da7a4',1,'ProcessSymbolsManager::RunStackWalk64()']]],
   ['rvatova_36',['rvaToVa',['../classpesieve_1_1_module_data.html#a1227c638b7039f75d3bf31b61fe13bf9',1,'pesieve::ModuleData']]]
 ];
