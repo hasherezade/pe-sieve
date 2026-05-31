@@ -77,7 +77,7 @@ size_t pesieve::util::extract_syscall_table(OUT std::map<DWORD, std::string>& sy
 	ExpandEnvironmentStringsA("%SystemRoot%\\system32\\win32u.dll", win32u_path, MAX_PATH);
 	extracted_count += extract_from_dll(win32u_path, 0x1000, syscallToName);
 
-	pesieve::util::wow64_revert_fs_redirection(&old_val);
+	pesieve::util::wow64_revert_fs_redirection(old_val);
 
 	if (!extracted_count) {
 #ifdef _DEBUG

@@ -50,9 +50,8 @@ namespace pesieve {
 		std::vector<ULONGLONG> callStack;
 
 		_ctx_details(bool _is64b = false, ULONGLONG _rip = 0, ULONGLONG _rsp = 0, ULONGLONG _rbp = 0, ULONGLONG _ret_addr = 0)
-			: is64b(_is64b), rip(_rip), rsp(_rsp), rbp(_rbp), last_ret(_ret_addr), ret_on_stack(0), is_ret_as_syscall(true), is_ret_in_frame(true),
-			is_managed(false)
 		{
+			init(_is64b, _rip, _rsp, _rbp, _ret_addr);
 		}
 
 		void init(bool _is64b = false, ULONGLONG _rip = 0, ULONGLONG _rsp = 0, ULONGLONG _rbp = 0, ULONGLONG _ret_addr = 0)
@@ -62,6 +61,11 @@ namespace pesieve {
 			this->rsp = _rsp;
 			this->rbp = _rbp;
 			this->last_ret = _ret_addr;
+			this->ret_on_stack = 0;
+			this->is_ret_as_syscall = true;
+			this->is_ret_in_frame = true;
+			this->is_managed = false;
+			this->callStack.clear();
 		}
 
 	} ctx_details;

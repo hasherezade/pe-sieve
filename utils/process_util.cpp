@@ -76,7 +76,7 @@ bool pesieve::util::is_current_wow64()
 	return false;
 #else
 	BOOL isWow64 = FALSE;
-	if (is_process_wow64(GetCurrentProcess(), &isWow64)) {
+	if (!is_process_wow64(GetCurrentProcess(), &isWow64)) {
 		return false;
 	}
 	return (bool)isWow64;
