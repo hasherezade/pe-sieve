@@ -47,8 +47,6 @@ namespace pesieve {
 		bool is_ret_as_syscall;
 		bool is_ret_in_frame;
 		bool is_managed; // does it contain .NET modules
-		bool has_terminal_unnamed_frame; // WOW64 guest walk stopped after retaining the first unnamed frame
-		ULONGLONG terminal_unnamed_frame;
 		std::vector<ULONGLONG> callStack;
 
 		_ctx_details(bool _is64b = false, ULONGLONG _rip = 0, ULONGLONG _rsp = 0, ULONGLONG _rbp = 0, ULONGLONG _ret_addr = 0)
@@ -67,8 +65,6 @@ namespace pesieve {
 			this->is_ret_as_syscall = true;
 			this->is_ret_in_frame = true;
 			this->is_managed = false;
-			this->has_terminal_unnamed_frame = false;
-			this->terminal_unnamed_frame = 0;
 			this->callStack.clear();
 		}
 
@@ -246,11 +242,6 @@ namespace pesieve {
 				outs << ",\n";
 				OUT_PADDED(outs, level, "\"frames_count\" : ");
 				outs << std::dec << details.callStack.size();
-				if (details.has_terminal_unnamed_frame) {
-					outs << ",\n";
-					OUT_PADDED(outs, level, "\"terminal_unnamed_frame\" : ");
-					outs << "\"" << std::hex << details.terminal_unnamed_frame << "\"";
-				}
 				if (printCallstack) {
 					outs << ",\n";
 					OUT_PADDED(outs, level, "\"frames\" : [");
@@ -431,7 +422,7 @@ namespace pesieve {
 		std::string resolveLowLevelFuncName(IN const ULONGLONG addr, OUT OPTIONAL size_t* disp = nullptr);
 		std::string resolveAddrToString(IN ULONGLONG addr);
 		bool printResolvedAddr(const ULONGLONG addr);
-		size_t fillCallStackInfo(IN HANDLE hThread, const IN LPVOID ctx, IN OUT ctx_details& cDetails, IN bool stop_after_first_unnamed_frame = false);
+		size_t fillCallStackInfo(IN HANDLE hThread, const IN LPVOID ctx, IN OUT ctx_details& cDetails);
 		bool fetchNativeThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, IN OUT ctx_details& cDetails);
 #ifdef _WIN64
 		bool fetchWow64ThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, IN OUT ctx_details& cDetails);

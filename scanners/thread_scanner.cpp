@@ -399,8 +399,7 @@ size_t enum_callstack(IN ProcessSymbolsManager* symbols, const pesieve::ctx_deta
 size_t pesieve::ThreadScanner::fillCallStackInfo(
 	IN HANDLE hThread,
 	IN const LPVOID ctx,
-	IN OUT ctx_details& cDetails,
-	IN bool stop_after_first_unnamed_frame)
+	IN OUT ctx_details& cDetails)
 {
 	if (!ctx ||
 		!this->symbols || !this->symbols->IsInitialized())
@@ -412,19 +411,6 @@ size_t pesieve::ThreadScanner::fillCallStackInfo(
 	const size_t fetched = enum_callstack(this->symbols, cDetails, hThread, ctx, machineType, callStack);
 	if (!fetched) {
 		return 0;
-	}
-	if (stop_after_first_unnamed_frame) {
-		std::vector<ULONGLONG> trusted_prefix;
-		for (auto itr = callStack.begin(); itr != callStack.end(); ++itr) {
-			const ULONGLONG frame_pc = *itr;
-			trusted_prefix.push_back(frame_pc);
-			if (!isAddrInNamedModule(frame_pc)) {
-				cDetails.has_terminal_unnamed_frame = true;
-				cDetails.terminal_unnamed_frame = frame_pc;
-				break;
-			}
-		}
-		callStack.swap(trusted_prefix);
 	}
 	cDetails.callStack = callStack;
 	return callStack.size();
@@ -471,7 +457,7 @@ bool pesieve::ThreadScanner::fetchWow64ThreadCtxDetails(IN HANDLE hProcess, IN H
 	}
 	cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
 	read_return_ptr<DWORD>(hProcess, cDetails);
-	fillCallStackInfo(hThread, &ctx, cDetails, true);
+	fillCallStackInfo(hThread, &ctx, cDetails);
 	return true;
 }
 #endif
