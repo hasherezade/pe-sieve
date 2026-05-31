@@ -130,12 +130,6 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		return false;
 	}
 
-	if (callStack.size() == 1) {
-		if (this->info.ext.wait_reason == Suspended && lastFuncCalled == "RtlUserThreadStart" && this->info.last_syscall == 0) {
-			return true; //normal for suspended threads
-		}
-		return false; // otherwise it is an anomaly
-	}
 	// Proceed to check if the last syscall matches the last function called...
 
 #ifndef _WIN64
@@ -152,7 +146,17 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	if (SyscallTable::isSameSyscallFunc(syscallFuncName, lastFuncCalled)) {
 		return true; // valid
 	}
-	
+
+	if (callStack.size() == 1) {
+		if (this->info.ext.wait_reason == Suspended
+			&& lastFuncCalled == "RtlUserThreadStart"
+			&& this->info.last_syscall == 0)
+		{
+			return true; //normal for suspended threads
+		}
+		return false; // otherwise it is an anomaly
+	}
+
 	const ScannedModule* mod = modulesInfo.findModuleContaining(lastCalled);
 	const std::string lastModName = mod ? mod->getModName() : "";
 
@@ -696,13 +700,6 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		my_report.indicators.insert(THI_SUS_CALLS_INTEGRITY);
 		my_report.status = SCAN_SUSPICIOUS;
 	}
-
-	if (cDetails.callStack.size() == 1
-		&& this->info.is_extended && info.ext.state == Waiting && info.ext.wait_reason == UserRequest)
-	{
-		my_report.indicators.insert(THI_SUS_CALLSTACK_CORRUPT);
-		my_report.status = SCAN_SUSPICIOUS;
-	}
 	return (my_report.status == SCAN_SUSPICIOUS) ? true : false;
 }
 
@@ -798,6 +795,8 @@ bool pesieve::ThreadScanner::assessIndicators(HANDLE hThread, ThreadScanReport& 
 		const ThSusIndicator& indicator = *itr;
 		switch (indicator) {
 		case THI_SUS_START:
+		case THI_SUS_IP:
+		case THI_SUS_RET:
 		case THI_SUS_CALLSTACK_SHC:
 			if (best_base) {
 				validatedIndicators.insert(indicator);
