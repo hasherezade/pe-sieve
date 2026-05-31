@@ -749,12 +749,22 @@ bool pesieve::ThreadScanner::scanRemoteThreadCtx(HANDLE hThread, ThreadScanRepor
 		&& !cDetails.is_ret_in_frame)
 	{
 		const ULONGLONG ret_addr = cDetails.ret_on_stack;
+		const bool is_stack_local_ret = is_in_same_allocation(this->processHandle, cDetails.rsp, ret_addr);
 		is_unnamed = !isAddrInNamedModule(ret_addr);
 #ifdef _SHOW_THREAD_INFO
 		std::cout << "Return addr: " << std::hex << ret_addr << "\n";
 		printResolvedAddr(ret_addr);
 #endif //_SHOW_THREAD_INFO
-		if (is_unnamed) {
+		if (is_stack_local_ret) {
+			// The top-of-stack value points back into the current stack allocation.
+			// Keep it in verbose diagnostics, but do not report the stack page as
+			// shellcode. A genuine sleep-masked return target resides in a separate
+			// allocation and remains eligible for reporting.
+#ifdef _SHOW_THREAD_INFO
+			std::cout << "\t" << std::hex << ret_addr << " <=== STACK-LOCAL RETURN, SKIPPED\n";
+#endif //_SHOW_THREAD_INFO
+		}
+		else if (ret_addr && is_unnamed) {
 			my_report.indicators.insert(THI_SUS_RET);
 			if (reportSuspiciousAddr(&my_report, (ULONGLONG)ret_addr)) {
 				my_report.indicators.insert(THI_SUS_CALLSTACK_SHC);
