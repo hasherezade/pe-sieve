@@ -53,6 +53,26 @@ bool get_page_details(HANDLE processHandle, LPVOID start_va, MEMORY_BASIC_INFORM
 	return true;
 }
 
+static bool is_in_same_allocation(IN HANDLE processHandle, IN ULONGLONG first_va, IN ULONGLONG second_va)
+{
+	if (!first_va || !second_va) {
+		return false;
+	}
+
+	MEMORY_BASIC_INFORMATION first_info = { 0 };
+	MEMORY_BASIC_INFORMATION second_info = { 0 };
+
+	if (!get_page_details(processHandle, (LPVOID)first_va, first_info)) {
+		return false;
+	}
+	if (!get_page_details(processHandle, (LPVOID)second_va, second_info)) {
+		return false;
+	}
+
+	return first_info.AllocationBase != nullptr
+		&& first_info.AllocationBase == second_info.AllocationBase;
+}
+
 std::string ThreadScanReport::translate_wait_reason(DWORD thread_wait_reason)
 {
 	switch (thread_wait_reason) {
@@ -263,9 +283,6 @@ size_t pesieve::ThreadScanner::_analyzeCallStack(IN OUT ctx_details& cDetails, O
 #endif //_SHOW_THREAD_INFO
 	for (auto itr = cDetails.callStack.rbegin(); itr != cDetails.callStack.rend() ;++itr, ++processedCntr) {
 		const ULONGLONG next_return = *itr;
-		if (cDetails.ret_on_stack == next_return) {
-			cDetails.is_ret_in_frame = true;
-		}
 		
 #ifdef _SHOW_THREAD_INFO
 		if (symbols && symbols->IsInitialized()) {
@@ -277,6 +294,18 @@ size_t pesieve::ThreadScanner::_analyzeCallStack(IN OUT ctx_details& cDetails, O
 		bool is_curr_shc = false;
 		const ScannedModule* mod = modulesInfo.findModuleContaining(next_return);
 		const std::string mod_name = mod ? mod->getModName() : "";
+		if (mod_name.length() == 0 && is_in_same_allocation(this->processHandle, cDetails.rsp, next_return)) {
+			// StackWalk64 may continue through values stored in the stack allocation
+			// after the trustworthy unwind chain ends. Keep the raw frame in the
+			// verbose call stack, but do not promote it to a shellcode candidate.
+#ifdef _SHOW_THREAD_INFO
+			std::cout << "\t" << std::hex << next_return << " <=== STACK-LOCAL FRAME, SKIPPED\n";
+#endif //_SHOW_THREAD_INFO
+			continue;
+		}
+		if (cDetails.ret_on_stack == next_return) {
+			cDetails.is_ret_in_frame = true;
+		}
 		if (mod_name.length() == 0) {
 			if (!cDetails.is_managed) {
 				is_curr_shc = true;
