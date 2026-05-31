@@ -413,7 +413,7 @@ namespace pesieve {
 		bool filterDotNet(ThreadScanReport& my_report);
 
 		// Assigns the final verdict basing on collected indicators. Returns true if the report was modified.
-		bool assessIndicators(HANDLE hThread, ThreadScanReport& my_report);
+		bool assessIndicators(ThreadScanReport& my_report);
 
 		bool isReflection;
 		bool isManaged;

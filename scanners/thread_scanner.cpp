@@ -752,16 +752,11 @@ static int scoreArea(const SuspAddrReport& area)
 	return score;
 }
 
-bool pesieve::ThreadScanner::assessIndicators(HANDLE hThread, ThreadScanReport& my_report)
+bool pesieve::ThreadScanner::assessIndicators(ThreadScanReport& my_report)
 {
 	if (my_report.status == SCAN_NOT_SUSPICIOUS) {
 		return false;
 	}
-	if (!pesieve::is_thread_running(hThread)) {
-		my_report.status = SCAN_NOT_SUSPICIOUS;
-		return true;
-	}
-	
 	if (filterDotNet(my_report)) {
 		return true;
 	}
@@ -861,26 +856,24 @@ ThreadScanReport* pesieve::ThreadScanner::scanRemote()
 			my_report->indicators.insert(THI_SUS_CALLSTACK_SHC);
 		}
 	}
-	if (!should_scan_context(info)) {
-		return my_report;
-	}
-	// proceed with detailed checks:
-	HANDLE hThread = OpenThread(
-		THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION | SYNCHRONIZE,
-		FALSE,
-		info.tid
-	);
-	if (!hThread) {
+	if (should_scan_context(info)) {
+		// proceed with detailed checks:
+		HANDLE hThread = OpenThread(
+			THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION | SYNCHRONIZE,
+			FALSE,
+			info.tid
+		);
+		if (hThread) {
+			scanRemoteThreadCtx(hThread, *my_report);
+			CloseHandle(hThread);
+		}
+		else {
 #ifdef _DEBUG
-		std::cerr << "[-] Could not OpenThread. Error: " << GetLastError() << std::endl;
+			std::cerr << "[-] Could not OpenThread. Error: " << GetLastError() << std::endl;
 #endif
-		my_report->status = SCAN_ERROR;
-		return my_report;
+		}
 	}
-	scanRemoteThreadCtx(hThread, *my_report);
-	assessIndicators(hThread, *my_report);
-	CloseHandle(hThread);
-
+	assessIndicators(*my_report);
 	reportResolvedCallstack(*my_report);
 	return my_report;
 }
