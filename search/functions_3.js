@@ -20,7 +20,7 @@ var searchData=
   ['checkareacontent_17',['checkAreaContent',['../classpesieve_1_1_working_set_scanner.html#a6f48a79a9fd5f288883d28fe63f4b60b',1,'pesieve::WorkingSetScanner']]],
   ['checkforhookedexports_18',['checkForHookedExports',['../classpesieve_1_1_patch_list.html#a05382a8d3308b2b73072ce3f74e51df7',1,'pesieve::PatchList']]],
   ['checkratios_19',['checkRatios',['../namespacepesieve.html#a5fd824d6b6952365f9a987cd2dde58c4',1,'pesieve']]],
-  ['checkreturnaddrintegrity_20',['checkReturnAddrIntegrity',['../classpesieve_1_1_thread_scanner.html#a1c1fd96c4b0adadecb460db246b16c25',1,'pesieve::ThreadScanner']]],
+  ['checkreturnaddrintegrity_20',['checkReturnAddrIntegrity',['../classpesieve_1_1_thread_scanner.html#a7397dc5a110e224bf39fe53a808a2240',1,'pesieve::ThreadScanner']]],
   ['choosepreferredfunctionname_21',['choosePreferredFunctionName',['../classpesieve_1_1_thread_scanner.html#ab34204d27d4605503dd94dd009fbc7ec',1,'pesieve::ThreadScanner']]],
   ['chunkstats_22',['ChunkStats',['../structpesieve_1_1_chunk_stats.html#a0d293c1c710b49b08b4385f4bf12f693',1,'pesieve::ChunkStats::ChunkStats()'],['../structpesieve_1_1_chunk_stats.html#a8faa551d12ce0ef9385011166fca6e22',1,'pesieve::ChunkStats::ChunkStats(size_t _offset, size_t _size)'],['../structpesieve_1_1_chunk_stats.html#ac43e6564353e25b0ba67943f22dddede',1,'pesieve::ChunkStats::ChunkStats(const ChunkStats &amp;p1)']]],
   ['cleanupprocess_23',['CleanupProcess',['../class_dbg_help_wrapper.html#a17ca38ddb1b0a8368f822b4649c5a76d',1,'DbgHelpWrapper']]],
