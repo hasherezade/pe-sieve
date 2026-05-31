@@ -331,8 +331,7 @@ size_t pesieve::ThreadScanner::analyzeCallStackInfo(IN OUT ThreadScanReport& my_
 	return analyzedCount;
 }
 
-template<typename T_STACKFRAME>
-size_t enum_callstack(IN ProcessSymbolsManager* symbols, const pesieve::ctx_details& cDetails,IN HANDLE hThread, IN LPVOID ctx, DWORD MachineType, std::vector<ULONGLONG> &callStack)
+size_t enum_callstack(IN ProcessSymbolsManager* symbols, const pesieve::ctx_details& cDetails, IN HANDLE hThread, IN LPVOID ctx, DWORD MachineType, std::vector<ULONGLONG>& callStack)
 {
 	if (!ctx || !symbols || !symbols->IsInitialized()) {
 		return 0;
@@ -340,7 +339,7 @@ size_t enum_callstack(IN ProcessSymbolsManager* symbols, const pesieve::ctx_deta
 	const size_t max_frames = 128;
 
 	size_t fetched = 0;
-	T_STACKFRAME frame = { 0 };
+	STACKFRAME64 frame = { 0 };
 
 	frame.AddrPC.Offset = cDetails.rip;
 	frame.AddrPC.Mode = AddrModeFlat;
@@ -348,11 +347,11 @@ size_t enum_callstack(IN ProcessSymbolsManager* symbols, const pesieve::ctx_deta
 	frame.AddrStack.Mode = AddrModeFlat;
 	frame.AddrFrame.Offset = cDetails.rbp;
 	frame.AddrFrame.Mode = AddrModeFlat;
-	
+
 	DWORD64 prevPc = 0;
 	size_t frameCount = 0;
 
-	while (symbols->RunStackWalk(MachineType, hThread, &frame, ctx, NULL, SymFunctionTableAccess, SymGetModuleBase, NULL)) {
+	while (symbols->RunStackWalk64(MachineType, hThread, &frame, ctx, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL)) {
 
 		DWORD64 next_return = frame.AddrPC.Offset;
 		if (next_return == 0) break;
@@ -368,7 +367,7 @@ size_t enum_callstack(IN ProcessSymbolsManager* symbols, const pesieve::ctx_deta
 	return fetched;
 }
 
-size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE hThread, IN const LPVOID ctx, IN OUT ThreadScanReport& my_report)
+size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hThread, IN const LPVOID ctx, IN OUT ctx_details& cDetails)
 {
 	if (!ctx ||
 		!this->symbols || !this->symbols->IsInitialized())
@@ -376,21 +375,12 @@ size_t pesieve::ThreadScanner::fillCallStackInfo(IN HANDLE hProcess, IN HANDLE h
 		return 0;
 	}
 	std::vector<ULONGLONG> callStack;
-	size_t fetched = 0;
-
-	const pesieve::ctx_details& cDetails = my_report.cDetails;
-#ifdef _WIN64
-	if (cDetails.is64b) {
-		fetched = enum_callstack<STACKFRAME64>(this->symbols, cDetails, hThread, ctx, IMAGE_FILE_MACHINE_AMD64, callStack);
-	}
-#endif
-	if (!cDetails.is64b) {
-		fetched = enum_callstack<STACKFRAME>(this->symbols, cDetails, hThread, ctx, IMAGE_FILE_MACHINE_I386, callStack);
-	}
+	const DWORD machineType = cDetails.is64b ? IMAGE_FILE_MACHINE_AMD64 : IMAGE_FILE_MACHINE_I386;
+	const size_t fetched = enum_callstack(this->symbols, cDetails, hThread, ctx, machineType, callStack);
 	if (!fetched) {
 		return 0;
 	}
-	my_report.cDetails.callStack = callStack;
+	cDetails.callStack = callStack;
 	return callStack.size();
 }
 
@@ -407,43 +397,67 @@ namespace pesieve {
 	}
 }; //namespace pesieve
 
+bool pesieve::ThreadScanner::fetchNativeThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, IN OUT ctx_details& cDetails)
+{
+	CONTEXT ctx = { 0 };
+	ctx.ContextFlags = CONTEXT_INTEGER | CONTEXT_CONTROL;
+	if (!GetThreadContext(hThread, &ctx)) {
+		return false;
+	}
+#ifdef _WIN64
+	cDetails.init(true, ctx.Rip, ctx.Rsp, ctx.Rbp);
+	read_return_ptr<ULONGLONG>(hProcess, cDetails);
+#else
+	cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
+	read_return_ptr<DWORD>(hProcess, cDetails);
+#endif
+	fillCallStackInfo(hThread, &ctx, cDetails);
+	return true;
+}
+
+#ifdef _WIN64
+bool pesieve::ThreadScanner::fetchWow64ThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, IN OUT ctx_details& cDetails)
+{
+	WOW64_CONTEXT ctx = { 0 };
+	ctx.ContextFlags = WOW64_CONTEXT_INTEGER | WOW64_CONTEXT_CONTROL;
+	if (!pesieve::util::wow64_get_thread_context(hThread, &ctx)) {
+		return false;
+	}
+	cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
+	read_return_ptr<DWORD>(hProcess, cDetails);
+	fillCallStackInfo(hThread, &ctx, cDetails);
+	return true;
+}
+#endif
+
 bool pesieve::ThreadScanner::fetchThreadCtxDetails(IN HANDLE hProcess, IN HANDLE hThread, OUT ThreadScanReport& my_report)
 {
-	bool is_ok = false;
-	BOOL is_wow64 = FALSE;
-	size_t retrieved = 0;
 #ifdef _WIN64
+	BOOL is_wow64 = FALSE;
 	pesieve::util::is_process_wow64(hProcess, &is_wow64);
 
 	if (is_wow64) {
-		WOW64_CONTEXT ctx = { 0 };
-		ctx.ContextFlags = CONTEXT_INTEGER | CONTEXT_CONTROL;
-		if (pesieve::util::wow64_get_thread_context(hThread, &ctx)) {
-			is_ok = true;
-			my_report.cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
-			read_return_ptr<DWORD>(hProcess, my_report.cDetails);
-			retrieved = fillCallStackInfo(hProcess, hThread, &ctx, my_report);
-		}
-	}
-#endif
-	if (!is_ok) {
+		const bool native_ok = fetchNativeThreadCtxDetails(hProcess, hThread, my_report.nativeWow64Details);
+		my_report.has_native_wow64_context = native_ok;
 
-		CONTEXT ctx = { 0 };
-		ctx.ContextFlags = CONTEXT_INTEGER | CONTEXT_CONTROL;
-		if (GetThreadContext(hThread, &ctx)) {
-			is_ok = true;
-#ifdef _WIN64
-			my_report.cDetails.init(true, ctx.Rip, ctx.Rsp, ctx.Rbp);
-			read_return_ptr<ULONGLONG>(hProcess, my_report.cDetails);
-#else
-			my_report.cDetails.init(false, ctx.Eip, ctx.Esp, ctx.Ebp);
-			read_return_ptr<DWORD>(hProcess, my_report.cDetails);
-#endif
-			retrieved = fillCallStackInfo(hProcess, hThread, &ctx, my_report);
+		const bool wow64_ok = fetchWow64ThreadCtxDetails(hProcess, hThread, my_report.cDetails);
+		if (!wow64_ok && native_ok) {
+			// Preserve a usable primary stack if the WOW64 guest context could not be fetched.
+			// Avoid reporting the same native stack twice.
+			my_report.cDetails = my_report.nativeWow64Details;
+			my_report.has_native_wow64_context = false;
 		}
-	}
 #ifdef _DEBUG
-	std::cout << std::dec << "[" << GetThreadId(hThread) << "] Retrieved callstack: " << retrieved << std::endl;
+		std::cout << std::dec << "[" << GetThreadId(hThread) << "] Retrieved WOW64 guest callstack: " << my_report.cDetails.callStack.size()
+			<< ", native callstack: " << my_report.nativeWow64Details.callStack.size() << std::endl;
+#endif //_DEBUG
+		return wow64_ok || native_ok;
+	}
+#endif
+
+	const bool is_ok = fetchNativeThreadCtxDetails(hProcess, hThread, my_report.cDetails);
+#ifdef _DEBUG
+	std::cout << std::dec << "[" << GetThreadId(hThread) << "] Retrieved callstack: " << my_report.cDetails.callStack.size() << std::endl;
 #endif //_DEBUG
 	return is_ok;
 }
@@ -833,6 +847,10 @@ void pesieve::ThreadScanner::initReport(ThreadScanReport& my_report)
 void pesieve::ThreadScanner::reportResolvedCallstack(ThreadScanReport& my_report)
 {
 	for (auto itr = my_report.cDetails.callStack.begin(); itr != my_report.cDetails.callStack.end(); ++itr) {
+		ULONGLONG addr = *itr;
+		my_report.addrToSymbol[addr] = this->resolveAddrToString(addr);
+	}
+	for (auto itr = my_report.nativeWow64Details.callStack.begin(); itr != my_report.nativeWow64Details.callStack.end(); ++itr) {
 		ULONGLONG addr = *itr;
 		my_report.addrToSymbol[addr] = this->resolveAddrToString(addr);
 	}
