@@ -110,19 +110,31 @@ std::string pesieve::ThreadScanner::choosePreferredFunctionName(const std::strin
 	return dbgSymbol;
 }
 
-bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONGLONG>& callStack, IN OUT ThreadScanReport& my_report)
+bool ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONGLONG>& callStack, IN OUT ThreadScanReport& my_report)
 {
-	if (this->info.last_syscall == INVALID_SYSCALL || !symbols || !callStack.size() || !info.is_extended || !g_SyscallTable.isReady()) {
+	if (this->info.last_syscall == INVALID_SYSCALL || !callStack.size() || !info.is_extended || !g_SyscallTable.isReady()) {
 		return true; // skip the check
 	}
 	const ULONGLONG lastCalled = *(callStack.begin());
-	const std::string debugFuncName = symbols->funcNameFromAddr(lastCalled);
+	const std::string debugFuncName = (symbols) ? symbols->funcNameFromAddr(lastCalled) : "";
 	const std::string manualSymbol = exportsMap ? resolveLowLevelFuncName(lastCalled) : "";
 	if (debugFuncName.empty() && !exportsMap) {
 		return true; // skip the check
 	}
 	const std::string lastFuncCalled = choosePreferredFunctionName(debugFuncName, manualSymbol);
 	my_report.lastFunction = lastFuncCalled;
+	if (this->info.last_syscall == 0) {
+		if (this->info.ext.wait_reason == Suspended && callStack.size() == 1 && lastFuncCalled == "RtlUserThreadStart") {
+			return true; //normal for suspended threads that just started
+		}
+		return false; // otherwise it is an anomaly
+	}
+
+	// Further checks require symbols:
+	if (!symbols) {
+		return true; // skip the check
+	}
+
 	if (lastFuncCalled.empty()) {
 #ifdef _DEBUG
 		std::cout << "ERR: Can't fetch the name of the last function called!\n";
@@ -147,21 +159,11 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 		return true; // valid
 	}
 
-	if (callStack.size() == 1) {
-		if (this->info.ext.wait_reason == Suspended
-			&& lastFuncCalled == "RtlUserThreadStart"
-			&& this->info.last_syscall == 0)
-		{
-			return true; //normal for suspended threads
-		}
-		return false; // otherwise it is an anomaly
-	}
-
 	const ScannedModule* mod = modulesInfo.findModuleContaining(lastCalled);
 	const std::string lastModName = mod ? mod->getModName() : "";
 
 	if (syscallFuncName == "NtCallbackReturn") {
-		if (lastModName == "win32u.dll" 
+		if (lastModName == "win32u.dll"
 			|| lastModName == "user32.dll" || lastModName == "winsrv.dll") // for Windows7
 		{
 			return true;
@@ -169,7 +171,7 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	}
 	if (!SyscallTable::isSyscallDll(lastModName)) {
 #ifdef _DEBUG
-		std::cout << "[@]" << std::dec << info.tid << " : " << "LastSyscall: " << syscallFuncName << " VS LastCalledAddr: " << std::hex << lastCalled 
+		std::cout << "[@]" << std::dec << info.tid << " : " << "LastSyscall: " << syscallFuncName << " VS LastCalledAddr: " << std::hex << lastCalled
 			<< " : " << lastFuncCalled << "(" << lastModName << "." << manualSymbol << " )" << " DIFFERENT!"
 			<< " WaitReason: " << std::dec << ThreadScanReport::translate_wait_reason(this->info.ext.wait_reason) << std::endl;
 #endif //_DEBUG
@@ -179,7 +181,7 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 	if (this->info.ext.wait_reason == WrUserRequest ||
 		this->info.ext.wait_reason == UserRequest)
 	{
-		if (syscallFuncName.rfind("NtUser", 0) == 0 ) {
+		if (syscallFuncName.rfind("NtUser", 0) == 0) {
 			if (lastFuncCalled.rfind("NtUser", 0) == 0) return true;
 			if (lastFuncCalled.rfind("NtGdi", 0) == 0) return true;
 		}
@@ -216,7 +218,10 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 			return true;
 		}
 		if (syscallFuncName == "NtWaitForWorkViaWorkerFactory") {
-			if (lastFuncCalled.rfind("NtWaitFor", 0) == 0 || lastFuncCalled.rfind("NtUserMsgWaitFor", 0) == 0 || lastFuncCalled.rfind("NtUserCreate", 0) == 0) {
+			if (lastFuncCalled.rfind("NtWaitFor", 0) == 0
+				|| lastFuncCalled.rfind("NtUserMsgWaitFor", 0) == 0
+				|| lastFuncCalled.rfind("NtUserCreate", 0) == 0)
+			{
 				return true;
 			}
 		}
@@ -227,6 +232,7 @@ bool pesieve::ThreadScanner::checkReturnAddrIntegrity(IN const std::vector<ULONG
 			if ((lastFuncCalled.rfind("NtUserMsgWaitFor", 0) == 0) || (lastFuncCalled.rfind("NtWaitFor", 0) == 0)) return true;
 		}
 	}
+
 #ifdef _DEBUG
 	std::cout << "[@]" << std::dec << info.tid << " : " << "LastSyscall: " << syscallFuncName << " VS LastCalledAddr: " << std::hex << lastCalled
 		<< " : " << lastFuncCalled << "(" << lastModName << "." << manualSymbol << " )" << " DIFFERENT!"
