@@ -251,7 +251,7 @@ namespace pesieve {
 			DWORD ret = _PssCaptureSnapshot(orig_hndl, capture_flags, 0, &snapShot);
 			if (ret != ERROR_SUCCESS) {
 #ifdef _DEBUG
-				std::cout << "PssCaptureSnapshot failed: " << std::hex << " ret: " << ret << " err: " << GetLastError() << "\n";
+				std::cout << "PssCaptureSnapshot failed: " << std::hex << " ret: " << ret << " err: " << ret << "\n";
 #endif
 				return NULL;
 			}
@@ -316,14 +316,19 @@ pesieve::util::ProcessRefl* pesieve::util::make_process_reflection(HANDLE orig_h
 		if (clone) {
 			return new ProcessRefl(clone, snapshot);
 		}
+		release_process_snapshot(snapshot);
 	}
 #endif
 #ifdef USE_RTL_PROCESS_REFLECTION
 	if (load_RtlCreateProcessReflection()) {
 		clone = make_process_reflection1(orig_hndl);
+
+		if (clone) {
+			return new ProcessRefl(clone);
+		}
 	}
 #endif
-	return new ProcessRefl(clone);
+	return nullptr;
 }
 
 //---

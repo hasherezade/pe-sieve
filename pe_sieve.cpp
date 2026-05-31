@@ -234,8 +234,10 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 			}
 		}
 
+		const bool is_reflection = refl && refl->hReflHndl;
+
 		if (!args.quiet) {
-			if (refl) {
+			if (is_reflection) {
 				std::cout << "[*] Using process reflection!\n";
 			}
 			else {
@@ -246,7 +248,6 @@ pesieve::ReportEx* pesieve::scan_and_dump(IN const pesieve::t_params args)
 			}
 		}
 
-		const bool is_reflection = (refl) ? true : false;
 		ProcessScanner scanner(target_proc, is_reflection, args);
 		report->scan_report = scanner.scanRemote();
 		if (report->scan_report) {
