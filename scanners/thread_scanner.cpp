@@ -648,7 +648,10 @@ bool should_scan_context(const util::thread_info& info)
 	}
 	const KTHREAD_STATE state = (KTHREAD_STATE)info.ext.state;
 	if (state == Ready) {
-		return true;
+		// Detailed context walking is intentionally limited to dormant threads.
+		// The start-address check still runs for Ready threads in scanRemote(),
+		// but their register and stack snapshots are not stable enough to analyze.
+		return false;
 	}
 	if (state == Terminated) {
 		return false;
