@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    ExpandEnvironmentStringsA(<span class="stringliteral">&quot;%SystemRoot%\\system32\\win32u.dll&quot;</span>, win32u_path, <a class="code hl_variable" href="namespacepesieve.html#a1cb84e5f71928d34d7e7169a19964a9c">MAX_PATH</a>);</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    extracted_count += <a class="code hl_function" href="namespacepesieve_1_1util.html#a9a0b78302afec18f94651ab7426d847a">extract_from_dll</a>(win32u_path, 0x1000, syscallToName);</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <a class="code hl_function" href="namespacepesieve_1_1util.html#aed4eb6ec69c30d271b4f4b6c4244f03e">pesieve::util::wow64_revert_fs_redirection</a>(&amp;old_val);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <a class="code hl_function" href="namespacepesieve_1_1util.html#aed4eb6ec69c30d271b4f4b6c4244f03e">pesieve::util::wow64_revert_fs_redirection</a>(old_val);</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keywordflow">if</span> (!extracted_count) {</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#ifdef _DEBUG</span></div>

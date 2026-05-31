@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#else</span></div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <a class="code hl_function" href="namespacepesieve_1_1util.html#aa85f1f0a0e6bca89adf99decf129714c">BOOL</a> isWow64 = FALSE;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespacepesieve_1_1util.html#a43b6faf00b6a97279f2d67f4a3fd2513">is_process_wow64</a>(GetCurrentProcess(), &amp;isWow64)) {</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacepesieve_1_1util.html#a43b6faf00b6a97279f2d67f4a3fd2513">is_process_wow64</a>(GetCurrentProcess(), &amp;isWow64)) {</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    }</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keywordflow">return</span> (<span class="keywordtype">bool</span>)isWow64;</div>
