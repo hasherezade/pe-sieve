@@ -1,7 +1,10 @@
 <map id="pesieve::util::trim" name="pesieve::util::trim">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,123,56"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#a0436803ad7df590457409147fa98fb1e" title=" " alt="" coords="171,5,292,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,32,156,27,156,32,123,37"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#a31052004d33cccf72236cd5bd451fa91" title=" " alt="" coords="171,55,292,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="123,49,156,54,155,59,123,55"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,67,123,92"/>
+<area shape="poly" id="edge5_Node000001_Node000001" title=" " alt="" coords="36,68,30,58,33,48,45,42,64,40,84,43,95,49,92,54,83,48,64,45,47,47,37,52,35,57,40,65"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#a0436803ad7df590457409147fa98fb1e" title=" " alt="" coords="171,29,292,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,64,155,56,157,62,124,69"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#a31052004d33cccf72236cd5bd451fa91" title=" " alt="" coords="171,103,292,128"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="123,89,156,97,155,102,122,95"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="203,30,197,21,201,11,212,5,231,3,252,5,262,12,260,16,250,10,231,8,214,10,205,15,203,20,207,28"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="203,104,197,94,201,84,212,78,231,76,252,79,262,85,260,90,250,84,231,81,214,83,205,88,203,93,207,101"/>
 </map>

@@ -1,0 +1,12 @@
+<map id="pesieve::AreaMultiStats::summarize" name="pesieve::AreaMultiStats::summarize">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,63,164,103"/>
+<area shape="rect" id="Node000002" href="$structpesieve_1_1_chunk_stats.html#ac68e19c8316bf003c2fbdea739176001" title=" " alt="" coords="212,63,352,103"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,80,196,80,196,86,164,86"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1stats.html#a4153bb932ccedcc28004bfee48c6c89f" title=" " alt="" coords="400,29,582,70"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="352,69,384,64,385,69,353,74"/>
+<area shape="rect" id="Node000004" href="$structpesieve_1_1_chunk_stats.html#a1681aec57fb3e79ef0e9846faed68652" title=" " alt="" coords="421,95,561,135"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="353,91,406,99,406,105,352,96"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="451,29,450,19,456,10,470,5,491,3,514,5,527,11,525,16,512,10,491,8,471,10,459,15,455,20,457,28"/>
+<area shape="rect" id="Node000005" href="$structpesieve_1_1_multi_stats_settings.html#a3e718c8a7a6d70c36c27b399ef5af9ca" title="Searches a given substring among the watchedStrings. If the substring found, return the corresponding..." alt="" coords="630,95,810,135"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="562,112,615,112,615,118,562,118"/>
+</map>

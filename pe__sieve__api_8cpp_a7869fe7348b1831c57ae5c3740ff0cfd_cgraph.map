@@ -1,9 +1,12 @@
 <map id="PESieve_scan" name="PESieve_scan">
-<area shape="rect" id="Node000001" title="Performs a PE&#45;sieve scan with a supplied set of parameters (defined as a structure t_params)...." alt="" coords="5,5,112,31"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a873e440b1e95f39a0f32e7c871677951" title=" " alt="" coords="160,5,334,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,16,144,16,144,21,112,21"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#a4be4055f3361d4800e16bc2e2e38cda6" title=" " alt="" coords="382,5,468,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="334,16,366,16,366,21,334,21"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve.html#a51cd13779a67fe18611b9bfe32ab52ae" title=" " alt="" coords="516,5,668,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="469,16,501,16,501,21,469,21"/>
+<area shape="rect" id="Node000001" title="Performs a PE&#45;sieve scan with a supplied set of parameters (defined as a structure t_params)...." alt="" coords="5,31,112,56"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#aaf3332943dd372baf4abeb09bfd9df53" title=" " alt="" coords="170,5,324,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,34,154,28,154,33,112,39"/>
+<area shape="rect" id="Node000005" href="$namespacepesieve.html#a873e440b1e95f39a0f32e7c871677951" title=" " alt="" coords="160,55,334,80"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="112,48,144,52,144,57,112,53"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve.html#a4be4055f3361d4800e16bc2e2e38cda6" title=" " alt="" coords="382,31,468,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="325,26,367,33,366,38,324,32"/>
+<area shape="rect" id="Node000004" href="$namespacepesieve.html#a51cd13779a67fe18611b9bfe32ab52ae" title=" " alt="" coords="516,31,668,56"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="469,41,501,41,501,46,469,46"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="334,53,366,49,367,54,335,58"/>
 </map>

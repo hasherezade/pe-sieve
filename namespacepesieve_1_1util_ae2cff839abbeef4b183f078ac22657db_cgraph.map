@@ -1,7 +1,9 @@
 <map id="pesieve::util::is_32bit_code" name="pesieve::util::is_32bit_code">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,181,60"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a1b4dba41ddf56a7365eefc3cab744572" title=" " alt="" coords="229,5,393,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,33,213,29,214,34,182,38"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve.html#a610881f75eb095edddd9001fba5793db" title=" " alt="" coords="245,55,376,96"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="182,56,230,62,230,68,181,61"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,71,181,96"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#a1b4dba41ddf56a7365eefc3cab744572" title=" " alt="" coords="229,29,393,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,67,224,56,225,61,165,73"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve.html#a610881f75eb095edddd9001fba5793db" title=" " alt="" coords="245,103,376,144"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="167,94,230,106,229,111,166,100"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="275,31,267,21,272,11,287,5,311,3,337,5,351,12,349,17,336,10,311,8,288,10,275,15,273,20,279,27"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="270,103,268,93,274,84,289,79,311,77,334,79,348,85,346,90,333,84,311,82,290,84,278,88,273,94,275,102"/>
 </map>

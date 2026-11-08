@@ -1,5 +1,11 @@
 <map id="PESieve_help" name="PESieve_help">
-<area shape="rect" id="Node000001" title="Shows a MessageBox with the informations about PE&#45;sieve." alt="" coords="5,5,108,31"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="156,5,249,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,16,140,16,140,21,108,21"/>
+<area shape="rect" id="Node000001" title="Shows a MessageBox with the informations about PE&#45;sieve." alt="" coords="5,31,108,56"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="184,5,278,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,33,169,24,169,30,108,39"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve.html#a098155f63e66b8a90c8166dd08b3cd03" title=" " alt="" coords="156,55,306,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="108,48,141,52,140,58,108,53"/>
+<area shape="rect" id="Node000004" href="$namespacepesieve.html#a4be4055f3361d4800e16bc2e2e38cda6" title=" " alt="" coords="354,55,440,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="306,65,338,65,338,70,306,70"/>
+<area shape="rect" id="Node000005" href="$namespacepesieve.html#a51cd13779a67fe18611b9bfe32ab52ae" title=" " alt="" coords="488,55,640,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="441,65,473,65,473,70,441,70"/>
 </map>

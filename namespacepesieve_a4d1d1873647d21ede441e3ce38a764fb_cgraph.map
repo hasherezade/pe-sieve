@@ -1,5 +1,7 @@
 <map id="pesieve::calc_import_table_size" name="pesieve::calc_import_table_size">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,145,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#af856350491a23b4fba1aabf0ffb5ecdb" title=" " alt="" coords="193,5,352,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,23,177,23,177,28,145,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,145,70"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="37,29,36,19,42,10,55,5,75,3,97,5,109,11,107,16,95,10,75,8,56,10,45,15,41,20,43,28"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#af856350491a23b4fba1aabf0ffb5ecdb" title=" " alt="" coords="193,29,352,70"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="145,47,177,47,177,52,145,52"/>
+<area shape="poly" id="edge3_Node000002_Node000002" title=" " alt="" coords="235,29,233,19,239,10,252,5,272,3,294,5,307,11,304,16,292,10,272,8,254,10,242,15,238,20,240,28"/>
 </map>

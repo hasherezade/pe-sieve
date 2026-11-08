@@ -1,5 +1,7 @@
 <map id="pesieve::checkRatios" name="pesieve::checkRatios">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,150,31"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a169ec97afb0aab13e1b69e98d6e5b9dc" title=" " alt="" coords="198,5,337,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,16,182,16,182,21,150,21"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,150,55"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="46,30,39,21,43,11,56,5,78,3,100,5,112,12,110,16,99,10,77,8,58,10,47,15,45,20,50,27"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#a169ec97afb0aab13e1b69e98d6e5b9dc" title=" " alt="" coords="198,29,337,55"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="150,40,182,40,182,45,150,45"/>
+<area shape="poly" id="edge3_Node000002_Node000002" title=" " alt="" coords="235,30,229,21,233,11,246,5,267,3,290,5,302,12,300,16,289,10,267,8,247,10,237,15,234,20,240,27"/>
 </map>

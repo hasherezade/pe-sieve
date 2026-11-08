@@ -1,5 +1,18 @@
 <map id="pesieve::RuleMatchersSet::RuleMatchersSet" name="pesieve::RuleMatchersSet::RuleMatchersSet">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,178,46"/>
-<area shape="rect" id="Node000002" href="$structpesieve_1_1_rule_matchers_set.html#a03ab7c01aeb9a20fceac7cf86c5f7a82" title=" " alt="" coords="226,5,398,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,23,210,23,210,28,178,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,104,178,145"/>
+<area shape="rect" id="Node000002" href="$structpesieve_1_1_rule_matchers_set.html#a03ab7c01aeb9a20fceac7cf86c5f7a82" title=" " alt="" coords="226,104,398,145"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,122,210,122,210,127,178,127"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_code_matcher.html#a1749ece281191d85895ac9b48f065ebd" title=" " alt="" coords="464,5,614,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="352,101,445,57,462,50,464,55,447,61,354,106"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_encrypted_matcher.html#a30128a7d5bdde7672d1dda642cf05676" title=" " alt="" coords="451,71,627,111"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="398,109,435,104,436,109,398,114"/>
+<area shape="rect" id="Node000006" href="$classpesieve_1_1_obfuscated_matcher.html#a3714530bae9951055c1ec4e2351c90e4" title=" " alt="" coords="446,136,632,177"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="398,134,431,138,430,144,398,139"/>
+<area shape="rect" id="Node000007" href="$classpesieve_1_1_text_matcher.html#aba583f3972e996338a972ae160c7d977" title=" " alt="" coords="467,201,611,242"/>
+<area shape="poly" id="edge8_Node000002_Node000007" title=" " alt="" coords="355,143,447,186,465,193,463,198,445,191,353,148"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_rule_matcher.html#a977717986c584a95b87ffd73da2e8905" title=" " alt="" coords="680,104,826,145"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="603,44,633,57,705,94,703,98,631,61,601,49"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="628,102,666,108,665,113,627,107"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="632,140,665,135,666,140,633,145"/>
+<area shape="poly" id="edge9_Node000007_Node000004" title=" " alt="" coords="601,198,631,186,701,150,704,155,633,191,603,203"/>
 </map>

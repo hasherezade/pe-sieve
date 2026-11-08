@@ -1,5 +1,6 @@
 <map id="pesieve::util::_thread_info::_thread_info" name="pesieve::util::_thread_info::_thread_info">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,144,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="192,13,336,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,23,176,23,176,28,144,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,22,144,62"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="192,29,336,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,40,176,40,176,45,144,45"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="232,30,226,21,230,11,243,5,264,3,287,5,299,12,296,16,285,10,264,8,244,10,233,15,231,20,236,27"/>
 </map>

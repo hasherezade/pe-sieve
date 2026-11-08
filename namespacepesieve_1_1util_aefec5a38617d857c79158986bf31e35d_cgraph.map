@@ -1,5 +1,7 @@
 <map id="pesieve::util::load_PssCaptureFreeSnapshot" name="pesieve::util::load_PssCaptureFreeSnapshot">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,183,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="231,13,375,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,23,215,23,215,28,183,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,183,70"/>
+<area shape="poly" id="edge3_Node000001_Node000001" title=" " alt="" coords="54,29,52,19,59,10,73,5,94,3,117,5,130,11,128,16,115,10,94,8,74,10,62,15,58,20,60,28"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="231,37,375,62"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,47,215,47,215,52,183,52"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="268,38,261,28,265,18,279,12,303,10,328,13,342,20,339,24,327,18,303,15,281,17,269,22,266,28,272,35"/>
 </map>

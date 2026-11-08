@@ -1,5 +1,7 @@
 <map id="free_params" name="free_params">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,99,31"/>
-<area shape="rect" id="Node000002" href="$params_8h.html#ae5bce7f115c2f5448f6453cff04fcebe" title=" " alt="" coords="147,5,248,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,16,131,16,131,21,99,21"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,99,55"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="27,30,22,21,25,11,35,5,52,3,70,5,79,12,76,16,68,10,52,8,37,10,29,14,27,20,32,28"/>
+<area shape="rect" id="Node000002" href="$params_8h.html#ae5bce7f115c2f5448f6453cff04fcebe" title=" " alt="" coords="147,29,248,55"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="99,40,131,40,131,45,99,45"/>
+<area shape="poly" id="edge3_Node000002_Node000002" title=" " alt="" coords="172,30,168,21,170,11,181,5,197,3,215,5,225,12,222,16,213,10,197,8,182,10,175,14,173,20,177,28"/>
 </map>

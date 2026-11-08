@@ -1,5 +1,6 @@
 <map id="pesieve::PeReconstructor::reconstructPeHdr" name="pesieve::PeReconstructor::reconstructPeHdr">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,175,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a294ac1ed36b2f8bbffab80b3314c7155" title=" " alt="" coords="223,5,348,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,23,207,23,207,28,175,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,175,70"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#a294ac1ed36b2f8bbffab80b3314c7155" title=" " alt="" coords="223,29,348,70"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,47,207,47,207,52,175,52"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="248,29,246,19,252,10,266,5,285,3,307,5,319,11,317,16,305,10,285,8,267,10,256,15,252,20,253,28"/>
 </map>

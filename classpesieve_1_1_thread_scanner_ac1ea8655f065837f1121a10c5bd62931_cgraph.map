@@ -1,5 +1,6 @@
 <map id="pesieve::ThreadScanner::fillCallStackInfo" name="pesieve::ThreadScanner::fillCallStackInfo">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,166,46"/>
-<area shape="rect" id="Node000002" href="$thread__scanner_8cpp.html#aca33ee3f926fdfa0262c33d05b95c9da" title=" " alt="" coords="214,13,326,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,23,198,23,198,28,166,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,22,166,62"/>
+<area shape="rect" id="Node000002" href="$thread__scanner_8cpp.html#aca33ee3f926fdfa0262c33d05b95c9da" title=" " alt="" coords="214,29,326,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,40,198,40,198,45,166,45"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="239,30,233,21,236,11,249,5,270,3,292,5,304,12,301,16,290,10,270,8,251,10,240,15,238,20,243,27"/>
 </map>

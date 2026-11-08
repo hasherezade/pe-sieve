@@ -1,9 +1,12 @@
 <map id="pesieve::util::extract_from_dll" name="pesieve::util::extract_from_dll">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,27,140,68"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15" title=" " alt="" coords="188,27,322,68"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,45,172,45,172,50,140,50"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="371,5,515,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="322,34,355,29,356,34,323,40"/>
-<area shape="rect" id="Node000004" href="$structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08" title=" " alt="" coords="370,55,516,96"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="323,55,355,60,354,65,322,60"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,51,140,92"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="38,51,36,41,42,32,54,27,73,25,92,27,104,33,102,38,91,32,72,30,55,32,45,36,41,42,43,50"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac99548a60414e711aa8bace85438cd15" title=" " alt="" coords="188,51,322,92"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="140,69,172,69,172,74,140,74"/>
+<area shape="poly" id="edge5_Node000002_Node000002" title=" " alt="" coords="220,51,218,41,224,32,236,27,255,25,275,27,287,33,284,38,273,32,255,30,238,32,227,36,223,42,225,50"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="371,29,515,55"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="322,58,355,53,356,58,323,64"/>
+<area shape="rect" id="Node000004" href="$structpesieve_1_1_syscall_table.html#a7421f265ea7f8e42b0476d5929853c08" title=" " alt="" coords="370,79,516,120"/>
+<area shape="poly" id="edge6_Node000002_Node000004" title=" " alt="" coords="323,79,355,84,354,89,322,84"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="411,30,405,21,409,11,422,5,443,3,466,5,478,12,475,16,464,10,443,8,423,10,413,15,411,20,416,27"/>
 </map>

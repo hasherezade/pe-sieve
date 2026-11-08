@@ -1,5 +1,6 @@
 <map id="should_scan_context" name="should_scan_context">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,149,31"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="197,5,290,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,16,181,16,181,21,149,21"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,149,55"/>
+<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="49,30,43,21,47,11,58,5,77,3,97,5,108,12,105,16,95,10,77,8,60,10,51,15,49,20,53,28"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#ac299ba917fb6598dc9de71516cf71c84" title="The string with the basic information about the scanner." alt="" coords="197,29,290,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,40,181,40,181,45,149,45"/>
 </map>

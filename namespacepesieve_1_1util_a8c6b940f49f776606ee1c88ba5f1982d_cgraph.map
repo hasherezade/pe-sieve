@@ -1,7 +1,9 @@
 <map id="pesieve::util::enum_workingset" name="pesieve::util::enum_workingset">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,133,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#a7b470a0106a3ad9352e64d1295bd9870" title=" " alt="" coords="181,5,339,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,23,165,23,165,28,133,28"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="387,13,531,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="339,23,372,23,372,28,339,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,133,70"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#a7b470a0106a3ad9352e64d1295bd9870" title=" " alt="" coords="181,29,339,70"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,47,165,47,165,52,133,52"/>
+<area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="223,29,222,19,228,10,240,5,260,3,281,5,293,11,291,16,279,10,260,8,242,10,231,15,227,20,229,28"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="387,37,531,62"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="339,47,372,47,372,52,339,52"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="426,38,419,28,423,18,437,12,459,10,484,13,496,20,494,24,482,18,459,15,438,17,427,22,425,28,430,35"/>
 </map>

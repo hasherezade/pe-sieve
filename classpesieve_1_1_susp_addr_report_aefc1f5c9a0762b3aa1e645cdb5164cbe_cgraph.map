@@ -1,0 +1,10 @@
+<map id="pesieve::SuspAddrReport::moduleInfoToJSON" name="pesieve::SuspAddrReport::moduleInfoToJSON">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,173,75"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_area_stats.html#a3005dfc8cd36c15290a724a29ee09a63" title=" " alt="" coords="399,5,529,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="173,46,383,29,384,35,173,51"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_area_stats.html#abd305d0d298016ab9099eda29568d236" title=" " alt="" coords="221,63,351,103"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="174,64,205,69,205,74,173,70"/>
+<area shape="poly" id="edge4_Node000003_Node000002" title=" " alt="" coords="350,60,383,49,385,54,352,65"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_area_stats.html#a07fe274131e6c58176225c5719351550" title=" " alt="" coords="399,71,529,111"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="352,83,383,85,383,90,351,89"/>
+</map>

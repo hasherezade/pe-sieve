@@ -1,5 +1,6 @@
 <map id="pesieve::EncryptedMatcher::_isMatching" name="pesieve::EncryptedMatcher::_isMatching">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,182,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1stats.html#adce13b998fffb6e41fc200dd10fb307f" title=" " alt="" coords="230,5,435,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,23,214,23,214,28,182,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,182,70"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1stats.html#adce13b998fffb6e41fc200dd10fb307f" title=" " alt="" coords="230,29,435,70"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,47,214,47,214,52,182,52"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="287,29,285,19,293,10,308,5,332,3,358,5,373,11,371,16,357,10,332,8,310,10,296,15,290,21,293,28"/>
 </map>

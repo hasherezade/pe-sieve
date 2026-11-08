@@ -1,9 +1,11 @@
 <map id="pesieve::ChunkStats::fieldsToJSON" name="pesieve::ChunkStats::fieldsToJSON">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,71,146,111"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,95,146,135"/>
 <area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#aee2126a30340b68df975bfe7d91d413c" title=" " alt="" coords="228,5,365,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,68,212,48,214,53,147,73"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve_1_1stats.html#a16f97b475c946b6131b2a94754bd1816" title=" " alt="" coords="194,71,399,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="146,88,178,88,178,94,146,94"/>
-<area shape="rect" id="Node000004" href="$namespacepesieve_1_1stats.html#ade82e467a4f4e18d203467d3927bd871" title=" " alt="" coords="197,136,396,161"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="147,108,194,120,226,129,225,134,193,126,145,113"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,92,193,57,212,49,214,54,195,61,118,97"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1stats.html#a16f97b475c946b6131b2a94754bd1816" title=" " alt="" coords="194,95,399,135"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="146,112,178,112,178,118,146,118"/>
+<area shape="rect" id="Node000004" href="$namespacepesieve_1_1stats.html#ade82e467a4f4e18d203467d3927bd871" title=" " alt="" coords="197,184,396,209"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="134,133,246,175,244,180,132,138"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="255,95,253,85,259,76,274,70,296,68,320,70,334,77,332,82,319,76,296,73,275,75,263,80,258,86,260,93"/>
+<area shape="poly" id="edge5_Node000004_Node000004" title=" " alt="" coords="260,185,252,175,257,165,272,159,296,157,323,160,337,166,335,171,322,165,296,162,273,164,260,169,258,174,264,181"/>
 </map>

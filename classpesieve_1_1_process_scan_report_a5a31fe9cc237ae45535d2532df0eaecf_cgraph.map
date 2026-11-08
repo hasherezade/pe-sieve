@@ -1,7 +1,8 @@
 <map id="pesieve::ProcessScanReport::listModules" name="pesieve::ProcessScanReport::listModules">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,27,194,68"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#afa0c8ad8a1812e5114f615afc6683ee6" title=" " alt="" coords="254,5,412,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,33,238,27,239,33,194,38"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_module_scan_report.html#a25e97f444bf7df224380c0f7b112443f" title=" " alt="" coords="242,55,424,96"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="194,56,227,60,226,65,194,61"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,51,194,92"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve.html#afa0c8ad8a1812e5114f615afc6683ee6" title=" " alt="" coords="254,29,412,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,57,238,51,239,57,194,62"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_module_scan_report.html#a25e97f444bf7df224380c0f7b112443f" title=" " alt="" coords="242,79,424,120"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="194,80,227,84,226,89,194,85"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="294,31,287,21,291,11,307,5,333,3,361,5,376,12,374,17,360,11,333,8,308,10,295,15,292,20,298,27"/>
 </map>

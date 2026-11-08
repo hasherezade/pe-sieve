@@ -1,5 +1,8 @@
 <map id="pesieve::ProcessScanner::ProcessScanner" name="pesieve::ProcessScanner::ProcessScanner">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,174,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve.html#a15a9583f5de3d091bffbee68e712d8d6" title=" " alt="" coords="222,13,404,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,23,206,23,206,28,174,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,47,174,87"/>
+<area shape="rect" id="Node000002" href="$class_process_symbols_manager.html#aa033a0bcbb58f91b9e371bbc0dfe45b1" title=" " alt="" coords="228,5,398,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,49,212,42,213,47,175,54"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve.html#a15a9583f5de3d091bffbee68e712d8d6" title=" " alt="" coords="222,94,404,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="175,79,223,88,222,93,174,85"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="276,95,268,86,273,76,288,70,313,68,340,70,354,77,352,82,339,75,313,73,289,75,276,80,274,85,280,92"/>
 </map>

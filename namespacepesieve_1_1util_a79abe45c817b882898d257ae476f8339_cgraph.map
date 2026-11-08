@@ -1,7 +1,9 @@
 <map id="pesieve::util::device_path_to_win32_path" name="pesieve::util::device_path_to_win32_path">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,150,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#a31cd5387a84569779492a6d7c5b0420a" title=" " alt="" coords="198,5,329,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,23,182,23,182,28,150,28"/>
-<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="377,13,521,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="329,23,361,23,361,28,329,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,150,70"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#a31cd5387a84569779492a6d7c5b0420a" title=" " alt="" coords="198,29,329,70"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,47,182,47,182,52,150,52"/>
+<area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="228,29,226,19,232,10,244,5,263,3,284,5,296,11,293,16,282,10,263,8,246,10,235,15,231,20,233,28"/>
+<area shape="rect" id="Node000003" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="377,37,521,62"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="329,47,361,47,361,52,329,52"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="418,38,412,28,415,19,428,12,449,10,472,13,483,19,481,24,470,18,449,15,430,17,419,22,417,28,422,35"/>
 </map>

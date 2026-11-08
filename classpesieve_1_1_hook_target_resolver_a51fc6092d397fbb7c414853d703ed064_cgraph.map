@@ -1,15 +1,20 @@
 <map id="pesieve::HookTargetResolver::resolveAllHooks" name="pesieve::HookTargetResolver::resolveAllHooks">
-<area shape="rect" id="Node000001" title="Resolves all the hooks collected within the given set of reports." alt="" coords="5,136,197,177"/>
-<area shape="rect" id="Node000002" href="$classpesieve_1_1_hook_target_resolver.html#a608ca9968909fbbb18a07af866ea47b1" title="Resolves the information about the target of the provided hook, and fills it back into the object." alt="" coords="245,136,436,177"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="197,154,229,154,229,159,197,159"/>
-<area shape="rect" id="Node000003" href="$classpesieve_1_1_patch_list_1_1_patch.html#abefc01f22610a8bfa9c06e76323f685f" title=" " alt="" coords="486,5,657,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="367,133,419,95,483,57,495,50,498,55,485,61,422,100,370,138"/>
-<area shape="rect" id="Node000004" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="489,71,654,111"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="414,133,482,114,483,119,415,138"/>
-<area shape="rect" id="Node000005" href="$classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="489,136,654,177"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="437,154,473,154,473,159,437,159"/>
-<area shape="rect" id="Node000006" href="$classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="489,201,654,242"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="415,175,483,194,482,199,414,180"/>
-<area shape="rect" id="Node000007" href="$classpesieve_1_1_patch_list_1_1_patch.html#ab0c79dabbeed28de63bf3f31844fb708" title=" " alt="" coords="484,267,659,307"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="370,175,422,213,485,251,498,257,495,262,483,256,419,217,367,179"/>
+<area shape="rect" id="Node000001" title="Resolves all the hooks collected within the given set of reports." alt="" coords="5,165,197,206"/>
+<area shape="rect" id="Node000002" href="$classpesieve_1_1_hook_target_resolver.html#a608ca9968909fbbb18a07af866ea47b1" title="Resolves the information about the target of the provided hook, and fills it back into the object." alt="" coords="245,165,436,206"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="197,183,229,183,229,188,197,188"/>
+<area shape="rect" id="Node000003" href="$classpesieve_1_1_patch_list_1_1_patch.html#abefc01f22610a8bfa9c06e76323f685f" title=" " alt="" coords="492,5,664,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="358,163,411,111,445,82,483,57,494,50,497,55,485,61,449,86,415,115,362,167"/>
+<area shape="rect" id="Node000004" href="$classpesieve_1_1_scanned_module.html#a032f8ad62f6bd513835a020fa8f55abb" title=" " alt="" coords="496,71,661,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="387,162,483,122,502,115,504,120,485,127,389,167"/>
+<area shape="rect" id="Node000005" href="$classpesieve_1_1_process_scan_report.html#abbccac104f264bc0b548a0f493a66dde" title=" " alt="" coords="484,136,672,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="436,171,468,167,469,172,437,176"/>
+<area shape="rect" id="Node000007" href="$classpesieve_1_1_scanned_module.html#a13ffedd20fa028dd82fd7db6a6661fef" title=" " alt="" coords="919,165,1084,206"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="437,185,484,186,871,186,903,185,903,191,871,191,484,191,437,190"/>
+<area shape="rect" id="Node000008" href="$classpesieve_1_1_scanned_module.html#a107e7818470321b79edd89bae3940a93" title=" " alt="" coords="496,251,661,291"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="400,204,506,242,504,247,398,209"/>
+<area shape="rect" id="Node000009" href="$classpesieve_1_1_patch_list_1_1_patch.html#ab0c79dabbeed28de63bf3f31844fb708" title=" " alt="" coords="490,316,666,357"/>
+<area shape="poly" id="edge9_Node000002_Node000009" title=" " alt="" coords="364,205,417,252,450,278,485,301,497,307,494,311,483,305,447,282,413,256,360,208"/>
+<area shape="rect" id="Node000006" href="$classpesieve_1_1_modules_info.html#a15b3653af8bb2e2f86991103ab3b9f9e" title=" " alt="" coords="720,136,871,177"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="672,154,705,154,705,159,672,159"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="872,164,904,169,903,174,871,170"/>
 </map>

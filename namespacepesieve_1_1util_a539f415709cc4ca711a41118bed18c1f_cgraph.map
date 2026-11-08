@@ -1,5 +1,6 @@
 <map id="pesieve::util::count_workingset_entries" name="pesieve::util::count_workingset_entries">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,143,46"/>
-<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="191,13,335,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,23,175,23,175,28,143,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,22,143,62"/>
+<area shape="rect" id="Node000002" href="$namespacepesieve_1_1util.html#ac533b9c8a18228f62223a0042c40f5ae" title=" " alt="" coords="191,29,335,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,40,175,40,175,45,143,45"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="231,30,225,21,229,11,242,5,263,3,286,5,298,12,295,16,284,10,263,8,243,10,232,15,230,20,235,27"/>
 </map>
