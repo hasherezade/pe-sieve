@@ -77,7 +77,7 @@ bool pesieve::util::fetch_threads_info(IN DWORD pid, OUT std::map<DWORD, thread_
 
 	while (status != STATUS_SUCCESS) {
 		ULONG ret_len = 0;
-		status = NtQuerySystemInformation(SystemProcessInformation, bBuf.buf, bBuf.buf_size, &ret_len);
+		status = NtQuerySystemInformation(SystemProcessInformation, bBuf.buf, static_cast<ULONG>(bBuf.buf_size), &ret_len);
 		if (status == STATUS_INFO_LENGTH_MISMATCH) {
 			if (!bBuf.alloc(ret_len)) {
 				return false;
