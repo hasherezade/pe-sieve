@@ -4,6 +4,34 @@
 
 using namespace pesieve;
 
+namespace {
+
+	std::string escape_json_string(const std::string& value)
+	{
+		static const char hex[] = "0123456789abcdef";
+		std::string escaped;
+		escaped.reserve(value.size());
+		for (unsigned char ch : value) {
+			switch (ch) {
+			case '"': escaped += "\\\""; break;
+			case '\\': escaped += "\\\\"; break;
+			default:
+				if (ch < 0x20) {
+					escaped += "\\u00";
+					escaped += hex[ch >> 4];
+					escaped += hex[ch & 0x0f];
+				}
+				else {
+					escaped += static_cast<char>(ch);
+				}
+			}
+		}
+		return escaped;
+	}
+
+} // namespace
+
+
 std::string pesieve::scan_report_to_string(const ProcessScanReport &process_report)
 {
 	const t_report report = process_report.generateSummary();
@@ -53,7 +81,7 @@ std::string pesieve::err_report_to_json(const pesieve::ErrorReport& err_report,
 	OUT_PADDED(stream, level, "\"pid\" : ");
 	stream << std::dec << err_report.pid << ",\n";
 	OUT_PADDED(stream, level, "\"err_message\" : ");
-	stream << "\"" << err_report.message << "\"\n";
+	stream << "\"" << escape_json_string(err_report.message) << "\"\n";
 	OUT_PADDED(stream, start_level, "}\n"); // end of the report
 
 	std::string report_all = stream.str();
@@ -105,7 +133,7 @@ std::string pesieve::dump_report_to_json(
 
 std::string pesieve::report_to_json(const pesieve::ReportEx& report, const t_report_type rtype, t_results_filter filter, const pesieve::t_json_level& jdetails, size_t start_level)
 {
-	if (rtype == REPORT_NONE) return 0;
+	if (rtype == REPORT_NONE) return "";
 
 	size_t level = 1;
 	std::stringstream stream;
