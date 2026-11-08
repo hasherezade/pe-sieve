@@ -1,6 +1,7 @@
 #include "scanner.h"
 
 #include <sstream>
+#include <memory>
 #include <fstream>
 #include <string>
 #include <locale>
@@ -239,7 +240,7 @@ ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 
 	const bool is_64bit = pesieve::util::is_process_64bit(this->processHandle);
 
-	ProcessScanReport *pReport = new ProcessScanReport(this->args.pid, is_64bit, this->isReflection, &this->args);
+	std::unique_ptr<ProcessScanReport> pReport(new ProcessScanReport(this->args.pid, is_64bit, this->isReflection, &this->args));
 
 	char image_buf[MAX_PATH] = { 0 };
 	GetProcessImageFileNameA(this->processHandle, image_buf, MAX_PATH);
@@ -298,7 +299,7 @@ ProcessScanReport* pesieve::ProcessScanner::scanRemote()
 
 	//post-process detection reports according to the .NET policy
 	filterDotNetReport(*pReport);
-	return pReport;
+	return pReport.release();
 }
 
 size_t pesieve::ProcessScanner::scanWorkingSet(ProcessScanReport &pReport) //throws exceptions
