@@ -152,6 +152,9 @@ namespace pesieve {
 
             bool copy(const ByteBuffer& p1)
             {
+                if (this == &p1) {
+                    return true;
+                }
                 if (!allocBuffer(p1.data_size)) {
                     return false;
                 }
